@@ -36,7 +36,7 @@ import de.ibapl.jnhw.common.memory.layout.Alignment;
 import de.ibapl.jnhw.common.memory.layout.StructLayoutFactory;
 import de.ibapl.jnhw.common.memory.layout.StructLayoutFactoryImpl;
 import java.io.IOException;
-import jdk.incubator.foreign.ResourceScope;
+import java.lang.foreign.MemorySession;
 
 /**
  *
@@ -44,27 +44,27 @@ import jdk.incubator.foreign.ResourceScope;
  */
 public class Struct {
 
-    public static void getMemory(ResourceScope scope) {
+    public static void getMemory(MemorySession ms) {
         System.out.println("\n\nStruct.getMemory()\n");
-        final MemoryHeap heap = MemoryHeap.allocateNative(1024, scope);
+        final MemoryHeap heap = MemoryHeap.allocateNative(1024, ms);
 
-        final Int8_t int8_t = Int8_t.allocateNative(scope);
+        final Int8_t int8_t = Int8_t.allocateNative(ms);
         int8_t.int8_t((byte) 42);
-        final Int16_t int16_t = Int16_t.allocateNative(scope);
+        final Int16_t int16_t = Int16_t.allocateNative(ms);
         int16_t.int16_t(int8_t.int8_t());
-        final Int32_t int32_t = Int32_t.allocateNative(scope);
+        final Int32_t int32_t = Int32_t.allocateNative(ms);
         int32_t.int32_t(int16_t.int16_t());
-        final Int64_t int64_t = Int64_t.allocateNative(scope);
+        final Int64_t int64_t = Int64_t.allocateNative(ms);
         int64_t.int64_t(int32_t.int32_t());
         System.out.println("int64_t: " + int64_t.int64_t());
 
-        final Uint8_t uint8_t = Uint8_t.allocateNative(scope);
+        final Uint8_t uint8_t = Uint8_t.allocateNative(ms);
         uint8_t.uint8_t((byte) 42);
-        final Uint16_t uint16_t = Uint16_t.allocateNative(scope);
+        final Uint16_t uint16_t = Uint16_t.allocateNative(ms);
         uint16_t.uint16_t(uint8_t.uint8_t());
-        final Uint32_t uint32_t = Uint32_t.allocateNative(scope);
+        final Uint32_t uint32_t = Uint32_t.allocateNative(ms);
         uint32_t.uint32_t(uint16_t.uint16_t());
-        final Uint64_t uint64_t = Uint64_t.allocateNative(scope);
+        final Uint64_t uint64_t = Uint64_t.allocateNative(ms);
         uint64_t.uint64_t(uint32_t.uint32_t());
         System.out.println("uint64_t: " + Long.toUnsignedString(uint64_t.uint64_t()));
         System.out.println();
@@ -80,9 +80,9 @@ public class Struct {
      * }
      * }
      */
-    public static void onTheFlyStructure(ResourceScope scope) {
+    public static void onTheFlyStructure(MemorySession ms) {
         System.out.println("\n\nStruct.onTheFlyStructure()\n");
-        final MemoryHeap heap = MemoryHeap.allocateNative(16, scope);
+        final MemoryHeap heap = MemoryHeap.allocateNative(16, ms);
         StructLayoutFactory slf = new StructLayoutFactoryImpl(StructLayoutFactory.Type.STRUCT);
         final long offsetInHeap = heap.getAlignmentOffset(0, Alignment.AT_16);
 
@@ -119,9 +119,9 @@ public class Struct {
      * }
      * }
      */
-    public static void onTheFlyUnion(ResourceScope scope) {
+    public static void onTheFlyUnion(MemorySession ms) {
         System.out.println("\n\nStruct.onTheFlyUnion()\n");
-        final MemoryHeap heap = MemoryHeap.allocateNative(16, scope);
+        final MemoryHeap heap = MemoryHeap.allocateNative(16, ms);
         StructLayoutFactory slf = new StructLayoutFactoryImpl(StructLayoutFactory.Type.STRUCT);
         final long offsetInHeap = heap.getAlignmentOffset(0, Alignment.AT_8);
 
@@ -145,9 +145,9 @@ public class Struct {
         System.out.println();
     }
 
-    public static void printMemory(ResourceScope scope) throws IOException {
+    public static void printMemory(MemorySession ms) throws IOException {
         System.out.println("\n\nStruct.printMemory()\n");
-        final MemoryHeap heap = MemoryHeap.allocateNative(256, scope);
+        final MemoryHeap heap = MemoryHeap.allocateNative(256, ms);
         for (int i = 0; i < heap.sizeof(); i++) {
             OpaqueMemory.setByte(heap, i, (byte) i);
         }

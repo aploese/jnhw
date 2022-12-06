@@ -23,11 +23,11 @@ package de.ibapl.jnhw.common.downcall;
 
 import de.ibapl.jnhw.common.downcall.wrapper.JnhwMh_sI___V;
 import de.ibapl.jnhw.common.downcall.wrapper.JnhwMh_uI___V;
-import jdk.incubator.foreign.Addressable;
-import jdk.incubator.foreign.FunctionDescriptor;
-import jdk.incubator.foreign.ResourceScope;
-import jdk.incubator.foreign.SymbolLookup;
-import jdk.incubator.foreign.ValueLayout;
+import java.lang.foreign.Addressable;
+import java.lang.foreign.FunctionDescriptor;
+import java.lang.foreign.MemorySession;
+import java.lang.foreign.SymbolLookup;
+import java.lang.foreign.ValueLayout;
 
 /**
  *
@@ -39,8 +39,8 @@ public class JnhwMi__I___V extends JnhwMethodInvoker implements JnhwMh_sI___V, J
         super(symbolLookup, name, FunctionDescriptor.of(ValueLayout.JAVA_INT));
     }
 
-    public JnhwMi__I___V(Addressable addressable, ResourceScope rs) {
-        super(addressable, FunctionDescriptor.of(ValueLayout.JAVA_INT), rs);
+    public JnhwMi__I___V(Addressable addressable, MemorySession ms) {
+        super(addressable, FunctionDescriptor.of(ValueLayout.JAVA_INT), ms);
     }
 
     @Override

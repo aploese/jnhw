@@ -29,22 +29,33 @@ import de.ibapl.jnhw.common.annotation.Include;
 import de.ibapl.jnhw.common.datatypes.BaseDataType;
 import de.ibapl.jnhw.common.datatypes.MultiarchTupelBuilder;
 import de.ibapl.jnhw.common.datatypes.Pointer;
-import de.ibapl.jnhw.common.upcall.Callback__V___I_MA_MA;
-import de.ibapl.jnhw.common.upcall.Callback__V___I;
-import de.ibapl.jnhw.common.upcall.Callback__V__MA;
+import de.ibapl.jnhw.common.downcall.JnhwMethodInvoker;
+import de.ibapl.jnhw.common.downcall.wrapper.JnhwMethodHandle;
+import de.ibapl.jnhw.common.downcall.wrapper.JnhwMh__A__sI__A;
+import de.ibapl.jnhw.common.downcall.wrapper.JnhwMh__V___A__A;
+import de.ibapl.jnhw.common.downcall.wrapper.JnhwMh__V__sI__A;
+import de.ibapl.jnhw.common.downcall.wrapper.JnhwMh_sI__A_sI;
+import de.ibapl.jnhw.common.downcall.wrapper.JnhwMh_sI___A;
+import de.ibapl.jnhw.common.downcall.wrapper.JnhwMh_sI___A__A;
+import de.ibapl.jnhw.common.downcall.wrapper.JnhwMh_sI___A__A__A;
+import de.ibapl.jnhw.common.downcall.wrapper.JnhwMh_sI__sI;
+import de.ibapl.jnhw.common.downcall.wrapper.JnhwMh_sI__sI__A__A;
+import de.ibapl.jnhw.common.downcall.wrapper.JnhwMh_sI__sI_sI;
+import de.ibapl.jnhw.common.downcall.wrapper.JnhwMh_sI__sI_sI__A;
 import de.ibapl.jnhw.common.exception.NativeErrorException;
 import de.ibapl.jnhw.common.exception.NoSuchNativeMethodException;
 import de.ibapl.jnhw.common.exception.NoSuchNativeTypeException;
 import de.ibapl.jnhw.common.exception.NoSuchNativeTypeMemberException;
-import de.ibapl.jnhw.common.downcall.JnhwMethodInvoker;
 import de.ibapl.jnhw.common.memory.Int32_t;
 import de.ibapl.jnhw.common.memory.NativeFunctionPointer;
 import de.ibapl.jnhw.common.memory.OpaqueMemory;
 import de.ibapl.jnhw.common.memory.Struct;
 import de.ibapl.jnhw.common.memory.layout.Alignment;
-import de.ibapl.jnhw.common.downcall.wrapper.JnhwMethodHandle;
-import de.ibapl.jnhw.common.nativepointer.FunctionPtr__V___I_MA_MA;
 import de.ibapl.jnhw.common.nativepointer.FunctionPtr__V___I;
+import de.ibapl.jnhw.common.nativepointer.FunctionPtr__V___I_MA_MA;
+import de.ibapl.jnhw.common.upcall.Callback__V__MA;
+import de.ibapl.jnhw.common.upcall.Callback__V___I;
+import de.ibapl.jnhw.common.upcall.Callback__V___I_MA_MA;
 import de.ibapl.jnhw.common.util.IntDefine;
 import de.ibapl.jnhw.common.util.JsonStringBuilder;
 import de.ibapl.jnhw.common.util.ObjectDefine;
@@ -53,23 +64,12 @@ import de.ibapl.jnhw.util.posix.LibrtLoader;
 import de.ibapl.jnhw.util.posix.PosixDataType;
 import de.ibapl.jnhw.util.posix.memory.PosixStruct;
 import java.io.IOException;
-import jdk.incubator.foreign.FunctionDescriptor;
-import jdk.incubator.foreign.MemoryAddress;
-import jdk.incubator.foreign.MemorySegment;
-import jdk.incubator.foreign.ResourceScope;
-import jdk.incubator.foreign.SymbolLookup;
-import jdk.incubator.foreign.ValueLayout;
-import de.ibapl.jnhw.common.downcall.wrapper.JnhwMh__V___A__A;
-import de.ibapl.jnhw.common.downcall.wrapper.JnhwMh__V__sI__A;
-import de.ibapl.jnhw.common.downcall.wrapper.JnhwMh_sI___A;
-import de.ibapl.jnhw.common.downcall.wrapper.JnhwMh_sI__sI_sI__A;
-import de.ibapl.jnhw.common.downcall.wrapper.JnhwMh__A__sI__A;
-import de.ibapl.jnhw.common.downcall.wrapper.JnhwMh_sI__A_sI;
-import de.ibapl.jnhw.common.downcall.wrapper.JnhwMh_sI__sI_sI;
-import de.ibapl.jnhw.common.downcall.wrapper.JnhwMh_sI___A__A;
-import de.ibapl.jnhw.common.downcall.wrapper.JnhwMh_sI__sI;
-import de.ibapl.jnhw.common.downcall.wrapper.JnhwMh_sI__sI__A__A;
-import de.ibapl.jnhw.common.downcall.wrapper.JnhwMh_sI___A__A__A;
+import java.lang.foreign.FunctionDescriptor;
+import java.lang.foreign.MemoryAddress;
+import java.lang.foreign.MemorySegment;
+import java.lang.foreign.MemorySession;
+import java.lang.foreign.SymbolLookup;
+import java.lang.foreign.ValueLayout;
 
 /**
  * Wrapper around the {@code <signal.h>} header.
@@ -498,15 +498,15 @@ public class Signal {
 
         }
 
-        public final static Mcontext_t tryAllocateNative(ResourceScope scope) throws NoSuchNativeTypeException {
+        public final static Mcontext_t tryAllocateNative(MemorySession ms) throws NoSuchNativeTypeException {
             if (alignof == null) {
                 throw new NoSuchNativeTypeException("Mcontext_t");
             }
-            return new Mcontext_t(MemorySegment.allocateNative(sizeof, scope), 0);
+            return new Mcontext_t(MemorySegment.allocateNative(sizeof, ms), 0);
         }
 
-        public static Mcontext_t tryOfAddress(MemoryAddress baseAddress, ResourceScope scope) throws NoSuchNativeTypeException {
-            return new Mcontext_t(MemorySegment.ofAddress(baseAddress, Mcontext_t.sizeof, scope), 0);
+        public static Mcontext_t tryOfAddress(MemoryAddress baseAddress, MemorySession ms) throws NoSuchNativeTypeException {
+            return new Mcontext_t(MemorySegment.ofAddress(baseAddress, Mcontext_t.sizeof, ms), 0);
         }
 
         public Mcontext_t(MemorySegment memorySegment, long offset) throws NoSuchNativeTypeException {
@@ -670,8 +670,8 @@ public class Signal {
             }
         }
 
-        public final static Sigaction allocateNative(ResourceScope scope) {
-            return new Sigaction(MemorySegment.allocateNative(sizeof, scope), 0);
+        public final static Sigaction allocateNative(MemorySession ms) {
+            return new Sigaction(MemorySegment.allocateNative(sizeof, ms), 0);
         }
 
         private NativeFunctionPointer cachedHandlerOrAction;
@@ -910,15 +910,15 @@ public class Signal {
             }
         }
 
-        public static <T extends OpaqueMemory> Sigevent<T> tryAllocateNative(ResourceScope scope) throws NoSuchNativeTypeException {
+        public static <T extends OpaqueMemory> Sigevent<T> tryAllocateNative(MemorySession ms) throws NoSuchNativeTypeException {
             if (alignof == null) {
                 throw new NoSuchNativeTypeException("Sigevent");
             }
-            return new Sigevent(MemorySegment.allocateNative(sizeof, scope), 0);
+            return new Sigevent(MemorySegment.allocateNative(sizeof, ms), 0);
         }
 
-        public static <T extends OpaqueMemory> Sigevent<T> tryOfAddress(MemoryAddress baseAddress, ResourceScope scope) throws NoSuchNativeTypeException {
-            return new Sigevent<>(MemorySegment.ofAddress(baseAddress, Sigevent.sizeof, scope), 0);
+        public static <T extends OpaqueMemory> Sigevent<T> tryOfAddress(MemoryAddress baseAddress, MemorySession ms) throws NoSuchNativeTypeException {
+            return new Sigevent<>(MemorySegment.ofAddress(baseAddress, Sigevent.sizeof, ms), 0);
         }
 
         private Pthread.Pthread_attr_t sigev_notify_attributes;
@@ -971,16 +971,16 @@ public class Signal {
             return MEM_ACCESS.uintptr_t(memorySegment, Sigevent.offsetof_Sigev_notify_attributes);
         }
 
-        public final Pthread.Pthread_attr_t sigev_notify_attributes(OpaqueMemoryProducer<Pthread.Pthread_attr_t, Sigevent> producer, ResourceScope scope) {
+        public final Pthread.Pthread_attr_t sigev_notify_attributes(OpaqueMemoryProducer<Pthread.Pthread_attr_t, Sigevent> producer, MemorySession ms) {
             final MemoryAddress sigev_notify_attributesAddress = sigev_notify_attributes();
             if (sigev_notify_attributes != null) {
                 if (!OpaqueMemory.isSameAddress(sigev_notify_attributesAddress, sigev_notify_attributes)) {
-                    sigev_notify_attributes = producer.produce(sigev_notify_attributesAddress, scope, this);
+                    sigev_notify_attributes = producer.produce(sigev_notify_attributesAddress, ms, this);
                 }
                 return sigev_notify_attributes;
             } else {
                 if (!sigev_notify_attributesAddress.equals(MemoryAddress.NULL)) {
-                    sigev_notify_attributes = producer.produce(sigev_notify_attributesAddress, scope, this);
+                    sigev_notify_attributes = producer.produce(sigev_notify_attributesAddress, ms, this);
                 }
                 return sigev_notify_attributes;
             }
@@ -1182,12 +1182,12 @@ public class Signal {
          */
         public final Sigval<T> si_value;
 
-        public static <T extends OpaqueMemory> Siginfo_t<T> allocateNative(ResourceScope scope) {
-            return new Siginfo_t<T>(MemorySegment.allocateNative(sizeof, scope), 0);
+        public static <T extends OpaqueMemory> Siginfo_t<T> allocateNative(MemorySession ms) {
+            return new Siginfo_t<T>(MemorySegment.allocateNative(sizeof, ms), 0);
         }
 
-        public static <T extends OpaqueMemory> Siginfo_t<T> ofAddress(MemoryAddress address, ResourceScope scope) {
-            return new Siginfo_t<>(MemorySegment.ofAddress(address, Siginfo_t.sizeof, scope), 0);
+        public static <T extends OpaqueMemory> Siginfo_t<T> ofAddress(MemoryAddress address, MemorySession ms) {
+            return new Siginfo_t<>(MemorySegment.ofAddress(address, Siginfo_t.sizeof, ms), 0);
         }
 
         public Siginfo_t(MemorySegment memorySegment, long offset) {
@@ -1345,8 +1345,8 @@ public class Signal {
             }
         }
 
-        public final static Sigset_t allocateNative(ResourceScope scope) {
-            return new Sigset_t(MemorySegment.allocateNative(sizeof, scope), 0);
+        public final static Sigset_t allocateNative(MemorySession ms) {
+            return new Sigset_t(MemorySegment.allocateNative(sizeof, ms), 0);
         }
 
         public Sigset_t(MemorySegment memorySegment, long offset) {
@@ -1548,12 +1548,12 @@ public class Signal {
             }
         }
 
-        public static <T extends OpaqueMemory> Sigval<T> allocateNative(ResourceScope scope) {
-            return new Sigval(MemorySegment.allocateNative(sizeof, scope), 0);
+        public static <T extends OpaqueMemory> Sigval<T> allocateNative(MemorySession ms) {
+            return new Sigval(MemorySegment.allocateNative(sizeof, ms), 0);
         }
 
-        public static <T extends OpaqueMemory> Sigval<T> ofAddress(MemoryAddress baseAddress, ResourceScope scope) {
-            return new Sigval<>(MemorySegment.ofAddress(baseAddress, Sigval.sizeof, scope), 0);
+        public static <T extends OpaqueMemory> Sigval<T> ofAddress(MemoryAddress baseAddress, MemorySession ms) {
+            return new Sigval<>(MemorySegment.ofAddress(baseAddress, Sigval.sizeof, ms), 0);
         }
 
         private T sival_ptr;
@@ -1603,16 +1603,16 @@ public class Signal {
          *
          * @return the native value of sival_ptr.
          */
-        public T sival_ptr(OpaqueMemoryProducer<T, Sigval<T>> producer, ResourceScope scope) {
+        public T sival_ptr(OpaqueMemoryProducer<T, Sigval<T>> producer, MemorySession ms) {
             final MemoryAddress baseAddress = sival_ptr();
             if (sival_ptr != null) {
                 if (!OpaqueMemory.isSameAddress(baseAddress, sival_ptr)) {
-                    sival_ptr = producer.produce(baseAddress, scope, this);
+                    sival_ptr = producer.produce(baseAddress, ms, this);
                 }
                 return sival_ptr;
             } else {
                 if (!MemoryAddress.NULL.equals(baseAddress)) {
-                    sival_ptr = producer.produce(baseAddress, scope, this);
+                    sival_ptr = producer.produce(baseAddress, ms, this);
                 }
                 return sival_ptr;
             }
@@ -1695,8 +1695,8 @@ public class Signal {
             }
         }
 
-        public final static <T extends OpaqueMemory> Stack_t<T> allocateNative(ResourceScope scope) {
-            return new Stack_t(MemorySegment.allocateNative(sizeof, scope), 0);
+        public final static <T extends OpaqueMemory> Stack_t<T> allocateNative(MemorySession ms) {
+            return new Stack_t(MemorySegment.allocateNative(sizeof, ms), 0);
         }
 
         /**
@@ -1706,8 +1706,8 @@ public class Signal {
          * @param ss_sp
          * @return
          */
-        public static <T extends OpaqueMemory> Stack_t<T> allocateNativeAndInit(ResourceScope scope, int ss_flags, T ss_sp) {
-            final Stack_t<T> result = allocateNative(scope);
+        public static <T extends OpaqueMemory> Stack_t<T> allocateNativeAndInit(MemorySession ms, int ss_flags, T ss_sp) {
+            final Stack_t<T> result = allocateNative(ms);
             result.ss_flags(ss_flags);
             result.ss_sp(ss_sp);
             result.ss_size(ss_sp.sizeof());
@@ -1766,8 +1766,8 @@ public class Signal {
          * @return the native value of ss_sp.
          */
         //TODO this is a Pointer
-        public final T ss_sp(OpaqueMemoryProducer<T, Stack_t<T>> producer, ResourceScope scope) {
-            return producer.produce(ss_sp0(), scope, this);
+        public final T ss_sp(OpaqueMemoryProducer<T, Stack_t<T>> producer, MemorySession ms) {
+            return producer.produce(ss_sp0(), ms, this);
         }
 
         private void ss_sp(T ss_sp) {
@@ -1929,15 +1929,15 @@ public class Signal {
          */
         public final Stack_t uc_stack;
 
-        public static Ucontext_t tryAllocateNative(ResourceScope scope) throws NoSuchNativeTypeException {
+        public static Ucontext_t tryAllocateNative(MemorySession ms) throws NoSuchNativeTypeException {
             if (Ucontext_t.alignof == null) {
                 throw new NoSuchNativeTypeException("Ucontext_t");
             }
-            return new Ucontext_t(MemorySegment.allocateNative(sizeof, scope), 0);
+            return new Ucontext_t(MemorySegment.allocateNative(sizeof, ms), 0);
         }
 
-        public static Ucontext_t tryOfAddress(MemoryAddress baseAddress, ResourceScope scope) throws NoSuchNativeTypeException {
-            return new Ucontext_t(MemorySegment.ofAddress(baseAddress, Ucontext_t.sizeof, scope), 0);
+        public static Ucontext_t tryOfAddress(MemoryAddress baseAddress, MemorySession ms) throws NoSuchNativeTypeException {
+            return new Ucontext_t(MemorySegment.ofAddress(baseAddress, Ucontext_t.sizeof, ms), 0);
         }
 
         public Ucontext_t(MemorySegment memorySegment, long offset) throws NoSuchNativeTypeException {
@@ -1966,8 +1966,8 @@ public class Signal {
          * ucontext_t}</a>.
          *
          */
-        public final Ucontext_t uc_link(OpaqueMemoryProducer<Ucontext_t, Ucontext_t> producer, ResourceScope scope) {
-            return producer.produce(uc_link0(), scope, this);
+        public final Ucontext_t uc_link(OpaqueMemoryProducer<Ucontext_t, Ucontext_t> producer, MemorySession ms) {
+            return producer.produce(uc_link0(), ms, this);
         }
 
         /**
@@ -3256,11 +3256,11 @@ public class Signal {
      * available natively.
      */
     public final static void psiginfo(Siginfo_t pinfo, String message) throws NativeErrorException, NoSuchNativeMethodException {
-        try ( ResourceScope scope = ResourceScope.newConfinedScope()) {
+        try ( MemorySession ms = MemorySession.openConfined()) {
             if (message == null) {
                 message = "";
             }
-            MemorySegment _message = MemorySegment.allocateNative(message.length() + 1, scope);
+            MemorySegment _message = MemorySegment.allocateNative(message.length() + 1, ms);
             _message.setUtf8String(0, message);
             final int old_errno = Errno.errno();
             Errno.errno(0);
@@ -3288,11 +3288,11 @@ public class Signal {
      * indicates an error.
      */
     public final static void psignal(int signum, String message) throws NativeErrorException {
-        try ( ResourceScope scope = ResourceScope.newConfinedScope()) {
+        try ( MemorySession ms = MemorySession.openConfined()) {
             if (message == null) {
                 message = "";
             }
-            MemorySegment _message = MemorySegment.allocateNative(message.length() + 1, scope);
+            MemorySegment _message = MemorySegment.allocateNative(message.length() + 1, ms);
             _message.setUtf8String(0, message);
             final int old_errno = Errno.errno();
             Errno.errno(0);

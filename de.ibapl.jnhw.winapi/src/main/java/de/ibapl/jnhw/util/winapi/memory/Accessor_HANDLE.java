@@ -22,7 +22,7 @@
 package de.ibapl.jnhw.util.winapi.memory;
 
 import de.ibapl.jnhw.winapi.Winnt.HANDLE;
-import jdk.incubator.foreign.MemorySegment;
+import java.lang.foreign.MemorySegment;
 
 /**
  *

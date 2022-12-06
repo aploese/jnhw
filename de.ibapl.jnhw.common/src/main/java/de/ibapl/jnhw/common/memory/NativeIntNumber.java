@@ -21,7 +21,7 @@
  */
 package de.ibapl.jnhw.common.memory;
 
-import jdk.incubator.foreign.MemorySegment;
+import java.lang.foreign.MemorySegment;
 
 /**
  *

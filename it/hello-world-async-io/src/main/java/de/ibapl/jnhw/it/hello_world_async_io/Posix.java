@@ -36,17 +36,16 @@ import de.ibapl.jnhw.posix.Signal;
 import de.ibapl.jnhw.posix.StringHeader;
 import de.ibapl.jnhw.posix.Unistd;
 import java.io.File;
-//Import only the needed method from the wrapper of iso c's unistd.h.h
 import java.io.IOException;
-import jdk.incubator.foreign.MemoryAddress;
-import jdk.incubator.foreign.MemorySegment;
-import jdk.incubator.foreign.ResourceScope;
+import java.lang.foreign.MemoryAddress;
+import java.lang.foreign.MemorySegment;
+import java.lang.foreign.MemorySession;
 
 public class Posix {
 
     final boolean isDebug;
     long transmitted;
-    final ResourceScope scope = ResourceScope.newSharedScope();
+    final MemorySession ms = MemorySession.openShared();
     final Aio.Aiocb<Aio.Aiocb> aiocb;
 
     final Object[] objRef = new Object[1];
@@ -87,7 +86,7 @@ public class Posix {
     public Posix(boolean isDebug) {
         this.isDebug = isDebug;
         try {
-            aiocb = Aio.Aiocb.tryAllocateNative(scope);
+            aiocb = Aio.Aiocb.tryAllocateNative(ms);
         } catch (NoSuchNativeTypeException nsnte) {
             throw new RuntimeException(nsnte);
         }
@@ -168,7 +167,7 @@ public class Posix {
 
     private void debugThread(String msg) {
         if (isDebug) {
-            System.out.append(msg).append(" thread: ").append(Thread.currentThread().toString()).append(" pthread_t: ").println(Pthread.pthread_self(scope).nativeToString());
+            System.out.append(msg).append(" thread: ").append(Thread.currentThread().toString()).append(" pthread_t: ").println(Pthread.pthread_self(ms).nativeToString());
             System.out.flush();
         }
     }
@@ -183,9 +182,8 @@ public class Posix {
                 osa.append("aiocb : ");
                 aiocb.nativeToString(osa, "", " ");
                 osa.append("\n");
-                final Pthread.Pthread_attr_t sigev_notify_attributes = aiocb.aio_sigevent.sigev_notify_attributes(
-                        (address, _scope, parent) -> Pthread.Pthread_attr_t.ofAddress(address, _scope),
-                        scope
+                final Pthread.Pthread_attr_t sigev_notify_attributes = aiocb.aio_sigevent.sigev_notify_attributes((address, _scope, parent) -> Pthread.Pthread_attr_t.ofAddress(address, _scope),
+                        ms
                 );
                 if (sigev_notify_attributes != null) {
                     osa.append("aiocb.aio_sigevent.sigev_notify_attributes : ");

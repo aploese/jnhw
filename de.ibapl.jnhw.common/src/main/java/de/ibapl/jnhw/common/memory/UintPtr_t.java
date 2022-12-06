@@ -24,9 +24,9 @@ package de.ibapl.jnhw.common.memory;
 
 import de.ibapl.jnhw.common.datatypes.BaseDataType;
 import java.io.IOException;
-import jdk.incubator.foreign.MemoryAddress;
-import jdk.incubator.foreign.MemorySegment;
-import jdk.incubator.foreign.ResourceScope;
+import java.lang.foreign.MemoryAddress;
+import java.lang.foreign.MemorySegment;
+import java.lang.foreign.MemorySession;
 
 /**
  *
@@ -36,8 +36,8 @@ public class UintPtr_t<T extends OpaqueMemory> extends OpaqueMemory<T> {
 
     public final static BaseDataType DATA_TYPE = BaseDataType.uintptr_t;
 
-    public static UintPtr_t allocateNative(ResourceScope scope) {
-        return new UintPtr_t(MemorySegment.allocateNative(DATA_TYPE.SIZE_OF, scope), 0);
+    public static UintPtr_t allocateNative(MemorySession ms) {
+        return new UintPtr_t(MemorySegment.allocateNative(DATA_TYPE.SIZE_OF, ms), 0);
     }
 
     public UintPtr_t(MemorySegment memorySegment, long offset) {
@@ -46,13 +46,13 @@ public class UintPtr_t<T extends OpaqueMemory> extends OpaqueMemory<T> {
 
     private T cached;
 
-    public T get(OpaqueMemoryProducer<T, UintPtr_t> opaqueMemoryProducer, ResourceScope rs) {
+    public T get(OpaqueMemoryProducer<T, UintPtr_t> opaqueMemoryProducer, MemorySession ms) {
         MemoryAddress result = MEM_ACCESS.intptr_t(memorySegment, 0);
         if (cached == null) {
-            cached = opaqueMemoryProducer.produce(result, rs, this);
+            cached = opaqueMemoryProducer.produce(result, ms, this);
         } else if (result == cached.memorySegment.address()) {
         } else {
-            cached = opaqueMemoryProducer.produce(result, rs, this);
+            cached = opaqueMemoryProducer.produce(result, ms, this);
         }
         return cached;
     }

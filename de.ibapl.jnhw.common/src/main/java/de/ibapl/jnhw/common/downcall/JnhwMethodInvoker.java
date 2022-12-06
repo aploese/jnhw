@@ -21,15 +21,15 @@
  */
 package de.ibapl.jnhw.common.downcall;
 
+import java.lang.foreign.Addressable;
+import java.lang.foreign.FunctionDescriptor;
+import java.lang.foreign.Linker;
+import java.lang.foreign.MemorySegment;
+import java.lang.foreign.MemorySession;
+import java.lang.foreign.SymbolLookup;
 import java.lang.invoke.MethodHandle;
 import java.util.NoSuchElementException;
 import java.util.Optional;
-import jdk.incubator.foreign.Addressable;
-import jdk.incubator.foreign.CLinker;
-import jdk.incubator.foreign.FunctionDescriptor;
-import jdk.incubator.foreign.NativeSymbol;
-import jdk.incubator.foreign.ResourceScope;
-import jdk.incubator.foreign.SymbolLookup;
 
 /**
  *
@@ -37,26 +37,27 @@ import jdk.incubator.foreign.SymbolLookup;
  */
 public abstract class JnhwMethodInvoker {
 
-    public final static CLinker C_LINKER = CLinker.systemCLinker();
+    public final static Linker NATIVE_LINKER = Linker.nativeLinker();
 
     protected final MethodHandle methodHandle;
-    private final NativeSymbol ns;
+    private final MemorySegment ns;
     private final String name;
 
     public JnhwMethodInvoker(SymbolLookup symbolLookup, String name, FunctionDescriptor fd) {
         this.name = name;
-        final Optional<NativeSymbol> ons = symbolLookup.lookup(name);
+        final Optional<MemorySegment> ons = symbolLookup.lookup(name);
         if (ons.isEmpty()) {
             throw new NoSuchElementException("Native symbol: \"" + name + "\" not found!");
         }
         ns = ons.get();
-        methodHandle = C_LINKER.downcallHandle(ns, fd);
+        methodHandle = NATIVE_LINKER.downcallHandle(ns, fd);
     }
 
-    public JnhwMethodInvoker(Addressable srcm, FunctionDescriptor fd, ResourceScope scope) {
+    //TODO use MemoryAddresas instead of Addressable??
+    public JnhwMethodInvoker(Addressable srcm, FunctionDescriptor fd, MemorySession session) {
         this.name = String.format("%s@0x%08x", getClass().getSimpleName(), srcm.address().toRawLongValue());
-        ns = NativeSymbol.ofAddress(name, srcm.address(), scope);
-        methodHandle = C_LINKER.downcallHandle(ns, fd);
+        ns = MemorySegment.ofAddress(srcm.address(), 0, session); //length is 0 @see java.lang.foreign.SymbolLookup#lookup(String)
+        methodHandle = NATIVE_LINKER.downcallHandle(ns, fd);
     }
 
     protected RuntimeException createRuntimeExceptionInvoke(Throwable t) {

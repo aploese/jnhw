@@ -25,7 +25,7 @@ import de.ibapl.jnhw.common.util.JsonStringBuilder;
 import de.ibapl.jnhw.syscall.linux.annotation.SysFs;
 import de.ibapl.jnhw.syscall.linux.uapi.asm_generic.Types;
 import java.io.IOException;
-import jdk.incubator.foreign.MemorySegment;
+import java.lang.foreign.MemorySegment;
 
 @SysFs("/sys/bus/usb/devices/*/descriptors")
 public abstract class AbstractCapabilityDescriptor extends AbstractDescriptor {

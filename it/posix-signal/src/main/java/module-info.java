@@ -22,6 +22,4 @@
 module de.ibapl.jnhw.it.posix_signal {
     requires de.ibapl.jnhw.posix;
 
-    requires jdk.incubator.foreign;
-
 }

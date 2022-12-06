@@ -25,9 +25,9 @@ import de.ibapl.jnhw.common.datatypes.Pointer;
 import de.ibapl.jnhw.common.downcall.wrapper.JnhwMh__B___A__A__A;
 import de.ibapl.jnhw.common.downcall.wrapper.JnhwMh_sI___A__A__A;
 import de.ibapl.jnhw.common.util.ConversionsNative2Java;
-import jdk.incubator.foreign.FunctionDescriptor;
-import jdk.incubator.foreign.SymbolLookup;
-import jdk.incubator.foreign.ValueLayout;
+import java.lang.foreign.FunctionDescriptor;
+import java.lang.foreign.SymbolLookup;
+import java.lang.foreign.ValueLayout;
 
 /**
  *

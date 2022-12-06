@@ -21,30 +21,30 @@
  */
 package de.ibapl.jnhw.posix;
 
+import de.ibapl.jnhw.annotation.posix.sys.types.pid_t;
+import de.ibapl.jnhw.annotation.posix.termios.cc_t;
 import de.ibapl.jnhw.annotation.posix.termios.speed_t;
 import de.ibapl.jnhw.annotation.posix.termios.tcflag_t;
 import de.ibapl.jnhw.common.annotation.Define;
 import de.ibapl.jnhw.common.annotation.Include;
-import de.ibapl.jnhw.common.exception.NativeErrorException;
-import de.ibapl.jnhw.common.exception.NoSuchNativeTypeMemberException;
-import de.ibapl.jnhw.annotation.posix.sys.types.pid_t;
-import de.ibapl.jnhw.annotation.posix.termios.cc_t;
 import de.ibapl.jnhw.common.datatypes.BaseDataType;
 import de.ibapl.jnhw.common.datatypes.MultiarchTupelBuilder;
-import de.ibapl.jnhw.common.util.IntDefine;
-import de.ibapl.jnhw.common.util.JsonStringBuilder;
-import java.io.IOException;
-import de.ibapl.jnhw.common.memory.layout.Alignment;
-import de.ibapl.jnhw.util.posix.PosixDataType;
-import de.ibapl.jnhw.util.posix.memory.PosixStruct;
-import jdk.incubator.foreign.MemorySegment;
-import jdk.incubator.foreign.ResourceScope;
-import de.ibapl.jnhw.common.downcall.wrapper.JnhwMh_sI__sI_sI__A;
-import de.ibapl.jnhw.common.downcall.wrapper.JnhwMh_sI__sI_sI;
-import de.ibapl.jnhw.common.downcall.wrapper.JnhwMh_uL___A;
+import de.ibapl.jnhw.common.downcall.wrapper.JnhwMh_sI___A_uL;
 import de.ibapl.jnhw.common.downcall.wrapper.JnhwMh_sI__sI;
 import de.ibapl.jnhw.common.downcall.wrapper.JnhwMh_sI__sI__A;
-import de.ibapl.jnhw.common.downcall.wrapper.JnhwMh_sI___A_uL;
+import de.ibapl.jnhw.common.downcall.wrapper.JnhwMh_sI__sI_sI;
+import de.ibapl.jnhw.common.downcall.wrapper.JnhwMh_sI__sI_sI__A;
+import de.ibapl.jnhw.common.downcall.wrapper.JnhwMh_uL___A;
+import de.ibapl.jnhw.common.exception.NativeErrorException;
+import de.ibapl.jnhw.common.exception.NoSuchNativeTypeMemberException;
+import de.ibapl.jnhw.common.memory.layout.Alignment;
+import de.ibapl.jnhw.common.util.IntDefine;
+import de.ibapl.jnhw.common.util.JsonStringBuilder;
+import de.ibapl.jnhw.util.posix.PosixDataType;
+import de.ibapl.jnhw.util.posix.memory.PosixStruct;
+import java.io.IOException;
+import java.lang.foreign.MemorySegment;
+import java.lang.foreign.MemorySession;
 
 /**
  * Wrapper around the {@code <termios.h>} header.
@@ -594,8 +594,8 @@ public final class Termios {
             }
         }
 
-        public final static StructTermios allocateNative(ResourceScope scope) {
-            return new StructTermios(MemorySegment.allocateNative(sizeof, scope), 0);
+        public final static StructTermios allocateNative(MemorySession ms) {
+            return new StructTermios(MemorySegment.allocateNative(sizeof, ms), 0);
         }
 
         public StructTermios(MemorySegment memorySegment, long offset) {

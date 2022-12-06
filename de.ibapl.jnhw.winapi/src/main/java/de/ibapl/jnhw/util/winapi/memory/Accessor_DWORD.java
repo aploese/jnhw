@@ -23,7 +23,7 @@ package de.ibapl.jnhw.util.winapi.memory;
 
 import de.ibapl.jnhw.annotation.winapi.basetsd.DWORD;
 import de.ibapl.jnhw.common.memory.MemoryAccessor;
-import jdk.incubator.foreign.MemorySegment;
+import java.lang.foreign.MemorySegment;
 
 /**
  *

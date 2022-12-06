@@ -22,8 +22,6 @@
 package de.ibapl.jnhw.syscall.linux.sysfs;
 
 import de.ibapl.jnhw.common.exception.NativeErrorException;
-import de.ibapl.jnhw.common.memory.MemoryHeap;
-import de.ibapl.jnhw.common.memory.OpaqueMemory;
 import de.ibapl.jnhw.posix.Fcntl;
 import de.ibapl.jnhw.posix.Unistd;
 import de.ibapl.jnhw.syscall.linux.annotation.Path;
@@ -36,14 +34,11 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.Reader;
-import java.util.Collection;
+import java.lang.foreign.MemorySegment;
+import java.lang.foreign.MemorySession;
 import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import jdk.incubator.foreign.MemorySegment;
-import jdk.incubator.foreign.ResourceScope;
 
 /**
  *
@@ -124,8 +119,8 @@ public class UsbDevice {
         private int currentPos = 0;
         private long length;
 
-        protected DeviceIterator(ResourceScope scope) {
-            mem = MemorySegment.allocateNative(1024 * 64, scope);
+        protected DeviceIterator(MemorySession ms) {
+            mem = MemorySegment.allocateNative(1024 * 64, ms);
             try {
                 final int fd = Fcntl.open(new File(sysFsDir, "descriptors").getAbsolutePath(), Fcntl.O_RDONLY);
                 try {
@@ -161,8 +156,8 @@ public class UsbDevice {
         }
     }
 
-    public Iterable<AbstractDescriptor> descriptors(ResourceScope scope) {
-        return () -> new DeviceIterator(scope);
+    public Iterable<AbstractDescriptor> descriptors(MemorySession ms) {
+        return () -> new DeviceIterator(ms);
     }
 
     public File getSysDir() {

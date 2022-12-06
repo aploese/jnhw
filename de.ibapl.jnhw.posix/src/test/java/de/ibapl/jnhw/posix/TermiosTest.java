@@ -29,7 +29,7 @@ import static de.ibapl.jnhw.posix.Termios.CREAD;
 import static de.ibapl.jnhw.posix.Termios.CRTSCTS;
 import static de.ibapl.jnhw.posix.Termios.CS8;
 import de.ibapl.jnhw.util.posix.DefinesTest;
-import jdk.incubator.foreign.ResourceScope;
+import java.lang.foreign.MemorySession;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import static org.junit.jupiter.api.Assertions.*;
@@ -101,21 +101,21 @@ public class TermiosTest {
         }
     }
 
-    private ResourceScope scope;
+    private MemorySession ms;
 
     @BeforeEach
     public void setUp() throws Exception {
-        scope = ResourceScope.newConfinedScope();
+        ms = MemorySession.openConfined();
     }
 
     @AfterEach
     public void tearDown() throws Exception {
-        scope.close();
+        ms.close();
     }
 
     @Test
     public void structTermios_c_ispeed() throws Exception {
-        Termios.StructTermios structTermios = Termios.StructTermios.allocateNative(scope);
+        Termios.StructTermios structTermios = Termios.StructTermios.allocateNative(ms);
         switch (MultiarchTupelBuilder.getOS()) {
             case LINUX:
                 if (!Termios._HAVE_STRUCT_TERMIOS_C_ISPEED.isDefined()) {
@@ -149,7 +149,7 @@ public class TermiosTest {
 
     @Test
     public void structTermios_c_ospeed() throws Exception {
-        Termios.StructTermios structTermios = Termios.StructTermios.allocateNative(scope);
+        Termios.StructTermios structTermios = Termios.StructTermios.allocateNative(ms);
         switch (MultiarchTupelBuilder.getOS()) {
             case LINUX:
                 if (!Termios._HAVE_STRUCT_TERMIOS_C_OSPEED.isDefined()) {
@@ -183,7 +183,7 @@ public class TermiosTest {
 
     @Test
     public void structTermiosToString() throws Exception {
-        Termios.StructTermios termios = Termios.StructTermios.allocateNative(scope);
+        Termios.StructTermios termios = Termios.StructTermios.allocateNative(ms);
         Termios.StructTermios.clear(termios);
 
         Termios.cfsetspeed(termios, Termios.B9600);

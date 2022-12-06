@@ -25,10 +25,10 @@ import de.ibapl.jnhw.common.datatypes.Pointer;
 import de.ibapl.jnhw.common.util.JnhwFormater;
 import de.ibapl.jnhw.common.util.JsonStringBuilder;
 import java.io.IOException;
+import java.lang.foreign.Addressable;
+import java.lang.foreign.MemoryAddress;
 import java.util.Objects;
 import java.util.function.Function;
-import jdk.incubator.foreign.Addressable;
-import jdk.incubator.foreign.MemoryAddress;
 
 /**
  *
@@ -91,12 +91,12 @@ public class NativeFunctionPointer implements Pointer {
 
     @Override
     public String toString() {
-        return "{nativeAddress : " + JnhwFormater.formatAddress(memoryAddress.toRawLongValue()) + "}";
+        return "{nativeAddress : " + JnhwFormater.formatAddress(memoryAddress) + "}";
     }
 
     public void nativeToString(Appendable sb, String INDENT_PREFIX, String INDENT) throws IOException {
         JsonStringBuilder jsb = new JsonStringBuilder(sb, INDENT_PREFIX, INDENT);
-        jsb.appendAddressMember("nativeAddress", memoryAddress.toRawLongValue());
+        jsb.appendAddressMember("nativeAddress", memoryAddress);
         jsb.close();
     }
 

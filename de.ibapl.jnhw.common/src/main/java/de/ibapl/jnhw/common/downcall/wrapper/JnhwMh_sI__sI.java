@@ -23,8 +23,8 @@ package de.ibapl.jnhw.common.downcall.wrapper;
 
 import de.ibapl.jnhw.common.datatypes.BaseDataType;
 import de.ibapl.jnhw.common.downcall.JnhwMi__I___I;
+import java.lang.foreign.SymbolLookup;
 import java.util.NoSuchElementException;
-import jdk.incubator.foreign.SymbolLookup;
 
 /**
  *
@@ -34,19 +34,19 @@ import jdk.incubator.foreign.SymbolLookup;
 public interface JnhwMh_sI__sI extends JnhwMethodHandle {
 
     public static JnhwMh_sI__sI ofOrNull(String name, BaseDataType result, BaseDataType arg1) {
-        return ofOrNull(C_LINKER, name, result, arg1);
+        return ofOrNull(NATIVE_LINKER.defaultLookup(), name, result, arg1);
     }
 
     public static JnhwMh_sI__sI ofOrNull(SymbolLookup symbolLookup, String name, BaseDataType result, BaseDataType arg1) {
         try {
-            return of(C_LINKER, name, result, arg1);
+            return of(NATIVE_LINKER.defaultLookup(), name, result, arg1);
         } catch (NoSuchElementException elementException) {
             return null;
         }
     }
 
     public static JnhwMh_sI__sI of(String name, BaseDataType result, BaseDataType arg1) {
-        return of(C_LINKER, name, result, arg1);
+        return of(NATIVE_LINKER.defaultLookup(), name, result, arg1);
     }
 
     public static JnhwMh_sI__sI of(SymbolLookup symbolLookup, String name, BaseDataType result, BaseDataType arg1) {

@@ -23,8 +23,8 @@ package de.ibapl.jnhw.common.memory;
 
 import de.ibapl.jnhw.common.datatypes.BaseDataType;
 import java.io.IOException;
-import jdk.incubator.foreign.MemorySegment;
-import jdk.incubator.foreign.ResourceScope;
+import java.lang.foreign.MemorySegment;
+import java.lang.foreign.MemorySession;
 
 /**
  *
@@ -34,8 +34,8 @@ public class AsSignedInt extends NativeIntNumber {
 
     private final BaseDataType dataType;
 
-    public static AsSignedInt allocateNative(BaseDataType nativeType, ResourceScope rs) {
-        return new AsSignedInt(nativeType, MemorySegment.allocateNative(nativeType.SIZE_OF, rs), 0);
+    public static AsSignedInt allocateNative(BaseDataType nativeType, MemorySession ms) {
+        return new AsSignedInt(nativeType, MemorySegment.allocateNative(nativeType.SIZE_OF, ms), 0);
     }
 
     public AsSignedInt(BaseDataType nativeType, MemorySegment memorySegment, long offset) {

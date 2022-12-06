@@ -30,15 +30,15 @@ import de.ibapl.jnhw.common.memory.OpaqueMemory;
 import de.ibapl.jnhw.common.memory.OpaquePointer;
 import de.ibapl.jnhw.util.winapi.WinApiDataType;
 import de.ibapl.jnhw.util.winapi.memory.WinApiStruct;
+import java.lang.foreign.Addressable;
+import java.lang.foreign.MemoryAddress;
+import java.lang.foreign.MemorySegment;
+import java.lang.foreign.MemorySession;
 import java.lang.ref.WeakReference;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.ListIterator;
 import java.util.function.Function;
-import jdk.incubator.foreign.Addressable;
-import jdk.incubator.foreign.MemoryAddress;
-import jdk.incubator.foreign.MemorySegment;
-import jdk.incubator.foreign.ResourceScope;
 
 /**
  * Wrapper around the
@@ -55,8 +55,8 @@ public final class Winnt {
 
         public final int length;
 
-        public static ArrayOfHandle allocateNative(int length, ResourceScope rs) {
-            return new ArrayOfHandle(MemorySegment.allocateNative(length * WinApiDataType.HANDLE.SIZE_OF, rs), length);
+        public static ArrayOfHandle allocateNative(int length, MemorySession ms) {
+            return new ArrayOfHandle(MemorySegment.allocateNative(length * WinApiDataType.HANDLE.SIZE_OF, ms), length);
         }
 
         public ArrayOfHandle(MemorySegment memorySegment, int length) {
@@ -199,8 +199,8 @@ public final class Winnt {
 
         private final static int SIZE_OF_WCHAR = WinApiDataType.WCHAR.SIZE_OF;
 
-        public static LPWSTR allocateNative(int stringLength, ResourceScope scope) {
-            return new LPWSTR(MemorySegment.allocateNative(stringLength * SIZE_OF_WCHAR, scope), 0, stringLength);
+        public static LPWSTR allocateNative(int stringLength, MemorySession ms) {
+            return new LPWSTR(MemorySegment.allocateNative(stringLength * SIZE_OF_WCHAR, ms), 0, stringLength);
         }
 
         static int getWCHAR_Length(LPWSTR value) {
@@ -293,12 +293,12 @@ public final class Winnt {
      */
     public static class PHANDLE extends OpaqueMemory {
 
-        public static PHANDLE allocateNative(ResourceScope rs) {
-            return new PHANDLE(MemorySegment.allocateNative(SIZE_OF, rs), 0);
+        public static PHANDLE allocateNative(MemorySession ms) {
+            return new PHANDLE(MemorySegment.allocateNative(SIZE_OF, ms), 0);
         }
 
-        public static PHANDLE allocateNative(HANDLE value, ResourceScope rs) {
-            return new PHANDLE(MemorySegment.allocateNative(SIZE_OF, rs), 0, value);
+        public static PHANDLE allocateNative(HANDLE value, MemorySession ms) {
+            return new PHANDLE(MemorySegment.allocateNative(SIZE_OF, ms), 0, value);
         }
 
         @FunctionalInterface

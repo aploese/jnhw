@@ -26,19 +26,19 @@ import de.ibapl.jnhw.common.annotation.Define;
 import de.ibapl.jnhw.common.annotation.Include;
 import de.ibapl.jnhw.common.datatypes.BaseDataType;
 import de.ibapl.jnhw.common.datatypes.MultiarchTupelBuilder;
+import de.ibapl.jnhw.common.downcall.wrapper.JnhwMh__V___V;
+import de.ibapl.jnhw.common.downcall.wrapper.JnhwMh_sI__sI;
+import de.ibapl.jnhw.common.downcall.wrapper.JnhwMh_sI__sI__A;
+import de.ibapl.jnhw.common.downcall.wrapper.JnhwMh_sI__sI_sI__A;
 import de.ibapl.jnhw.common.exception.NativeErrorException;
 import de.ibapl.jnhw.common.exception.NoSuchNativeMethodException;
 import de.ibapl.jnhw.common.exception.NoSuchNativeTypeMemberException;
 import de.ibapl.jnhw.common.memory.Struct;
 import de.ibapl.jnhw.common.memory.layout.Alignment;
-import de.ibapl.jnhw.common.downcall.wrapper.JnhwMh__V___V;
 import de.ibapl.jnhw.common.util.IntDefine;
 import de.ibapl.jnhw.util.posix.PosixDataType;
-import jdk.incubator.foreign.MemorySegment;
-import jdk.incubator.foreign.ResourceScope;
-import de.ibapl.jnhw.common.downcall.wrapper.JnhwMh_sI__sI_sI__A;
-import de.ibapl.jnhw.common.downcall.wrapper.JnhwMh_sI__sI;
-import de.ibapl.jnhw.common.downcall.wrapper.JnhwMh_sI__sI__A;
+import java.lang.foreign.MemorySegment;
+import java.lang.foreign.MemorySession;
 
 /**
  * Wrapper around the {@code <pthread.h>} header.
@@ -118,8 +118,8 @@ public class Sched {
             offsetof_Sched_ss_repl_period = -1;
         }
 
-        public final static Sched_param allocateNative(ResourceScope scope) {
-            return new Sched_param(MemorySegment.allocateNative(sizeof, scope), 0);
+        public final static Sched_param allocateNative(MemorySession ms) {
+            return new Sched_param(MemorySegment.allocateNative(sizeof, ms), 0);
         }
 
         /**

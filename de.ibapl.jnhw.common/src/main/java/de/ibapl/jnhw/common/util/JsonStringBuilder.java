@@ -21,12 +21,12 @@
  */
 package de.ibapl.jnhw.common.util;
 
+import de.ibapl.jnhw.common.memory.MemoryArray;
 import de.ibapl.jnhw.common.memory.NativeFunctionPointer;
 import de.ibapl.jnhw.common.memory.Struct;
-import de.ibapl.jnhw.common.memory.MemoryArray;
 import java.io.IOException;
+import java.lang.foreign.MemoryAddress;
 import java.util.function.IntFunction;
-import jdk.incubator.foreign.MemoryAddress;
 
 /**
  *
@@ -125,12 +125,6 @@ public class JsonStringBuilder {
     }
 
     public void appendAddressMember(String name, MemoryAddress value) throws IOException {
-        appendMemberName(name);
-        sb.append(JnhwFormater.formatAddress(value));
-    }
-
-    @Deprecated
-    public void appendAddressMember(String name, long value) throws IOException {
         appendMemberName(name);
         sb.append(JnhwFormater.formatAddress(value));
     }

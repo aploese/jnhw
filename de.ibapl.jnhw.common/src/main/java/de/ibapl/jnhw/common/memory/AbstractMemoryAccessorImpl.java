@@ -22,12 +22,12 @@
 package de.ibapl.jnhw.common.memory;
 
 import de.ibapl.jnhw.common.datatypes.Pointer;
+import java.lang.foreign.Addressable;
+import java.lang.foreign.MemoryAddress;
+import java.lang.foreign.MemorySegment;
+import java.lang.foreign.ValueLayout;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
-import jdk.incubator.foreign.Addressable;
-import jdk.incubator.foreign.MemoryAddress;
-import jdk.incubator.foreign.MemorySegment;
-import jdk.incubator.foreign.ValueLayout;
 
 /**
  *
@@ -77,6 +77,24 @@ public sealed abstract class AbstractMemoryAccessorImpl implements MemoryAccesso
         LAYOUT_UINTPTR_T = LAYOUT_ADDRESS;
 
         LAYOUT_UTF16 = ValueLayout.JAVA_CHAR.withOrder(byteOrder);
+    }
+
+    public AbstractMemoryAccessorImpl(ByteOrder byteOrder, long alignmentBits) {
+        LAYOUT_INT8_T = ValueLayout.JAVA_BYTE.withOrder(byteOrder).withBitAlignment(alignmentBits);
+        LAYOUT_INT16_T = ValueLayout.JAVA_SHORT.withOrder(byteOrder).withBitAlignment(alignmentBits);
+        LAYOUT_INT32_T = ValueLayout.JAVA_INT.withOrder(byteOrder).withBitAlignment(alignmentBits);
+        LAYOUT_INT64_T = ValueLayout.JAVA_LONG.withOrder(byteOrder).withBitAlignment(alignmentBits);
+
+        LAYOUT_UINT8_T = ValueLayout.JAVA_BYTE.withOrder(byteOrder).withBitAlignment(alignmentBits);
+        LAYOUT_UINT16_T = ValueLayout.JAVA_SHORT.withOrder(byteOrder).withBitAlignment(alignmentBits);
+        LAYOUT_UINT32_T = ValueLayout.JAVA_INT.withOrder(byteOrder).withBitAlignment(alignmentBits);
+        LAYOUT_UINT64_T = ValueLayout.JAVA_LONG.withOrder(byteOrder).withBitAlignment(alignmentBits);
+
+        LAYOUT_ADDRESS = ValueLayout.ADDRESS.withOrder(byteOrder).withBitAlignment(alignmentBits);
+        LAYOUT_INTPTR_T = LAYOUT_ADDRESS;
+        LAYOUT_UINTPTR_T = LAYOUT_ADDRESS;
+
+        LAYOUT_UTF16 = ValueLayout.JAVA_CHAR.withOrder(byteOrder).withBitAlignment(alignmentBits);
     }
 
     @Override
@@ -206,7 +224,7 @@ public sealed abstract class AbstractMemoryAccessorImpl implements MemoryAccesso
 
     @Override
     public void uintptr_t(MemorySegment mem, long offset, ByteBuffer value) {
-        mem.set(LAYOUT_UINTPTR_T, offset, MemorySegment.ofByteBuffer(value));
+        mem.set(LAYOUT_UINTPTR_T, offset, MemorySegment.ofBuffer(value));
     }
 
     @Override

@@ -24,18 +24,18 @@ package de.ibapl.jnhw.winapi;
 import de.ibapl.jnhw.common.annotation.Define;
 import de.ibapl.jnhw.common.annotation.Include;
 import de.ibapl.jnhw.common.datatypes.Pointer;
-import de.ibapl.jnhw.common.exception.NativeErrorException;
 import de.ibapl.jnhw.common.downcall.wrapper.JnhwMh_sI___A;
 import de.ibapl.jnhw.common.downcall.wrapper.JnhwMh_sI___A__A_uI_uI__A;
 import de.ibapl.jnhw.common.downcall.wrapper.JnhwMh_sI___A_uI__A__A__A__A__A__A;
+import de.ibapl.jnhw.common.exception.NativeErrorException;
 import de.ibapl.jnhw.util.winapi.Kernel32Loader;
 import de.ibapl.jnhw.util.winapi.WinApiDataType;
 import de.ibapl.jnhw.winapi.WinDef.HKEY;
 import de.ibapl.jnhw.winapi.WinDef.LPBYTE;
 import de.ibapl.jnhw.winapi.WinDef.LPDWORD;
 import de.ibapl.jnhw.winapi.Winnt.LPWSTR;
-import jdk.incubator.foreign.MemoryAddress;
-import jdk.incubator.foreign.ResourceScope;
+import java.lang.foreign.MemoryAddress;
+import java.lang.foreign.MemorySession;
 
 /**
  * Wrapper around the
@@ -268,8 +268,8 @@ public abstract class Winreg {
      * indicates an error.
      */
     public final static void RegOpenKeyExW(HKEY hKey, String lpSubKey, int ulOptions, int samDesired, WinDef.PHKEY phkResult) throws NativeErrorException {
-        try ( ResourceScope scope = ResourceScope.newConfinedScope()) {
-            Pointer<WinDef.LPWSTR> _lpSubKey = lpSubKey != null ? WinDef.LPWSTR.wrap(lpSubKey, true, scope) : Pointer.NULL;
+        try ( MemorySession ms = MemorySession.openConfined()) {
+            Pointer<WinDef.LPWSTR> _lpSubKey = lpSubKey != null ? WinDef.LPWSTR.wrap(lpSubKey, true, ms) : Pointer.NULL;
             final int result = RegOpenKeyExW.invoke_sI___P__P_uI_uI__P(
                     hKey,
                     _lpSubKey,

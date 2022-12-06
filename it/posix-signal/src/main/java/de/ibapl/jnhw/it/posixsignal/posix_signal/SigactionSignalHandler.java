@@ -23,14 +23,12 @@ package de.ibapl.jnhw.it.posixsignal.posix_signal;
 
 import de.ibapl.jnhw.common.downcall.JnhwMi__V___I__A__A;
 import de.ibapl.jnhw.common.exception.NoSuchNativeTypeException;
-import de.ibapl.jnhw.common.memory.OpaqueMemory;
 import de.ibapl.jnhw.common.upcall.Callback__V___I_MA_MA;
 import de.ibapl.jnhw.common.util.OutputStreamAppender;
 import de.ibapl.jnhw.posix.Signal;
-import de.ibapl.jnhw.x_open.Ucontext;
 import java.io.IOException;
-import jdk.incubator.foreign.MemoryAddress;
-import jdk.incubator.foreign.ResourceScope;
+import java.lang.foreign.MemoryAddress;
+import java.lang.foreign.MemorySession;
 
 /**
  *
@@ -38,10 +36,10 @@ import jdk.incubator.foreign.ResourceScope;
  */
 public class SigactionSignalHandler extends SignalHandler {
 
-    final ResourceScope scope = ResourceScope.newSharedScope();
+    final MemorySession ms = MemorySession.openShared();
 
-    final Signal.Sigaction act = Signal.Sigaction.allocateNative(scope);
-    final Signal.Sigaction oact = Signal.Sigaction.allocateNative(scope);
+    final Signal.Sigaction act = Signal.Sigaction.allocateNative(ms);
+    final Signal.Sigaction oact = Signal.Sigaction.allocateNative(ms);
     Callback__V___I_MA_MA<Signal.Siginfo_t, Signal.Ucontext_t> sa_handler = new Callback__V___I_MA_MA<>() {
 
         @Override
@@ -51,12 +49,12 @@ public class SigactionSignalHandler extends SignalHandler {
                 sb.append("\n\n********Caught Signal " + value + " in thread: " + Thread.currentThread() + "\n");
 
                 sb.append("siginfo: ");
-                final Signal.Siginfo_t siginfo = Signal.Siginfo_t.ofAddress(siginfoPtr, scope);
+                final Signal.Siginfo_t siginfo = Signal.Siginfo_t.ofAddress(siginfoPtr, ms);
                 siginfo.nativeToString(sb, "", " ");
                 sb.append("\n");
 
                 sb.append("ucontext: ");
-                final Signal.Ucontext_t ucontext = Signal.Ucontext_t.tryOfAddress(ucontextPtr, scope);
+                final Signal.Ucontext_t ucontext = Signal.Ucontext_t.tryOfAddress(ucontextPtr, ms);
                 ucontext.nativeToString(sb, "", " ");
                 sb.append("\n");
 
@@ -67,9 +65,10 @@ public class SigactionSignalHandler extends SignalHandler {
                         System.exit(value);
                         break;
                     case PRINT_MSG_AND_CALL_OLD_HANDLER:
-                        try (ResourceScope rs = ResourceScope.newConfinedScope()){
-                        new JnhwMi__V___I__A__A(oact.sa_sigaction().toAddressable(), rs).invoke__V__sI__P__P(value, siginfo, ucontext);
-                        }                        break;
+                        try ( MemorySession ms = MemorySession.openConfined()) {
+                        new JnhwMi__V___I__A__A(oact.sa_sigaction().toAddressable(), ms).invoke__V__sI__P__P(value, siginfo, ucontext);
+                    }
+                    break;
                     default:
                         thrownInHandler = new RuntimeException("Can't handle signalAction: " + signalAction);
                 }

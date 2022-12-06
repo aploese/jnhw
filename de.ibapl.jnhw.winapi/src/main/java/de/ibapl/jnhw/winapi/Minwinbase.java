@@ -34,10 +34,10 @@ import de.ibapl.jnhw.common.upcall.Callback__V___I__I_MA;
 import de.ibapl.jnhw.util.winapi.memory.WinApiStdStructLayoutFactory;
 import de.ibapl.jnhw.util.winapi.memory.WinApiStruct;
 import de.ibapl.jnhw.winapi.Winnt.HANDLE;
-import jdk.incubator.foreign.Addressable;
-import jdk.incubator.foreign.MemoryAddress;
-import jdk.incubator.foreign.MemorySegment;
-import jdk.incubator.foreign.ResourceScope;
+import java.lang.foreign.Addressable;
+import java.lang.foreign.MemoryAddress;
+import java.lang.foreign.MemorySegment;
+import java.lang.foreign.MemorySession;
 
 /**
  * Wrapper around the
@@ -63,8 +63,8 @@ public class Minwinbase {
      */
     public final static class LPOVERLAPPED extends WinApiStruct {
 
-        public static LPOVERLAPPED allocateNative(ResourceScope rs) {
-            return new LPOVERLAPPED(MemorySegment.allocateNative(Layout.sizeof, rs), 0);
+        public static LPOVERLAPPED allocateNative(MemorySession ms) {
+            return new LPOVERLAPPED(MemorySegment.allocateNative(Layout.sizeof, ms), 0);
         }
 
         public static class Layout extends StructLayout {

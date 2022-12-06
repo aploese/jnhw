@@ -21,7 +21,7 @@
  */
 package de.ibapl.jnhw.common.downcall.wrapper;
 
-import jdk.incubator.foreign.CLinker;
+import java.lang.foreign.Linker;
 
 /**
  *
@@ -29,6 +29,6 @@ import jdk.incubator.foreign.CLinker;
  */
 public interface JnhwMethodHandle {
 
-    final static CLinker C_LINKER = CLinker.systemCLinker();
+    final static Linker NATIVE_LINKER = Linker.nativeLinker();
 
 }

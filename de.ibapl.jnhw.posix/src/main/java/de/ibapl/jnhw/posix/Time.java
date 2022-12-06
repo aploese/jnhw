@@ -64,13 +64,12 @@ import de.ibapl.jnhw.util.posix.LibrtLoader;
 import de.ibapl.jnhw.util.posix.PosixDataType;
 import de.ibapl.jnhw.util.posix.memory.PosixStruct;
 import java.io.IOException;
+import java.lang.foreign.Linker;
+import java.lang.foreign.MemoryAddress;
+import java.lang.foreign.MemorySegment;
+import java.lang.foreign.MemorySession;
+import java.lang.foreign.ValueLayout;
 import java.util.Objects;
-import jdk.incubator.foreign.CLinker;
-import jdk.incubator.foreign.MemoryAddress;
-import jdk.incubator.foreign.MemorySegment;
-import jdk.incubator.foreign.NativeSymbol;
-import jdk.incubator.foreign.ResourceScope;
-import jdk.incubator.foreign.ValueLayout;
 
 /**
  * Wrapper around the {@code <time.h>} header.
@@ -150,7 +149,7 @@ public class Time {
             }
         }
 
-        public final static Itimerspec tryAllocateNative(ResourceScope ms) throws NoSuchNativeTypeException {
+        public final static Itimerspec tryAllocateNative(MemorySession ms) throws NoSuchNativeTypeException {
             if (alignof == null) {
                 throw new NoSuchNativeTypeException("Itimerspec");
             }
@@ -250,14 +249,14 @@ public class Time {
         public final static Alignment alignof = PosixDataType.timer_t.ALIGN_OF;
         public final static int sizeof = PosixDataType.timer_t.SIZE_OF;
 
-        public final static Timer_t tryAllocateNative(ResourceScope ms) throws NoSuchNativeTypeException {
+        public final static Timer_t tryAllocateNative(MemorySession ms) throws NoSuchNativeTypeException {
             if (alignof == null) {
                 throw new NoSuchNativeTypeException("Timer_t");
             }
             return new Timer_t(MemorySegment.allocateNative(sizeof, ms), 0);
         }
 
-        public final static Timer_t ofAddress(MemoryAddress address, ResourceScope ms) throws NoSuchNativeTypeException {
+        public final static Timer_t ofAddress(MemoryAddress address, MemorySession ms) throws NoSuchNativeTypeException {
             return new Timer_t(MemorySegment.ofAddress(address, sizeof, ms), 0);
         }
 
@@ -299,7 +298,7 @@ public class Time {
 
     public final static class PtrTimer_t extends IntPtr_t<Timer_t> {
 
-        public static PtrTimer_t tryAllocateNative(ResourceScope ms) throws NoSuchNativeTypeException {
+        public static PtrTimer_t tryAllocateNative(MemorySession ms) throws NoSuchNativeTypeException {
             if (Timer_t.alignof == null) {
                 throw new NoSuchNativeTypeException("Timer_t");
             }
@@ -310,14 +309,14 @@ public class Time {
             super(memorySegment, offset);
         }
 
-        public Timer_t get(final ResourceScope scope) {
-            return get((address, _scope, parent) -> {
+        public Timer_t get(final MemorySession ms) {
+            return get((address, _ms, parent) -> {
                 try {
-                    return Timer_t.ofAddress(address, _scope);
+                    return Timer_t.ofAddress(address, _ms);
                 } catch (NoSuchNativeTypeException e) {
                     throw new RuntimeException(e);
                 }
-            }, scope);
+            }, ms);
         }
 
     }
@@ -351,7 +350,7 @@ public class Time {
             }
         }
 
-        public final static Timespec allocateNative(ResourceScope ms) {
+        public final static Timespec allocateNative(MemorySession ms) {
             return new Timespec(MemorySegment.allocateNative(Timespec.sizeof, ms), 0);
         }
 
@@ -491,16 +490,16 @@ public class Time {
             }
         }
 
-        public final static Tm allocateNative(ResourceScope scope) {
-            return new Tm(MemorySegment.allocateNative(sizeof, scope), 0);
+        public final static Tm allocateNative(MemorySession ms) {
+            return new Tm(MemorySegment.allocateNative(sizeof, ms), 0);
         }
 
         public Tm(MemorySegment memorySegment, long offset) {
             super(memorySegment, offset, Tm.sizeof);
         }
 
-        public Tm(MemoryAddress baseAddress, ResourceScope scope) {
-            super(baseAddress, scope, Tm.sizeof);
+        public Tm(MemoryAddress baseAddress, MemorySession ms) {
+            super(baseAddress, ms, Tm.sizeof);
         }
 
         @Override
@@ -1239,11 +1238,7 @@ public class Time {
         return daylight.address().get(ValueLayout.JAVA_INT, 0);
     }
 
-    private final static NativeSymbol daylight;
-
-    static {
-        daylight = CLinker.systemCLinker().lookup("daylight").get();
-    }
+    private final static MemorySegment daylight = Linker.nativeLinker().defaultLookup().lookup("daylight").get();
 
     /**
      * <b>POSIX:</b>
@@ -1269,11 +1264,7 @@ public class Time {
         return getdate_err.address().get(ValueLayout.JAVA_INT, 0);
     }
 
-    private final static NativeSymbol getdate_err;
-
-    static {
-        getdate_err = CLinker.systemCLinker().lookup("getdate_err").get();
-    }
+    private final static MemorySegment getdate_err = Linker.nativeLinker().defaultLookup().lookup("getdate_err").get();
 
     /**
      * <b>POSIX:</b>
@@ -1290,7 +1281,7 @@ public class Time {
      * available natively.
      */
     public final static Tm getdate(String string) throws NativeException, NoSuchNativeMethodException {
-        try ( ResourceScope ms = ResourceScope.newConfinedScope()) {
+        try ( MemorySession ms = MemorySession.openConfined()) {
             MemorySegment _string = MemorySegment.allocateNative(string.length() + 1, ms);
             _string.setUtf8String(0, string);
             final MemoryAddress result = getdate.invoke_MA__A(_string);
@@ -1298,7 +1289,7 @@ public class Time {
                 throw new NativeException("getdate");
             } else {
                 // getdate returns static memory - so do not attempt to free it...
-                return new Tm(result, ResourceScope.globalScope());
+                return new Tm(result, MemorySession.global());
             }
         } catch (NullPointerException npe) {
             if (getdate == null) {
@@ -1325,7 +1316,7 @@ public class Time {
             throw new NativeErrorException(Errno.errno());
         } else {
             // gmtime returns static memory - so do not attempt to free it...
-            return new Tm(result, ResourceScope.globalScope());
+            return new Tm(result, MemorySession.global());
         }
     }
 
@@ -1367,7 +1358,7 @@ public class Time {
             throw new NativeErrorException(Errno.errno());
         } else {
             // localtime returns static memory - so do not attempt to free it...
-            return new Tm(result, ResourceScope.globalScope());
+            return new Tm(result, MemorySession.global());
         }
     }
 
@@ -1446,7 +1437,7 @@ public class Time {
      * @return on succes the converted time otherwise {@code null}.
      */
     public final static String strftime(@size_t long maxsize, String format, Tm timeptr) {
-        try ( ResourceScope ms = ResourceScope.newConfinedScope()) {
+        try ( MemorySession ms = MemorySession.openConfined()) {
             MemorySegment s = MemorySegment.allocateNative(maxsize, ms);
             MemorySegment _format = MemorySegment.allocateNative(format.length() + 1, ms);
             _format.setUtf8String(0, format);
@@ -1473,7 +1464,7 @@ public class Time {
      * @return on succes the converted time otherwise {@code null}.
      */
     public final static String strftime_l(@size_t long maxsize, String format, Tm timeptr, Locale.Locale_t locale) {
-        try ( ResourceScope ms = ResourceScope.newConfinedScope()) {
+        try ( MemorySession ms = MemorySession.openConfined()) {
             MemorySegment s = MemorySegment.allocateNative(maxsize, ms);
             MemorySegment _format = MemorySegment.allocateNative(format.length() + 1, ms);
             _format.setUtf8String(0, format);
@@ -1500,10 +1491,10 @@ public class Time {
      * character parsed.
      */
     public final static String strptime(String buf, String format, Tm tm) {
-        try ( ResourceScope scope = ResourceScope.newConfinedScope()) {
-            MemorySegment _format = MemorySegment.allocateNative(format.length() + 1, scope);
+        try ( MemorySession ms = MemorySession.openConfined()) {
+            MemorySegment _format = MemorySegment.allocateNative(format.length() + 1, ms);
             _format.setUtf8String(0, format);
-            MemorySegment _buf = MemorySegment.allocateNative(buf.length() + 1, scope);
+            MemorySegment _buf = MemorySegment.allocateNative(buf.length() + 1, ms);
             _buf.setUtf8String(0, buf);
             final MemoryAddress result = strptime.invoke_MA__A_A_P(_buf, _format, tm);
             if (result == MemoryAddress.NULL) {
@@ -1710,11 +1701,7 @@ public class Time {
         return timezone.address().get(ValueLayout.JAVA_LONG, 0);
     }
 
-    private final static NativeSymbol timezone;
-
-    static {
-        timezone = CLinker.systemCLinker().lookup("timezone").get();
-    }
+    private final static MemorySegment timezone = Linker.nativeLinker().defaultLookup().lookup("timezone").get();
 
     /**
      * <b>POSIX:</b>
@@ -1732,11 +1719,7 @@ public class Time {
         return result;
     }
 
-    private final static NativeSymbol tzname;
-
-    static {
-        tzname = CLinker.systemCLinker().lookup("tzname").get();
-    }
+    private final static MemorySegment tzname = Linker.nativeLinker().defaultLookup().lookup("tzname").get();
 
     /**
      * <b>POSIX:</b>

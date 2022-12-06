@@ -23,7 +23,7 @@ package de.ibapl.jnhw.common.util;
 
 import de.ibapl.jnhw.common.datatypes.MultiarchTupelBuilder;
 import de.ibapl.jnhw.common.datatypes.SizeInBit;
-import jdk.incubator.foreign.MemoryAddress;
+import java.lang.foreign.MemoryAddress;
 
 /**
  *
@@ -58,28 +58,4 @@ public class JnhwFormater {
 
     }
 
-    /**
-     * formats an Address according to 32 or 64 bit
-     *
-     * @param address
-     * @return
-     */
-    @Deprecated
-    public static String formatAddress(long address) {
-        switch (POINTER_SIZE) {
-            case _64_BIT:
-                return String.format("0x%016x", address);
-            case _32_BIT:
-                final long upper32 = address & 0xFFFFFFFF00000000L;
-                if (upper32 == 0L) {
-                    return String.format("0x%08x", address);
-                } else {
-                    //Error?? on 32 bit we got the upper 32 set??
-                    return String.format("0x(!>>>)%08x(<<<!)%08x", upper32 >>> 32, address & 0x00000000FFFFFFFFL);
-                }
-            default:
-                throw new RuntimeException("UnknownWordsize");
-        }
-
-    }
 }

@@ -22,7 +22,7 @@
 package de.ibapl.jnhw.util.posix.memory;
 
 import de.ibapl.jnhw.annotation.posix.sys.types.size_t;
-import jdk.incubator.foreign.MemorySegment;
+import java.lang.foreign.MemorySegment;
 
 /**
  *

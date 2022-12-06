@@ -23,7 +23,7 @@ package de.ibapl.jnhw.common.nativepointer;
 
 import de.ibapl.jnhw.common.memory.NativeFunctionPointer;
 import java.util.function.Function;
-import jdk.incubator.foreign.MemoryAddress;
+import java.lang.foreign.MemoryAddress;
 
 /**
  *

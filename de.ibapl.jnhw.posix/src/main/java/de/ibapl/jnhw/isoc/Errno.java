@@ -25,13 +25,10 @@ import de.ibapl.jnhw.common.annotation.Define;
 import de.ibapl.jnhw.common.annotation.Include;
 import de.ibapl.jnhw.common.datatypes.BaseDataType;
 import de.ibapl.jnhw.common.datatypes.MultiarchTupelBuilder;
-import de.ibapl.jnhw.common.exception.NativeErrorException;
-import java.lang.invoke.MethodHandle;
-import jdk.incubator.foreign.CLinker;
-import jdk.incubator.foreign.FunctionDescriptor;
-import jdk.incubator.foreign.MemoryAddress;
-import jdk.incubator.foreign.ValueLayout;
 import de.ibapl.jnhw.common.downcall.wrapper.JnhwMh_MA___V;
+import de.ibapl.jnhw.common.exception.NativeErrorException;
+import java.lang.foreign.Linker;
+import java.lang.foreign.ValueLayout;
 
 /**
  * Wrapper around the {@code <errno.h>} header.
@@ -45,7 +42,7 @@ import de.ibapl.jnhw.common.downcall.wrapper.JnhwMh_MA___V;
 @Include("#include <errno.h>")
 public abstract class Errno {
 
-    protected final static CLinker JNHW_LINKER = CLinker.systemCLinker();
+    protected final static Linker NATIVE_LINKER = Linker.nativeLinker();
     private final static JnhwMh_MA___V __errno_location = JnhwMh_MA___V.of(
             "__errno_location",
             BaseDataType.C_int_pointer);

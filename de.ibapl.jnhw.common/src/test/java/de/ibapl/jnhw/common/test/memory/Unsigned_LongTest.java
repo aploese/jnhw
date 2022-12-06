@@ -22,14 +22,14 @@
 package de.ibapl.jnhw.common.test.memory;
 
 import de.ibapl.jnhw.common.datatypes.BaseDataType;
-import de.ibapl.jnhw.common.memory.Uint64_t;
-import org.junit.jupiter.api.Test;
-import static org.junit.jupiter.api.Assertions.*;
 import de.ibapl.jnhw.common.memory.AsUnsignedLong;
 import de.ibapl.jnhw.common.memory.Uint32_t;
+import de.ibapl.jnhw.common.memory.Uint64_t;
 import de.ibapl.jnhw.common.memory.Unsigned_Long;
-import jdk.incubator.foreign.MemorySegment;
-import jdk.incubator.foreign.ResourceScope;
+import java.lang.foreign.MemorySegment;
+import java.lang.foreign.MemorySession;
+import static org.junit.jupiter.api.Assertions.*;
+import org.junit.jupiter.api.Test;
 
 /**
  *
@@ -39,8 +39,8 @@ public class Unsigned_LongTest {
 
     @Test
     public void testNative() {
-        try ( ResourceScope rs = ResourceScope.newConfinedScope()) {
-            Unsigned_Long instance = Unsigned_Long.allocateNative(rs);
+        try ( MemorySession ms = MemorySession.openConfined()) {
+            Unsigned_Long instance = Unsigned_Long.allocateNative(ms);
             final long input = 0x8070605040302010L;
             if (BaseDataType.C_unsigned_long.SIZE_OF == 8) {
                 instance.unsigned_long(input);
@@ -66,8 +66,8 @@ public class Unsigned_LongTest {
 
     @Test
     public void testNativeToString() {
-        try ( ResourceScope rs = ResourceScope.newConfinedScope()) {
-            Unsigned_Long instance = new Unsigned_Long(MemorySegment.allocateNative(BaseDataType.C_unsigned_long.SIZE_OF, rs), 0);
+        try ( MemorySession ms = MemorySession.openConfined()) {
+            Unsigned_Long instance = new Unsigned_Long(MemorySegment.allocateNative(BaseDataType.C_unsigned_long.SIZE_OF, ms), 0);
             if (BaseDataType.C_unsigned_long.SIZE_OF == 8) {
                 Uint64_t uint64_t = Uint64_t.map(instance, 0);
                 uint64_t.uint64_t(0xfffffffffffffffeL);
@@ -84,12 +84,12 @@ public class Unsigned_LongTest {
 
     @Test
     public void testNative_1() {
-        try ( ResourceScope rs = ResourceScope.newConfinedScope()) {
-            AsUnsignedLong instance = new AsUnsignedLong(BaseDataType.uint32_t, MemorySegment.allocateNative(BaseDataType.uint32_t.SIZE_OF, rs), 0);
+        try ( MemorySession ms = MemorySession.openConfined()) {
+            AsUnsignedLong instance = new AsUnsignedLong(BaseDataType.uint32_t, MemorySegment.allocateNative(BaseDataType.uint32_t.SIZE_OF, ms), 0);
             instance.setFromUnsignedLong(33);
             assertEquals(33, instance.getAsUnsignedLong());
             assertThrows(IllegalArgumentException.class, () -> instance.setFromUnsignedLong(-1));
-            assertThrows(IllegalArgumentException.class, () -> new AsUnsignedLong(BaseDataType.int8_t, MemorySegment.allocateNative(BaseDataType.int8_t.SIZE_OF, rs), 0));
+            assertThrows(IllegalArgumentException.class, () -> new AsUnsignedLong(BaseDataType.int8_t, MemorySegment.allocateNative(BaseDataType.int8_t.SIZE_OF, ms), 0));
         }
     }
 

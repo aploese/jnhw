@@ -21,15 +21,10 @@
  */
 package de.ibapl.jnhw.it.hello_world_async_io;
 
-import de.ibapl.jnhw.common.datatypes.Pointer;
 import de.ibapl.jnhw.common.exception.NativeErrorException;
-import de.ibapl.jnhw.common.memory.Int32_t;
-import de.ibapl.jnhw.common.memory.OpaqueMemory;
-import de.ibapl.jnhw.common.memory.Uint32_t;
 import de.ibapl.jnhw.common.memory.UintPtr_t;
 import de.ibapl.jnhw.winapi.BaseTsd;
 import de.ibapl.jnhw.winapi.Fileapi;
-//Import only the needed define from the wrapper of processenv.h
 import de.ibapl.jnhw.winapi.Handleapi;
 import de.ibapl.jnhw.winapi.IoAPI;
 import de.ibapl.jnhw.winapi.Minwinbase;
@@ -38,13 +33,13 @@ import de.ibapl.jnhw.winapi.Winbase;
 import de.ibapl.jnhw.winapi.Winnt;
 import java.io.File;
 import java.io.IOException;
-import jdk.incubator.foreign.MemorySegment;
-import jdk.incubator.foreign.ResourceScope;
-import jdk.incubator.foreign.ValueLayout;
+import java.lang.foreign.MemorySegment;
+import java.lang.foreign.MemorySession;
+import java.lang.foreign.ValueLayout;
 
 public class Windows {
 
-    private final static ResourceScope scope = ResourceScope.newSharedScope();
+    private final static MemorySession ms = MemorySession.openShared();
 
     public static void aio(File file, MemorySegment aioBuffer, final boolean debug) throws NativeErrorException, IOException {
 
@@ -56,16 +51,16 @@ public class Windows {
                 Winbase.FILE_FLAG_OVERLAPPED,
                 null);
 
-        final Minwinbase.LPOVERLAPPED overlapped = Minwinbase.LPOVERLAPPED.allocateNative(scope);
+        final Minwinbase.LPOVERLAPPED overlapped = Minwinbase.LPOVERLAPPED.allocateNative(ms);
         final long COMPLETION_KEY = 24;
         Winnt.HANDLE hIoCompletionPort = IoAPI.CreateIoCompletionPort(hFile, null, COMPLETION_KEY, 0);
 
-        WinDef.LPDWORD lpNumberOfBytesTransferred = WinDef.LPDWORD.allocateNative(scope);
-        BaseTsd.PULONG_PTR lpCompletionKey = BaseTsd.PULONG_PTR.allocateNative(scope);
+        WinDef.LPDWORD lpNumberOfBytesTransferred = WinDef.LPDWORD.allocateNative(ms);
+        BaseTsd.PULONG_PTR lpCompletionKey = BaseTsd.PULONG_PTR.allocateNative(ms);
 
         Fileapi.WriteFile(hFile, aioBuffer, overlapped);
 
-        UintPtr_t<Minwinbase.LPOVERLAPPED> overlappedPtr = UintPtr_t.allocateNative(scope);
+        UintPtr_t<Minwinbase.LPOVERLAPPED> overlappedPtr = UintPtr_t.allocateNative(ms);
         IoAPI.GetQueuedCompletionStatus(hIoCompletionPort, lpNumberOfBytesTransferred, lpCompletionKey, overlappedPtr, 1000);
 
         /*

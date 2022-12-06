@@ -23,9 +23,6 @@ package de.ibapl.jnhw.posix;
 
 import de.ibapl.jnhw.common.datatypes.MultiarchTupelBuilder;
 import de.ibapl.jnhw.common.datatypes.OS;
-import de.ibapl.jnhw.common.upcall.Callback__V___I_MA_MA;
-import de.ibapl.jnhw.common.upcall.Callback__V___I;
-import de.ibapl.jnhw.common.util.ObjectDefine;
 import de.ibapl.jnhw.common.exception.NativeErrorException;
 import de.ibapl.jnhw.common.exception.NoSuchNativeMethodException;
 import de.ibapl.jnhw.common.exception.NoSuchNativeTypeException;
@@ -35,13 +32,16 @@ import de.ibapl.jnhw.common.memory.MemoryHeap;
 import de.ibapl.jnhw.common.memory.OpaqueMemory;
 import de.ibapl.jnhw.common.nativepointer.FunctionPtr__V___I;
 import de.ibapl.jnhw.common.upcall.Callback__V__MA;
+import de.ibapl.jnhw.common.upcall.Callback__V___I;
+import de.ibapl.jnhw.common.upcall.Callback__V___I_MA_MA;
+import de.ibapl.jnhw.common.util.ObjectDefine;
 import de.ibapl.jnhw.util.posix.DefinesTest;
-import jdk.incubator.foreign.MemoryAddress;
-import jdk.incubator.foreign.MemorySegment;
-import jdk.incubator.foreign.ResourceScope;
+import java.lang.foreign.MemoryAddress;
+import java.lang.foreign.MemorySegment;
+import java.lang.foreign.MemorySession;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
@@ -274,16 +274,16 @@ public class SignalTest {
         );
     }
 
-    private ResourceScope scope;
+    private MemorySession ms;
 
     @BeforeEach
     public void setUp() {
-        scope = ResourceScope.newSharedScope();
+        ms = MemorySession.openShared();
     }
 
     @AfterEach
     public void tearDown() {
-        scope.close();
+        ms.close();
     }
 
     // just for vm in qemu...
@@ -302,7 +302,7 @@ public class SignalTest {
         final int sig = Signal.SIGCHLD; //TODO SIGQUIT blows anything away .... WHY??? pthread_kill
 
         final Integer[] sigRef = new Integer[1];
-        final Signal.Sigaction act = Signal.Sigaction.allocateNative(scope);
+        final Signal.Sigaction act = Signal.Sigaction.allocateNative(ms);
         act.sa_flags(0);
         Signal.sigemptyset(act.sa_mask);
 
@@ -310,7 +310,7 @@ public class SignalTest {
             @Override
             protected void callback(int sig) {
                 synchronized (sigRef) {
-                    System.out.println("pthread_t of signalhadler: " + Pthread.pthread_self(scope) + " Java thread ID: " + Thread.currentThread().getId());
+                    System.out.println("pthread_t of signalhadler: " + Pthread.pthread_self(ms) + " Java thread ID: " + Thread.currentThread().threadId());
                     sigRef[0] = sig;
                     sigRef.notifyAll();
                 }
@@ -319,10 +319,10 @@ public class SignalTest {
         };
         act.sa_handler(sa_handler);
 
-        final Signal.Sigaction oact = Signal.Sigaction.allocateNative(scope);
+        final Signal.Sigaction oact = Signal.Sigaction.allocateNative(ms);
         Signal.sigaction(sig, act, oact);
         try {
-            System.out.println("pthread_t of testKill: " + Pthread.pthread_self(scope) + " Java thread ID: " + Thread.currentThread().getId());
+            System.out.println("pthread_t of testKill: " + Pthread.pthread_self(ms) + " Java thread ID: " + Thread.currentThread().threadId());
             Signal.kill(Unistd.getpid(), sig);
             synchronized (sigRef) {
                 if (sigRef[0] == null) {
@@ -344,7 +344,7 @@ public class SignalTest {
         final int sig = Signal.SIGCHLD;
 
         final Integer[] sigRef = new Integer[1];
-        final Signal.Sigaction act = Signal.Sigaction.allocateNative(scope);
+        final Signal.Sigaction act = Signal.Sigaction.allocateNative(ms);
         act.sa_flags(0);
         Signal.sigemptyset(act.sa_mask);
 
@@ -359,7 +359,7 @@ public class SignalTest {
         };
         act.sa_handler(sa_handler);
 
-        final Signal.Sigaction oact = Signal.Sigaction.allocateNative(scope);
+        final Signal.Sigaction oact = Signal.Sigaction.allocateNative(ms);
         Signal.sigaction(sig, act, oact);
         try {
             Signal.killpg(Unistd.getpgrp(), sig);
@@ -380,7 +380,7 @@ public class SignalTest {
     @Test
     public void testPsiginfo() throws Exception {
         System.out.println("psiginfo");
-        Signal.Siginfo_t pinfo = Signal.Siginfo_t.allocateNative(scope);
+        Signal.Siginfo_t pinfo = Signal.Siginfo_t.allocateNative(ms);
         switch (MultiarchTupelBuilder.getOS()) {
             case DARWIN:
             case FREE_BSD:
@@ -423,13 +423,13 @@ public class SignalTest {
     @Test
     public void testPthread_kill() throws Exception {
         System.out.println("pthread_kill");
-        System.out.println("pthread_t of testPthread_kill: " + Pthread.pthread_self(scope) + " Java thread ID: " + Thread.currentThread().getId());
+        System.out.println("pthread_t of testPthread_kill: " + Pthread.pthread_self(ms) + " Java thread ID: " + Thread.currentThread().threadId());
 
         final int sig = Signal.SIGCHLD; //TODO SIGQUIT blows anything away .... WHY??? pthread_kill
 
         final Integer[] sigRef = new Integer[1];
         final Throwable[] error = new Throwable[1];
-        final Signal.Sigaction act = Signal.Sigaction.allocateNative(scope);
+        final Signal.Sigaction act = Signal.Sigaction.allocateNative(ms);
         act.sa_flags(0);
         Signal.sigemptyset(act.sa_mask);
 
@@ -437,18 +437,18 @@ public class SignalTest {
             @Override
             protected void callback(int sig) {
                 sigRef[0] = sig;
-                System.out.println("pthread_t of signalhadler: " + Pthread.pthread_self(scope) + " Java thread ID: " + Thread.currentThread().getId() + " signal: " + sig);
+                System.out.println("pthread_t of signalhadler: " + Pthread.pthread_self(ms) + " Java thread ID: " + Thread.currentThread().threadId() + " signal: " + sig);
             }
         };
         act.sa_handler(sa_handler);
 
-        final Signal.Sigaction oact = Signal.Sigaction.allocateNative(scope);
+        final Signal.Sigaction oact = Signal.Sigaction.allocateNative(ms);
         Signal.sigaction(sig, act, oact);
         try {
             Thread t = new Thread(() -> {
                 try {
-                    System.out.println("pthread_t of thread: " + Pthread.pthread_self(scope) + " Java thread ID: " + Thread.currentThread().getId());
-                    Signal.pthread_kill(Pthread.pthread_self(scope), sig);
+                    System.out.println("pthread_t of thread: " + Pthread.pthread_self(ms) + " Java thread ID: " + Thread.currentThread().threadId());
+                    Signal.pthread_kill(Pthread.pthread_self(ms), sig);
                 } catch (NativeErrorException nee) {
                     error[0] = nee;
                 }
@@ -471,19 +471,19 @@ public class SignalTest {
 
         Signal.pthread_sigmask(0, null, null);
 
-        final Signal.Sigset_t oset = Signal.Sigset_t.allocateNative(scope);
+        final Signal.Sigset_t oset = Signal.Sigset_t.allocateNative(ms);
         Signal.sigemptyset(oset);
         Signal.pthread_sigmask(0, null, oset);
         try {
             //make sure SIGUSR1 is in signak mask; we want to set it
             System.err.println("current sigprocmask: " + oset);
             Assertions.assertFalse(Signal.sigismember(oset, Signal.SIGUSR1));
-            Signal.Sigset_t set = Signal.Sigset_t.allocateNative(scope);
+            Signal.Sigset_t set = Signal.Sigset_t.allocateNative(ms);
             Signal.sigemptyset(set);
             Signal.sigaddset(set, Signal.SIGUSR1);
             Signal.pthread_sigmask(Signal.SIG_BLOCK, set, null);
             //Test that SIGUSR1 was set
-            final Signal.Sigset_t changedSet = Signal.Sigset_t.allocateNative(scope);
+            final Signal.Sigset_t changedSet = Signal.Sigset_t.allocateNative(ms);
             Signal.sigemptyset(changedSet);
             Signal.pthread_sigmask(0, null, changedSet);
             System.err.println("current sigprocmask: " + changedSet.toString());
@@ -503,7 +503,7 @@ public class SignalTest {
         final int sig = Signal.SIGCHLD;
 
         final Integer[] sigRef = new Integer[1];
-        final Signal.Sigaction act = Signal.Sigaction.allocateNative(scope);
+        final Signal.Sigaction act = Signal.Sigaction.allocateNative(ms);
         act.sa_flags(0);
         Signal.sigemptyset(act.sa_mask);
 
@@ -515,7 +515,7 @@ public class SignalTest {
         };
         act.sa_handler(sa_handler);
 
-        final Signal.Sigaction oact = Signal.Sigaction.allocateNative(scope);
+        final Signal.Sigaction oact = Signal.Sigaction.allocateNative(ms);
         Signal.sigaction(sig, act, oact);
         try {
             Signal.raise(sig);
@@ -533,7 +533,7 @@ public class SignalTest {
         System.out.println("sigaction");
         final int SIG = Signal.SIGCHLD;
 
-        final Signal.Sigaction<OpaqueMemory> act = Signal.Sigaction.allocateNative(scope);
+        final Signal.Sigaction<OpaqueMemory> act = Signal.Sigaction.allocateNative(ms);
         act.sa_flags(Signal.SA_RESTART);
         Signal.sigemptyset(act.sa_mask);
 
@@ -544,7 +544,7 @@ public class SignalTest {
         };
         act.sa_handler(sa_handler);
 
-        final Signal.Sigaction<OpaqueMemory> oact = Signal.Sigaction.allocateNative(scope);
+        final Signal.Sigaction<OpaqueMemory> oact = Signal.Sigaction.allocateNative(ms);
         Signal.sigaction(SIG, null, oact);
         try {
             Signal.sigaction(SIG, act, oact);
@@ -555,7 +555,7 @@ public class SignalTest {
                 Assertions.assertEquals(Signal.SIG_DFL, oact.sa_handler());
             }
 
-            final Signal.Sigaction<OpaqueMemory> actOut = Signal.Sigaction.allocateNative(scope);
+            final Signal.Sigaction<OpaqueMemory> actOut = Signal.Sigaction.allocateNative(ms);
             Signal.sigaction(SIG, oact, actOut);
 
             Assertions.assertEquals(act.sa_handler(), actOut.sa_handler());
@@ -571,9 +571,9 @@ public class SignalTest {
     @Test
     public void testSigaltstack() throws Exception {
         System.out.println("sigaltstack");
-        final MemoryHeap ss_sp = MemoryHeap.wrap(MemorySegment.allocateNative(Signal.MINSIGSTKSZ, scope));
-        Signal.Stack_t ss = Signal.Stack_t.allocateNativeAndInit(scope, Signal.SS_DISABLE, ss_sp);
-        Signal.Stack_t oss = Signal.Stack_t.allocateNative(scope);
+        final MemoryHeap ss_sp = MemoryHeap.wrap(MemorySegment.allocateNative(Signal.MINSIGSTKSZ, ms));
+        Signal.Stack_t ss = Signal.Stack_t.allocateNativeAndInit(ms, Signal.SS_DISABLE, ss_sp);
+        Signal.Stack_t oss = Signal.Stack_t.allocateNative(ms);
         Signal.sigaltstack(null, oss);
         try {
             Signal.sigaltstack(null, null);
@@ -603,7 +603,7 @@ public class SignalTest {
     @Test
     public void testSigset_t() throws Exception {
         System.out.println("Sigset_t");
-        Signal.Sigset_t set = Signal.Sigset_t.allocateNative(scope);
+        Signal.Sigset_t set = Signal.Sigset_t.allocateNative(ms);
 
         Signal.sigemptyset(set);
         Assertions.assertFalse(Signal.sigismember(set, Signal.SIGKILL));
@@ -632,7 +632,7 @@ public class SignalTest {
             Assertions.assertThrows(NoSuchNativeMethodException.class, () -> Signal.sigrelse(sig));
         } else {
             Signal.sighold(sig);
-            Signal.Sigset_t mask = Signal.Sigset_t.allocateNative(scope);
+            Signal.Sigset_t mask = Signal.Sigset_t.allocateNative(ms);
             Signal.sigemptyset(mask);
             Signal.sigprocmask(0, null, mask);
             Assertions.assertTrue(Signal.sigismember(mask, sig), "Signal is not in mask");
@@ -670,7 +670,7 @@ public class SignalTest {
     public void testSiginterrupt() throws Exception {
         System.out.println("siginterrupt");
         int sig = Signal.SIGCHLD;
-        Signal.Sigaction oact = Signal.Sigaction.allocateNative(scope);
+        Signal.Sigaction oact = Signal.Sigaction.allocateNative(ms);
         Signal.sigaction(sig, null, oact);
         try {
             Signal.siginterrupt(sig, true);
@@ -800,7 +800,7 @@ public class SignalTest {
             Signal.sigpending(null);
         });
 
-        Signal.Sigset_t set = Signal.Sigset_t.allocateNative(scope);
+        Signal.Sigset_t set = Signal.Sigset_t.allocateNative(ms);
         // Just make sure all bytes are set to 0 otherwise linux s390x may fail at byte comparision).
         OpaqueMemory.clear(set);
         Signal.sigemptyset(set);
@@ -819,19 +819,19 @@ public class SignalTest {
 
         Signal.sigprocmask(0, null, null);
 
-        final Signal.Sigset_t oset = Signal.Sigset_t.allocateNative(scope);
+        final Signal.Sigset_t oset = Signal.Sigset_t.allocateNative(ms);
         Signal.sigemptyset(oset);
         Signal.sigprocmask(0, null, oset);
         try {
             //make sure SIGUSR1 is in signak mask; we want to set it
             System.err.println("current sigprocmask: " + oset);
             Assertions.assertFalse(Signal.sigismember(oset, Signal.SIGUSR1));
-            Signal.Sigset_t set = Signal.Sigset_t.allocateNative(scope);
+            Signal.Sigset_t set = Signal.Sigset_t.allocateNative(ms);
             Signal.sigemptyset(set);
             Signal.sigaddset(set, Signal.SIGUSR1);
             Signal.sigprocmask(Signal.SIG_BLOCK, set, null);
             //Test that SIGUSR1 was set
-            final Signal.Sigset_t changedSet = Signal.Sigset_t.allocateNative(scope);
+            final Signal.Sigset_t changedSet = Signal.Sigset_t.allocateNative(ms);
             Signal.sigemptyset(changedSet);
             Signal.sigprocmask(0, null, changedSet);
             System.err.println("current sigprocmask: " + changedSet.toString());
@@ -852,10 +852,10 @@ public class SignalTest {
         switch (MultiarchTupelBuilder.getOS()) {
             case DARWIN:
             case OPEN_BSD:
-                Assertions.assertThrows(NoSuchNativeMethodException.class, () -> Signal.sigqueue(Unistd.getpid(), SIG, Signal.Sigval.allocateNative(scope)));
+                Assertions.assertThrows(NoSuchNativeMethodException.class, () -> Signal.sigqueue(Unistd.getpid(), SIG, Signal.Sigval.allocateNative(ms)));
                 break;
             default:
-                final Signal.Sigaction act = Signal.Sigaction.allocateNative(scope);
+                final Signal.Sigaction act = Signal.Sigaction.allocateNative(ms);
                 OpaqueMemory.clear(act);
                 act.sa_flags(Signal.SA_SIGINFO);
                 Signal.sigemptyset(act.sa_mask);
@@ -870,9 +870,9 @@ public class SignalTest {
                     @Override
                     protected void callback(int value, MemoryAddress a, MemoryAddress b) {
                         try {
-                            siginfo_tRef[0] = Signal.Siginfo_t.ofAddress(a, scope);
+                            siginfo_tRef[0] = Signal.Siginfo_t.ofAddress(a, ms);
                             try {
-                                opmRef[0] = Signal.Ucontext_t.tryOfAddress(b, scope);
+                                opmRef[0] = Signal.Ucontext_t.tryOfAddress(b, ms);
                             } catch (NoSuchNativeTypeException nste) {
                                 Assertions.fail(nste);
 
@@ -887,12 +887,12 @@ public class SignalTest {
 
                 act.sa_sigaction(sa_handler);
 
-                final Signal.Sigaction oact = Signal.Sigaction.allocateNative(scope);
+                final Signal.Sigaction oact = Signal.Sigaction.allocateNative(ms);
                 Signal.sigaction(SIG, act, oact);
 
-                final MemoryHeap data = MemoryHeap.wrap(MemorySegment.allocateNative(128, scope));
+                final MemoryHeap data = MemoryHeap.wrap(MemorySegment.allocateNative(128, ms));
 
-                Signal.Sigval sigval = Signal.Sigval.allocateNative(scope);
+                Signal.Sigval sigval = Signal.Sigval.allocateNative(ms);
                 sigval.sival_ptr(data);
 
                 Signal.sigqueue(Unistd.getpid(), SIG, sigval);
@@ -917,7 +917,7 @@ public class SignalTest {
                             () -> {
                                 Assertions.assertEquals(data, siginfo_tRef[0].si_value.sival_ptr((baseAddress, scope, parent) -> {
                                     return new MemoryHeap(baseAddress, scope, data.sizeof());
-                                }, scope), "siginfo_tRef.value.si_value.sival_ptr()");
+                                }, ms), "siginfo_tRef.value.si_value.sival_ptr()");
                             });
                 } finally {
                     Signal.sigaction(SIG, oact, null);
@@ -957,16 +957,16 @@ public class SignalTest {
         };
         final var oldHandler = Signal.signal(SIG, funcHandler);
 
-        final var act = Signal.Sigset_t.allocateNative(scope);
+        final var act = Signal.Sigset_t.allocateNative(ms);
         Signal.sigemptyset(act);
         Signal.sigaddset(act, SIG);
 
-        final var oact = Signal.Sigset_t.allocateNative(scope);
+        final var oact = Signal.Sigset_t.allocateNative(ms);
         Signal.sigemptyset(oact);
         Signal.sigprocmask(Signal.SIG_BLOCK, act, oact);
 
         try {
-            final Signal.Sigset_t sigmask = Signal.Sigset_t.allocateNative(scope);
+            final Signal.Sigset_t sigmask = Signal.Sigset_t.allocateNative(ms);
             Signal.sigemptyset(sigmask);
             Signal.sigaddset(sigmask, Signal.SIGUSR1);
 
@@ -988,11 +988,11 @@ public class SignalTest {
         switch (MultiarchTupelBuilder.getOS()) {
             case DARWIN:
             case OPEN_BSD: {
-                final Signal.Sigset_t set = Signal.Sigset_t.allocateNative(scope);
+                final Signal.Sigset_t set = Signal.Sigset_t.allocateNative(ms);
                 Signal.sigemptyset(set);
                 Signal.sigaddset(set, Signal.SIGALRM);
-                final Signal.Siginfo_t info = Signal.Siginfo_t.allocateNative(scope);
-                final Time.Timespec timeout = Time.Timespec.allocateNative(scope);
+                final Signal.Siginfo_t info = Signal.Siginfo_t.allocateNative(ms);
+                final Time.Timespec timeout = Time.Timespec.allocateNative(ms);
 
                 Assertions.assertThrows(NoSuchNativeMethodException.class, () -> {
                     Signal.sigtimedwait(set, info, timeout);
@@ -1003,21 +1003,21 @@ public class SignalTest {
 
                 final int SIG = Signal.SIGALRM;
 
-                final Signal.Sigset_t set = Signal.Sigset_t.allocateNative(scope);
+                final Signal.Sigset_t set = Signal.Sigset_t.allocateNative(ms);
                 Signal.sigemptyset(set);
                 Signal.sigaddset(set, SIG);
 
-                final Signal.Sigset_t oset = Signal.Sigset_t.allocateNative(scope);
+                final Signal.Sigset_t oset = Signal.Sigset_t.allocateNative(ms);
 
-                final Signal.Siginfo_t info = Signal.Siginfo_t.allocateNative(scope);
+                final Signal.Siginfo_t info = Signal.Siginfo_t.allocateNative(ms);
 
-                final Time.Timespec timeout = Time.Timespec.allocateNative(scope);
+                final Time.Timespec timeout = Time.Timespec.allocateNative(ms);
                 timeout.tv_nsec(0);
                 timeout.tv_sec(10);
 
                 Signal.sigprocmask(Signal.SIG_BLOCK, set, oset);
                 try {
-                    Signal.pthread_kill(Pthread.pthread_self(scope), SIG); //We need to fire in this thread ...
+                    Signal.pthread_kill(Pthread.pthread_self(ms), SIG); //We need to fire in this thread ...
                     try {
                         int signal = Signal.sigtimedwait(set, info, timeout);
 
@@ -1072,21 +1072,21 @@ public class SignalTest {
         final int SIG = Signal.SIGALRM;
 
         Signal.signal(SIG, Signal.SIG_DFL);
-        final Signal.Sigset_t set = Signal.Sigset_t.allocateNative(scope);
+        final Signal.Sigset_t set = Signal.Sigset_t.allocateNative(ms);
         Signal.sigemptyset(set);
         Signal.sigaddset(set, SIG);
-        final Signal.Sigset_t oset = Signal.Sigset_t.allocateNative(scope);
+        final Signal.Sigset_t oset = Signal.Sigset_t.allocateNative(ms);
 
         Signal.sigprocmask(Signal.SIG_BLOCK, set, oset);
         try {
             Signal.raise(SIG);
-            final Signal.Sigset_t testSet = Signal.Sigset_t.allocateNative(scope);
+            final Signal.Sigset_t testSet = Signal.Sigset_t.allocateNative(ms);
             Signal.sigemptyset(testSet);
 
             Signal.sigpending(testSet);
             Assertions.assertTrue(Signal.sigismember(testSet, SIG), "Signal must be pending");
 
-            final Int32_t signal = Int32_t.allocateNative(scope);
+            final Int32_t signal = Int32_t.allocateNative(ms);
             Signal.sigwait(set, signal);
             assertEquals(SIG, signal.int32_t());
 
@@ -1112,10 +1112,10 @@ public class SignalTest {
         switch (MultiarchTupelBuilder.getOS()) {
             case DARWIN:
             case OPEN_BSD: {
-                final Signal.Sigset_t set = Signal.Sigset_t.allocateNative(scope);
+                final Signal.Sigset_t set = Signal.Sigset_t.allocateNative(ms);
                 Signal.sigemptyset(set);
                 Signal.sigaddset(set, Signal.SIGALRM);
-                final Signal.Siginfo_t info = Signal.Siginfo_t.allocateNative(scope);
+                final Signal.Siginfo_t info = Signal.Siginfo_t.allocateNative(ms);
                 Assertions.assertThrows(NoSuchNativeMethodException.class, () -> {
                     Signal.sigwaitinfo(set, info);
                 });
@@ -1126,14 +1126,14 @@ public class SignalTest {
                 final int SIG = Signal.SIGALRM;
 
                 Signal.signal(SIG, Signal.SIG_DFL);
-                final Signal.Sigset_t set = Signal.Sigset_t.allocateNative(scope);
+                final Signal.Sigset_t set = Signal.Sigset_t.allocateNative(ms);
                 Signal.sigemptyset(set);
                 Signal.sigaddset(set, SIG);
-                final Signal.Sigset_t oset = Signal.Sigset_t.allocateNative(scope);
+                final Signal.Sigset_t oset = Signal.Sigset_t.allocateNative(ms);
 
                 Signal.sigprocmask(Signal.SIG_BLOCK, set, oset);
                 try {
-                    final Signal.Sigset_t testSet = Signal.Sigset_t.allocateNative(scope);
+                    final Signal.Sigset_t testSet = Signal.Sigset_t.allocateNative(ms);
                     Signal.sigemptyset(testSet);
                     /*
              If the test fails after raising the signal
@@ -1145,7 +1145,7 @@ public class SignalTest {
 
                     Assertions.assertTrue(Signal.sigismember(testSet, SIG), "Signal must be pending");
 
-                    final Signal.Siginfo_t info = Signal.Siginfo_t.allocateNative(scope);
+                    final Signal.Siginfo_t info = Signal.Siginfo_t.allocateNative(ms);
                     try {
                         final int signal = Signal.sigwaitinfo(set, info);
 
@@ -1196,20 +1196,20 @@ public class SignalTest {
 
     @Test
     public void testUnionSigval() throws Exception {
-        MemoryHeap mem = MemoryHeap.wrap(MemorySegment.allocateNative(2, scope));
-        Signal.Sigval<MemoryHeap> sigval = Signal.Sigval.allocateNative(scope);
+        MemoryHeap mem = MemoryHeap.wrap(MemorySegment.allocateNative(2, ms));
+        Signal.Sigval<MemoryHeap> sigval = Signal.Sigval.allocateNative(ms);
         sigval.sival_int(0x0223344);
         assertEquals(0x0223344, sigval.sival_int());
         sigval.sival_ptr(mem);
         assertEquals(mem, sigval.sival_ptr((baseAddress, scope, parent) -> {
             return new MemoryHeap(baseAddress, scope, mem.sizeof());
-        }, scope));
+        }, ms));
         Assertions.assertNotEquals(22, sigval.sival_int()); //Its is a union, so it must now be different
     }
 
     @Test
     public void testStructSiginfo_t() throws Exception {
-        Signal.Siginfo_t<OpaqueMemory> siginfo_t = Signal.Siginfo_t.allocateNative(scope);
+        Signal.Siginfo_t<OpaqueMemory> siginfo_t = Signal.Siginfo_t.allocateNative(ms);
         Assertions.assertNotNull(siginfo_t.si_addr());
         if (MultiarchTupelBuilder.getOS() == OS.OPEN_BSD) {
             Assertions.assertThrows(NoSuchNativeTypeMemberException.class, () -> siginfo_t.si_band());
@@ -1228,9 +1228,9 @@ public class SignalTest {
     @Test
     public void testStructSigevent_t() throws Exception {
         if (MultiarchTupelBuilder.getOS() == OS.OPEN_BSD) {
-            Assertions.assertThrows(NoSuchNativeTypeException.class, () -> Signal.Sigevent.tryAllocateNative(scope));
+            Assertions.assertThrows(NoSuchNativeTypeException.class, () -> Signal.Sigevent.tryAllocateNative(ms));
         } else {
-            Signal.Sigevent<OpaqueMemory> sigevent = Signal.Sigevent.tryAllocateNative(scope);
+            Signal.Sigevent<OpaqueMemory> sigevent = Signal.Sigevent.tryAllocateNative(ms);
             Assertions.assertNotNull(sigevent.sigev_notify());
             Assertions.assertNotNull(sigevent.sigev_signo());
             sigevent.sigev_value.sival_int(66);
@@ -1249,13 +1249,13 @@ public class SignalTest {
             sigevent.sigev_notify_function(sigev_notify_function_dummy);
             Assertions.assertSame(sigev_notify_function_dummy, sigevent.sigev_notify_functionAsCallback__V_Adr());
 
-            Pthread.Pthread_attr_t pthread_attr_t = Pthread.Pthread_attr_t.allocateNative(scope);
+            Pthread.Pthread_attr_t pthread_attr_t = Pthread.Pthread_attr_t.allocateNative(ms);
             Pthread.pthread_attr_init(pthread_attr_t);
             sigevent.sigev_notify_attributes(pthread_attr_t);
             final Pthread.Pthread_attr_t pthread_attr_t1
                     = sigevent.sigev_notify_attributes((baseAddress, scope, parent) -> {
                         return new Pthread.Pthread_attr_t(baseAddress, scope);
-                    }, scope);
+                    }, ms);
             Assertions.assertSame(pthread_attr_t, pthread_attr_t1);
             Pthread.pthread_attr_destroy(pthread_attr_t);
         }
@@ -1263,7 +1263,7 @@ public class SignalTest {
 
     @Test
     public void testStructStack_t() throws Exception {
-        Signal.Stack_t<OpaqueMemory> stack_t = Signal.Stack_t.allocateNative(scope);
+        Signal.Stack_t<OpaqueMemory> stack_t = Signal.Stack_t.allocateNative(ms);
         Assertions.assertEquals(0, stack_t.ss_flags());
         Assertions.assertEquals(0, stack_t.ss_size());
         Assertions.assertNull(stack_t.ss_sp((baseAddress, scope, parent) -> {
@@ -1272,7 +1272,7 @@ public class SignalTest {
             } else {
                 return null;
             }
-        }, scope));
+        }, ms));
     }
 
     @Test
@@ -1281,10 +1281,10 @@ public class SignalTest {
             case DARWIN:
             case OPEN_BSD:
                 Assertions.assertThrows(NoSuchNativeTypeException.class,
-                        () -> Signal.Ucontext_t.tryAllocateNative(scope));
+                        () -> Signal.Ucontext_t.tryAllocateNative(ms));
                 break;
             default:
-                Signal.Ucontext_t ucontext_t = Signal.Ucontext_t.tryAllocateNative(scope);
+                Signal.Ucontext_t ucontext_t = Signal.Ucontext_t.tryAllocateNative(ms);
                 Assertions.assertNull(ucontext_t.uc_link((baseAddress, scope, parent) -> {
                     try {
                         return MemoryAddress.NULL.equals(baseAddress) ? null : Signal.Ucontext_t.tryOfAddress(baseAddress, scope);
@@ -1292,7 +1292,7 @@ public class SignalTest {
                         Assertions.fail(nste);
                         throw new RuntimeException(nste);
                     }
-                }, scope)); //Maybe fail sometimes....
+                }, ms)); //Maybe fail sometimes....
                 Assertions.assertNotNull(ucontext_t.uc_mcontext);
                 Assertions.assertNotNull(ucontext_t.uc_sigmask);
                 Assertions.assertNotNull(ucontext_t.uc_stack);
@@ -1303,16 +1303,16 @@ public class SignalTest {
     public void testStructMcontext_t() throws Exception {
         if (MultiarchTupelBuilder.getOS() == OS.OPEN_BSD) {
             Assertions.assertThrows(NoSuchNativeTypeException.class,
-                    () -> Signal.Mcontext_t.tryAllocateNative(scope));
+                    () -> Signal.Mcontext_t.tryAllocateNative(ms));
         } else {
-            Signal.Mcontext_t mcontext_t = Signal.Mcontext_t.tryAllocateNative(scope);
+            Signal.Mcontext_t mcontext_t = Signal.Mcontext_t.tryAllocateNative(ms);
             Assertions.assertNotNull(mcontext_t); //Opaque to us
         }
     }
 
     @Test
     public void testStructSigaction() throws Exception {
-        Signal.Sigaction<OpaqueMemory> sigaction = Signal.Sigaction.allocateNative(scope);
+        Signal.Sigaction<OpaqueMemory> sigaction = Signal.Sigaction.allocateNative(ms);
 
         sigaction.sa_flags(22);
         assertEquals(22, sigaction.sa_flags());

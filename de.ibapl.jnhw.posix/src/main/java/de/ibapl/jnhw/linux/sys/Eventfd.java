@@ -27,17 +27,17 @@ import de.ibapl.jnhw.common.annotation.Include;
 import de.ibapl.jnhw.common.annotation.Unsigned;
 import de.ibapl.jnhw.common.datatypes.BaseDataType;
 import de.ibapl.jnhw.common.datatypes.MultiarchTupelBuilder;
+import de.ibapl.jnhw.common.downcall.wrapper.JnhwMh_sI__sI__A;
+import de.ibapl.jnhw.common.downcall.wrapper.JnhwMh_sI__sI_uL;
+import de.ibapl.jnhw.common.downcall.wrapper.JnhwMh_sI__uI_sI;
 import de.ibapl.jnhw.common.exception.NativeErrorException;
 import de.ibapl.jnhw.common.memory.OpaqueMemory;
 import de.ibapl.jnhw.common.memory.Uint64_t;
 import static de.ibapl.jnhw.common.memory.Uint64_t.DATA_TYPE;
 import de.ibapl.jnhw.isoc.Errno;
 import de.ibapl.jnhw.util.linux.LinuxDataType;
-import jdk.incubator.foreign.MemorySegment;
-import jdk.incubator.foreign.ResourceScope;
-import de.ibapl.jnhw.common.downcall.wrapper.JnhwMh_sI__uI_sI;
-import de.ibapl.jnhw.common.downcall.wrapper.JnhwMh_sI__sI_uL;
-import de.ibapl.jnhw.common.downcall.wrapper.JnhwMh_sI__sI__A;
+import java.lang.foreign.MemorySegment;
+import java.lang.foreign.MemorySession;
 
 /**
  * Wrapper around the linux {@code <sys/eventfd.h>} header. execute
@@ -51,7 +51,7 @@ public final class Eventfd {
     @eventfd_t
     public final static class PtrEventfd_t extends Uint64_t {
 
-        public static PtrEventfd_t allocateNative(ResourceScope ms) {
+        public static PtrEventfd_t allocateNative(MemorySession ms) {
             return new PtrEventfd_t(MemorySegment.allocateNative(DATA_TYPE.SIZE_OF, ms), 0);
         }
 

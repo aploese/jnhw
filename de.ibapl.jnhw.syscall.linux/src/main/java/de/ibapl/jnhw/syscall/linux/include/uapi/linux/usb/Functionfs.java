@@ -28,7 +28,7 @@ import static de.ibapl.jnhw.syscall.linux.uapi.asm_generic.Types.__u8;
 import static de.ibapl.jnhw.syscall.linux.uapi.asm_generic.Types.__le16;
 import static de.ibapl.jnhw.syscall.linux.uapi.asm_generic.Types.__le32;
 import de.ibapl.jnhw.unix.sys.Ioctl;
-import jdk.incubator.foreign.MemorySegment;
+import java.lang.foreign.MemorySegment;
 
 /**
  *

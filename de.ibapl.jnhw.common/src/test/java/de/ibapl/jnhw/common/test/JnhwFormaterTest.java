@@ -23,6 +23,7 @@ package de.ibapl.jnhw.common.test;
 
 import de.ibapl.jnhw.common.datatypes.MultiarchTupelBuilder;
 import de.ibapl.jnhw.common.util.JnhwFormater;
+import java.lang.foreign.MemoryAddress;
 import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.Test;
 
@@ -39,12 +40,12 @@ public class JnhwFormaterTest {
     public void testFormatAddress() {
         switch (MultiarchTupelBuilder.getMemoryModel().sizeOf_pointer) {
             case _64_BIT:
-                assertEquals("0xfedcba9876543210", JnhwFormater.formatAddress(0xfedcba9876543210L));
+                assertEquals("0xfedcba9876543210", JnhwFormater.formatAddress(MemoryAddress.ofLong(0xfedcba9876543210L)));
                 break;
             case _32_BIT:
-                assertEquals("0xfedcba98", JnhwFormater.formatAddress(0x00000000fedcba98L));
-                assertEquals("0x(!>>>)fedcba98(<<<!)76543210", JnhwFormater.formatAddress(0xfedcba9876543210L));
-                assertEquals("0x(!>>>)00000098(<<<!)76543210", JnhwFormater.formatAddress(0x0000009876543210L));
+                assertEquals("0xfedcba98", JnhwFormater.formatAddress(MemoryAddress.ofLong(0x00000000fedcba98L)));
+                assertEquals("0x(!>>>)fedcba98(<<<!)76543210", JnhwFormater.formatAddress(MemoryAddress.ofLong(0xfedcba9876543210L)));
+                assertEquals("0x(!>>>)00000098(<<<!)76543210", JnhwFormater.formatAddress(MemoryAddress.ofLong(0x0000009876543210L)));
                 break;
             default:
                 throw new RuntimeException();

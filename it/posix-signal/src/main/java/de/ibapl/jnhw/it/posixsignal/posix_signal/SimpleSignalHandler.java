@@ -25,7 +25,7 @@ import de.ibapl.jnhw.common.downcall.JnhwMi__V___I;
 import de.ibapl.jnhw.common.nativepointer.FunctionPtr__V___I;
 import de.ibapl.jnhw.common.upcall.Callback__V___I;
 import de.ibapl.jnhw.posix.Signal;
-import jdk.incubator.foreign.ResourceScope;
+import java.lang.foreign.MemorySession;
 
 /**
  *
@@ -49,10 +49,10 @@ public class SimpleSignalHandler extends SignalHandler {
                     System.exit(value);
                     break;
                 case PRINT_MSG_AND_CALL_OLD_HANDLER:
-                    try (ResourceScope rs = ResourceScope.newConfinedScope()) {
-                    new JnhwMi__V___I(originalHandler.toAddressable(), rs).invoke__V__sI(value);
-                    }
-                    break;
+                    try ( MemorySession ms = MemorySession.openConfined()) {
+                    new JnhwMi__V___I(originalHandler.toAddressable(), ms).invoke__V__sI(value);
+                }
+                break;
                 default:
                     thrownInHandler = new RuntimeException("Can't handle signalAction: " + signalAction);
             }

@@ -25,21 +25,21 @@ import de.ibapl.jnhw.common.datatypes.MultiarchTupelBuilder;
 import de.ibapl.jnhw.common.datatypes.SizeInBit;
 import de.ibapl.jnhw.common.memory.Int32_t;
 import de.ibapl.jnhw.common.memory.Int64_t;
-import de.ibapl.jnhw.common.memory.MemoryHeap;
 import de.ibapl.jnhw.common.memory.MemoryAccessor;
+import de.ibapl.jnhw.common.memory.MemoryHeap;
 import de.ibapl.jnhw.common.memory.OpaqueMemory;
 import de.ibapl.jnhw.common.memory.Uint32_t;
 import de.ibapl.jnhw.common.memory.Uint64_t;
+import java.lang.foreign.MemoryAddress;
+import java.lang.foreign.MemorySegment;
+import java.lang.foreign.MemorySession;
 import java.nio.ByteOrder;
-import jdk.incubator.foreign.MemoryAddress;
-import jdk.incubator.foreign.MemorySegment;
-import jdk.incubator.foreign.ResourceScope;
 import org.junit.jupiter.api.AfterAll;
+import static org.junit.jupiter.api.Assertions.*;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
-import static org.junit.jupiter.api.Assertions.*;
-import org.junit.jupiter.api.BeforeEach;
 
 /**
  *
@@ -53,11 +53,11 @@ public class MemoryAccessorTest {
     private final static boolean IS_BIG_ENDIAN = MultiarchTupelBuilder.getEndianess().isBigEndian();
     private final static boolean IS_LITTLE_ENDIAN = MultiarchTupelBuilder.getEndianess().isLittleEndian();
 
-    private final static ResourceScope rs = ResourceScope.newConfinedScope();
+    private final static MemorySession ms = MemorySession.openConfined();
 
     private final static int HEAP_SIZE = 8 * 12;
 
-    private final static MemoryHeap heap = MemoryHeap.wrap(MemorySegment.allocateNative(HEAP_SIZE, rs));
+    private final static MemoryHeap heap = MemoryHeap.wrap(MemorySegment.allocateNative(HEAP_SIZE, ms));
     private final static Int64_t prev = Int64_t.map(heap, 0);
 
     //Her is the place to write/read
@@ -85,7 +85,7 @@ public class MemoryAccessorTest {
 
     @AfterAll
     public static void afterAll() {
-        rs.close();
+        ms.close();
     }
 
     //byte order native

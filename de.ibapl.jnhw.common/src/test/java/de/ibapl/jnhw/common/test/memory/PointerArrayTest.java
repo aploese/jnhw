@@ -24,15 +24,15 @@ package de.ibapl.jnhw.common.test.memory;
 import de.ibapl.jnhw.common.datatypes.BaseDataType;
 import de.ibapl.jnhw.common.datatypes.MultiarchTupelBuilder;
 import de.ibapl.jnhw.common.memory.MemoryHeap;
-import de.ibapl.jnhw.common.memory.PointerArray;
 import de.ibapl.jnhw.common.memory.OpaqueMemory;
+import de.ibapl.jnhw.common.memory.PointerArray;
+import de.ibapl.jnhw.common.memory.layout.Alignment;
 import de.ibapl.jnhw.common.test.LibJnhwCommonTestLoader;
+import java.lang.foreign.MemorySegment;
+import java.lang.foreign.MemorySession;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
-import de.ibapl.jnhw.common.memory.layout.Alignment;
-import jdk.incubator.foreign.MemorySegment;
-import jdk.incubator.foreign.ResourceScope;
 
 /**
  *
@@ -85,21 +85,21 @@ public class PointerArrayTest {
     @Test
     @SuppressWarnings("unchecked")
     public void testSetAndGet() {
-        try ( ResourceScope rs = ResourceScope.newConfinedScope()) {
+        try ( MemorySession ms = MemorySession.openConfined()) {
             System.out.println("set");
             PointerArray.ElementProducer<OpaqueMemory> producerFail = (baseAddress, index, cachedElement) -> {
                 Assertions.fail("Not expecting to be called for index: " + index);
                 return null;
             };
-            PointerArray<OpaqueMemory> instance = new PointerArray<>(MemorySegment.allocateNative(16 * BaseDataType.uintptr_t.SIZE_OF, rs), 0, 16);
-            OpaqueMemory element1 = MemoryHeap.wrap(MemorySegment.allocateNative(8, rs));
+            PointerArray<OpaqueMemory> instance = new PointerArray<>(MemorySegment.allocateNative(16 * BaseDataType.uintptr_t.SIZE_OF, ms), 0, 16);
+            OpaqueMemory element1 = MemoryHeap.wrap(MemorySegment.allocateNative(8, ms));
             OpaqueMemory.setByte(element1, 0, (byte) 1);
             instance.set(1, element1);
             for (int i = 0; i < instance.length(); i++) {
                 instance.get(i, producerFail);
             }
 
-            OpaqueMemory element2 = MemoryHeap.wrap(MemorySegment.allocateNative(8, rs));
+            OpaqueMemory element2 = MemoryHeap.wrap(MemorySegment.allocateNative(8, ms));
             OpaqueMemory.setByte(element2, 0, (byte) 2);
             instance.set(2, element2);
             for (int i = 0; i < instance.length(); i++) {
@@ -119,10 +119,10 @@ public class PointerArrayTest {
     @Test
     @SuppressWarnings("unchecked")
     public void testNativeToString() {
-        try ( ResourceScope rs = ResourceScope.newConfinedScope()) {
+        try ( MemorySession ms = MemorySession.openConfined()) {
             System.out.println("toString");
-            PointerArray<OpaqueMemory> instance = new PointerArray<>(MemorySegment.allocateNative(6 * BaseDataType.uintptr_t.SIZE_OF, rs), 0, 6);
-            OpaqueMemory element1 = MemoryHeap.wrap(MemorySegment.allocateNative(1, rs));
+            PointerArray<OpaqueMemory> instance = new PointerArray<>(MemorySegment.allocateNative(6 * BaseDataType.uintptr_t.SIZE_OF, ms), 0, 6);
+            OpaqueMemory element1 = MemoryHeap.wrap(MemorySegment.allocateNative(1, ms));
             instance.set(1, element1);
             String result = instance.nativeToString();
             Assertions.assertEquals("[null, " + element1.nativeToString() + ", null, null, null, null]", result);
@@ -132,8 +132,8 @@ public class PointerArrayTest {
     @Test
     @SuppressWarnings("unchecked")
     public void testArrayBounds() {
-        try ( ResourceScope rs = ResourceScope.newConfinedScope()) {
-            PointerArray<OpaqueMemory> instance = new PointerArray<>(MemorySegment.allocateNative(2 * BaseDataType.uintptr_t.SIZE_OF, rs), 0, 2);
+        try ( MemorySession ms = MemorySession.openConfined()) {
+            PointerArray<OpaqueMemory> instance = new PointerArray<>(MemorySegment.allocateNative(2 * BaseDataType.uintptr_t.SIZE_OF, ms), 0, 2);
 
             Assertions.assertThrows(ArrayIndexOutOfBoundsException.class, () -> {
                 instance.set(-1, null);

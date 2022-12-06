@@ -60,6 +60,7 @@ import de.ibapl.jnhw.common.memory.layout.StructLayout;
 import de.ibapl.jnhw.common.memory.layout.StructLayoutFactory;
 import de.ibapl.jnhw.common.memory.layout.StructLayoutFactoryImpl;
 import de.ibapl.jnhw.common.util.JsonStringBuilder;
+import de.ibapl.jnhw.syscall.linux.AbstractLinuxSyscallStruct;
 import de.ibapl.jnhw.syscall.linux.annotation.SysFs;
 import de.ibapl.jnhw.syscall.linux.include.linux.Hid;
 import de.ibapl.jnhw.syscall.linux.include.linux.usb.Uas;
@@ -68,7 +69,7 @@ import de.ibapl.jnhw.syscall.linux.uapi.asm_generic.Types.__le32;
 import de.ibapl.jnhw.syscall.linux.uapi.asm_generic.Types.__u16;
 import de.ibapl.jnhw.syscall.linux.uapi.asm_generic.Types.__u8;
 import java.io.IOException;
-import jdk.incubator.foreign.MemorySegment;
+import java.lang.foreign.MemorySegment;
 
 /**
  *
@@ -273,7 +274,7 @@ public interface Ch9 {
      * most devices, interfaces don't coordinate with each other, so such
      * requests may be made at any time.
      */
-    public abstract static class Usb_ctrlrequest extends Struct {
+    public abstract static class Usb_ctrlrequest extends AbstractLinuxSyscallStruct {
 
         public static final class Layout extends StructLayout {
 
@@ -310,27 +311,27 @@ public interface Ch9 {
 
         @__u8
         public byte bRequestType() {
-            return MEM_ACCESS.uint8_t(memorySegment, LAYOUT.bRequestType);
+            return MEM_ACCESS_BYTE_ALIGNED.uint8_t(memorySegment, LAYOUT.bRequestType);
         }
 
         @__u8
         public byte bRequest() {
-            return MEM_ACCESS.uint8_t(memorySegment, LAYOUT.bRequest);
+            return MEM_ACCESS_BYTE_ALIGNED.uint8_t(memorySegment, LAYOUT.bRequest);
         }
 
         @__le16
         public short wValue() {
-            return MEM_ACCESS.uint16_t(memorySegment, LAYOUT.wValue);
+            return MEM_ACCESS_LE_BYTE_ALIGNED.uint16_t(memorySegment, LAYOUT.wValue);
         }
 
         @__le16
         public int wIndex() {
-            return MEM_ACCESS.uint16_t_AsInt(memorySegment, LAYOUT.wIndex);
+            return MEM_ACCESS_LE_BYTE_ALIGNED.uint16_t_AsInt(memorySegment, LAYOUT.wIndex);
         }
 
         @__le16
         public int wLength() {
-            return MEM_ACCESS.uint16_t_AsInt(memorySegment, LAYOUT.wLength);
+            return MEM_ACCESS_LE_BYTE_ALIGNED.uint16_t_AsInt(memorySegment, LAYOUT.wLength);
         }
     }
 
@@ -491,62 +492,62 @@ public interface Ch9 {
 
         @__le16
         public short bcdUSB() {
-            return MEM_ACCESS_LE.uint16_t(memorySegment, Layout.bcdUSB);
+            return MEM_ACCESS_LE_BYTE_ALIGNED.uint16_t(memorySegment, Layout.bcdUSB);
         }
 
         @__u8
         public byte bDeviceClass() {
-            return MEM_ACCESS.uint8_t(memorySegment, Layout.bDeviceClass);
+            return MEM_ACCESS_LE_BYTE_ALIGNED.uint8_t(memorySegment, Layout.bDeviceClass);
         }
 
         @__u8
         public byte bDeviceSubClass() {
-            return MEM_ACCESS.uint8_t(memorySegment, Layout.bDeviceSubClass);
+            return MEM_ACCESS_LE_BYTE_ALIGNED.uint8_t(memorySegment, Layout.bDeviceSubClass);
         }
 
         @__u8
         public byte bDeviceProtocol() {
-            return MEM_ACCESS.uint8_t(memorySegment, Layout.bDeviceProtocol);
+            return MEM_ACCESS_LE_BYTE_ALIGNED.uint8_t(memorySegment, Layout.bDeviceProtocol);
         }
 
         @__u8
         public byte bMaxPacketSize0() {
-            return MEM_ACCESS.uint8_t(memorySegment, Layout.bMaxPacketSize0);
+            return MEM_ACCESS_LE_BYTE_ALIGNED.uint8_t(memorySegment, Layout.bMaxPacketSize0);
         }
 
         @__le16
         public short idVendor() {
-            return MEM_ACCESS_LE.uint16_t(memorySegment, Layout.idVendor);
+            return MEM_ACCESS_LE_BYTE_ALIGNED.uint16_t(memorySegment, Layout.idVendor);
         }
 
         @__le16
         public short idProduct() {
-            return MEM_ACCESS_LE.uint16_t(memorySegment, Layout.idProduct);
+            return MEM_ACCESS_LE_BYTE_ALIGNED.uint16_t(memorySegment, Layout.idProduct);
         }
 
         @__le16
         public short bcdDevice() {
-            return MEM_ACCESS_LE.uint16_t(memorySegment, Layout.bcdDevice);
+            return MEM_ACCESS_LE_BYTE_ALIGNED.uint16_t(memorySegment, Layout.bcdDevice);
         }
 
         @__u8
         public byte iManufacturer() {
-            return MEM_ACCESS.uint8_t(memorySegment, Layout.iManufacturer);
+            return MEM_ACCESS_LE_BYTE_ALIGNED.uint8_t(memorySegment, Layout.iManufacturer);
         }
 
         @__u8
         public byte iProduct() {
-            return MEM_ACCESS.uint8_t(memorySegment, Layout.iProduct);
+            return MEM_ACCESS_LE_BYTE_ALIGNED.uint8_t(memorySegment, Layout.iProduct);
         }
 
         @__u8
         public byte iSerialNumber() {
-            return MEM_ACCESS.uint8_t(memorySegment, Layout.iSerialNumber);
+            return MEM_ACCESS_LE_BYTE_ALIGNED.uint8_t(memorySegment, Layout.iSerialNumber);
         }
 
         @__u8
         public short bNumConfigurations() {
-            return MEM_ACCESS.uint8_t(memorySegment, Layout.bNumConfigurations);
+            return MEM_ACCESS_LE_BYTE_ALIGNED.uint8_t(memorySegment, Layout.bNumConfigurations);
         }
 
         @Override
@@ -629,32 +630,32 @@ public interface Ch9 {
 
         @__le16
         public int wTotalLength() {
-            return MEM_ACCESS_LE.uint16_t_AsInt(memorySegment, Layout.wTotalLength);
+            return MEM_ACCESS_LE_BYTE_ALIGNED.uint16_t_AsInt(memorySegment, Layout.wTotalLength);
         }
 
         @__u8
         public short bNumInterfaces() {
-            return MEM_ACCESS.uint8_t_AsShort(memorySegment, Layout.bNumInterfaces);
+            return MEM_ACCESS_LE_BYTE_ALIGNED.uint8_t_AsShort(memorySegment, Layout.bNumInterfaces);
         }
 
         @__u8
         public byte bConfigurationValue() {
-            return MEM_ACCESS.uint8_t(memorySegment, Layout.bConfigurationValue);
+            return MEM_ACCESS_LE_BYTE_ALIGNED.uint8_t(memorySegment, Layout.bConfigurationValue);
         }
 
         @__u8
         public byte iConfiguration() {
-            return MEM_ACCESS.uint8_t(memorySegment, Layout.iConfiguration);
+            return MEM_ACCESS_LE_BYTE_ALIGNED.uint8_t(memorySegment, Layout.iConfiguration);
         }
 
         @__u8
         public byte bmAttributes() {
-            return MEM_ACCESS.uint8_t(memorySegment, Layout.bmAttributes);
+            return MEM_ACCESS_LE_BYTE_ALIGNED.uint8_t(memorySegment, Layout.bmAttributes);
         }
 
         @__u8
         public short bMaxPower() {
-            return MEM_ACCESS.uint8_t(memorySegment, Layout.bMaxPower);
+            return MEM_ACCESS_LE_BYTE_ALIGNED.uint8_t(memorySegment, Layout.bMaxPower);
         }
 
         @Override
@@ -705,7 +706,7 @@ public interface Ch9 {
         public String wData() {
 
             throw new RuntimeException("IMPLEMENT ME!");
-//            return MEM_ACCESS.UTF_16__String(this, LAYOUT.wData);
+//            return MEM_ACCESS_BYTE_ALIGNED.UTF_16__String(this, LAYOUT.wData);
         }
     }
 
@@ -740,37 +741,37 @@ public interface Ch9 {
 
         @__u8
         public short bInterfaceNumber() {
-            return MEM_ACCESS.uint8_t_AsShort(memorySegment, Layout.bInterfaceNumber);
+            return MEM_ACCESS_LE_BYTE_ALIGNED.uint8_t_AsShort(memorySegment, Layout.bInterfaceNumber);
         }
 
         @__u8
         public byte bAlternateSetting() {
-            return MEM_ACCESS.uint8_t(memorySegment, Layout.bAlternateSetting);
+            return MEM_ACCESS_LE_BYTE_ALIGNED.uint8_t(memorySegment, Layout.bAlternateSetting);
         }
 
         @__u8
         public short bNumEndpoints() {
-            return MEM_ACCESS.uint8_t_AsShort(memorySegment, Layout.bNumEndpoints);
+            return MEM_ACCESS_LE_BYTE_ALIGNED.uint8_t_AsShort(memorySegment, Layout.bNumEndpoints);
         }
 
         @__u8
         public short bInterfaceClass() {
-            return MEM_ACCESS.uint8_t_AsShort(memorySegment, Layout.bInterfaceClass);
+            return MEM_ACCESS_LE_BYTE_ALIGNED.uint8_t_AsShort(memorySegment, Layout.bInterfaceClass);
         }
 
         @__u8
         public short bInterfaceSubClass() {
-            return MEM_ACCESS.uint8_t_AsShort(memorySegment, Layout.bInterfaceClass);
+            return MEM_ACCESS_LE_BYTE_ALIGNED.uint8_t_AsShort(memorySegment, Layout.bInterfaceClass);
         }
 
         @__u8
         public short bInterfaceProtocol() {
-            return MEM_ACCESS.uint8_t_AsShort(memorySegment, Layout.bInterfaceProtocol);
+            return MEM_ACCESS_LE_BYTE_ALIGNED.uint8_t_AsShort(memorySegment, Layout.bInterfaceProtocol);
         }
 
         @__u8
         public byte iInterface() {
-            return MEM_ACCESS.uint8_t(memorySegment, Layout.iInterface);
+            return MEM_ACCESS_LE_BYTE_ALIGNED.uint8_t(memorySegment, Layout.iInterface);
         }
 
         @Override
@@ -819,22 +820,22 @@ public interface Ch9 {
 
         @__u8
         public short bEndpointAddress() {
-            return MEM_ACCESS.uint8_t_AsShort(memorySegment, Layout.bEndpointAddress);
+            return MEM_ACCESS_LE_BYTE_ALIGNED.uint8_t_AsShort(memorySegment, Layout.bEndpointAddress);
         }
 
         @__u8
         public byte bmAttributes() {
-            return MEM_ACCESS.uint8_t(memorySegment, Layout.bmAttributes);
+            return MEM_ACCESS_LE_BYTE_ALIGNED.uint8_t(memorySegment, Layout.bmAttributes);
         }
 
         @__le16
         public int wMaxPacketSize() {
-            return MEM_ACCESS_LE.uint16_t_AsInt(memorySegment, Layout.wMaxPacketSize);
+            return MEM_ACCESS_LE_BYTE_ALIGNED.uint16_t_AsInt(memorySegment, Layout.wMaxPacketSize);
         }
 
         @__u8
         public short bInterval() {
-            return MEM_ACCESS.uint8_t_AsShort(memorySegment, Layout.bInterval);
+            return MEM_ACCESS_LE_BYTE_ALIGNED.uint8_t_AsShort(memorySegment, Layout.bInterval);
         }
 
         /* NOTE:  these two are _only_ in audio endpoints. */
@@ -848,7 +849,7 @@ public interface Ch9 {
         @__u8
         public byte bRefresh() {
             if (sizeof() == USB_DT_ENDPOINT_AUDIO_SIZE) {
-                return MEM_ACCESS.uint8_t(memorySegment, Layout.bRefresh);
+                return MEM_ACCESS_LE_BYTE_ALIGNED.uint8_t(memorySegment, Layout.bRefresh);
             } else {
                 throw new IllegalStateException("Not an audio endpoint");
             }
@@ -863,7 +864,7 @@ public interface Ch9 {
         @__u8
         public byte bSynchAddress() {
             if (sizeof() == USB_DT_ENDPOINT_AUDIO_SIZE) {
-                return MEM_ACCESS.uint8_t(memorySegment, Layout.bSynchAddress);
+                return MEM_ACCESS_LE_BYTE_ALIGNED.uint8_t(memorySegment, Layout.bSynchAddress);
             } else {
                 throw new IllegalStateException("Not an audio endpoint");
             }
@@ -1179,17 +1180,17 @@ public interface Ch9 {
 
         @__u8
         public short bMaxBurst() {
-            return MEM_ACCESS.uint8_t_AsShort(memorySegment, Layout.bMaxBurst);
+            return MEM_ACCESS_LE_BYTE_ALIGNED.uint8_t_AsShort(memorySegment, Layout.bMaxBurst);
         }
 
         @__u8
         public byte bmAttributes() {
-            return MEM_ACCESS.uint8_t(memorySegment, Layout.bmAttributes);
+            return MEM_ACCESS_LE_BYTE_ALIGNED.uint8_t(memorySegment, Layout.bmAttributes);
         }
 
         @__le16
         public int wBytesPerInterval() {
-            return MEM_ACCESS_LE.uint16_t_AsInt(memorySegment, Layout.wBytesPerInterval);
+            return MEM_ACCESS_LE_BYTE_ALIGNED.uint16_t_AsInt(memorySegment, Layout.wBytesPerInterval);
         }
 
         @Override
@@ -1267,37 +1268,37 @@ public interface Ch9 {
 
         @__le16
         public short bcdUSB() {
-            return MEM_ACCESS_LE.uint16_t(memorySegment, LAYOUT.bcdUSB);
+            return MEM_ACCESS_LE_BYTE_ALIGNED.uint16_t(memorySegment, LAYOUT.bcdUSB);
         }
 
         @__u8
         public byte bDeviceClass() {
-            return MEM_ACCESS.uint8_t(memorySegment, LAYOUT.bDeviceClass);
+            return MEM_ACCESS_BYTE_ALIGNED.uint8_t(memorySegment, LAYOUT.bDeviceClass);
         }
 
         @__u8
         public byte bDeviceSubClass() {
-            return MEM_ACCESS.uint8_t(memorySegment, LAYOUT.bDeviceSubClass);
+            return MEM_ACCESS_BYTE_ALIGNED.uint8_t(memorySegment, LAYOUT.bDeviceSubClass);
         }
 
         @__u8
         public byte bDeviceProtocol() {
-            return MEM_ACCESS.uint8_t(memorySegment, LAYOUT.bDeviceProtocol);
+            return MEM_ACCESS_BYTE_ALIGNED.uint8_t(memorySegment, LAYOUT.bDeviceProtocol);
         }
 
         @__u8
         public short bMaxPacketSize0() {
-            return MEM_ACCESS.uint8_t_AsShort(memorySegment, LAYOUT.bMaxPacketSize0);
+            return MEM_ACCESS_BYTE_ALIGNED.uint8_t_AsShort(memorySegment, LAYOUT.bMaxPacketSize0);
         }
 
         @__u8
         public short bNumConfigurations() {
-            return MEM_ACCESS.uint8_t(memorySegment, LAYOUT.bNumConfigurations);
+            return MEM_ACCESS_BYTE_ALIGNED.uint8_t(memorySegment, LAYOUT.bNumConfigurations);
         }
 
         @__u8
         public byte bRESERVED() {
-            return MEM_ACCESS.uint8_t(memorySegment, LAYOUT.bRESERVED);
+            return MEM_ACCESS_BYTE_ALIGNED.uint8_t(memorySegment, LAYOUT.bRESERVED);
         }
     }
 
@@ -1326,7 +1327,7 @@ public interface Ch9 {
         /* support for HNP, SRP, etc */
         @__u8
         public byte bmAttributes() {
-            return MEM_ACCESS.uint8_t(memorySegment, LAYOUT.bmAttributes);
+            return MEM_ACCESS_BYTE_ALIGNED.uint8_t(memorySegment, LAYOUT.bmAttributes);
         }
     }
 
@@ -1353,13 +1354,13 @@ public interface Ch9 {
 
         @__u8
         public byte bmAttributes() {
-            return MEM_ACCESS.uint8_t(memorySegment, LAYOUT.bmAttributes);
+            return MEM_ACCESS_BYTE_ALIGNED.uint8_t(memorySegment, LAYOUT.bmAttributes);
         }
 
         /* support for HNP, SRP and ADP, etc */
         @__le16
         public short bcdOTG() {
-            return MEM_ACCESS_LE.int16_t(memorySegment, LAYOUT.bcdOTG);
+            return MEM_ACCESS_LE_BYTE_ALIGNED.int16_t(memorySegment, LAYOUT.bcdOTG);
         }
         /* OTG and EH supplement release number
 				 * in binary-coded decimal(i.e. 2.0 is 0200H)
@@ -1402,12 +1403,12 @@ public interface Ch9 {
         /* bulk endpoints with 8 byte maxpacket */
         @__u8
         public byte bDebugInEndpoint() {
-            return MEM_ACCESS.uint8_t(memorySegment, LAYOUT.bDebugInEndpoint);
+            return MEM_ACCESS_BYTE_ALIGNED.uint8_t(memorySegment, LAYOUT.bDebugInEndpoint);
         }
 
         @__u8
         public byte bDebugOutEndpoint() {
-            return MEM_ACCESS.uint8_t(memorySegment, LAYOUT.bDebugOutEndpoint);
+            return MEM_ACCESS_BYTE_ALIGNED.uint8_t(memorySegment, LAYOUT.bDebugOutEndpoint);
         }
     }
 
@@ -1436,32 +1437,32 @@ public interface Ch9 {
 
         @__u8
         public byte bFirstInterface() {
-            return MEM_ACCESS.uint8_t(memorySegment, Layout.bFirstInterface);
+            return MEM_ACCESS_BYTE_ALIGNED.uint8_t(memorySegment, Layout.bFirstInterface);
         }
 
         @__u8
         public short bInterfaceCount() {
-            return MEM_ACCESS.uint8_t(memorySegment, Layout.bInterfaceCount);
+            return MEM_ACCESS_BYTE_ALIGNED.uint8_t(memorySegment, Layout.bInterfaceCount);
         }
 
         @__u8
         public byte bFunctionClass() {
-            return MEM_ACCESS.uint8_t(memorySegment, Layout.bFunctionClass);
+            return MEM_ACCESS_BYTE_ALIGNED.uint8_t(memorySegment, Layout.bFunctionClass);
         }
 
         @__u8
         public byte bFunctionSubClass() {
-            return MEM_ACCESS.uint8_t(memorySegment, Layout.bFunctionSubClass);
+            return MEM_ACCESS_BYTE_ALIGNED.uint8_t(memorySegment, Layout.bFunctionSubClass);
         }
 
         @__u8
         public byte bFunctionProtocol() {
-            return MEM_ACCESS.uint8_t(memorySegment, Layout.bFunctionProtocol);
+            return MEM_ACCESS_BYTE_ALIGNED.uint8_t(memorySegment, Layout.bFunctionProtocol);
         }
 
         @__u8
         public byte iFunction() {
-            return MEM_ACCESS.uint8_t(memorySegment, Layout.iFunction);
+            return MEM_ACCESS_BYTE_ALIGNED.uint8_t(memorySegment, Layout.iFunction);
         }
 
         @Override
@@ -1503,12 +1504,12 @@ public interface Ch9 {
 
         @__le16
         public int wTotalLength() {
-            return MEM_ACCESS.uint16_t_AsInt(memorySegment, LAYOUT.wTotalLength);
+            return MEM_ACCESS_BYTE_ALIGNED.uint16_t_AsInt(memorySegment, LAYOUT.wTotalLength);
         }
 
         @__u8
         public short bNumEncryptionTypes() {
-            return MEM_ACCESS.int8_t(memorySegment, LAYOUT.bNumEncryptionTypes);
+            return MEM_ACCESS_BYTE_ALIGNED.int8_t(memorySegment, LAYOUT.bNumEncryptionTypes);
         }
     }
 
@@ -1576,7 +1577,7 @@ public interface Ch9 {
 
         @__u8
         public byte bEncryptionType() {
-            return MEM_ACCESS.uint8_t(memorySegment, LAYOUT.bEncryptionType);
+            return MEM_ACCESS_BYTE_ALIGNED.uint8_t(memorySegment, LAYOUT.bEncryptionType);
         }
         public final static byte USB_ENC_TYPE_UNSECURE = 0;
         /* non-wireless mode */
@@ -1589,12 +1590,12 @@ public interface Ch9 {
         /* use in SET_ENCRYPTION */
         @__u8
         public byte bEncryptionValue() {
-            return MEM_ACCESS.uint8_t(memorySegment, LAYOUT.bEncryptionValue);
+            return MEM_ACCESS_BYTE_ALIGNED.uint8_t(memorySegment, LAYOUT.bEncryptionValue);
         }
 
         @__u8
         public byte bAuthKeyIndex() {
-            return MEM_ACCESS.uint8_t(memorySegment, LAYOUT.bAuthKeyIndex);
+            return MEM_ACCESS_BYTE_ALIGNED.uint8_t(memorySegment, LAYOUT.bAuthKeyIndex);
         }
     }
 
@@ -1626,12 +1627,12 @@ public interface Ch9 {
 
         @__le16
         public int wTotalLength() {
-            return MEM_ACCESS_LE.uint16_t_AsInt(memorySegment, LAYOUT.wTotalLength);
+            return MEM_ACCESS_LE_BYTE_ALIGNED.uint16_t_AsInt(memorySegment, LAYOUT.wTotalLength);
         }
 
         @__u8
         public byte bNumDeviceCaps() {
-            return MEM_ACCESS.uint8_t(memorySegment, LAYOUT.bNumDeviceCaps);
+            return MEM_ACCESS_BYTE_ALIGNED.uint8_t(memorySegment, LAYOUT.bNumDeviceCaps);
         }
     }
 
@@ -1688,7 +1689,7 @@ public interface Ch9 {
 
         @__u8
         public byte bmAttributes() {
-            return MEM_ACCESS.uint8_t(memorySegment, LAYOUT.bmAttributes);
+            return MEM_ACCESS_BYTE_ALIGNED.uint8_t(memorySegment, LAYOUT.bmAttributes);
         }
 
         public final static byte USB_WIRELESS_P2P_DRD = (1 << 1);
@@ -1700,7 +1701,7 @@ public interface Ch9 {
         /* bit rates, Mbps */
         @__le16
         public short wPHYRates() {
-            return MEM_ACCESS_LE.uint16_t(memorySegment, LAYOUT.wPHYRates);
+            return MEM_ACCESS_LE_BYTE_ALIGNED.uint16_t(memorySegment, LAYOUT.wPHYRates);
         }
         /* always set */
         public final static byte USB_WIRELESS_PHY_53 = (1 << 0);
@@ -1717,23 +1718,23 @@ public interface Ch9 {
         /* TFI power levels */
         @__u8
         public byte bmTFITXPowerInfo() {
-            return MEM_ACCESS.uint8_t(memorySegment, LAYOUT.bmTFITXPowerInfo);
+            return MEM_ACCESS_BYTE_ALIGNED.uint8_t(memorySegment, LAYOUT.bmTFITXPowerInfo);
         }
 
         /* FFI power levels */
         @__u8
         public byte bmFFITXPowerInfo() {
-            return MEM_ACCESS.uint8_t(memorySegment, LAYOUT.bmFFITXPowerInfo);
+            return MEM_ACCESS_BYTE_ALIGNED.uint8_t(memorySegment, LAYOUT.bmFFITXPowerInfo);
         }
 
         @__le16
         public short bmBandGroup() {
-            return MEM_ACCESS_LE.uint16_t(memorySegment, LAYOUT.bmBandGroup);
+            return MEM_ACCESS_LE_BYTE_ALIGNED.uint16_t(memorySegment, LAYOUT.bmBandGroup);
         }
 
         @__u8
         public byte bReserved() {
-            return MEM_ACCESS.uint8_t(memorySegment, LAYOUT.bReserved);
+            return MEM_ACCESS_BYTE_ALIGNED.uint8_t(memorySegment, LAYOUT.bReserved);
         }
     }
 
@@ -1763,7 +1764,7 @@ public interface Ch9 {
 
         @__le32
         public int bmAttributes() {
-            return MEM_ACCESS_LE.uint32_t(memorySegment, LAYOUT.bmAttributes);
+            return MEM_ACCESS_LE_BYTE_ALIGNED.uint32_t(memorySegment, LAYOUT.bmAttributes);
         }
         /* supports LPM */
         public final static byte USB_LPM_SUPPORT = (1 << 1);
@@ -1828,14 +1829,14 @@ public interface Ch9 {
 
         @__u8
         public byte bmAttributes() {
-            return MEM_ACCESS.uint8_t(memorySegment, LAYOUT.bmAttributes);
+            return MEM_ACCESS_BYTE_ALIGNED.uint8_t(memorySegment, LAYOUT.bmAttributes);
         }
         /* supports LTM */
         public final static byte USB_LTM_SUPPORT = (1 << 1);
 
         @__le16
         public int wSpeedSupported() {
-            return MEM_ACCESS_LE.uint16_t_AsInt(memorySegment, LAYOUT.wSpeedSupported);
+            return MEM_ACCESS_LE_BYTE_ALIGNED.uint16_t_AsInt(memorySegment, LAYOUT.wSpeedSupported);
         }
         /* Low speed operation */
         public final static byte USB_LOW_SPEED_OPERATION = (1);
@@ -1848,17 +1849,17 @@ public interface Ch9 {
 
         @__u8
         public byte bFunctionalitySupport() {
-            return MEM_ACCESS.uint8_t(memorySegment, LAYOUT.bFunctionalitySupport);
+            return MEM_ACCESS_BYTE_ALIGNED.uint8_t(memorySegment, LAYOUT.bFunctionalitySupport);
         }
 
         @__u8
         public byte bU1devExitLat() {
-            return MEM_ACCESS.uint8_t(memorySegment, LAYOUT.bU1devExitLat);
+            return MEM_ACCESS_BYTE_ALIGNED.uint8_t(memorySegment, LAYOUT.bU1devExitLat);
         }
 
         @__le16
         public byte bU2DevExitLat() {
-            return MEM_ACCESS_LE.uint8_t(memorySegment, LAYOUT.bU2DevExitLat);
+            return MEM_ACCESS_LE_BYTE_ALIGNED.uint8_t(memorySegment, LAYOUT.bU2DevExitLat);
         }
     }
 
@@ -1892,7 +1893,7 @@ public interface Ch9 {
 
         @__u8
         public byte bReserved() {
-            return MEM_ACCESS.uint8_t(memorySegment, LAYOUT.ContainerID);
+            return MEM_ACCESS_BYTE_ALIGNED.uint8_t(memorySegment, LAYOUT.ContainerID);
         }
 
         /* 128-bit number */
@@ -1936,12 +1937,12 @@ public interface Ch9 {
 
         @__u8
         public byte bReserved() {
-            return MEM_ACCESS.uint8_t(memorySegment, LAYOUT.bReserved);
+            return MEM_ACCESS_BYTE_ALIGNED.uint8_t(memorySegment, LAYOUT.bReserved);
         }
 
         @__le32
         public int bmAttributes() {
-            return MEM_ACCESS_LE.uint32_t(memorySegment, LAYOUT.bmAttributes);
+            return MEM_ACCESS_LE_BYTE_ALIGNED.uint32_t(memorySegment, LAYOUT.bmAttributes);
         }
         /* sublink speed entries */
         public final static short USB_SSP_SUBLINK_SPEED_ATTRIBS = (0x1f << 0);
@@ -1950,7 +1951,7 @@ public interface Ch9 {
 
         @__le16
         public short wFunctionalitySupport() {
-            return MEM_ACCESS_LE.uint16_t(memorySegment, LAYOUT.wFunctionalitySupport);
+            return MEM_ACCESS_LE_BYTE_ALIGNED.uint16_t(memorySegment, LAYOUT.wFunctionalitySupport);
         }
         public final static short USB_SSP_MIN_SUBLINK_SPEED_ATTRIBUTE_ID = (0xf);
         public final static short USB_SSP_MIN_RX_LANE_COUNT = (0xf << 8);
@@ -1958,7 +1959,7 @@ public interface Ch9 {
 
         @__le16
         public short wReserved() {
-            return MEM_ACCESS_LE.uint16_t(memorySegment, LAYOUT.wReserved);
+            return MEM_ACCESS_LE_BYTE_ALIGNED.uint16_t(memorySegment, LAYOUT.wReserved);
         }
 
         /* list of sublink speed attrib entries */
@@ -2023,12 +2024,12 @@ public interface Ch9 {
 
         @__u8
         public byte bReserved() {
-            return MEM_ACCESS.uint8_t(memorySegment, LAYOUT.bReserved);
+            return MEM_ACCESS_BYTE_ALIGNED.uint8_t(memorySegment, LAYOUT.bReserved);
         }
 
         @__le32
         public int bmAttributes() {
-            return MEM_ACCESS_LE.uint32_t(memorySegment, LAYOUT.bmAttributes);
+            return MEM_ACCESS_LE_BYTE_ALIGNED.uint32_t(memorySegment, LAYOUT.bmAttributes);
         }
         /* supports Battery Charging specification */
         public final static byte USB_PD_CAP_BATTERY_CHARGING = (1 << 1);
@@ -2050,27 +2051,27 @@ public interface Ch9 {
         /* Bit zero refers to the UFP of the device */
         @__le16
         public int bmProviderPorts() {
-            return MEM_ACCESS_LE.uint16_t_AsInt(memorySegment, LAYOUT.bmProviderPorts);
+            return MEM_ACCESS_LE_BYTE_ALIGNED.uint16_t_AsInt(memorySegment, LAYOUT.bmProviderPorts);
         }
 
         @__le16
         public int bmConsumerPorts() {
-            return MEM_ACCESS_LE.uint16_t_AsInt(memorySegment, LAYOUT.bmConsumerPorts);
+            return MEM_ACCESS_LE_BYTE_ALIGNED.uint16_t_AsInt(memorySegment, LAYOUT.bmConsumerPorts);
         }
 
         @__le16
         public short bcdBCVersion() {
-            return MEM_ACCESS_LE.uint16_t(memorySegment, LAYOUT.bcdBCVersion);
+            return MEM_ACCESS_LE_BYTE_ALIGNED.uint16_t(memorySegment, LAYOUT.bcdBCVersion);
         }
 
         @__le16
         public short bcdPDVersion() {
-            return MEM_ACCESS_LE.uint16_t(memorySegment, LAYOUT.bcdPDVersion);
+            return MEM_ACCESS_LE_BYTE_ALIGNED.uint16_t(memorySegment, LAYOUT.bcdPDVersion);
         }
 
         @__le16
         public short bcdUSBTypeCVersion() {
-            return MEM_ACCESS_LE.uint16_t(memorySegment, LAYOUT.bcdUSBTypeCVersion);
+            return MEM_ACCESS_LE_BYTE_ALIGNED.uint16_t(memorySegment, LAYOUT.bcdUSBTypeCVersion);
         }
     }
 
@@ -2111,29 +2112,29 @@ public interface Ch9 {
         /* Index of string descriptor shall contain the user friendly name for this battery */
         @__u8
         public byte iBattery() {
-            return MEM_ACCESS.uint8_t(memorySegment, LAYOUT.iBattery);
+            return MEM_ACCESS_BYTE_ALIGNED.uint8_t(memorySegment, LAYOUT.iBattery);
         }
 
         /* Index of string descriptor shall contain the Serial Number String for this battery */
         @__u8
         public byte iSerial() {
-            return MEM_ACCESS.uint8_t(memorySegment, LAYOUT.iSerial);
+            return MEM_ACCESS_BYTE_ALIGNED.uint8_t(memorySegment, LAYOUT.iSerial);
         }
 
         @__u8
         public byte iManufacturer() {
-            return MEM_ACCESS.uint8_t(memorySegment, LAYOUT.iManufacturer);
+            return MEM_ACCESS_BYTE_ALIGNED.uint8_t(memorySegment, LAYOUT.iManufacturer);
         }
 
         /* uniquely identifies this battery in status Messages */
         @__u8
         public byte bBatteryId() {
-            return MEM_ACCESS.uint8_t(memorySegment, LAYOUT.bBatteryId);
+            return MEM_ACCESS_BYTE_ALIGNED.uint8_t(memorySegment, LAYOUT.bBatteryId);
         }
 
         @__u8
         public byte bReserved() {
-            return MEM_ACCESS.uint8_t(memorySegment, LAYOUT.bReserved);
+            return MEM_ACCESS_BYTE_ALIGNED.uint8_t(memorySegment, LAYOUT.bReserved);
         }
 
         /*
@@ -2144,7 +2145,7 @@ public interface Ch9 {
  /* in mWh */
         @__le32
         public int dwChargedThreshold() {
-            return MEM_ACCESS_LE.uint32_t(memorySegment, LAYOUT.dwChargedThreshold);
+            return MEM_ACCESS_LE_BYTE_ALIGNED.uint32_t(memorySegment, LAYOUT.dwChargedThreshold);
         }
 
         /*
@@ -2155,19 +2156,19 @@ public interface Ch9 {
  /* in mWh */
         @__le32
         public long dwWeakThreshold() {
-            return MEM_ACCESS_LE.uint32_t(memorySegment, LAYOUT.dwWeakThreshold);
+            return MEM_ACCESS_LE_BYTE_ALIGNED.uint32_t(memorySegment, LAYOUT.dwWeakThreshold);
         }
 
         /* in mWh */
         @__le32
         public long dwBatteryDesignCapacity() {
-            return MEM_ACCESS_LE.uint32_t(memorySegment, LAYOUT.dwBatteryDesignCapacity);
+            return MEM_ACCESS_LE_BYTE_ALIGNED.uint32_t(memorySegment, LAYOUT.dwBatteryDesignCapacity);
         }
 
         /* in mWh */
         @__le32
         public long dwBatteryLastFullchargeCapacity() {
-            return MEM_ACCESS_LE.uint32_t(memorySegment, LAYOUT.dwBatteryLastFullchargeCapacity);
+            return MEM_ACCESS_LE_BYTE_ALIGNED.uint32_t(memorySegment, LAYOUT.dwBatteryLastFullchargeCapacity);
         }
     }
 
@@ -2205,12 +2206,12 @@ public interface Ch9 {
 
         @__u8
         public byte bReserved() {
-            return MEM_ACCESS.uint8_t(memorySegment, LAYOUT.bReserved);
+            return MEM_ACCESS_BYTE_ALIGNED.uint8_t(memorySegment, LAYOUT.bReserved);
         }
 
         @__u8
         public byte bmCapabilities() {
-            return MEM_ACCESS.uint8_t(memorySegment, LAYOUT.bmCapabilities);
+            return MEM_ACCESS_BYTE_ALIGNED.uint8_t(memorySegment, LAYOUT.bmCapabilities);
         }
         /* port will oerate under: */
  /* BC */
@@ -2223,36 +2224,36 @@ public interface Ch9 {
         /* in 50mV units */
         @__le16
         public int wMinVoltage() {
-            return MEM_ACCESS_LE.uint16_t(memorySegment, LAYOUT.wMinVoltage);
+            return MEM_ACCESS_LE_BYTE_ALIGNED.uint16_t(memorySegment, LAYOUT.wMinVoltage);
         }
 
         /* in 50mV units */
         @__le16
         public int wMaxVoltage() {
-            return MEM_ACCESS_LE.uint16_t(memorySegment, LAYOUT.wMaxVoltage);
+            return MEM_ACCESS_LE_BYTE_ALIGNED.uint16_t(memorySegment, LAYOUT.wMaxVoltage);
         }
 
         @__u16
         public short wReserved() {
-            return MEM_ACCESS_LE.int16_t(memorySegment, LAYOUT.wReserved);
+            return MEM_ACCESS_BYTE_ALIGNED.int16_t(memorySegment, LAYOUT.wReserved);
         }
 
         /* in 10 mW - operating at steady state */
         @__le32
         public long dwMaxOperatingPower() {
-            return MEM_ACCESS_LE.uint32_t(memorySegment, LAYOUT.dwMaxOperatingPower);
+            return MEM_ACCESS_LE_BYTE_ALIGNED.uint32_t(memorySegment, LAYOUT.dwMaxOperatingPower);
         }
 
         /* in 10mW units - operating at peak power */
         @__le32
         public long dwMaxPeakPower() {
-            return MEM_ACCESS_LE.uint32_t(memorySegment, LAYOUT.dwMaxPeakPower);
+            return MEM_ACCESS_LE_BYTE_ALIGNED.uint32_t(memorySegment, LAYOUT.dwMaxPeakPower);
         }
 
         /* in 100ms units - duration of peak */
         @__le32
         public long dwMaxPeakPowerTime() {
-            return MEM_ACCESS_LE.uint32_t(memorySegment, LAYOUT.dwMaxPeakPowerTime);
+            return MEM_ACCESS_LE_BYTE_ALIGNED.uint32_t(memorySegment, LAYOUT.dwMaxPeakPowerTime);
         }
 
         public final static int USB_PD_CAP_CONSUMER_UNKNOWN_PEAK_POWER_TIME = 0xffff;
@@ -2286,12 +2287,12 @@ public interface Ch9 {
 
         @__u8
         public byte bReserved1() {
-            return MEM_ACCESS.uint8_t(memorySegment, LAYOUT.bReserved1);
+            return MEM_ACCESS_BYTE_ALIGNED.uint8_t(memorySegment, LAYOUT.bReserved1);
         }
 
         @__u8
         public byte bmCapabilities() {
-            return MEM_ACCESS.uint8_t(memorySegment, LAYOUT.bmCapabilities);
+            return MEM_ACCESS_BYTE_ALIGNED.uint8_t(memorySegment, LAYOUT.bmCapabilities);
         }
         /* port will oerate under: */
  /* BC */
@@ -2303,12 +2304,12 @@ public interface Ch9 {
 
         @__u8
         public short bNumOfPDObjects() {
-            return MEM_ACCESS.uint8_t(memorySegment, LAYOUT.bNumOfPDObjects);
+            return MEM_ACCESS_BYTE_ALIGNED.uint8_t(memorySegment, LAYOUT.bNumOfPDObjects);
         }
 
         @__u8
         public byte bReserved2() {
-            return MEM_ACCESS.uint8_t(memorySegment, LAYOUT.bReserved2);
+            return MEM_ACCESS_BYTE_ALIGNED.uint8_t(memorySegment, LAYOUT.bReserved2);
         }
 
         @__le32
@@ -2383,32 +2384,32 @@ public interface Ch9 {
 
         @__u8
         public short bMaxBurst() {
-            return MEM_ACCESS.uint8_t_AsShort(memorySegment, LAYOUT.bMaxBurst);
+            return MEM_ACCESS_BYTE_ALIGNED.uint8_t_AsShort(memorySegment, LAYOUT.bMaxBurst);
         }
 
         @__u8
         public short bMaxSequence() {
-            return MEM_ACCESS.uint8_t_AsShort(memorySegment, LAYOUT.bMaxSequence);
+            return MEM_ACCESS_BYTE_ALIGNED.uint8_t_AsShort(memorySegment, LAYOUT.bMaxSequence);
         }
 
         @__le16
         public int wMaxStreamDelay() {
-            return MEM_ACCESS_LE.uint16_t_AsInt(memorySegment, LAYOUT.wMaxStreamDelay);
+            return MEM_ACCESS_LE_BYTE_ALIGNED.uint16_t_AsInt(memorySegment, LAYOUT.wMaxStreamDelay);
         }
 
         @__le16
         public int wOverTheAirPacketSize() {
-            return MEM_ACCESS_LE.uint16_t_AsInt(memorySegment, LAYOUT.wOverTheAirPacketSize);
+            return MEM_ACCESS_LE_BYTE_ALIGNED.uint16_t_AsInt(memorySegment, LAYOUT.wOverTheAirPacketSize);
         }
 
         @__u8
         public short bOverTheAirInterval() {
-            return MEM_ACCESS.uint8_t_AsShort(memorySegment, LAYOUT.bOverTheAirInterval);
+            return MEM_ACCESS_BYTE_ALIGNED.uint8_t_AsShort(memorySegment, LAYOUT.bOverTheAirInterval);
         }
 
         @__u8
         public byte bmCompAttributes() {
-            return MEM_ACCESS.uint8_t(memorySegment, LAYOUT.bmCompAttributes);
+            return MEM_ACCESS_BYTE_ALIGNED.uint8_t(memorySegment, LAYOUT.bmCompAttributes);
         }
         /* in bmCompAttributes */
         public final static byte USB_ENDPOINT_SWITCH_MASK = 0x03;
@@ -2423,7 +2424,7 @@ public interface Ch9 {
  * host and a device for connection set up, mutual authentication, and
  * exchanging short lived session keys.  The handshake depends on a CC.
      */
-    public final static class Usb_handshake extends Struct {
+    public final static class Usb_handshake extends AbstractLinuxSyscallStruct {
 
         public final class Layout {
 
@@ -2448,44 +2449,44 @@ public interface Ch9 {
 
         @__u8
         public short bMessageNumber() {
-            return MEM_ACCESS.uint8_t_AsShort(memorySegment, Layout.bMessageNumber);
+            return MEM_ACCESS_BYTE_ALIGNED.uint8_t_AsShort(memorySegment, Layout.bMessageNumber);
         }
 
         @__u8
         public byte bStatus() {
-            return MEM_ACCESS.uint8_t(memorySegment, Layout.bStatus);
+            return MEM_ACCESS_BYTE_ALIGNED.uint8_t(memorySegment, Layout.bStatus);
         }
 
         @__u8
         public byte[] tTKID() {
             final byte[] result = new byte[Layout.sizeof_tTKID];
-            MEM_ACCESS.copyMemory(memorySegment, Layout.tTKID, result, 0, Layout.sizeof_tTKID);
+            MEM_ACCESS_BYTE_ALIGNED.copyMemory(memorySegment, Layout.tTKID, result, 0, Layout.sizeof_tTKID);
             return result;
         }
 
         @__u8
         public byte bReserved() {
-            return MEM_ACCESS.uint8_t(memorySegment, Layout.bReserved);
+            return MEM_ACCESS_BYTE_ALIGNED.uint8_t(memorySegment, Layout.bReserved);
         }
 
         @__u8
         public byte[] CDID() {
             final byte[] result = new byte[Layout.sizeof_CDID];
-            MEM_ACCESS.copyMemory(memorySegment, Layout.CDID, result, 0, Layout.sizeof_CDID);
+            MEM_ACCESS_BYTE_ALIGNED.copyMemory(memorySegment, Layout.CDID, result, 0, Layout.sizeof_CDID);
             return result;
         }
 
         @__u8
         public byte[] nonce() {
             final byte[] result = new byte[Layout.sizeof_nonce];
-            MEM_ACCESS.copyMemory(memorySegment, Layout.nonce, result, 0, Layout.sizeof_nonce);
+            MEM_ACCESS_BYTE_ALIGNED.copyMemory(memorySegment, Layout.nonce, result, 0, Layout.sizeof_nonce);
             return result;
         }
 
         @__u8
         public byte[] MIC() {
             final byte[] result = new byte[Layout.sizeof_MIC];
-            MEM_ACCESS.copyMemory(memorySegment, Layout.MIC, result, 0, Layout.sizeof_MIC);
+            MEM_ACCESS_BYTE_ALIGNED.copyMemory(memorySegment, Layout.MIC, result, 0, Layout.sizeof_MIC);
             return result;
         }
     }

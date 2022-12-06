@@ -21,22 +21,22 @@
  */
 package de.ibapl.jnhw.common.test.upcall;
 
+import de.ibapl.jnhw.common.downcall.JnhwMi__V___I;
 import de.ibapl.jnhw.common.memory.NativeFunctionPointer;
 import de.ibapl.jnhw.common.nativepointer.FunctionPtr__V___I;
 import de.ibapl.jnhw.common.test.LibJnhwCommonTestLoader;
 import de.ibapl.jnhw.common.upcall.CallbackFactory__V___I;
 import de.ibapl.jnhw.common.upcall.Callback__V___I;
+import java.lang.foreign.FunctionDescriptor;
+import java.lang.foreign.MemoryAddress;
+import java.lang.foreign.MemorySession;
+import java.lang.foreign.ValueLayout;
 import java.lang.invoke.MethodHandle;
 import java.lang.ref.Cleaner;
-import jdk.incubator.foreign.FunctionDescriptor;
-import jdk.incubator.foreign.MemoryAddress;
-import jdk.incubator.foreign.ResourceScope;
-import jdk.incubator.foreign.ValueLayout;
 import org.junit.jupiter.api.AfterEach;
 import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import de.ibapl.jnhw.common.downcall.JnhwMi__V___I;
 
 /**
  *
@@ -55,7 +55,7 @@ public class Callback__V___I_Test {
         doCallback__V___I = LibJnhwCommonTestLoader.downcallHandle("doCallback__V___I", FunctionDescriptor.ofVoid(ValueLayout.JAVA_BOOLEAN, ValueLayout.JAVA_INT));
     }
 
-    private ResourceScope rs;
+    private MemorySession ms;
 
     private class DummyCB extends Callback__V___I {
 
@@ -68,14 +68,13 @@ public class Callback__V___I_Test {
 
     @BeforeEach
     public void setUpBefore() throws Exception {
-        System.runFinalization();
         System.gc();
-        rs = ResourceScope.newConfinedScope();
+        ms = MemorySession.openConfined();
     }
 
     @AfterEach
     public void cleanupAfterEach() throws Exception {
-        rs.close();
+        ms.close();
     }
 
     private FunctionPtr__V___I getCallback__V___I() {
@@ -123,8 +122,6 @@ public class Callback__V___I_Test {
 
         cbs = null;
 
-        System.gc();
-        System.runFinalization();
         System.gc();
 
         assertEquals(CallbackFactory__V___I.MAX_CALL_BACKS, CallbackFactory__V___I.callbacksAvailable());
@@ -182,12 +179,11 @@ public class Callback__V___I_Test {
         assertEquals(42, intref[0]);
 
         intref[0] = 0;
-        new JnhwMi__V___I(getCallback__V___I().toAddressable().address(), rs).invoke__V__sI(42);
+        new JnhwMi__V___I(getCallback__V___I().toAddressable().address(), ms).invoke__V__sI(42);
         assertEquals(-42, intref[0]);
 
         callback = null;
 
-        System.runFinalization();
         System.gc();
 
         assertEquals(CallbackFactory__V___I.MAX_CALL_BACKS, CallbackFactory__V___I.callbacksAvailable());
@@ -201,7 +197,7 @@ public class Callback__V___I_Test {
 
         intref[0] = -1;
         //The logs shoud show: Unassigned callback for trampoline(0, 84)
-        new JnhwMi__V___I(getCallback__V___I().toAddressable().address(), rs).invoke__V__sI(84);
+        new JnhwMi__V___I(getCallback__V___I().toAddressable().address(), ms).invoke__V__sI(84);
         assertEquals(-1, intref[0]);
     }
 
@@ -243,12 +239,11 @@ public class Callback__V___I_Test {
         assertEquals(42, intref[0]);
 
         intref[0] = 0;
-        new JnhwMi__V___I(getCallback__V___I().toAddressable().address(), rs).invoke__V__sI(42);
+        new JnhwMi__V___I(getCallback__V___I().toAddressable().address(), ms).invoke__V__sI(42);
         assertEquals(42, intref[0]);
 
         callback = null;
 
-        System.runFinalization();
         System.gc();
 
         //sleep here, to let the CLEANER do it cleanup....

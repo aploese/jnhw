@@ -26,6 +26,11 @@ import de.ibapl.jnhw.common.annotation.Define;
 import de.ibapl.jnhw.common.annotation.Include;
 import de.ibapl.jnhw.common.datatypes.BaseDataType;
 import de.ibapl.jnhw.common.datatypes.MultiarchTupelBuilder;
+import de.ibapl.jnhw.common.downcall.wrapper.JnhwMh_MA___A;
+import de.ibapl.jnhw.common.downcall.wrapper.JnhwMh_MA___V;
+import de.ibapl.jnhw.common.downcall.wrapper.JnhwMh__A__sI__A;
+import de.ibapl.jnhw.common.downcall.wrapper.JnhwMh__A__sI__A__A;
+import de.ibapl.jnhw.common.downcall.wrapper.JnhwMh__V___A;
 import de.ibapl.jnhw.common.exception.NativeErrorException;
 import de.ibapl.jnhw.common.memory.OpaquePointer;
 import de.ibapl.jnhw.common.memory.layout.Alignment;
@@ -33,14 +38,9 @@ import de.ibapl.jnhw.common.util.JsonStringBuilder;
 import de.ibapl.jnhw.util.posix.PosixDataType;
 import de.ibapl.jnhw.util.posix.memory.PosixStruct;
 import java.io.IOException;
-import jdk.incubator.foreign.MemoryAddress;
-import jdk.incubator.foreign.MemorySegment;
-import jdk.incubator.foreign.ResourceScope;
-import de.ibapl.jnhw.common.downcall.wrapper.JnhwMh__A__sI__A__A;
-import de.ibapl.jnhw.common.downcall.wrapper.JnhwMh__A__sI__A;
-import de.ibapl.jnhw.common.downcall.wrapper.JnhwMh_MA___A;
-import de.ibapl.jnhw.common.downcall.wrapper.JnhwMh_MA___V;
-import de.ibapl.jnhw.common.downcall.wrapper.JnhwMh__V___A;
+import java.lang.foreign.MemoryAddress;
+import java.lang.foreign.MemorySegment;
+import java.lang.foreign.MemorySession;
 
 /**
  * Wrapper around the {@code <aio.h>} header.
@@ -253,8 +253,8 @@ public class Locale {
             }
         }
 
-        public Lconv(MemoryAddress memoryAddress, ResourceScope scope) {
-            super(MemorySegment.ofAddress(memoryAddress, Lconv.sizeof, scope), 0, Lconv.sizeof);
+        public Lconv(MemoryAddress memoryAddress, MemorySession ms) {
+            super(MemorySegment.ofAddress(memoryAddress, Lconv.sizeof, ms), 0, Lconv.sizeof);
         }
 
         public Lconv(MemorySegment memorySegment, long offset) {
@@ -897,8 +897,8 @@ public class Locale {
      * @return The localeconv() function shall return a pointer to the filled-in
      * object.
      */
-    public final static Lconv localeconv(ResourceScope scope) {
-        return new Lconv(localeconv.invoke_MA___V(), scope);
+    public final static Lconv localeconv(MemorySession ms) {
+        return new Lconv(localeconv.invoke_MA___V(), ms);
     }
 
     /**
@@ -920,8 +920,8 @@ public class Locale {
         if (LC_GLOBAL_LOCALE.equals(base)) {
             throw new IllegalArgumentException("base is LC_GLOBAL_LOCALE");
         }
-        try ( ResourceScope scope = ResourceScope.newConfinedScope()) {
-            MemorySegment _locale = MemorySegment.allocateNative(locale.length() + 1, scope);
+        try ( MemorySession ms = MemorySession.openConfined()) {
+            MemorySegment _locale = MemorySegment.allocateNative(locale.length() + 1, ms);
             _locale.setUtf8String(0, locale);
             final MemoryAddress resultAdr = newlocale.invoke_MA__sI_A_P(category_mask, _locale, base);
             if (resultAdr == MemoryAddress.NULL) {
@@ -942,12 +942,12 @@ public class Locale {
      * specified category for the new locale. otherwise {@code null}
      */
     public final static String setlocale(int category, String locale) {
-        try ( ResourceScope scope = ResourceScope.newConfinedScope()) {
+        try ( MemorySession ms = MemorySession.openConfined()) {
             final MemoryAddress resultAdr;
             if (locale == null) {
                 resultAdr = setlocale.invoke_MA__sI_A(category, MemoryAddress.NULL);
             } else {
-                MemorySegment _locale = MemorySegment.allocateNative(locale.length() + 1, scope);
+                MemorySegment _locale = MemorySegment.allocateNative(locale.length() + 1, ms);
                 _locale.setUtf8String(0, locale);
                 resultAdr = setlocale.invoke_MA__sI_A(category, _locale);
             }

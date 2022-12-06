@@ -27,12 +27,11 @@ import de.ibapl.jnhw.common.datatypes.MultiarchTupelBuilder;
 import de.ibapl.jnhw.common.datatypes.OS;
 import de.ibapl.jnhw.common.memory.OpaqueMemory;
 import de.ibapl.jnhw.common.memory.Uint64_t;
-import de.ibapl.jnhw.common.memory.layout.Alignment;
 import de.ibapl.jnhw.common.test.LibJnhwCommonTestLoader;
-import jdk.incubator.foreign.MemorySegment;
-import jdk.incubator.foreign.ResourceScope;
-import org.junit.jupiter.api.Test;
+import java.lang.foreign.MemorySegment;
+import java.lang.foreign.MemorySession;
 import static org.junit.jupiter.api.Assertions.*;
+import org.junit.jupiter.api.Test;
 
 /**
  *
@@ -159,8 +158,8 @@ public class BaseDataTypeTest {
 
     @Test
     public void testEndianes() {
-        try ( ResourceScope rs = ResourceScope.newConfinedScope()) {
-            final Uint64_t uint64_t = new Uint64_t(MemorySegment.allocateNative(BaseDataType.uint64_t.SIZE_OF, rs), 0);
+        try ( MemorySession ms = MemorySession.openConfined()) {
+            final Uint64_t uint64_t = new Uint64_t(MemorySegment.allocateNative(BaseDataType.uint64_t.SIZE_OF, ms), 0);
             OpaqueMemory.setByte(uint64_t, 0, (byte) 0x01);
             OpaqueMemory.setByte(uint64_t, 1, (byte) 0x02);
             OpaqueMemory.setByte(uint64_t, 2, (byte) 0x03);

@@ -21,20 +21,20 @@
  */
 package de.ibapl.jnhw.syscall.linux.include.uapi.linux.usb;
 
-import de.ibapl.jnhw.common.memory.Struct;
 import de.ibapl.jnhw.common.memory.layout.Alignment;
 import de.ibapl.jnhw.common.memory.layout.StructLayout;
 import de.ibapl.jnhw.common.memory.layout.StructLayoutFactory;
 import de.ibapl.jnhw.common.memory.layout.StructLayoutFactoryImpl;
 import de.ibapl.jnhw.common.util.JsonStringBuilder;
+import de.ibapl.jnhw.syscall.linux.AbstractLinuxSyscallStruct;
 import de.ibapl.jnhw.syscall.linux.annotation.SysFs;
 import de.ibapl.jnhw.syscall.linux.uapi.asm_generic.Types;
 import de.ibapl.jnhw.syscall.linux.util.memory.PacketLayout;
 import java.io.IOException;
-import jdk.incubator.foreign.MemorySegment;
+import java.lang.foreign.MemorySegment;
 
 @SysFs("/sys/bus/usb/devices/*/descriptors")
-public abstract class AbstractDescriptor extends Struct {
+public abstract class AbstractDescriptor extends AbstractLinuxSyscallStruct {
 
     public static class Layout extends PacketLayout {
 
@@ -79,12 +79,12 @@ public abstract class AbstractDescriptor extends Struct {
 
     @Types.__u8
     public final short bLength() {
-        return MEM_ACCESS.uint8_t_AsShort(memorySegment, Layout.bLength);
+        return MEM_ACCESS_BYTE_ALIGNED.uint8_t_AsShort(memorySegment, Layout.bLength);
     }
 
     @Types.__u8
     public final byte bDescriptorType() {
-        return MEM_ACCESS.uint8_t(memorySegment, Layout.bDescriptorType);
+        return MEM_ACCESS_BYTE_ALIGNED.uint8_t(memorySegment, Layout.bDescriptorType);
     }
 
     protected abstract void nativeToString(JsonStringBuilder jsb, String indentPrefix, String indent) throws IOException;

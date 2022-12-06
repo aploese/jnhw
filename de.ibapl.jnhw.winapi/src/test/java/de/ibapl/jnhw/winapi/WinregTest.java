@@ -21,13 +21,10 @@
  */
 package de.ibapl.jnhw.winapi;
 
-import de.ibapl.jnhw.common.memory.Int32_t;
-import de.ibapl.jnhw.common.memory.OpaqueMemory;
-import de.ibapl.jnhw.util.winapi.WinApiDataType;
 import de.ibapl.jnhw.winapi.WinDef.LPBYTE;
 import de.ibapl.jnhw.winapi.WinDef.LPDWORD;
 import de.ibapl.jnhw.winapi.Winnt.LPWSTR;
-import jdk.incubator.foreign.ResourceScope;
+import java.lang.foreign.MemorySession;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -37,34 +34,34 @@ import org.junit.jupiter.api.condition.EnabledOnOs;
 @EnabledOnOs(org.junit.jupiter.api.condition.OS.WINDOWS)
 public class WinregTest {
 
-    private ResourceScope scope;
+    private MemorySession ms;
 
     @BeforeEach
     public void setUp() throws Exception {
-        scope = ResourceScope.newConfinedScope();
+        ms = MemorySession.openConfined();
     }
 
     @AfterEach
     public void tearDown() throws Exception {
-        scope.close();
+        ms.close();
     }
 
     @Test
     public void testRegOpenKey() throws Exception {
         String testKeyStr = "HARDWARE\\DESCRIPTION\\System";
-        WinDef.PHKEY phkResult = WinDef.PHKEY.allocateNative(scope);
+        WinDef.PHKEY phkResult = WinDef.PHKEY.allocateNative(ms);
         Winreg.RegOpenKeyExW(Winreg.HKEY_LOCAL_MACHINE, testKeyStr, 0, Winnt.KEY_READ, phkResult);
         WinDef.HKEY testKey = phkResult.dereference();
         try {
             Assertions.assertFalse(testKey.is_INVALID_HANDLE_VALUE(), "RegistryHKEY is not valid");
             int dwIndex = 0;
-            LPWSTR lpValueName = LPWSTR.allocateNative(256, scope);
-            LPDWORD lpcchValueName = LPDWORD.allocateNative(scope);
+            LPWSTR lpValueName = LPWSTR.allocateNative(256, ms);
+            LPDWORD lpcchValueName = LPDWORD.allocateNative(ms);
             lpcchValueName.uint32_t(LPWSTR.getWCHAR_Length(lpValueName));
-            LPBYTE lpData = LPBYTE.allocateNative(256, scope);
-            LPDWORD lpccData = LPDWORD.allocateNative(scope);
+            LPBYTE lpData = LPBYTE.allocateNative(256, ms);
+            LPDWORD lpccData = LPDWORD.allocateNative(ms);
             lpccData.uint32_t((int) lpData.sizeof());
-            LPDWORD lpType = LPDWORD.allocateNative(scope);
+            LPDWORD lpType = LPDWORD.allocateNative(ms);
             boolean collecting = true;
             do {
                 long result = Winreg.RegEnumValueW(testKey, dwIndex, lpValueName, lpcchValueName, lpType, lpData, lpccData);

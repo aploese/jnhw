@@ -27,10 +27,10 @@ import de.ibapl.jnhw.common.downcall.JnhwMethodInvoker;
 import de.ibapl.jnhw.common.memory.OpaqueMemory;
 import de.ibapl.jnhw.common.downcall.wrapper.JnhwMethodHandle;
 import de.ibapl.jnhw.posix.Pthread;
-import jdk.incubator.foreign.FunctionDescriptor;
-import jdk.incubator.foreign.MemoryAddress;
-import jdk.incubator.foreign.SymbolLookup;
-import jdk.incubator.foreign.ValueLayout;
+import java.lang.foreign.FunctionDescriptor;
+import java.lang.foreign.MemoryAddress;
+import java.lang.foreign.SymbolLookup;
+import java.lang.foreign.ValueLayout;
 
 /**
  *
@@ -73,7 +73,7 @@ public interface JnhwMethodHandle_Sint_PthreadT_Adr_Adr extends JnhwMethodHandle
     }
 
     static JnhwMethodHandle_Sint_PthreadT_Adr_Adr of(String name, BaseDataType result, BaseDataType arg1, BaseDataType arg2, BaseDataType arg3) {
-        return of(C_LINKER, name, result, arg1, arg2, arg3);
+        return of(NATIVE_LINKER.defaultLookup(), name, result, arg1, arg2, arg3);
     }
 
     static JnhwMethodHandle_Sint_PthreadT_Adr_Adr of(SymbolLookup symbolLookup, String name, BaseDataType result, BaseDataType arg1, BaseDataType arg2, BaseDataType arg3) {

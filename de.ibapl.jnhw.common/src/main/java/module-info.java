@@ -22,8 +22,6 @@
 module de.ibapl.jnhw.common {
     requires transitive java.logging;
 
-    requires jdk.incubator.foreign;
-
     exports de.ibapl.jnhw.common.annotation;
     exports de.ibapl.jnhw.common.datatypes;
     exports de.ibapl.jnhw.common.downcall;

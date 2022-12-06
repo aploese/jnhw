@@ -21,7 +21,7 @@
  */
 package de.ibapl.jnhw.util.winapi;
 
-import jdk.incubator.foreign.SymbolLookup;
+import java.lang.foreign.SymbolLookup;
 
 /**
  *

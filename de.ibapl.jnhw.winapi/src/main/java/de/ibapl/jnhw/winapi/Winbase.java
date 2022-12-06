@@ -43,8 +43,8 @@ import de.ibapl.jnhw.util.winapi.WinApiDataType;
 import de.ibapl.jnhw.util.winapi.memory.WinApiStdStructLayoutFactory;
 import de.ibapl.jnhw.util.winapi.memory.WinApiStruct;
 import de.ibapl.jnhw.winapi.Winnt.HANDLE;
-import jdk.incubator.foreign.MemorySegment;
-import jdk.incubator.foreign.ResourceScope;
+import java.lang.foreign.MemorySegment;
+import java.lang.foreign.MemorySession;
 
 /**
  * Wrapper around the
@@ -87,8 +87,8 @@ public abstract class Winbase {
 
         }
 
-        public static COMMTIMEOUTS allocateNative(ResourceScope rs) {
-            return new COMMTIMEOUTS(MemorySegment.allocateNative(Layout.sizeof, rs), 0);
+        public static COMMTIMEOUTS allocateNative(MemorySession ms) {
+            return new COMMTIMEOUTS(MemorySegment.allocateNative(Layout.sizeof, ms), 0);
         }
 
         public COMMTIMEOUTS(MemorySegment memorySegment, long offset) {
@@ -225,8 +225,8 @@ public abstract class Winbase {
 
         }
 
-        public static COMSTAT allocateNative(ResourceScope rs) {
-            return new COMSTAT(MemorySegment.allocateNative(Layout.sizeof, rs), 0);
+        public static COMSTAT allocateNative(MemorySession ms) {
+            return new COMSTAT(MemorySegment.allocateNative(Layout.sizeof, ms), 0);
         }
 
         public COMSTAT(MemorySegment memorySegment, long offset) {
@@ -389,8 +389,8 @@ public abstract class Winbase {
 
         }
 
-        public static DCB allocateNative(ResourceScope resourceScope) {
-            return new DCB(MemorySegment.allocateNative(Layout.sizeof, resourceScope), 0);
+        public static DCB allocateNative(MemorySession ms) {
+            return new DCB(MemorySegment.allocateNative(Layout.sizeof, ms), 0);
         }
 
         public DCB(MemorySegment memorySegment, long offset) {

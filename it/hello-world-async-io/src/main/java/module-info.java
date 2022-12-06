@@ -23,5 +23,4 @@ module de.ibapl.jnhw.it.hello_world {
     requires de.ibapl.jnhw.posix;
     requires de.ibapl.jnhw.winapi;
 
-    requires jdk.incubator.foreign;
 }

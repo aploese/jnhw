@@ -21,12 +21,9 @@
  */
 package de.ibapl.jnhw.it.fun_with_memory_and_function_pointers;
 
-import de.ibapl.jnhw.common.datatypes.Pointer;
 import de.ibapl.jnhw.common.downcall.JnhwMi__V___I;
-import de.ibapl.jnhw.common.memory.NativeFunctionPointer;
-import de.ibapl.jnhw.common.nativepointer.FunctionPtr__V___I;
 import de.ibapl.jnhw.common.upcall.Callback__V___I;
-import jdk.incubator.foreign.ResourceScope;
+import java.lang.foreign.MemorySession;
 
 /**
  *
@@ -46,10 +43,10 @@ public class FunctionPointer {
             }
         };
         System.out.println("cb: " + cb.toString());
-        
+
         //get the native address and encapsulate it in an NativeAddressHolder..
         System.out.println("nah: " + cb.toAddress());
-        JnhwMi__V___I cn = new JnhwMi__V___I(cb.toAddress(), ResourceScope.globalScope());
+        JnhwMi__V___I cn = new JnhwMi__V___I(cb.toAddress(), MemorySession.global());
         System.out.println("cn: " + cn.toString());
 
         System.out.println("Do the call!>>>");

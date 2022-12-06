@@ -20,8 +20,7 @@
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
  */
 module de.ibapl.jnhw.it.hello_world {
-    requires jdk.incubator.foreign;
-    
+
     requires de.ibapl.jnhw.posix;
     requires com.sun.jna;
     requires org.jnrproject.ffi;

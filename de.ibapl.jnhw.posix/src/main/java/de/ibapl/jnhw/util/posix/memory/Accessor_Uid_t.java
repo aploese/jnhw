@@ -23,7 +23,7 @@ package de.ibapl.jnhw.util.posix.memory;
 
 import de.ibapl.jnhw.annotation.posix.sys.types.uid_t;
 import de.ibapl.jnhw.common.memory.OpaqueMemory;
-import jdk.incubator.foreign.MemorySegment;
+import java.lang.foreign.MemorySegment;
 
 /**
  *

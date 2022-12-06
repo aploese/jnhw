@@ -26,7 +26,7 @@ import de.ibapl.jnhw.common.datatypes.OS;
 import de.ibapl.jnhw.common.exception.NativeErrorException;
 import de.ibapl.jnhw.util.posix.Defines;
 import de.ibapl.jnhw.util.posix.DefinesTest;
-import jdk.incubator.foreign.ResourceScope;
+import java.lang.foreign.MemorySession;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import static org.junit.jupiter.api.Assertions.fail;
@@ -162,16 +162,16 @@ public class LocaleTest {
         );
     }
 
-    private ResourceScope scope;
+    private MemorySession ms;
 
     @BeforeEach
     public void setUp() throws Exception {
-        scope = ResourceScope.newConfinedScope();
+        ms = MemorySession.openConfined();
     }
 
     @AfterEach
     public void tearDown() throws Exception {
-        scope.close();
+        ms.close();
     }
 
     /**
@@ -209,7 +209,7 @@ public class LocaleTest {
     @Test
     public void testLocaleconv() {
         System.out.println("localeconv");
-        Locale.Lconv result = Locale.localeconv(scope);
+        Locale.Lconv result = Locale.localeconv(ms);
         Assertions.assertNotNull(result);
         System.out.println("localeconv: " + result);
     }

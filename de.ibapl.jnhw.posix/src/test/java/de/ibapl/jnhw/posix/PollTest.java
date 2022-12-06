@@ -26,7 +26,7 @@ import de.ibapl.jnhw.common.datatypes.OS;
 import de.ibapl.jnhw.common.memory.layout.Alignment;
 import de.ibapl.jnhw.util.posix.DefinesTest;
 import de.ibapl.jnhw.util.posix.PosixDataType;
-import jdk.incubator.foreign.ResourceScope;
+import java.lang.foreign.MemorySession;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -78,21 +78,21 @@ public class PollTest {
         );
     }
 
-    private ResourceScope scope;
+    private MemorySession ms;
 
     @BeforeEach
     public void setUp() {
-        scope = ResourceScope.newConfinedScope();
+        ms = MemorySession.openConfined();
     }
 
     @AfterEach
     public void tearDown() {
-        scope.close();
+        ms.close();
     }
 
     @Test
     public void testCreatePollFd() throws Exception {
-        Poll.PollFds pollFds = Poll.PollFds.allocateNative(scope, 2);
+        Poll.PollFds pollFds = Poll.PollFds.allocateNative(ms, 2);
     }
 
     @Test
@@ -107,7 +107,7 @@ public class PollTest {
         Assertions.assertEquals(8, PosixDataType.nfds_t.SIZE_OF);
         Assertions.assertEquals(Alignment.AT_8, PosixDataType.nfds_t.ALIGN_OF);
         Assertions.assertTrue(PosixDataType.nfds_t.UNSIGNED);
-        Poll.Nfds_t instance = Poll.Nfds_t.allocateNative(scope);
+        Poll.Nfds_t instance = Poll.Nfds_t.allocateNative(ms);
         instance.setFromUnsignedLong(0x8070605040302010L);
         assertEquals(0x8070605040302010L, instance.getAsUnsignedLong());
         assertEquals(Long.toUnsignedString(0x8070605040302010L), instance.nativeToString());

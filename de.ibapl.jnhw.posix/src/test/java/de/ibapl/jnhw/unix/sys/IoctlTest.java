@@ -27,8 +27,8 @@ import de.ibapl.jnhw.common.datatypes.OS;
 import de.ibapl.jnhw.common.memory.Int32_t;
 import de.ibapl.jnhw.posix.LibJnhwPosixTestLoader;
 import de.ibapl.jnhw.util.posix.DefinesTest;
-import jdk.incubator.foreign.MemoryAddress;
-import jdk.incubator.foreign.ResourceScope;
+import java.lang.foreign.MemoryAddress;
+import java.lang.foreign.MemorySession;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
@@ -60,16 +60,16 @@ public class IoctlTest {
         DefinesTest.testDefines(Ioctl.class, "HAVE_SYS_IOCTL_H");
     }
 
-    private ResourceScope scope;
+    private MemorySession ms;
 
     @BeforeEach
     public void setUp() throws Exception {
-        scope = ResourceScope.newConfinedScope();
+        ms = MemorySession.openConfined();
     }
 
     @AfterEach
     public void tearDown() throws Exception {
-        scope.close();
+        ms.close();
     }
 
     @Test
@@ -192,7 +192,7 @@ public class IoctlTest {
         switch (MultiarchTupelBuilder.getOS()) {
             case LINUX:
                 final int arg = 1;
-                final Int32_t resultArg = Int32_t.allocateNative(scope);
+                final Int32_t resultArg = Int32_t.allocateNative(ms);
                 MemoryAddress result = LibJnhwPosixTestLoader.invokeExact_MA___A_sI("tryGet_IOC_DIR", resultArg.toAddressable(), arg);
                 Assertions.assertNotEquals(MemoryAddress.NULL, result);
                 Assertions.assertEquals(resultArg.int32_t(), Ioctl._IOC_DIR(arg));
@@ -207,7 +207,7 @@ public class IoctlTest {
         switch (MultiarchTupelBuilder.getOS()) {
             case LINUX:
                 final int arg = 1;
-                final Int32_t resultArg = Int32_t.allocateNative(scope);
+                final Int32_t resultArg = Int32_t.allocateNative(ms);
                 MemoryAddress result = LibJnhwPosixTestLoader.invokeExact_MA___A_sI("tryGet_IOC_NR", resultArg.toAddressable(), arg);
                 Assertions.assertNotEquals(MemoryAddress.NULL, result);
                 Assertions.assertEquals(resultArg.int32_t(), Ioctl._IOC_NR(arg));
@@ -222,7 +222,7 @@ public class IoctlTest {
         switch (MultiarchTupelBuilder.getOS()) {
             case LINUX:
                 final int arg = 1;
-                final Int32_t resultArg = Int32_t.allocateNative(scope);
+                final Int32_t resultArg = Int32_t.allocateNative(ms);
                 MemoryAddress result = LibJnhwPosixTestLoader.invokeExact_MA___A_sI("tryGet_IOC_SIZE", resultArg.toAddressable(), arg);
                 Assertions.assertNotEquals(MemoryAddress.NULL, result);
                 Assertions.assertEquals(resultArg.int32_t(), Ioctl._IOC_SIZE(arg));
@@ -237,7 +237,7 @@ public class IoctlTest {
         switch (MultiarchTupelBuilder.getOS()) {
             case LINUX:
                 final int arg = 1;
-                final Int32_t resultArg = Int32_t.allocateNative(scope);
+                final Int32_t resultArg = Int32_t.allocateNative(ms);
                 MemoryAddress result = LibJnhwPosixTestLoader.invokeExact_MA___A_sI("tryGet_IOC_TYPE", resultArg.toAddressable(), arg);
                 Assertions.assertNotEquals(MemoryAddress.NULL, result);
                 Assertions.assertEquals(resultArg.int32_t(), Ioctl._IOC_TYPE(arg));
@@ -251,7 +251,7 @@ public class IoctlTest {
     public void test_IOCPARM_LEN() throws Exception {
         switch (MultiarchTupelBuilder.getOS()) {
             case LINUX:
-                final Int32_t resultArg = Int32_t.allocateNative(scope);
+                final Int32_t resultArg = Int32_t.allocateNative(ms);
                 MemoryAddress result = LibJnhwPosixTestLoader.invokeExact_MA___A_sI("tryGet_IOCPARM_LEN", resultArg.toAddressable(), 1);
                 Assertions.assertEquals(MemoryAddress.NULL, result);
                 Assertions.assertThrows(NoSuchMethodException.class, () -> {
@@ -267,7 +267,7 @@ public class IoctlTest {
     public void test_IOCBASECMD() throws Exception {
         switch (MultiarchTupelBuilder.getOS()) {
             case LINUX:
-                final Int32_t resultArg = Int32_t.allocateNative(scope);
+                final Int32_t resultArg = Int32_t.allocateNative(ms);
                 MemoryAddress result = LibJnhwPosixTestLoader.invokeExact_MA___A_sI("tryGet_IOCBASECMD", resultArg.toAddressable(), 1);
                 Assertions.assertEquals(MemoryAddress.NULL, result);
                 Assertions.assertThrows(NoSuchMethodException.class, () -> {
@@ -283,7 +283,7 @@ public class IoctlTest {
     public void test_IOCGROUP() throws Exception {
         switch (MultiarchTupelBuilder.getOS()) {
             case LINUX:
-                final Int32_t resultArg = Int32_t.allocateNative(scope);
+                final Int32_t resultArg = Int32_t.allocateNative(ms);
                 MemoryAddress result = LibJnhwPosixTestLoader.invokeExact_MA___A_sI("tryGet_IOCGROUP", resultArg.toAddressable(), 1);
                 Assertions.assertEquals(MemoryAddress.NULL, result);
                 Assertions.assertThrows(NoSuchMethodException.class, () -> {

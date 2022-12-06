@@ -24,7 +24,7 @@ package de.ibapl.jnhw.util.posix.memory;
 import de.ibapl.jnhw.common.memory.MemoryAccessor;
 import de.ibapl.jnhw.util.posix.PosixDataType;
 import java.nio.ByteOrder;
-import jdk.incubator.foreign.MemorySegment;
+import java.lang.foreign.MemorySegment;
 
 /**
  *

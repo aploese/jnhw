@@ -24,8 +24,8 @@ package de.ibapl.jnhw.common.downcall.wrapper;
 import de.ibapl.jnhw.common.datatypes.BaseDataType;
 import de.ibapl.jnhw.common.datatypes.Pointer;
 import de.ibapl.jnhw.common.downcall.JnhwMi__I___A__A__A__A__I;
+import java.lang.foreign.SymbolLookup;
 import java.util.NoSuchElementException;
-import jdk.incubator.foreign.SymbolLookup;
 
 /**
  *
@@ -34,7 +34,7 @@ import jdk.incubator.foreign.SymbolLookup;
 public interface JnhwMh__B___A__A__A__A_uI extends JnhwMethodHandle {
 
     public static JnhwMh__B___A__A__A__A_uI ofOrNull(String name, BaseDataType result, BaseDataType arg1, BaseDataType arg2, BaseDataType arg3, BaseDataType arg4, BaseDataType arg5) {
-        return ofOrNull(C_LINKER, name, result, arg1, arg2, arg3, arg4, arg5);
+        return ofOrNull(NATIVE_LINKER.defaultLookup(), name, result, arg1, arg2, arg3, arg4, arg5);
     }
 
     public static JnhwMh__B___A__A__A__A_uI ofOrNull(SymbolLookup symbolLookup, String name, BaseDataType result, BaseDataType arg1, BaseDataType arg2, BaseDataType arg3, BaseDataType arg4, BaseDataType arg5) {
@@ -46,7 +46,7 @@ public interface JnhwMh__B___A__A__A__A_uI extends JnhwMethodHandle {
     }
 
     public static JnhwMh__B___A__A__A__A_uI of(String name, BaseDataType result, BaseDataType arg1, BaseDataType arg2, BaseDataType arg3, BaseDataType arg4, BaseDataType arg5) {
-        return of(C_LINKER, name, result, arg1, arg2, arg3, arg4, arg5);
+        return of(NATIVE_LINKER.defaultLookup(), name, result, arg1, arg2, arg3, arg4, arg5);
     }
 
     public static JnhwMh__B___A__A__A__A_uI of(SymbolLookup symbolLookup, String name, BaseDataType result, BaseDataType arg1, BaseDataType arg2, BaseDataType arg3, BaseDataType arg4, BaseDataType arg5) {

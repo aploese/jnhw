@@ -27,17 +27,17 @@ import de.ibapl.jnhw.common.memory.IntPtr_t;
 import de.ibapl.jnhw.libloader.LoadResult;
 import de.ibapl.jnhw.libloader.LoadState;
 import de.ibapl.jnhw.libloader.NativeLibResolver;
+import java.lang.foreign.Addressable;
+import java.lang.foreign.FunctionDescriptor;
+import java.lang.foreign.Linker;
+import java.lang.foreign.MemoryAddress;
+import java.lang.foreign.MemorySegment;
+import java.lang.foreign.MemorySession;
+import java.lang.foreign.SymbolLookup;
+import java.lang.foreign.ValueLayout;
 import java.lang.invoke.MethodHandle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import jdk.incubator.foreign.Addressable;
-import jdk.incubator.foreign.CLinker;
-import jdk.incubator.foreign.FunctionDescriptor;
-import jdk.incubator.foreign.MemoryAddress;
-import jdk.incubator.foreign.NativeSymbol;
-import jdk.incubator.foreign.ResourceScope;
-import jdk.incubator.foreign.SymbolLookup;
-import jdk.incubator.foreign.ValueLayout;
 
 /**
  *
@@ -52,7 +52,7 @@ public final class LibJnhwPosixTestLoader {
     public final static int LIB_JNHW_POSIX_TEST_VERSION = 4;
     private final static Object loadLock = new Object();
     private static LoadState state = LoadState.INIT;
-    private final static CLinker C_LINKER = CLinker.systemCLinker();
+    private final static Linker NATIVE_LINKER = Linker.nativeLinker();
 
     static {
         LibJnhwPosixTestLoader.touch();
@@ -93,10 +93,10 @@ public final class LibJnhwPosixTestLoader {
     private static MethodHandle downcallHandle(String name, FunctionDescriptor function) throws NoSuchNativeMethodException {
         SymbolLookup loaderLookup = SymbolLookup.loaderLookup();
         try {
-            NativeSymbol ns = loaderLookup.lookup(name).orElseThrow(() -> {
+            MemorySegment ns = loaderLookup.lookup(name).orElseThrow(() -> {
                 return new NoSuchNativeMethodException(name);
             });
-            return C_LINKER.downcallHandle(ns, function);
+            return NATIVE_LINKER.downcallHandle(ns, function);
         } catch (Throwable t) {
             LOG.log(Level.SEVERE, "d.i.j.p.LibJnhwPosixTestLoader.downcallHandle(\"" + name + "\")", t);
             throw t;
@@ -214,8 +214,8 @@ public final class LibJnhwPosixTestLoader {
     }
 
     public static Integer getClassIntegerDefine(String name) {
-        try ( ResourceScope scope = ResourceScope.newConfinedScope()) {
-            Int32_t value = Int32_t.allocateNative(scope);
+        try ( MemorySession ms = MemorySession.openConfined()) {
+            Int32_t value = Int32_t.allocateNative(ms);
             MemoryAddress result = LibJnhwPosixTestLoader.invokeExact_Adr_Adr("tryGetValueOf_" + name, value.toAddressable().address());
             if (MemoryAddress.NULL == result) {
                 return null;
@@ -249,8 +249,8 @@ public final class LibJnhwPosixTestLoader {
     }
 
     public static MemoryAddress tryGetAdrDefine(String name) {
-        try ( ResourceScope scope = ResourceScope.newConfinedScope()) {
-            IntPtr_t value = IntPtr_t.allocateNative(scope);
+        try ( MemorySession ms = MemorySession.openConfined()) {
+            IntPtr_t value = IntPtr_t.allocateNative(ms);
             MemoryAddress result = LibJnhwPosixTestLoader.invokeExact_Adr_Adr("tryGetValueOf_" + name, value.toAddressable().address());
             if (MemoryAddress.NULL == result) {
                 return null;

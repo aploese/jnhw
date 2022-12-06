@@ -33,27 +33,27 @@ import de.ibapl.jnhw.common.annotation.Define;
 import de.ibapl.jnhw.common.annotation.Include;
 import de.ibapl.jnhw.common.datatypes.BaseDataType;
 import de.ibapl.jnhw.common.datatypes.MultiarchTupelBuilder;
+import de.ibapl.jnhw.common.downcall.wrapper.JnhwMh_sI___A;
+import de.ibapl.jnhw.common.downcall.wrapper.JnhwMh_sI___V;
+import de.ibapl.jnhw.common.downcall.wrapper.JnhwMh_sI__sI;
+import de.ibapl.jnhw.common.downcall.wrapper.JnhwMh_sI__uI;
+import de.ibapl.jnhw.common.downcall.wrapper.JnhwMh_sI__uI_uI;
+import de.ibapl.jnhw.common.downcall.wrapper.JnhwMh_sL__sI;
+import de.ibapl.jnhw.common.downcall.wrapper.JnhwMh_sL__sI_sL_sI;
+import de.ibapl.jnhw.common.downcall.wrapper.JnhwMh_sL_sI__A_uL;
+import de.ibapl.jnhw.common.downcall.wrapper.JnhwMh_uI___V;
 import de.ibapl.jnhw.common.exception.NativeErrorException;
 import de.ibapl.jnhw.common.exception.NoSuchNativeMethodException;
 import de.ibapl.jnhw.common.memory.Int32_t;
 import de.ibapl.jnhw.common.memory.MemoryArray;
 import de.ibapl.jnhw.common.memory.OpaqueMemory;
+import de.ibapl.jnhw.common.util.ByteBufferUtils;
 import de.ibapl.jnhw.common.util.IntDefine;
 import de.ibapl.jnhw.util.posix.PosixDataType;
+import java.lang.foreign.MemorySegment;
+import java.lang.foreign.MemorySession;
 import java.nio.ByteBuffer;
-import de.ibapl.jnhw.common.util.ByteBufferUtils;
 import java.util.Objects;
-import jdk.incubator.foreign.MemorySegment;
-import jdk.incubator.foreign.ResourceScope;
-import de.ibapl.jnhw.common.downcall.wrapper.JnhwMh_sI___A;
-import de.ibapl.jnhw.common.downcall.wrapper.JnhwMh_sL_sI__A_uL;
-import de.ibapl.jnhw.common.downcall.wrapper.JnhwMh_sI__uI_uI;
-import de.ibapl.jnhw.common.downcall.wrapper.JnhwMh_uI___V;
-import de.ibapl.jnhw.common.downcall.wrapper.JnhwMh_sI___V;
-import de.ibapl.jnhw.common.downcall.wrapper.JnhwMh_sL__sI_sL_sI;
-import de.ibapl.jnhw.common.downcall.wrapper.JnhwMh_sL__sI;
-import de.ibapl.jnhw.common.downcall.wrapper.JnhwMh_sI__uI;
-import de.ibapl.jnhw.common.downcall.wrapper.JnhwMh_sI__sI;
 
 /**
  * Wrapper around the {@code <stdio.h>} header.
@@ -268,8 +268,8 @@ public final class Unistd {
             return new Int32_t(memorySegment, elementoffset);
         }
 
-        public final static JnhwPipeFiledes allocateNative(ResourceScope scope) {
-            return new JnhwPipeFiledes(MemorySegment.allocateNative(Int32_t.DATA_TYPE.SIZE_OF * ARRAY_LENGTH, scope), 0);
+        public final static JnhwPipeFiledes allocateNative(MemorySession ms) {
+            return new JnhwPipeFiledes(MemorySegment.allocateNative(Int32_t.DATA_TYPE.SIZE_OF * ARRAY_LENGTH, ms), 0);
         }
 
         public JnhwPipeFiledes(MemorySegment memorySegment, long offset) {
@@ -596,8 +596,8 @@ public final class Unistd {
      */
     @ssize_t
     public final static int read(int fildes, byte[] buf) throws NativeErrorException {
-        try ( ResourceScope scope = ResourceScope.newConfinedScope()) {
-            final MemorySegment mem = MemorySegment.allocateNative(buf.length, scope);
+        try ( MemorySession ms = MemorySession.openConfined()) {
+            final MemorySegment mem = MemorySegment.allocateNative(buf.length, ms);
             final long result = read.invoke_sL__sI_A_uL(fildes, mem, buf.length);
             if (result == -1) {
                 throw new NativeErrorException(Errno.errno());
@@ -630,8 +630,8 @@ public final class Unistd {
     @ssize_t
     public final static int read(int fildes, byte[] buf, int destOff, @size_t int nbyte) throws NativeErrorException {
         Objects.checkFromIndexSize(destOff, nbyte, buf.length);
-        try ( ResourceScope scope = ResourceScope.newConfinedScope()) {
-            final MemorySegment mem = MemorySegment.allocateNative(nbyte, scope);
+        try ( MemorySession ms = MemorySession.openConfined()) {
+            final MemorySegment mem = MemorySegment.allocateNative(nbyte, ms);
             final long result = read.invoke_sL__sI_A_uL(fildes, mem, nbyte);
             if (result == -1) {
                 throw new NativeErrorException(Errno.errno());
@@ -665,7 +665,7 @@ public final class Unistd {
     public final static int read(int fildes, ByteBuffer buffer) throws NativeErrorException {
         final long result;
         if (buffer.isDirect()) {
-            result = read.invoke_sL__sI_A_uL(fildes, MemorySegment.ofByteBuffer(buffer), buffer.remaining());
+            result = read.invoke_sL__sI_A_uL(fildes, MemorySegment.ofBuffer(buffer), buffer.remaining());
             if (result == -1) {
                 throw new NativeErrorException(Errno.errno());
             }
@@ -925,8 +925,8 @@ public final class Unistd {
      */
     @ssize_t
     public final static int write(int fildes, byte[] buf) throws NativeErrorException {
-        try ( ResourceScope scope = ResourceScope.newConfinedScope()) {
-            final MemorySegment mem = MemorySegment.allocateNative(buf.length, scope);
+        try ( MemorySession ms = MemorySession.openConfined()) {
+            final MemorySegment mem = MemorySegment.allocateNative(buf.length, ms);
             mem.copyFrom(MemorySegment.ofArray(buf));
             final long result = write.invoke_sL__sI_A_uL(fildes, mem, buf.length);
             if (result == -1) {
@@ -959,8 +959,8 @@ public final class Unistd {
     @ssize_t
     public final static int write(int fildes, byte[] buf, int srcOff, @size_t int nbyte) throws NativeErrorException {
         Objects.checkFromIndexSize(srcOff, nbyte, buf.length);
-        try ( ResourceScope scope = ResourceScope.newConfinedScope()) {
-            final MemorySegment mem = MemorySegment.allocateNative(nbyte, scope);
+        try ( MemorySession ms = MemorySession.openConfined()) {
+            final MemorySegment mem = MemorySegment.allocateNative(nbyte, ms);
             mem.copyFrom(MemorySegment.ofArray(buf).asSlice(srcOff, nbyte));
             final long result = write.invoke_sL__sI_A_uL(fildes, mem, nbyte);
             if (result == -1) {
@@ -992,7 +992,7 @@ public final class Unistd {
     public final static int write(int fildes, ByteBuffer buffer) throws NativeErrorException {
         final long result;
         if (buffer.isDirect()) {
-            result = write.invoke_sL__sI_A_uL(fildes, MemorySegment.ofByteBuffer(buffer), buffer.remaining());
+            result = write.invoke_sL__sI_A_uL(fildes, MemorySegment.ofBuffer(buffer), buffer.remaining());
             if (result == -1) {
                 throw new NativeErrorException(Errno.errno());
             }

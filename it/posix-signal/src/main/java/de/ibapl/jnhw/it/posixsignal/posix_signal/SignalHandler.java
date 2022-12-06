@@ -21,12 +21,10 @@
  */
 package de.ibapl.jnhw.it.posixsignal.posix_signal;
 
-import de.ibapl.jnhw.common.datatypes.Pointer;
-import de.ibapl.jnhw.common.downcall.JnhwMi__I___V;
 import de.ibapl.jnhw.common.downcall.JnhwMi__V___I;
 import de.ibapl.jnhw.posix.Signal;
-import jdk.incubator.foreign.MemoryAddress;
-import jdk.incubator.foreign.ResourceScope;
+import java.lang.foreign.MemoryAddress;
+import java.lang.foreign.MemorySession;
 
 /**
  *
@@ -141,10 +139,10 @@ public abstract class SignalHandler {
     }
 
     private void doForceSignal() {
-        try (ResourceScope rs = ResourceScope.newConfinedScope()){
+        try ( MemorySession ms = MemorySession.openConfined()) {
             System.out.println("force Signal " + signalToRaise + " in thread: " + Thread.currentThread());
             //We will call a NULL pointer on the native side. So we will force a segmentation violation.
-            JnhwMi__V___I callNative__V___I = new JnhwMi__V___I(MemoryAddress.NULL, rs);
+            JnhwMi__V___I callNative__V___I = new JnhwMi__V___I(MemoryAddress.NULL, ms);
             callNative__V___I.invoke__V__sI(42);
         } catch (Throwable t) {
             thrownInHandler = t;

@@ -23,19 +23,17 @@ package de.ibapl.jnhw.common.downcall;
 
 import de.ibapl.jnhw.common.downcall.wrapper.JnhwMh__V__sI;
 import de.ibapl.jnhw.common.downcall.wrapper.JnhwMh__V__uI;
-import java.lang.reflect.Member;
-import jdk.incubator.foreign.Addressable;
-import jdk.incubator.foreign.FunctionDescriptor;
-import jdk.incubator.foreign.MemoryAddress;
-import jdk.incubator.foreign.ResourceScope;
-import jdk.incubator.foreign.SymbolLookup;
-import jdk.incubator.foreign.ValueLayout;
+import java.lang.foreign.Addressable;
+import java.lang.foreign.FunctionDescriptor;
+import java.lang.foreign.MemorySession;
+import java.lang.foreign.SymbolLookup;
+import java.lang.foreign.ValueLayout;
 
 /**
  *
  * @author aploese
  */
-public class JnhwMi__V___I extends JnhwMethodInvoker implements JnhwMh__V__sI, JnhwMh__V__uI  {
+public class JnhwMi__V___I extends JnhwMethodInvoker implements JnhwMh__V__sI, JnhwMh__V__uI {
 
     private final static FunctionDescriptor FD = FunctionDescriptor.ofVoid(ValueLayout.JAVA_INT);
 
@@ -43,8 +41,8 @@ public class JnhwMi__V___I extends JnhwMethodInvoker implements JnhwMh__V__sI, J
         super(symbolLookup, name, FD);
     }
 
-    public JnhwMi__V___I(Addressable addressable, ResourceScope scope) {
-        super(addressable, FD, scope);
+    public JnhwMi__V___I(Addressable addressable, MemorySession ms) {
+        super(addressable, FD, ms);
     }
 
     @Override

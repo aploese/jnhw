@@ -27,13 +27,13 @@ import de.ibapl.jnhw.common.exception.NoSuchNativeMethodException;
 import de.ibapl.jnhw.common.exception.NoSuchNativeTypeException;
 import de.ibapl.jnhw.posix.Signal;
 import de.ibapl.jnhw.util.posix.DefinesTest;
-import jdk.incubator.foreign.ResourceScope;
+import java.lang.foreign.MemorySession;
 import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.condition.DisabledOnOs;
 
 /**
@@ -51,16 +51,16 @@ public class UcontextTest {
         DefinesTest.testDefines(Ucontext.class, "HAVE_UCONTEXT_H");
     }
 
-    private ResourceScope scope;
+    private MemorySession ms;
 
     @BeforeEach
     public void setUp() {
-        scope = ResourceScope.newConfinedScope();
+        ms = MemorySession.openConfined();
     }
 
     @AfterEach
     public void tearDown() {
-        scope.close();
+        ms.close();
     }
 
     /**
@@ -71,11 +71,11 @@ public class UcontextTest {
         switch (MultiarchTupelBuilder.getOS()) {
             case OPEN_BSD:
             case DARWIN:
-                assertThrows(NoSuchNativeTypeException.class, () -> Ucontext.getcontext(Signal.Ucontext_t.tryAllocateNative(scope)));
+                assertThrows(NoSuchNativeTypeException.class, () -> Ucontext.getcontext(Signal.Ucontext_t.tryAllocateNative(ms)));
                 break;
             default:
                 assertThrows(NullPointerException.class, () -> Ucontext.getcontext(null));
-                Signal.Ucontext_t ucp = Signal.Ucontext_t.tryAllocateNative(scope);
+                Signal.Ucontext_t ucp = Signal.Ucontext_t.tryAllocateNative(ms);
                 Ucontext.getcontext(ucp);
                 StringBuilder sb = new StringBuilder();
                 ucp.nativeToString(sb, "", " ");
@@ -98,7 +98,7 @@ public class UcontextTest {
                 break;
             default:
                 assertThrows(NullPointerException.class, () -> Ucontext.setcontext(null));
-                Signal.Ucontext_t ucp = Signal.Ucontext_t.tryAllocateNative(scope);
+                Signal.Ucontext_t ucp = Signal.Ucontext_t.tryAllocateNative(ms);
                 count = 0;
                 Ucontext.getcontext(ucp);
                 count++;

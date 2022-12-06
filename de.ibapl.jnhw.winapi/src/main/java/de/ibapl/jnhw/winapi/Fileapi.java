@@ -24,23 +24,23 @@ package de.ibapl.jnhw.winapi;
 import de.ibapl.jnhw.common.annotation.Define;
 import de.ibapl.jnhw.common.annotation.Include;
 import de.ibapl.jnhw.common.datatypes.Pointer;
+import de.ibapl.jnhw.common.downcall.wrapper.JnhwMh_MA___A_uI_uI__A_uI_uI__A;
+import de.ibapl.jnhw.common.downcall.wrapper.JnhwMh__B___A;
+import de.ibapl.jnhw.common.downcall.wrapper.JnhwMh__B___A__A_uI__A__A;
 import de.ibapl.jnhw.common.exception.NativeErrorException;
 import de.ibapl.jnhw.common.memory.OpaqueMemory;
 import de.ibapl.jnhw.common.util.ByteBufferUtils;
 import de.ibapl.jnhw.common.util.ConversionsJava2Native;
+import de.ibapl.jnhw.util.winapi.Kernel32Loader;
 import de.ibapl.jnhw.util.winapi.WinApiDataType;
 import de.ibapl.jnhw.winapi.Minwinbase.LPOVERLAPPED;
 import de.ibapl.jnhw.winapi.Minwinbase.SECURITY_ATTRIBUTES;
 import de.ibapl.jnhw.winapi.Winnt.HANDLE;
 import java.io.File;
+import java.lang.foreign.MemoryAddress;
+import java.lang.foreign.MemorySegment;
+import java.lang.foreign.MemorySession;
 import java.nio.ByteBuffer;
-import jdk.incubator.foreign.MemoryAddress;
-import jdk.incubator.foreign.MemorySegment;
-import jdk.incubator.foreign.ResourceScope;
-import de.ibapl.jnhw.common.downcall.wrapper.JnhwMh_MA___A_uI_uI__A_uI_uI__A;
-import de.ibapl.jnhw.common.downcall.wrapper.JnhwMh__B___A;
-import de.ibapl.jnhw.common.downcall.wrapper.JnhwMh__B___A__A_uI__A__A;
-import de.ibapl.jnhw.util.winapi.Kernel32Loader;
 
 /**
  * Wrapper around the
@@ -219,8 +219,8 @@ public final class Fileapi {
      * indicates an error.
      */
     public final static HANDLE CreateFileW(String lpFileName, int dwDesiredAccess, int dwShareMode, SECURITY_ATTRIBUTES lpSecurityAttributes, int dwCreationDisposition, int dwFlagsAndAttributes, HANDLE hTemplateFile) throws NativeErrorException {
-        try ( ResourceScope scope = ResourceScope.newConfinedScope()) {
-            WinDef.LPWSTR _lpFileName = WinDef.LPWSTR.wrap(lpFileName, true, scope);
+        try ( MemorySession ms = MemorySession.openConfined()) {
+            WinDef.LPWSTR _lpFileName = WinDef.LPWSTR.wrap(lpFileName, true, ms);
             final MemoryAddress result = CreateFileW.invoke_MA___P_uI_uI__P_uI_uI__P(
                     _lpFileName,
                     dwDesiredAccess,
@@ -275,8 +275,8 @@ public final class Fileapi {
      * indicates an error.
      */
     public static void ReadFile(HANDLE hFile, byte[] lpBuffer, WinDef.LPDWORD lpNumberOfBytesRead) throws NativeErrorException {
-        try ( ResourceScope scope = ResourceScope.newConfinedScope()) {
-            final MemorySegment _lpBuffer = MemorySegment.allocateNative(lpBuffer.length, scope);
+        try ( MemorySession ms = MemorySession.openConfined()) {
+            final MemorySegment _lpBuffer = MemorySegment.allocateNative(lpBuffer.length, ms);
             if (!ReadFile.invoke__B___P__A_uI__P__P(
                     hFile,
                     _lpBuffer,
@@ -313,8 +313,8 @@ public final class Fileapi {
      * indicates an error.
      */
     public final static void ReadFile(HANDLE hFile, byte[] lpBuffer, int off, int nNumberOfBytesToRead, WinDef.LPDWORD lpNumberOfBytesRead) throws NativeErrorException {
-        try ( ResourceScope scope = ResourceScope.newConfinedScope()) {
-            final MemorySegment _lpBuffer = MemorySegment.allocateNative(nNumberOfBytesToRead, scope);
+        try ( MemorySession ms = MemorySession.openConfined()) {
+            final MemorySegment _lpBuffer = MemorySegment.allocateNative(nNumberOfBytesToRead, ms);
             if (!ReadFile.invoke__B___P__A_uI__P__P(
                     hFile,
                     _lpBuffer,
@@ -348,7 +348,7 @@ public final class Fileapi {
         if (lpBuffer.isDirect()) {
             if (!ReadFile.invoke__B___P__A_uI__P__P(
                     hFile,
-                    MemorySegment.ofByteBuffer(lpBuffer),
+                    MemorySegment.ofBuffer(lpBuffer),
                     lpBuffer.remaining(),
                     lpNumberOfBytesRead,
                     Pointer.NULL)) {
@@ -400,7 +400,7 @@ public final class Fileapi {
         if (lpBuffer.isDirect()) {
             if (!ReadFile.invoke__B___P__A_uI__P__P(
                     hFile,
-                    MemorySegment.ofByteBuffer(lpBuffer),
+                    MemorySegment.ofBuffer(lpBuffer),
                     lpBuffer.remaining(),
                     Pointer.NULL,
                     lpOverlapped)) {
@@ -653,7 +653,7 @@ public final class Fileapi {
         if (lpBuffer.isDirect()) {
             if (!ReadFileEx.invoke__B___P__A_uI__P__P(
                     hFile,
-                    MemorySegment.ofByteBuffer(lpBuffer),
+                    MemorySegment.ofBuffer(lpBuffer),
                     lpBuffer.remaining(),
                     lpOverlapped,
                     lpCompletionRoutine)) {
@@ -796,8 +796,8 @@ public final class Fileapi {
      * indicates an error.
      */
     public static void WriteFile(HANDLE hFile, byte[] lpBuffer, WinDef.LPDWORD lpNumberOfBytesWritten) throws NativeErrorException {
-        try ( ResourceScope scope = ResourceScope.newConfinedScope()) {
-            final MemorySegment _lpBuffer = MemorySegment.allocateNative(lpBuffer.length, scope);
+        try ( MemorySession ms = MemorySession.openConfined()) {
+            final MemorySegment _lpBuffer = MemorySegment.allocateNative(lpBuffer.length, ms);
             _lpBuffer.copyFrom(MemorySegment.ofArray(lpBuffer));
             if (!WriteFile.invoke__B___P__A_uI__P__P(
                     hFile,
@@ -833,8 +833,8 @@ public final class Fileapi {
      * indicates an error.
      */
     public final static void WriteFile(HANDLE hFile, byte[] lpBuffer, int off, int nNumberOfBytesToWrite, WinDef.LPDWORD lpNumberOfBytesWritten) throws NativeErrorException {
-        try ( ResourceScope scope = ResourceScope.newConfinedScope()) {
-            final MemorySegment _lpBuffer = MemorySegment.allocateNative(nNumberOfBytesToWrite, scope);
+        try ( MemorySession ms = MemorySession.openConfined()) {
+            final MemorySegment _lpBuffer = MemorySegment.allocateNative(nNumberOfBytesToWrite, ms);
             _lpBuffer.copyFrom(MemorySegment.ofArray(lpBuffer).asSlice(off, nNumberOfBytesToWrite));
             if (!WriteFile.invoke__B___P__A_uI__P__P(
                     hFile,
@@ -867,7 +867,7 @@ public final class Fileapi {
         if (lpBuffer.isDirect()) {
             if (!WriteFile.invoke__B___P__A_uI__P__P(
                     hFile,
-                    MemorySegment.ofByteBuffer(lpBuffer),
+                    MemorySegment.ofBuffer(lpBuffer),
                     lpBuffer.remaining(),
                     lpNumberOfBytesWritten,
                     Pointer.NULL)) {
@@ -936,7 +936,7 @@ public final class Fileapi {
             System.err.println("de.ibapl.jnhw.winapi.Fileapi.WriteFile()" + Errhandlingapi.GetLastError());
             if (!WriteFile.invoke__B___P__A_uI__P__P(
                     hFile,
-                    MemorySegment.ofByteBuffer(lpBuffer),
+                    MemorySegment.ofBuffer(lpBuffer),
                     lpBuffer.remaining(),
                     Pointer.NULL,
                     lpOverlapped)) {
@@ -1184,7 +1184,7 @@ public final class Fileapi {
         if (lpBuffer.isDirect()) {
             if (!WriteFileEx.invoke__B___P__A_uI__P__P(
                     hFile,
-                    MemorySegment.ofByteBuffer(lpBuffer),
+                    MemorySegment.ofBuffer(lpBuffer),
                     lpBuffer.remaining(),
                     lpOverlapped,
                     lpCompletionRoutine)) {

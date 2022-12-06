@@ -23,8 +23,8 @@ package de.ibapl.jnhw.common.test.memory;
 
 import de.ibapl.jnhw.common.datatypes.BaseDataType;
 import de.ibapl.jnhw.common.memory.AsSignedInt;
-import jdk.incubator.foreign.MemorySegment;
-import jdk.incubator.foreign.ResourceScope;
+import java.lang.foreign.MemorySegment;
+import java.lang.foreign.MemorySession;
 import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.Test;
 
@@ -36,13 +36,13 @@ public class AsSignedIntTest {
 
     @Test
     public void testNative() {
-        try ( ResourceScope rs = ResourceScope.newConfinedScope()) {
-            AsSignedInt instance = AsSignedInt.allocateNative(BaseDataType.int16_t, rs);
+        try ( MemorySession ms = MemorySession.openConfined()) {
+            AsSignedInt instance = AsSignedInt.allocateNative(BaseDataType.int16_t, ms);
             short expResult = 0x2010;
             instance.setFromSignedInt(expResult);
             assertEquals(expResult, instance.getAsSignedInt());
             assertThrows(IllegalArgumentException.class, () -> instance.setFromSignedInt(Integer.MAX_VALUE));
-            assertThrows(IllegalArgumentException.class, () -> new AsSignedInt(BaseDataType.uint8_t, MemorySegment.allocateNative(BaseDataType.uint8_t.SIZE_OF, rs), 0));
+            assertThrows(IllegalArgumentException.class, () -> new AsSignedInt(BaseDataType.uint8_t, MemorySegment.allocateNative(BaseDataType.uint8_t.SIZE_OF, ms), 0));
         }
     }
 }

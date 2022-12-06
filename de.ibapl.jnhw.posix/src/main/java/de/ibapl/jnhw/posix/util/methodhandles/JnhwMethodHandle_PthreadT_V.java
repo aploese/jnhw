@@ -23,14 +23,13 @@ package de.ibapl.jnhw.posix.util.methodhandles;
 
 import de.ibapl.jnhw.common.datatypes.BaseDataType;
 import de.ibapl.jnhw.common.downcall.JnhwMethodInvoker;
-import de.ibapl.jnhw.common.memory.OpaqueMemory;
 import de.ibapl.jnhw.common.downcall.wrapper.JnhwMethodHandle;
 import de.ibapl.jnhw.posix.Pthread;
-import jdk.incubator.foreign.FunctionDescriptor;
-import jdk.incubator.foreign.MemoryAddress;
-import jdk.incubator.foreign.ResourceScope;
-import jdk.incubator.foreign.SymbolLookup;
-import jdk.incubator.foreign.ValueLayout;
+import java.lang.foreign.FunctionDescriptor;
+import java.lang.foreign.MemoryAddress;
+import java.lang.foreign.MemorySession;
+import java.lang.foreign.SymbolLookup;
+import java.lang.foreign.ValueLayout;
 
 /**
  *
@@ -45,11 +44,11 @@ public interface JnhwMethodHandle_PthreadT_V extends JnhwMethodHandle {
         }
 
         @Override
-        public Pthread.Pthread_t invokeExact(ResourceScope scope) {
+        public Pthread.Pthread_t invokeExact(MemorySession ms) {
             try {
                 return Pthread.Pthread_t.wrap(
                         (long) methodHandle.invokeExact(),
-                        scope);
+                        ms);
             } catch (Throwable t) {
                 throw createRuntimeExceptionInvoke(t);
             }
@@ -63,9 +62,9 @@ public interface JnhwMethodHandle_PthreadT_V extends JnhwMethodHandle {
         }
 
         @Override
-        public Pthread.Pthread_t invokeExact(ResourceScope scope) {
+        public Pthread.Pthread_t invokeExact(MemorySession ms) {
             try {
-                return Pthread.Pthread_t.ofAddress((MemoryAddress) methodHandle.invokeExact(), scope);
+                return Pthread.Pthread_t.ofAddress((MemoryAddress) methodHandle.invokeExact(), ms);
             } catch (Throwable t) {
                 throw createRuntimeExceptionInvoke(t);
             }
@@ -73,7 +72,7 @@ public interface JnhwMethodHandle_PthreadT_V extends JnhwMethodHandle {
     }
 
     static JnhwMethodHandle_PthreadT_V of(String name, BaseDataType result) {
-        return of(C_LINKER, name, result);
+        return of(NATIVE_LINKER.defaultLookup(), name, result);
     }
 
     static JnhwMethodHandle_PthreadT_V of(SymbolLookup symbolLookup, String name, BaseDataType result) {
@@ -87,6 +86,6 @@ public interface JnhwMethodHandle_PthreadT_V extends JnhwMethodHandle {
         }
     }
 
-    Pthread.Pthread_t invokeExact(ResourceScope ms);
+    Pthread.Pthread_t invokeExact(MemorySession ms);
 
 }

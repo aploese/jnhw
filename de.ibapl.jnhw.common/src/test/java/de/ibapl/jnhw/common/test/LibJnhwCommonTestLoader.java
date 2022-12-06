@@ -21,18 +21,17 @@
  */
 package de.ibapl.jnhw.common.test;
 
-import java.lang.invoke.MethodHandle;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
 import de.ibapl.jnhw.libloader.LoadResult;
 import de.ibapl.jnhw.libloader.LoadState;
 import de.ibapl.jnhw.libloader.NativeLibResolver;
-import jdk.incubator.foreign.CLinker;
-import jdk.incubator.foreign.FunctionDescriptor;
-import jdk.incubator.foreign.NativeSymbol;
-import jdk.incubator.foreign.SymbolLookup;
-import jdk.incubator.foreign.ValueLayout;
+import java.lang.foreign.FunctionDescriptor;
+import java.lang.foreign.Linker;
+import java.lang.foreign.MemorySegment;
+import java.lang.foreign.SymbolLookup;
+import java.lang.foreign.ValueLayout;
+import java.lang.invoke.MethodHandle;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -45,7 +44,7 @@ public final class LibJnhwCommonTestLoader {
     public final static int LIB_JNHW_COMMON_TEST_VERSION = 4;
     private final static Object loadLock = new Object();
     private static LoadState state = LoadState.INIT;
-    private final static CLinker C_LINKER = CLinker.systemCLinker();
+    private final static Linker NATIVE_LINKER = Linker.nativeLinker();
 
     static {
         LibJnhwCommonTestLoader.touch();
@@ -86,8 +85,8 @@ public final class LibJnhwCommonTestLoader {
     public static MethodHandle downcallHandle(String name, FunctionDescriptor function) {
         try {
             SymbolLookup loaderLookup = SymbolLookup.loaderLookup();
-            NativeSymbol symbol = loaderLookup.lookup(name).get();
-            return C_LINKER.downcallHandle(symbol, function);
+            MemorySegment symbol = loaderLookup.lookup(name).get();
+            return NATIVE_LINKER.downcallHandle(symbol, function);
         } catch (Throwable t) {
             Logger.getLogger("d.i.j.c.t.LibJnhwCommonTestLoader").log(Level.SEVERE, name, t);
             return null;

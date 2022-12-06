@@ -42,7 +42,6 @@
                 <configuration>
                     <compilerArgs>
                         <arg>--enable-preview</arg>
-                        <arg>--add-modules=jdk.incubator.foreign</arg>
                     </compilerArgs>
                 </configuration>
             </plugin>
@@ -50,12 +49,12 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
                 <configuration>
-                    <argLine>--enable-preview --add-modules=jdk.incubator.foreign --enable-native-access=de.ibapl.jnhw.common,de.ibapl.jnhw.posix,ALL-UNNAMED</argLine>
+                    <argLine>--enable-preview --enable-native-access=de.ibapl.jnhw.common,de.ibapl.jnhw.posix,ALL-UNNAMED</argLine>
                 </configuration>
             </plugin>
         </plugins>
     </build>
 
-    <description>Provider which accesses the native resources with a Java Native Header Wrapper (JNHR) binding.</description>
+    <description>Provider which accesses the native resources with a Java Native Header Wrapper (JNHW) binding.</description>
 
 </project>

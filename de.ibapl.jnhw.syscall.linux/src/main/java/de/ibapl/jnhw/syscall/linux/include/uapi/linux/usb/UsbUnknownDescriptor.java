@@ -23,7 +23,7 @@ package de.ibapl.jnhw.syscall.linux.include.uapi.linux.usb;
 
 import de.ibapl.jnhw.common.util.JsonStringBuilder;
 import java.io.IOException;
-import jdk.incubator.foreign.MemorySegment;
+import java.lang.foreign.MemorySegment;
 
 /**
  *
@@ -38,7 +38,7 @@ public class UsbUnknownDescriptor extends AbstractDescriptor {
     @Override
     protected void nativeToString(JsonStringBuilder jsb, String indentPrefix, String indent) throws IOException {
         byte[] payload = new byte[(int) sizeof() - Layout._sizeof];
-        MEM_ACCESS.copyMemory(memorySegment, Layout._sizeof, payload, 0, payload.length);
+        MEM_ACCESS_BYTE_ALIGNED.copyMemory(memorySegment, Layout._sizeof, payload, 0, payload.length);
         jsb.appendRawDataMember("payload", payload);
     }
 

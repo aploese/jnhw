@@ -22,18 +22,18 @@
 package de.ibapl.jnhw.common.upcall;
 
 import de.ibapl.jnhw.common.memory.NativeFunctionPointer;
+import java.lang.foreign.FunctionDescriptor;
+import java.lang.foreign.Linker;
+import java.lang.foreign.MemoryAddress;
+import java.lang.foreign.MemorySegment;
+import java.lang.foreign.MemorySession;
+import java.lang.foreign.ValueLayout;
 import java.lang.invoke.MethodHandle;
 import java.lang.invoke.MethodHandles;
 import java.lang.invoke.MethodType;
 import java.lang.ref.WeakReference;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import jdk.incubator.foreign.CLinker;
-import jdk.incubator.foreign.FunctionDescriptor;
-import jdk.incubator.foreign.MemoryAddress;
-import jdk.incubator.foreign.NativeSymbol;
-import jdk.incubator.foreign.ResourceScope;
-import jdk.incubator.foreign.ValueLayout;
 
 /**
  *
@@ -44,12 +44,12 @@ public class CallbackFactory__V___I__I_MA {
 
     private final static Logger LOG = Logger.getLogger("d.i.j.c.CallbackFactory__V___I__I_MA");
 
-    private final static CLinker C_LINKER = CLinker.systemCLinker();
+    private final static Linker NATIVE_LINKER = Linker.nativeLinker();
 
     public static final int MAX_CALL_BACKS = 16;
 
     private static final WeakReference<Callback__V___I__I_MA> REFS[] = new WeakReference[MAX_CALL_BACKS];
-    private static final NativeSymbol NATIVE_SYMBOLS[] = new NativeSymbol[MAX_CALL_BACKS];
+    private static final MemorySegment NATIVE_SYMBOLS[] = new MemorySegment[MAX_CALL_BACKS];
 
     static {
         for (int i = 0; i < MAX_CALL_BACKS; i++) {
@@ -69,9 +69,9 @@ public class CallbackFactory__V___I__I_MA {
         return null;
     }
 
-    static NativeSymbol registerCallBack(int index) throws NoSuchMethodException, IllegalAccessException {
+    static MemorySegment registerCallBack(int index) throws NoSuchMethodException, IllegalAccessException {
         MethodHandle handle = MethodHandles.lookup().findStatic(CallbackFactory__V___I__I_MA.class, "trampoline_" + index, MethodType.methodType(void.class, int.class, int.class, MemoryAddress.class));
-        return C_LINKER.upcallStub(handle, FunctionDescriptor.ofVoid(ValueLayout.JAVA_INT, ValueLayout.JAVA_INT, ValueLayout.ADDRESS), ResourceScope.globalScope());
+        return NATIVE_LINKER.upcallStub(handle, FunctionDescriptor.ofVoid(ValueLayout.JAVA_INT, ValueLayout.JAVA_INT, ValueLayout.ADDRESS), MemorySession.global());
     }
 
     /**

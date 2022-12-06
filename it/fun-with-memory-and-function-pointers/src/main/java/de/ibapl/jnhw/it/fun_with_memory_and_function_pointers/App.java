@@ -21,7 +21,7 @@
  */
 package de.ibapl.jnhw.it.fun_with_memory_and_function_pointers;
 
-import jdk.incubator.foreign.ResourceScope;
+import java.lang.foreign.MemorySession;
 
 /**
  * Hello world!
@@ -30,13 +30,13 @@ import jdk.incubator.foreign.ResourceScope;
 public class App {
 
     public static void main(String[] args) throws Exception {
-        try (ResourceScope scope = ResourceScope.newConfinedScope()) {
-        Struct.getMemory(scope);
-        Struct.onTheFlyStructure(scope);
-        Struct.onTheFlyUnion(scope);
-        Struct.printMemory(scope);
+        try ( MemorySession ms = MemorySession.openConfined()) {
+            Struct.getMemory(ms);
+            Struct.onTheFlyStructure(ms);
+            Struct.onTheFlyUnion(ms);
+            Struct.printMemory(ms);
 
-        FunctionPointer.call_I__V();
+            FunctionPointer.call_I__V();
         }
     }
 }

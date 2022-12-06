@@ -23,13 +23,12 @@ package de.ibapl.jnhw.posix.util.methodhandles;
 
 import de.ibapl.jnhw.common.datatypes.BaseDataType;
 import de.ibapl.jnhw.common.downcall.JnhwMethodInvoker;
-import de.ibapl.jnhw.common.memory.OpaqueMemory;
 import de.ibapl.jnhw.common.downcall.wrapper.JnhwMethodHandle;
 import de.ibapl.jnhw.posix.Pthread;
+import java.lang.foreign.FunctionDescriptor;
+import java.lang.foreign.SymbolLookup;
+import java.lang.foreign.ValueLayout;
 import java.util.NoSuchElementException;
-import jdk.incubator.foreign.FunctionDescriptor;
-import jdk.incubator.foreign.SymbolLookup;
-import jdk.incubator.foreign.ValueLayout;
 
 /**
  *
@@ -72,7 +71,7 @@ public interface JnhwMethodHandle_Sint_PthreadT_Sint extends JnhwMethodHandle {
     }
 
     public static JnhwMethodHandle_Sint_PthreadT_Sint ofOrNull(String name, BaseDataType result, BaseDataType arg1, BaseDataType arg2) {
-        return ofOrNull(C_LINKER, name, result, arg1, arg2);
+        return ofOrNull(NATIVE_LINKER.defaultLookup(), name, result, arg1, arg2);
     }
 
     public static JnhwMethodHandle_Sint_PthreadT_Sint ofOrNull(SymbolLookup symbolLookup, String name, BaseDataType result, BaseDataType arg1, BaseDataType arg2) {
@@ -84,7 +83,7 @@ public interface JnhwMethodHandle_Sint_PthreadT_Sint extends JnhwMethodHandle {
     }
 
     static JnhwMethodHandle_Sint_PthreadT_Sint of(String name, BaseDataType result, BaseDataType arg1, BaseDataType arg2) {
-        return of(C_LINKER, name, result, arg1, arg2);
+        return of(NATIVE_LINKER.defaultLookup(), name, result, arg1, arg2);
     }
 
     static JnhwMethodHandle_Sint_PthreadT_Sint of(SymbolLookup symbolLookup, String name, BaseDataType result, BaseDataType arg1, BaseDataType arg2) {

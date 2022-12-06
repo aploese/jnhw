@@ -27,7 +27,7 @@ import de.ibapl.jnhw.common.datatypes.MultiarchTupelBuilder;
 import de.ibapl.jnhw.common.exception.NativeErrorException;
 import de.ibapl.jnhw.common.exception.NoSuchNativeMethodException;
 import de.ibapl.jnhw.util.posix.PosixDataType;
-import jdk.incubator.foreign.MemoryAddress;
+import java.lang.foreign.MemoryAddress;
 import de.ibapl.jnhw.common.downcall.wrapper.JnhwMh__A__sI__A;
 import de.ibapl.jnhw.common.downcall.wrapper.JnhwMh_MA__sI;
 

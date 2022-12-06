@@ -21,36 +21,36 @@
  */
 package de.ibapl.jnhw.posix;
 
-import de.ibapl.jnhw.posix.util.methodhandles.JnhwMethodHandle_Sint_PthreadT_PthreadT;
-import de.ibapl.jnhw.posix.util.methodhandles.JnhwMethodHandle_Sint_PthreadT_Adr_Adr;
-import de.ibapl.jnhw.posix.util.methodhandles.JnhwMethodHandle_PthreadT_V;
-import de.ibapl.jnhw.posix.util.methodhandles.JnhwMethodHandle_Sint_PthreadT;
 import de.ibapl.jnhw.annotation.posix.sys.types.pthread_attr_t;
 import de.ibapl.jnhw.common.annotation.Define;
 import de.ibapl.jnhw.common.annotation.Include;
 import de.ibapl.jnhw.common.datatypes.BaseDataType;
 import de.ibapl.jnhw.common.datatypes.MultiarchTupelBuilder;
+import de.ibapl.jnhw.common.downcall.wrapper.JnhwMh__V___V;
+import de.ibapl.jnhw.common.downcall.wrapper.JnhwMh_sI__A_sI;
+import de.ibapl.jnhw.common.downcall.wrapper.JnhwMh_sI___A;
+import de.ibapl.jnhw.common.downcall.wrapper.JnhwMh_sI___A__A;
+import de.ibapl.jnhw.common.downcall.wrapper.JnhwMh_sI__sI__A;
 import de.ibapl.jnhw.common.exception.NativeErrorException;
 import de.ibapl.jnhw.common.exception.NoSuchNativeMethodException;
 import de.ibapl.jnhw.common.memory.Int32_t;
 import de.ibapl.jnhw.common.memory.OpaqueMemory;
 import de.ibapl.jnhw.common.memory.Struct;
 import de.ibapl.jnhw.common.memory.layout.Alignment;
-import de.ibapl.jnhw.common.downcall.wrapper.JnhwMh__V___V;
 import de.ibapl.jnhw.posix.sys.Types;
+import de.ibapl.jnhw.posix.util.methodhandles.JnhwMethodHandle_PthreadT_V;
+import de.ibapl.jnhw.posix.util.methodhandles.JnhwMethodHandle_Sint_PthreadT;
 import de.ibapl.jnhw.posix.util.methodhandles.JnhwMethodHandle_Sint_PthreadT_Adr;
+import de.ibapl.jnhw.posix.util.methodhandles.JnhwMethodHandle_Sint_PthreadT_Adr_Adr;
+import de.ibapl.jnhw.posix.util.methodhandles.JnhwMethodHandle_Sint_PthreadT_PthreadT;
 import de.ibapl.jnhw.posix.util.methodhandles.JnhwMethodHandle_Sint_PthreadT_Sint;
 import de.ibapl.jnhw.posix.util.methodhandles.JnhwMethodHandle_Sint_PthreadT_Sint_Adr;
 import de.ibapl.jnhw.util.posix.LibrtLoader;
 import de.ibapl.jnhw.util.posix.PosixDataType;
 import java.io.IOException;
-import jdk.incubator.foreign.MemoryAddress;
-import jdk.incubator.foreign.MemorySegment;
-import jdk.incubator.foreign.ResourceScope;
-import de.ibapl.jnhw.common.downcall.wrapper.JnhwMh_sI___A;
-import de.ibapl.jnhw.common.downcall.wrapper.JnhwMh_sI__A_sI;
-import de.ibapl.jnhw.common.downcall.wrapper.JnhwMh_sI___A__A;
-import de.ibapl.jnhw.common.downcall.wrapper.JnhwMh_sI__sI__A;
+import java.lang.foreign.MemoryAddress;
+import java.lang.foreign.MemorySegment;
+import java.lang.foreign.MemorySession;
 
 /**
  * Wrapper around the {@code <pthread.h>} header.
@@ -168,11 +168,11 @@ public class Pthread {
 
         }
 
-        public final static Pthread_attr_t allocateNative(ResourceScope ms) {
+        public final static Pthread_attr_t allocateNative(MemorySession ms) {
             return new Pthread_attr_t(MemorySegment.allocateNative(sizeof, ms), 0);
         }
 
-        public final static Pthread_attr_t ofAddress(MemoryAddress address, ResourceScope ms) {
+        public final static Pthread_attr_t ofAddress(MemoryAddress address, MemorySession ms) {
             return new Pthread_attr_t(MemorySegment.ofAddress(address, sizeof, ms), 0);
         }
 
@@ -180,7 +180,7 @@ public class Pthread {
             super(memorySegment, offset, Pthread_attr_t.sizeof);
         }
 
-        public Pthread_attr_t(MemoryAddress baseAddress, ResourceScope ms) {
+        public Pthread_attr_t(MemoryAddress baseAddress, MemorySession ms) {
             super(baseAddress, ms, Pthread_attr_t.sizeof);
         }
 
@@ -197,16 +197,16 @@ public class Pthread {
         public final static Alignment alignof = PosixDataType.pthread_t.ALIGN_OF;
         public final static int sizeof = PosixDataType.pthread_t.SIZE_OF;
 
-        public final static Pthread_t allocateNative(ResourceScope ms) {
+        public final static Pthread_t allocateNative(MemorySession ms) {
             return new Pthread_t(MemorySegment.allocateNative(sizeof, ms), 0);
         }
 
-        public final static Pthread_t ofAddress(MemoryAddress address, ResourceScope ms) {
+        public final static Pthread_t ofAddress(MemoryAddress address, MemorySession ms) {
             return new Pthread_t(MemorySegment.ofAddress(address, sizeof, ms), 0);
         }
 
-        public static Pthread_t wrap(long value, ResourceScope scope) {
-            Pthread_t result = Pthread_t.allocateNative(scope);
+        public static Pthread_t wrap(long value, MemorySession ms) {
+            Pthread_t result = Pthread_t.allocateNative(ms);
             result.asUint64_t(value);
             return result;
         }
@@ -215,7 +215,7 @@ public class Pthread {
             super(memorySegment, offset, Pthread_t.sizeof);
         }
 
-        public Pthread_t(MemoryAddress baseAddress, ResourceScope ms) {
+        public Pthread_t(MemoryAddress baseAddress, MemorySession ms) {
             super(baseAddress, ms, Pthread_t.sizeof);
         }
 
@@ -595,11 +595,11 @@ public class Pthread {
      * <a href="https://pubs.opengroup.org/onlinepubs/9699919799/functions/pthread_self.html">pthread_self
      * - get the calling thread ID</a>.
      *
-     * @param scope
+     * @param ms
      * @return
      */
-    public final static Pthread_t pthread_self(ResourceScope scope) {
-        return pthread_self.invokeExact(scope);
+    public final static Pthread_t pthread_self(MemorySession ms) {
+        return pthread_self.invokeExact(ms);
     }
 
     /**

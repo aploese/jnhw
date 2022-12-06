@@ -31,7 +31,7 @@ import de.ibapl.jnhw.common.exception.NativeErrorException;
 import de.ibapl.jnhw.common.memory.Int32_t;
 import de.ibapl.jnhw.common.util.IntDefine;
 import de.ibapl.jnhw.posix.Errno;
-import jdk.incubator.foreign.VaList;
+import java.lang.foreign.VaList;
 
 /**
  * Wrapper around the {@code  <sys/ioctl.h>} header. execute

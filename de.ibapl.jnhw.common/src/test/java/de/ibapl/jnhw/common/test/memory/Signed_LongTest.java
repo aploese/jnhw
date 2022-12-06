@@ -25,8 +25,8 @@ import de.ibapl.jnhw.common.datatypes.BaseDataType;
 import de.ibapl.jnhw.common.memory.Int32_t;
 import de.ibapl.jnhw.common.memory.Int64_t;
 import de.ibapl.jnhw.common.memory.Signed_Long;
-import jdk.incubator.foreign.MemorySegment;
-import jdk.incubator.foreign.ResourceScope;
+import java.lang.foreign.MemorySegment;
+import java.lang.foreign.MemorySession;
 import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.Test;
 
@@ -38,8 +38,8 @@ public class Signed_LongTest {
 
     @Test
     public void testNative() {
-        try ( ResourceScope rs = ResourceScope.newConfinedScope()) {
-            Signed_Long instance = Signed_Long.allocateNative(rs);
+        try ( MemorySession ms = MemorySession.openConfined()) {
+            Signed_Long instance = Signed_Long.allocateNative(ms);
             long input64 = 0x8070605040302010L;
             if (BaseDataType.C_long.SIZE_OF == 8) {
                 instance.signed_long(input64);
@@ -62,8 +62,8 @@ public class Signed_LongTest {
 
     @Test
     public void testNativeToString() {
-        try ( ResourceScope rs = ResourceScope.newConfinedScope()) {
-            Signed_Long instance = new Signed_Long(MemorySegment.allocateNative(Signed_Long.DATA_TYPE.SIZE_OF, rs), 0);
+        try ( MemorySession ms = MemorySession.openConfined()) {
+            Signed_Long instance = new Signed_Long(MemorySegment.allocateNative(Signed_Long.DATA_TYPE.SIZE_OF, ms), 0);
             if (BaseDataType.C_long.SIZE_OF == 8) {
                 Int64_t int64_t = Int64_t.map(instance, 0);
                 int64_t.int64_t(0xfffffffffffffffeL);

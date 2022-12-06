@@ -23,14 +23,14 @@ package de.ibapl.jnhw.common.test;
 
 import de.ibapl.jnhw.common.datatypes.MultiarchTupelBuilder;
 import de.ibapl.jnhw.common.memory.Int8_t;
+import de.ibapl.jnhw.common.memory.MemoryArray;
 import de.ibapl.jnhw.common.memory.OpaqueMemory;
 import de.ibapl.jnhw.common.memory.Struct;
-import de.ibapl.jnhw.common.memory.MemoryArray;
 import de.ibapl.jnhw.common.util.JsonStringBuilder;
 import java.io.IOException;
-import jdk.incubator.foreign.MemoryAddress;
-import jdk.incubator.foreign.MemorySegment;
-import jdk.incubator.foreign.ResourceScope;
+import java.lang.foreign.MemoryAddress;
+import java.lang.foreign.MemorySegment;
+import java.lang.foreign.MemorySession;
 import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.Test;
 
@@ -117,7 +117,7 @@ public class JnhwStringBuilderTest {
 
     @Test
     public void testFormatCompact() throws Exception {
-        try ( ResourceScope rs = ResourceScope.newConfinedScope()) {
+        try ( MemorySession ms = MemorySession.openConfined()) {
             JsonStringBuilder jsb = new JsonStringBuilder("", "");
             jsb.appendByteMember("_byte", Byte.MAX_VALUE);
             jsb.appendCharMember("_char", 'a');
@@ -128,8 +128,8 @@ public class JnhwStringBuilderTest {
             }, "]");
             jsb.appendShortMember("_short", Short.MAX_VALUE);
             jsb.appendStringMember("_string", "Hello!");
-            jsb.appendStruct32Member("_struct32", new StructTest(MemorySegment.allocateNative(16, rs)));
-            jsb.appendStructArray32Member("array", new MemoryArrayTest(MemorySegment.allocateNative(12, rs), 0));
+            jsb.appendStruct32Member("_struct32", new StructTest(MemorySegment.allocateNative(16, ms)));
+            jsb.appendStructArray32Member("array", new MemoryArrayTest(MemorySegment.allocateNative(12, ms), 0));
             assertEquals("{_byte : 127, _char : \"a\", _int : 2147483647, _long : 9223372036854775807, _flags : [ONE, TWO], _short : 32767, _string : \"Hello!\", _struct32 : {memory : \"00000000 00000000  00000000 00000000 | \u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\"}, array : [{i0 : 0x00, i1 : 0x00}, {i0 : 0x00, i1 : 0x01}, {i0 : 0x00, i1 : 0x02}]}", jsb.toString()
             );
         }
@@ -137,7 +137,7 @@ public class JnhwStringBuilderTest {
 
     @Test
     public void testFormatPretty() throws Exception {
-        try ( ResourceScope rs = ResourceScope.newConfinedScope()) {
+        try ( MemorySession ms = MemorySession.openConfined()) {
             JsonStringBuilder jsb = new JsonStringBuilder("", " ");
             jsb.appendByteMember("_byte", Byte.MAX_VALUE);
             jsb.appendCharMember("_char", 'a');
@@ -148,8 +148,8 @@ public class JnhwStringBuilderTest {
             }, "]");
             jsb.appendShortMember("_short", Short.MAX_VALUE);
             jsb.appendStringMember("_string", "Hello!");
-            jsb.appendStruct32Member("_struct32", new StructTest(MemorySegment.allocateNative(16, rs)));
-            jsb.appendStructArray32Member("array", new MemoryArrayTest(MemorySegment.allocateNative(12, rs), 0));
+            jsb.appendStruct32Member("_struct32", new StructTest(MemorySegment.allocateNative(16, ms)));
+            jsb.appendStructArray32Member("array", new MemoryArrayTest(MemorySegment.allocateNative(12, ms), 0));
             assertEquals("""
                          {
                           _byte : 127,

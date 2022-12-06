@@ -24,7 +24,7 @@ package de.ibapl.jnhw.winapi;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.condition.EnabledOnOs;
-import jdk.incubator.foreign.MemoryAddress;
+import java.lang.foreign.MemoryAddress;
 
 @EnabledOnOs(org.junit.jupiter.api.condition.OS.WINDOWS)
 public class HandleapiTest {

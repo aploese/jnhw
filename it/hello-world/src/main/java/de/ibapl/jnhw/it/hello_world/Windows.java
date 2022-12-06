@@ -29,7 +29,7 @@ import static de.ibapl.jnhw.winapi.ProcessEnv.GetStdHandle;
 //Import only the needed method from the wrapper of fileapi.h
 import static de.ibapl.jnhw.winapi.Fileapi.WriteFile;
 import static de.ibapl.jnhw.winapi.WinDef.LPDWORD;
-import jdk.incubator.foreign.ResourceScope;
+import java.lang.foreign.ResourceScope;
 
 public class Windows {
 

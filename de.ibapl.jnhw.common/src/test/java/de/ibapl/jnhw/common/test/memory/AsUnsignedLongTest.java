@@ -23,10 +23,10 @@ package de.ibapl.jnhw.common.test.memory;
 
 import de.ibapl.jnhw.common.datatypes.BaseDataType;
 import de.ibapl.jnhw.common.memory.AsUnsignedLong;
-import org.junit.jupiter.api.Test;
+import java.lang.foreign.MemorySegment;
+import java.lang.foreign.MemorySession;
 import static org.junit.jupiter.api.Assertions.*;
-import jdk.incubator.foreign.MemorySegment;
-import jdk.incubator.foreign.ResourceScope;
+import org.junit.jupiter.api.Test;
 
 /**
  *
@@ -36,12 +36,12 @@ public class AsUnsignedLongTest {
 
     @Test
     public void testNative() {
-        try ( ResourceScope rs = ResourceScope.newConfinedScope()) {
-            AsUnsignedLong instance = AsUnsignedLong.allocateNative(BaseDataType.uint32_t, rs);
+        try ( MemorySession ms = MemorySession.openConfined()) {
+            AsUnsignedLong instance = AsUnsignedLong.allocateNative(BaseDataType.uint32_t, ms);
             instance.setFromUnsignedLong(33);
             assertEquals(33, instance.getAsUnsignedLong());
             assertThrows(IllegalArgumentException.class, () -> instance.setFromUnsignedLong(-1));
-            assertThrows(IllegalArgumentException.class, () -> new AsUnsignedLong(BaseDataType.int8_t, MemorySegment.allocateNative(BaseDataType.int8_t.SIZE_OF, rs), 0));
+            assertThrows(IllegalArgumentException.class, () -> new AsUnsignedLong(BaseDataType.int8_t, MemorySegment.allocateNative(BaseDataType.int8_t.SIZE_OF, ms), 0));
         }
     }
 

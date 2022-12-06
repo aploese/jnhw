@@ -21,7 +21,8 @@
  */
 package de.ibapl.jnhw.util.posix;
 
-import jdk.incubator.foreign.SymbolLookup;
+import java.lang.foreign.MemorySession;
+import java.lang.foreign.SymbolLookup;
 
 /**
  *
@@ -29,9 +30,13 @@ import jdk.incubator.foreign.SymbolLookup;
  */
 public class LibrtLoader {
 
+    public final static SymbolLookup LIB_RT_SYMBOL_LOOKUP;
+
     static {
-        System.loadLibrary("rt");
+        //TODO Quick and dirty ...
+//        LIB_RT_SYMBOL_LOOKUP = SymbolLookup.libraryLookup(Path.of("/lib/x86_64-linux-gnu/librt.so.1"), MemorySession.global());
+        LIB_RT_SYMBOL_LOOKUP = SymbolLookup.libraryLookup("librt.so.1", MemorySession.global());
+//TODO  does noe work anymore       LIB_RT_SYMBOL_LOOKUP = SymbolLookup.libraryLookup("rt", MemorySession.global());
     }
 
-    public final static SymbolLookup LIB_RT_SYMBOL_LOOKUP = SymbolLookup.loaderLookup();
 }

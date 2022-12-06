@@ -22,11 +22,11 @@
 package de.ibapl.jnhw.common.downcall;
 
 import de.ibapl.jnhw.common.datatypes.Pointer;
-import jdk.incubator.foreign.FunctionDescriptor;
-import jdk.incubator.foreign.MemoryAddress;
-import jdk.incubator.foreign.SymbolLookup;
-import jdk.incubator.foreign.ValueLayout;
-import jdk.incubator.foreign.Addressable;
+import java.lang.foreign.FunctionDescriptor;
+import java.lang.foreign.MemoryAddress;
+import java.lang.foreign.SymbolLookup;
+import java.lang.foreign.ValueLayout;
+import java.lang.foreign.Addressable;
 import de.ibapl.jnhw.common.downcall.wrapper.JnhwMh__A__sI__A__A;
 
 /**

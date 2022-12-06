@@ -28,7 +28,7 @@ import de.ibapl.jnhw.syscall.linux.include.uapi.linux.usb.AbstractDescriptor;
 import de.ibapl.jnhw.syscall.linux.uapi.asm_generic.Types.__be16;
 import de.ibapl.jnhw.syscall.linux.uapi.asm_generic.Types.__u8;
 import java.io.IOException;
-import jdk.incubator.foreign.MemorySegment;
+import java.lang.foreign.MemorySegment;
 
 /**
  *
@@ -177,12 +177,12 @@ public class Uas {
 
         @__u8
         public byte bPipeID() {
-            return MEM_ACCESS.uint8_t(memorySegment, Layout.bPipeID);
+            return MEM_ACCESS_BYTE_ALIGNED.uint8_t(memorySegment, Layout.bPipeID);
         }
 
         @__u8
         public byte Reserved() {
-            return MEM_ACCESS.uint8_t(memorySegment, Layout.Reserved);
+            return MEM_ACCESS_BYTE_ALIGNED.uint8_t(memorySegment, Layout.Reserved);
         }
 
         @Override

@@ -24,9 +24,9 @@ package de.ibapl.jnhw.common.downcall.wrapper;
 import de.ibapl.jnhw.common.datatypes.BaseDataType;
 import de.ibapl.jnhw.common.datatypes.Pointer;
 import de.ibapl.jnhw.common.downcall.JnhwMi__I___A;
+import java.lang.foreign.Addressable;
+import java.lang.foreign.SymbolLookup;
 import java.util.NoSuchElementException;
-import jdk.incubator.foreign.Addressable;
-import jdk.incubator.foreign.SymbolLookup;
 
 /**
  *
@@ -35,7 +35,7 @@ import jdk.incubator.foreign.SymbolLookup;
 public interface JnhwMh_sI___A extends JnhwMethodHandle {
 
     public static JnhwMh_sI___A ofOrNull(String name, BaseDataType result, BaseDataType arg1) {
-        return ofOrNull(C_LINKER, name, result, arg1);
+        return ofOrNull(NATIVE_LINKER.defaultLookup(), name, result, arg1);
     }
 
     public static JnhwMh_sI___A ofOrNull(SymbolLookup symbolLookup, String name, BaseDataType result, BaseDataType arg1) {
@@ -47,7 +47,7 @@ public interface JnhwMh_sI___A extends JnhwMethodHandle {
     }
 
     public static JnhwMh_sI___A of(String name, BaseDataType result, BaseDataType arg1) {
-        return of(C_LINKER, name, result, arg1);
+        return of(NATIVE_LINKER.defaultLookup(), name, result, arg1);
     }
 
     public static JnhwMh_sI___A of(SymbolLookup symbolLookup, String name, BaseDataType result, BaseDataType arg1) {

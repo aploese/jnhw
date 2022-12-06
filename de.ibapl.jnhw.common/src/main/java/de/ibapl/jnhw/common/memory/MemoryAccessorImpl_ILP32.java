@@ -21,9 +21,9 @@
  */
 package de.ibapl.jnhw.common.memory;
 
+import java.lang.foreign.MemorySegment;
+import java.lang.foreign.ValueLayout;
 import java.nio.ByteOrder;
-import jdk.incubator.foreign.MemorySegment;
-import jdk.incubator.foreign.ValueLayout;
 
 /**
  *
@@ -41,6 +41,12 @@ public final class MemoryAccessorImpl_ILP32 extends AbstractMemoryAccessorImpl {
         super(byteOrder);
         LAYOUT__LONG = ValueLayout.JAVA_INT.withOrder(byteOrder);
         LAYOUT__UNSIGNED_LONG = ValueLayout.JAVA_INT.withOrder(byteOrder);
+    }
+
+    public MemoryAccessorImpl_ILP32(ByteOrder byteOrder, long alignmentBits) {
+        super(byteOrder, alignmentBits);
+        LAYOUT__LONG = ValueLayout.JAVA_INT.withOrder(byteOrder).withBitAlignment(alignmentBits);
+        LAYOUT__UNSIGNED_LONG = ValueLayout.JAVA_INT.withOrder(byteOrder).withBitAlignment(alignmentBits);
     }
 
     @Override

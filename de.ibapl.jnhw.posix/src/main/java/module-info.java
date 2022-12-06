@@ -52,8 +52,6 @@ module de.ibapl.jnhw.posix {
     requires java.logging;
 
     requires transitive de.ibapl.jnhw.common;
-    requires jdk.unsupported;
-    requires jdk.incubator.foreign;
 
     exports de.ibapl.jnhw.annotation.linux.sys;
     exports de.ibapl.jnhw.annotation.posix.poll;

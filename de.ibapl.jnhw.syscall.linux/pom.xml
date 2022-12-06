@@ -37,44 +37,17 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
-                <executions>
-                    <execution>
-                        <id>compile</id>
-                        <phase>compile</phase>
-                        <goals>
-                            <goal>compile</goal>
-                        </goals>
-                        <configuration>
-                            <compilerArgs>
-                                <arg>-h</arg>
-                                <arg>${basedir}/src/main/native/include/</arg>
-                            </compilerArgs>
-                        </configuration>
-                    </execution>
-                    <execution>
-                        <id>testCompile</id>
-                        <phase>test-compile</phase>
-                        <goals>
-                            <goal>testCompile</goal>
-                        </goals>
-                        <configuration>
-                            <compilerArgs>
-                                <arg>-h</arg>
-                                <arg>${basedir}/src/test/native/include/</arg>
-                            </compilerArgs>
-                        </configuration>
-                    </execution>
-                </executions>
+                <configuration>
+                    <compilerArgs>
+                        <arg>--enable-preview</arg>
+                    </compilerArgs>
+                </configuration>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
                 <configuration>
-                    <forkCount>1</forkCount>
-                    <reuseForks>false</reuseForks>
-                    <skipAfterFailureCount>10</skipAfterFailureCount>
-                    <argLine>--enable-preview</argLine>
-                    <argLine>--enable-native-access=de.ibapl.jnhw.common,de.ibapl.jnhw.posix,ALL-UNNAMED</argLine>
+                    <argLine>--enable-preview --enable-native-access=de.ibapl.jnhw.common,de.ibapl.jnhw.posix,ALL-UNNAMED</argLine>
                 </configuration>
             </plugin>
         </plugins>

@@ -22,11 +22,7 @@
 module de.ibapl.jnhw.winapi {
     requires java.logging;
 
-    requires jdk.incubator.foreign;
-    
     requires transitive de.ibapl.jnhw.common;
-
-
 
     exports de.ibapl.jnhw.winapi;
     exports de.ibapl.jnhw.util.winapi;

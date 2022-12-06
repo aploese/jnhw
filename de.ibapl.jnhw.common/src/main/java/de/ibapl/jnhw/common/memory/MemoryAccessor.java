@@ -35,11 +35,11 @@ import de.ibapl.jnhw.common.datatypes.MultiarchTupelBuilder;
 import de.ibapl.jnhw.common.datatypes.Pointer;
 import de.ibapl.jnhw.common.util.ConversionsJava2Native;
 import de.ibapl.jnhw.common.util.ConversionsNative2Java;
+import java.lang.foreign.Addressable;
+import java.lang.foreign.MemoryAddress;
+import java.lang.foreign.MemorySegment;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
-import jdk.incubator.foreign.Addressable;
-import jdk.incubator.foreign.MemoryAddress;
-import jdk.incubator.foreign.MemorySegment;
 
 /**
  *
@@ -57,6 +57,21 @@ public sealed interface MemoryAccessor permits AbstractMemoryAccessorImpl {
                 new MemoryAccessorImpl_LLP64(byteOrder);
             case LP64 ->
                 new MemoryAccessorImpl_LP64(byteOrder);
+            default ->
+                throw new IllegalStateException("Unknow memory model: " + MultiarchTupelBuilder.getMemoryModel());
+        };
+    }
+
+    static MemoryAccessor getMemoryAccessor(ByteOrder byteOrder, long alignmentBits) {
+        return switch (MultiarchTupelBuilder.getMemoryModel()) {
+            case ILP32 ->
+                new MemoryAccessorImpl_ILP32(byteOrder, alignmentBits);
+            case L64 ->
+                new MemoryAccessorImpl_L64(byteOrder, alignmentBits);
+            case LLP64 ->
+                new MemoryAccessorImpl_LLP64(byteOrder, alignmentBits);
+            case LP64 ->
+                new MemoryAccessorImpl_LP64(byteOrder, alignmentBits);
             default ->
                 throw new IllegalStateException("Unknow memory model: " + MultiarchTupelBuilder.getMemoryModel());
         };

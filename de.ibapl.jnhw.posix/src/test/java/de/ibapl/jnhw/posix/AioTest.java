@@ -34,22 +34,22 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
+import java.lang.foreign.MemoryAddress;
+import java.lang.foreign.MemorySession;
 import java.nio.ByteBuffer;
 import java.time.Duration;
-import jdk.incubator.foreign.MemoryAddress;
-import jdk.incubator.foreign.ResourceScope;
 import org.junit.jupiter.api.AfterEach;
 import static org.junit.jupiter.api.Assertions.assertAll;
-import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.fail;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTimeoutPreemptively;
-import static org.junit.jupiter.api.Assertions.assertArrayEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -94,8 +94,8 @@ public class AioTest {
         switch (MultiarchTupelBuilder.getOS()) {
             case OPEN_BSD:
                 assertThrows(NoSuchNativeTypeException.class, () -> {
-                    try ( ResourceScope scope = ResourceScope.newConfinedScope()) {
-                        Aio.Aiocb.tryAllocateNative(scope);
+                    try ( MemorySession ms = MemorySession.openConfined()) {
+                        Aio.Aiocb.tryAllocateNative(ms);
                     }
                 });
                 break;
@@ -132,16 +132,16 @@ public class AioTest {
         }
     }
 
-    private ResourceScope sharedScope;
+    private MemorySession sharedSession;
 
     @BeforeEach
     public void setUp() {
-        sharedScope = ResourceScope.newSharedScope();
+        sharedSession = MemorySession.openShared();
     }
 
     @AfterEach
     public void tearDown() {
-        sharedScope.close();
+        sharedSession.close();
     }
 
     /**
@@ -152,11 +152,11 @@ public class AioTest {
         switch (MultiarchTupelBuilder.getOS()) {
             case OPEN_BSD:
                 assertThrows(NoSuchNativeTypeException.class, () -> {
-                    Aio.Aiocb.tryAllocateNative(sharedScope);
+                    Aio.Aiocb.tryAllocateNative(sharedSession);
                 });
                 break;
             default:
-                Aio.Aiocb aiocb = Aio.Aiocb.tryAllocateNative(sharedScope);
+                Aio.Aiocb aiocb = Aio.Aiocb.tryAllocateNative(sharedSession);
                 System.out.println("aiocb : " + aiocb.nativeToString());
                 assertEquals(MemoryAddress.NULL, aiocb.aio_buf());
 
@@ -186,12 +186,12 @@ public class AioTest {
                 assertFalse(Aio.HAVE_AIO_H);
                 break;
             default:
-                Aio.Aiocbs aiocbs = Aio.Aiocbs.tryAllocateNative(sharedScope, 1);
+                Aio.Aiocbs aiocbs = Aio.Aiocbs.tryAllocateNative(sharedSession, 1);
 
                 Aio.Aiocb aiocb_null = aiocbs.get(0, null);
                 assertNull(aiocb_null);
 
-                Aio.Aiocb aiocb = Aio.Aiocb.tryAllocateNative(sharedScope);
+                Aio.Aiocb aiocb = Aio.Aiocb.tryAllocateNative(sharedSession);
                 aiocb.aio_fildes(-1);
                 aiocbs.set(0, aiocb);
 
@@ -209,7 +209,7 @@ public class AioTest {
         System.out.println("aio_cancel");
         switch (MultiarchTupelBuilder.getOS()) {
             case DARWIN: {
-                Aio.Aiocb aiocb = Aio.Aiocb.tryAllocateNative(sharedScope);
+                Aio.Aiocb aiocb = Aio.Aiocb.tryAllocateNative(sharedSession);
                 aiocb.aio_sigevent.sigev_notify(Signal.SIGEV_NONE.get());
                 aiocb.aio_fildes(-1);
 
@@ -222,11 +222,11 @@ public class AioTest {
             break;
             case OPEN_BSD:
                 assertThrows(NoSuchNativeTypeException.class, () -> {
-                    Aio.aio_cancel(Aio.Aiocb.tryAllocateNative(sharedScope));
+                    Aio.aio_cancel(Aio.Aiocb.tryAllocateNative(sharedSession));
                 });
                 break;
             default:
-                Aio.Aiocb aiocb = Aio.Aiocb.tryAllocateNative(sharedScope);
+                Aio.Aiocb aiocb = Aio.Aiocb.tryAllocateNative(sharedSession);
                 aiocb.aio_sigevent.sigev_notify(Signal.SIGEV_NONE.get());
                 aiocb.aio_fildes(-1);
 
@@ -250,7 +250,7 @@ public class AioTest {
         System.out.println("aio_error");
         switch (MultiarchTupelBuilder.getOS()) {
             case DARWIN: {
-                Aio.Aiocb aiocb = Aio.Aiocb.tryAllocateNative(sharedScope);
+                Aio.Aiocb aiocb = Aio.Aiocb.tryAllocateNative(sharedSession);
                 aiocb.aio_sigevent.sigev_notify(Signal.SIGEV_NONE.get());
                 aiocb.aio_fildes(-1);
                 NativeErrorException nee = assertThrows(NativeErrorException.class,
@@ -261,7 +261,7 @@ public class AioTest {
             }
             break;
             case FREE_BSD: {
-                Aio.Aiocb aiocb = Aio.Aiocb.tryAllocateNative(sharedScope);
+                Aio.Aiocb aiocb = Aio.Aiocb.tryAllocateNative(sharedSession);
                 aiocb.aio_sigevent.sigev_notify(Signal.SIGEV_NONE.get());
                 aiocb.aio_fildes(-1);
                 assertThrows(NativeErrorException.class, () -> Aio.aio_error(aiocb));
@@ -270,11 +270,11 @@ public class AioTest {
             case OPEN_BSD:
                 assertThrows(NoSuchNativeTypeException.class,
                         () -> {
-                            Aio.aio_error(Aio.Aiocb.tryAllocateNative(sharedScope));
+                            Aio.aio_error(Aio.Aiocb.tryAllocateNative(sharedSession));
                         });
                 return;
             default:
-                Aio.Aiocb aiocb = Aio.Aiocb.tryAllocateNative(sharedScope);
+                Aio.Aiocb aiocb = Aio.Aiocb.tryAllocateNative(sharedSession);
                 aiocb.aio_sigevent.sigev_notify(Signal.SIGEV_NONE.get());
                 aiocb.aio_fildes(-1);
 
@@ -294,7 +294,7 @@ public class AioTest {
         System.out.println("aio_fsync");
         switch (MultiarchTupelBuilder.getOS()) {
             case DARWIN: {
-                Aio.Aiocb aiocb = Aio.Aiocb.tryAllocateNative(sharedScope);
+                Aio.Aiocb aiocb = Aio.Aiocb.tryAllocateNative(sharedSession);
                 aiocb.aio_sigevent.sigev_notify(Signal.SIGEV_NONE.get());
                 aiocb.aio_fildes(-1);
 
@@ -307,11 +307,11 @@ public class AioTest {
             break;
             case OPEN_BSD:
                 assertThrows(NoSuchNativeTypeException.class, () -> {
-                    Aio.aio_fsync(0, Aio.Aiocb.tryAllocateNative(sharedScope));
+                    Aio.aio_fsync(0, Aio.Aiocb.tryAllocateNative(sharedSession));
                 });
                 return;
             default:
-                Aio.Aiocb aiocb = Aio.Aiocb.tryAllocateNative(sharedScope);
+                Aio.Aiocb aiocb = Aio.Aiocb.tryAllocateNative(sharedSession);
                 aiocb.aio_sigevent.sigev_notify(Signal.SIGEV_NONE.get());
                 aiocb.aio_fildes(-1);
 
@@ -336,7 +336,7 @@ public class AioTest {
             case OPEN_BSD:
                 assertThrows(NoSuchNativeTypeException.class,
                         () -> {
-                            Aio.aio_read(Aio.Aiocb.tryAllocateNative(sharedScope));
+                            Aio.aio_read(Aio.Aiocb.tryAllocateNative(sharedSession));
                         });
                 break;
             default:
@@ -352,7 +352,7 @@ public class AioTest {
                 fw.flush();
                 fw.close();
 
-                final Aio.Aiocb<Aio.Aiocb> aiocb = Aio.Aiocb.tryAllocateNative(sharedScope);
+                final Aio.Aiocb<Aio.Aiocb> aiocb = Aio.Aiocb.tryAllocateNative(sharedSession);
                 aiocb.aio_reqprio((int) Unistd.sysconf(Unistd._SC_AIO_PRIO_DELTA_MAX));
 
                 aiocb.aio_fildes(Fcntl.open(tmpFile.getAbsolutePath(), Fcntl.O_RDWR));
@@ -368,7 +368,7 @@ public class AioTest {
                 aiocb.aio_sigevent.sigev_value.sival_ptr(aiocb);
 
                 System.out.println("aio_read aiocb.aio_sigevent.sigev_value: " + aiocb.aio_sigevent.sigev_value);
-                System.out.println("aio_read Pthread_t: " + Pthread.pthread_self(sharedScope));
+                System.out.println("aio_read Pthread_t: " + Pthread.pthread_self(sharedSession));
                 System.out.println("aio_read currentThread: " + Thread.currentThread());
 
                 aiocb.aio_sigevent.sigev_notify_function(new Callback__V__MA<Aio.Aiocb>() {
@@ -379,9 +379,9 @@ public class AioTest {
                         try {
                             assertEquals(OpaqueMemory.getMemorySegment(aiocb).address().toRawLongValue(), address.toRawLongValue(), "testAio_read_ByteBuffer callback MemoryAddress mismatch");
                             final Aio.Aiocb callback_aiocb;
-                            callback_aiocb = Aio.Aiocb.tryOfAddress(address, sharedScope);
+                            callback_aiocb = Aio.Aiocb.tryOfAddress(address, sharedSession);
 
-                            System.out.println("aio_read enter callback Pthread_t: " + Pthread.pthread_self(sharedScope));
+                            System.out.println("aio_read enter callback Pthread_t: " + Pthread.pthread_self(sharedSession));
                             System.out.println("aio_read in callback currentThread: " + Thread.currentThread());
                             assertEquals(0, Aio.aio_error(callback_aiocb));
 
@@ -466,7 +466,7 @@ public class AioTest {
             case OPEN_BSD:
                 assertThrows(NoSuchNativeTypeException.class,
                         () -> {
-                            Aio.aio_read(Aio.Aiocb.tryAllocateNative(sharedScope));
+                            Aio.aio_read(Aio.Aiocb.tryAllocateNative(sharedSession));
                         });
                 break;
             default:
@@ -479,7 +479,7 @@ public class AioTest {
                 fw.flush();
                 fw.close();
 
-                final Aio.Aiocb<Aio.Aiocb> aiocb = Aio.Aiocb.tryAllocateNative(sharedScope);
+                final Aio.Aiocb<Aio.Aiocb> aiocb = Aio.Aiocb.tryAllocateNative(sharedSession);
 
                 aiocb.aio_fildes(Fcntl.open(tmpFile.getAbsolutePath(), Fcntl.O_RDWR));
                 final ByteBuffer aioBuffer = ByteBuffer.allocateDirect(1024);
@@ -492,7 +492,7 @@ public class AioTest {
 
                 aiocb.aio_sigevent.sigev_notify(Signal.SIGEV_NONE.get());
 
-                System.out.println("aio_read Pthread_t: " + Pthread.pthread_self(sharedScope));
+                System.out.println("aio_read Pthread_t: " + Pthread.pthread_self(sharedSession));
                 System.out.println("aio_read currentThread: " + Thread.currentThread());
 
                 Aio.aio_read(aiocb);
@@ -540,7 +540,7 @@ public class AioTest {
             case OPEN_BSD:
                 assertThrows(NoSuchNativeTypeException.class,
                         () -> {
-                            Aio.aio_read(Aio.Aiocb.tryAllocateNative(sharedScope));
+                            Aio.aio_read(Aio.Aiocb.tryAllocateNative(sharedSession));
                         });
                 break;
             default:
@@ -552,7 +552,7 @@ public class AioTest {
                 final Object[] intRef = new Object[1];
                 File tmpFile = File.createTempFile("Jnhw-Posix-Aio-Test-Read", ".txt");
 
-                final Aio.Aiocb<Struct> aiocb = Aio.Aiocb.tryAllocateNative(sharedScope);
+                final Aio.Aiocb<Struct> aiocb = Aio.Aiocb.tryAllocateNative(sharedSession);
                 aiocb.aio_fildes(Fcntl.open(tmpFile.getAbsolutePath(), Fcntl.O_RDWR));
                 final ByteBuffer aioBuffer = ByteBuffer.allocateDirect(1024);
 
@@ -564,7 +564,7 @@ public class AioTest {
                 aiocb.aio_sigevent.sigev_value.sival_int(SIVAL_INT);
 
                 System.out.println("aio_read aiocb.aio_sigevent.sigev_value: " + aiocb.aio_sigevent.sigev_value);
-                System.out.println("aio_read Pthread_t: " + Pthread.pthread_self(sharedScope));
+                System.out.println("aio_read Pthread_t: " + Pthread.pthread_self(sharedSession));
                 System.out.println("aio_read currentThread: " + Thread.currentThread());
 
                 aiocb.aio_sigevent.sigev_notify_function(new Callback__V___I() {
@@ -573,7 +573,7 @@ public class AioTest {
                     protected void callback(int value) {
                         try {
                             assertEquals(SIVAL_INT, value);
-                            System.out.println("aio_read enter callback Pthread_t: " + Pthread.pthread_self(sharedScope));
+                            System.out.println("aio_read enter callback Pthread_t: " + Pthread.pthread_self(sharedSession));
                             System.out.println("aio_read in callback currentThread: " + Thread.currentThread());
                             assertEquals(0, Aio.aio_error(aiocb));
                             aioBuffer.position(aioBuffer.position() + (int) Aio.aio_return(aiocb));
@@ -664,13 +664,13 @@ public class AioTest {
             case OPEN_BSD:
                 assertThrows(NoSuchNativeTypeException.class,
                         () -> {
-                            Aio.aio_read(Aio.Aiocb.tryAllocateNative(sharedScope));
+                            Aio.aio_read(Aio.Aiocb.tryAllocateNative(sharedSession));
                         });
                 break;
             default:
                 File tmpFile = File.createTempFile("Jnhw-Posix-Aio-Test-Read", ".txt");
 
-                final Aio.Aiocb<Struct> aiocb = Aio.Aiocb.tryAllocateNative(sharedScope);
+                final Aio.Aiocb<Struct> aiocb = Aio.Aiocb.tryAllocateNative(sharedSession);
                 aiocb.aio_fildes(Fcntl.open(tmpFile.getAbsolutePath(), Fcntl.O_RDWR));
                 final ByteBuffer aioBuffer = ByteBuffer.allocateDirect(1024);
 
@@ -680,7 +680,7 @@ public class AioTest {
 
                 aiocb.aio_sigevent.sigev_notify(Signal.SIGEV_NONE.get());
 
-                System.out.println("aio_read Pthread_t: " + Pthread.pthread_self(sharedScope));
+                System.out.println("aio_read Pthread_t: " + Pthread.pthread_self(sharedSession));
                 System.out.println("aio_read currentThread: " + Thread.currentThread());
 
                 //No read or write executed....
@@ -730,7 +730,7 @@ public class AioTest {
         System.out.println("aio_return");
         switch (MultiarchTupelBuilder.getOS()) {
             case DARWIN: {
-                final Aio.Aiocb aiocb = Aio.Aiocb.tryAllocateNative(sharedScope);
+                final Aio.Aiocb aiocb = Aio.Aiocb.tryAllocateNative(sharedSession);
                 aiocb.aio_sigevent.sigev_notify(Signal.SIGEV_NONE.get());
                 aiocb.aio_fildes(-1);
 
@@ -742,7 +742,7 @@ public class AioTest {
             }
             break;
             case FREE_BSD: {
-                final Aio.Aiocb aiocb = Aio.Aiocb.tryAllocateNative(sharedScope);
+                final Aio.Aiocb aiocb = Aio.Aiocb.tryAllocateNative(sharedSession);
                 aiocb.aio_sigevent.sigev_notify(Signal.SIGEV_NONE.get());
                 aiocb.aio_fildes(-1);
 
@@ -756,12 +756,12 @@ public class AioTest {
             case OPEN_BSD:
                 assertThrows(NoSuchNativeTypeException.class,
                         () -> {
-                            Aio.aio_return(Aio.Aiocb.tryAllocateNative(sharedScope));
+                            Aio.aio_return(Aio.Aiocb.tryAllocateNative(sharedSession));
                         });
                 break;
             case LINUX:
             default:
-                final Aio.Aiocb aiocb = Aio.Aiocb.tryAllocateNative(sharedScope);
+                final Aio.Aiocb aiocb = Aio.Aiocb.tryAllocateNative(sharedSession);
                 aiocb.aio_sigevent.sigev_notify(Signal.SIGEV_NONE.get());
                 aiocb.aio_fildes(-1);
 
@@ -779,12 +779,12 @@ public class AioTest {
         System.out.println("aio_suspend");
         switch (MultiarchTupelBuilder.getOS()) {
             case DARWIN: {
-                Aio.Aiocbs aiocbs = Aio.Aiocbs.tryAllocateNative(sharedScope, 1);
-                Aio.Aiocb aiocb = Aio.Aiocb.tryAllocateNative(sharedScope);
+                Aio.Aiocbs aiocbs = Aio.Aiocbs.tryAllocateNative(sharedSession, 1);
+                Aio.Aiocb aiocb = Aio.Aiocb.tryAllocateNative(sharedSession);
                 aiocb.aio_sigevent.sigev_notify(Signal.SIGEV_NONE.get());
                 aiocb.aio_fildes(-1);
                 aiocbs.set(0, aiocb);
-                Time.Timespec timeout = Time.Timespec.allocateNative(sharedScope);
+                Time.Timespec timeout = Time.Timespec.allocateNative(sharedSession);
                 timeout.tv_sec(1);
 
                 NativeErrorException nee = assertThrows(NativeErrorException.class, () -> {
@@ -796,17 +796,17 @@ public class AioTest {
             case OPEN_BSD:
                 assertThrows(NoSuchNativeTypeException.class,
                         () -> {
-                            Aio.aio_suspend(Aio.Aiocbs.tryAllocateNative(sharedScope, 0), Time.Timespec.allocateNative(sharedScope));
+                            Aio.aio_suspend(Aio.Aiocbs.tryAllocateNative(sharedSession, 0), Time.Timespec.allocateNative(sharedSession));
                         });
                 return;
             case LINUX:
             default: {
-                Aio.Aiocbs aiocbs = Aio.Aiocbs.tryAllocateNative(sharedScope, 1);
-                Aio.Aiocb aiocb = Aio.Aiocb.tryAllocateNative(sharedScope);
+                Aio.Aiocbs aiocbs = Aio.Aiocbs.tryAllocateNative(sharedSession, 1);
+                Aio.Aiocb aiocb = Aio.Aiocb.tryAllocateNative(sharedSession);
                 aiocb.aio_sigevent.sigev_notify(Signal.SIGEV_NONE.get());
                 aiocb.aio_fildes(-1);
                 aiocbs.set(0, aiocb);
-                Time.Timespec timeout = Time.Timespec.allocateNative(sharedScope);
+                Time.Timespec timeout = Time.Timespec.allocateNative(sharedSession);
                 timeout.tv_sec(1);
 
                 //Just a dry run....
@@ -814,12 +814,12 @@ public class AioTest {
             }
         }
 
-        Aio.Aiocbs aiocbs = Aio.Aiocbs.tryAllocateNative(sharedScope, 1);
-        Aio.Aiocb aiocb = Aio.Aiocb.tryAllocateNative(sharedScope);
+        Aio.Aiocbs aiocbs = Aio.Aiocbs.tryAllocateNative(sharedSession, 1);
+        Aio.Aiocb aiocb = Aio.Aiocb.tryAllocateNative(sharedSession);
         aiocb.aio_sigevent.sigev_notify(Signal.SIGEV_NONE.get());
         aiocb.aio_fildes(-1);
         aiocbs.set(0, aiocb);
-        Time.Timespec timeout = Time.Timespec.allocateNative(sharedScope);
+        Time.Timespec timeout = Time.Timespec.allocateNative(sharedSession);
         timeout.tv_sec(1);
 
         assertThrows(NullPointerException.class, () -> {
@@ -840,7 +840,7 @@ public class AioTest {
             case OPEN_BSD:
                 assertThrows(NoSuchNativeTypeException.class,
                         () -> {
-                            Aio.aio_write(Aio.Aiocb.tryAllocateNative(sharedScope));
+                            Aio.aio_write(Aio.Aiocb.tryAllocateNative(sharedSession));
                         });
                 break;
             default:
@@ -853,7 +853,7 @@ public class AioTest {
                 final Object[] ref = new Object[1];
                 File tmpFile = File.createTempFile("Jnhw-Posix-Aio-Test-Write", ".txt");
 
-                final Aio.Aiocb<Struct> aiocb = Aio.Aiocb.tryAllocateNative(sharedScope);
+                final Aio.Aiocb<Struct> aiocb = Aio.Aiocb.tryAllocateNative(sharedSession);
                 aiocb.aio_fildes(Fcntl.open(tmpFile.getAbsolutePath(), Fcntl.O_RDWR));
                 final ByteBuffer aioBuffer = ByteBuffer.allocateDirect(1024);
                 aioBuffer.put(HELLO_WORLD.getBytes());
@@ -868,7 +868,7 @@ public class AioTest {
                 aiocb.aio_sigevent.sigev_value.sival_int(SIVAL_INT);
 
                 System.out.println("aio_write aiocb.aio_sigevent.sigev_value: " + aiocb.aio_sigevent.sigev_value);
-                System.out.println("aio_write Pthread_t: " + Pthread.pthread_self(sharedScope));
+                System.out.println("aio_write Pthread_t: " + Pthread.pthread_self(sharedSession));
                 System.out.println("aio_write currentThread: " + Thread.currentThread());
 
                 aiocb.aio_sigevent.sigev_notify_function(new Callback__V___I() {
@@ -877,7 +877,7 @@ public class AioTest {
                     protected void callback(int value) {
                         try {
                             assertEquals(SIVAL_INT, value);
-                            System.out.println("aio_write enter callback Pthread_t: " + Pthread.pthread_self(sharedScope));
+                            System.out.println("aio_write enter callback Pthread_t: " + Pthread.pthread_self(sharedSession));
                             System.out.println("aio_write in callback currentThread: " + Thread.currentThread());
                             int errno = Aio.aio_error(aiocb);
                             if (errno != 0) {
@@ -957,7 +957,7 @@ public class AioTest {
             case OPEN_BSD:
                 assertThrows(NoSuchNativeTypeException.class,
                         () -> {
-                            Aio.aio_write(Aio.Aiocb.tryAllocateNative(sharedScope));
+                            Aio.aio_write(Aio.Aiocb.tryAllocateNative(sharedSession));
                         });
                 break;
             default:
@@ -965,7 +965,7 @@ public class AioTest {
 
                 File tmpFile = File.createTempFile("Jnhw-Posix-Aio-Test-Write", ".txt");
 
-                final Aio.Aiocb<Struct> aiocb = Aio.Aiocb.tryAllocateNative(sharedScope);
+                final Aio.Aiocb<Struct> aiocb = Aio.Aiocb.tryAllocateNative(sharedSession);
                 aiocb.aio_fildes(Fcntl.open(tmpFile.getAbsolutePath(), Fcntl.O_RDWR));
                 final ByteBuffer aioBuffer = ByteBuffer.allocateDirect(1024);
                 aioBuffer.put(HELLO_WORLD.getBytes());
@@ -978,7 +978,7 @@ public class AioTest {
 
                 aiocb.aio_sigevent.sigev_notify(Signal.SIGEV_NONE.get());
 
-                System.out.println("aio_write Pthread_t: " + Pthread.pthread_self(sharedScope));
+                System.out.println("aio_write Pthread_t: " + Pthread.pthread_self(sharedSession));
                 System.out.println("aio_write currentThread: " + Thread.currentThread());
 
                 Aio.aio_write(aiocb);
@@ -1019,15 +1019,15 @@ public class AioTest {
         switch (MultiarchTupelBuilder.getOS()) {
             case OPEN_BSD:
                 assertThrows(NoSuchNativeTypeException.class, () -> {
-                    Aio.lio_listio(0, Aio.Aiocbs.tryAllocateNative(sharedScope, 0), Signal.Sigevent.tryAllocateNative(sharedScope));
+                    Aio.lio_listio(0, Aio.Aiocbs.tryAllocateNative(sharedSession, 0), Signal.Sigevent.tryAllocateNative(sharedSession));
                 });
                 break;
             default:
                 //Clean up references to Callbacks
                 System.gc();
 
-                final Aio.Aiocbs list = Aio.Aiocbs.tryAllocateNative(sharedScope, 1);
-                Aio.Aiocb aiocb = Aio.Aiocb.tryAllocateNative(sharedScope);
+                final Aio.Aiocbs list = Aio.Aiocbs.tryAllocateNative(sharedSession, 1);
+                Aio.Aiocb aiocb = Aio.Aiocb.tryAllocateNative(sharedSession);
                 aiocb.aio_sigevent.sigev_notify(Signal.SIGEV_NONE.get());
                 aiocb.aio_fildes(-1);
                 list.set(0, aiocb);
@@ -1082,7 +1082,7 @@ public class AioTest {
         switch (MultiarchTupelBuilder.getOS()) {
             case OPEN_BSD:
                 assertThrows(NoSuchNativeTypeException.class, () -> {
-                    Aio.lio_listio(0, Aio.Aiocbs.tryAllocateNative(sharedScope, 1), Signal.Sigevent.tryAllocateNative(sharedScope));
+                    Aio.lio_listio(0, Aio.Aiocbs.tryAllocateNative(sharedSession, 1), Signal.Sigevent.tryAllocateNative(sharedSession));
                 });
                 break;
             default:
@@ -1098,7 +1098,7 @@ public class AioTest {
                 fw.flush();
                 fw.close();
 
-                final Aio.Aiocb<Aio.Aiocb> aiocb = Aio.Aiocb.tryAllocateNative(sharedScope);
+                final Aio.Aiocb<Aio.Aiocb> aiocb = Aio.Aiocb.tryAllocateNative(sharedSession);
                 aiocb.aio_sigevent.sigev_notify(Signal.SIGEV_NONE.get());
                 aiocb.aio_fildes(Fcntl.open(tmpFile.getAbsolutePath(), Fcntl.O_RDWR));
                 aiocb.aio_lio_opcode(Aio.LIO_READ.get());
@@ -1108,7 +1108,7 @@ public class AioTest {
                 aiocb.aio_buf(aioBuffer);
                 assertEquals(0, aioBuffer.position());
 
-                Aio.Aiocbs list = Aio.Aiocbs.tryAllocateNative(sharedScope, 1);
+                Aio.Aiocbs list = Aio.Aiocbs.tryAllocateNative(sharedSession, 1);
                 list.set(0, aiocb);
 
                 Aio.lio_listio(Aio.LIO_NOWAIT.get(), list);

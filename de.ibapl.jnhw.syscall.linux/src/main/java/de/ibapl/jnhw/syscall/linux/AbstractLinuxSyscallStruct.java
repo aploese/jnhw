@@ -19,21 +19,34 @@
  * Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
  */
-package de.ibapl.jnhw.util.winapi.memory;
+package de.ibapl.jnhw.syscall.linux;
 
-import de.ibapl.jnhw.annotation.winapi.basetsd.ULONG_PTR;
+import de.ibapl.jnhw.common.memory.MemoryAccessor;
+import de.ibapl.jnhw.common.memory.Struct;
 import java.lang.foreign.MemorySegment;
+import java.nio.ByteOrder;
 
 /**
  *
  * @author aploese
  */
-@ULONG_PTR
-public interface Accessor_ULONG_PTR {
+public abstract class AbstractLinuxSyscallStruct extends Struct {
 
-    @ULONG_PTR
-    long ULONG_PTR(MemorySegment memorySegment, long offset);
+    /**
+     * Memory accessor with the natural byte order and byte alignment
+     */
+    protected final static MemoryAccessor MEM_ACCESS_BYTE_ALIGNED = MemoryAccessor.getMemoryAccessor(ByteOrder.nativeOrder(), 8);
+    /**
+     * Memory accessor with the little endian byte order and byte alignment
+     */
+    protected final static MemoryAccessor MEM_ACCESS_LE_BYTE_ALIGNED = MemoryAccessor.getMemoryAccessor(ByteOrder.LITTLE_ENDIAN, 8);
+    /**
+     * Memory accessor with the big endian byte order and byte alignment
+     */
+    protected final static MemoryAccessor MEM_ACCESS_BE_BYTE_ALIGNED = MemoryAccessor.getMemoryAccessor(ByteOrder.BIG_ENDIAN, 8);
 
-    void ULONG_PTR(MemorySegment memorySegment, long offset, @ULONG_PTR long value);
+    public AbstractLinuxSyscallStruct(MemorySegment memorySegment, long offset, int sizeInBytes) {
+        super(memorySegment, offset, sizeInBytes);
+    }
 
 }

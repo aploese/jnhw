@@ -24,11 +24,11 @@ package de.ibapl.jnhw.it.posixsignal.posix_graceful_exit_sigsegv;
 import de.ibapl.jnhw.common.datatypes.MultiarchTupelBuilder;
 import de.ibapl.jnhw.common.datatypes.OS;
 import de.ibapl.jnhw.common.downcall.JnhwMi__V___I;
-import de.ibapl.jnhw.common.upcall.Callback__V___I;
 import de.ibapl.jnhw.common.nativepointer.FunctionPtr__V___I;
+import de.ibapl.jnhw.common.upcall.Callback__V___I;
 import de.ibapl.jnhw.posix.Signal;
-import jdk.incubator.foreign.MemoryAddress;
-import jdk.incubator.foreign.ResourceScope;
+import java.lang.foreign.MemoryAddress;
+import java.lang.foreign.MemorySession;
 
 /**
  * The simplest way to handle a SIGSEGV. The shutdownhook will be called or the
@@ -72,7 +72,7 @@ public class App {
         FunctionPtr__V___I originalHandler = Signal.signal(Signal.SIGSEGV, callback__V___I);
 
         //We will call a NULL pointer on the native side. So we will force a segmentation violation.
-        JnhwMi__V___I downcall__V___I = new JnhwMi__V___I(MemoryAddress.NULL, ResourceScope.globalScope());
+        JnhwMi__V___I downcall__V___I = new JnhwMi__V___I(MemoryAddress.NULL, MemorySession.global());
         downcall__V___I.invoke__V__sI(42);
 
         System.err.println("We should never reach this.");

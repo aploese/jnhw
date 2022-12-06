@@ -28,22 +28,22 @@ import de.ibapl.jnhw.common.annotation.Define;
 import de.ibapl.jnhw.common.annotation.Include;
 import de.ibapl.jnhw.common.datatypes.BaseDataType;
 import de.ibapl.jnhw.common.datatypes.MultiarchTupelBuilder;
+import de.ibapl.jnhw.common.downcall.wrapper.JnhwMh_sI__A_sI;
+import de.ibapl.jnhw.common.downcall.wrapper.JnhwMh_sI__A_sI_uI;
+import de.ibapl.jnhw.common.downcall.wrapper.JnhwMh_sI__A_uI;
+import de.ibapl.jnhw.common.downcall.wrapper.JnhwMh_sI__sI__A_sI;
+import de.ibapl.jnhw.common.downcall.wrapper.JnhwMh_sI__sI__A_sI_uI;
+import de.ibapl.jnhw.common.downcall.wrapper.JnhwMh_sI__sI_sI;
+import de.ibapl.jnhw.common.downcall.wrapper.JnhwMh_sI__sI_sI_sI;
+import de.ibapl.jnhw.common.downcall.wrapper.JnhwMh_sI__sI_sL_sL;
+import de.ibapl.jnhw.common.downcall.wrapper.JnhwMh_sI__sI_sL_sL_sI;
 import de.ibapl.jnhw.common.exception.NativeErrorException;
 import de.ibapl.jnhw.common.exception.NoSuchNativeMethodException;
 import de.ibapl.jnhw.common.util.IntDefine;
 import de.ibapl.jnhw.posix.sys.Stat;
 import de.ibapl.jnhw.util.posix.PosixDataType;
-import jdk.incubator.foreign.MemorySegment;
-import jdk.incubator.foreign.ResourceScope;
-import de.ibapl.jnhw.common.downcall.wrapper.JnhwMh_sI__A_sI_uI;
-import de.ibapl.jnhw.common.downcall.wrapper.JnhwMh_sI__sI__A_sI;
-import de.ibapl.jnhw.common.downcall.wrapper.JnhwMh_sI__A_sI;
-import de.ibapl.jnhw.common.downcall.wrapper.JnhwMh_sI__A_uI;
-import de.ibapl.jnhw.common.downcall.wrapper.JnhwMh_sI__sI_sI;
-import de.ibapl.jnhw.common.downcall.wrapper.JnhwMh_sI__sI_sL_sL_sI;
-import de.ibapl.jnhw.common.downcall.wrapper.JnhwMh_sI__sI_sL_sL;
-import de.ibapl.jnhw.common.downcall.wrapper.JnhwMh_sI__sI_sI_sI;
-import de.ibapl.jnhw.common.downcall.wrapper.JnhwMh_sI__sI__A_sI_uI;
+import java.lang.foreign.MemorySegment;
+import java.lang.foreign.MemorySession;
 
 /**
  * Wrapper around the {@code <fcntl.h>} header.
@@ -1089,8 +1089,8 @@ public final class Fcntl {
      *
      */
     public final static int creat(String path, @mode_t int mode) throws NativeErrorException {
-        try ( ResourceScope scope = ResourceScope.newConfinedScope()) {
-            MemorySegment _path = MemorySegment.allocateNative(path.length() + 1, scope);
+        try ( MemorySession ms = MemorySession.openConfined()) {
+            MemorySegment _path = MemorySegment.allocateNative(path.length() + 1, ms);
             _path.setUtf8String(0, path);
             final int result = creat.invoke_sI__A_uI(_path, mode);
             if (result == -1) {
@@ -1111,8 +1111,8 @@ public final class Fcntl {
      * defined.
      */
     public final static int creat64(String path, @mode_t int mode) throws NativeErrorException, NoSuchNativeMethodException {
-        try ( ResourceScope scope = ResourceScope.newConfinedScope()) {
-            MemorySegment _path = MemorySegment.allocateNative(path.length() + 1, scope);
+        try ( MemorySession ms = MemorySession.openConfined()) {
+            MemorySegment _path = MemorySegment.allocateNative(path.length() + 1, ms);
             _path.setUtf8String(0, path);
             final int result = creat64.invoke_sI__A_uI(_path, mode);
             if (result == -1) {
@@ -1241,8 +1241,8 @@ public final class Fcntl {
      * indicates an error.
      */
     public final static int open(String path, int oflag) throws NativeErrorException {
-        try ( ResourceScope scope = ResourceScope.newConfinedScope()) {
-            MemorySegment _path = MemorySegment.allocateNative(path.length() + 1, scope);
+        try ( MemorySession ms = MemorySession.openConfined()) {
+            MemorySegment _path = MemorySegment.allocateNative(path.length() + 1, ms);
             _path.setUtf8String(0, path);
             final int result = open.invoke_sI__A_sI(_path, oflag);
             if (result == -1) {
@@ -1265,8 +1265,8 @@ public final class Fcntl {
      *
      */
     public final static int open(String path, int oflag, @mode_t int mode) throws NativeErrorException {
-        try ( ResourceScope scope = ResourceScope.newConfinedScope()) {
-            MemorySegment _path = MemorySegment.allocateNative(path.length() + 1, scope);
+        try ( MemorySession ms = MemorySession.openConfined()) {
+            MemorySegment _path = MemorySegment.allocateNative(path.length() + 1, ms);
             _path.setUtf8String(0, path);
             final int result = open__with_ModeArg.invoke_sI__A_sI_uI(_path, oflag, mode);
             if (result == -1) {
@@ -1291,8 +1291,8 @@ public final class Fcntl {
      * defined.
      */
     public final static int open64(String path, int oflag) throws NativeErrorException, NoSuchNativeMethodException {
-        try ( ResourceScope scope = ResourceScope.newConfinedScope()) {
-            MemorySegment _path = MemorySegment.allocateNative(path.length() + 1, scope);
+        try ( MemorySession ms = MemorySession.openConfined()) {
+            MemorySegment _path = MemorySegment.allocateNative(path.length() + 1, ms);
             _path.setUtf8String(0, path);
             final int result = open64.invoke_sI__A_sI(_path, oflag);
             if (result == -1) {
@@ -1324,8 +1324,8 @@ public final class Fcntl {
      * defined.
      */
     public final static int open64(String path, int oflag, @mode_t int mode) throws NativeErrorException, NoSuchNativeMethodException {
-        try ( ResourceScope scope = ResourceScope.newConfinedScope()) {
-            MemorySegment _path = MemorySegment.allocateNative(path.length() + 1, scope);
+        try ( MemorySession ms = MemorySession.openConfined()) {
+            MemorySegment _path = MemorySegment.allocateNative(path.length() + 1, ms);
             _path.setUtf8String(0, path);
             final int result = open64__with_ModeArg.invoke_sI__A_sI_uI(_path, oflag, mode);
             if (result == -1) {
@@ -1358,8 +1358,8 @@ public final class Fcntl {
      *
      */
     public final static int openat(int fd, String path, int oflag) throws NativeErrorException {
-        try ( ResourceScope scope = ResourceScope.newConfinedScope()) {
-            MemorySegment _path = MemorySegment.allocateNative(path.length() + 1, scope);
+        try ( MemorySession ms = MemorySession.openConfined()) {
+            MemorySegment _path = MemorySegment.allocateNative(path.length() + 1, ms);
             _path.setUtf8String(0, path);
             final int result = openat.invoke_sI__sI_A_sI(fd, _path, oflag);
             if (result == -1) {
@@ -1384,8 +1384,8 @@ public final class Fcntl {
      *
      */
     public final static int openat(int fd, String path, int oflag, @mode_t int mode) throws NativeErrorException {
-        try ( ResourceScope scope = ResourceScope.newConfinedScope()) {
-            MemorySegment _path = MemorySegment.allocateNative(path.length() + 1, scope);
+        try ( MemorySession ms = MemorySession.openConfined()) {
+            MemorySegment _path = MemorySegment.allocateNative(path.length() + 1, ms);
             _path.setUtf8String(0, path);
             final int result = openat__with_ModeArg.invoke_sI__sI__A_sI_uI(fd, _path, oflag, mode);
             if (result == -1) {
@@ -1411,8 +1411,8 @@ public final class Fcntl {
      * defined.
      */
     public final static int openat64(int fd, String path, int oflag) throws NativeErrorException, NoSuchNativeMethodException {
-        try ( ResourceScope scope = ResourceScope.newConfinedScope()) {
-            MemorySegment _path = MemorySegment.allocateNative(path.length() + 1, scope);
+        try ( MemorySession ms = MemorySession.openConfined()) {
+            MemorySegment _path = MemorySegment.allocateNative(path.length() + 1, ms);
             _path.setUtf8String(0, path);
             final int result = openat64.invoke_sI__sI_A_sI(fd, _path, oflag);
             if (result == -1) {
@@ -1445,8 +1445,8 @@ public final class Fcntl {
      * defined.
      */
     public final static int openat64(int fd, String path, int oflag, @mode_t int mode) throws NativeErrorException, NoSuchNativeMethodException {
-        try ( ResourceScope scope = ResourceScope.newConfinedScope()) {
-            MemorySegment _path = MemorySegment.allocateNative(path.length() + 1, scope);
+        try ( MemorySession ms = MemorySession.openConfined()) {
+            MemorySegment _path = MemorySegment.allocateNative(path.length() + 1, ms);
             _path.setUtf8String(0, path);
             final int result = openat64__with_ModeArg.invoke_sI__sI__A_sI_uI(fd, _path, oflag, mode);
             if (result == -1) {

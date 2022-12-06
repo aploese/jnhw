@@ -41,7 +41,6 @@
                   <configuration>
                     <compilerArgs>
                         <arg>--enable-preview</arg>
-                        <arg>--add-modules=jdk.incubator.foreign</arg>
                     </compilerArgs>
                 </configuration>
             </plugin>
@@ -49,7 +48,7 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
                 <configuration>
-                    <argLine>--enable-preview --add-modules=jdk.incubator.foreign --enable-native-access=de.ibapl.jnhw.common,de.ibapl.jnhw.common.test,ALL-UNNAMED</argLine>
+                    <argLine>--enable-preview --enable-native-access=de.ibapl.jnhw.common,de.ibapl.jnhw.common.test,ALL-UNNAMED</argLine>
                 </configuration>
             </plugin>
         </plugins>

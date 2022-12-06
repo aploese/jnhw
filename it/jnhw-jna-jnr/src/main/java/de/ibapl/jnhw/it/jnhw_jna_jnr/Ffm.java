@@ -22,17 +22,18 @@
 package de.ibapl.jnhw.it.jnhw_jna_jnr;
 
 import de.ibapl.jnhw.posix.Time;
+import java.lang.foreign.Addressable;
+import java.lang.foreign.FunctionDescriptor;
+import java.lang.foreign.Linker;
+import java.lang.foreign.MemoryAddress;
+import java.lang.foreign.MemoryLayout;
+import java.lang.foreign.MemoryLayout.PathElement;
+import java.lang.foreign.MemorySegment;
+import java.lang.foreign.MemorySession;
+import java.lang.foreign.SymbolLookup;
+import java.lang.foreign.ValueLayout;
 import java.lang.invoke.MethodHandle;
 import java.lang.invoke.VarHandle;
-import jdk.incubator.foreign.Addressable;
-import jdk.incubator.foreign.CLinker;
-import jdk.incubator.foreign.FunctionDescriptor;
-import jdk.incubator.foreign.MemoryAddress;
-import jdk.incubator.foreign.MemoryLayout;
-import static jdk.incubator.foreign.MemoryLayout.PathElement;
-import jdk.incubator.foreign.MemorySegment;
-import jdk.incubator.foreign.ResourceScope;
-import jdk.incubator.foreign.ValueLayout;
 
 /**
  *
@@ -50,19 +51,20 @@ public class Ffm {
     final static VarHandle tv_sec = TIMESPEC_MEMORY_LAYOUT.varHandle(PathElement.groupElement("tv_sec"));
     final static VarHandle tv_nsec = TIMESPEC_MEMORY_LAYOUT.varHandle(PathElement.groupElement("tv_nsec"));
 
-    final static CLinker linker = CLinker.systemCLinker();
-    final static MethodHandle clock_gettime = linker.downcallHandle(
-            linker.lookup("clock_gettime").get(),
+    final static Linker LINKER = Linker.nativeLinker();
+    final static SymbolLookup SYMBOL_LOOKUP = LINKER.defaultLookup();
+    final static MethodHandle clock_gettime = LINKER.downcallHandle(
+            SYMBOL_LOOKUP.lookup("clock_gettime").get(),
             FunctionDescriptor.of(ValueLayout.JAVA_LONG, ValueLayout.JAVA_INT, ValueLayout.ADDRESS)
     );
-    final static MethodHandle clock_settime = linker.downcallHandle(
-            linker.lookup("clock_settime").get(),
+    final static MethodHandle clock_settime = LINKER.downcallHandle(
+            SYMBOL_LOOKUP.lookup("clock_settime").get(),
             FunctionDescriptor.of(ValueLayout.JAVA_LONG, ValueLayout.JAVA_INT, ValueLayout.ADDRESS)
     );
 
     final static int getErrno() {
         try {
-            final MethodHandle errnoAddr = linker.downcallHandle(linker.lookup("__errno_location").get(), FunctionDescriptor.of(ValueLayout.ADDRESS));
+            final MethodHandle errnoAddr = LINKER.downcallHandle(SYMBOL_LOOKUP.lookup("__errno_location").get(), FunctionDescriptor.of(ValueLayout.ADDRESS));
             return ((MemoryAddress) errnoAddr.invoke()).get(ValueLayout.JAVA_INT, 0);
         } catch (Throwable th) {
             throw new RuntimeException("Cant find errno", th);
@@ -71,8 +73,8 @@ public class Ffm {
 
     public static void runFullTest_HeapAllocated(final int count) {
         final int CLOCK_MONOTONIC = de.ibapl.jnhw.posix.Time.CLOCK_MONOTONIC;
-        try ( ResourceScope rs = ResourceScope.newConfinedScope()) {
-            MemorySegment heap = MemorySegment.allocateNative(1024, rs);
+        try ( MemorySession ms = MemorySession.openConfined()) {
+            MemorySegment heap = MemorySegment.allocateNative(1024, ms);
             if (DIRECT_ACCESS) {
                 for (int i = 0; i < count; i++) {
                     MemorySegment timespec = heap.asSlice(0, de.ibapl.jnhw.posix.Time.Timespec.sizeof);
@@ -105,8 +107,8 @@ public class Ffm {
         final int CLOCK_MONOTONIC = de.ibapl.jnhw.posix.Time.CLOCK_MONOTONIC;
         if (DIRECT_ACCESS) {
             for (int i = 0; i < count; i++) {
-                try ( ResourceScope rs = ResourceScope.newConfinedScope()) {
-                    MemorySegment timespec = MemorySegment.allocateNative(de.ibapl.jnhw.posix.Time.Timespec.sizeof, rs);
+                try ( MemorySession ms = MemorySession.openConfined()) {
+                    MemorySegment timespec = MemorySegment.allocateNative(de.ibapl.jnhw.posix.Time.Timespec.sizeof, ms);
 
                     if (((long) clock_gettime.invokeExact(CLOCK_MONOTONIC, (Addressable) timespec)) != 0) {
                         throw new RuntimeException("Errno: " + getErrno());
@@ -120,8 +122,8 @@ public class Ffm {
             }
         } else {
             for (int i = 0; i < count; i++) {
-                try ( ResourceScope rs = ResourceScope.newConfinedScope()) {
-                    MemorySegment timespec = MemorySegment.allocateNative(de.ibapl.jnhw.posix.Time.Timespec.sizeof, rs);
+                try ( MemorySession ms = MemorySession.openConfined()) {
+                    MemorySegment timespec = MemorySegment.allocateNative(de.ibapl.jnhw.posix.Time.Timespec.sizeof, ms);
 
                     if (((long) clock_gettime.invokeExact(CLOCK_MONOTONIC, (Addressable) timespec)) != 0) {
                         throw new RuntimeException("Errno: " + getErrno());
@@ -140,8 +142,8 @@ public class Ffm {
 
     public static void mem(final int count) {
         for (int i = 0; i < count; i++) {
-            try ( ResourceScope rs = ResourceScope.newConfinedScope()) {
-                ts = MemorySegment.allocateNative(de.ibapl.jnhw.posix.Time.Timespec.sizeof, rs);
+            try ( MemorySession ms = MemorySession.openConfined()) {
+                ts = MemorySegment.allocateNative(de.ibapl.jnhw.posix.Time.Timespec.sizeof, ms);
             } catch (Throwable th) {
                 throw new RuntimeException(th);
             }
@@ -150,8 +152,8 @@ public class Ffm {
 
     public static void clock_gettime(final int count) {
         final int CLOCK_MONOTONIC = de.ibapl.jnhw.posix.Time.CLOCK_MONOTONIC;
-        try ( ResourceScope rs = ResourceScope.newConfinedScope()) {
-            final MemorySegment timespec = MemorySegment.allocateNative(de.ibapl.jnhw.posix.Time.Timespec.sizeof, rs);
+        try ( MemorySession ms = MemorySession.openConfined()) {
+            final MemorySegment timespec = MemorySegment.allocateNative(de.ibapl.jnhw.posix.Time.Timespec.sizeof, ms);
             for (int i = 0; i < count; i++) {
                 if (((long) clock_gettime.invokeExact(CLOCK_MONOTONIC, (Addressable) timespec)) != 0) {
                     throw new RuntimeException("Errno: " + getErrno());
@@ -163,8 +165,8 @@ public class Ffm {
     }
 
     public static int clock_settime(final int clock) {
-        try ( ResourceScope rs = ResourceScope.newConfinedScope()) {
-            final MemorySegment timespec = MemorySegment.allocateNative(de.ibapl.jnhw.posix.Time.Timespec.sizeof, rs);
+        try ( MemorySession ms = MemorySession.openConfined()) {
+            final MemorySegment timespec = MemorySegment.allocateNative(de.ibapl.jnhw.posix.Time.Timespec.sizeof, ms);
             if (((long) clock_settime.invokeExact(clock, (Addressable) timespec)) != 0) {
                 return getErrno();
             } else {
@@ -178,8 +180,8 @@ public class Ffm {
     static volatile long val;
 
     public static void get(final int count) {
-        try ( ResourceScope rs = ResourceScope.newConfinedScope()) {
-            final MemorySegment timespec = MemorySegment.allocateNative(de.ibapl.jnhw.posix.Time.Timespec.sizeof, rs);
+        try ( MemorySession ms = MemorySession.openConfined()) {
+            final MemorySegment timespec = MemorySegment.allocateNative(de.ibapl.jnhw.posix.Time.Timespec.sizeof, ms);
             if (DIRECT_ACCESS) {
                 for (int i = 0; i < count; i++) {
                     val = timespec.get(ValueLayout.JAVA_LONG, Time.Timespec.offsetof_Tv_sec);
@@ -195,8 +197,8 @@ public class Ffm {
     }
 
     public static void set(final int count) {
-        try ( ResourceScope rs = ResourceScope.newConfinedScope()) {
-            final MemorySegment timespec = MemorySegment.allocateNative(de.ibapl.jnhw.posix.Time.Timespec.sizeof, rs);
+        try ( MemorySession ms = MemorySession.openConfined()) {
+            final MemorySegment timespec = MemorySegment.allocateNative(de.ibapl.jnhw.posix.Time.Timespec.sizeof, ms);
             if (DIRECT_ACCESS) {
                 for (int i = 0; i < count; i++) {
                     timespec.set(ValueLayout.JAVA_LONG, Time.Timespec.offsetof_Tv_sec, val);

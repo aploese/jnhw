@@ -23,21 +23,21 @@ package de.ibapl.jnhw.winapi;
 
 import de.ibapl.jnhw.common.annotation.Include;
 import de.ibapl.jnhw.common.datatypes.Pointer;
-import de.ibapl.jnhw.common.exception.NativeErrorException;
-import de.ibapl.jnhw.util.winapi.WinApiDataType;
-import de.ibapl.jnhw.winapi.Minwinbase.SECURITY_ATTRIBUTES;
-import de.ibapl.jnhw.winapi.Winnt.HANDLE;
-import de.ibapl.jnhw.winapi.Winnt.ArrayOfHandle;
-import jdk.incubator.foreign.MemoryAddress;
-import jdk.incubator.foreign.ResourceScope;
 import de.ibapl.jnhw.common.downcall.wrapper.JnhwMh_MA___A__B__B__A;
 import de.ibapl.jnhw.common.downcall.wrapper.JnhwMh__B___A;
 import de.ibapl.jnhw.common.downcall.wrapper.JnhwMh_uI___A_uI;
-import de.ibapl.jnhw.common.downcall.wrapper.JnhwMh_uI__uI__A__B_uI;
-import de.ibapl.jnhw.common.downcall.wrapper.JnhwMh_uI__uI_sI;
 import de.ibapl.jnhw.common.downcall.wrapper.JnhwMh_uI___A_uI__B;
-import de.ibapl.jnhw.util.winapi.Kernel32Loader;
+import de.ibapl.jnhw.common.downcall.wrapper.JnhwMh_uI__uI__A__B_uI;
 import de.ibapl.jnhw.common.downcall.wrapper.JnhwMh_uI__uI__A__B_uI__B;
+import de.ibapl.jnhw.common.downcall.wrapper.JnhwMh_uI__uI_sI;
+import de.ibapl.jnhw.common.exception.NativeErrorException;
+import de.ibapl.jnhw.util.winapi.Kernel32Loader;
+import de.ibapl.jnhw.util.winapi.WinApiDataType;
+import de.ibapl.jnhw.winapi.Minwinbase.SECURITY_ATTRIBUTES;
+import de.ibapl.jnhw.winapi.Winnt.ArrayOfHandle;
+import de.ibapl.jnhw.winapi.Winnt.HANDLE;
+import java.lang.foreign.MemoryAddress;
+import java.lang.foreign.MemorySession;
 
 /**
  * Wrapper around the
@@ -137,12 +137,12 @@ public abstract class Synchapi {
      * indicates an error.
      */
     public final static HANDLE CreateEventW(SECURITY_ATTRIBUTES lpEventAttributes, boolean bManualReset, boolean bInitialState, String lpName) throws NativeErrorException {
-        try ( ResourceScope scope = ResourceScope.newConfinedScope()) {
+        try ( MemorySession ms = MemorySession.openConfined()) {
             MemoryAddress result = CreateEventW.invoke_MA___P__B__B__P(
                     lpEventAttributes != null ? lpEventAttributes : Pointer.NULL,
                     bManualReset,
                     bInitialState,
-                    lpName != null ? WinDef.LPWSTR.wrap(lpName, true, scope) : Pointer.NULL);
+                    lpName != null ? WinDef.LPWSTR.wrap(lpName, true, ms) : Pointer.NULL);
             if (result == MemoryAddress.NULL) {
                 throw new NativeErrorException(Errhandlingapi.GetLastError());
             }

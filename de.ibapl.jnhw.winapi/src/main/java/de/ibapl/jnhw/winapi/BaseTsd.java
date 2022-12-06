@@ -26,8 +26,8 @@ import de.ibapl.jnhw.common.datatypes.BaseDataType;
 import de.ibapl.jnhw.common.datatypes.MultiarchTupelBuilder;
 import de.ibapl.jnhw.common.memory.NativeIntNumber;
 import de.ibapl.jnhw.util.winapi.WinApiDataType;
-import jdk.incubator.foreign.MemorySegment;
-import jdk.incubator.foreign.ResourceScope;
+import java.lang.foreign.MemorySegment;
+import java.lang.foreign.MemorySession;
 
 /**
  * Wrapper around the
@@ -79,14 +79,14 @@ public abstract class BaseTsd {
 
         public final static BaseDataType DATA_TYPE = WinApiDataType.ULONG_PTR;
 
-        public static PULONG_PTR allocateNative(ResourceScope scope) {
-            final MemorySegment ms = MemorySegment.allocateNative(DATA_TYPE.SIZE_OF, scope);
+        public static PULONG_PTR allocateNative(MemorySession ms) {
+            final MemorySegment segment = MemorySegment.allocateNative(DATA_TYPE.SIZE_OF, ms);
             switch (DATA_TYPE) {
                 case uint32_t -> {
-                    return new PULONG_PTR32(ms, 0);
+                    return new PULONG_PTR32(segment, 0);
                 }
                 case uint64_t -> {
-                    return new PULONG_PTR64(ms, 0);
+                    return new PULONG_PTR64(segment, 0);
                 }
                 default ->
                     throw new RuntimeException("Cant handle PULONG_PTR for " + MultiarchTupelBuilder.getMultiarch());

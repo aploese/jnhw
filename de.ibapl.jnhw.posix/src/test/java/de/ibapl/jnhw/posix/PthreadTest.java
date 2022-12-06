@@ -28,9 +28,9 @@ import de.ibapl.jnhw.common.exception.NoSuchNativeMethodException;
 import de.ibapl.jnhw.common.memory.Int32_t;
 import de.ibapl.jnhw.posix.sys.Types;
 import de.ibapl.jnhw.util.posix.DefinesTest;
+import java.lang.foreign.MemorySession;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import jdk.incubator.foreign.ResourceScope;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
@@ -93,16 +93,16 @@ public class PthreadTest {
         );
     }
 
-    private ResourceScope scope;
+    private MemorySession ms;
 
     @BeforeEach
     public void setUp() {
-        scope = ResourceScope.newConfinedScope();
+        ms = MemorySession.openConfined();
     }
 
     @AfterEach
     public void tearDown() {
-        scope.close();
+        ms.close();
     }
 
     /**
@@ -111,7 +111,7 @@ public class PthreadTest {
     @Test
     public void testPthread_self() {
         System.out.println("pthread_self");
-        Pthread.Pthread_t result = Pthread.pthread_self(scope);
+        Pthread.Pthread_t result = Pthread.pthread_self(ms);
         Assertions.assertNotNull(result);
         System.out.println("PTHREAD ID: " + result);
     }
@@ -123,16 +123,16 @@ public class PthreadTest {
     public void testPthread_equal() throws Exception {
         System.out.println("pthread_equal");
         Assertions.assertThrows(NullPointerException.class, () -> {
-            Pthread.pthread_equal(null, Pthread.pthread_self(scope));
+            Pthread.pthread_equal(null, Pthread.pthread_self(ms));
         });
         Assertions.assertThrows(NullPointerException.class, () -> {
-            Pthread.pthread_equal(Pthread.pthread_self(scope), null);
+            Pthread.pthread_equal(Pthread.pthread_self(ms), null);
         });
         Assertions.assertThrows(NullPointerException.class, () -> {
             Pthread.pthread_equal(null, null);
         });
-        final Pthread.Pthread_t t1 = Pthread.pthread_self(scope);
-        final Pthread.Pthread_t t2 = Pthread.pthread_self(scope);
+        final Pthread.Pthread_t t1 = Pthread.pthread_self(ms);
+        final Pthread.Pthread_t t2 = Pthread.pthread_self(ms);
 
         Assertions.assertTrue(Pthread.pthread_equal(t1, t2));
 
@@ -143,8 +143,8 @@ public class PthreadTest {
         Thread t3 = new Thread(() -> {
             try {
                 //TODO move outside - currently junit will crash
-                final ResourceScope sharedScope = ResourceScope.newSharedScope();
-                objectRef[0] = Pthread.pthread_self(sharedScope);
+                final MemorySession sharedSession = MemorySession.openShared();
+                objectRef[0] = Pthread.pthread_self(sharedSession);
             } catch (Throwable t) {
                 Assertions.fail(t);
             }
@@ -164,10 +164,10 @@ public class PthreadTest {
     @Test
     public void testPthread_getcpuclockid() throws Exception {
         System.out.println("pthread_getcpuclockid");
-        Types.Clockid_t clock_id = Types.Clockid_t.allocateNative(scope);
+        Types.Clockid_t clock_id = Types.Clockid_t.allocateNative(ms);
         if (MultiarchTupelBuilder.getOS() == OS.DARWIN) {
             Assertions.assertThrows(NoSuchNativeMethodException.class, () -> {
-                Pthread.pthread_getcpuclockid(Pthread.pthread_self(scope), clock_id);
+                Pthread.pthread_getcpuclockid(Pthread.pthread_self(ms), clock_id);
             });
         } else {
             Assertions.assertThrows(NullPointerException.class, () -> {
@@ -176,20 +176,20 @@ public class PthreadTest {
 
 //This will crash with SIGSEV
 //            Pthread.pthread_getcpuclockid(Pthread.Pthread_t.ofAddress(MemoryAddress.ofLong(1024), scope), clock_id);
-            Pthread.pthread_getcpuclockid(Pthread.pthread_self(scope), clock_id);
+            Pthread.pthread_getcpuclockid(Pthread.pthread_self(ms), clock_id);
         }
     }
 
     @Test
     public void testPthread_t() {
-        Pthread.Pthread_t pthread_t = Pthread.Pthread_t.allocateNative(scope);
+        Pthread.Pthread_t pthread_t = Pthread.Pthread_t.allocateNative(ms);
         Assertions.assertNotNull(pthread_t.toString());
         Assertions.assertNotNull(pthread_t.nativeToString());
     }
 
     @Test
     public void testPthread_attr_t() throws Exception {
-        Pthread.Pthread_attr_t pthread_attr_t = Pthread.Pthread_attr_t.allocateNative(scope);
+        Pthread.Pthread_attr_t pthread_attr_t = Pthread.Pthread_attr_t.allocateNative(ms);
         Pthread.pthread_attr_init(pthread_attr_t);
         Assertions.assertNotNull(pthread_attr_t.toString());
         Assertions.assertNotNull(pthread_attr_t.nativeToString());
@@ -198,9 +198,9 @@ public class PthreadTest {
 
     @Test
     public void testPthread_attr_setget_schedparam() throws Exception {
-        Pthread.Pthread_attr_t attr = Pthread.Pthread_attr_t.allocateNative(scope);
+        Pthread.Pthread_attr_t attr = Pthread.Pthread_attr_t.allocateNative(ms);
         Pthread.pthread_attr_init(attr);
-        Sched.Sched_param param = Sched.Sched_param.allocateNative(scope);
+        Sched.Sched_param param = Sched.Sched_param.allocateNative(ms);
         param.sched_priority(0); //TODO Any other will give a EINVAL ????
         try {
             System.out.println("pthread_attr_setschedparam ");
@@ -213,7 +213,7 @@ public class PthreadTest {
             Pthread.pthread_attr_setschedparam(attr, param);
 
             System.out.println("pthread_attr_getschedparam");
-            Sched.Sched_param param1 = Sched.Sched_param.allocateNative(scope);
+            Sched.Sched_param param1 = Sched.Sched_param.allocateNative(ms);
             Assertions.assertThrows(NullPointerException.class, () -> {
                 Pthread.pthread_attr_getschedparam(null, param1);
             });
@@ -229,9 +229,9 @@ public class PthreadTest {
 
     @Test
     public void testPthread_attr_setget_inheritsched() throws Exception {
-        Pthread.Pthread_attr_t attr = Pthread.Pthread_attr_t.allocateNative(scope);
+        Pthread.Pthread_attr_t attr = Pthread.Pthread_attr_t.allocateNative(ms);
         Pthread.pthread_attr_init(attr);
-        Int32_t inheritsched = Int32_t.allocateNative(scope);
+        Int32_t inheritsched = Int32_t.allocateNative(ms);
         try {
             System.out.println("pthread_attr_getinheritsched");
             Assertions.assertThrows(NullPointerException.class, () -> {
@@ -254,39 +254,39 @@ public class PthreadTest {
 
     @Test
     public void testPthread_setget_schedparam() throws NativeErrorException {
-        Sched.Sched_param param = Sched.Sched_param.allocateNative(scope);
-        Int32_t policy = Int32_t.allocateNative(scope);
+        Sched.Sched_param param = Sched.Sched_param.allocateNative(ms);
+        Int32_t policy = Int32_t.allocateNative(ms);
 
         System.out.println("pthread_getschedparam");
 
         Assertions.assertThrows(NullPointerException.class, () -> {
-            Pthread.pthread_getschedparam(Pthread.pthread_self(scope), policy, null);
+            Pthread.pthread_getschedparam(Pthread.pthread_self(ms), policy, null);
         });
         Assertions.assertThrows(NullPointerException.class, () -> {
             Pthread.pthread_getschedparam(null, policy, param);
         });
 
-        Pthread.pthread_getschedparam(Pthread.pthread_self(scope), policy, param);
+        Pthread.pthread_getschedparam(Pthread.pthread_self(ms), policy, param);
         Assertions.assertEquals(Sched.SCHED_OTHER, policy.int32_t());
 
         System.out.println("pthread_setschedparam");
 
-        Pthread.pthread_setschedparam(Pthread.pthread_self(scope), policy.int32_t(), param);
+        Pthread.pthread_setschedparam(Pthread.pthread_self(ms), policy.int32_t(), param);
 
         param.sched_priority(Integer.MAX_VALUE);
         if (MultiarchTupelBuilder.getOS() == OS.OPEN_BSD) {
-            Pthread.pthread_setschedparam(Pthread.pthread_self(scope), policy.int32_t(), param);
+            Pthread.pthread_setschedparam(Pthread.pthread_self(ms), policy.int32_t(), param);
         } else {
             NativeErrorException nee = Assertions.assertThrows(NativeErrorException.class, () -> {
                 //TODO we must set this here oterwise error will not be EINVAL but ENOENT
                 Errno.errno(0);
-                Pthread.pthread_setschedparam(Pthread.pthread_self(scope), policy.int32_t(), param);
+                Pthread.pthread_setschedparam(Pthread.pthread_self(ms), policy.int32_t(), param);
             });
             Assertions.assertEquals(Errno.EINVAL, nee.errno);
         }
 
         Assertions.assertThrows(NullPointerException.class, () -> {
-            Pthread.pthread_setschedparam(Pthread.pthread_self(scope), 0, null);
+            Pthread.pthread_setschedparam(Pthread.pthread_self(ms), 0, null);
         });
 
         Assertions.assertThrows(NullPointerException.class, () -> {
@@ -303,14 +303,14 @@ public class PthreadTest {
             case OPEN_BSD:
             case DARWIN:
                 Assertions.assertThrows(NoSuchNativeMethodException.class, () -> {
-                    Pthread.pthread_setschedprio(Pthread.pthread_self(scope), 0);
+                    Pthread.pthread_setschedprio(Pthread.pthread_self(ms), 0);
                 });
                 break;
             default:
                 Assertions.assertThrows(NullPointerException.class, () -> {
                     Pthread.pthread_setschedprio(null, 0);
                 });
-                Pthread.pthread_setschedprio(Pthread.pthread_self(scope), 0);
+                Pthread.pthread_setschedprio(Pthread.pthread_self(ms), 0);
         }
     }
 
@@ -319,9 +319,9 @@ public class PthreadTest {
     //TODO What is going on?
     public void testPthread_t_Cancel() throws Exception {
         System.out.println("Start testPthread_t_Cancel");
-        Pthread.Pthread_t me = Pthread.pthread_self(scope);
-        Int32_t oldstate = Int32_t.allocateNative(scope);
-        Int32_t oldtype = Int32_t.allocateNative(scope);
+        Pthread.Pthread_t me = Pthread.pthread_self(ms);
+        Int32_t oldstate = Int32_t.allocateNative(ms);
+        Int32_t oldtype = Int32_t.allocateNative(ms);
 
         Pthread.pthread_setcancelstate(Pthread.PTHREAD_CANCEL_DISABLE, oldstate);
         Pthread.pthread_setcancelstate(oldstate.int32_t(), oldstate);
@@ -339,7 +339,7 @@ public class PthreadTest {
             try {
                 Pthread.pthread_testcancel();
 
-                objectRef[0] = Pthread.pthread_self(scope);
+                objectRef[0] = Pthread.pthread_self(ms);
                 synchronized (objectRef) {
                     objectRef.notifyAll();
                 }

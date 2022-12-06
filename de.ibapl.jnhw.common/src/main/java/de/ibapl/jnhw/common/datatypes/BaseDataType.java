@@ -23,7 +23,7 @@ package de.ibapl.jnhw.common.datatypes;
 
 import de.ibapl.jnhw.common.memory.layout.Alignment;
 import static de.ibapl.jnhw.common.memory.layout.Alignment.*;
-import jdk.incubator.foreign.ValueLayout;
+import java.lang.foreign.ValueLayout;
 
 /**
  *

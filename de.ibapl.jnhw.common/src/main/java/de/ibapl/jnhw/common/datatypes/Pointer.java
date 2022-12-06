@@ -22,8 +22,8 @@
 package de.ibapl.jnhw.common.datatypes;
 
 import java.util.Objects;
-import jdk.incubator.foreign.Addressable;
-import jdk.incubator.foreign.MemoryAddress;
+import java.lang.foreign.Addressable;
+import java.lang.foreign.MemoryAddress;
 
 /**
  *

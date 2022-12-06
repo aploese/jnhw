@@ -26,15 +26,15 @@ import de.ibapl.jnhw.common.datatypes.Pointer;
 import de.ibapl.jnhw.common.memory.layout.Alignment;
 import de.ibapl.jnhw.common.util.JnhwFormater;
 import java.io.IOException;
+import java.lang.foreign.Addressable;
+import java.lang.foreign.MemoryAddress;
+import java.lang.foreign.MemorySegment;
+import java.lang.foreign.MemorySession;
+import java.lang.foreign.ValueLayout;
 import java.nio.ByteOrder;
 import java.util.Arrays;
 import java.util.Objects;
 import java.util.logging.Logger;
-import jdk.incubator.foreign.Addressable;
-import jdk.incubator.foreign.MemoryAddress;
-import jdk.incubator.foreign.MemorySegment;
-import jdk.incubator.foreign.ResourceScope;
-import jdk.incubator.foreign.ValueLayout;
 
 /**
  *
@@ -59,7 +59,7 @@ public abstract class OpaqueMemory<T> implements Native, Pointer<T> {
          * @param parent the parent of the result with given address.
          * @return a cached or new OpaqueMemory.
          */
-        T produce(MemoryAddress address, ResourceScope rs, P parent);
+        T produce(MemoryAddress address, MemorySession ms, P parent);
 
     }
 
@@ -70,17 +70,9 @@ public abstract class OpaqueMemory<T> implements Native, Pointer<T> {
     protected final static Logger LOG = Logger.getLogger("de.ibapl.libjnhw-common");
 
     /**
-     * Memory accessor with the natural byte order
+     * Memory accessor with the natural byte order and natural alignemnt
      */
     protected final static MemoryAccessor MEM_ACCESS = MemoryAccessor.getMemoryAccessor(ByteOrder.nativeOrder());
-    /**
-     * Memory accessor with the little endian byte order
-     */
-    protected final static MemoryAccessor MEM_ACCESS_LE = ByteOrder.nativeOrder() == ByteOrder.LITTLE_ENDIAN ? MEM_ACCESS : MemoryAccessor.getMemoryAccessor(ByteOrder.LITTLE_ENDIAN);
-    /**
-     * Memory accessor with the big endian byte order
-     */
-    protected final static MemoryAccessor MEM_ACCESS_BE = ByteOrder.nativeOrder() == ByteOrder.BIG_ENDIAN ? MEM_ACCESS : MemoryAccessor.getMemoryAccessor(ByteOrder.BIG_ENDIAN);
 
     /**
      * Get the offset of member to direct parent.
@@ -171,8 +163,8 @@ public abstract class OpaqueMemory<T> implements Native, Pointer<T> {
         }
     }
 
-    public OpaqueMemory(MemoryAddress baseAddress, ResourceScope rs, long sizeInBytes) {
-        memorySegment = MemorySegment.ofAddress(baseAddress, sizeInBytes, rs);
+    public OpaqueMemory(MemoryAddress baseAddress, MemorySession ms, long sizeInBytes) {
+        memorySegment = MemorySegment.ofAddress(baseAddress, sizeInBytes, ms);
     }
 
     @Deprecated //Use OpaqueMemory.sliceMemorySegment(mem, destOff, nbyte)
@@ -326,32 +318,32 @@ public abstract class OpaqueMemory<T> implements Native, Pointer<T> {
                 copy(mem, i * BLOCK_SIZE, block, 0, BLOCK_SIZE);
             }
             if (printAddress) {
-                sb.append(JnhwFormater.formatAddress(BASE_ADDRESS + BLOCK_SIZE * i)).append(": ");
+                sb.append(JnhwFormater.formatAddress(MemoryAddress.ofLong(BASE_ADDRESS + BLOCK_SIZE * i))).append(": ");
             }
             for (int j = 0; j < BLOCK_SIZE; j++) {
                 ascii.append((char) block[j]);
                 switch (j) {
-                    case 4:
-                    case 12:
+                    case 4, 12 -> {
                         if (j < SIZE_IN_BYTES) {
                             sb.append(String.format(" %02x", block[j]));
                         } else {
                             sb.append("   ");
                         }
-                        break;
-                    case 8:
+                    }
+                    case 8 -> {
                         if (j < SIZE_IN_BYTES) {
                             sb.append(String.format("  %02x", block[j]));
                         } else {
                             sb.append("    ");
                         }
-                        break;
-                    default:
+                    }
+                    default -> {
                         if (j < SIZE_IN_BYTES) {
                             sb.append(String.format("%02x", block[j]));
                         } else {
                             sb.append("  ");
                         }
+                    }
                 }
             }
             sb.append(" | ");
@@ -365,7 +357,7 @@ public abstract class OpaqueMemory<T> implements Native, Pointer<T> {
 
     @Override
     final public String toString() {
-        return String.format("{baseAddress : %s, sizeof : %d}", JnhwFormater.formatAddress(memorySegment.address().toRawLongValue()), sizeof());
+        return String.format("{baseAddress : %s, sizeof : %d}", JnhwFormater.formatAddress(memorySegment.address()), sizeof());
     }
 
 }

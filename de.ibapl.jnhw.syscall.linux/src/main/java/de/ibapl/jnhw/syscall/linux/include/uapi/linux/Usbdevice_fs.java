@@ -59,8 +59,8 @@ import static de.ibapl.jnhw.syscall.linux.uapi.asm_generic.Types.__u16;
 import static de.ibapl.jnhw.syscall.linux.uapi.asm_generic.Types.__u32;
 import de.ibapl.jnhw.unix.sys.Ioctl;
 import java.nio.ByteBuffer;
-import jdk.incubator.foreign.MemoryAddress;
-import jdk.incubator.foreign.MemorySegment;
+import java.lang.foreign.MemoryAddress;
+import java.lang.foreign.MemorySegment;
 
 public final class Usbdevice_fs {
 

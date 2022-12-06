@@ -29,6 +29,11 @@ import de.ibapl.jnhw.common.annotation.Include;
 import de.ibapl.jnhw.common.datatypes.BaseDataType;
 import de.ibapl.jnhw.common.datatypes.MultiarchTupelBuilder;
 import de.ibapl.jnhw.common.datatypes.Pointer;
+import de.ibapl.jnhw.common.downcall.wrapper.JnhwMh_sI___A;
+import de.ibapl.jnhw.common.downcall.wrapper.JnhwMh_sI___A_sI__A;
+import de.ibapl.jnhw.common.downcall.wrapper.JnhwMh_sI__sI__A;
+import de.ibapl.jnhw.common.downcall.wrapper.JnhwMh_sI__sI__A_sI__A;
+import de.ibapl.jnhw.common.downcall.wrapper.JnhwMh_sL___A;
 import de.ibapl.jnhw.common.exception.NativeErrorException;
 import de.ibapl.jnhw.common.exception.NoSuchNativeMethodException;
 import de.ibapl.jnhw.common.exception.NoSuchNativeTypeException;
@@ -43,16 +48,10 @@ import de.ibapl.jnhw.util.posix.LibrtLoader;
 import de.ibapl.jnhw.util.posix.PosixDataType;
 import de.ibapl.jnhw.util.posix.memory.PosixStruct;
 import java.io.IOException;
+import java.lang.foreign.MemoryAddress;
+import java.lang.foreign.MemorySegment;
+import java.lang.foreign.MemorySession;
 import java.nio.ByteBuffer;
-import jdk.incubator.foreign.MemoryAddress;
-import jdk.incubator.foreign.MemorySegment;
-import jdk.incubator.foreign.ResourceScope;
-import de.ibapl.jnhw.common.downcall.wrapper.JnhwMh_sI___A;
-import de.ibapl.jnhw.common.downcall.wrapper.JnhwMh_sL___A;
-import de.ibapl.jnhw.common.downcall.wrapper.JnhwMh_sI__sI__A_sI__A;
-import de.ibapl.jnhw.common.downcall.wrapper.JnhwMh_sI__sI__A;
-import de.ibapl.jnhw.common.downcall.wrapper.JnhwMh_sI___A_sI__A__A;
-import de.ibapl.jnhw.common.downcall.wrapper.JnhwMh_sI___A_sI__A;
 
 /**
  * Wrapper around the {@code <aio.h>} header.
@@ -160,11 +159,11 @@ public class Aio {
          */
         public final Sigevent<T> aio_sigevent;
 
-        public static Aiocb tryAllocateNative(ResourceScope scope) throws NoSuchNativeTypeException {
+        public static Aiocb tryAllocateNative(MemorySession ms) throws NoSuchNativeTypeException {
             if (alignof == null) {
                 throw new NoSuchNativeTypeException("aiocb");
             }
-            return new Aiocb(MemorySegment.allocateNative(sizeof, scope), 0);
+            return new Aiocb(MemorySegment.allocateNative(sizeof, ms), 0);
         }
 
         /**
@@ -172,11 +171,11 @@ public class Aio {
          *
          * @param address
          */
-        public static Aiocb tryOfAddress(MemoryAddress address, ResourceScope scope) throws NoSuchNativeTypeException {
+        public static Aiocb tryOfAddress(MemoryAddress address, MemorySession ms) throws NoSuchNativeTypeException {
             if (alignof == null) {
                 throw new NoSuchNativeTypeException("aiocb");
             }
-            return new Aiocb(MemorySegment.ofAddress(address, sizeof, scope), 0);
+            return new Aiocb(MemorySegment.ofAddress(address, sizeof, ms), 0);
         }
 
         public Aiocb(MemorySegment memorySegment, long offset) throws NoSuchNativeTypeException {
@@ -523,11 +522,11 @@ public class Aio {
      */
     public static final class Aiocbs extends PointerArray<Aiocb> {
 
-        public final static Aiocbs tryAllocateNative(ResourceScope scope, int arraylength) throws NoSuchNativeTypeException {
+        public final static Aiocbs tryAllocateNative(MemorySession ms, int arraylength) throws NoSuchNativeTypeException {
             if (Aiocb.alignof == null) {
                 throw new NoSuchNativeTypeException("aiocb");
             }
-            return new Aiocbs(MemorySegment.allocateNative(BaseDataType.uintptr_t.SIZE_OF * arraylength, scope), 0, arraylength);
+            return new Aiocbs(MemorySegment.allocateNative(BaseDataType.uintptr_t.SIZE_OF * arraylength, ms), 0, arraylength);
         }
 
         public Aiocbs(MemorySegment memorySegment, long offset, int arrayLength) throws NoSuchNativeTypeException {

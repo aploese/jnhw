@@ -23,9 +23,9 @@ package de.ibapl.jnhw.it.posixsignal.posix_signal;
 
 import de.ibapl.jnhw.common.datatypes.MultiarchTupelBuilder;
 import de.ibapl.jnhw.common.datatypes.OS;
-import de.ibapl.jnhw.posix.Signal;
-import de.ibapl.jnhw.it.posixsignal.posix_signal.SignalHandler.ThreadingModel;
 import de.ibapl.jnhw.it.posixsignal.posix_signal.SignalHandler.SignalAction;
+import de.ibapl.jnhw.it.posixsignal.posix_signal.SignalHandler.ThreadingModel;
+import de.ibapl.jnhw.posix.Signal;
 
 /**
  *
@@ -166,7 +166,6 @@ public class App {
             } else {
                 args = new String[0];
             }
-            System.runFinalization();
             System.gc();
         } while (true);
     }

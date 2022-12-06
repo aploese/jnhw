@@ -23,8 +23,8 @@ package de.ibapl.jnhw.winapi;
 
 import de.ibapl.jnhw.common.memory.OpaqueMemory;
 import de.ibapl.jnhw.common.memory.UintPtr_t;
-import jdk.incubator.foreign.MemoryAddress;
-import jdk.incubator.foreign.ResourceScope;
+import java.lang.foreign.MemoryAddress;
+import java.lang.foreign.MemorySession;
 import org.junit.jupiter.api.AfterEach;
 import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.BeforeEach;
@@ -34,16 +34,16 @@ import org.junit.jupiter.api.condition.EnabledOnOs;
 @EnabledOnOs(org.junit.jupiter.api.condition.OS.WINDOWS)
 public class IoAPITest {
 
-    private ResourceScope scope;
+    private MemorySession ms;
 
     @BeforeEach
     public void setUp() throws Exception {
-        scope = ResourceScope.newSharedScope();
+        ms = MemorySession.openShared();
     }
 
     @AfterEach
     public void tearDown() throws Exception {
-        scope.close();
+        ms.close();
     }
 
     /**
@@ -54,10 +54,10 @@ public class IoAPITest {
         System.out.println("PostQueuedCompletionStatus");
         final long COMPLETION_KEY = 0xCAFE;
         final Winnt.HANDLE completionPort = IoAPI.CreateIoCompletionPort(Winnt.HANDLE.INVALID_HANDLE_VALUE, Winnt.HANDLE.NULL, COMPLETION_KEY, 0);
-        final Minwinbase.LPOVERLAPPED overlapped = Minwinbase.LPOVERLAPPED.allocateNative(scope);
-        WinDef.LPDWORD lpNumberOfBytesTransferred = WinDef.LPDWORD.allocateNative(scope);
-        BaseTsd.PULONG_PTR lpCompletionKey = BaseTsd.PULONG_PTR.allocateNative(scope);
-        UintPtr_t<Minwinbase.LPOVERLAPPED> lpOverlapped = UintPtr_t.allocateNative(scope);
+        final Minwinbase.LPOVERLAPPED overlapped = Minwinbase.LPOVERLAPPED.allocateNative(ms);
+        WinDef.LPDWORD lpNumberOfBytesTransferred = WinDef.LPDWORD.allocateNative(ms);
+        BaseTsd.PULONG_PTR lpCompletionKey = BaseTsd.PULONG_PTR.allocateNative(ms);
+        UintPtr_t<Minwinbase.LPOVERLAPPED> lpOverlapped = UintPtr_t.allocateNative(ms);
         final int dwNumberOfBytesTransferred = 42;
         long dwMilliseconds = 5000;
         Throwable ta[] = new Throwable[1];
@@ -83,7 +83,7 @@ public class IoAPITest {
         assertEquals(dwNumberOfBytesTransferred, lpNumberOfBytesTransferred.uint32_t());
         lpNumberOfBytesTransferred.uint32_t(0);
         assertEquals(lpOverlapped.get(), OpaqueMemory.getMemorySegment(overlapped).address());
-        UintPtr_t<Minwinbase.LPOVERLAPPED> lpOverlapped0 = UintPtr_t.allocateNative(scope);
+        UintPtr_t<Minwinbase.LPOVERLAPPED> lpOverlapped0 = UintPtr_t.allocateNative(ms);
 
         IoAPI.PostQueuedCompletionStatus(completionPort, dwNumberOfBytesTransferred, COMPLETION_KEY, null);
         IoAPI.GetQueuedCompletionStatus(completionPort, lpNumberOfBytesTransferred, lpCompletionKey, lpOverlapped0, dwMilliseconds);

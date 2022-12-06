@@ -36,8 +36,8 @@ import de.ibapl.jnhw.common.memory.layout.Alignment;
 import de.ibapl.jnhw.common.util.JsonStringBuilder;
 import de.ibapl.jnhw.util.posix.PosixDataType;
 import java.io.IOException;
-import jdk.incubator.foreign.MemorySegment;
-import jdk.incubator.foreign.ResourceScope;
+import java.lang.foreign.MemorySegment;
+import java.lang.foreign.MemorySession;
 
 /**
  * Wrapper around the {@code <poll.h>} header.
@@ -252,8 +252,8 @@ public final class Poll {
     @nfds_t
     public static class Nfds_t extends AsUnsignedLong {
 
-        public final static Nfds_t allocateNative(ResourceScope scope) {
-            return new Nfds_t(MemorySegment.allocateNative(PosixDataType.nfds_t.SIZE_OF, scope), 0);
+        public final static Nfds_t allocateNative(MemorySession ms) {
+            return new Nfds_t(MemorySegment.allocateNative(PosixDataType.nfds_t.SIZE_OF, ms), 0);
         }
 
         public Nfds_t(MemorySegment memorySegment, int offset) {
@@ -273,8 +273,8 @@ public final class Poll {
             return new PollFd(memorySegment, elementoffset);
         }
 
-        public final static PollFds allocateNative(ResourceScope scope, int arraylength) {
-            return new PollFds(MemorySegment.allocateNative(PollFd.sizeof * arraylength, scope), 0, arraylength);
+        public final static PollFds allocateNative(MemorySession ms, int arraylength) {
+            return new PollFds(MemorySegment.allocateNative(PollFd.sizeof * arraylength, ms), 0, arraylength);
         }
 
         public final static PollFds wrap(OpaqueMemory mem, long offset, int arraylength) {

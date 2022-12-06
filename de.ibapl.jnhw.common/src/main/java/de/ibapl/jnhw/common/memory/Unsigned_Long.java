@@ -23,8 +23,8 @@ package de.ibapl.jnhw.common.memory;
 
 import de.ibapl.jnhw.common.datatypes.BaseDataType;
 import java.io.IOException;
-import jdk.incubator.foreign.MemorySegment;
-import jdk.incubator.foreign.ResourceScope;
+import java.lang.foreign.MemorySegment;
+import java.lang.foreign.MemorySession;
 
 /**
  * teh datatype unsigned long
@@ -35,8 +35,8 @@ public class Unsigned_Long extends NativeIntNumber {
 
     public final static BaseDataType DATA_TYPE = BaseDataType.C_unsigned_long;
 
-    public static Unsigned_Long allocateNative(ResourceScope rs) {
-        return new Unsigned_Long(MemorySegment.allocateNative(DATA_TYPE.SIZE_OF, rs), 0);
+    public static Unsigned_Long allocateNative(MemorySession ms) {
+        return new Unsigned_Long(MemorySegment.allocateNative(DATA_TYPE.SIZE_OF, ms), 0);
     }
 
     public Unsigned_Long(MemorySegment memorySegment, long offset) {

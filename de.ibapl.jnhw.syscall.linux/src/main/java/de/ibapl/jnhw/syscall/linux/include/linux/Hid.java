@@ -23,14 +23,14 @@ package de.ibapl.jnhw.syscall.linux.include.linux;
 
 import de.ibapl.jnhw.common.annotation.Packed;
 import de.ibapl.jnhw.common.memory.MemoryArray;
-import de.ibapl.jnhw.common.memory.Struct;
 import de.ibapl.jnhw.common.util.JsonStringBuilder;
+import de.ibapl.jnhw.syscall.linux.AbstractLinuxSyscallStruct;
 import de.ibapl.jnhw.syscall.linux.include.uapi.linux.usb.AbstractDescriptor;
-import de.ibapl.jnhw.syscall.linux.uapi.asm_generic.Types.__u8;
 import de.ibapl.jnhw.syscall.linux.uapi.asm_generic.Types.__le16;
+import de.ibapl.jnhw.syscall.linux.uapi.asm_generic.Types.__u8;
 import de.ibapl.jnhw.syscall.linux.util.memory.PacketLayout;
 import java.io.IOException;
-import jdk.incubator.foreign.MemorySegment;
+import java.lang.foreign.MemorySegment;
 
 /**
  *
@@ -39,7 +39,7 @@ import jdk.incubator.foreign.MemorySegment;
 public class Hid {
 
     @Packed
-    public final static class Hid_class_descriptor extends Struct {
+    public final static class Hid_class_descriptor extends AbstractLinuxSyscallStruct {
 
         public final static class Layout extends PacketLayout {
 
@@ -55,12 +55,12 @@ public class Hid {
 
         @__u8
         public byte bDescriptorType() {
-            return MEM_ACCESS.uint8_t(memorySegment, Layout.bDescriptorType);
+            return MEM_ACCESS_BYTE_ALIGNED.uint8_t(memorySegment, Layout.bDescriptorType);
         }
 
         @__le16
         public int wDescriptorLength() {
-            return MEM_ACCESS_LE.uint16_t_AsInt(memorySegment, Layout.wDescriptorLength);
+            return MEM_ACCESS_LE_BYTE_ALIGNED.uint16_t_AsInt(memorySegment, Layout.wDescriptorLength);
         }
 
         @Override
@@ -111,17 +111,17 @@ public class Hid {
 
         @__le16
         public short bcdHID() {
-            return MEM_ACCESS_LE.uint16_t(memorySegment, Layout.bcdHID);
+            return MEM_ACCESS_LE_BYTE_ALIGNED.uint16_t(memorySegment, Layout.bcdHID);
         }
 
         @__u8
         public byte bCountryCode() {
-            return MEM_ACCESS.uint8_t(memorySegment, Layout.bCountryCode);
+            return MEM_ACCESS_BYTE_ALIGNED.uint8_t(memorySegment, Layout.bCountryCode);
         }
 
         @__u8
         public short bNumDescriptors() {
-            return MEM_ACCESS.uint8_t_AsShort(memorySegment, Layout.bNumDescriptors);
+            return MEM_ACCESS_BYTE_ALIGNED.uint8_t_AsShort(memorySegment, Layout.bNumDescriptors);
         }
 
         public MemoryArray<Hid_class_descriptor> desc;

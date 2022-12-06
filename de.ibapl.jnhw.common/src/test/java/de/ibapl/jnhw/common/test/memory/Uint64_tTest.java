@@ -23,11 +23,11 @@ package de.ibapl.jnhw.common.test.memory;
 
 import de.ibapl.jnhw.common.datatypes.BaseDataType;
 import de.ibapl.jnhw.common.memory.Uint64_t;
-import org.junit.jupiter.api.Test;
-import static org.junit.jupiter.api.Assertions.*;
 import de.ibapl.jnhw.common.memory.layout.Alignment;
-import jdk.incubator.foreign.MemorySegment;
-import jdk.incubator.foreign.ResourceScope;
+import java.lang.foreign.MemorySegment;
+import java.lang.foreign.MemorySession;
+import static org.junit.jupiter.api.Assertions.*;
+import org.junit.jupiter.api.Test;
 
 /**
  *
@@ -59,8 +59,8 @@ public class Uint64_tTest {
      */
     @Test
     public void testRawUint64_t() {
-        try ( ResourceScope rs = ResourceScope.newConfinedScope()) {
-            Uint64_t instance = Uint64_t.allocateNative(rs);
+        try ( MemorySession ms = MemorySession.openConfined()) {
+            Uint64_t instance = Uint64_t.allocateNative(ms);
             long expResult = 0x08070605040302010L;
             instance.uint64_t(expResult);
             assertEquals(expResult, instance.uint64_t());
@@ -69,8 +69,8 @@ public class Uint64_tTest {
 
     @Test
     public void testNativeToString() {
-        try ( ResourceScope rs = ResourceScope.newConfinedScope()) {
-            Uint64_t instance = new Uint64_t(MemorySegment.allocateNative(BaseDataType.uint64_t.SIZE_OF, rs), 0);
+        try ( MemorySession ms = MemorySession.openConfined()) {
+            Uint64_t instance = new Uint64_t(MemorySegment.allocateNative(BaseDataType.uint64_t.SIZE_OF, ms), 0);
             instance.uint64_t(-2);
             assertEquals(Long.toUnsignedString(-2), instance.nativeToString());
             assertEquals("0xfffffffffffffffe", instance.nativeToHexString());

@@ -21,8 +21,6 @@
  */
 module de.ibapl.jnhw.syscall.linux {
 
-    requires jdk.incubator.foreign;
-    
     requires de.ibapl.jnhw.posix;
 
     exports de.ibapl.jnhw.syscall.linux.annotation;

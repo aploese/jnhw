@@ -21,24 +21,23 @@
  */
 package de.ibapl.jnhw.common.test.upcall;
 
-import de.ibapl.jnhw.common.memory.NativeFunctionPointer;
+import de.ibapl.jnhw.common.downcall.JnhwMi__V___I__A__A;
 import de.ibapl.jnhw.common.memory.MemoryHeap;
+import de.ibapl.jnhw.common.memory.NativeFunctionPointer;
 import de.ibapl.jnhw.common.memory.OpaqueMemory;
 import de.ibapl.jnhw.common.nativepointer.FunctionPtr__V___I_MA_MA;
 import de.ibapl.jnhw.common.test.LibJnhwCommonTestLoader;
 import de.ibapl.jnhw.common.upcall.CallbackFactory__V___I_MA_MA;
 import de.ibapl.jnhw.common.upcall.Callback__V___I_MA_MA;
-import de.ibapl.jnhw.common.downcall.JnhwMi__V___I__A__A;
+import java.lang.foreign.FunctionDescriptor;
+import java.lang.foreign.MemoryAddress;
+import java.lang.foreign.MemorySegment;
+import java.lang.foreign.MemorySession;
+import java.lang.foreign.ValueLayout;
 import java.lang.invoke.MethodHandle;
 import java.lang.ref.Cleaner;
-import jdk.incubator.foreign.FunctionDescriptor;
-import jdk.incubator.foreign.MemoryAddress;
-import jdk.incubator.foreign.MemorySegment;
-import jdk.incubator.foreign.ResourceScope;
-import jdk.incubator.foreign.ValueLayout;
 import org.junit.jupiter.api.AfterEach;
 import static org.junit.jupiter.api.Assertions.*;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -59,18 +58,18 @@ public class Callback__V___I_MA_MA_Test {
         doCallback__V___I_MA_MA = LibJnhwCommonTestLoader.downcallHandle("doCallback__V___I_MA_MA", FunctionDescriptor.ofVoid(ValueLayout.JAVA_INT, ValueLayout.ADDRESS, ValueLayout.ADDRESS));
     }
 
-    private ResourceScope rs;
+    private MemorySession ms;
 
     static class A extends MemoryHeap {
 
         public final static int SIZE_OF = 2;
 
-        public A(MemoryAddress nativeAddress, ResourceScope rs) {
-            super(MemorySegment.ofAddress(nativeAddress, SIZE_OF, rs), 0, SIZE_OF);
+        public A(MemoryAddress nativeAddress, MemorySession ms) {
+            super(MemorySegment.ofAddress(nativeAddress, SIZE_OF, ms), 0, SIZE_OF);
         }
 
-        public A(ResourceScope rs) {
-            super(MemorySegment.allocateNative(SIZE_OF, rs), 0, SIZE_OF);
+        public A(MemorySession ms) {
+            super(MemorySegment.allocateNative(SIZE_OF, ms), 0, SIZE_OF);
         }
 
     }
@@ -79,26 +78,25 @@ public class Callback__V___I_MA_MA_Test {
 
         public final static int SIZE_OF = 4;
 
-        public B(MemoryAddress nativeAddress, ResourceScope rs) {
-            super(MemorySegment.ofAddress(nativeAddress, SIZE_OF, rs), 0, SIZE_OF);
+        public B(MemoryAddress nativeAddress, MemorySession ms) {
+            super(MemorySegment.ofAddress(nativeAddress, SIZE_OF, ms), 0, SIZE_OF);
         }
 
-        public B(ResourceScope rs) {
-            super(MemorySegment.allocateNative(SIZE_OF, rs), 0, SIZE_OF);
+        public B(MemorySession ms) {
+            super(MemorySegment.allocateNative(SIZE_OF, ms), 0, SIZE_OF);
         }
 
     }
 
     @BeforeEach
     public void setUpBefore() throws Exception {
-        System.runFinalization();
         System.gc();
-        rs = ResourceScope.newConfinedScope();
+        ms = MemorySession.openConfined();
     }
 
     @AfterEach
     public void cleanupAfterEach() throws Exception {
-        rs.close();
+        ms.close();
     }
 
     private static FunctionPtr__V___I_MA_MA getCallback__V___I_MA_MA() {
@@ -167,7 +165,6 @@ public class Callback__V___I_MA_MA_Test {
 
         cbs = null;
 
-        System.runFinalization();
         System.gc();
 
         assertEquals(maxCB, CallbackFactory__V___I_MA_MA.callbacksAvailable());
@@ -195,8 +192,8 @@ public class Callback__V___I_MA_MA_Test {
         final int[] intref = new int[1];
         final MemoryAddress[] refA = new MemoryAddress[1];
         final MemoryAddress[] refB = new MemoryAddress[1];
-        A a = new A(rs);
-        B b = new B(rs);
+        A a = new A(ms);
+        B b = new B(ms);
         Callback__V___I_MA_MA<A, B> callback = new Callback__V___I_MA_MA<A, B>() {
 
             @Override
@@ -224,7 +221,7 @@ public class Callback__V___I_MA_MA_Test {
         refA[0] = null;
         refB[0] = null;
 
-        new JnhwMi__V___I__A__A(getCallback__V___I_MA_MA().toAddressable(), rs).invoke__V__sI__P__P(42, a, b);
+        new JnhwMi__V___I__A__A(getCallback__V___I_MA_MA().toAddressable(), ms).invoke__V__sI__P__P(42, a, b);
         assertEquals(42, intref[0]);
         assertEquals(a.toAddressable().address(), refA[0]);
         assertEquals(b.toAddressable().address(), refB[0]);
@@ -233,7 +230,6 @@ public class Callback__V___I_MA_MA_Test {
 
         callback = null;
 
-        System.runFinalization();
         System.gc();
 
         assertEquals(CallbackFactory__V___I_MA_MA.MAX_CALL_BACKS, CallbackFactory__V___I_MA_MA.callbacksAvailable());
@@ -255,8 +251,8 @@ public class Callback__V___I_MA_MA_Test {
         Cleaner CLEANER = Cleaner.create();
         final MemoryAddress[] refA = new MemoryAddress[1];
         final MemoryAddress[] refB = new MemoryAddress[1];
-        A a = new A(rs);
-        B b = new B(rs);
+        A a = new A(ms);
+        B b = new B(ms);
 
         final int[] intref = new int[1];
         @SuppressWarnings("unchecked")
@@ -292,7 +288,6 @@ public class Callback__V___I_MA_MA_Test {
 
         callback = null;
 
-        System.runFinalization();
         System.gc();
 
         //sleep here, to let the CLEANER do it cleanup....

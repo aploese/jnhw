@@ -25,7 +25,7 @@ import de.ibapl.jnhw.common.datatypes.MultiarchTupelBuilder;
 import de.ibapl.jnhw.common.datatypes.OS;
 import de.ibapl.jnhw.posix.Unistd;
 import de.ibapl.jnhw.util.posix.DefinesTest;
-import jdk.incubator.foreign.ResourceScope;
+import java.lang.foreign.MemorySession;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
@@ -53,22 +53,22 @@ public class EventfdTest {
         DefinesTest.testDefines(Eventfd.class, "HAVE_SYS_EVENTFD_H");
     }
 
-    private ResourceScope scope;
+    private MemorySession ms;
 
     @BeforeEach
     public void setUp() throws Exception {
-        scope = ResourceScope.newConfinedScope();
+        ms = MemorySession.openConfined();
     }
 
     @AfterEach
     public void tearDown() throws Exception {
-        scope.close();
+        ms.close();
     }
 
     @Test
     public void testEventFD() throws Exception {
         int fd = Eventfd.eventfd(42, 0);
-        Eventfd.PtrEventfd_t readValue = Eventfd.PtrEventfd_t.allocateNative(scope);
+        Eventfd.PtrEventfd_t readValue = Eventfd.PtrEventfd_t.allocateNative(ms);
 
         Eventfd.eventfd_read(fd, readValue);
         Assertions.assertEquals(42, readValue.uint64_t());
@@ -88,7 +88,7 @@ public class EventfdTest {
     @Test
     public void testEventFD_0() throws Exception {
         int fd = Eventfd.eventfd(0, 0);
-        Eventfd.PtrEventfd_t readValue = Eventfd.PtrEventfd_t.allocateNative(scope);
+        Eventfd.PtrEventfd_t readValue = Eventfd.PtrEventfd_t.allocateNative(ms);
 
         Eventfd.eventfd_write(fd, 1);
         Eventfd.eventfd_read(fd, readValue);
