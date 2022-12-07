@@ -27,7 +27,6 @@ libtool
 .classpath
 
 
-ar-lib
 autom4te.cache
 stamp-h1
 .deps
