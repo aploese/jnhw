@@ -89,5 +89,22 @@ int getValueOf_STDOUT_FILENO() {
     return STDOUT_FILENO;
 }
 
+int* tryGetValueOf__SC_MINSIGSTKSZ(int* value) {
+#if ! defined(_SC_MINSIGSTKSZ)
+    value = NULL;
+#else
+    *value = _SC_MINSIGSTKSZ;
+#endif
+    return value;
+}
+
+int* tryGetValueOf__SC_SIGSTKSZ(int* value) {
+#if ! defined(_SC_SIGSTKSZ)
+    value = NULL;
+#else
+    *value = _SC_SIGSTKSZ;
+#endif
+    return value;
+}
 
 #endif

@@ -2164,11 +2164,12 @@ public class Signal {
     public final static int ILL_PRVREG;
 
     /**
-     * <b>POSIX:</b> Minimum stack size for a signal handler.
+     * <b>POSIX:</b> Minimum stack size for a signal handler. GLibC &gt; 2.34
+     * use sysconf(_SC_MINSIGSTKSZ)
      *
      */
     @Define()
-    public final static int MINSIGSTKSZ;
+    public final static long MINSIGSTKSZ;
 
     /**
      * <b>POSIX:</b>{@link SIGPOLL} I/O error.
@@ -2516,11 +2517,12 @@ public class Signal {
     public final static int SIGSEGV;
 
     /**
-     * <b>POSIX:</b> Default size in bytes for the alternate signal stack.
+     * <b>POSIX:</b> Default size in bytes for the alternate signal stack. GLibC
+     * &gt; 2.34 use sysconf(_SC_SIGSTKSZ)
      *
      */
     @Define()
-    public final static int SIGSTKSZ;
+    public final static long SIGSTKSZ;
 
     /**
      * <b>POSIX:</b><i>Stop the process</i> Stop executing(cannot be caught or
@@ -2695,28 +2697,27 @@ public class Signal {
                 ILL_ILLTRP = Linux_AllArchs_Defines.ILL_ILLTRP;
                 ILL_PRVOPC = Linux_AllArchs_Defines.ILL_PRVOPC;
                 ILL_PRVREG = Linux_AllArchs_Defines.ILL_PRVREG;
-                switch (MultiarchTupelBuilder.getArch()) {
-                    case AARCH64:
-                        MINSIGSTKSZ = Linux_Aarc64_Defines.MINSIGSTKSZ;
-                        break;
-                    case ARM:
-                    case I386:
-                    case RISC_V_64:
-                    case S390_X:
-                    case X86_64:
-                        MINSIGSTKSZ = Linux_Arm_I386_RiscV64_S390_X86_64_Defines.MINSIGSTKSZ;
-                        break;
-                    case MIPS:
-                    case MIPS_64:
-                        MINSIGSTKSZ = Linux_Mips_Mips64_Defines.MINSIGSTKSZ;
-                        break;
-                    case POWER_PC_64:
-                        MINSIGSTKSZ = Linux_Ppc64_Defines.MINSIGSTKSZ;
-                        break;
-                    default:
-                        throw new NoClassDefFoundError("No signal.h linux defines for MINSIGSTKSZ " + MultiarchTupelBuilder.getMultiarch());
+                if (Unistd._SC_MINSIGSTKSZ.isDefined()) {
+                    try {
+                        //TODO Bug in glibc 2.36??? _SC_SIGSTKSZ instead of _SC_MINSIGSTKSZ
+                        MINSIGSTKSZ = Unistd.sysconf(Unistd._SC_SIGSTKSZ.get());
+                    } catch (NativeErrorException ex) {
+                        throw new RuntimeException(ex);
+                    }
+                } else {
+                    MINSIGSTKSZ = switch (MultiarchTupelBuilder.getArch()) {
+                        case AARCH64 ->
+                            Linux_Aarc64_Defines.MINSIGSTKSZ;
+                        case ARM, I386, RISC_V_64, S390_X, X86_64 ->
+                            Linux_Arm_I386_RiscV64_S390_X86_64_Defines.MINSIGSTKSZ;
+                        case MIPS, MIPS_64 ->
+                            Linux_Mips_Mips64_Defines.MINSIGSTKSZ;
+                        case POWER_PC_64 ->
+                            Linux_Ppc64_Defines.MINSIGSTKSZ;
+                        default ->
+                            throw new NoClassDefFoundError("No signal.h linux defines for MINSIGSTKSZ " + MultiarchTupelBuilder.getMultiarch());
+                    };
                 }
-
                 POLL_ERR = IntDefine.toIntDefine(Linux_AllArchs_Defines.POLL_ERR);
                 POLL_HUP = IntDefine.toIntDefine(Linux_AllArchs_Defines.POLL_HUP);
                 POLL_IN = IntDefine.toIntDefine(Linux_AllArchs_Defines.POLL_IN);
@@ -2748,24 +2749,23 @@ public class Signal {
                 SIGPIPE = Linux_AllArchs_Defines.SIGPIPE;
                 SIGQUIT = Linux_AllArchs_Defines.SIGQUIT;
                 SIGSEGV = Linux_AllArchs_Defines.SIGSEGV;
-                switch (MultiarchTupelBuilder.getArch()) {
-                    case AARCH64:
-                    case POWER_PC_64:
-                        SIGSTKSZ = Linux_Aarc64_Ppc64_Defines.SIGSTKSZ;
-                        break;
-                    case ARM:
-                    case I386:
-                    case RISC_V_64:
-                    case S390_X:
-                    case X86_64:
-                        SIGSTKSZ = Linux_Arm_I386_RiscV64_S390_X86_64_Defines.SIGSTKSZ;
-                        break;
-                    case MIPS:
-                    case MIPS_64:
-                        SIGSTKSZ = Linux_Mips_Mips64_Defines.SIGSTKSZ;
-                        break;
-                    default:
-                        throw new NoClassDefFoundError("No signal.h linux defines for SIGSTKSZ " + MultiarchTupelBuilder.getMultiarch());
+                if (Unistd._SC_SIGSTKSZ.isDefined()) {
+                    try {
+                        SIGSTKSZ = Unistd.sysconf(Unistd._SC_SIGSTKSZ.get());
+                    } catch (NativeErrorException ex) {
+                        throw new RuntimeException(ex);
+                    }
+                } else {
+                    SIGSTKSZ = switch (MultiarchTupelBuilder.getArch()) {
+                        case AARCH64, POWER_PC_64 ->
+                            Linux_Aarc64_Ppc64_Defines.SIGSTKSZ;
+                        case ARM, I386,RISC_V_64,S390_X,X86_64 ->
+                            Linux_Arm_I386_RiscV64_S390_X86_64_Defines.SIGSTKSZ;
+                        case MIPS,MIPS_64 ->
+                            Linux_Mips_Mips64_Defines.SIGSTKSZ;
+                        default ->
+                            throw new NoClassDefFoundError("No signal.h linux defines for SIGSTKSZ " + MultiarchTupelBuilder.getMultiarch());
+                    };
                 }
                 SIGTERM = Linux_AllArchs_Defines.SIGTERM;
                 SIGTRAP = Linux_AllArchs_Defines.SIGTRAP;

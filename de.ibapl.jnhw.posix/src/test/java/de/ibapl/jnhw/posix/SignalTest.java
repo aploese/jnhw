@@ -389,7 +389,14 @@ public class SignalTest {
                 break;
             default:
                 System.err.print("psiginfo MSG >>>");
-                Signal.psiginfo(pinfo, "JNHW Test for Signal.psiginfo");
+                try {
+                    Signal.psiginfo(pinfo, "JNHW Test for Signal.psiginfo");
+                } catch (NativeErrorException nee) {
+                    //Ignore EAGAIN....
+                    if (nee.errno != Errno.EAGAIN) {
+                        throw nee;
+                    }
+                }
                 System.err.println("<<< psiginfo MSG");
                 System.err.flush();
                 System.out.flush();

@@ -102,6 +102,10 @@ public final class Unistd {
         public final static int STDERR_FILENO = 2;
         public final static int STDIN_FILENO = 0;
         public final static int STDOUT_FILENO = 1;
+        //TODO test real value
+        public final static IntDefine _SC_MINSIGSTKSZ = IntDefine.toIntDefine(249);
+        //TODO test real value
+        public final static IntDefine _SC_SIGSTKSZ = IntDefine.toIntDefine(250);
     }
 
     public static interface OpenBsdDefines extends BsdDefines {
@@ -137,6 +141,20 @@ public final class Unistd {
      */
     @Define
     public final static int _SC_AIO_PRIO_DELTA_MAX;
+
+    /**
+     * <b>GlibC(&gt; 2.34):</b> variable: {MINSIGSTKSZ}.
+     *
+     */
+    @Define
+    public final static IntDefine _SC_MINSIGSTKSZ;
+
+    /**
+     * <b>GlibC(&gt; 2.34):</b> variable: {SIGSTKSZ}.
+     *
+     */
+    @Define
+    public final static IntDefine _SC_SIGSTKSZ;
 
     public final static boolean HAVE_UNISTD_H;
 
@@ -219,6 +237,8 @@ public final class Unistd {
                 _SC_AIO_LISTIO_MAX = LinuxDefines._SC_AIO_LISTIO_MAX;
                 _SC_AIO_MAX = LinuxDefines._SC_AIO_MAX;
                 _SC_AIO_PRIO_DELTA_MAX = LinuxDefines._SC_AIO_PRIO_DELTA_MAX;
+                _SC_MINSIGSTKSZ = LinuxDefines._SC_MINSIGSTKSZ;
+                _SC_SIGSTKSZ = LinuxDefines._SC_SIGSTKSZ;
                 SEEK_DATA = IntDefine.toIntDefine(LinuxDefines.SEEK_DATA);
                 SEEK_HOLE = IntDefine.toIntDefine(LinuxDefines.SEEK_HOLE);
                 STDERR_FILENO = LinuxDefines.STDERR_FILENO;
@@ -232,6 +252,8 @@ public final class Unistd {
                 _SC_AIO_LISTIO_MAX = BsdDefines._SC_AIO_LISTIO_MAX;
                 _SC_AIO_MAX = BsdDefines._SC_AIO_MAX;
                 _SC_AIO_PRIO_DELTA_MAX = BsdDefines._SC_AIO_PRIO_DELTA_MAX;
+                _SC_MINSIGSTKSZ = IntDefine.UNDEFINED;
+                _SC_SIGSTKSZ = IntDefine.UNDEFINED;
                 STDERR_FILENO = BsdDefines.STDERR_FILENO;
                 STDIN_FILENO = BsdDefines.STDIN_FILENO;
                 STDOUT_FILENO = BsdDefines.STDOUT_FILENO;

@@ -345,7 +345,7 @@ public class Defines {
 
         switch (os) {
             case LINUX:
-                __GLIBC_MINOR__ = IntDefine.toIntDefine(33);
+                __GLIBC_MINOR__ = IntDefine.toIntDefine(36);
                 __GLIBC__ = IntDefine.toIntDefine(2);
                 __GNU_LIBRARY__ = IntDefine.toIntDefine(6);
                 break;

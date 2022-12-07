@@ -315,11 +315,13 @@ int getValueOf_SS_DISABLE() {
     return SS_DISABLE;
 }
 
-int getValueOf_MINSIGSTKSZ() {
+//glibc > 2.34 redefines this to sysconf(_SC_MINSIGSTKSZ), so this const is useless
+long getValueOf_MINSIGSTKSZ() {
     return MINSIGSTKSZ;
 }
 
-int getValueOf_SIGSTKSZ() {
+//glibc > 2.34 redefines this to sysconf(_SC_SIGSTKSZ), so this const is useless
+long getValueOf_SIGSTKSZ() {
     return SIGSTKSZ;
 }
 

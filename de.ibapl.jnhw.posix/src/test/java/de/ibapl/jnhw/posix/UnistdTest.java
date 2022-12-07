@@ -572,6 +572,12 @@ public class UnistdTest {
         System.out.println("sysconf(_SC_AIO_LISTIO_MAX) = " + Unistd.sysconf(Unistd._SC_AIO_LISTIO_MAX));
         System.out.println("sysconf(_SC_AIO_MAX) = " + Unistd.sysconf(Unistd._SC_AIO_MAX));
         System.out.println("sysconf(_SC_AIO_PRIO_DELTA_MAX) = " + Unistd.sysconf(Unistd._SC_AIO_PRIO_DELTA_MAX));
+        if (Unistd._SC_MINSIGSTKSZ.isDefined()) {
+            System.out.println("sysconf(_SC_MINSIGSTKSZ) = " + Unistd.sysconf(Unistd._SC_MINSIGSTKSZ.get()));
+        }
+        if (Unistd._SC_SIGSTKSZ.isDefined()) {
+            System.out.println("sysconf(_SC_SIGSTKSZ) = " + Unistd.sysconf(Unistd._SC_SIGSTKSZ.get()));
+        }
     }
 
     /**

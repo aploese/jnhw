@@ -419,9 +419,10 @@ int getValueOf_CREAD() {
 }
 
 int getValueOf_CRTSCTS() {
-#if defined (__linux__) && defined(__x86_64__)
-//TODO detect at compiletime if unsigned
-    return (int)CRTSCTS;
+#if defined (__linux__) && (defined(__x86_64__) || defined(__aarch64__))
+// detect at compiletime if unsigned
+    unsigned int RESULT = CRTSCTS;
+    return (int)RESULT;
 #else
     return CRTSCTS;
 #endif
