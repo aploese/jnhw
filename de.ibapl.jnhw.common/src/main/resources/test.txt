@@ -1,1 +1,0 @@
-find -name "*jnhw-common*" -exec ls -l {} \; >> length_X.txt

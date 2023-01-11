@@ -1,8 +1,0 @@
--rwxr-xr-x 1 aploese aploese 22112  9. Jan 10:24 ./lib/x86_64-linux-gnu/libjnhw-common.so.4
--rwxr-xr-x 1 aploese aploese 67184  5. Jan 08:25 ./lib/aarch64-linux-gnu/libjnhw-common.so.4
--rwxr-xr-x 1 aploese aploese 66712  5. Jan 08:25 ./lib/arm-linux-gnueabi/libjnhw-common.so.4
--rwxr-xr-x 1 aploese aploese 66720  5. Jan 08:26 ./lib/arm-linux-gnueabihf/libjnhw-common.so.4
--rwxr-xr-x 1 aploese aploese 14844  5. Jan 08:26 ./lib/mipsel-linux-gnu/libjnhw-common.so.4
--rwxr-xr-x 1 aploese aploese 16528  5. Jan 08:27 ./lib/mips64el-linux-gnuabi64/libjnhw-common.so.4
--rwxr-xr-x 1 aploese aploese 67224  5. Jan 08:27 ./lib/powerpc64le-linux-gnu/libjnhw-common.so.4
--rwxr-xr-x 1 aploese aploese 18024  5. Jan 08:28 ./lib/s390x-linux-gnu/libjnhw-common.so.4
