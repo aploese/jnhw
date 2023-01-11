@@ -1,6 +1,6 @@
 /*
  * JNHW - Java Native header Wrapper, https://github.com/aploese/jnhw/
- * Copyright (C) 2019-2022, Arne Plöse and individual contributors as indicated
+ * Copyright (C) 2019-2023, Arne Plöse and individual contributors as indicated
  * by the @authors tag. See the copyright.txt in the distribution for a
  * full listing of individual contributors.
  *
@@ -70,7 +70,7 @@ public abstract class AbstractDescriptor extends AbstractLinuxSyscallStruct {
     protected final static AbstractLayout ABSTRACT_LAYOUT = null;
 
     public static String bcd2String(short bcdValue) {
-        return String.format("%x.%02x", (bcdValue >> 8), (bcdValue & 0x00FF));
+        return String.format("%x.%02x", (bcdValue >>> 8), (bcdValue & 0x00FF));
     }
 
     public AbstractDescriptor(MemorySegment memorySegment, long offset, int sizeInBytes) {

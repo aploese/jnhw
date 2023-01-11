@@ -1,6 +1,6 @@
 /*
  * JNHW - Java Native header Wrapper, https://github.com/aploese/jnhw/
- * Copyright (C) 2019-2022, Arne Plöse and individual contributors as indicated
+ * Copyright (C) 2019-2023, Arne Plöse and individual contributors as indicated
  * by the @authors tag. See the copyright.txt in the distribution for a
  * full listing of individual contributors.
  *
@@ -25,19 +25,19 @@
 #include <pthread.h>
 #include <unistd.h>
 
-int Pthread_attr_t_alignof() {
+int32_t Pthread_attr_t_alignof() {
     return __alignof__ (pthread_attr_t);
 }
 
-int Pthread_attr_t_sizeof() {
+int32_t Pthread_attr_t_sizeof() {
     return sizeof (pthread_attr_t);
 }
 
-int Pthread_t_alignof() {
+int32_t Pthread_t_alignof() {
     return __alignof__ (pthread_t);
 }
 
-int Pthread_t_sizeof() {
+int32_t Pthread_t_sizeof() {
     return sizeof (pthread_t);
 }
 

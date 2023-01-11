@@ -1,6 +1,6 @@
 /*
  * JNHW - Java Native header Wrapper, https://github.com/aploese/jnhw/
- * Copyright (C) 2019-2022, Arne Plöse and individual contributors as indicated
+ * Copyright (C) 2019-2023, Arne Plöse and individual contributors as indicated
  * by the @authors tag. See the copyright.txt in the distribution for a
  * full listing of individual contributors.
  *
@@ -24,38 +24,38 @@
     //We need the POSIX version ...
 #if !defined(HAVE_PTHREAD_H) || !defined(_POSIX_VERSION)
 
-int getValueOf_HAVE_PTHREAD_H() {
+int32_t getValueOf_HAVE_PTHREAD_H() {
     return 0;
 }
 
 #else
 #include <pthread.h>
 
-int getValueOf_HAVE_PTHREAD_H() {
+int32_t getValueOf_HAVE_PTHREAD_H() {
     return 1;
 }
 
-int getValueOf_PTHREAD_EXPLICIT_SCHED() {
+int32_t getValueOf_PTHREAD_EXPLICIT_SCHED() {
     return PTHREAD_EXPLICIT_SCHED;
 }
 
-int getValueOf_PTHREAD_INHERIT_SCHED() {
+int32_t getValueOf_PTHREAD_INHERIT_SCHED() {
     return PTHREAD_INHERIT_SCHED;
 }
 
-int getValueOf_PTHREAD_CANCEL_DISABLE() {
+int32_t getValueOf_PTHREAD_CANCEL_DISABLE() {
     return PTHREAD_CANCEL_DISABLE;
 }
 
-int getValueOf_PTHREAD_CANCEL_ENABLE() {
+int32_t getValueOf_PTHREAD_CANCEL_ENABLE() {
     return PTHREAD_CANCEL_ENABLE;
 }
 
-int getValueOf_PTHREAD_CANCEL_DEFERRED() {
+int32_t getValueOf_PTHREAD_CANCEL_DEFERRED() {
     return PTHREAD_CANCEL_DEFERRED;
 }
 
-int getValueOf_PTHREAD_CANCEL_ASYNCHRONOUS() {
+int32_t getValueOf_PTHREAD_CANCEL_ASYNCHRONOUS() {
     return PTHREAD_CANCEL_ASYNCHRONOUS;
 }
 

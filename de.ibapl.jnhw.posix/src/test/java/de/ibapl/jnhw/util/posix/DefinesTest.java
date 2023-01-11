@@ -1,6 +1,6 @@
 /*
  * JNHW - Java Native header Wrapper, https://github.com/aploese/jnhw/
- * Copyright (C) 2019-2022, Arne Plöse and individual contributors as indicated
+ * Copyright (C) 2019-2023, Arne Plöse and individual contributors as indicated
  * by the @authors tag. See the copyright.txt in the distribution for a
  * full listing of individual contributors.
  *
@@ -22,10 +22,10 @@
 package de.ibapl.jnhw.util.posix;
 
 import de.ibapl.jnhw.common.annotation.Define;
-import de.ibapl.jnhw.common.datatypes.MultiarchTupelBuilder;
-import de.ibapl.jnhw.common.datatypes.OS;
 import de.ibapl.jnhw.common.util.IntDefine;
 import de.ibapl.jnhw.common.util.ObjectDefine;
+import de.ibapl.jnhw.libloader.MultiarchTupelBuilder;
+import de.ibapl.jnhw.libloader.OS;
 import de.ibapl.jnhw.posix.LibJnhwPosixTestLoader;
 import java.lang.reflect.Field;
 import java.util.stream.Stream;
@@ -40,27 +40,16 @@ import org.junit.jupiter.api.function.Executable;
  */
 public class DefinesTest {
 
-    @FunctionalInterface
-    public interface ObjectResolver {
-
-        Object invoke(String name);
-    }
-
-    @Test
-    public void test_NativeDefines() throws Exception {
-        DefinesTest.testDefines(Defines.class, null);
-    }
-
-    public static void testDefines(Class javaDefines, String haveHeaderName) throws Exception {
+    public static void testDefines(Class<?> javaDefines, String haveHeaderName) throws Exception {
         testDefines(javaDefines, haveHeaderName, null);
     }
 
-    public static void testDefines(Class javaDefines, String haveHeaderName, ObjectResolver objectResolver) throws Exception {
+    public static void testDefines(Class<?> javaDefines, String haveHeaderName, ObjectResolver objectResolver) throws Exception {
         Stream.Builder<Executable> streamBuilder = Stream.builder();
 
         for (Field f : javaDefines.getFields()) {
             if (f.getAnnotation(Define.class) != null) {
-                final Class type = f.getType();
+                final Class<?> type = f.getType();
                 if (Long.class.equals(type) || Integer.class.equals(type) || Short.class.equals(type) || Byte.class.equals(type)) {
                     throw new AssertionError("Unexpected type " + type + " for " + f.getName());
                 } else if (long.class.equals(type)) {
@@ -80,7 +69,6 @@ public class DefinesTest {
                         assertEquals(LibJnhwPosixTestLoader.getByteDefine(f.getName()), f.getByte(javaDefines), f.getName());
                     });
                 } else if (IntDefine.class.equals(type)) {
-                    IntDefine def = (IntDefine) f.get(javaDefines);
                     Integer nativeResult = LibJnhwPosixTestLoader.getClassIntegerDefine(f.getName());
                     if (nativeResult == null) {
                         streamBuilder.accept(() -> {
@@ -97,11 +85,10 @@ public class DefinesTest {
                         });
                     }
                 } else if (ObjectDefine.class.equals(type)) {
-                    ObjectDefine def = (ObjectDefine) f.get(javaDefines);
                     if (objectResolver == null) {
                         throw new IllegalArgumentException("No objectResolver for: " + f.getName());
                     }
-                    ObjectDefine nativeResult = (ObjectDefine) objectResolver.invoke(f.getName());
+                    ObjectDefine<?> nativeResult = (ObjectDefine) objectResolver.invoke(f.getName());
                     if (nativeResult.isDefined()) {
                         streamBuilder.accept(() -> {
                             assertTrue(((ObjectDefine) f.get(javaDefines)).isDefined(), () -> {
@@ -119,7 +106,6 @@ public class DefinesTest {
 
                     }
                 } else if (Object.class.isAssignableFrom(type)) {
-                    Object def = f.get(javaDefines);
                     if (objectResolver == null) {
                         throw new IllegalArgumentException("No objectResolver for: " + f.getName());
                     }
@@ -178,33 +164,31 @@ public class DefinesTest {
         System.out.println("<<< " + clazz.getName() + " Defines");
     }
 
+    @Test
+    public void test_NativeDefines() throws Exception {
+        DefinesTest.testDefines(Defines.class, null);
+    }
+
     /**
      * Test of _LARGEFILE64_SOURCE method, of class Defines.
      */
     @Test
     public void test_LARGEFILE64_SOURCE() throws Exception {
         switch (MultiarchTupelBuilder.getOS()) {
-            case LINUX:
+            case LINUX -> {
                 switch (Defines.__SIZEOF_LONG__) {
-                    case 4:
+                    case 4 ->
                         assertTrue(Defines._LARGEFILE64_SOURCE.get() != 0);
-                        break;
-                    case 8:
+                    case 8 ->
                         assertTrue(Defines._LARGEFILE64_SOURCE.get() != 0);
-                        break;
-                    default:
+                    default ->
                         fail("no case for this size of long:" + Defines.__SIZEOF_LONG__);
-                        break;
                 }
-                break;
+            }
 
-            case FREE_BSD:
-            case OPEN_BSD:
-            case DARWIN:
-            case WINDOWS:
+            case FREE_BSD, OPEN_BSD, DARWIN, WINDOWS ->
                 assertFalse(Defines._LARGEFILE64_SOURCE.isDefined());
-                break;
-            default:
+            default ->
                 fail("No testcase for OS: " + MultiarchTupelBuilder.getOS());
         }
     }
@@ -215,27 +199,20 @@ public class DefinesTest {
     @Test
     public void test_LARGEFILE_SOURCE() throws Exception {
         switch (MultiarchTupelBuilder.getOS()) {
-            case LINUX:
+            case LINUX -> {
                 switch (Defines.__SIZEOF_LONG__) {
-                    case 4:
+                    case 4 ->
                         assertTrue(Defines._LARGEFILE_SOURCE.get() != 0);
-                        break;
-                    case 8:
+                    case 8 ->
                         assertTrue(Defines._LARGEFILE_SOURCE.get() != 0);
-                        break;
-                    default:
+                    default ->
                         fail("no case for this size of long:" + Defines.__SIZEOF_LONG__);
-                        break;
                 }
-                break;
+            }
 
-            case FREE_BSD:
-            case OPEN_BSD:
-            case DARWIN:
-            case WINDOWS:
+            case FREE_BSD, OPEN_BSD, DARWIN, WINDOWS ->
                 assertFalse(Defines._LARGEFILE_SOURCE.isDefined());
-                break;
-            default:
+            default ->
                 fail("No testcase for OS: " + MultiarchTupelBuilder.getOS());
         }
     }
@@ -254,16 +231,11 @@ public class DefinesTest {
     @Test
     public void test_POSIX_C_SOURCE() throws Exception {
         switch (MultiarchTupelBuilder.getOS()) {
-            case LINUX:
-            case FREE_BSD:
-            case OPEN_BSD:
-            case DARWIN:
+            case LINUX, FREE_BSD, OPEN_BSD, DARWIN ->
                 assertEquals(200809, Defines._POSIX_C_SOURCE.get());
-                break;
-            case WINDOWS:
+            case WINDOWS ->
                 assertFalse(Defines._POSIX_C_SOURCE.isDefined());
-                break;
-            default:
+            default ->
                 fail("No testcase for OS: " + MultiarchTupelBuilder.getOS());
         }
     }
@@ -274,16 +246,11 @@ public class DefinesTest {
     @Test
     public void test_XOPEN_SOURCE() throws Exception {
         switch (MultiarchTupelBuilder.getOS()) {
-            case LINUX:
-            case FREE_BSD:
-            case OPEN_BSD:
-            case DARWIN:
+            case LINUX, FREE_BSD, OPEN_BSD, DARWIN ->
                 assertEquals(700, Defines._XOPEN_SOURCE.get());
-                break;
-            case WINDOWS:
+            case WINDOWS ->
                 assertFalse(Defines._XOPEN_SOURCE.isDefined());
-                break;
-            default:
+            default ->
                 fail("No testcase for OS: " + MultiarchTupelBuilder.getOS());
         }
     }
@@ -294,16 +261,11 @@ public class DefinesTest {
     @Test
     public void test_XOPEN_SOURCE_EXTENDED() throws Exception {
         switch (MultiarchTupelBuilder.getOS()) {
-            case LINUX:
-            case FREE_BSD:
-            case OPEN_BSD:
-            case DARWIN:
+            case LINUX, FREE_BSD, OPEN_BSD, DARWIN ->
                 assertEquals(1, Defines._XOPEN_SOURCE_EXTENDED.get());
-                break;
-            case WINDOWS:
+            case WINDOWS ->
                 assertFalse(Defines._XOPEN_SOURCE_EXTENDED.isDefined());
-                break;
-            default:
+            default ->
                 fail("No testcase for OS: " + MultiarchTupelBuilder.getOS());
         }
     }
@@ -380,6 +342,12 @@ public class DefinesTest {
             assertTrue(Defines.__GLIBC__.isDefined(), "__GLIBC__");
             assertTrue(Defines.__GLIBC_MINOR__.isDefined(), "__GLIBC_MINOR__");
         }
+    }
+
+    @FunctionalInterface
+    public interface ObjectResolver {
+
+        Object invoke(String name);
     }
 
 }

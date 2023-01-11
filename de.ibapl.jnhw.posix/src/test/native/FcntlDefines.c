@@ -1,6 +1,6 @@
 /*
  * JNHW - Java Native header Wrapper, https://github.com/aploese/jnhw/
- * Copyright (C) 2019-2022, Arne Plöse and individual contributors as indicated
+ * Copyright (C) 2019-2023, Arne Plöse and individual contributors as indicated
  * by the @authors tag. See the copyright.txt in the distribution for a
  * full listing of individual contributors.
  *
@@ -23,7 +23,7 @@
     //We need the POSIX version ...
 #if !defined(HAVE_FCNTL_H) || !defined(_POSIX_VERSION)
 
-int getValueOf_HAVE_FCNTL_H() {
+int32_t getValueOf_HAVE_FCNTL_H() {
     return 0;
 }
 
@@ -33,99 +33,99 @@ int getValueOf_HAVE_FCNTL_H() {
     // include POSIX OH (Optional Header) as well, to make FreeBSD happy.
 //#include <sys/stat.h>
 
-int getValueOf_HAVE_FCNTL_H() {
+int32_t getValueOf_HAVE_FCNTL_H() {
     return 1;
 }
 
-int getValueOf_AT_EACCESS() {
+int32_t getValueOf_AT_EACCESS() {
     return AT_EACCESS;
 }
 
-int getValueOf_AT_FDCWD() {
+int32_t getValueOf_AT_FDCWD() {
     return AT_FDCWD;
 }
 
-int getValueOf_AT_REMOVEDIR() {
+int32_t getValueOf_AT_REMOVEDIR() {
     return AT_REMOVEDIR;
 }
 
-int getValueOf_AT_SYMLINK_FOLLOW() {
+int32_t getValueOf_AT_SYMLINK_FOLLOW() {
     return AT_SYMLINK_FOLLOW;
 }
 
-int getValueOf_AT_SYMLINK_NOFOLLOW() {
+int32_t getValueOf_AT_SYMLINK_NOFOLLOW() {
     return AT_SYMLINK_NOFOLLOW;
 }
 
-int getValueOf_FD_CLOEXEC() {
+int32_t getValueOf_FD_CLOEXEC() {
     return FD_CLOEXEC;
 }
 
-int getValueOf_F_DUPFD() {
+int32_t getValueOf_F_DUPFD() {
     return F_DUPFD;
 }
 
-int getValueOf_F_DUPFD_CLOEXEC() {
+int32_t getValueOf_F_DUPFD_CLOEXEC() {
     return F_DUPFD_CLOEXEC;
 }
 
-int getValueOf_F_GETFD() {
+int32_t getValueOf_F_GETFD() {
     return F_GETFD;
 }
 
-int getValueOf_F_GETFL() {
+int32_t getValueOf_F_GETFL() {
     return F_GETFL;
 }
 
-int getValueOf_F_GETLK() {
+int32_t getValueOf_F_GETLK() {
     return F_GETLK;
 }
 
-int getValueOf_F_GETOWN() {
+int32_t getValueOf_F_GETOWN() {
     return F_GETOWN;
 }
 
-int getValueOf_F_RDLCK() {
+int32_t getValueOf_F_RDLCK() {
     return F_RDLCK;
 }
 
-int getValueOf_F_SETFD() {
+int32_t getValueOf_F_SETFD() {
     return F_SETFD;
 }
 
-int getValueOf_F_SETFL() {
+int32_t getValueOf_F_SETFL() {
     return F_SETFL;
 }
 
-int getValueOf_F_SETLK() {
+int32_t getValueOf_F_SETLK() {
     return F_SETLK;
 }
 
-int getValueOf_F_SETLKW() {
+int32_t getValueOf_F_SETLKW() {
     return F_SETLKW;
 }
 
-int getValueOf_F_SETOWN() {
+int32_t getValueOf_F_SETOWN() {
     return F_SETOWN;
 }
 
-int getValueOf_F_UNLCK() {
+int32_t getValueOf_F_UNLCK() {
     return F_UNLCK;
 }
 
-int getValueOf_F_WRLCK() {
+int32_t getValueOf_F_WRLCK() {
     return F_WRLCK;
 }
 
-int getValueOf_O_ACCMODE() {
+int32_t getValueOf_O_ACCMODE() {
     return O_ACCMODE;
 }
 
-int getValueOf_O_APPEND() {
+int32_t getValueOf_O_APPEND() {
     return O_APPEND;
 }
 
-int* tryGetValueOf_O_ASYNC(int* value) {
+int32_t* tryGetValueOf_O_ASYNC(int32_t* value) {
 #if defined (__linux__) || defined(__FreeBSD__) || defined(__OpenBSD__)  || defined(__APPLE__)
     *value = O_ASYNC;
 #else
@@ -138,27 +138,27 @@ int* tryGetValueOf_O_ASYNC(int* value) {
     return value;
 }
 
-int getValueOf_O_CLOEXEC() {
+int32_t getValueOf_O_CLOEXEC() {
     return O_CLOEXEC;
 }
 
-int getValueOf_O_CREAT() {
+int32_t getValueOf_O_CREAT() {
     return O_CREAT;
 }
 
-int getValueOf_O_DIRECTORY() {
+int32_t getValueOf_O_DIRECTORY() {
     return O_DIRECTORY;
 }
 
-int getValueOf_O_DSYNC() {
+int32_t getValueOf_O_DSYNC() {
     return O_DSYNC;
 }
 
-int getValueOf_O_EXCL() {
+int32_t getValueOf_O_EXCL() {
     return O_EXCL;
 }
 
-int* tryGetValueOf_O_EXEC(int* value) {
+int32_t* tryGetValueOf_O_EXEC(int32_t* value) {
 #if defined (__linux__) || defined(__APPLE__) || defined(__OpenBSD__)
 #if !defined(O_EXEC)
     value = NULL;
@@ -171,7 +171,7 @@ int* tryGetValueOf_O_EXEC(int* value) {
     return value;
 }
 
-int* tryGetValueOf_O_FSYNC(int* value) {
+int32_t* tryGetValueOf_O_FSYNC(int32_t* value) {
 #if defined (__linux__) || defined(__FreeBSD__)|| defined(__OpenBSD__) || defined(__APPLE__)
     *value = O_FSYNC;
 #else
@@ -184,7 +184,7 @@ int* tryGetValueOf_O_FSYNC(int* value) {
     return value;
 }
 
-int* tryGetValueOf_O_LARGEFILE(int* value) {
+int32_t* tryGetValueOf_O_LARGEFILE(int32_t* value) {
 #if defined (_LARGEFILE64_SOURCE)
     *value = O_LARGEFILE;
 #else
@@ -196,27 +196,27 @@ int* tryGetValueOf_O_LARGEFILE(int* value) {
     return value;
 }
 
-int getValueOf_O_NOCTTY() {
+int32_t getValueOf_O_NOCTTY() {
     return O_NOCTTY;
 }
 
-int getValueOf_O_NOFOLLOW() {
+int32_t getValueOf_O_NOFOLLOW() {
     return O_NOFOLLOW;
 }
 
-int getValueOf_O_NONBLOCK() {
+int32_t getValueOf_O_NONBLOCK() {
     return O_NONBLOCK;
 }
 
-int getValueOf_O_RDONLY() {
+int32_t getValueOf_O_RDONLY() {
     return O_RDONLY;
 }
 
-int getValueOf_O_RDWR() {
+int32_t getValueOf_O_RDWR() {
     return O_RDWR;
 }
 
-int* tryGetValueOf_O_RSYNC(int* value) {
+int32_t* tryGetValueOf_O_RSYNC(int32_t* value) {
 #if defined (__APPLE__) || defined (__FreeBSD__)
 #if !defined(O_RSYNC)
     value = NULL;
@@ -229,7 +229,7 @@ int* tryGetValueOf_O_RSYNC(int* value) {
     return value;
 }
 
-int* tryGetValueOf_O_SEARCH(int* value) {
+int32_t* tryGetValueOf_O_SEARCH(int32_t* value) {
 #if defined (__linux__) || defined(__APPLE__) || defined(__OpenBSD__)
 #if !defined(O_SEARCH)
     value = NULL;
@@ -242,15 +242,15 @@ int* tryGetValueOf_O_SEARCH(int* value) {
     return value;
 }
 
-int getValueOf_O_SYNC() {
+int32_t getValueOf_O_SYNC() {
     return O_SYNC;
 }
 
-int getValueOf_O_TRUNC() {
+int32_t getValueOf_O_TRUNC() {
     return O_TRUNC;
 }
 
-int* tryGetValueOf_O_TTY_INIT(int* value) {
+int32_t* tryGetValueOf_O_TTY_INIT(int32_t* value) {
 #if defined (__linux__) || defined(__APPLE__) || defined(__OpenBSD__)
 #if !defined(O_TTY_INIT)
     value = NULL;
@@ -263,11 +263,11 @@ int* tryGetValueOf_O_TTY_INIT(int* value) {
     return value;
 }
 
-int getValueOf_O_WRONLY() {
+int32_t getValueOf_O_WRONLY() {
     return O_WRONLY;
 }
 
-int* tryGetValueOf_POSIX_FADV_DONTNEED(int* value) {
+int32_t* tryGetValueOf_POSIX_FADV_DONTNEED(int32_t* value) {
 #if defined(__APPLE__) || defined(__OpenBSD__)
 #if !defined(POSIX_FADV_DONTNEED)
     value = NULL;
@@ -280,7 +280,7 @@ int* tryGetValueOf_POSIX_FADV_DONTNEED(int* value) {
     return value;
 }
 
-int* tryGetValueOf_POSIX_FADV_NOREUSE(int* value) {
+int32_t* tryGetValueOf_POSIX_FADV_NOREUSE(int32_t* value) {
 #if defined(__APPLE__) || defined(__OpenBSD__)
 #if !defined(POSIX_FADV_NOREUSE)
     value = NULL;
@@ -293,7 +293,7 @@ int* tryGetValueOf_POSIX_FADV_NOREUSE(int* value) {
     return value;
 }
 
-int* tryGetValueOf_POSIX_FADV_NORMAL(int* value) {
+int32_t* tryGetValueOf_POSIX_FADV_NORMAL(int32_t* value) {
 #if defined(__APPLE__) || defined(__OpenBSD__)
 #if !defined(POSIX_FADV_NORMAL)
     value = NULL;
@@ -306,7 +306,7 @@ int* tryGetValueOf_POSIX_FADV_NORMAL(int* value) {
     return value;
 }
 
-int* tryGetValueOf_POSIX_FADV_RANDOM(int* value) {
+int32_t* tryGetValueOf_POSIX_FADV_RANDOM(int32_t* value) {
 #if defined(__APPLE__) || defined(__OpenBSD__)
 #if !defined(POSIX_FADV_RANDOM)
     value = NULL;
@@ -319,7 +319,7 @@ int* tryGetValueOf_POSIX_FADV_RANDOM(int* value) {
     return value;
 }
 
-int* tryGetValueOf_POSIX_FADV_SEQUENTIAL(int* value) {
+int32_t* tryGetValueOf_POSIX_FADV_SEQUENTIAL(int32_t* value) {
 #if defined(__APPLE__) || defined(__OpenBSD__)
 #if !defined(POSIX_FADV_SEQUENTIAL)
     value = NULL;
@@ -332,7 +332,7 @@ int* tryGetValueOf_POSIX_FADV_SEQUENTIAL(int* value) {
     return value;
 }
 
-int* tryGetValueOf_POSIX_FADV_WILLNEED(int* value) {
+int32_t* tryGetValueOf_POSIX_FADV_WILLNEED(int32_t* value) {
 #if defined(__APPLE__) || defined(__OpenBSD__)
 #if !defined(POSIX_FADV_WILLNEED)
     value = NULL;

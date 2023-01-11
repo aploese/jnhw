@@ -1,6 +1,6 @@
 /*
  * JNHW - Java Native header Wrapper, https://github.com/aploese/jnhw/
- * Copyright (C) 2019-2022, Arne Plöse and individual contributors as indicated
+ * Copyright (C) 2019-2023, Arne Plöse and individual contributors as indicated
  * by the @authors tag. See the copyright.txt in the distribution for a
  * full listing of individual contributors.
  *
@@ -23,26 +23,26 @@
 
 #ifndef HAVE_ERRNO_H
 
-int getValueOf_HAVE_ERRNO_H() {
+int32_t getValueOf_HAVE_ERRNO_H() {
     return 0;
 }
 
 #else
 #include <errno.h>
 
-int getValueOf_HAVE_ERRNO_H() {
+int32_t getValueOf_HAVE_ERRNO_H() {
     return 1;
 }
 
-int getValueOf_EDOM() {
+int32_t getValueOf_EDOM() {
     return EDOM;
 }
 
-int getValueOf_EILSEQ() {
+int32_t getValueOf_EILSEQ() {
     return EILSEQ;
 }
 
-int getValueOf_ERANGE() {
+int32_t getValueOf_ERANGE() {
     return ERANGE;
 }
 

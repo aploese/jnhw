@@ -1,6 +1,6 @@
 /*
  * JNHW - Java Native header Wrapper, https://github.com/aploese/jnhw/
- * Copyright (C) 2019-2022, Arne Plöse and individual contributors as indicated
+ * Copyright (C) 2019-2023, Arne Plöse and individual contributors as indicated
  * by the @authors tag. See the copyright.txt in the distribution for a
  * full listing of individual contributors.
  *
@@ -24,11 +24,12 @@ package de.ibapl.jnhw.posix;
 import de.ibapl.jnhw.common.annotation.Define;
 import de.ibapl.jnhw.common.annotation.Include;
 import de.ibapl.jnhw.common.datatypes.BaseDataType;
-import de.ibapl.jnhw.common.datatypes.MultiarchTupelBuilder;
-import de.ibapl.jnhw.common.downcall.wrapper.JnhwMh_sI___A;
-import de.ibapl.jnhw.common.downcall.wrapper.JnhwMh_sI___V;
-import de.ibapl.jnhw.common.downcall.wrapper.JnhwMh_sI__sI;
+import de.ibapl.jnhw.common.downcall.JnhwMh_sI___A;
+import de.ibapl.jnhw.common.downcall.JnhwMh_sI___V;
+import de.ibapl.jnhw.common.downcall.JnhwMh_sI__sI;
 import de.ibapl.jnhw.common.exception.NativeErrorException;
+import de.ibapl.jnhw.libloader.MultiarchTupelBuilder;
+import de.ibapl.jnhw.util.posix.LibcLoader;
 import java.lang.foreign.MemorySegment;
 import java.lang.foreign.MemorySession;
 
@@ -129,15 +130,18 @@ public class Stdio {
     }
 
     private final static JnhwMh_sI___V getchar = JnhwMh_sI___V.of(
+            LibcLoader.LIB_C_SYMBOL_LOOKUP,
             "getchar",
             BaseDataType.C_int);
 
     private final static JnhwMh_sI__sI putchar = JnhwMh_sI__sI.of(
+            LibcLoader.LIB_C_SYMBOL_LOOKUP,
             "putchar",
             BaseDataType.C_int,
             BaseDataType.C_int);
 
     private final static JnhwMh_sI___A remove = JnhwMh_sI___A.of(
+            LibcLoader.LIB_C_SYMBOL_LOOKUP,
             "remove",
             BaseDataType.C_int,
             BaseDataType.C_const_char_pointer);
@@ -186,7 +190,7 @@ public class Stdio {
      * indicates an error.
      */
     public final static void remove(String path) throws NativeErrorException {
-        try ( MemorySession ms = MemorySession.openConfined()) {
+        try (MemorySession ms = MemorySession.openConfined()) {
             MemorySegment _path = MemorySegment.allocateNative(path.length() + 1, ms);
             _path.setUtf8String(0, path);
             int result = remove.invoke_sI___A(_path);

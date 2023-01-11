@@ -1,6 +1,6 @@
 /*
  * JNHW - Java Native header Wrapper, https://github.com/aploese/jnhw/
- * Copyright (C) 2019-2022, Arne Plöse and individual contributors as indicated
+ * Copyright (C) 2019-2023, Arne Plöse and individual contributors as indicated
  * by the @authors tag. See the copyright.txt in the distribution for a
  * full listing of individual contributors.
  *
@@ -21,8 +21,10 @@
  */
 package de.ibapl.jnhw.util.posix;
 
+import java.lang.foreign.MemorySegment;
 import java.lang.foreign.MemorySession;
 import java.lang.foreign.SymbolLookup;
+import java.util.Optional;
 
 /**
  *
@@ -31,12 +33,17 @@ import java.lang.foreign.SymbolLookup;
 public class LibrtLoader {
 
     public final static SymbolLookup LIB_RT_SYMBOL_LOOKUP;
+    private final static MemorySession LIB_RT_MEMORY_SESSION = MemorySession.openShared();
 
     static {
         //TODO Quick and dirty ...
 //        LIB_RT_SYMBOL_LOOKUP = SymbolLookup.libraryLookup(Path.of("/lib/x86_64-linux-gnu/librt.so.1"), MemorySession.global());
-        LIB_RT_SYMBOL_LOOKUP = SymbolLookup.libraryLookup("librt.so.1", MemorySession.global());
+        LIB_RT_SYMBOL_LOOKUP = SymbolLookup.libraryLookup("librt.so.1", LIB_RT_MEMORY_SESSION);
 //TODO  does noe work anymore       LIB_RT_SYMBOL_LOOKUP = SymbolLookup.libraryLookup("rt", MemorySession.global());
+    }
+
+    public static Optional<MemorySegment> lookup(String name) {
+        return LIB_RT_SYMBOL_LOOKUP.lookup(name);
     }
 
 }

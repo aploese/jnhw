@@ -1,16 +1,21 @@
 -noimportjava: true
 Export-Package: \
 	de.ibapl.jnhw.annotation.linux.sys,\
-	de.ibapl.jnhw.annotation.posix.poll,\
 	de.ibapl.jnhw.annotation.posix.locale,\
+	de.ibapl.jnhw.annotation.posix.poll,\
+	de.ibapl.jnhw.annotation.posix.stdio,\
 	de.ibapl.jnhw.annotation.posix.sys.types,\
 	de.ibapl.jnhw.annotation.posix.termios,\
-    de.ibapl.jnhw.isoc,\
+        de.ibapl.jnhw.isoc,\
 	de.ibapl.jnhw.linux.sys,\
 	de.ibapl.jnhw.posix,\
 	de.ibapl.jnhw.posix.sys,\
 	de.ibapl.jnhw.unix.sys,\
-	de.ibapl.jnhw.util.posix,\
-	de.ibapl.jnhw.util.posix.memory,\
-	de.ibapl.jnhw.util.posix.ref,\
-    de.ibapl.jnhw.x_open
+        de.ibapl.jnhw.util.posix,\
+        de.ibapl.jnhw.util.posix.downcall,\
+        de.ibapl.jnhw.util.posix.downcall.foreign,\
+        de.ibapl.jnhw.util.posix.downcall.jni,\
+        de.ibapl.jnhw.util.posix.memory,\
+        de.ibapl.jnhw.util.posix.nativepointer,\
+        de.ibapl.jnhw.util.posix.upcall,\
+        de.ibapl.jnhw.x_open

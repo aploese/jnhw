@@ -1,6 +1,6 @@
 /*
  * JNHW - Java Native header Wrapper, https://github.com/aploese/jnhw/
- * Copyright (C) 2019-2022, Arne Plöse and individual contributors as indicated
+ * Copyright (C) 2019-2023, Arne Plöse and individual contributors as indicated
  * by the @authors tag. See the copyright.txt in the distribution for a
  * full listing of individual contributors.
  *
@@ -24,30 +24,30 @@
     //We need the POSIX version ...
 #if !defined(HAVE_SCHED_H) || !defined(_POSIX_VERSION)
 
-int getValueOf_HAVE_SCHED_H() {
+int32_t getValueOf_HAVE_SCHED_H() {
     return 0;
 }
 
 #else
 #include <sched.h>
 
-int getValueOf_HAVE_SCHED_H() {
+int32_t getValueOf_HAVE_SCHED_H() {
     return 1;
 }
 
-int getValueOf_SCHED_FIFO() {
+int32_t getValueOf_SCHED_FIFO() {
     return SCHED_FIFO;
 }
 
-int getValueOf_SCHED_OTHER() {
+int32_t getValueOf_SCHED_OTHER() {
     return SCHED_OTHER;
 }
 
-int getValueOf_SCHED_RR() {
+int32_t getValueOf_SCHED_RR() {
     return SCHED_RR;
 }
 
-int* tryGetValueOf_SCHED_SPORADIC(int* value) {
+int32_t* tryGetValueOf_SCHED_SPORADIC(int32_t* value) {
 #if defined (__linux__) || defined(__APPLE__) || defined(__FreeBSD__) || defined(__OpenBSD__)
     value = NULL;
 #elif not defined(SCHED_SPORADIC)

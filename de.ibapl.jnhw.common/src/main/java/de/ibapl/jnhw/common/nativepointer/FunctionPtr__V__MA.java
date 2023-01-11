@@ -1,6 +1,6 @@
 /*
  * JNHW - Java Native header Wrapper, https://github.com/aploese/jnhw/
- * Copyright (C) 2019-2022, Arne Plöse and individual contributors as indicated
+ * Copyright (C) 2019-2023, Arne Plöse and individual contributors as indicated
  * by the @authors tag. See the copyright.txt in the distribution for a
  * full listing of individual contributors.
  *
@@ -23,8 +23,8 @@ package de.ibapl.jnhw.common.nativepointer;
 
 import de.ibapl.jnhw.common.memory.NativeFunctionPointer;
 import de.ibapl.jnhw.common.memory.OpaqueMemory;
-import java.util.function.Function;
 import java.lang.foreign.MemoryAddress;
+import java.util.function.Function;
 
 /**
  *

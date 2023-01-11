@@ -1,6 +1,6 @@
 /*
  * JNHW - Java Native header Wrapper, https://github.com/aploese/jnhw/
- * Copyright (C) 2019-2022, Arne Plöse and individual contributors as indicated
+ * Copyright (C) 2019-2023, Arne Plöse and individual contributors as indicated
  * by the @authors tag. See the copyright.txt in the distribution for a
  * full listing of individual contributors.
  *
@@ -21,9 +21,9 @@
  */
 package de.ibapl.jnhw.posix;
 
-import de.ibapl.jnhw.common.datatypes.MultiarchTupelBuilder;
-import de.ibapl.jnhw.common.datatypes.OS;
 import de.ibapl.jnhw.common.exception.NativeErrorException;
+import de.ibapl.jnhw.libloader.MultiarchTupelBuilder;
+import de.ibapl.jnhw.libloader.OS;
 import de.ibapl.jnhw.util.posix.Defines;
 import de.ibapl.jnhw.util.posix.DefinesTest;
 import java.lang.foreign.MemorySession;
@@ -47,7 +47,7 @@ public class LocaleTest {
         if (MultiarchTupelBuilder.getOS() == OS.WINDOWS) {
             return;
         }
-        Assertions.assertTrue(LibJnhwPosixTestLoader.invokeExact_Int_V("sizeof__locale_t") > Defines.__SIZEOF_POINTER__, "sizeof locale_t must be >= sizeof uintptr_t");
+        Assertions.assertTrue(LibJnhwPosixTestLoader.invoke_sI___V("sizeof__locale_t") > Defines.__SIZEOF_POINTER__, "sizeof locale_t must be >= sizeof uintptr_t");
         DefinesTest.testDefines(Locale.class, "HAVE_LOCALE_H");
     }
 
@@ -82,82 +82,82 @@ public class LocaleTest {
         }
         Assertions.assertAll(
                 () -> {
-                    Assertions.assertEquals(LibJnhwPosixTestLoader.invokeExact_Int_V("lconv_t_sizeof"), Locale.Lconv.sizeof, "sizeof");
+                    Assertions.assertEquals(LibJnhwPosixTestLoader.invoke_sI___V("lconv_t_sizeof"), Locale.Lconv.sizeof, "sizeof");
                 },
                 () -> {
-                    Assertions.assertEquals(LibJnhwPosixTestLoader.invokeExact_Int_V("lconv_t_alignof"), Locale.Lconv.alignof.alignof, "alignof");
+                    Assertions.assertEquals(LibJnhwPosixTestLoader.invoke_sI___V("lconv_t_alignof"), Locale.Lconv.alignof.alignof, "alignof");
                 },
                 () -> {
-                    Assertions.assertEquals(LibJnhwPosixTestLoader.invokeExact_Int_V("lconv_t_offsetof_currency_symbol"), Locale.Lconv.offsetof_Currency_symbol, "offsetof_Currency_symbol");
+                    Assertions.assertEquals(LibJnhwPosixTestLoader.invoke_sI___V("lconv_t_offsetof_currency_symbol"), Locale.Lconv.offsetof_Currency_symbol, "offsetof_Currency_symbol");
                 },
                 () -> {
-                    Assertions.assertEquals(LibJnhwPosixTestLoader.invokeExact_Int_V("lconv_t_offsetof_decimal_point"), Locale.Lconv.offsetof_Decimal_point, "offsetof_Decimal_point");
+                    Assertions.assertEquals(LibJnhwPosixTestLoader.invoke_sI___V("lconv_t_offsetof_decimal_point"), Locale.Lconv.offsetof_Decimal_point, "offsetof_Decimal_point");
                 },
                 () -> {
-                    Assertions.assertEquals(LibJnhwPosixTestLoader.invokeExact_Int_V("lconv_t_offsetof_frac_digits"), Locale.Lconv.offsetof_Frac_digits, "offsetof_Frac_digits");
+                    Assertions.assertEquals(LibJnhwPosixTestLoader.invoke_sI___V("lconv_t_offsetof_frac_digits"), Locale.Lconv.offsetof_Frac_digits, "offsetof_Frac_digits");
                 },
                 () -> {
-                    Assertions.assertEquals(LibJnhwPosixTestLoader.invokeExact_Int_V("lconv_t_offsetof_grouping"), Locale.Lconv.offsetof_Grouping, "offsetof_Grouping");
+                    Assertions.assertEquals(LibJnhwPosixTestLoader.invoke_sI___V("lconv_t_offsetof_grouping"), Locale.Lconv.offsetof_Grouping, "offsetof_Grouping");
                 },
                 () -> {
-                    Assertions.assertEquals(LibJnhwPosixTestLoader.invokeExact_Int_V("lconv_t_offsetof_int_curr_symbol"), Locale.Lconv.offsetof_Int_curr_symbol, "offsetof_Int_curr_symbol");
+                    Assertions.assertEquals(LibJnhwPosixTestLoader.invoke_sI___V("lconv_t_offsetof_int_curr_symbol"), Locale.Lconv.offsetof_Int_curr_symbol, "offsetof_Int_curr_symbol");
                 },
                 () -> {
-                    Assertions.assertEquals(LibJnhwPosixTestLoader.invokeExact_Int_V("lconv_t_offsetof_int_frac_digits"), Locale.Lconv.offsetof_Int_frac_digits, "offsetof_Int_frac_digits");
+                    Assertions.assertEquals(LibJnhwPosixTestLoader.invoke_sI___V("lconv_t_offsetof_int_frac_digits"), Locale.Lconv.offsetof_Int_frac_digits, "offsetof_Int_frac_digits");
                 },
                 () -> {
-                    Assertions.assertEquals(LibJnhwPosixTestLoader.invokeExact_Int_V("lconv_t_offsetof_int_n_cs_precedes"), Locale.Lconv.offsetof_Int_n_cs_precedes, "offsetof_Int_n_cs_precedes");
+                    Assertions.assertEquals(LibJnhwPosixTestLoader.invoke_sI___V("lconv_t_offsetof_int_n_cs_precedes"), Locale.Lconv.offsetof_Int_n_cs_precedes, "offsetof_Int_n_cs_precedes");
                 },
                 () -> {
-                    Assertions.assertEquals(LibJnhwPosixTestLoader.invokeExact_Int_V("lconv_t_offsetof_int_n_sep_by_space"), Locale.Lconv.offsetof_Int_n_sep_by_space, "offsetof_Int_n_sep_by_space");
+                    Assertions.assertEquals(LibJnhwPosixTestLoader.invoke_sI___V("lconv_t_offsetof_int_n_sep_by_space"), Locale.Lconv.offsetof_Int_n_sep_by_space, "offsetof_Int_n_sep_by_space");
                 },
                 () -> {
-                    Assertions.assertEquals(LibJnhwPosixTestLoader.invokeExact_Int_V("lconv_t_offsetof_int_n_sign_posn"), Locale.Lconv.offsetof_Int_n_sign_posn, "offsetof_Int_n_sign_posn");
+                    Assertions.assertEquals(LibJnhwPosixTestLoader.invoke_sI___V("lconv_t_offsetof_int_n_sign_posn"), Locale.Lconv.offsetof_Int_n_sign_posn, "offsetof_Int_n_sign_posn");
                 },
                 () -> {
-                    Assertions.assertEquals(LibJnhwPosixTestLoader.invokeExact_Int_V("lconv_t_offsetof_int_p_cs_precedes"), Locale.Lconv.offsetof_Int_p_cs_precedes, "offsetof_Int_p_cs_precedes");
+                    Assertions.assertEquals(LibJnhwPosixTestLoader.invoke_sI___V("lconv_t_offsetof_int_p_cs_precedes"), Locale.Lconv.offsetof_Int_p_cs_precedes, "offsetof_Int_p_cs_precedes");
                 },
                 () -> {
-                    Assertions.assertEquals(LibJnhwPosixTestLoader.invokeExact_Int_V("lconv_t_offsetof_int_p_sep_by_space"), Locale.Lconv.offsetof_Int_p_sep_by_space, "offsetof_Int_p_sep_by_space");
+                    Assertions.assertEquals(LibJnhwPosixTestLoader.invoke_sI___V("lconv_t_offsetof_int_p_sep_by_space"), Locale.Lconv.offsetof_Int_p_sep_by_space, "offsetof_Int_p_sep_by_space");
                 },
                 () -> {
-                    Assertions.assertEquals(LibJnhwPosixTestLoader.invokeExact_Int_V("lconv_t_offsetof_int_p_sign_posn"), Locale.Lconv.offsetof_Int_p_sign_posn, "offsetof_Int_p_sign_posn");
+                    Assertions.assertEquals(LibJnhwPosixTestLoader.invoke_sI___V("lconv_t_offsetof_int_p_sign_posn"), Locale.Lconv.offsetof_Int_p_sign_posn, "offsetof_Int_p_sign_posn");
                 },
                 () -> {
-                    Assertions.assertEquals(LibJnhwPosixTestLoader.invokeExact_Int_V("lconv_t_offsetof_mon_decimal_point"), Locale.Lconv.offsetof_Mon_decimal_point, "offsetof_Mon_decimal_point");
+                    Assertions.assertEquals(LibJnhwPosixTestLoader.invoke_sI___V("lconv_t_offsetof_mon_decimal_point"), Locale.Lconv.offsetof_Mon_decimal_point, "offsetof_Mon_decimal_point");
                 },
                 () -> {
-                    Assertions.assertEquals(LibJnhwPosixTestLoader.invokeExact_Int_V("lconv_t_offsetof_mon_grouping"), Locale.Lconv.offsetof_Mon_grouping, "offsetof_Mon_grouping");
+                    Assertions.assertEquals(LibJnhwPosixTestLoader.invoke_sI___V("lconv_t_offsetof_mon_grouping"), Locale.Lconv.offsetof_Mon_grouping, "offsetof_Mon_grouping");
                 },
                 () -> {
-                    Assertions.assertEquals(LibJnhwPosixTestLoader.invokeExact_Int_V("lconv_t_offsetof_mon_thousands_sep"), Locale.Lconv.offsetof_Mon_thousands_sep, "offsetof_Mon_thousands_sep");
+                    Assertions.assertEquals(LibJnhwPosixTestLoader.invoke_sI___V("lconv_t_offsetof_mon_thousands_sep"), Locale.Lconv.offsetof_Mon_thousands_sep, "offsetof_Mon_thousands_sep");
                 },
                 () -> {
-                    Assertions.assertEquals(LibJnhwPosixTestLoader.invokeExact_Int_V("lconv_t_offsetof_n_cs_precedes"), Locale.Lconv.offsetof_N_cs_precedes, "offsetof_N_cs_precedes");
+                    Assertions.assertEquals(LibJnhwPosixTestLoader.invoke_sI___V("lconv_t_offsetof_n_cs_precedes"), Locale.Lconv.offsetof_N_cs_precedes, "offsetof_N_cs_precedes");
                 },
                 () -> {
-                    Assertions.assertEquals(LibJnhwPosixTestLoader.invokeExact_Int_V("lconv_t_offsetof_n_sep_by_space"), Locale.Lconv.offsetof_N_sep_by_space, "offsetof_N_sep_by_space");
+                    Assertions.assertEquals(LibJnhwPosixTestLoader.invoke_sI___V("lconv_t_offsetof_n_sep_by_space"), Locale.Lconv.offsetof_N_sep_by_space, "offsetof_N_sep_by_space");
                 },
                 () -> {
-                    Assertions.assertEquals(LibJnhwPosixTestLoader.invokeExact_Int_V("lconv_t_offsetof_n_sign_posn"), Locale.Lconv.offsetof_N_sign_posn, "offsetof_N_sign_posn");
+                    Assertions.assertEquals(LibJnhwPosixTestLoader.invoke_sI___V("lconv_t_offsetof_n_sign_posn"), Locale.Lconv.offsetof_N_sign_posn, "offsetof_N_sign_posn");
                 },
                 () -> {
-                    Assertions.assertEquals(LibJnhwPosixTestLoader.invokeExact_Int_V("lconv_t_offsetof_negative_sign"), Locale.Lconv.offsetof_Negative_sign, "offsetof_Negative_sign");
+                    Assertions.assertEquals(LibJnhwPosixTestLoader.invoke_sI___V("lconv_t_offsetof_negative_sign"), Locale.Lconv.offsetof_Negative_sign, "offsetof_Negative_sign");
                 },
                 () -> {
-                    Assertions.assertEquals(LibJnhwPosixTestLoader.invokeExact_Int_V("lconv_t_offsetof_p_cs_precedes"), Locale.Lconv.offsetof_P_cs_precedes, "offsetof_P_cs_precedes");
+                    Assertions.assertEquals(LibJnhwPosixTestLoader.invoke_sI___V("lconv_t_offsetof_p_cs_precedes"), Locale.Lconv.offsetof_P_cs_precedes, "offsetof_P_cs_precedes");
                 },
                 () -> {
-                    Assertions.assertEquals(LibJnhwPosixTestLoader.invokeExact_Int_V("lconv_t_offsetof_p_sep_by_space"), Locale.Lconv.offsetof_P_sep_by_space, "offsetof_P_sep_by_space");
+                    Assertions.assertEquals(LibJnhwPosixTestLoader.invoke_sI___V("lconv_t_offsetof_p_sep_by_space"), Locale.Lconv.offsetof_P_sep_by_space, "offsetof_P_sep_by_space");
                 },
                 () -> {
-                    Assertions.assertEquals(LibJnhwPosixTestLoader.invokeExact_Int_V("lconv_t_offsetof_p_sign_posn"), Locale.Lconv.offsetof_P_sign_posn, "offsetof_P_sign_posn");
+                    Assertions.assertEquals(LibJnhwPosixTestLoader.invoke_sI___V("lconv_t_offsetof_p_sign_posn"), Locale.Lconv.offsetof_P_sign_posn, "offsetof_P_sign_posn");
                 },
                 () -> {
-                    Assertions.assertEquals(LibJnhwPosixTestLoader.invokeExact_Int_V("lconv_t_offsetof_positive_sign"), Locale.Lconv.offsetof_Positive_sign, "offsetof_Positive_sign");
+                    Assertions.assertEquals(LibJnhwPosixTestLoader.invoke_sI___V("lconv_t_offsetof_positive_sign"), Locale.Lconv.offsetof_Positive_sign, "offsetof_Positive_sign");
                 },
                 () -> {
-                    Assertions.assertEquals(LibJnhwPosixTestLoader.invokeExact_Int_V("lconv_t_offsetof_thousands_sep"), Locale.Lconv.offsetof_Thousands_sep, "offsetof_Thousands_sep");
+                    Assertions.assertEquals(LibJnhwPosixTestLoader.invoke_sI___V("lconv_t_offsetof_thousands_sep"), Locale.Lconv.offsetof_Thousands_sep, "offsetof_Thousands_sep");
                 }
         );
     }

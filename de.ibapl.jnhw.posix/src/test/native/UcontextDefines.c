@@ -1,6 +1,6 @@
 /*
  * JNHW - Java Native header Wrapper, https://github.com/aploese/jnhw/
- * Copyright (C) 2019-2022, Arne Plöse and individual contributors as indicated
+ * Copyright (C) 2019-2023, Arne Plöse and individual contributors as indicated
  * by the @authors tag. See the copyright.txt in the distribution for a
  * full listing of individual contributors.
  *
@@ -23,13 +23,13 @@
 
 #ifndef HAVE_UCONTEXT_H
 
-int getValueOf_HAVE_UCONTEXT_H() {
+int32_t getValueOf_HAVE_UCONTEXT_H() {
     return 0;
 }
 #else
 #include <ucontext.h>
 
-int getValueOf_HAVE_UCONTEXT_H() {
+int32_t getValueOf_HAVE_UCONTEXT_H() {
     return 1;
 }
 

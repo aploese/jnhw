@@ -1,6 +1,6 @@
 /*
  * JNHW - Java Native header Wrapper, https://github.com/aploese/jnhw/
- * Copyright (C) 2019-2022, Arne Plöse and individual contributors as indicated
+ * Copyright (C) 2019-2023, Arne Plöse and individual contributors as indicated
  * by the @authors tag. See the copyright.txt in the distribution for a
  * full listing of individual contributors.
  *
@@ -24,9 +24,9 @@ package de.ibapl.jnhw.winapi;
 import de.ibapl.jnhw.annotation.winapi.basetsd.ULONG_PTR;
 import de.ibapl.jnhw.common.annotation.Include;
 import de.ibapl.jnhw.common.datatypes.Pointer;
-import de.ibapl.jnhw.common.downcall.wrapper.JnhwMh_MA___A__A_uL_uI;
-import de.ibapl.jnhw.common.downcall.wrapper.JnhwMh__B___A__A__A__A_uI;
-import de.ibapl.jnhw.common.downcall.wrapper.JnhwMh__B___A_uI_uL__A;
+import de.ibapl.jnhw.common.downcall.JnhwMh_BL___A__A__A__A_uI;
+import de.ibapl.jnhw.common.downcall.JnhwMh_BL___A_uI_uL__A;
+import de.ibapl.jnhw.common.downcall.JnhwMh_MA___A__A_uL_uI;
 import de.ibapl.jnhw.common.exception.NativeErrorException;
 import de.ibapl.jnhw.common.memory.UintPtr_t;
 import de.ibapl.jnhw.util.winapi.Kernel32Loader;
@@ -54,7 +54,7 @@ public final class IoAPI {
             WinApiDataType.ULONG_PTR,
             WinApiDataType.DWORD);
 
-    private final static JnhwMh__B___A__A__A__A_uI GetQueuedCompletionStatus = JnhwMh__B___A__A__A__A_uI.of(
+    private final static JnhwMh_BL___A__A__A__A_uI GetQueuedCompletionStatus = JnhwMh_BL___A__A__A__A_uI.of(
             Kernel32Loader.DLL_KERNEL32_SYMBOL_LOOKUP,
             "GetQueuedCompletionStatus",
             WinApiDataType.BOOL,
@@ -64,7 +64,7 @@ public final class IoAPI {
             WinApiDataType.LPOVERLAPPED,
             WinApiDataType.DWORD);
 
-    private final static JnhwMh__B___A_uI_uL__A PostQueuedCompletionStatus = JnhwMh__B___A_uI_uL__A.of(
+    private final static JnhwMh_BL___A_uI_uL__A PostQueuedCompletionStatus = JnhwMh_BL___A_uI_uL__A.of(
             Kernel32Loader.DLL_KERNEL32_SYMBOL_LOOKUP,
             "PostQueuedCompletionStatus",
             WinApiDataType.BOOL,
@@ -137,7 +137,7 @@ public final class IoAPI {
         if ((dwMilliseconds < 0) && (dwMilliseconds != Winbase.INFINITE)) {
             throw new IllegalArgumentException("dwMilliseconds must be >= 0");
         }
-        if (!GetQueuedCompletionStatus.invoke__B___P__P__P__P_uI(
+        if (!GetQueuedCompletionStatus.invoke_BL___P__P__P__P_uI(
                 CompletionPort,
                 lpNumberOfBytesTransferred,
                 lpCompletionKey,
@@ -166,7 +166,7 @@ public final class IoAPI {
      * indicates an error.
      */
     public final static void PostQueuedCompletionStatus(HANDLE CompletionPort, int dwNumberOfBytesTransferred, @ULONG_PTR long dwCompletionKey, LPOVERLAPPED lpOverlapped) throws NativeErrorException {
-        if (!PostQueuedCompletionStatus.invoke__B___P_uI_uL__P(
+        if (!PostQueuedCompletionStatus.invoke_BL___P_uI_uL__P(
                 CompletionPort,
                 dwNumberOfBytesTransferred,
                 dwCompletionKey,

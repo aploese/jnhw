@@ -1,6 +1,6 @@
 /*
  * JNHW - Java Native header Wrapper, https://github.com/aploese/jnhw/
- * Copyright (C) 2019-2022, Arne Plöse and individual contributors as indicated
+ * Copyright (C) 2019-2023, Arne Plöse and individual contributors as indicated
  * by the @authors tag. See the copyright.txt in the distribution for a
  * full listing of individual contributors.
  *
@@ -23,7 +23,7 @@
 
 #ifndef HAVE_SYS_IOCTL_H
 
-int getValueOf_HAVE_SYS_IOCTL_H() {
+int32_t getValueOf_HAVE_SYS_IOCTL_H() {
     return 0;
 }
 #else
@@ -33,11 +33,11 @@ int getValueOf_HAVE_SYS_IOCTL_H() {
 #include <sys/param.h>
 #endif
 
-int getValueOf_HAVE_SYS_IOCTL_H() {
+int32_t getValueOf_HAVE_SYS_IOCTL_H() {
     return 1;
 }
 
-int getValueOf_FIONREAD() {
+int32_t getValueOf_FIONREAD() {
 #if defined(__linux__) && defined(__sh__)
     return (int32_t) FIONREAD))
 #else
@@ -45,15 +45,15 @@ int getValueOf_FIONREAD() {
 #endif
 }
 
-int getValueOf_TIOCCBRK() {
+int32_t getValueOf_TIOCCBRK() {
     return TIOCCBRK;
 }
 
-int getValueOf_TIOCEXCL() {
+int32_t getValueOf_TIOCEXCL() {
     return TIOCEXCL;
 }
 
-int* tryGetValueOf_TIOCGICOUNT(int* value) {
+int32_t* tryGetValueOf_TIOCGICOUNT(int32_t* value) {
 #if defined (__linux__)
     *value = TIOCGICOUNT;
 #elif !defined(TIOCGICOUNT)
@@ -64,7 +64,7 @@ int* tryGetValueOf_TIOCGICOUNT(int* value) {
     return value;
 }
 
-int* tryGetValueOf_TIOCGSOFTCAR(int* value) {
+int32_t* tryGetValueOf_TIOCGSOFTCAR(int32_t* value) {
 #if defined (__linux__)
 #if defined(__sh__)
     *value = (int32_t) TIOCGSOFTCAR;
@@ -79,7 +79,7 @@ int* tryGetValueOf_TIOCGSOFTCAR(int* value) {
     return value;
 }
 
-int getValueOf_TIOCMBIC() {
+int32_t getValueOf_TIOCMBIC() {
 #if defined(__APPLE__) || defined (__FreeBSD__) || defined (__OpenBSD__) || (defined(__linux__) && defined(__sparc__))
     //Just force the conversation or check at runtime sizeof??
     return (int32_t) TIOCMBIC;
@@ -88,7 +88,7 @@ int getValueOf_TIOCMBIC() {
 #endif
 }
 
-int getValueOf_TIOCMBIS() {
+int32_t getValueOf_TIOCMBIS() {
 #if defined(__APPLE__) || defined (__FreeBSD__) || defined (__OpenBSD__) || (defined(__linux__) && defined(__sparc__))
     //Just force the conversation or check at runtime sizeof??
     return (int32_t) TIOCMBIS;
@@ -97,7 +97,7 @@ int getValueOf_TIOCMBIS() {
 #endif
 }
 
-int getValueOf_TIOCMGET() {
+int32_t getValueOf_TIOCMGET() {
 #if defined(__linux__) && defined(__sh__)
     return (int32_t) TIOCMGET;
 #else
@@ -105,7 +105,7 @@ int getValueOf_TIOCMGET() {
 #endif
 }
 
-int* tryGetValueOf_TIOCMIWAIT(int* value) {
+int32_t* tryGetValueOf_TIOCMIWAIT(int32_t* value) {
 #if defined (__linux__)
     *value = TIOCMIWAIT;
 #elif !defined(TIOCMIWAIT)
@@ -116,7 +116,7 @@ int* tryGetValueOf_TIOCMIWAIT(int* value) {
     return value;
 }
 
-int getValueOf_TIOCMSET() {
+int32_t getValueOf_TIOCMSET() {
 #if defined(__APPLE__) || defined (__FreeBSD__) || defined (__OpenBSD__) || (defined(__linux__) && defined(__sparc__))
     //Just force the conversation or check at runtime sizeof??
     return (int32_t) TIOCMSET;
@@ -125,51 +125,51 @@ int getValueOf_TIOCMSET() {
 #endif
 }
 
-int getValueOf_TIOCM_CAR() {
+int32_t getValueOf_TIOCM_CAR() {
     return TIOCM_CAR;
 }
 
-int getValueOf_TIOCM_CD() {
+int32_t getValueOf_TIOCM_CD() {
     return TIOCM_CD;
 }
 
-int getValueOf_TIOCM_CTS() {
+int32_t getValueOf_TIOCM_CTS() {
     return TIOCM_CTS;
 }
 
-int getValueOf_TIOCM_DSR() {
+int32_t getValueOf_TIOCM_DSR() {
     return TIOCM_DSR;
 }
 
-int getValueOf_TIOCM_DTR() {
+int32_t getValueOf_TIOCM_DTR() {
     return TIOCM_DTR;
 }
 
-int getValueOf_TIOCM_LE() {
+int32_t getValueOf_TIOCM_LE() {
     return TIOCM_LE;
 }
 
-int getValueOf_TIOCM_RI() {
+int32_t getValueOf_TIOCM_RI() {
     return TIOCM_RI;
 }
 
-int getValueOf_TIOCM_RNG() {
+int32_t getValueOf_TIOCM_RNG() {
     return TIOCM_RNG;
 }
 
-int getValueOf_TIOCM_RTS() {
+int32_t getValueOf_TIOCM_RTS() {
     return TIOCM_RTS;
 }
 
-int getValueOf_TIOCM_SR() {
+int32_t getValueOf_TIOCM_SR() {
     return TIOCM_SR;
 }
 
-int getValueOf_TIOCM_ST() {
+int32_t getValueOf_TIOCM_ST() {
     return TIOCM_ST;
 }
 
-int getValueOf_TIOCOUTQ() {
+int32_t getValueOf_TIOCOUTQ() {
 #if defined(__linux__) && defined(__sh__)
     return (int32_t) TIOCOUTQ;
 #else
@@ -177,11 +177,11 @@ int getValueOf_TIOCOUTQ() {
 #endif
 }
 
-int getValueOf_TIOCSBRK() {
+int32_t getValueOf_TIOCSBRK() {
     return TIOCSBRK;
 }
 
-int* tryGetValueOf_TIOCSSOFTCAR(int* value) {
+int32_t* tryGetValueOf_TIOCSSOFTCAR(int32_t* value) {
 #if defined (__linux__)
 #if defined (__linux__)
     *value = (int32_t) TIOCSSOFTCAR;
@@ -198,7 +198,7 @@ int* tryGetValueOf_TIOCSSOFTCAR(int* value) {
     return value;
 }
 
-int* tryGetValueOf_IOCPARM_MASK(int* value) {
+int32_t* tryGetValueOf_IOCPARM_MASK(int32_t* value) {
 #if defined (__OpenBSD__) || defined (__FreeBSD__) || defined(__APPLE__)
     *value = IOCPARM_MASK;
 #elif !defined(IOCPARM_MASK)
@@ -209,7 +209,7 @@ int* tryGetValueOf_IOCPARM_MASK(int* value) {
     return value;
 }
 
-int* tryGetValueOf_IOCPARM_MAX(int* value) {
+int32_t* tryGetValueOf_IOCPARM_MAX(int32_t* value) {
 #if defined (__OpenBSD__) || defined (__FreeBSD__) || defined(__APPLE__)
     *value = IOCPARM_MAX;
 #elif !defined(IOCPARM_MAX)
@@ -220,7 +220,7 @@ int* tryGetValueOf_IOCPARM_MAX(int* value) {
     return value;
 }
 
-int* tryGetValueOf_IOC_VOID(int* value) {
+int32_t* tryGetValueOf_IOC_VOID(int32_t* value) {
 #if defined (__OpenBSD__) || defined (__FreeBSD__) || defined(__APPLE__)
     *value = IOC_VOID;
 #elif !defined(IOC_VOID)
@@ -231,11 +231,11 @@ int* tryGetValueOf_IOC_VOID(int* value) {
     return value;
 }
 
-int getValueOf_IOC_OUT() {
+int32_t getValueOf_IOC_OUT() {
     return (int32_t) IOC_OUT;
 }
 
-int getValueOf_IOC_IN() {
+int32_t getValueOf_IOC_IN() {
 #if defined (__linux__) && (defined(__mips__) || defined(__powerpc__)) || defined(__FreeBSD__)|| defined(__OpenBSD__) || defined(__APPLE__)
     return (int32_t) IOC_IN;
 #else
@@ -243,11 +243,11 @@ int getValueOf_IOC_IN() {
 #endif
 }
 
-int getValueOf_IOC_INOUT() {
+int32_t getValueOf_IOC_INOUT() {
     return (int32_t) IOC_INOUT;
 }
 
-int* tryGetValueOf_IOC_DIRMASK(int* value) {
+int32_t* tryGetValueOf_IOC_DIRMASK(int32_t* value) {
 #if defined (__OpenBSD__)|| defined (__FreeBSD__)|| defined(__APPLE__)
     *value = (int32_t) IOC_DIRMASK;
 #elif !defined(IOC_DIRMASK)
@@ -258,7 +258,7 @@ int* tryGetValueOf_IOC_DIRMASK(int* value) {
     return value;
 }
 
-int* tryGetValueOf__IOC_NRBITS(int* value) {
+int32_t* tryGetValueOf__IOC_NRBITS(int32_t* value) {
 #if defined (__linux__)
     *value = _IOC_NRBITS;
 #elif !defined(_IOC_NRBITS)
@@ -269,7 +269,7 @@ int* tryGetValueOf__IOC_NRBITS(int* value) {
     return value;
 }
 
-int* tryGetValueOf__IOC_TYPEBITS(int* value) {
+int32_t* tryGetValueOf__IOC_TYPEBITS(int32_t* value) {
 #if defined (__linux__)
     *value = _IOC_TYPEBITS;
 #elif !defined(_IOC_TYPEBITS)
@@ -280,7 +280,7 @@ int* tryGetValueOf__IOC_TYPEBITS(int* value) {
     return value;
 }
 
-int* tryGetValueOf__IOC_SIZEBITS(int* value) {
+int32_t* tryGetValueOf__IOC_SIZEBITS(int32_t* value) {
 #if defined (__linux__)
     *value = _IOC_SIZEBITS;
 #elif !defined(_IOC_SIZEBITS)
@@ -291,7 +291,7 @@ int* tryGetValueOf__IOC_SIZEBITS(int* value) {
     return value;
 }
 
-int* tryGetValueOf__IOC_DIRBITS(int* value) {
+int32_t* tryGetValueOf__IOC_DIRBITS(int32_t* value) {
 #if defined (__linux__)
     *value = _IOC_DIRBITS;
 #elif !defined(_IOC_DIRBITS)
@@ -302,7 +302,7 @@ int* tryGetValueOf__IOC_DIRBITS(int* value) {
     return value;
 }
 
-int* tryGetValueOf__IOC_NRMASK(int* value) {
+int32_t* tryGetValueOf__IOC_NRMASK(int32_t* value) {
 #if defined (__linux__)
     *value = _IOC_NRMASK;
 #elif !defined(_IOC_NRMASK)
@@ -313,7 +313,7 @@ int* tryGetValueOf__IOC_NRMASK(int* value) {
     return value;
 }
 
-int* tryGetValueOf__IOC_TYPEMASK(int* value) {
+int32_t* tryGetValueOf__IOC_TYPEMASK(int32_t* value) {
 #if defined (__linux__)
     *value = _IOC_TYPEMASK;
 #elif !defined(_IOC_TYPEMASK)
@@ -325,7 +325,7 @@ int* tryGetValueOf__IOC_TYPEMASK(int* value) {
 }
 
 
-int* tryGetValueOf__IOC_SIZEMASK(int* value) {
+int32_t* tryGetValueOf__IOC_SIZEMASK(int32_t* value) {
 #if defined (__linux__)
     *value = _IOC_SIZEMASK;
 #elif !defined(_IOC_SIZEMASK)
@@ -336,7 +336,7 @@ int* tryGetValueOf__IOC_SIZEMASK(int* value) {
     return value;
 }
 
-int* tryGetValueOf__IOC_DIRMASK(int* value) {
+int32_t* tryGetValueOf__IOC_DIRMASK(int32_t* value) {
 #if defined (__linux__)
     *value = _IOC_DIRMASK;
 #elif !defined(_IOC_DIRMASK)
@@ -347,7 +347,7 @@ int* tryGetValueOf__IOC_DIRMASK(int* value) {
     return value;
 }
 
-int* tryGetValueOf__IOC_NRSHIFT(int* value) {
+int32_t* tryGetValueOf__IOC_NRSHIFT(int32_t* value) {
 #if defined (__linux__)
     *value = _IOC_NRSHIFT;
 #elif !defined(_IOC_NRSHIFT)
@@ -358,7 +358,7 @@ int* tryGetValueOf__IOC_NRSHIFT(int* value) {
     return value;
 }
 
-int* tryGetValueOf__IOC_TYPESHIFT(int* value) {
+int32_t* tryGetValueOf__IOC_TYPESHIFT(int32_t* value) {
 #if defined (__linux__)
     *value = _IOC_TYPESHIFT;
 #elif !defined(_IOC_TYPESHIFT)
@@ -369,7 +369,7 @@ int* tryGetValueOf__IOC_TYPESHIFT(int* value) {
     return value;
 }
 
-int* tryGetValueOf__IOC_SIZESHIFT(int* value) {
+int32_t* tryGetValueOf__IOC_SIZESHIFT(int32_t* value) {
 #if defined (__linux__)
     *value = _IOC_SIZESHIFT;
 #elif !defined(_IOC_SIZESHIFT)
@@ -380,7 +380,7 @@ int* tryGetValueOf__IOC_SIZESHIFT(int* value) {
     return value;
 }
 
-int* tryGetValueOf__IOC_DIRSHIFT(int* value) {
+int32_t* tryGetValueOf__IOC_DIRSHIFT(int32_t* value) {
 #if defined (__linux__)
     *value = _IOC_DIRSHIFT;
 #elif !defined(_IOC_DIRSHIFT)
@@ -391,7 +391,7 @@ int* tryGetValueOf__IOC_DIRSHIFT(int* value) {
     return value;
 }
 
-int* tryGetValueOf__IOC_NONE(int* value) {
+int32_t* tryGetValueOf__IOC_NONE(int32_t* value) {
 #if defined (__linux__)
     *value = _IOC_NONE;
 #elif !defined(_IOC_NONE)
@@ -402,7 +402,7 @@ int* tryGetValueOf__IOC_NONE(int* value) {
     return value;
 }
 
-int* tryGetValueOf__IOC_READ(int* value) {
+int32_t* tryGetValueOf__IOC_READ(int32_t* value) {
 #if defined (__linux__)
     *value = _IOC_READ;
 #elif !defined(_IOC_READ)
@@ -413,7 +413,7 @@ int* tryGetValueOf__IOC_READ(int* value) {
     return value;
 }
 
-int* tryGetValueOf__IOC_WRITE(int* value) {
+int32_t* tryGetValueOf__IOC_WRITE(int32_t* value) {
 #if defined (__linux__)
     *value = _IOC_WRITE;
 #elif !defined(_IOC_WRITE)
@@ -424,7 +424,7 @@ int* tryGetValueOf__IOC_WRITE(int* value) {
     return value;
 }
 
-int* tryGetValueOf_IOCSIZE_MASK(int* value) {
+int32_t* tryGetValueOf_IOCSIZE_MASK(int32_t* value) {
 #if defined (__linux__)
     *value = IOCSIZE_MASK;
 #elif !defined(IOCSIZE_MASK)
@@ -435,7 +435,7 @@ int* tryGetValueOf_IOCSIZE_MASK(int* value) {
     return value;
 }
 
-int* tryGetValueOf_IOCSIZE_SHIFT(int* value) {
+int32_t* tryGetValueOf_IOCSIZE_SHIFT(int32_t* value) {
 #if defined (__linux__)
     *value = IOCSIZE_SHIFT;
 #elif !defined(IOCSIZE_SHIFT)

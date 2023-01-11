@@ -1,6 +1,6 @@
 /*
  * JNHW - Java Native header Wrapper, https://github.com/aploese/jnhw/
- * Copyright (C) 2019-2022, Arne Plöse and individual contributors as indicated
+ * Copyright (C) 2019-2023, Arne Plöse and individual contributors as indicated
  * by the @authors tag. See the copyright.txt in the distribution for a
  * full listing of individual contributors.
  *
@@ -26,23 +26,23 @@
 #else
 #include <errno.h>
 
-int getValueOf_E2BIG() {
+int32_t getValueOf_E2BIG() {
     return E2BIG;
 }
 
-int getValueOf_EACCES() {
+int32_t getValueOf_EACCES() {
     return EACCES;
 }
 
-int getValueOf_EADDRINUSE() {
+int32_t getValueOf_EADDRINUSE() {
     return EADDRINUSE;
 }
 
-int getValueOf_EADDRNOTAVAIL() {
+int32_t getValueOf_EADDRNOTAVAIL() {
     return EADDRNOTAVAIL;
 }
 
-int* tryGetValueOf_EADV(int* value) {
+int32_t* tryGetValueOf_EADV(int32_t* value) {
 #if defined (__linux__)
     *value = EADV;
 #elif !defined(EADV)
@@ -53,19 +53,19 @@ int* tryGetValueOf_EADV(int* value) {
     return value;
 }
 
-int getValueOf_EAFNOSUPPORT() {
+int32_t getValueOf_EAFNOSUPPORT() {
     return EAFNOSUPPORT;
 }
 
-int getValueOf_EAGAIN() {
+int32_t getValueOf_EAGAIN() {
     return EAGAIN;
 }
 
-int getValueOf_EALREADY() {
+int32_t getValueOf_EALREADY() {
     return EALREADY;
 }
 
-int* tryGetValueOf_EBADE(int* value) {
+int32_t* tryGetValueOf_EBADE(int32_t* value) {
 #if defined (__linux__)
     *value = EBADE;
 #elif !defined(EBADE)
@@ -76,11 +76,11 @@ int* tryGetValueOf_EBADE(int* value) {
     return value;
 }
 
-int getValueOf_EBADF() {
+int32_t getValueOf_EBADF() {
     return EBADF;
 }
 
-int* tryGetValueOf_EBADFD(int* value) {
+int32_t* tryGetValueOf_EBADFD(int32_t* value) {
 #if defined (__linux__)
     *value = EBADFD;
 #elif !defined(EBADFD)
@@ -91,11 +91,11 @@ int* tryGetValueOf_EBADFD(int* value) {
     return value;
 }
 
-int getValueOf_EBADMSG() {
+int32_t getValueOf_EBADMSG() {
     return EBADMSG;
 }
 
-int* tryGetValueOf_EBADR(int* value) {
+int32_t* tryGetValueOf_EBADR(int32_t* value) {
 #if defined (__linux__)
     *value = EBADR;
 #elif !defined(EBADR)
@@ -106,7 +106,7 @@ int* tryGetValueOf_EBADR(int* value) {
     return value;
 }
 
-int* tryGetValueOf_EBADRQC(int* value) {
+int32_t* tryGetValueOf_EBADRQC(int32_t* value) {
 #if defined (__linux__)
     *value = EBADRQC;
 #elif !defined(EBADRQC)
@@ -117,7 +117,7 @@ int* tryGetValueOf_EBADRQC(int* value) {
     return value;
 }
 
-int* tryGetValueOf_EBADSLT(int* value) {
+int32_t* tryGetValueOf_EBADSLT(int32_t* value) {
 #if defined (__linux__)
     *value = EBADSLT;
 #elif !defined(EBADSLT)
@@ -128,7 +128,7 @@ int* tryGetValueOf_EBADSLT(int* value) {
     return value;
 }
 
-int* tryGetValueOf_EBFONT(int* value) {
+int32_t* tryGetValueOf_EBFONT(int32_t* value) {
 #if defined (__linux__)
     *value = EBFONT;
 #elif !defined(EBFONT)
@@ -139,19 +139,19 @@ int* tryGetValueOf_EBFONT(int* value) {
     return value;
 }
 
-int getValueOf_EBUSY() {
+int32_t getValueOf_EBUSY() {
     return EBUSY;
 }
 
-int getValueOf_ECANCELED() {
+int32_t getValueOf_ECANCELED() {
     return ECANCELED;
 }
 
-int getValueOf_ECHILD() {
+int32_t getValueOf_ECHILD() {
     return ECHILD;
 }
 
-int* tryGetValueOf_ECHRNG(int* value) {
+int32_t* tryGetValueOf_ECHRNG(int32_t* value) {
 #if defined (__linux__)
     *value = ECHRNG;
 #elif !defined(ECHRNG)
@@ -162,7 +162,7 @@ int* tryGetValueOf_ECHRNG(int* value) {
     return value;
 }
 
-int* tryGetValueOf_ECOMM(int* value) {
+int32_t* tryGetValueOf_ECOMM(int32_t* value) {
 #if defined (__linux__)
     *value = ECOMM;
 #elif !defined(ECOMM)
@@ -173,23 +173,23 @@ int* tryGetValueOf_ECOMM(int* value) {
     return value;
 }
 
-int getValueOf_ECONNABORTED() {
+int32_t getValueOf_ECONNABORTED() {
     return ECONNABORTED;
 }
 
-int getValueOf_ECONNREFUSED() {
+int32_t getValueOf_ECONNREFUSED() {
     return ECONNREFUSED;
 }
 
-int getValueOf_ECONNRESET() {
+int32_t getValueOf_ECONNRESET() {
     return ECONNRESET;
 }
 
-int getValueOf_EDEADLK() {
+int32_t getValueOf_EDEADLK() {
     return EDEADLK;
 }
 
-int* tryGetValueOf_EDEADLOCK(int* value) {
+int32_t* tryGetValueOf_EDEADLOCK(int32_t* value) {
 #if defined (__linux__)
     *value = EDEADLOCK;
 #elif !defined(EDEADLOCK)
@@ -200,11 +200,11 @@ int* tryGetValueOf_EDEADLOCK(int* value) {
     return value;
 }
 
-int getValueOf_EDESTADDRREQ() {
+int32_t getValueOf_EDESTADDRREQ() {
     return EDESTADDRREQ;
 }
 
-int* tryGetValueOf_EDOTDOT(int* value) {
+int32_t* tryGetValueOf_EDOTDOT(int32_t* value) {
 #if defined (__linux__)
     *value = EDOTDOT;
 #elif !defined(EDOTDOT)
@@ -215,31 +215,31 @@ int* tryGetValueOf_EDOTDOT(int* value) {
     return value;
 }
 
-int getValueOf_EDQUOT() {
+int32_t getValueOf_EDQUOT() {
     return EDQUOT;
 }
 
-int getValueOf_EEXIST() {
+int32_t getValueOf_EEXIST() {
     return EEXIST;
 }
 
-int getValueOf_EFAULT() {
+int32_t getValueOf_EFAULT() {
     return EFAULT;
 }
 
-int getValueOf_EFBIG() {
+int32_t getValueOf_EFBIG() {
     return EFBIG;
 }
 
-int getValueOf_EHOSTDOWN() {
+int32_t getValueOf_EHOSTDOWN() {
     return EHOSTDOWN;
 }
 
-int getValueOf_EHOSTUNREACH() {
+int32_t getValueOf_EHOSTUNREACH() {
     return EHOSTUNREACH;
 }
 
-int* tryGetValueOf_EHWPOISON(int* value) {
+int32_t* tryGetValueOf_EHWPOISON(int32_t* value) {
 #if defined (__linux__)
     *value = EHWPOISON;
 #elif !defined(EHWPOISON)
@@ -250,35 +250,35 @@ int* tryGetValueOf_EHWPOISON(int* value) {
     return value;
 }
 
-int getValueOf_EIDRM() {
+int32_t getValueOf_EIDRM() {
     return EIDRM;
 }
 
-int getValueOf_EINPROGRESS() {
+int32_t getValueOf_EINPROGRESS() {
     return EINPROGRESS;
 }
 
-int getValueOf_EINTR() {
+int32_t getValueOf_EINTR() {
     return EINTR;
 }
 
-int getValueOf_EINVAL() {
+int32_t getValueOf_EINVAL() {
     return EINVAL;
 }
 
-int getValueOf_EIO() {
+int32_t getValueOf_EIO() {
     return EIO;
 }
 
-int getValueOf_EISCONN() {
+int32_t getValueOf_EISCONN() {
     return EISCONN;
 }
 
-int getValueOf_EISDIR() {
+int32_t getValueOf_EISDIR() {
     return EISDIR;
 }
 
-int* tryGetValueOf_EISNAM(int* value) {
+int32_t* tryGetValueOf_EISNAM(int32_t* value) {
 #if defined (__linux__)
     *value = EISNAM;
 #elif !defined(EISNAM)
@@ -289,7 +289,7 @@ int* tryGetValueOf_EISNAM(int* value) {
     return value;
 }
 
-int* tryGetValueOf_EKEYEXPIRED(int* value) {
+int32_t* tryGetValueOf_EKEYEXPIRED(int32_t* value) {
 #if defined (__linux__)
     *value = EKEYEXPIRED;
 #elif !defined(EKEYEXPIRED)
@@ -300,7 +300,7 @@ int* tryGetValueOf_EKEYEXPIRED(int* value) {
     return value;
 }
 
-int* tryGetValueOf_EKEYREJECTED(int* value) {
+int32_t* tryGetValueOf_EKEYREJECTED(int32_t* value) {
 #if defined (__linux__)
     *value = EKEYREJECTED;
 #elif !defined(EKEYREJECTED)
@@ -311,7 +311,7 @@ int* tryGetValueOf_EKEYREJECTED(int* value) {
     return value;
 }
 
-int* tryGetValueOf_EKEYREVOKED(int* value) {
+int32_t* tryGetValueOf_EKEYREVOKED(int32_t* value) {
 #if defined (__linux__)
     *value = EKEYREVOKED;
 #elif !defined(EKEYREVOKED)
@@ -322,7 +322,7 @@ int* tryGetValueOf_EKEYREVOKED(int* value) {
     return value;
 }
 
-int* tryGetValueOf_EL2HLT(int* value) {
+int32_t* tryGetValueOf_EL2HLT(int32_t* value) {
 #if defined (__linux__)
     *value = EL2HLT;
 #elif !defined(EL2HLT)
@@ -333,7 +333,7 @@ int* tryGetValueOf_EL2HLT(int* value) {
     return value;
 }
 
-int* tryGetValueOf_EL2NSYNC(int* value) {
+int32_t* tryGetValueOf_EL2NSYNC(int32_t* value) {
 #if defined (__linux__)
     *value = EL2NSYNC;
 #elif !defined(EL2NSYNC)
@@ -344,7 +344,7 @@ int* tryGetValueOf_EL2NSYNC(int* value) {
     return value;
 }
 
-int* tryGetValueOf_EL3HLT(int* value) {
+int32_t* tryGetValueOf_EL3HLT(int32_t* value) {
 #if defined (__linux__)
     *value = EL3HLT;
 #elif !defined(EL3HLT)
@@ -355,7 +355,7 @@ int* tryGetValueOf_EL3HLT(int* value) {
     return value;
 }
 
-int* tryGetValueOf_EL3RST(int* value) {
+int32_t* tryGetValueOf_EL3RST(int32_t* value) {
 #if defined (__linux__)
     *value = EL3RST;
 #elif !defined(EL3RST)
@@ -366,7 +366,7 @@ int* tryGetValueOf_EL3RST(int* value) {
     return value;
 }
 
-int* tryGetValueOf_ELIBACC(int* value) {
+int32_t* tryGetValueOf_ELIBACC(int32_t* value) {
 #if defined (__linux__)
     *value = ELIBACC;
 #elif !defined(ELIBACC)
@@ -377,7 +377,7 @@ int* tryGetValueOf_ELIBACC(int* value) {
     return value;
 }
 
-int* tryGetValueOf_ELIBBAD(int* value) {
+int32_t* tryGetValueOf_ELIBBAD(int32_t* value) {
 #if defined (__linux__)
     *value = ELIBBAD;
 #elif !defined(ELIBBAD)
@@ -388,7 +388,7 @@ int* tryGetValueOf_ELIBBAD(int* value) {
     return value;
 }
 
-int* tryGetValueOf_ELIBEXEC(int* value) {
+int32_t* tryGetValueOf_ELIBEXEC(int32_t* value) {
 #if defined (__linux__)
     *value = ELIBEXEC;
 #elif !defined(ELIBEXEC)
@@ -399,7 +399,7 @@ int* tryGetValueOf_ELIBEXEC(int* value) {
     return value;
 }
 
-int* tryGetValueOf_ELIBMAX(int* value) {
+int32_t* tryGetValueOf_ELIBMAX(int32_t* value) {
 #if defined (__linux__)
     *value = ELIBMAX;
 #elif !defined(ELIBMAX)
@@ -410,7 +410,7 @@ int* tryGetValueOf_ELIBMAX(int* value) {
     return value;
 }
 
-int* tryGetValueOf_ELIBSCN(int* value) {
+int32_t* tryGetValueOf_ELIBSCN(int32_t* value) {
 #if defined (__linux__)
     *value = ELIBSCN;
 #elif !defined(ELIBSCN)
@@ -421,7 +421,7 @@ int* tryGetValueOf_ELIBSCN(int* value) {
     return value;
 }
 
-int* tryGetValueOf_ELNRNG(int* value) {
+int32_t* tryGetValueOf_ELNRNG(int32_t* value) {
 #if defined (__linux__)
     *value = ELNRNG;
 #elif !defined(ELNRNG)
@@ -432,11 +432,11 @@ int* tryGetValueOf_ELNRNG(int* value) {
     return value;
 }
 
-int getValueOf_ELOOP() {
+int32_t getValueOf_ELOOP() {
     return ELOOP;
 }
 
-int* tryGetValueOf_EMEDIUMTYPE(int* value) {
+int32_t* tryGetValueOf_EMEDIUMTYPE(int32_t* value) {
 #if defined (__linux__) || defined(__OpenBSD__)
     *value = EMEDIUMTYPE;
 #elif !defined(EMEDIUMTYPE)
@@ -447,19 +447,19 @@ int* tryGetValueOf_EMEDIUMTYPE(int* value) {
     return value;
 }
 
-int getValueOf_EMFILE() {
+int32_t getValueOf_EMFILE() {
     return EMFILE;
 }
 
-int getValueOf_EMLINK() {
+int32_t getValueOf_EMLINK() {
     return EMLINK;
 }
 
-int getValueOf_EMSGSIZE() {
+int32_t getValueOf_EMSGSIZE() {
     return EMSGSIZE;
 }
 
-int* tryGetValueOf_EMULTIHOP(int* value) {
+int32_t* tryGetValueOf_EMULTIHOP(int32_t* value) {
 #if defined (__OpenBSD__)
 #if !defined(EMULTIHOP)
     value = NULL;
@@ -472,11 +472,11 @@ int* tryGetValueOf_EMULTIHOP(int* value) {
     return value;
 }
 
-int getValueOf_ENAMETOOLONG() {
+int32_t getValueOf_ENAMETOOLONG() {
     return ENAMETOOLONG;
 }
 
-int* tryGetValueOf_ENAVAIL(int* value) {
+int32_t* tryGetValueOf_ENAVAIL(int32_t* value) {
 #if defined (__linux__)
     *value = ENAVAIL;
 #elif !defined(ENAVAIL)
@@ -487,23 +487,23 @@ int* tryGetValueOf_ENAVAIL(int* value) {
     return value;
 }
 
-int getValueOf_ENETDOWN() {
+int32_t getValueOf_ENETDOWN() {
     return ENETDOWN;
 }
 
-int getValueOf_ENETRESET() {
+int32_t getValueOf_ENETRESET() {
     return ENETRESET;
 }
 
-int getValueOf_ENETUNREACH() {
+int32_t getValueOf_ENETUNREACH() {
     return ENETUNREACH;
 }
 
-int getValueOf_ENFILE() {
+int32_t getValueOf_ENFILE() {
     return ENFILE;
 }
 
-int* tryGetValueOf_ENOANO(int* value) {
+int32_t* tryGetValueOf_ENOANO(int32_t* value) {
 #if defined (__linux__)
     *value = ENOANO;
 #elif !defined(ENOANO)
@@ -514,11 +514,11 @@ int* tryGetValueOf_ENOANO(int* value) {
     return value;
 }
 
-int getValueOf_ENOBUFS() {
+int32_t getValueOf_ENOBUFS() {
     return ENOBUFS;
 }
 
-int* tryGetValueOf_ENOCSI(int* value) {
+int32_t* tryGetValueOf_ENOCSI(int32_t* value) {
 #if defined (__linux__)
     *value = ENOCSI;
 #elif !defined(ENOCSI)
@@ -529,7 +529,7 @@ int* tryGetValueOf_ENOCSI(int* value) {
     return value;
 }
 
-int* tryGetValueOf_ENODATA(int* value) {
+int32_t* tryGetValueOf_ENODATA(int32_t* value) {
 #if defined(__linux__) || defined(__APPLE__)
     *value = ENODATA;
 #elif !defined(ENODATA)
@@ -540,19 +540,19 @@ int* tryGetValueOf_ENODATA(int* value) {
     return value;
 }
 
-int getValueOf_ENODEV() {
+int32_t getValueOf_ENODEV() {
     return ENODEV;
 }
 
-int getValueOf_ENOENT() {
+int32_t getValueOf_ENOENT() {
     return ENOENT;
 }
 
-int getValueOf_ENOEXEC() {
+int32_t getValueOf_ENOEXEC() {
     return ENOEXEC;
 }
 
-int* tryGetValueOf_ENOKEY(int* value) {
+int32_t* tryGetValueOf_ENOKEY(int32_t* value) {
 #if defined (__linux__)
     *value = ENOKEY;
 #elif !defined(ENOKEY)
@@ -563,11 +563,11 @@ int* tryGetValueOf_ENOKEY(int* value) {
     return value;
 }
 
-int getValueOf_ENOLCK() {
+int32_t getValueOf_ENOLCK() {
     return ENOLCK;
 }
 
-int* tryGetValueOf_ENOLINK(int* value) {
+int32_t* tryGetValueOf_ENOLINK(int32_t* value) {
 #if defined (__OpenBSD__)
 #if !defined(ENOLINK)
     value = NULL;
@@ -580,7 +580,7 @@ int* tryGetValueOf_ENOLINK(int* value) {
     return value;
 }
 
-int* tryGetValueOf_ENOMEDIUM(int* value) {
+int32_t* tryGetValueOf_ENOMEDIUM(int32_t* value) {
 #if defined (__linux__) || defined(__OpenBSD__)
     *value = ENOMEDIUM;
 #elif !defined(ENOMEDIUM)
@@ -591,15 +591,15 @@ int* tryGetValueOf_ENOMEDIUM(int* value) {
     return value;
 }
 
-int getValueOf_ENOMEM() {
+int32_t getValueOf_ENOMEM() {
     return ENOMEM;
 }
 
-int getValueOf_ENOMSG() {
+int32_t getValueOf_ENOMSG() {
     return ENOMSG;
 }
 
-int* tryGetValueOf_ENONET(int* value) {
+int32_t* tryGetValueOf_ENONET(int32_t* value) {
 #if defined (__linux__)
     *value = ENONET;
 #elif !defined(ENONET)
@@ -610,7 +610,7 @@ int* tryGetValueOf_ENONET(int* value) {
     return value;
 }
 
-int* tryGetValueOf_ENOPKG(int* value) {
+int32_t* tryGetValueOf_ENOPKG(int32_t* value) {
 #if defined (__linux__)
     *value = ENOPKG;
 #elif !defined(ENOPKG)
@@ -621,15 +621,15 @@ int* tryGetValueOf_ENOPKG(int* value) {
     return value;
 }
 
-int getValueOf_ENOPROTOOPT() {
+int32_t getValueOf_ENOPROTOOPT() {
     return ENOPROTOOPT;
 }
 
-int getValueOf_ENOSPC() {
+int32_t getValueOf_ENOSPC() {
     return ENOSPC;
 }
 
-int* tryGetValueOf_ENOSR(int* value) {
+int32_t* tryGetValueOf_ENOSR(int32_t* value) {
 #if defined(__linux__) || defined(__APPLE__)
     *value = ENOSR;
 #elif !defined(ENOSR)
@@ -640,7 +640,7 @@ int* tryGetValueOf_ENOSR(int* value) {
     return value;
 }
 
-int* tryGetValueOf_ENOSTR(int* value) {
+int32_t* tryGetValueOf_ENOSTR(int32_t* value) {
 #if defined(__FreeBSD__) || defined(__OpenBSD__)
 #if !defined(ENOSTR)
     value = NULL;
@@ -653,27 +653,27 @@ int* tryGetValueOf_ENOSTR(int* value) {
     return value;
 }
 
-int getValueOf_ENOSYS() {
+int32_t getValueOf_ENOSYS() {
     return ENOSYS;
 }
 
-int getValueOf_ENOTBLK() {
+int32_t getValueOf_ENOTBLK() {
     return ENOTBLK;
 }
 
-int getValueOf_ENOTCONN() {
+int32_t getValueOf_ENOTCONN() {
     return ENOTCONN;
 }
 
-int getValueOf_ENOTDIR() {
+int32_t getValueOf_ENOTDIR() {
     return ENOTDIR;
 }
 
-int getValueOf_ENOTEMPTY() {
+int32_t getValueOf_ENOTEMPTY() {
     return ENOTEMPTY;
 }
 
-int* tryGetValueOf_ENOTNAM(int* value) {
+int32_t* tryGetValueOf_ENOTNAM(int32_t* value) {
 #if defined (__linux__)
     *value = ENOTNAM;
 #elif !defined(ENOTNAM)
@@ -684,23 +684,23 @@ int* tryGetValueOf_ENOTNAM(int* value) {
     return value;
 }
 
-int getValueOf_ENOTRECOVERABLE() {
+int32_t getValueOf_ENOTRECOVERABLE() {
     return ENOTRECOVERABLE;
 }
 
-int getValueOf_ENOTSOCK() {
+int32_t getValueOf_ENOTSOCK() {
     return ENOTSOCK;
 }
 
-int getValueOf_ENOTSUP() {
+int32_t getValueOf_ENOTSUP() {
     return ENOTSUP;
 }
 
-int getValueOf_ENOTTY() {
+int32_t getValueOf_ENOTTY() {
     return ENOTTY;
 }
 
-int* tryGetValueOf_ENOTUNIQ(int* value) {
+int32_t* tryGetValueOf_ENOTUNIQ(int32_t* value) {
 #if defined (__linux__)
     *value = ENOTUNIQ;
 #elif !defined(ENOTUNIQ)
@@ -711,47 +711,47 @@ int* tryGetValueOf_ENOTUNIQ(int* value) {
     return value;
 }
 
-int getValueOf_ENXIO() {
+int32_t getValueOf_ENXIO() {
     return ENXIO;
 }
 
-int getValueOf_EOPNOTSUPP() {
+int32_t getValueOf_EOPNOTSUPP() {
     return EOPNOTSUPP;
 }
 
-int getValueOf_EOVERFLOW() {
+int32_t getValueOf_EOVERFLOW() {
     return EOVERFLOW;
 }
 
-int getValueOf_EOWNERDEAD() {
+int32_t getValueOf_EOWNERDEAD() {
     return EOWNERDEAD;
 }
 
-int getValueOf_EPERM() {
+int32_t getValueOf_EPERM() {
     return EPERM;
 }
 
-int getValueOf_EPFNOSUPPORT() {
+int32_t getValueOf_EPFNOSUPPORT() {
     return EPFNOSUPPORT;
 }
 
-int getValueOf_EPIPE() {
+int32_t getValueOf_EPIPE() {
     return EPIPE;
 }
 
-int getValueOf_EPROTO() {
+int32_t getValueOf_EPROTO() {
     return EPROTO;
 }
 
-int getValueOf_EPROTONOSUPPORT() {
+int32_t getValueOf_EPROTONOSUPPORT() {
     return EPROTONOSUPPORT;
 }
 
-int getValueOf_EPROTOTYPE() {
+int32_t getValueOf_EPROTOTYPE() {
     return EPROTOTYPE;
 }
 
-int* tryGetValueOf_EREMCHG(int* value) {
+int32_t* tryGetValueOf_EREMCHG(int32_t* value) {
 #if defined (__linux__)
     *value = EREMCHG;
 #elif !defined(EREMCHG)
@@ -762,11 +762,11 @@ int* tryGetValueOf_EREMCHG(int* value) {
     return value;
 }
 
-int getValueOf_EREMOTE() {
+int32_t getValueOf_EREMOTE() {
     return EREMOTE;
 }
 
-int* tryGetValueOf_EREMOTEIO(int* value) {
+int32_t* tryGetValueOf_EREMOTEIO(int32_t* value) {
 #if defined (__linux__)
     *value = EREMOTEIO;
 #elif !defined(EREMOTEIO)
@@ -777,7 +777,7 @@ int* tryGetValueOf_EREMOTEIO(int* value) {
     return value;
 }
 
-int* tryGetValueOf_ERESTART(int* value) {
+int32_t* tryGetValueOf_ERESTART(int32_t* value) {
 #if defined (__linux__)
     *value = ERESTART;
 #elif !defined(ERESTART)
@@ -788,7 +788,7 @@ int* tryGetValueOf_ERESTART(int* value) {
     return value;
 }
 
-int* tryGetValueOf_ERFKILL(int* value) {
+int32_t* tryGetValueOf_ERFKILL(int32_t* value) {
 #if defined (__linux__)
     *value = ERFKILL;
 #elif !defined(ERFKILL)
@@ -799,27 +799,27 @@ int* tryGetValueOf_ERFKILL(int* value) {
     return value;
 }
 
-int getValueOf_EROFS() {
+int32_t getValueOf_EROFS() {
     return EROFS;
 }
 
-int getValueOf_ESHUTDOWN() {
+int32_t getValueOf_ESHUTDOWN() {
     return ESHUTDOWN;
 }
 
-int getValueOf_ESOCKTNOSUPPORT() {
+int32_t getValueOf_ESOCKTNOSUPPORT() {
     return ESOCKTNOSUPPORT;
 }
 
-int getValueOf_ESPIPE() {
+int32_t getValueOf_ESPIPE() {
     return ESPIPE;
 }
 
-int getValueOf_ESRCH() {
+int32_t getValueOf_ESRCH() {
     return ESRCH;
 }
 
-int* tryGetValueOf_ESRMNT(int* value) {
+int32_t* tryGetValueOf_ESRMNT(int32_t* value) {
 #if defined (__linux__)
     *value = ESRMNT;
 #elif !defined(ESRMNT)
@@ -830,11 +830,11 @@ int* tryGetValueOf_ESRMNT(int* value) {
     return value;
 }
 
-int getValueOf_ESTALE() {
+int32_t getValueOf_ESTALE() {
     return ESTALE;
 }
 
-int* tryGetValueOf_ESTRPIPE(int* value) {
+int32_t* tryGetValueOf_ESTRPIPE(int32_t* value) {
 #if defined (__linux__)
     *value = ESTRPIPE;
 #elif !defined(ESTRPIPE)
@@ -845,7 +845,7 @@ int* tryGetValueOf_ESTRPIPE(int* value) {
     return value;
 }
 
-int* tryGetValueOf_ETIME(int* value) {
+int32_t* tryGetValueOf_ETIME(int32_t* value) {
 #if defined(__linux__) || defined(__APPLE__)
     *value = ETIME;
 #elif !defined(ETIME)
@@ -856,19 +856,19 @@ int* tryGetValueOf_ETIME(int* value) {
     return value;
 }
 
-int getValueOf_ETIMEDOUT() {
+int32_t getValueOf_ETIMEDOUT() {
     return ETIMEDOUT;
 }
 
-int getValueOf_ETOOMANYREFS() {
+int32_t getValueOf_ETOOMANYREFS() {
     return ETOOMANYREFS;
 }
 
-int getValueOf_ETXTBSY() {
+int32_t getValueOf_ETXTBSY() {
     return ETXTBSY;
 }
 
-int* tryGetValueOf_EUCLEAN(int* value) {
+int32_t* tryGetValueOf_EUCLEAN(int32_t* value) {
 #if defined (__linux__)
     *value = EUCLEAN;
 #elif !defined(EUCLEAN)
@@ -879,7 +879,7 @@ int* tryGetValueOf_EUCLEAN(int* value) {
     return value;
 }
 
-int* tryGetValueOf_EUNATCH(int* value) {
+int32_t* tryGetValueOf_EUNATCH(int32_t* value) {
 #if defined (__linux__)
     *value = EUNATCH;
 #elif !defined(EUNATCH)
@@ -890,19 +890,19 @@ int* tryGetValueOf_EUNATCH(int* value) {
     return value;
 }
 
-int getValueOf_EUSERS() {
+int32_t getValueOf_EUSERS() {
     return EUSERS;
 }
 
-int getValueOf_EWOULDBLOCK() {
+int32_t getValueOf_EWOULDBLOCK() {
     return EWOULDBLOCK;
 }
 
-int getValueOf_EXDEV() {
+int32_t getValueOf_EXDEV() {
     return EXDEV;
 }
 
-int* tryGetValueOf_EXFULL(int* value) {
+int32_t* tryGetValueOf_EXFULL(int32_t* value) {
 #if defined (__linux__)
     *value = EXFULL;
 #elif !defined(EXFULL)

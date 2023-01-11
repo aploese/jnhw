@@ -1,6 +1,6 @@
 /*
  * JNHW - Java Native header Wrapper, https://github.com/aploese/jnhw/
- * Copyright (C) 2019-2022, Arne Plöse and individual contributors as indicated
+ * Copyright (C) 2019-2023, Arne Plöse and individual contributors as indicated
  * by the @authors tag. See the copyright.txt in the distribution for a
  * full listing of individual contributors.
  *
@@ -21,11 +21,11 @@
  */
 package de.ibapl.jnhw.posix;
 
-import de.ibapl.jnhw.common.datatypes.MultiarchTupelBuilder;
-import de.ibapl.jnhw.common.datatypes.OS;
 import de.ibapl.jnhw.common.exception.NativeErrorException;
 import de.ibapl.jnhw.common.exception.NoSuchNativeMethodException;
 import de.ibapl.jnhw.common.memory.Int32_t;
+import de.ibapl.jnhw.libloader.MultiarchTupelBuilder;
+import de.ibapl.jnhw.libloader.OS;
 import de.ibapl.jnhw.posix.sys.Types;
 import de.ibapl.jnhw.util.posix.DefinesTest;
 import java.lang.foreign.MemorySession;
@@ -70,10 +70,10 @@ public class PthreadTest {
         }
         Assertions.assertAll(
                 () -> {
-                    Assertions.assertEquals(LibJnhwPosixTestLoader.invokeExact_Int_V("Pthread_attr_t_sizeof"), Pthread.Pthread_attr_t.sizeof, "sizeof");
+                    Assertions.assertEquals(LibJnhwPosixTestLoader.invoke_sI___V("Pthread_attr_t_sizeof"), Pthread.Pthread_attr_t.sizeof, "sizeof");
                 },
                 () -> {
-                    Assertions.assertEquals(LibJnhwPosixTestLoader.invokeExact_Int_V("Pthread_attr_t_alignof"), Pthread.Pthread_attr_t.alignof.alignof, "alignof");
+                    Assertions.assertEquals(LibJnhwPosixTestLoader.invoke_sI___V("Pthread_attr_t_alignof"), Pthread.Pthread_attr_t.alignof.alignof, "alignof");
                 }
         );
     }
@@ -85,10 +85,10 @@ public class PthreadTest {
         }
         Assertions.assertAll(
                 () -> {
-                    Assertions.assertEquals(LibJnhwPosixTestLoader.invokeExact_Int_V("Pthread_t_sizeof"), Pthread.Pthread_t.sizeof, "sizeof");
+                    Assertions.assertEquals(LibJnhwPosixTestLoader.invoke_sI___V("Pthread_t_sizeof"), Pthread.Pthread_t.sizeof, "sizeof");
                 },
                 () -> {
-                    Assertions.assertEquals(LibJnhwPosixTestLoader.invokeExact_Int_V("Pthread_t_alignof"), Pthread.Pthread_t.alignof.alignof, "alignof");
+                    Assertions.assertEquals(LibJnhwPosixTestLoader.invoke_sI___V("Pthread_t_alignof"), Pthread.Pthread_t.alignof.alignof, "alignof");
                 }
         );
     }

@@ -1,6 +1,6 @@
 /*
  * JNHW - Java Native header Wrapper, https://github.com/aploese/jnhw/
- * Copyright (C) 2019-2022, Arne Plöse and individual contributors as indicated
+ * Copyright (C) 2019-2023, Arne Plöse and individual contributors as indicated
  * by the @authors tag. See the copyright.txt in the distribution for a
  * full listing of individual contributors.
  *
@@ -21,17 +21,8 @@
  */
 package de.ibapl.jnhw.util.posix;
 
-import static de.ibapl.jnhw.common.datatypes.Arch.I386;
-import static de.ibapl.jnhw.common.datatypes.Arch.MIPS;
-import static de.ibapl.jnhw.common.datatypes.Arch.POWER_PC_64;
-import static de.ibapl.jnhw.common.datatypes.Arch.RISC_V_64;
-import static de.ibapl.jnhw.common.datatypes.Arch.S390_X;
-import static de.ibapl.jnhw.common.datatypes.Arch.X86_64;
 import de.ibapl.jnhw.common.datatypes.BaseDataType;
-import de.ibapl.jnhw.common.datatypes.MultiarchTupelBuilder;
-import static de.ibapl.jnhw.common.datatypes.OS.FREE_BSD;
-import static de.ibapl.jnhw.common.datatypes.OS.LINUX;
-import static de.ibapl.jnhw.common.datatypes.OS.OPEN_BSD;
+import de.ibapl.jnhw.libloader.MultiarchTupelBuilder;
 
 /**
  * The posix datatypes with their mapping to the base datatypes that we have
@@ -115,6 +106,9 @@ public interface PosixDataType {
             throw new NoClassDefFoundError("can't get OS datatype of off_t on " + MultiarchTupelBuilder.getMultiarch());
     };
 
+    //TODO only set value on 32 bit off_t??
+    public final static BaseDataType off64_t = BaseDataType.int64_t;
+
     public final static BaseDataType pid_t = BaseDataType.int32_t;
 
     public final static BaseDataType pthread_t = switch (MultiarchTupelBuilder.getOS()) {
@@ -196,7 +190,7 @@ public interface PosixDataType {
                 default ->
                     throw new NoClassDefFoundError("can't get linux datatype of time_t on " + MultiarchTupelBuilder.getMultiarch());
             };
-        case DARWIN, FREE_BSD,OPEN_BSD ->
+        case DARWIN, FREE_BSD, OPEN_BSD ->
             BaseDataType.int64_t;
         default ->
             throw new NoClassDefFoundError("can't get OS datatype of time_t on " + MultiarchTupelBuilder.getMultiarch());

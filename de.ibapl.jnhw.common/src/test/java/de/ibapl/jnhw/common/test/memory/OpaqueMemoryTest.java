@@ -1,6 +1,6 @@
 /*
  * JNHW - Java Native header Wrapper, https://github.com/aploese/jnhw/
- * Copyright (C) 2019-2022, Arne Plöse and individual contributors as indicated
+ * Copyright (C) 2019-2023, Arne Plöse and individual contributors as indicated
  * by the @authors tag. See the copyright.txt in the distribution for a
  * full listing of individual contributors.
  *
@@ -22,11 +22,11 @@
 package de.ibapl.jnhw.common.test.memory;
 
 import de.ibapl.jnhw.common.datatypes.BaseDataType;
-import de.ibapl.jnhw.common.datatypes.MultiarchTupelBuilder;
-import de.ibapl.jnhw.common.datatypes.SizeInBit;
 import de.ibapl.jnhw.common.memory.OpaqueMemory;
 import de.ibapl.jnhw.common.memory.layout.Alignment;
 import de.ibapl.jnhw.common.test.memory.layout.S_i8_i64OnTheFlyImpl;
+import de.ibapl.jnhw.libloader.MultiarchTupelBuilder;
+import de.ibapl.jnhw.libloader.SizeInBit;
 import java.lang.foreign.MemoryAddress;
 import java.lang.foreign.MemorySegment;
 import java.lang.foreign.MemorySession;
@@ -59,7 +59,7 @@ public class OpaqueMemoryTest {
 
     @Test
     public void testAllocateDirtyMem() throws Exception {
-        try ( MemorySession ms = MemorySession.openConfined()) {
+        try (MemorySession ms = MemorySession.openConfined()) {
             OpaqueMemory mem = new MemToTest(1024, ms);
             Assertions.assertEquals(1024, mem.sizeof());
         }
@@ -70,7 +70,7 @@ public class OpaqueMemoryTest {
 
     @Test
     public void testAllocateCleanMem() throws Exception {
-        try ( MemorySession ms = MemorySession.openConfined()) {
+        try (MemorySession ms = MemorySession.openConfined()) {
             OpaqueMemory mem = new MemToTest(1024, ms);
             Assertions.assertEquals(1024, mem.sizeof());
         }
@@ -83,7 +83,7 @@ public class OpaqueMemoryTest {
 
     @Test
     public void testCopy() throws Exception {
-        try ( MemorySession ms = MemorySession.openConfined()) {
+        try (MemorySession ms = MemorySession.openConfined()) {
             OpaqueMemory mem = new MemToTest(1024, ms);
             final int MEM_POS = 753;
             OpaqueMemory.copy(HELLO_WORLD, 0, mem, MEM_POS, HELLO_WORLD.length);
@@ -95,7 +95,7 @@ public class OpaqueMemoryTest {
 
     @Test
     public void testCopyIndex() throws Exception {
-        try ( MemorySession ms = MemorySession.openConfined()) {
+        try (MemorySession ms = MemorySession.openConfined()) {
             final byte[] array = new byte[16];
             final OpaqueMemory mem = new MemToTest(array.length, ms);
             Assertions.assertAll(() -> {
@@ -162,7 +162,7 @@ public class OpaqueMemoryTest {
 
     @Test
     public void testGetSetByte() throws Exception {
-        try ( MemorySession ms = MemorySession.openConfined()) {
+        try (MemorySession ms = MemorySession.openConfined()) {
             OpaqueMemory mem = new MemToTest(1024, ms);
             OpaqueMemory.setByte(mem, 67, (byte) 9);
             Assertions.assertEquals((byte) 9, OpaqueMemory.getByte(mem, 67));
@@ -171,7 +171,7 @@ public class OpaqueMemoryTest {
 
     @Test
     public void testSetGetIndex() throws Exception {
-        try ( MemorySession ms = MemorySession.openConfined()) {
+        try (MemorySession ms = MemorySession.openConfined()) {
             final OpaqueMemory mem = new MemToTest(16, ms);
             Assertions.assertAll(() -> {
                 //Exact fit
@@ -203,7 +203,7 @@ public class OpaqueMemoryTest {
 
     @Test
     public void testClear() throws Exception {
-        try ( MemorySession ms = MemorySession.openConfined()) {
+        try (MemorySession ms = MemorySession.openConfined()) {
             OpaqueMemory mem = new MemToTest(1024, ms);
             OpaqueMemory.clear(mem);
             for (int i = 0; i < mem.sizeof(); i++) {
@@ -214,7 +214,7 @@ public class OpaqueMemoryTest {
 
     @Test
     public void testSetMem() throws Exception {
-        try ( MemorySession ms = MemorySession.openConfined()) {
+        try (MemorySession ms = MemorySession.openConfined()) {
             OpaqueMemory mem = new MemToTest(1024, ms);
             OpaqueMemory.memset(mem, (byte) 42);
             for (int i = 0; i < mem.sizeof(); i++) {
@@ -225,7 +225,7 @@ public class OpaqueMemoryTest {
 
     @Test
     public void testEquals() throws Exception {
-        try ( MemorySession ms = MemorySession.openConfined()) {
+        try (MemorySession ms = MemorySession.openConfined()) {
             OpaqueMemory mem = new MemToTest(MemorySegment.ofAddress(MemoryAddress.ofLong(0x2aL), 8, ms));
             OpaqueMemory mem1 = new MemToTest(MemorySegment.ofAddress(MemoryAddress.ofLong(42L), 8, ms));
             OpaqueMemory mem2 = new MemToTest(OpaqueMemory.getMemorySegment(mem));
@@ -254,7 +254,7 @@ public class OpaqueMemoryTest {
 
     @Test
     public void testAddressOn32BitNotNegative() {
-        try ( MemorySession ms = MemorySession.openConfined()) {
+        try (MemorySession ms = MemorySession.openConfined()) {
             MemToTest parent = new MemToTest(48, ms);
             if (MultiarchTupelBuilder.getMemoryModel().sizeOf_pointer == SizeInBit._32_BIT) {
                 Assertions.assertTrue(parent.toAddressable().address().toRawLongValue() > 0, "baseaddress must not be negative");
@@ -264,7 +264,7 @@ public class OpaqueMemoryTest {
 
     @Test
     public void testCalcNextOffset() {
-        try ( MemorySession ms = MemorySession.openConfined()) {
+        try (MemorySession ms = MemorySession.openConfined()) {
             S_i8_i64OnTheFlyImpl struct = new S_i8_i64OnTheFlyImpl(MemorySegment.allocateNative(56, ms), 0, 56);
 
             Assertions.assertEquals(0, OpaqueMemory.offsetof(struct, struct._0_i8));
@@ -288,43 +288,69 @@ public class OpaqueMemoryTest {
             Assertions.assertEquals(24, OpaqueMemory.offsetof(struct, struct._6_i8));
             struct._6_i8((byte) 0x77);
 
-            Assertions.assertEquals(32, OpaqueMemory.offsetof(struct, struct._7_i64));
-            struct._7_i64(0x8888888888888888L);
+            switch (MultiarchTupelBuilder.getArch()) {
+                case I386:
+                    //int64_t is aligned at 4
+                    Assertions.assertEquals(28, OpaqueMemory.offsetof(struct, struct._7_i64));
+                    struct._7_i64(0x8888888888888888L);
 
-            Assertions.assertEquals(40, OpaqueMemory.offsetof(struct, struct._8_i8));
-            struct._8_i8((byte) 0x88);
+                    Assertions.assertEquals(36, OpaqueMemory.offsetof(struct, struct._8_i8));
+                    struct._8_i8((byte) 0x88);
 
-            Assertions.assertEquals(44, OpaqueMemory.offsetof(struct, struct._9_i32));
-            struct._9_i32(0x55555555);
+                    Assertions.assertEquals(40, OpaqueMemory.offsetof(struct, struct._9_i32));
+                    struct._9_i32(0x55555555);
 
-            Assertions.assertEquals(48, OpaqueMemory.offsetof(struct, struct._10_i8));
-            struct._10_i8((byte) 0x99);
+                    Assertions.assertEquals(44, OpaqueMemory.offsetof(struct, struct._10_i8));
+                    struct._10_i8((byte) 0x99);
 
-            Assertions.assertEquals(50, OpaqueMemory.offsetof(struct, struct._11_i16));
-            struct._11_i16((short) 0xAAAA);
+                    Assertions.assertEquals(46, OpaqueMemory.offsetof(struct, struct._11_i16));
+                    struct._11_i16((short) 0xAAAA);
 
-            Assertions.assertEquals(52, OpaqueMemory.offsetof(struct, struct._12_i8));
-            struct._12_i8((byte) 0xBB);
+                    Assertions.assertEquals(48, OpaqueMemory.offsetof(struct, struct._12_i8));
+                    struct._12_i8((byte) 0xBB);
+                    break;
+                default:
+                    Assertions.assertEquals(32, OpaqueMemory.offsetof(struct, struct._7_i64));
+                    struct._7_i64(0x8888888888888888L);
 
+                    Assertions.assertEquals(40, OpaqueMemory.offsetof(struct, struct._8_i8));
+                    struct._8_i8((byte) 0x88);
+
+                    Assertions.assertEquals(44, OpaqueMemory.offsetof(struct, struct._9_i32));
+                    struct._9_i32(0x55555555);
+
+                    Assertions.assertEquals(48, OpaqueMemory.offsetof(struct, struct._10_i8));
+                    struct._10_i8((byte) 0x99);
+
+                    Assertions.assertEquals(50, OpaqueMemory.offsetof(struct, struct._11_i16));
+                    struct._11_i16((short) 0xAAAA);
+
+                    Assertions.assertEquals(52, OpaqueMemory.offsetof(struct, struct._12_i8));
+                    struct._12_i8((byte) 0xBB);
+                    Assertions.assertEquals(56, struct.sizeof);
+            }
             String expected = null;
-            switch (Alignment.__ALIGN_OF_INT64_T) {
-                case AT_8:
+            switch (MultiarchTupelBuilder.getArch()) {
+                case I386:
+                    Assertions.assertEquals(52, struct.sizeof);
+                    Assertions.assertEquals(Alignment.AT_4, struct.alignment);
+                    expected = """
+                               11002222 33000000  44444444 55000000 | \u0011\u0000\u0022\u0022\u0033\u0000\u0000\u0000\u0044\u0044\u0044\u0044\u0055\u0000\u0000\u0000
+                               66666666 66666666  77000000 88888888 | \u0066\u0066\u0066\u0066\u0066\u0066\u0066\u0066\u0077\u0000\u0000\u0000\u0088\u0088\u0088\u0088
+                               88888888 88000000  55555555 9900aaaa | \u0088\u0088\u0088\u0088\u0088\u0000\u0000\u0000\u0055\u0055\u0055\u0055\u0099\u0000\u00aa\u00aa
+                               bb000000 00000000  00000000 00000000 | \u00bb\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000""";
+                    break;
+                default:
                     Assertions.assertEquals(56, struct.sizeof);
                     Assertions.assertEquals(Alignment.AT_8, struct.alignment);
                     expected = """
                                11002222 33000000  44444444 55000000 | \u0011\u0000\u0022\u0022\u0033\u0000\u0000\u0000\u0044\u0044\u0044\u0044\u0055\u0000\u0000\u0000
                                66666666 66666666  77000000 00000000 | \u0066\u0066\u0066\u0066\u0066\u0066\u0066\u0066\u0077\u0000\u0000\u0000\u0000\u0000\u0000\u0000
-                               88888888 88888888  88000000 55555555 | \uff88\uff88\uff88\uff88\uff88\uff88\uff88\uff88\uff88\u0000\u0000\u0000\u0055\u0055\u0055\u0055
-                               9900aaaa bb000000  00000000 00000000 | \uff99\u0000\uffaa\uffaa\uffbb\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000""";
+                               88888888 88888888  88000000 55555555 | \u0088\u0088\u0088\u0088\u0088\u0088\u0088\u0088\u0088\u0000\u0000\u0000\u0055\u0055\u0055\u0055
+                               9900aaaa bb000000  00000000 00000000 | \u0099\u0000\u00aa\u00aa\u00bb\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000""";
                     break;
-                case AT_4:
-                    Assertions.assertEquals(-1, struct.sizeof);
-                    Assertions.assertEquals(Alignment.AT_4, struct.alignment);
-                    expected = "No Data YET";
-                    break;
-                default:
-                    Assertions.fail();
             }
+
             Assertions.assertEquals(expected, OpaqueMemory.printMemory(struct, false));
             byte[] result = OpaqueMemory.toBytes(struct);
 
@@ -363,8 +389,40 @@ public class OpaqueMemoryTest {
             Assertions.assertEquals(0x00, result[26]);
             Assertions.assertEquals(0x00, result[27]);
 
-            switch (Alignment.__ALIGN_OF_INT64_T) {
-                case AT_8:
+            switch (MultiarchTupelBuilder.getArch()) {
+                case I386 -> {
+                    Assertions.assertEquals((byte) 0x88, result[28]);
+                    Assertions.assertEquals((byte) 0x88, result[29]);
+                    Assertions.assertEquals((byte) 0x88, result[30]);
+                    Assertions.assertEquals((byte) 0x88, result[31]);
+
+                    Assertions.assertEquals((byte) 0x88, result[32]);
+                    Assertions.assertEquals((byte) 0x88, result[33]);
+                    Assertions.assertEquals((byte) 0x88, result[34]);
+                    Assertions.assertEquals((byte) 0x88, result[35]);
+
+                    Assertions.assertEquals((byte) 0x88, result[36]);
+                    Assertions.assertEquals(0x00, result[37]);
+                    Assertions.assertEquals(0x00, result[38]);
+                    Assertions.assertEquals(0x00, result[39]);
+
+                    Assertions.assertEquals((byte) 0x55, result[40]);
+                    Assertions.assertEquals((byte) 0x55, result[41]);
+                    Assertions.assertEquals((byte) 0x55, result[42]);
+                    Assertions.assertEquals((byte) 0x55, result[43]);
+
+                    Assertions.assertEquals((byte) 0x99, result[44]);
+                    Assertions.assertEquals(0x00, result[45]);
+                    Assertions.assertEquals((byte) 0xaa, result[46]);
+                    Assertions.assertEquals((byte) 0xaa, result[47]);
+
+                    Assertions.assertEquals((byte) 0xbb, result[48]);
+                    Assertions.assertEquals(0x00, result[49]);
+                    Assertions.assertEquals(0x00, result[50]);
+                    Assertions.assertEquals(0x00, result[51]);
+
+                }
+                default -> {
                     Assertions.assertEquals(0x00, result[28]);
                     Assertions.assertEquals(0x00, result[29]);
                     Assertions.assertEquals(0x00, result[30]);
@@ -399,36 +457,7 @@ public class OpaqueMemoryTest {
                     Assertions.assertEquals(0x00, result[53]);
                     Assertions.assertEquals(0x00, result[54]);
                     Assertions.assertEquals(0x00, result[55]);
-
-                    break;
-                case AT_4:
-                    Assertions.assertEquals((byte) 0x88, result[28]);
-                    Assertions.assertEquals((byte) 0x88, result[29]);
-                    Assertions.assertEquals((byte) 0x88, result[30]);
-                    Assertions.assertEquals((byte) 0x88, result[31]);
-
-                    Assertions.assertEquals((byte) 0x88, result[32]);
-                    Assertions.assertEquals((byte) 0x88, result[33]);
-                    Assertions.assertEquals((byte) 0x88, result[34]);
-                    Assertions.assertEquals((byte) 0x88, result[35]);
-
-                    Assertions.assertEquals(0x00, result[36]);
-                    Assertions.assertEquals(0x00, result[37]);
-                    Assertions.assertEquals(0x00, result[38]);
-                    Assertions.assertEquals(0x00, result[39]);
-
-                    Assertions.assertEquals(0x00, result[40]);
-                    Assertions.assertEquals(0x00, result[41]);
-                    Assertions.assertEquals(0x00, result[42]);
-                    Assertions.assertEquals(0x00, result[43]);
-
-                    Assertions.assertEquals(0x00, result[44]);
-                    Assertions.assertEquals(0x00, result[45]);
-                    Assertions.assertEquals(0x00, result[46]);
-                    Assertions.assertEquals(0x00, result[47]);
-                    break;
-                default:
-                    Assertions.fail();
+                }
             }
         }
     }

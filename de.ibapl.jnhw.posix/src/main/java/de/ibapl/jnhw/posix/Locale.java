@@ -1,6 +1,6 @@
 /*
  * JNHW - Java Native header Wrapper, https://github.com/aploese/jnhw/
- * Copyright (C) 2019-2022, Arne Plöse and individual contributors as indicated
+ * Copyright (C) 2019-2023, Arne Plöse and individual contributors as indicated
  * by the @authors tag. See the copyright.txt in the distribution for a
  * full listing of individual contributors.
  *
@@ -25,16 +25,18 @@ import de.ibapl.jnhw.annotation.posix.locale.locale_t;
 import de.ibapl.jnhw.common.annotation.Define;
 import de.ibapl.jnhw.common.annotation.Include;
 import de.ibapl.jnhw.common.datatypes.BaseDataType;
-import de.ibapl.jnhw.common.datatypes.MultiarchTupelBuilder;
-import de.ibapl.jnhw.common.downcall.wrapper.JnhwMh_MA___A;
-import de.ibapl.jnhw.common.downcall.wrapper.JnhwMh_MA___V;
-import de.ibapl.jnhw.common.downcall.wrapper.JnhwMh__A__sI__A;
-import de.ibapl.jnhw.common.downcall.wrapper.JnhwMh__A__sI__A__A;
-import de.ibapl.jnhw.common.downcall.wrapper.JnhwMh__V___A;
+import de.ibapl.jnhw.common.downcall.JnhwMh_MA___A;
+import de.ibapl.jnhw.common.downcall.JnhwMh_MA___V;
+import de.ibapl.jnhw.common.downcall.JnhwMh_MA__sI__A;
+import de.ibapl.jnhw.common.downcall.JnhwMh_MA__sI__A__A;
+import de.ibapl.jnhw.common.downcall.JnhwMh__V___A;
 import de.ibapl.jnhw.common.exception.NativeErrorException;
 import de.ibapl.jnhw.common.memory.OpaquePointer;
 import de.ibapl.jnhw.common.memory.layout.Alignment;
 import de.ibapl.jnhw.common.util.JsonStringBuilder;
+import de.ibapl.jnhw.libloader.MultiarchInfo;
+import de.ibapl.jnhw.libloader.MultiarchTupelBuilder;
+import de.ibapl.jnhw.util.posix.LibcLoader;
 import de.ibapl.jnhw.util.posix.PosixDataType;
 import de.ibapl.jnhw.util.posix.memory.PosixStruct;
 import java.io.IOException;
@@ -581,23 +583,35 @@ public class Locale {
 
     }
 
-    public static interface LinuxDefines {
+    public static class LinuxDefines {
 
-        public final static int LC_ALL = 6;
-        public final static int LC_ALL_MASK = 8127;
-        public final static int LC_COLLATE = 3;
-        public final static int LC_COLLATE_MASK = 8;
-        public final static int LC_CTYPE = 0;
-        public final static int LC_CTYPE_MASK = 1;
-        public final static Locale_t LC_GLOBAL_LOCALE = Locale_t.of(MemoryAddress.ofLong(-1));
-        public final static int LC_MESSAGES = 5;
-        public final static int LC_MESSAGES_MASK = 32;
-        public final static int LC_MONETARY = 4;
-        public final static int LC_MONETARY_MASK = 16;
-        public final static int LC_NUMERIC = 1;
-        public final static int LC_NUMERIC_MASK = 2;
-        public final static int LC_TIME = 2;
-        public final static int LC_TIME_MASK = 4;
+        public final int LC_ALL = 6;
+        public final int LC_ALL_MASK = 8127;
+        public final int LC_COLLATE = 3;
+        public final int LC_COLLATE_MASK = 8;
+        public final int LC_CTYPE = 0;
+        public final int LC_CTYPE_MASK = 1;
+        public final int LC_MESSAGES = 5;
+        public final int LC_MESSAGES_MASK = 32;
+        public final int LC_MONETARY = 4;
+        public final int LC_MONETARY_MASK = 16;
+        public final int LC_NUMERIC = 1;
+        public final int LC_NUMERIC_MASK = 2;
+        public final int LC_TIME = 2;
+        public final int LC_TIME_MASK = 4;
+
+        public final Locale_t LC_GLOBAL_LOCALE;
+
+        public LinuxDefines(MultiarchInfo multiarchInfo) {
+            switch (multiarchInfo.getMemoryModel()) {
+                case ILP32 ->
+                    LC_GLOBAL_LOCALE = Locale_t.of(MemoryAddress.ofLong(Integer.toUnsignedLong(-1)));
+                case LP64 ->
+                    LC_GLOBAL_LOCALE = Locale_t.of(MemoryAddress.ofLong(-1));
+                default ->
+                    throw new RuntimeException("No LC_GLOBAL_LOCALE for: " + multiarchInfo.getTupelName());
+            }
+        }
     }
 
     /**
@@ -762,27 +776,27 @@ public class Locale {
      */
     static {
         switch (MultiarchTupelBuilder.getOS()) {
-            case LINUX:
+            case LINUX -> {
                 HAVE_LOCALE_H = true;
-                LC_ALL = LinuxDefines.LC_ALL;
-                LC_ALL_MASK = LinuxDefines.LC_ALL_MASK;
-                LC_COLLATE = LinuxDefines.LC_COLLATE;
-                LC_COLLATE_MASK = LinuxDefines.LC_COLLATE_MASK;
-                LC_CTYPE = LinuxDefines.LC_CTYPE;
-                LC_CTYPE_MASK = LinuxDefines.LC_CTYPE_MASK;
-                LC_GLOBAL_LOCALE = LinuxDefines.LC_GLOBAL_LOCALE;
-                LC_MESSAGES = LinuxDefines.LC_MESSAGES;
-                LC_MESSAGES_MASK = LinuxDefines.LC_MESSAGES_MASK;
-                LC_MONETARY = LinuxDefines.LC_MONETARY;
-                LC_MONETARY_MASK = LinuxDefines.LC_MONETARY_MASK;
-                LC_NUMERIC = LinuxDefines.LC_NUMERIC;
-                LC_NUMERIC_MASK = LinuxDefines.LC_NUMERIC_MASK;
-                LC_TIME = LinuxDefines.LC_TIME;
-                LC_TIME_MASK = LinuxDefines.LC_TIME_MASK;
-                break;
-            case DARWIN:
-            case FREE_BSD:
-            case OPEN_BSD:
+                final LinuxDefines linuxDefines = new LinuxDefines(MultiarchTupelBuilder.getMultiarch());
+
+                LC_ALL = linuxDefines.LC_ALL;
+                LC_ALL_MASK = linuxDefines.LC_ALL_MASK;
+                LC_COLLATE = linuxDefines.LC_COLLATE;
+                LC_COLLATE_MASK = linuxDefines.LC_COLLATE_MASK;
+                LC_CTYPE = linuxDefines.LC_CTYPE;
+                LC_CTYPE_MASK = linuxDefines.LC_CTYPE_MASK;
+                LC_GLOBAL_LOCALE = linuxDefines.LC_GLOBAL_LOCALE;
+                LC_MESSAGES = linuxDefines.LC_MESSAGES;
+                LC_MESSAGES_MASK = linuxDefines.LC_MESSAGES_MASK;
+                LC_MONETARY = linuxDefines.LC_MONETARY;
+                LC_MONETARY_MASK = linuxDefines.LC_MONETARY_MASK;
+                LC_NUMERIC = linuxDefines.LC_NUMERIC;
+                LC_NUMERIC_MASK = linuxDefines.LC_NUMERIC_MASK;
+                LC_TIME = linuxDefines.LC_TIME;
+                LC_TIME_MASK = linuxDefines.LC_TIME_MASK;
+            }
+            case DARWIN, FREE_BSD, OPEN_BSD -> {
                 HAVE_LOCALE_H = true;
                 LC_ALL = BsdDefines.LC_ALL;
                 LC_COLLATE = BsdDefines.LC_COLLATE;
@@ -793,7 +807,7 @@ public class Locale {
                 LC_NUMERIC = BsdDefines.LC_NUMERIC;
                 LC_TIME = BsdDefines.LC_TIME;
                 switch (MultiarchTupelBuilder.getOS()) {
-                    case DARWIN:
+                    case DARWIN -> {
                         LC_ALL_MASK = DarwinDefines.LC_ALL_MASK;
                         LC_COLLATE_MASK = DarwinDefines.LC_COLLATE_MASK;
                         LC_CTYPE_MASK = DarwinDefines.LC_CTYPE_MASK;
@@ -801,8 +815,8 @@ public class Locale {
                         LC_MONETARY_MASK = DarwinDefines.LC_MONETARY_MASK;
                         LC_NUMERIC_MASK = DarwinDefines.LC_NUMERIC_MASK;
                         LC_TIME_MASK = DarwinDefines.LC_TIME_MASK;
-                        break;
-                    case FREE_BSD:
+                    }
+                    case FREE_BSD -> {
                         LC_ALL_MASK = FreeBsdDefines.LC_ALL_MASK;
                         LC_COLLATE_MASK = FreeBsdDefines.LC_COLLATE_MASK;
                         LC_CTYPE_MASK = FreeBsdDefines.LC_CTYPE_MASK;
@@ -810,8 +824,8 @@ public class Locale {
                         LC_MONETARY_MASK = FreeBsdDefines.LC_MONETARY_MASK;
                         LC_NUMERIC_MASK = FreeBsdDefines.LC_NUMERIC_MASK;
                         LC_TIME_MASK = FreeBsdDefines.LC_TIME_MASK;
-                        break;
-                    case OPEN_BSD:
+                    }
+                    case OPEN_BSD -> {
                         LC_ALL_MASK = OpenBsdDefines.LC_ALL_MASK;
                         LC_COLLATE_MASK = OpenBsdDefines.LC_COLLATE_MASK;
                         LC_CTYPE_MASK = OpenBsdDefines.LC_CTYPE_MASK;
@@ -819,43 +833,49 @@ public class Locale {
                         LC_MONETARY_MASK = OpenBsdDefines.LC_MONETARY_MASK;
                         LC_NUMERIC_MASK = OpenBsdDefines.LC_NUMERIC_MASK;
                         LC_TIME_MASK = OpenBsdDefines.LC_TIME_MASK;
-                        break;
-                    default:
+                    }
+                    default ->
                         throw new NoClassDefFoundError("No locale.h BSD defines for " + MultiarchTupelBuilder.getMultiarch());
                 }
-                break;
-            default:
+            }
+            default ->
                 throw new NoClassDefFoundError("No locale.h OS defines for " + MultiarchTupelBuilder.getMultiarch());
         }
     }
 
     private final static JnhwMh_MA___A duplocale = JnhwMh_MA___A.of(
+            LibcLoader.LIB_C_SYMBOL_LOOKUP,
             "duplocale",
             PosixDataType.locale_t,
             PosixDataType.locale_t);
 
     private final static JnhwMh__V___A freelocale = JnhwMh__V___A.of(
+            LibcLoader.LIB_C_SYMBOL_LOOKUP,
             "freelocale",
             PosixDataType.locale_t);
 
     private final static JnhwMh_MA___V localeconv = JnhwMh_MA___V.of(
+            LibcLoader.LIB_C_SYMBOL_LOOKUP,
             "localeconv",
             BaseDataType.C_pointer);
 
-    private final static JnhwMh__A__sI__A__A newlocale = JnhwMh__A__sI__A__A.of(
+    private final static JnhwMh_MA__sI__A__A newlocale = JnhwMh_MA__sI__A__A.of(
+            LibcLoader.LIB_C_SYMBOL_LOOKUP,
             "newlocale",
             PosixDataType.locale_t,
             BaseDataType.C_int,
             BaseDataType.C_const_char_pointer,
             PosixDataType.locale_t);
 
-    private final static JnhwMh__A__sI__A setlocale = JnhwMh__A__sI__A.of(
+    private final static JnhwMh_MA__sI__A setlocale = JnhwMh_MA__sI__A.of(
+            LibcLoader.LIB_C_SYMBOL_LOOKUP,
             "setlocale",
             BaseDataType.C_char_pointer,
             BaseDataType.C_int,
             BaseDataType.C_const_char_pointer);
 
     private final static JnhwMh_MA___A uselocale = JnhwMh_MA___A.of(
+            LibcLoader.LIB_C_SYMBOL_LOOKUP,
             "uselocale",
             PosixDataType.locale_t,
             PosixDataType.locale_t);
@@ -873,7 +893,7 @@ public class Locale {
      * indicates an error.
      */
     public final static Locale_t duplocale(Locale_t locobj) throws NativeErrorException {
-        return new Locale_t(duplocale.invoke_MA__P(locobj));
+        return new Locale_t(duplocale.invoke_MA___P(locobj));
     }
 
     /**
@@ -920,10 +940,10 @@ public class Locale {
         if (LC_GLOBAL_LOCALE.equals(base)) {
             throw new IllegalArgumentException("base is LC_GLOBAL_LOCALE");
         }
-        try ( MemorySession ms = MemorySession.openConfined()) {
+        try (MemorySession ms = MemorySession.openConfined()) {
             MemorySegment _locale = MemorySegment.allocateNative(locale.length() + 1, ms);
             _locale.setUtf8String(0, locale);
-            final MemoryAddress resultAdr = newlocale.invoke_MA__sI_A_P(category_mask, _locale, base);
+            final MemoryAddress resultAdr = newlocale.invoke_MA__sI__A__P(category_mask, _locale, base);
             if (resultAdr == MemoryAddress.NULL) {
                 throw new NativeErrorException(Errno.errno());
             }
@@ -942,14 +962,14 @@ public class Locale {
      * specified category for the new locale. otherwise {@code null}
      */
     public final static String setlocale(int category, String locale) {
-        try ( MemorySession ms = MemorySession.openConfined()) {
+        try (MemorySession ms = MemorySession.openConfined()) {
             final MemoryAddress resultAdr;
             if (locale == null) {
-                resultAdr = setlocale.invoke_MA__sI_A(category, MemoryAddress.NULL);
+                resultAdr = setlocale.invoke_MA__sI__A(category, MemoryAddress.NULL);
             } else {
                 MemorySegment _locale = MemorySegment.allocateNative(locale.length() + 1, ms);
                 _locale.setUtf8String(0, locale);
-                resultAdr = setlocale.invoke_MA__sI_A(category, _locale);
+                resultAdr = setlocale.invoke_MA__sI__A(category, _locale);
             }
             if (resultAdr == MemoryAddress.NULL) {
                 return null;
@@ -975,7 +995,7 @@ public class Locale {
      * indicates an error.
      */
     public final static Locale_t uselocale(Locale_t newloc) throws NativeErrorException {
-        final MemoryAddress resultAdr = uselocale.invoke_MA__P(newloc);
+        final MemoryAddress resultAdr = uselocale.invoke_MA___P(newloc);
         if (resultAdr == MemoryAddress.NULL) {
             throw new NativeErrorException(Errno.errno());
         } else {

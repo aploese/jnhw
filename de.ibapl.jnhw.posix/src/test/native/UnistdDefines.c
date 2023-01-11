@@ -1,6 +1,6 @@
 /*
  * JNHW - Java Native header Wrapper, https://github.com/aploese/jnhw/
- * Copyright (C) 2019-2022, Arne Plöse and individual contributors as indicated
+ * Copyright (C) 2019-2023, Arne Plöse and individual contributors as indicated
  * by the @authors tag. See the copyright.txt in the distribution for a
  * full listing of individual contributors.
  *
@@ -25,7 +25,7 @@
 //We need the POSIX version ...
 #if !defined(HAVE_UNISTD_H) || !defined(_POSIX_VERSION)
 
-int getValueOf_HAVE_UNISTD_H() {
+int32_t getValueOf_HAVE_UNISTD_H() {
     return 0;
 }
 
@@ -33,27 +33,26 @@ int getValueOf_HAVE_UNISTD_H() {
 #include <unistd.h>
 #include <errno.h>
 
-int getValueOf_HAVE_UNISTD_H() {
+int32_t getValueOf_HAVE_UNISTD_H() {
     return 1;
 }
 
-
-long getValueOf__POSIX_VERSION() {
+int64_t getValueOf__POSIX_VERSION() {
     return _POSIX_VERSION;
 }
 
-int getValueOf__SC_AIO_LISTIO_MAX() {
+int32_t getValueOf__SC_AIO_LISTIO_MAX() {
     return _SC_AIO_LISTIO_MAX;
 }
 
-int getValueOf__SC_AIO_MAX() {
+int32_t getValueOf__SC_AIO_MAX() {
     return _SC_AIO_MAX;
 }
-int getValueOf__SC_AIO_PRIO_DELTA_MAX() {
+int32_t getValueOf__SC_AIO_PRIO_DELTA_MAX() {
     return _SC_AIO_PRIO_DELTA_MAX;
 }
 
-int* tryGetValueOf_SEEK_DATA(int* value) {
+int32_t* tryGetValueOf_SEEK_DATA(int32_t* value) {
 #if defined(__OpenBSD__)
 #if defined(SEEK_DATA)
 #error "SEEK_DATA defined"
@@ -65,7 +64,7 @@ int* tryGetValueOf_SEEK_DATA(int* value) {
     return value;
 }
 
-int* tryGetValueOf_SEEK_HOLE(int* value) {
+int32_t* tryGetValueOf_SEEK_HOLE(int32_t* value) {
 #if defined(__OpenBSD__)
 #if defined(SEEK_HOLE)
 #error "SEEK_HOLE defined"
@@ -77,19 +76,19 @@ int* tryGetValueOf_SEEK_HOLE(int* value) {
     return value;
 }
 
-int getValueOf_STDERR_FILENO() {
+int32_t getValueOf_STDERR_FILENO() {
     return STDERR_FILENO;
 }
 
-int getValueOf_STDIN_FILENO() {
+int32_t getValueOf_STDIN_FILENO() {
     return STDIN_FILENO;
 }
 
-int getValueOf_STDOUT_FILENO() {
+int32_t getValueOf_STDOUT_FILENO() {
     return STDOUT_FILENO;
 }
 
-int* tryGetValueOf__SC_MINSIGSTKSZ(int* value) {
+int32_t* tryGetValueOf__SC_MINSIGSTKSZ(int32_t* value) {
 #if ! defined(_SC_MINSIGSTKSZ)
     value = NULL;
 #else
@@ -98,7 +97,7 @@ int* tryGetValueOf__SC_MINSIGSTKSZ(int* value) {
     return value;
 }
 
-int* tryGetValueOf__SC_SIGSTKSZ(int* value) {
+int32_t* tryGetValueOf__SC_SIGSTKSZ(int32_t* value) {
 #if ! defined(_SC_SIGSTKSZ)
     value = NULL;
 #else

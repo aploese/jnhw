@@ -1,6 +1,6 @@
 /*
  * JNHW - Java Native header Wrapper, https://github.com/aploese/jnhw/
- * Copyright (C) 2019-2022, Arne Plöse and individual contributors as indicated
+ * Copyright (C) 2019-2023, Arne Plöse and individual contributors as indicated
  * by the @authors tag. See the copyright.txt in the distribution for a
  * full listing of individual contributors.
  *
@@ -24,10 +24,11 @@ package de.ibapl.jnhw.isoc;
 import de.ibapl.jnhw.common.annotation.Define;
 import de.ibapl.jnhw.common.annotation.Include;
 import de.ibapl.jnhw.common.datatypes.BaseDataType;
-import de.ibapl.jnhw.common.datatypes.MultiarchTupelBuilder;
-import de.ibapl.jnhw.common.downcall.wrapper.JnhwMh_MA___V;
+import de.ibapl.jnhw.common.downcall.JnhwMh_MA___V;
 import de.ibapl.jnhw.common.exception.NativeErrorException;
-import java.lang.foreign.Linker;
+import de.ibapl.jnhw.libloader.MultiarchInfo;
+import de.ibapl.jnhw.libloader.MultiarchTupelBuilder;
+import de.ibapl.jnhw.util.posix.LibcLoader;
 import java.lang.foreign.ValueLayout;
 
 /**
@@ -42,8 +43,11 @@ import java.lang.foreign.ValueLayout;
 @Include("#include <errno.h>")
 public abstract class Errno {
 
-    protected final static Linker NATIVE_LINKER = Linker.nativeLinker();
+    /**
+     * glibc defines that in this fashion....
+     */
     private final static JnhwMh_MA___V __errno_location = JnhwMh_MA___V.of(
+            LibcLoader.LIB_C_SYMBOL_LOOKUP,
             "__errno_location",
             BaseDataType.C_int_pointer);
 
@@ -63,21 +67,20 @@ public abstract class Errno {
         public final static int EILSEQ = 86;
     }
 
-    public static interface Linux_Mips_Defines {
+    public static class LinuxDefines {
 
-        public final static int EILSEQ = 88;
-    }
+        public final int EDOM = 33;
+        public final int ERANGE = 34;
+        public final int EILSEQ;
 
-    public static interface Linux_NonMips_Defines {
-
-        public final static int EILSEQ = 84;
-
-    }
-
-    public static interface LinuxDefines {
-
-        public final static int EDOM = 33;
-        public final static int ERANGE = 34;
+        public LinuxDefines(MultiarchInfo multiarchInfo) {
+            EILSEQ = switch (multiarchInfo.getArch()) {
+                case MIPS, MIPS_64 ->
+                    88;
+                default ->
+                    84;
+            };
+        }
     }
 
     public static interface OpenBsdDefines extends BsdDefines {
@@ -119,44 +122,38 @@ public abstract class Errno {
      */
     static {
         switch (MultiarchTupelBuilder.getOS()) {
-            case LINUX:
+            case LINUX -> {
                 HAVE_ERRNO_H = true;
-                EDOM = LinuxDefines.EDOM;
-                ERANGE = LinuxDefines.ERANGE;
-                switch (MultiarchTupelBuilder.getArch()) {
-                    case MIPS:
-                    case MIPS_64:
-                        EILSEQ = Linux_Mips_Defines.EILSEQ;
-                        break;
-                    default:
-                        EILSEQ = Linux_NonMips_Defines.EILSEQ;
-                }
-                break;
-            case DARWIN:
+                final LinuxDefines linuxDefines = new LinuxDefines(MultiarchTupelBuilder.getMultiarch());
+                EDOM = linuxDefines.EDOM;
+                ERANGE = linuxDefines.ERANGE;
+                EILSEQ = linuxDefines.EILSEQ;
+            }
+            case DARWIN -> {
                 HAVE_ERRNO_H = true;
                 EDOM = DarwinDefines.EDOM;
                 EILSEQ = DarwinDefines.EILSEQ;
                 ERANGE = DarwinDefines.ERANGE;
-                break;
-            case FREE_BSD:
+            }
+            case FREE_BSD -> {
                 HAVE_ERRNO_H = true;
                 EDOM = FreeBsdDefines.EDOM;
                 EILSEQ = FreeBsdDefines.EILSEQ;
                 ERANGE = FreeBsdDefines.ERANGE;
-                break;
-            case OPEN_BSD:
+            }
+            case OPEN_BSD -> {
                 HAVE_ERRNO_H = true;
                 EDOM = OpenBsdDefines.EDOM;
                 EILSEQ = OpenBsdDefines.EILSEQ;
                 ERANGE = OpenBsdDefines.ERANGE;
-                break;
-            case WINDOWS:
+            }
+            case WINDOWS -> {
                 HAVE_ERRNO_H = false;
                 EDOM = 0;
                 EILSEQ = 0;
                 ERANGE = 0;
-                break;
-            default:
+            }
+            default ->
                 throw new NoClassDefFoundError("No errno.h defines for " + MultiarchTupelBuilder.getMultiarch());
         }
     }

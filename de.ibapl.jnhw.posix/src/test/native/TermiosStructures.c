@@ -1,6 +1,6 @@
 /*
  * JNHW - Java Native header Wrapper, https://github.com/aploese/jnhw/
- * Copyright (C) 2019-2022, Arne Plöse and individual contributors as indicated
+ * Copyright (C) 2019-2023, Arne Plöse and individual contributors as indicated
  * by the @authors tag. See the copyright.txt in the distribution for a
  * full listing of individual contributors.
  *
@@ -31,35 +31,35 @@
     JNHW_ASSERT__tcflag_t__IS__uint32_t__OR__uint64_t
     JNHW_ASSERT__cc_t__IS__uint8_t
 
-int StructTermios_alignof() {
+int32_t StructTermios_alignof() {
     return __alignof__ (struct termios);
 }
 
-int StructTermios_sizeof() {
+int32_t StructTermios_sizeof() {
     return sizeof(struct termios);
 }
 
-int StructTermios_offsetof_c_iflag() {
+int32_t StructTermios_offsetof_c_iflag() {
     return offsetof(struct termios, c_iflag);
     }
 
-int StructTermios_offsetof_c_oflag() {
+int32_t StructTermios_offsetof_c_oflag() {
     return offsetof(struct termios, c_oflag);
 }
 
-int StructTermios_offsetof_c_cflag() {
+int32_t StructTermios_offsetof_c_cflag() {
     return offsetof(struct termios, c_cflag);
 }
 
-int StructTermios_offsetof_c_lflag() {
+int32_t StructTermios_offsetof_c_lflag() {
     return offsetof(struct termios, c_lflag);
 }
 
-int StructTermios_offsetof_c_cc() {
+int32_t StructTermios_offsetof_c_cc() {
     return offsetof(struct termios, c_cc);
 }
 
-int StructTermios_offsetof_c_line() {
+int32_t StructTermios_offsetof_c_line() {
 #if defined(__FreeBSD__) || defined(__OpenBSD__)|| defined(__APPLE__)
     return -1;
 #else
@@ -67,7 +67,7 @@ int StructTermios_offsetof_c_line() {
 #endif
 }
 
-int StructTermios_offsetof_c_ispeed() {
+int32_t StructTermios_offsetof_c_ispeed() {
 #if (defined(_HAVE_STRUCT_TERMIOS_C_ISPEED) && _HAVE_STRUCT_TERMIOS_C_ISPEED != 0) || defined(__APPLE__) || defined(__FreeBSD__)
     return offsetof(struct termios, c_ispeed);
 #else
@@ -75,7 +75,7 @@ int StructTermios_offsetof_c_ispeed() {
 #endif
 }
 
-int StructTermios_offsetof_c_ospeed() {
+int32_t StructTermios_offsetof_c_ospeed() {
 #if (defined(_HAVE_STRUCT_TERMIOS_C_OSPEED) && _HAVE_STRUCT_TERMIOS_C_OSPEED != 0) || defined(__APPLE__) || defined(__FreeBSD__)
     return offsetof(struct termios, c_ospeed);
 #else

@@ -1,6 +1,6 @@
 /*
  * JNHW - Java Native header Wrapper, https://github.com/aploese/jnhw/
- * Copyright (C) 2019-2022, Arne Plöse and individual contributors as indicated
+ * Copyright (C) 2019-2023, Arne Plöse and individual contributors as indicated
  * by the @authors tag. See the copyright.txt in the distribution for a
  * full listing of individual contributors.
  *
@@ -21,17 +21,13 @@
  */
 package de.ibapl.jnhw.common.test;
 
+import de.ibapl.jnhw.common.datatypes.BaseDataType;
+import de.ibapl.jnhw.common.downcall.JnhwMh_sI___V;
 import de.ibapl.jnhw.libloader.LoadResult;
 import de.ibapl.jnhw.libloader.LoadState;
 import de.ibapl.jnhw.libloader.NativeLibResolver;
-import java.lang.foreign.FunctionDescriptor;
-import java.lang.foreign.Linker;
-import java.lang.foreign.MemorySegment;
+import java.lang.foreign.MemorySession;
 import java.lang.foreign.SymbolLookup;
-import java.lang.foreign.ValueLayout;
-import java.lang.invoke.MethodHandle;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  *
@@ -44,14 +40,15 @@ public final class LibJnhwCommonTestLoader {
     public final static int LIB_JNHW_COMMON_TEST_VERSION = 4;
     private final static Object loadLock = new Object();
     private static LoadState state = LoadState.INIT;
-    private final static Linker NATIVE_LINKER = Linker.nativeLinker();
+    public static SymbolLookup SYMBOL_LOOKUP = null;
+    private static MemorySession MEM_SESSION = MemorySession.openShared();
 
     static {
         LibJnhwCommonTestLoader.touch();
     }
 
-    protected static void doSystemLoad(String absoluteLibName) {
-        System.load(absoluteLibName);
+    protected static void doLoadTestLib(String absoluteLibName) {
+        SYMBOL_LOOKUP = SymbolLookup.libraryLookup(absoluteLibName, MEM_SESSION);
     }
 
     public static LoadResult getLoadResult() {
@@ -71,7 +68,7 @@ public final class LibJnhwCommonTestLoader {
             }
             state = LoadState.LOADING;
         }
-        LIB_JNHW_COMMON_TEST_LOAD_RESULT = NativeLibResolver.loadNativeLib(LIB_JNHW_COMMON_TEST, LIB_JNHW_COMMON_TEST_VERSION, LibJnhwCommonTestLoader::doSystemLoad);
+        LIB_JNHW_COMMON_TEST_LOAD_RESULT = NativeLibResolver.loadNativeLib(LIB_JNHW_COMMON_TEST, LIB_JNHW_COMMON_TEST_VERSION, LibJnhwCommonTestLoader::doLoadTestLib);
         synchronized (loadLock) {
             if (LIB_JNHW_COMMON_TEST_LOAD_RESULT.isLoaded()) {
                 state = LoadState.SUCCESS;
@@ -82,24 +79,8 @@ public final class LibJnhwCommonTestLoader {
         return state;
     }
 
-    public static MethodHandle downcallHandle(String name, FunctionDescriptor function) {
-        try {
-            SymbolLookup loaderLookup = SymbolLookup.loaderLookup();
-            MemorySegment symbol = loaderLookup.lookup(name).get();
-            return NATIVE_LINKER.downcallHandle(symbol, function);
-        } catch (Throwable t) {
-            Logger.getLogger("d.i.j.c.t.LibJnhwCommonTestLoader").log(Level.SEVERE, name, t);
-            return null;
-        }
-    }
-
     public static int invokeExact_Int_V(String name) {
-        final MethodHandle handle = downcallHandle(name, FunctionDescriptor.of(ValueLayout.JAVA_INT));
-        try {
-            return (int) handle.invokeExact();
-        } catch (Throwable t) {
-            throw new RuntimeException(t);
-        }
+        return JnhwMh_sI___V.of(SYMBOL_LOOKUP, name, BaseDataType.int32_t).invoke_sI___V();
     }
 
     private LibJnhwCommonTestLoader() {

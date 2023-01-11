@@ -1,6 +1,6 @@
 /*
  * JNHW - Java Native header Wrapper, https://github.com/aploese/jnhw/
- * Copyright (C) 2019-2022, Arne Plöse and individual contributors as indicated
+ * Copyright (C) 2019-2023, Arne Plöse and individual contributors as indicated
  * by the @authors tag. See the copyright.txt in the distribution for a
  * full listing of individual contributors.
  *
@@ -25,28 +25,29 @@ import de.ibapl.jnhw.annotation.posix.sys.types.pthread_attr_t;
 import de.ibapl.jnhw.common.annotation.Define;
 import de.ibapl.jnhw.common.annotation.Include;
 import de.ibapl.jnhw.common.datatypes.BaseDataType;
-import de.ibapl.jnhw.common.datatypes.MultiarchTupelBuilder;
-import de.ibapl.jnhw.common.downcall.wrapper.JnhwMh__V___V;
-import de.ibapl.jnhw.common.downcall.wrapper.JnhwMh_sI__A_sI;
-import de.ibapl.jnhw.common.downcall.wrapper.JnhwMh_sI___A;
-import de.ibapl.jnhw.common.downcall.wrapper.JnhwMh_sI___A__A;
-import de.ibapl.jnhw.common.downcall.wrapper.JnhwMh_sI__sI__A;
+import de.ibapl.jnhw.common.downcall.JnhwMh__V___V;
+import de.ibapl.jnhw.common.downcall.JnhwMh_sI___A;
+import de.ibapl.jnhw.common.downcall.JnhwMh_sI___A__A;
+import de.ibapl.jnhw.common.downcall.JnhwMh_sI___A_sI;
+import de.ibapl.jnhw.common.downcall.JnhwMh_sI__sI__A;
 import de.ibapl.jnhw.common.exception.NativeErrorException;
 import de.ibapl.jnhw.common.exception.NoSuchNativeMethodException;
 import de.ibapl.jnhw.common.memory.Int32_t;
 import de.ibapl.jnhw.common.memory.OpaqueMemory;
 import de.ibapl.jnhw.common.memory.Struct;
 import de.ibapl.jnhw.common.memory.layout.Alignment;
+import de.ibapl.jnhw.libloader.MultiarchTupelBuilder;
 import de.ibapl.jnhw.posix.sys.Types;
-import de.ibapl.jnhw.posix.util.methodhandles.JnhwMethodHandle_PthreadT_V;
-import de.ibapl.jnhw.posix.util.methodhandles.JnhwMethodHandle_Sint_PthreadT;
-import de.ibapl.jnhw.posix.util.methodhandles.JnhwMethodHandle_Sint_PthreadT_Adr;
-import de.ibapl.jnhw.posix.util.methodhandles.JnhwMethodHandle_Sint_PthreadT_Adr_Adr;
-import de.ibapl.jnhw.posix.util.methodhandles.JnhwMethodHandle_Sint_PthreadT_PthreadT;
-import de.ibapl.jnhw.posix.util.methodhandles.JnhwMethodHandle_Sint_PthreadT_Sint;
-import de.ibapl.jnhw.posix.util.methodhandles.JnhwMethodHandle_Sint_PthreadT_Sint_Adr;
+import de.ibapl.jnhw.util.posix.LibcLoader;
 import de.ibapl.jnhw.util.posix.LibrtLoader;
 import de.ibapl.jnhw.util.posix.PosixDataType;
+import de.ibapl.jnhw.util.posix.downcall.JnhwMh_PthreadT___V;
+import de.ibapl.jnhw.util.posix.downcall.JnhwMh_sI__PthreadT;
+import de.ibapl.jnhw.util.posix.downcall.JnhwMh_sI__PthreadT_PthreadT;
+import de.ibapl.jnhw.util.posix.downcall.JnhwMh_sI__PthreadT__A;
+import de.ibapl.jnhw.util.posix.downcall.JnhwMh_sI__PthreadT__A__A;
+import de.ibapl.jnhw.util.posix.downcall.JnhwMh_sI__PthreadT__sI__A;
+import de.ibapl.jnhw.util.posix.downcall.JnhwMh_sI__PthreadT_sI;
 import java.io.IOException;
 import java.lang.foreign.MemoryAddress;
 import java.lang.foreign.MemorySegment;
@@ -126,25 +127,17 @@ public class Pthread {
             switch (MultiarchTupelBuilder.getOS()) {
                 case LINUX:
                     switch (MultiarchTupelBuilder.getArch()) {
-                        case AARCH64:
+                        case AARCH64 ->
                             sizeof = 64;
-                            break;
-                        case ARM:
-                        case I386:
-                        case MIPS:
+                        case ARM, I386, MIPS ->
                             sizeof = 36;
-                            break;
-                        case MIPS_64:
-                        case POWER_PC_64:
-                        case RISC_V_64:
-                        case S390_X:
-                        case X86_64:
+                        case MIPS_64, POWER_PC_64, RISC_V_64, S390_X, X86_64 ->
                             sizeof = 56;
-                            break;
-                        default:
+                        default ->
                             throw new NoClassDefFoundError("No pthread.h linux defines for Pthread_attr_t " + MultiarchTupelBuilder.getMultiarch());
                     }
                     break;
+
                 case DARWIN:
                     sizeof = 64;
                     break;
@@ -156,13 +149,11 @@ public class Pthread {
                     throw new NoClassDefFoundError("No pthread.h OS defines for Pthread_attr_t " + MultiarchTupelBuilder.getMultiarch());
             }
             switch (MultiarchTupelBuilder.getMemoryModel()) {
-                case ILP32:
+                case ILP32 ->
                     alignof = Alignment.AT_4;
-                    break;
-                case LP64:
+                case LP64 ->
                     alignof = Alignment.AT_8;
-                    break;
-                default:
+                default ->
                     throw new NoClassDefFoundError("No pthread.h defines for Pthread_attr_t" + MultiarchTupelBuilder.getMultiarch());
             }
 
@@ -211,6 +202,12 @@ public class Pthread {
             return result;
         }
 
+        public static Pthread_t wrap(int value, MemorySession ms) {
+            Pthread_t result = Pthread_t.allocateNative(ms);
+            result.asUint32_t(value);
+            return result;
+        }
+
         public Pthread_t(MemorySegment memorySegment, long offset) {
             super(memorySegment, offset, Pthread_t.sizeof);
         }
@@ -219,11 +216,27 @@ public class Pthread {
             super(baseAddress, ms, Pthread_t.sizeof);
         }
 
+        public int asUint32_t() {
+            if (PosixDataType.pthread_t == BaseDataType.uint32_t) {
+                return MEM_ACCESS.uint32_t(memorySegment, 0);
+            } else {
+                throw new IllegalStateException("pthread_t is not uint32_t but: " + PosixDataType.pthread_t);
+            }
+        }
+
         public long asUint64_t() {
             if (PosixDataType.pthread_t == BaseDataType.uint64_t) {
                 return MEM_ACCESS.uint64_t(memorySegment, 0);
             } else {
                 throw new IllegalStateException("pthread_t is not uint64_t but: " + PosixDataType.pthread_t);
+            }
+        }
+
+        public void asUint32_t(int value) {
+            if (PosixDataType.pthread_t == BaseDataType.uint32_t) {
+                MEM_ACCESS.uint32_t(memorySegment, 0, value);
+            } else {
+                throw new IllegalStateException("pthread_t is not uint32_t but: " + PosixDataType.pthread_t);
             }
         }
 
@@ -238,9 +251,13 @@ public class Pthread {
         @Override
         public String nativeToString() {
             switch (PosixDataType.pthread_t) {
-                case uint64_t:
+                case uint32_t -> {
+                    return MEM_ACCESS.uint32_t_nativeToString(memorySegment, 0);
+                }
+                case uint64_t -> {
                     return MEM_ACCESS.uint64_t_nativeToString(memorySegment, 0);
-                default:
+                }
+                default ->
                     throw new AssertionError();
             }
         }
@@ -257,30 +274,33 @@ public class Pthread {
 
     }
 
-    private final static JnhwMethodHandle_PthreadT_V pthread_self = JnhwMethodHandle_PthreadT_V.of(
+    private final static JnhwMh_PthreadT___V pthread_self = JnhwMh_PthreadT___V.of(
+            LibcLoader.LIB_C_SYMBOL_LOOKUP,
             "pthread_self",
             PosixDataType.pthread_t);
 
-    private final static JnhwMethodHandle_Sint_PthreadT pthread_cancel = JnhwMethodHandle_Sint_PthreadT.of(
+    private final static JnhwMh_sI__PthreadT pthread_cancel = JnhwMh_sI__PthreadT.of(
             LibrtLoader.LIB_RT_SYMBOL_LOOKUP,
             "pthread_cancel",
             BaseDataType.C_int,
             PosixDataType.pthread_t);
 
-    private final static JnhwMethodHandle_Sint_PthreadT_PthreadT pthread_equal = JnhwMethodHandle_Sint_PthreadT_PthreadT.of(
+    private final static JnhwMh_sI__PthreadT_PthreadT pthread_equal = JnhwMh_sI__PthreadT_PthreadT.of(
+            LibcLoader.LIB_C_SYMBOL_LOOKUP,
             "pthread_equal",
             BaseDataType.C_int,
             PosixDataType.pthread_t,
             PosixDataType.pthread_t);
 
-    private final static JnhwMethodHandle_Sint_PthreadT_Adr pthread_getcpuclockid = JnhwMethodHandle_Sint_PthreadT_Adr.ofOrNull(
+    private final static JnhwMh_sI__PthreadT__A pthread_getcpuclockid = JnhwMh_sI__PthreadT__A.ofOrNull(
             LibrtLoader.LIB_RT_SYMBOL_LOOKUP,
             "pthread_getcpuclockid",
             BaseDataType.C_int,
             PosixDataType.pthread_t,
             BaseDataType.C_pointer);
 
-    private final static JnhwMethodHandle_Sint_PthreadT_Adr_Adr pthread_getschedparam = JnhwMethodHandle_Sint_PthreadT_Adr_Adr.of(
+    private final static JnhwMh_sI__PthreadT__A__A pthread_getschedparam = JnhwMh_sI__PthreadT__A__A.of(
+            LibcLoader.LIB_C_SYMBOL_LOOKUP,
             "pthread_getschedparam",
             BaseDataType.C_int,
             PosixDataType.pthread_t,
@@ -288,12 +308,14 @@ public class Pthread {
             BaseDataType.C_pointer);
 
     private final static JnhwMh_sI__sI__A pthread_setcancelstate = JnhwMh_sI__sI__A.of(
+            LibcLoader.LIB_C_SYMBOL_LOOKUP,
             "pthread_setcancelstate",
             BaseDataType.C_int,
             BaseDataType.C_int,
             BaseDataType.C_int_pointer);
 
     private final static JnhwMh_sI__sI__A pthread_setcanceltype = JnhwMh_sI__sI__A.of(
+            LibcLoader.LIB_C_SYMBOL_LOOKUP,
             "pthread_setcanceltype",
             BaseDataType.C_int,
             BaseDataType.C_int,
@@ -303,7 +325,8 @@ public class Pthread {
             LibrtLoader.LIB_RT_SYMBOL_LOOKUP,
             "pthread_testcancel");
 
-    private final static JnhwMethodHandle_Sint_PthreadT_Sint_Adr pthread_setschedparam = JnhwMethodHandle_Sint_PthreadT_Sint_Adr.of(
+    private final static JnhwMh_sI__PthreadT__sI__A pthread_setschedparam = JnhwMh_sI__PthreadT__sI__A.of(
+            LibcLoader.LIB_C_SYMBOL_LOOKUP,
             "pthread_setschedparam",
             BaseDataType.C_int,
             PosixDataType.pthread_t,
@@ -311,28 +334,32 @@ public class Pthread {
             BaseDataType.C_const_struct_pointer);
 
     private final static JnhwMh_sI___A pthread_attr_destroy = JnhwMh_sI___A.of(
+            LibcLoader.LIB_C_SYMBOL_LOOKUP,
             "pthread_attr_destroy",
             BaseDataType.C_int,
             PosixDataType.pthread_attr_t_pointer);
 
     private final static JnhwMh_sI___A pthread_attr_init = JnhwMh_sI___A.of(
+            LibcLoader.LIB_C_SYMBOL_LOOKUP,
             "pthread_attr_init",
             BaseDataType.C_int,
             PosixDataType.pthread_attr_t_pointer);
 
-    private final static JnhwMh_sI__A_sI pthread_attr_setinheritsched = JnhwMh_sI__A_sI.of(
+    private final static JnhwMh_sI___A_sI pthread_attr_setinheritsched = JnhwMh_sI___A_sI.of(
+            LibcLoader.LIB_C_SYMBOL_LOOKUP,
             "pthread_attr_setinheritsched",
             BaseDataType.C_int,
             PosixDataType.pthread_attr_t_pointer,
             BaseDataType.C_int);
 
     private final static JnhwMh_sI___A__A pthread_attr_getinheritsched = JnhwMh_sI___A__A.of(
+            LibcLoader.LIB_C_SYMBOL_LOOKUP,
             "pthread_attr_getinheritsched",
             BaseDataType.C_int,
             PosixDataType.pthread_attr_t_pointer,
             BaseDataType.C_int_pointer);
 
-    private final static JnhwMethodHandle_Sint_PthreadT_Sint pthread_setschedprio = JnhwMethodHandle_Sint_PthreadT_Sint.ofOrNull(
+    private final static JnhwMh_sI__PthreadT_sI pthread_setschedprio = JnhwMh_sI__PthreadT_sI.ofOrNull(
             LibrtLoader.LIB_RT_SYMBOL_LOOKUP,
             "pthread_setschedprio",
             BaseDataType.C_int,
@@ -340,12 +367,14 @@ public class Pthread {
             BaseDataType.C_int);
 
     private final static JnhwMh_sI___A__A pthread_attr_getschedparam = JnhwMh_sI___A__A.of(
+            LibcLoader.LIB_C_SYMBOL_LOOKUP,
             "pthread_attr_getschedparam",
             BaseDataType.C_int,
             PosixDataType.pthread_attr_t_pointer,
             BaseDataType.C_struct_pointer);
 
     private final static JnhwMh_sI___A__A pthread_attr_setschedparam = JnhwMh_sI___A__A.of(
+            LibcLoader.LIB_C_SYMBOL_LOOKUP,
             "pthread_attr_setschedparam",
             BaseDataType.C_int,
             PosixDataType.pthread_attr_t_pointer,
@@ -405,7 +434,7 @@ public class Pthread {
      */
     static {
         switch (MultiarchTupelBuilder.getOS()) {
-            case LINUX:
+            case LINUX -> {
                 HAVE_PTHREAD_H = true;
                 PTHREAD_CANCEL_ASYNCHRONOUS = LinuxDefines.PTHREAD_CANCEL_ASYNCHRONOUS;
                 PTHREAD_CANCEL_DEFERRED = LinuxDefines.PTHREAD_CANCEL_DEFERRED;
@@ -413,8 +442,8 @@ public class Pthread {
                 PTHREAD_CANCEL_ENABLE = LinuxDefines.PTHREAD_CANCEL_ENABLE;
                 PTHREAD_EXPLICIT_SCHED = LinuxDefines.PTHREAD_EXPLICIT_SCHED;
                 PTHREAD_INHERIT_SCHED = LinuxDefines.PTHREAD_INHERIT_SCHED;
-                break;
-            case DARWIN:
+            }
+            case DARWIN -> {
                 HAVE_PTHREAD_H = true;
                 PTHREAD_CANCEL_ASYNCHRONOUS = DarwinDefines.PTHREAD_CANCEL_ASYNCHRONOUS;
                 PTHREAD_CANCEL_DEFERRED = DarwinDefines.PTHREAD_CANCEL_DEFERRED;
@@ -422,9 +451,8 @@ public class Pthread {
                 PTHREAD_CANCEL_ENABLE = DarwinDefines.PTHREAD_CANCEL_ENABLE;
                 PTHREAD_EXPLICIT_SCHED = DarwinDefines.PTHREAD_EXPLICIT_SCHED;
                 PTHREAD_INHERIT_SCHED = DarwinDefines.PTHREAD_INHERIT_SCHED;
-                break;
-            case FREE_BSD:
-            case OPEN_BSD:
+            }
+            case FREE_BSD, OPEN_BSD -> {
                 HAVE_PTHREAD_H = true;
                 PTHREAD_CANCEL_ASYNCHRONOUS = FreeBsd_OpenBsd_Defines.PTHREAD_CANCEL_ASYNCHRONOUS;
                 PTHREAD_CANCEL_DEFERRED = FreeBsd_OpenBsd_Defines.PTHREAD_CANCEL_DEFERRED;
@@ -432,8 +460,8 @@ public class Pthread {
                 PTHREAD_CANCEL_ENABLE = FreeBsd_OpenBsd_Defines.PTHREAD_CANCEL_ENABLE;
                 PTHREAD_EXPLICIT_SCHED = FreeBsd_OpenBsd_Defines.PTHREAD_EXPLICIT_SCHED;
                 PTHREAD_INHERIT_SCHED = FreeBsd_OpenBsd_Defines.PTHREAD_INHERIT_SCHED;
-                break;
-            default:
+            }
+            default ->
                 throw new NoClassDefFoundError("No pthread.h OS defines for " + MultiarchTupelBuilder.getMultiarch());
         }
     }
@@ -505,7 +533,7 @@ public class Pthread {
      * indicates an error.
      */
     public final static void pthread_attr_setinheritsched(Pthread_attr_t attr, int inheritsched) throws NativeErrorException {
-        if (pthread_attr_setinheritsched.invoke_sI__P_sI(attr, inheritsched) != 0) {
+        if (pthread_attr_setinheritsched.invoke_sI___P_sI(attr, inheritsched) != 0) {
             throw new NativeErrorException(Errno.errno());
         }
     }
@@ -535,7 +563,7 @@ public class Pthread {
      * indicates an error.
      */
     final static void pthread_cancel(Pthread_t thread) throws NativeErrorException {
-        if (pthread_cancel.invokeExact(thread) != 0) {
+        if (pthread_cancel.invoke_sI__PthreadT(thread) != 0) {
             throw new NativeErrorException(Errno.errno());
         }
     }
@@ -546,7 +574,7 @@ public class Pthread {
      * - pthread_equal - compare thread IDs</a>.
      */
     public final static boolean pthread_equal(Pthread_t t1, Pthread_t t2) {
-        return pthread_equal.invokeExact(t1, t2) != 0;
+        return pthread_equal.invoke_sI__PthreadT_PthreadT(t1, t2) != 0;
     }
 
     /**
@@ -561,7 +589,7 @@ public class Pthread {
      */
     public final static void pthread_getcpuclockid(Pthread_t thread_id, Types.Clockid_t clock_id) throws NativeErrorException, NoSuchNativeMethodException {
         try {
-            if (pthread_getcpuclockid.invokeExact(thread_id, clock_id) != 0) {
+            if (pthread_getcpuclockid.invoke_sI__PthreadT__P(thread_id, clock_id) != 0) {
                 throw new NativeErrorException(Errno.errno());
             }
         } catch (NullPointerException npe) {
@@ -586,7 +614,7 @@ public class Pthread {
      * indicates an error.
      */
     public final static void pthread_getschedparam(Pthread_t thread, Int32_t policy, Sched.Sched_param param) throws NativeErrorException {
-        if (pthread_getschedparam.invokeExact(thread, policy, param) != 0) {
+        if (pthread_getschedparam.invoke_sI__PthreadT__P__P(thread, policy, param) != 0) {
             throw new NativeErrorException(Errno.errno());
         }
     }
@@ -599,7 +627,7 @@ public class Pthread {
      * @return
      */
     public final static Pthread_t pthread_self(MemorySession ms) {
-        return pthread_self.invokeExact(ms);
+        return pthread_self.invoke_PthreadT___V(ms);
     }
 
     /**
@@ -645,7 +673,7 @@ public class Pthread {
      * indicates an error.
      */
     public final static void pthread_setschedparam(Pthread_t thread, int policy, Sched.Sched_param param) throws NativeErrorException {
-        if (pthread_setschedparam.invokeExact(thread, policy, param) != 0) {
+        if (pthread_setschedparam.invoke_sI__PthreadT__sI__P(thread, policy, param) != 0) {
             throw new NativeErrorException(Errno.errno());
         }
     }
@@ -662,7 +690,7 @@ public class Pthread {
      */
     public final static void pthread_setschedprio(Pthread_t thread, int prio) throws NativeErrorException, NoSuchNativeMethodException {
         try {
-            if (pthread_setschedprio.invokeExact(thread, prio) != 0) {
+            if (pthread_setschedprio.invoke_sI__PthreadT_sI(thread, prio) != 0) {
                 throw new NativeErrorException(Errno.errno());
             }
         } catch (NullPointerException npe) {

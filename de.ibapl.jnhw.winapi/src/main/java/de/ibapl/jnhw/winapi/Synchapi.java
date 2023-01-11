@@ -1,6 +1,6 @@
 /*
  * JNHW - Java Native header Wrapper, https://github.com/aploese/jnhw/
- * Copyright (C) 2019-2022, Arne Plöse and individual contributors as indicated
+ * Copyright (C) 2019-2023, Arne Plöse and individual contributors as indicated
  * by the @authors tag. See the copyright.txt in the distribution for a
  * full listing of individual contributors.
  *
@@ -23,13 +23,13 @@ package de.ibapl.jnhw.winapi;
 
 import de.ibapl.jnhw.common.annotation.Include;
 import de.ibapl.jnhw.common.datatypes.Pointer;
-import de.ibapl.jnhw.common.downcall.wrapper.JnhwMh_MA___A__B__B__A;
-import de.ibapl.jnhw.common.downcall.wrapper.JnhwMh__B___A;
-import de.ibapl.jnhw.common.downcall.wrapper.JnhwMh_uI___A_uI;
-import de.ibapl.jnhw.common.downcall.wrapper.JnhwMh_uI___A_uI__B;
-import de.ibapl.jnhw.common.downcall.wrapper.JnhwMh_uI__uI__A__B_uI;
-import de.ibapl.jnhw.common.downcall.wrapper.JnhwMh_uI__uI__A__B_uI__B;
-import de.ibapl.jnhw.common.downcall.wrapper.JnhwMh_uI__uI_sI;
+import de.ibapl.jnhw.common.downcall.JnhwMh_BL___A;
+import de.ibapl.jnhw.common.downcall.JnhwMh_MA___A_BL_BL__A;
+import de.ibapl.jnhw.common.downcall.JnhwMh_uI___A_uI;
+import de.ibapl.jnhw.common.downcall.JnhwMh_uI___A_uI_BL;
+import de.ibapl.jnhw.common.downcall.JnhwMh_uI__uI__A_BL_uI;
+import de.ibapl.jnhw.common.downcall.JnhwMh_uI__uI__A_BL_uI_BL;
+import de.ibapl.jnhw.common.downcall.JnhwMh_uI__uI_sI;
 import de.ibapl.jnhw.common.exception.NativeErrorException;
 import de.ibapl.jnhw.util.winapi.Kernel32Loader;
 import de.ibapl.jnhw.util.winapi.WinApiDataType;
@@ -50,7 +50,7 @@ import java.lang.foreign.MemorySession;
 @Include("synchapi.h")
 public abstract class Synchapi {
 
-    private final static JnhwMh_MA___A__B__B__A CreateEventW = JnhwMh_MA___A__B__B__A.of(
+    private final static JnhwMh_MA___A_BL_BL__A CreateEventW = JnhwMh_MA___A_BL_BL__A.of(
             Kernel32Loader.DLL_KERNEL32_SYMBOL_LOOKUP,
             "CreateEventW",
             WinApiDataType.HANDLE,
@@ -59,13 +59,13 @@ public abstract class Synchapi {
             WinApiDataType.BOOL,
             WinApiDataType.LPCWSTR);
 
-    private final static JnhwMh__B___A ResetEvent = JnhwMh__B___A.of(
+    private final static JnhwMh_BL___A ResetEvent = JnhwMh_BL___A.of(
             Kernel32Loader.DLL_KERNEL32_SYMBOL_LOOKUP,
             "ResetEvent",
             WinApiDataType.BOOL,
             WinApiDataType.HANDLE);
 
-    private final static JnhwMh__B___A SetEvent = JnhwMh__B___A.of(
+    private final static JnhwMh_BL___A SetEvent = JnhwMh_BL___A.of(
             Kernel32Loader.DLL_KERNEL32_SYMBOL_LOOKUP,
             "SetEvent",
             WinApiDataType.BOOL,
@@ -78,7 +78,7 @@ public abstract class Synchapi {
             WinApiDataType.DWORD,
             WinApiDataType.BOOL);
 
-    private final static JnhwMh_uI__uI__A__B_uI WaitForMultipleObjects = JnhwMh_uI__uI__A__B_uI.of(
+    private final static JnhwMh_uI__uI__A_BL_uI WaitForMultipleObjects = JnhwMh_uI__uI__A_BL_uI.of(
             Kernel32Loader.DLL_KERNEL32_SYMBOL_LOOKUP,
             "WaitForMultipleObjects",
             WinApiDataType.DWORD,
@@ -87,7 +87,7 @@ public abstract class Synchapi {
             WinApiDataType.BOOL,
             WinApiDataType.DWORD);
 
-    private final static JnhwMh_uI__uI__A__B_uI__B WaitForMultipleObjectsEx = JnhwMh_uI__uI__A__B_uI__B.of(
+    private final static JnhwMh_uI__uI__A_BL_uI_BL WaitForMultipleObjectsEx = JnhwMh_uI__uI__A_BL_uI_BL.of(
             Kernel32Loader.DLL_KERNEL32_SYMBOL_LOOKUP,
             "WaitForMultipleObjectsEx",
             WinApiDataType.DWORD,
@@ -104,7 +104,7 @@ public abstract class Synchapi {
             WinApiDataType.HANDLE,
             WinApiDataType.DWORD);
 
-    private final static JnhwMh_uI___A_uI__B WaitForSingleObjectEx = JnhwMh_uI___A_uI__B.of(
+    private final static JnhwMh_uI___A_uI_BL WaitForSingleObjectEx = JnhwMh_uI___A_uI_BL.of(
             Kernel32Loader.DLL_KERNEL32_SYMBOL_LOOKUP,
             "WaitForSingleObjectEx",
             WinApiDataType.DWORD,
@@ -137,8 +137,8 @@ public abstract class Synchapi {
      * indicates an error.
      */
     public final static HANDLE CreateEventW(SECURITY_ATTRIBUTES lpEventAttributes, boolean bManualReset, boolean bInitialState, String lpName) throws NativeErrorException {
-        try ( MemorySession ms = MemorySession.openConfined()) {
-            MemoryAddress result = CreateEventW.invoke_MA___P__B__B__P(
+        try (MemorySession ms = MemorySession.openConfined()) {
+            MemoryAddress result = CreateEventW.invoke_MA___P_BL_BL__P(
                     lpEventAttributes != null ? lpEventAttributes : Pointer.NULL,
                     bManualReset,
                     bInitialState,
@@ -162,7 +162,7 @@ public abstract class Synchapi {
      * indicates an error.
      */
     public final static void ResetEvent(HANDLE hEvent) throws NativeErrorException {
-        if (!ResetEvent.invoke__B___P(hEvent)) {
+        if (!ResetEvent.invoke_BL___P(hEvent)) {
             throw new NativeErrorException(Errhandlingapi.GetLastError());
         }
     }
@@ -179,7 +179,7 @@ public abstract class Synchapi {
      * indicates an error.
      */
     public final static void SetEvent(HANDLE hEvent) throws NativeErrorException {
-        if (!SetEvent.invoke__B___P(hEvent)) {
+        if (!SetEvent.invoke_BL___P(hEvent)) {
             throw new NativeErrorException(Errhandlingapi.GetLastError());
         }
     }
@@ -231,7 +231,7 @@ public abstract class Synchapi {
         if ((dwMilliseconds < 0) && (dwMilliseconds != Winbase.INFINITE)) {
             throw new IllegalArgumentException("dwMilliseconds < 0");
         }
-        return WaitForMultipleObjects.invoke_uL__uI__P__B_uI(
+        return WaitForMultipleObjects.invoke_uL__uI__P_BL_uI(
                 lpHandles.length,
                 lpHandles,
                 bWaitAll,
@@ -271,7 +271,7 @@ public abstract class Synchapi {
         if ((dwMilliseconds < 0) && (dwMilliseconds != Winbase.INFINITE)) {
             throw new IllegalArgumentException("dwMilliseconds < 0");
         }
-        return WaitForMultipleObjectsEx.invoke_uI__uI__P__B_uI__B(
+        return WaitForMultipleObjectsEx.invoke_uI__uI__P_BL_uI_BL(
                 lpHandles.length,
                 lpHandles,
                 bWaitAll,
@@ -297,7 +297,7 @@ public abstract class Synchapi {
         if ((dwMilliseconds < 0) && (dwMilliseconds != Winbase.INFINITE)) {
             throw new IllegalArgumentException("dwMilliseconds < 0");
         }
-        return WaitForSingleObject.invoke_uI__P_uI(
+        return WaitForSingleObject.invoke_uI___P_uI(
                 hHandle,
                 (int) dwMilliseconds);
     }
@@ -327,7 +327,7 @@ public abstract class Synchapi {
         if ((dwMilliseconds < 0) && (dwMilliseconds != Winbase.INFINITE)) {
             throw new IllegalArgumentException("dwMilliseconds < 0");
         }
-        return WaitForSingleObjectEx.invoke_uI__P_uI_B(
+        return WaitForSingleObjectEx.invoke_uI___P_uI_BL(
                 hHandle,
                 (int) dwMilliseconds,
                 bAlertable);

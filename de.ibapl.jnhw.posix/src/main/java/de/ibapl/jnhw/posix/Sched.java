@@ -1,6 +1,6 @@
 /*
  * JNHW - Java Native header Wrapper, https://github.com/aploese/jnhw/
- * Copyright (C) 2019-2022, Arne Plöse and individual contributors as indicated
+ * Copyright (C) 2019-2023, Arne Plöse and individual contributors as indicated
  * by the @authors tag. See the copyright.txt in the distribution for a
  * full listing of individual contributors.
  *
@@ -25,17 +25,18 @@ import de.ibapl.jnhw.annotation.posix.sys.types.pid_t;
 import de.ibapl.jnhw.common.annotation.Define;
 import de.ibapl.jnhw.common.annotation.Include;
 import de.ibapl.jnhw.common.datatypes.BaseDataType;
-import de.ibapl.jnhw.common.datatypes.MultiarchTupelBuilder;
-import de.ibapl.jnhw.common.downcall.wrapper.JnhwMh__V___V;
-import de.ibapl.jnhw.common.downcall.wrapper.JnhwMh_sI__sI;
-import de.ibapl.jnhw.common.downcall.wrapper.JnhwMh_sI__sI__A;
-import de.ibapl.jnhw.common.downcall.wrapper.JnhwMh_sI__sI_sI__A;
+import de.ibapl.jnhw.common.downcall.JnhwMh__V___V;
+import de.ibapl.jnhw.common.downcall.JnhwMh_sI__sI;
+import de.ibapl.jnhw.common.downcall.JnhwMh_sI__sI__A;
+import de.ibapl.jnhw.common.downcall.JnhwMh_sI__sI_sI__A;
 import de.ibapl.jnhw.common.exception.NativeErrorException;
 import de.ibapl.jnhw.common.exception.NoSuchNativeMethodException;
 import de.ibapl.jnhw.common.exception.NoSuchNativeTypeMemberException;
 import de.ibapl.jnhw.common.memory.Struct;
 import de.ibapl.jnhw.common.memory.layout.Alignment;
 import de.ibapl.jnhw.common.util.IntDefine;
+import de.ibapl.jnhw.libloader.MultiarchTupelBuilder;
+import de.ibapl.jnhw.util.posix.LibcLoader;
 import de.ibapl.jnhw.util.posix.PosixDataType;
 import java.lang.foreign.MemorySegment;
 import java.lang.foreign.MemorySession;
@@ -328,39 +329,46 @@ public class Sched {
     }
 
     private final static JnhwMh_sI__sI sched_get_priority_max = JnhwMh_sI__sI.of(
+            LibcLoader.LIB_C_SYMBOL_LOOKUP,
             "sched_get_priority_max",
             BaseDataType.C_int,
             BaseDataType.C_int);
 
     private final static JnhwMh_sI__sI sched_get_priority_min = JnhwMh_sI__sI.of(
+            LibcLoader.LIB_C_SYMBOL_LOOKUP,
             "sched_get_priority_min",
             BaseDataType.C_int,
             BaseDataType.C_int);
 
     private final static JnhwMh_sI__sI__A sched_getparam = JnhwMh_sI__sI__A.ofOrNull(
+            LibcLoader.LIB_C_SYMBOL_LOOKUP,
             "sched_getparam",
             BaseDataType.C_int,
             PosixDataType.pid_t,
             BaseDataType.C_struct_pointer);
 
     private final static JnhwMh_sI__sI sched_getscheduler = JnhwMh_sI__sI.ofOrNull(
+            LibcLoader.LIB_C_SYMBOL_LOOKUP,
             "sched_getscheduler",
             BaseDataType.C_int,
             PosixDataType.pid_t);
 
     private final static JnhwMh_sI__sI__A sched_rr_get_interval = JnhwMh_sI__sI__A.ofOrNull(
+            LibcLoader.LIB_C_SYMBOL_LOOKUP,
             "sched_rr_get_interval",
             BaseDataType.C_int,
             PosixDataType.pid_t,
             BaseDataType.C_struct_pointer);
 
     private final static JnhwMh_sI__sI__A sched_setparam = JnhwMh_sI__sI__A.ofOrNull(
+            LibcLoader.LIB_C_SYMBOL_LOOKUP,
             "sched_setparam",
             BaseDataType.C_int,
             PosixDataType.pid_t,
             BaseDataType.C_const_struct_pointer);
 
     private final static JnhwMh_sI__sI_sI__A sched_setscheduler = JnhwMh_sI__sI_sI__A.ofOrNull(
+            LibcLoader.LIB_C_SYMBOL_LOOKUP,
             "sched_setscheduler",
             BaseDataType.C_int,
             PosixDataType.pid_t,
@@ -368,6 +376,7 @@ public class Sched {
             BaseDataType.C_const_struct_pointer);
 
     private final static JnhwMh__V___V sched_yield = JnhwMh__V___V.of(
+            LibcLoader.LIB_C_SYMBOL_LOOKUP,
             "sched_yield");
 
     /**
@@ -513,7 +522,7 @@ public class Sched {
      */
     public final static int sched_setscheduler(@pid_t int pid, int policy, Sched_param param) throws NativeErrorException, NoSuchNativeMethodException {
         try {
-            final int result = sched_setscheduler.invoke_sI__sI_sI_P(pid, policy, param);
+            final int result = sched_setscheduler.invoke_sI__sI_sI__P(pid, policy, param);
             if (result == -1) {
                 throw new NativeErrorException(Errno.errno());
             }

@@ -1,6 +1,6 @@
 /*
  * JNHW - Java Native header Wrapper, https://github.com/aploese/jnhw/
- * Copyright (C) 2019-2022, Arne Plöse and individual contributors as indicated
+ * Copyright (C) 2019-2023, Arne Plöse and individual contributors as indicated
  * by the @authors tag. See the copyright.txt in the distribution for a
  * full listing of individual contributors.
  *
@@ -21,8 +21,8 @@
  */
 package de.ibapl.jnhw.winapi;
 
-import de.ibapl.jnhw.common.datatypes.MultiarchTupelBuilder;
 import de.ibapl.jnhw.common.memory.layout.Alignment;
+import de.ibapl.jnhw.libloader.MultiarchTupelBuilder;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.condition.EnabledOnOs;

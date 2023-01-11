@@ -1,6 +1,6 @@
 /*
  * JNHW - Java Native header Wrapper, https://github.com/aploese/jnhw/
- * Copyright (C) 2019-2022, Arne Plöse and individual contributors as indicated
+ * Copyright (C) 2019-2023, Arne Plöse and individual contributors as indicated
  * by the @authors tag. See the copyright.txt in the distribution for a
  * full listing of individual contributors.
  *
@@ -41,23 +41,23 @@
 #endif
 
 
-int PollFd_alignof() {
+int32_t PollFd_alignof() {
     return __alignof__ (struct pollfd);
 }
 
-int PollFd_sizeof() {
+int32_t PollFd_sizeof() {
     return sizeof (struct pollfd);
 }
 
-int PollFd_offsetof_fd() {
+int32_t PollFd_offsetof_fd() {
     return offsetof(struct pollfd, fd);
 }
 
-int PollFd_offsetof_events() {
+int32_t PollFd_offsetof_events() {
     return offsetof(struct pollfd, events);
 }
 
-int PollFd_offsetof_revents() {
+int32_t PollFd_offsetof_revents() {
     return offsetof(struct pollfd, revents);
 }
 

@@ -1,6 +1,6 @@
 /*
  * JNHW - Java Native header Wrapper, https://github.com/aploese/jnhw/
- * Copyright (C) 2019-2022, Arne Plöse and individual contributors as indicated
+ * Copyright (C) 2019-2023, Arne Plöse and individual contributors as indicated
  * by the @authors tag. See the copyright.txt in the distribution for a
  * full listing of individual contributors.
  *
@@ -21,9 +21,9 @@
  */
 package de.ibapl.jnhw.posix;
 
-import de.ibapl.jnhw.common.datatypes.MultiarchTupelBuilder;
-import de.ibapl.jnhw.common.datatypes.OS;
 import de.ibapl.jnhw.common.memory.layout.Alignment;
+import de.ibapl.jnhw.libloader.MultiarchTupelBuilder;
+import de.ibapl.jnhw.libloader.OS;
 import de.ibapl.jnhw.util.posix.DefinesTest;
 import de.ibapl.jnhw.util.posix.PosixDataType;
 import java.lang.foreign.MemorySession;
@@ -61,19 +61,19 @@ public class PollTest {
             return;
         }
         Assertions.assertAll(() -> {
-            Assertions.assertEquals(LibJnhwPosixTestLoader.invokeExact_Int_V("PollFd_sizeof"), Poll.PollFd.sizeof, "sizeof");
+            Assertions.assertEquals(LibJnhwPosixTestLoader.invoke_sI___V("PollFd_sizeof"), Poll.PollFd.sizeof, "sizeof");
         },
                 () -> {
-                    Assertions.assertEquals(LibJnhwPosixTestLoader.invokeExact_Int_V("PollFd_alignof"), Poll.PollFd.alignof.alignof, "alignof");
+                    Assertions.assertEquals(LibJnhwPosixTestLoader.invoke_sI___V("PollFd_alignof"), Poll.PollFd.alignof.alignof, "alignof");
                 },
                 () -> {
-                    Assertions.assertEquals(LibJnhwPosixTestLoader.invokeExact_Int_V("PollFd_offsetof_fd"), Poll.PollFd.offsetof_Fd, "offsetof_Fd");
+                    Assertions.assertEquals(LibJnhwPosixTestLoader.invoke_sI___V("PollFd_offsetof_fd"), Poll.PollFd.offsetof_Fd, "offsetof_Fd");
                 },
                 () -> {
-                    Assertions.assertEquals(LibJnhwPosixTestLoader.invokeExact_Int_V("PollFd_offsetof_events"), Poll.PollFd.offsetof_Events, "offsetof_Events");
+                    Assertions.assertEquals(LibJnhwPosixTestLoader.invoke_sI___V("PollFd_offsetof_events"), Poll.PollFd.offsetof_Events, "offsetof_Events");
                 },
                 () -> {
-                    Assertions.assertEquals(LibJnhwPosixTestLoader.invokeExact_Int_V("PollFd_offsetof_revents"), Poll.PollFd.offsetof_Revents, "offsetof_Revents");
+                    Assertions.assertEquals(LibJnhwPosixTestLoader.invoke_sI___V("PollFd_offsetof_revents"), Poll.PollFd.offsetof_Revents, "offsetof_Revents");
                 }
         );
     }
@@ -104,19 +104,43 @@ public class PollTest {
 
     @Test
     public void testNfds_t() {
-        Assertions.assertEquals(8, PosixDataType.nfds_t.SIZE_OF);
-        Assertions.assertEquals(Alignment.AT_8, PosixDataType.nfds_t.ALIGN_OF);
-        Assertions.assertTrue(PosixDataType.nfds_t.UNSIGNED);
-        Poll.Nfds_t instance = Poll.Nfds_t.allocateNative(ms);
-        instance.setFromUnsignedLong(0x8070605040302010L);
-        assertEquals(0x8070605040302010L, instance.getAsUnsignedLong());
-        assertEquals(Long.toUnsignedString(0x8070605040302010L), instance.nativeToString());
-        assertEquals("0x8070605040302010", instance.nativeToHexString());
-        //This is unsigned so this is really
-        instance.setFromUnsignedLong(-1L);
-        assertEquals(-1, instance.getAsUnsignedLong());
-        assertEquals("18446744073709551615", instance.nativeToString());
-        assertEquals("0xffffffffffffffff", instance.nativeToHexString());
+        switch (MultiarchTupelBuilder.getMemoryModel()) {
+            case ILP32 -> {
+                Assertions.assertEquals(4, PosixDataType.nfds_t.SIZE_OF);
+                Assertions.assertEquals(Alignment.AT_4, PosixDataType.nfds_t.ALIGN_OF);
+                Assertions.assertTrue(PosixDataType.nfds_t.UNSIGNED);
+                Poll.Nfds_t instance = Poll.Nfds_t.allocateNative(ms);
+                Assertions.assertThrows(
+                        IllegalArgumentException.class,
+                        () -> instance.setFromUnsignedLong(0x8070605040302010L));
+                instance.setFromUnsignedLong(0x0000000040302010L);
+                assertEquals(0x0000000040302010L, instance.getAsUnsignedLong());
+                assertEquals(Long.toUnsignedString(0x0000000040302010L), instance.nativeToString());
+                assertEquals("0x40302010", instance.nativeToHexString());
+                //This is unsigned so this is really
+                instance.setFromUnsignedLong(0x00000000ffffffffL);
+                assertEquals(0x00000000ffffffffL, instance.getAsUnsignedLong());
+                assertEquals("4294967295", instance.nativeToString());
+                assertEquals("0xffffffff", instance.nativeToHexString());
+            }
+            case LP64 -> {
+                Assertions.assertEquals(8, PosixDataType.nfds_t.SIZE_OF);
+                Assertions.assertEquals(Alignment.AT_8, PosixDataType.nfds_t.ALIGN_OF);
+                Assertions.assertTrue(PosixDataType.nfds_t.UNSIGNED);
+                Poll.Nfds_t instance = Poll.Nfds_t.allocateNative(ms);
+                instance.setFromUnsignedLong(0x8070605040302010L);
+                assertEquals(0x8070605040302010L, instance.getAsUnsignedLong());
+                assertEquals(Long.toUnsignedString(0x8070605040302010L), instance.nativeToString());
+                assertEquals("0x8070605040302010", instance.nativeToHexString());
+                //This is unsigned so this is really
+                instance.setFromUnsignedLong(-1L);
+                assertEquals(-1, instance.getAsUnsignedLong());
+                assertEquals("18446744073709551615", instance.nativeToString());
+                assertEquals("0xffffffffffffffff", instance.nativeToHexString());
+            }
+            default ->
+                Assertions.fail();
+        }
     }
 
 }

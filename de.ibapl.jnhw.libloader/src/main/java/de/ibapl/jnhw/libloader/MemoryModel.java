@@ -1,6 +1,6 @@
 /*
  * JNHW - Java Native header Wrapper, https://github.com/aploese/jnhw/
- * Copyright (C) 2019-2022, Arne Plöse and individual contributors as indicated
+ * Copyright (C) 2019-2023, Arne Plöse and individual contributors as indicated
  * by the @authors tag. See the copyright.txt in the distribution for a
  * full listing of individual contributors.
  *
@@ -28,27 +28,81 @@ import static de.ibapl.jnhw.libloader.SizeInBit.*;
  * @author aploese
  */
 public enum MemoryModel {
+    /**
+     * char is 8 bit. <br>
+     * short is 16 bit. <br>
+     * int is 32 bit. <br>
+     * long is 64 bit. <br>
+     * long long is 64 bit. <br>
+     * pointer is 32 bit. <br>
+     */
     L64(_8_BIT, _16_BIT, _32_BIT, _64_BIT, _64_BIT, _32_BIT),
+    /**
+     * char is 8 bit. <br>
+     * short is 16 bit. <br>
+     * int is 32 bit. <br>
+     * long is 64 bit. <br>
+     * long long is 64 bit. <br>
+     * pointer is 64 bit. <br>
+     */
     LP64(_8_BIT, _16_BIT, _32_BIT, _64_BIT, _64_BIT, _64_BIT),
+    /**
+     * Unix 64 bit. <br>
+     *
+     * char is 8 bit. <br>
+     * short is 16 bit. <br>
+     * int is 64 bit. <br>
+     * long is 64 bit. <br>
+     * long long is 64 bit. <br>
+     * pointer is 64 bit. <br>
+     */
     ILP64(_8_BIT, _16_BIT, _64_BIT, _64_BIT, _64_BIT, _64_BIT),
+    /**
+     * char is 8 bit. <br>
+     * short is 16 bit. <br>
+     * int is 32 bit. <br>
+     * long is 32 bit. <br>
+     * long long is 64 bit. <br>
+     * pointer is 64 bit. <br>
+     */
     LLP64(_8_BIT, _16_BIT, _32_BIT, _32_BIT, _64_BIT, _64_BIT),
+    /**
+     * Windows 64 bit. <br>
+     *
+     * char is 8 bit. <br>
+     * short is 16 bit. <br>
+     * int is 32 bit. <br>
+     * long is 32 bit. <br>
+     * long long is 64 bit. <br>
+     * pointer is 32 bit. <br>
+     */
     ILP32(_8_BIT, _16_BIT, _32_BIT, _32_BIT, _64_BIT, _32_BIT),
+    /**
+     * Unix 32 bit and Windows 32 bit. <br>
+     *
+     * char is 8 bit. <br>
+     * short is 16 bit. <br>
+     * int is 16 bit. <br>
+     * long is 32 bit. <br>
+     * long long is 64 bit. <br>
+     * pointer is 32 bit. <br>
+     */
     LP32(_8_BIT, _16_BIT, _16_BIT, _32_BIT, _64_BIT, _32_BIT);
 
     private MemoryModel(SizeInBit sizeOf_char, SizeInBit sizeOf_short, SizeInBit sizeOf_int, SizeInBit sizeOf_long, SizeInBit sizeOf_long_long, SizeInBit sizeOf_pointer) {
-        this.sizeOf_char = sizeOf_char.sizeInByte;
-        this.sizeOf_short = sizeOf_short.sizeInByte;
-        this.sizeOf_int = sizeOf_int.sizeInByte;
-        this.sizeOf_long = sizeOf_long.sizeInByte;
-        this.sizeOf_long_long = sizeOf_long_long.sizeInByte;
-        this.sizeOf_pointer = sizeOf_pointer.sizeInByte;
+        this.sizeOf_char = sizeOf_char;
+        this.sizeOf_short = sizeOf_short;
+        this.sizeOf_int = sizeOf_int;
+        this.sizeOf_long = sizeOf_long;
+        this.sizeOf_long_long = sizeOf_long_long;
+        this.sizeOf_pointer = sizeOf_pointer;
     }
 
-    public final int sizeOf_char;
-    public final int sizeOf_short;
-    public final int sizeOf_int;
-    public final int sizeOf_long;
-    public final int sizeOf_long_long;
-    public final int sizeOf_pointer;
+    public final SizeInBit sizeOf_char;
+    public final SizeInBit sizeOf_short;
+    public final SizeInBit sizeOf_int;
+    public final SizeInBit sizeOf_long;
+    public final SizeInBit sizeOf_long_long;
+    public final SizeInBit sizeOf_pointer;
 
 }

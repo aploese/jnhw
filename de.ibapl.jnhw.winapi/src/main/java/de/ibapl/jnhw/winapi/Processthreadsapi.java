@@ -1,6 +1,6 @@
 /*
  * JNHW - Java Native header Wrapper, https://github.com/aploese/jnhw/
- * Copyright (C) 2019-2022, Arne Plöse and individual contributors as indicated
+ * Copyright (C) 2019-2023, Arne Plöse and individual contributors as indicated
  * by the @authors tag. See the copyright.txt in the distribution for a
  * full listing of individual contributors.
  *
@@ -21,16 +21,15 @@
  */
 package de.ibapl.jnhw.winapi;
 
-import de.ibapl.jnhw.common.annotation.Include;
-import de.ibapl.jnhw.winapi.Winnt.HANDLE;
-import de.ibapl.jnhw.winapi.Winnt.PAPCFUNC;
 import de.ibapl.jnhw.annotation.winapi.basetsd.ULONG_PTR;
+import de.ibapl.jnhw.common.annotation.Include;
+import de.ibapl.jnhw.common.downcall.JnhwMh_BL___A__A_uL;
+import de.ibapl.jnhw.common.downcall.JnhwMh_MA___V;
 import de.ibapl.jnhw.common.exception.NativeErrorException;
-import de.ibapl.jnhw.common.memory.UintPtr_t;
-import de.ibapl.jnhw.common.downcall.wrapper.JnhwMh_MA___V;
-import de.ibapl.jnhw.common.downcall.wrapper.JnhwMh__B___A__A_uL;
 import de.ibapl.jnhw.util.winapi.Kernel32Loader;
 import de.ibapl.jnhw.util.winapi.WinApiDataType;
+import de.ibapl.jnhw.winapi.Winnt.HANDLE;
+import de.ibapl.jnhw.winapi.Winnt.PAPCFUNC;
 
 /**
  * Wrapper around the
@@ -47,7 +46,7 @@ public abstract class Processthreadsapi {
             "GetCurrentThread",
             WinApiDataType.HANDLE);
 
-    private final static JnhwMh__B___A__A_uL QueueUserAPC = JnhwMh__B___A__A_uL.of(
+    private final static JnhwMh_BL___A__A_uL QueueUserAPC = JnhwMh_BL___A__A_uL.of(
             Kernel32Loader.DLL_KERNEL32_SYMBOL_LOOKUP,
             "QueueUserAPC",
             WinApiDataType.BOOL,
@@ -84,7 +83,7 @@ public abstract class Processthreadsapi {
      * indicates an error.
      */
     public final static void QueueUserAPC(PAPCFUNC pfnAPC, HANDLE hThread, @ULONG_PTR long dwData) throws NativeErrorException {
-        if (!QueueUserAPC.invoke__B___P__P_uL(pfnAPC, hThread, dwData)) {
+        if (!QueueUserAPC.invoke_BL___P__P_uL(pfnAPC, hThread, dwData)) {
             throw new NativeErrorException(Errhandlingapi.GetLastError());
         }
     }

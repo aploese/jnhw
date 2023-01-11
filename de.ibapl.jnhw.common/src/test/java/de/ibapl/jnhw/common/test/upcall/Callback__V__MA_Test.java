@@ -1,6 +1,6 @@
 /*
  * JNHW - Java Native header Wrapper, https://github.com/aploese/jnhw/
- * Copyright (C) 2019-2022, Arne Plöse and individual contributors as indicated
+ * Copyright (C) 2019-2023, Arne Plöse and individual contributors as indicated
  * by the @authors tag. See the copyright.txt in the distribution for a
  * full listing of individual contributors.
  *
@@ -21,24 +21,26 @@
  */
 package de.ibapl.jnhw.common.test.upcall;
 
-import de.ibapl.jnhw.common.downcall.JnhwMi__V___A;
-import de.ibapl.jnhw.common.memory.MemoryHeap;
+import de.ibapl.jnhw.common.datatypes.BaseDataType;
+import de.ibapl.jnhw.common.downcall.JnhwMh_MA___V;
+import de.ibapl.jnhw.common.downcall.JnhwMh__V___A;
+import de.ibapl.jnhw.common.downcall.JnhwMh__V__sL;
 import de.ibapl.jnhw.common.memory.NativeFunctionPointer;
-import de.ibapl.jnhw.common.memory.OpaqueMemory;
 import de.ibapl.jnhw.common.nativepointer.FunctionPtr__V__MA;
 import de.ibapl.jnhw.common.test.LibJnhwCommonTestLoader;
 import de.ibapl.jnhw.common.upcall.CallbackFactory__V__MA;
 import de.ibapl.jnhw.common.upcall.Callback__V__MA;
-import java.lang.foreign.FunctionDescriptor;
+import static de.ibapl.jnhw.libloader.MemoryModel.ILP32;
+import static de.ibapl.jnhw.libloader.MemoryModel.LP64;
+import de.ibapl.jnhw.libloader.MultiarchTupelBuilder;
 import java.lang.foreign.MemoryAddress;
 import java.lang.foreign.MemorySession;
-import java.lang.foreign.ValueLayout;
-import java.lang.invoke.MethodHandle;
-import java.lang.ref.Cleaner;
 import org.junit.jupiter.api.AfterEach;
 import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 
 /**
  *
@@ -46,27 +48,27 @@ import org.junit.jupiter.api.Test;
  */
 public class Callback__V__MA_Test {
 
-    final static MethodHandle setCallback__V__MA;
-    final static MethodHandle getCallback__V__MA;
-    final static MethodHandle doCallback__V__MA;
+    private final static JnhwMh__V___A setCallback__V__MA;
+    private final static JnhwMh_MA___V getCallback__V__MA;
+    private final static JnhwMh__V___A doCallback__V__MA;
 
     static {
         LibJnhwCommonTestLoader.touch();
-        setCallback__V__MA = LibJnhwCommonTestLoader.downcallHandle("setCallback__V__MA", FunctionDescriptor.ofVoid(ValueLayout.ADDRESS));
-        getCallback__V__MA = LibJnhwCommonTestLoader.downcallHandle("getCallback__V__MA", FunctionDescriptor.of(ValueLayout.ADDRESS));
-        doCallback__V__MA = LibJnhwCommonTestLoader.downcallHandle("doCallback__V__MA", FunctionDescriptor.ofVoid(ValueLayout.ADDRESS));
+        setCallback__V__MA = JnhwMh__V___A.of(LibJnhwCommonTestLoader.SYMBOL_LOOKUP, "setCallback__V__MA", BaseDataType.uintptr_t);
+        getCallback__V__MA = JnhwMh_MA___V.of(LibJnhwCommonTestLoader.SYMBOL_LOOKUP, "getCallback__V__MA", BaseDataType.uintptr_t);
+        doCallback__V__MA = JnhwMh__V___A.of(LibJnhwCommonTestLoader.SYMBOL_LOOKUP, "doCallback__V__MA", BaseDataType.uintptr_t);
     }
-
-    private MemorySession ms;
 
     private class DummyCB extends Callback__V__MA {
 
         @Override
-        protected void callback(MemoryAddress address) {
-            throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        protected void callback(MemoryAddress value) {
+            throw new UnsupportedOperationException("Not supported yet.");
         }
 
     }
+
+    private MemorySession ms;
 
     @BeforeEach
     public void setUpBefore() throws Exception {
@@ -81,7 +83,7 @@ public class Callback__V__MA_Test {
 
     private static FunctionPtr__V__MA getCallback__V__MA() {
         try {
-            return FunctionPtr__V__MA.wrap((MemoryAddress) getCallback__V__MA.invokeExact());
+            return FunctionPtr__V__MA.wrap(getCallback__V__MA.invoke_MA___V());
         } catch (Throwable t) {
             throw new RuntimeException(t);
         }
@@ -89,15 +91,15 @@ public class Callback__V__MA_Test {
 
     private static void setCallback__V__MA(FunctionPtr__V__MA callback) {
         try {
-            setCallback__V__MA.invokeExact(callback.toAddressable());
+            setCallback__V__MA.invoke__V___P(callback);
         } catch (Throwable t) {
             throw new RuntimeException(t);
         }
     }
 
-    private static void doCallback__V__MA(OpaqueMemory a) {
+    private static void doCallback__V__MA(MemoryAddress value) {
         try {
-            doCallback__V__MA.invokeExact(a.toAddressable());
+            doCallback__V__MA.invoke__V___A(value);
         } catch (Throwable t) {
             throw new RuntimeException(t);
         }
@@ -110,11 +112,12 @@ public class Callback__V__MA_Test {
     @Test
     public void testMAX_CALL_BACKS() {
         System.out.println("MAX_CALL_BACKS");
-        assertEquals(16, CallbackFactory__V__MA.MAX_CALL_BACKS);
-        Callback__V__MA[] cbs = new Callback__V__MA[CallbackFactory__V__MA.MAX_CALL_BACKS];
+        int maxCB = CallbackFactory__V__MA.MAX_CALL_BACKS;
+        assertEquals(16, maxCB);
+        Callback__V__MA[] cbs = new Callback__V__MA[maxCB];
         for (int i = 0; i < cbs.length; i++) {
             cbs[i] = new DummyCB();
-            assertEquals(CallbackFactory__V__MA.MAX_CALL_BACKS - (i + 1), CallbackFactory__V__MA.callbacksAvailable());
+            assertEquals(maxCB - (i + 1), CallbackFactory__V__MA.callbacksAvailable());
         }
 
         RuntimeException re = assertThrows(RuntimeException.class, () -> {
@@ -122,133 +125,116 @@ public class Callback__V__MA_Test {
         });
         assertEquals("No more Callbacks available! max: 16 reached", re.getMessage());
 
-        cbs = null;
+        for (Callback__V__MA cb : cbs) {
+            cb.release();
+        }
 
-        System.gc();
-
-        assertEquals(CallbackFactory__V__MA.MAX_CALL_BACKS, CallbackFactory__V__MA.callbacksAvailable());
+        assertEquals(maxCB, CallbackFactory__V__MA.callbacksAvailable());
     }
 
     @Test
     public void testNativeFunctionPointer() {
-        final Callback__V__MA testPtr = new Callback__V__MA(MemoryAddress.ofLong(121)) {
+        final Callback__V__MA testPtr = new Callback__V__MA((t) -> MemoryAddress.ofLong(121)) {
             @Override
-            protected void callback(MemoryAddress address) {
-                throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+            protected void callback(MemoryAddress value) {
+                throw new UnsupportedOperationException("Not supported yet.");
             }
 
+            @Override
+            public void release() {
+                throw new UnsupportedOperationException("This was not aquired - so there is nothing to be released");
+            }
         };
         setCallback__V__MA(testPtr);
         assertEquals(getCallback__V__MA(), testPtr);
+
+        //Its not aquired ... so do not release
+        //testPtr.release();
     }
 
     /**
-     * Test of release method, of class IntConsumerCallbackFactory.
+     * Test of release method
      */
-    @Test
-    public void testReleaseByGarbageCollector() {
-        System.out.println("release");
-        final int[] intref = new int[1];
-        final Callback__V__MA NULL_PTR = new Callback__V__MA(MemoryAddress.NULL) {
+    @ParameterizedTest
+    @ValueSource(longs = {
+        0x0807060504030201L,
+        0xF807060504030201L,
+        0x0000000004030201L,
+        0x00000000F4030201L})
+    public void testCallAndRelease(final long testValue) {
+        System.out.printf("Callback__V__L_Test.testCallAndRelease 0x%016x %1$d \n", testValue);
+        final long[] ref = new long[1];
+        final Callback__V__MA NULL_PTR = new Callback__V__MA((t) -> MemoryAddress.NULL) {
             @Override
-            protected void callback(MemoryAddress address) {
-                throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+            protected void callback(MemoryAddress value) {
+                throw new UnsupportedOperationException("Not supported yet.");
             }
 
+            @Override
+            public void release() {
+                throw new UnsupportedOperationException("This was not aquired - so there is nothing to be released");
+            }
         };
         final Thread t = Thread.currentThread();
         Callback__V__MA callback = new Callback__V__MA() {
 
             @Override
-            protected void callback(MemoryAddress address) {
+            protected void callback(MemoryAddress value) {
                 if (t.equals(Thread.currentThread())) {
-                    intref[0] = 42;
+                    ref[0] = value.toRawLongValue();
                 } else {
-                    intref[0] = -42;
+                    ref[0] = ~value.toRawLongValue();
                 }
             }
 
         };
         final NativeFunctionPointer nativeCallbackPointer = NativeFunctionPointer.wrap(callback.toAddressable().address());
+        try {
 
-        setCallback__V__MA(callback);
+            setCallback__V__MA(callback);
 
-        assertEquals(getCallback__V__MA(), callback);
-        assertSame(Callback__V__MA.find(getCallback__V__MA()), callback);
+            assertEquals(getCallback__V__MA(), callback);
+            assertSame(Callback__V__MA.find(getCallback__V__MA()), callback);
+            doCallback__V__MA(MemoryAddress.ofLong(testValue));
+            switch (MultiarchTupelBuilder.getMemoryModel()) {
+                case ILP32 ->
+                    assertEquals(testValue & 0xffffffffL, ref[0]);
+                case LP64 ->
+                    assertEquals(testValue, ref[0]);
+                default ->
+                    throw new AssertionError("Can`t handle memory model: " + MultiarchTupelBuilder.getMemoryModel());
+            }
 
-        intref[0] = 0;
-        doCallback__V__MA(new MemoryHeap(MemoryAddress.ofLong(42), ms, 1));
-        assertEquals(42, intref[0]);
+            //Call native from java
+            ref[0] = 0;
+            JnhwMh__V___A.of(getCallback__V__MA().toAddressable(), ms, BaseDataType.uintptr_t).invoke__V___A(MemoryAddress.ofLong(testValue));
+            switch (MultiarchTupelBuilder.getMemoryModel()) {
+                case ILP32 ->
+                    assertEquals(testValue & 0xffffffffL, ref[0]);
+                case LP64 ->
+                    assertEquals(testValue, ref[0]);
+                default ->
+                    throw new AssertionError("Can`t handle memory model: " + MultiarchTupelBuilder.getMemoryModel());
+            }
 
-        intref[0] = 0;
-        new JnhwMi__V___A(getCallback__V__MA().toAddressable().address(), ms).invoke__V___P(new MemoryHeap(MemoryAddress.ofLong(42), ms, 1));
-        assertEquals(42, intref[0]);
-
-        callback = null;
-
-        System.gc();
+        } finally {
+            callback.release();
+        }
 
         assertEquals(CallbackFactory__V__MA.MAX_CALL_BACKS, CallbackFactory__V__MA.callbacksAvailable());
         //it is still callable, but its is only logged...
         assertEquals(getCallback__V__MA(), nativeCallbackPointer);
 
         //Just check that the reference is gone...
-        intref[0] = -1;
-        doCallback__V__MA(new MemoryHeap(MemoryAddress.ofLong(84), ms, 1));
-        assertEquals(-1, intref[0]);
+        ref[0] = -1;
+        doCallback__V__MA(MemoryAddress.ofLong(testValue / 2));
+        assertEquals(-1, ref[0]);
 
-        intref[0] = -1;
-        //The logs shoud show: Unassigned callback for trampoline(0, 84)
-        new JnhwMi__V___A(getCallback__V__MA().toAddressable().address(), ms).invoke__V___P(new MemoryHeap(MemoryAddress.ofLong(84), ms, 1));
-        assertEquals(-1, intref[0]);
-
-    }
-
-    /**
-     * Test of release method, of class IntConsumerCallbackFactory.
-     */
-    @Test
-    public void testReleaseByGarbageCollectorAndCleanup() throws Exception {
-        System.out.println("release");
-        Cleaner CLEANER = Cleaner.create();
-
-        final int[] intref = new int[1];
-        final Callback__V__MA NULL_PTR = new Callback__V__MA(MemoryAddress.NULL) {
-            @Override
-            protected void callback(MemoryAddress address) {
-                throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-            }
-        };
-        Callback__V__MA callback = new Callback__V__MA() {
-
-            @Override
-            protected void callback(MemoryAddress address) {
-                intref[0] = 42;
-            }
-
-        };
-        CLEANER.register(callback, () -> {
-            setCallback__V__MA(NULL_PTR);
-        });
-
-        setCallback__V__MA(callback);
-
-        assertEquals(getCallback__V__MA(), callback);
-        doCallback__V__MA(new MemoryHeap(MemoryAddress.ofLong(42), ms, 1));
-        assertEquals(42, intref[0]);
-
-        intref[0] = 0;
-        new JnhwMi__V___A(getCallback__V__MA().toAddressable().address(), ms).invoke__V___P(new MemoryHeap(MemoryAddress.ofLong(42), ms, 1));
-        assertEquals(42, intref[0]);
-
-        callback = null;
-
-        System.gc();
-
-        //sleep here, to let the CLEANER do it cleanup....
-        Thread.sleep(10);
-
-        assertEquals(getCallback__V__MA(), NULL_PTR);
+        ref[0] = -1;
+        //The logs shoud show: Unassigned callback for trampoline_0(testValue/2)
+        JnhwMh__V__sL.of(getCallback__V__MA().toAddressable().address(), ms, BaseDataType.int64_t).invoke__V__sL(testValue / 2);
+        assertEquals(-1, ref[0]);
 
     }
+
 }

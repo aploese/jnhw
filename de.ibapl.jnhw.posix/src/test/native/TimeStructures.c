@@ -1,6 +1,6 @@
 /*
  * JNHW - Java Native header Wrapper, https://github.com/aploese/jnhw/
- * Copyright (C) 2019-2022, Arne Plöse and individual contributors as indicated
+ * Copyright (C) 2019-2023, Arne Plöse and individual contributors as indicated
  * by the @authors tag. See the copyright.txt in the distribution for a
  * full listing of individual contributors.
  *
@@ -27,23 +27,23 @@
 //for offsetof
 #include <stddef.h>
 
-int Timespec_alignof() {
+int32_t Timespec_alignof() {
     return __alignof__ (struct timespec);
 }
 
-int Timespec_sizeof() {
+int32_t Timespec_sizeof() {
     return sizeof (struct timespec);
 }
 
-int Timespec_offsetof_tv_sec() {
+int32_t Timespec_offsetof_tv_sec() {
     return offsetof(struct timespec, tv_sec);
 }
 
-int Timespec_offsetof_tv_nsec() {
+int32_t Timespec_offsetof_tv_nsec() {
     return offsetof(struct timespec, tv_nsec);
 }
 
-int Itimerspec_alignof() {
+int32_t Itimerspec_alignof() {
 #if defined(__APPLE__)
     return 0;
 #else
@@ -51,7 +51,7 @@ int Itimerspec_alignof() {
 #endif
 }
 
-int Itimerspec_sizeof() {
+int32_t Itimerspec_sizeof() {
 #if defined(__APPLE__)
     return 0;
 #else
@@ -59,7 +59,7 @@ int Itimerspec_sizeof() {
 #endif
 }
 
-int Itimerspec_offsetof_it_interval() {
+int32_t Itimerspec_offsetof_it_interval() {
 #if defined(__APPLE__)
     return -1;
 #else
@@ -67,7 +67,7 @@ int Itimerspec_offsetof_it_interval() {
 #endif
 }
 
-int Itimerspec_offsetof_it_value() {
+int32_t Itimerspec_offsetof_it_value() {
 #if defined(__APPLE__)
     return -1;
 #else
@@ -75,7 +75,7 @@ int Itimerspec_offsetof_it_value() {
 #endif
 }
 
-int Timer_t_alignof() {
+int32_t Timer_t_alignof() {
 #if defined(__APPLE__)
     return 0;
 #else
@@ -83,7 +83,7 @@ int Timer_t_alignof() {
 #endif
 }
 
-int Timer_t_sizeof() {
+int32_t Timer_t_sizeof() {
 #if defined(__APPLE__)
     return 0;
 #else
@@ -91,47 +91,47 @@ int Timer_t_sizeof() {
 #endif
 }
 
-int Tm_alignof() {
+int32_t Tm_alignof() {
     return __alignof__ (struct tm);
 }
 
-int Tm_sizeof() {
+int32_t Tm_sizeof() {
     return sizeof (struct tm);
 }
 
-int Tm_offsetof_tm_sec() {
+int32_t Tm_offsetof_tm_sec() {
     return offsetof(struct tm, tm_sec);
 }
 
-int Tm_offsetof_tm_min() {
+int32_t Tm_offsetof_tm_min() {
     return offsetof(struct tm, tm_min);
 }
 
-int Tm_offsetof_tm_hour() {
+int32_t Tm_offsetof_tm_hour() {
     return offsetof(struct tm, tm_hour);
 }
 
-int Tm_offsetof_tm_mday() {
+int32_t Tm_offsetof_tm_mday() {
     return offsetof(struct tm, tm_mday);
 }
 
-int Tm_offsetof_tm_mon() {
+int32_t Tm_offsetof_tm_mon() {
     return offsetof(struct tm, tm_mon);
 }
 
-int Tm_offsetof_tm_year() {
+int32_t Tm_offsetof_tm_year() {
     return offsetof(struct tm, tm_year);
 }
 
-int Tm_offsetof_tm_wday() {
+int32_t Tm_offsetof_tm_wday() {
     return offsetof(struct tm, tm_wday);
 }
 
-int Tm_offsetof_tm_yday() {
+int32_t Tm_offsetof_tm_yday() {
     return offsetof(struct tm, tm_yday);
 }
 
-int Tm_offsetof_tm_isdst() {
+int32_t Tm_offsetof_tm_isdst() {
     return offsetof(struct tm, tm_isdst);
 }
 

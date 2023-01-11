@@ -1,6 +1,6 @@
 /*
  * JNHW - Java Native header Wrapper, https://github.com/aploese/jnhw/
- * Copyright (C) 2019-2022, Arne Plöse and individual contributors as indicated
+ * Copyright (C) 2019-2023, Arne Plöse and individual contributors as indicated
  * by the @authors tag. See the copyright.txt in the distribution for a
  * full listing of individual contributors.
  *
@@ -27,21 +27,18 @@ import de.ibapl.jnhw.annotation.posix.sys.types.uid_t;
 import de.ibapl.jnhw.common.annotation.Define;
 import de.ibapl.jnhw.common.annotation.Include;
 import de.ibapl.jnhw.common.datatypes.BaseDataType;
-import de.ibapl.jnhw.common.datatypes.MultiarchTupelBuilder;
 import de.ibapl.jnhw.common.datatypes.Pointer;
-import de.ibapl.jnhw.common.downcall.JnhwMethodInvoker;
-import de.ibapl.jnhw.common.downcall.wrapper.JnhwMethodHandle;
-import de.ibapl.jnhw.common.downcall.wrapper.JnhwMh__A__sI__A;
-import de.ibapl.jnhw.common.downcall.wrapper.JnhwMh__V___A__A;
-import de.ibapl.jnhw.common.downcall.wrapper.JnhwMh__V__sI__A;
-import de.ibapl.jnhw.common.downcall.wrapper.JnhwMh_sI__A_sI;
-import de.ibapl.jnhw.common.downcall.wrapper.JnhwMh_sI___A;
-import de.ibapl.jnhw.common.downcall.wrapper.JnhwMh_sI___A__A;
-import de.ibapl.jnhw.common.downcall.wrapper.JnhwMh_sI___A__A__A;
-import de.ibapl.jnhw.common.downcall.wrapper.JnhwMh_sI__sI;
-import de.ibapl.jnhw.common.downcall.wrapper.JnhwMh_sI__sI__A__A;
-import de.ibapl.jnhw.common.downcall.wrapper.JnhwMh_sI__sI_sI;
-import de.ibapl.jnhw.common.downcall.wrapper.JnhwMh_sI__sI_sI__A;
+import de.ibapl.jnhw.common.downcall.JnhwMh_MA__sI__A;
+import de.ibapl.jnhw.common.downcall.JnhwMh__V___A__A;
+import de.ibapl.jnhw.common.downcall.JnhwMh__V__sI__A;
+import de.ibapl.jnhw.common.downcall.JnhwMh_sI___A;
+import de.ibapl.jnhw.common.downcall.JnhwMh_sI___A__A;
+import de.ibapl.jnhw.common.downcall.JnhwMh_sI___A__A__A;
+import de.ibapl.jnhw.common.downcall.JnhwMh_sI___A_sI;
+import de.ibapl.jnhw.common.downcall.JnhwMh_sI__sI;
+import de.ibapl.jnhw.common.downcall.JnhwMh_sI__sI__A__A;
+import de.ibapl.jnhw.common.downcall.JnhwMh_sI__sI_sI;
+import de.ibapl.jnhw.common.downcall.JnhwMh_sI__sI_sI__A;
 import de.ibapl.jnhw.common.exception.NativeErrorException;
 import de.ibapl.jnhw.common.exception.NoSuchNativeMethodException;
 import de.ibapl.jnhw.common.exception.NoSuchNativeTypeException;
@@ -53,23 +50,23 @@ import de.ibapl.jnhw.common.memory.Struct;
 import de.ibapl.jnhw.common.memory.layout.Alignment;
 import de.ibapl.jnhw.common.nativepointer.FunctionPtr__V___I;
 import de.ibapl.jnhw.common.nativepointer.FunctionPtr__V___I_MA_MA;
-import de.ibapl.jnhw.common.upcall.Callback__V__MA;
 import de.ibapl.jnhw.common.upcall.Callback__V___I;
 import de.ibapl.jnhw.common.upcall.Callback__V___I_MA_MA;
 import de.ibapl.jnhw.common.util.IntDefine;
 import de.ibapl.jnhw.common.util.JsonStringBuilder;
 import de.ibapl.jnhw.common.util.ObjectDefine;
-import de.ibapl.jnhw.posix.Time.Timespec;
+import de.ibapl.jnhw.libloader.MultiarchInfo;
+import de.ibapl.jnhw.libloader.MultiarchTupelBuilder;
+import de.ibapl.jnhw.util.posix.LibcLoader;
 import de.ibapl.jnhw.util.posix.LibrtLoader;
 import de.ibapl.jnhw.util.posix.PosixDataType;
+import de.ibapl.jnhw.util.posix.downcall.JnhwMh_sI__PthreadT_sI;
 import de.ibapl.jnhw.util.posix.memory.PosixStruct;
+import de.ibapl.jnhw.util.posix.upcall.Callback__V__UnionSigval;
 import java.io.IOException;
-import java.lang.foreign.FunctionDescriptor;
 import java.lang.foreign.MemoryAddress;
 import java.lang.foreign.MemorySegment;
 import java.lang.foreign.MemorySession;
-import java.lang.foreign.SymbolLookup;
-import java.lang.foreign.ValueLayout;
 
 /**
  * Wrapper around the {@code <signal.h>} header.
@@ -82,48 +79,6 @@ import java.lang.foreign.ValueLayout;
  */
 @Include("#include <signal.h>")
 public class Signal {
-
-    private static interface JnhwPthreadKill extends JnhwMethodHandle {
-
-        static class JnhwMethodInvoker_Int_Long_Int extends JnhwMethodInvoker implements JnhwPthreadKill {
-
-            public JnhwMethodInvoker_Int_Long_Int(SymbolLookup symbolLookup, String name) {
-                super(symbolLookup, name, FunctionDescriptor.of(ValueLayout.JAVA_INT, ValueLayout.JAVA_LONG, ValueLayout.JAVA_INT));
-            }
-
-            @Override
-            public int invokeExact(Pthread.Pthread_t thread, int sig) {
-                try {
-                    return (int) methodHandle.invokeExact(thread.asUint64_t(), sig);
-                } catch (Throwable t) {
-                    throw createRuntimeExceptionInvoke(t);
-                }
-            }
-
-        }
-
-        public static JnhwPthreadKill of(SymbolLookup symbolLookup, String name, BaseDataType result, BaseDataType arg1, BaseDataType arg2) {
-            switch (result) {
-                case int32_t:
-                    switch (arg1) {
-                        case uint64_t:
-                            switch (arg2) {
-                                case int32_t:
-                                    return new JnhwMethodInvoker_Int_Long_Int(symbolLookup, name);
-                                default:
-                                    throw new IllegalArgumentException("arg2 unexpected data type: " + name + " " + arg2);
-                            }
-                        default:
-                            throw new IllegalArgumentException("arg1 unexpected data type: " + name + " " + arg1);
-                    }
-                default:
-                    throw new IllegalArgumentException("result unexpected data type: " + name + " " + result);
-            }
-        }
-
-        int invokeExact(Pthread.Pthread_t thread, int sig);
-
-    }
 
     public static interface BsdDefines {
 
@@ -233,12 +188,6 @@ public class Signal {
 
     }
 
-    public static interface Defines__AARCH64__LINUX__GNU extends Linux_AllArchs_Defines, Linux_Aarch64_Arm_I386_Ppc64_RiscV64_S390_X86_64_Defines, Linux_Aarc64_Defines, Linux_Aarc64_Ppc64_Defines {
-    }
-
-    public static interface Defines__MIPS_64__LINUX__GNU_ABI_64 extends Linux_AllArchs_Defines, Linux_Mips_Mips64_Defines {
-    }
-
     public static interface FreeBsdDefines extends BsdDefines {
 
         public final static int FPE_FLTDIV = 3;
@@ -276,150 +225,179 @@ public class Signal {
         public final static int SIGSTKSZ = 34816;
     }
 
-    public static interface Linux_Aarc64_Defines {
+    public static class LinuxDefines {
 
-        public final static int MINSIGSTKSZ = 5120;
-    }
+        public final int BUS_ADRALN = 1;
+        public final int BUS_ADRERR = 2;
+        public final int BUS_OBJERR = 3;
+        public final int CLD_CONTINUED = 6;
+        public final int CLD_DUMPED = 3;
+        public final int CLD_EXITED = 1;
+        public final int CLD_KILLED = 2;
+        public final int CLD_STOPPED = 5;
+        public final int CLD_TRAPPED = 4;
+        public final int FPE_FLTDIV = 3;
+        public final int FPE_FLTINV = 7;
+        public final int FPE_FLTOVF = 4;
+        public final int FPE_FLTRES = 6;
+        public final int FPE_FLTSUB = 8;
+        public final int FPE_FLTUND = 5;
+        public final int FPE_INTDIV = 1;
+        public final int FPE_INTOVF = 2;
+        public final int ILL_BADSTK = 8;
+        public final int ILL_COPROC = 7;
+        public final int ILL_ILLADR = 3;
+        public final int ILL_ILLOPC = 1;
+        public final int ILL_ILLOPN = 2;
+        public final int ILL_ILLTRP = 4;
+        public final int ILL_PRVOPC = 5;
+        public final int ILL_PRVREG = 6;
+        public final int POLL_ERR = 4;
+        public final int POLL_HUP = 6;
+        public final int POLL_IN = 1;
+        public final int POLL_MSG = 3;
+        public final int POLL_OUT = 2;
+        public final int POLL_PRI = 5;
+        public final int SA_NOCLDSTOP = 1;
+        public final int SA_NODEFER = 0x40000000;
+        public final int SA_ONSTACK = 0x08000000;
+        public final int SA_RESETHAND = 0x80000000;
+        public final int SA_RESTART = 0x10000000;
+        public final int SEGV_ACCERR = 2;
+        public final int SEGV_MAPERR = 1;
+        public final int SI_QUEUE = -1;
+        public final int SI_USER = 0;
+        public final FunctionPtr__V___I SIG_DFL = new FunctionPtr__V___I(MemoryAddress.ofLong(0));
+        public final FunctionPtr__V___I SIG_ERR;
+        public final FunctionPtr__V___I SIG_HOLD = new FunctionPtr__V___I(MemoryAddress.ofLong(2));
+        public final FunctionPtr__V___I SIG_IGN = new FunctionPtr__V___I(MemoryAddress.ofLong(1));
+        public final int SIGABRT = 6;
+        public final int SIGALRM = 14;
+        public final int SIGEV_NONE = 1;
+        public final int SIGEV_SIGNAL = 0;
+        public final int SIGEV_THREAD = 2;
+        public final int SIGFPE = 8;
+        public final int SIGHUP = 1;
+        public final int SIGILL = 4;
+        public final int SIGINT = 2;
+        public final int SIGKILL = 9;
+        public final int SIGPIPE = 13;
+        public final int SIGQUIT = 3;
+        public final int SIGSEGV = 11;
+        public final int SIGTERM = 15;
+        public final int SIGTRAP = 5;
+        public final int SS_DISABLE = 2;
+        public final int SS_ONSTACK = 1;
+        public final int TRAP_BRKPT = 1;
+        public final int TRAP_TRACE = 2;
 
-    public static interface Linux_Aarc64_Ppc64_Defines {
+        public final int SA_NOCLDWAIT;
+        public final int SA_SIGINFO;
+        public final int SI_ASYNCIO;
+        public final int SI_MESGQ;
+        public final int SI_TIMER;
+        public final int SIG_BLOCK;
+        public final int SIG_SETMASK;
+        public final int SIG_UNBLOCK;
+        public final int SIGBUS;
+        public final int SIGCHLD;
+        public final int SIGCONT;
+        public final int SIGPOLL;
+        public final int SIGPROF;
+        public final int SIGSTKSZ;
+        public final int SIGSTOP;
+        public final int SIGSYS;
+        public final int SIGTSTP;
+        public final int SIGTTIN;
+        public final int SIGTTOU;
+        public final int SIGURG;
+        public final int SIGUSR1;
+        public final int SIGUSR2;
+        public final int SIGVTALRM;
+        public final int SIGXCPU;
+        public final int SIGXFSZ;
+        public final int MINSIGSTKSZ;
 
-        public final static int SIGSTKSZ = 16384;
-    }
+        public LinuxDefines(MultiarchInfo multiarchInfo) {
+            switch (multiarchInfo.getMemoryModel()) {
+                case ILP32 ->
+                    SIG_ERR = new FunctionPtr__V___I(MemoryAddress.ofLong(Integer.toUnsignedLong(-1)));
+                case LP64 ->
+                    SIG_ERR = new FunctionPtr__V___I(MemoryAddress.ofLong(-1));
+                default ->
+                    throw new NoClassDefFoundError("unknown memory model: " + MultiarchTupelBuilder.getMemoryModel());
+            }
+            switch (multiarchInfo.getArch()) {
+                case MIPS, MIPS_64 -> {
+                    SA_NOCLDWAIT = 65536;
+                    SA_SIGINFO = 8;
+                    SI_ASYNCIO = -2;
+                    SI_MESGQ = -4;
+                    SI_TIMER = -3;
+                    SIG_BLOCK = 1;
+                    SIG_SETMASK = 3;
+                    SIG_UNBLOCK = 2;
+                    SIGBUS = 10;
+                    SIGCHLD = 18;
+                    SIGCONT = 25;
+                    SIGPOLL = 22;
+                    SIGPROF = 29;
+                    SIGSTOP = 23;
+                    SIGSYS = 12;
+                    SIGTSTP = 24;
+                    SIGTTIN = 26;
+                    SIGTTOU = 27;
+                    SIGURG = 21;
+                    SIGUSR1 = 16;
+                    SIGUSR2 = 17;
+                    SIGVTALRM = 28;
+                    SIGXCPU = 30;
+                    SIGXFSZ = 31;
+                }
+                default -> {
+                    SA_NOCLDWAIT = 2;
+                    SA_SIGINFO = 4;
+                    SI_ASYNCIO = -4;
+                    SI_MESGQ = -3;
+                    SI_TIMER = -2;
+                    SIG_BLOCK = 0;
+                    SIG_SETMASK = 2;
+                    SIG_UNBLOCK = 1;
+                    SIGBUS = 7;
+                    SIGCHLD = 17;
+                    SIGCONT = 18;
+                    SIGPOLL = 29;
+                    SIGPROF = 27;
+                    SIGSTOP = 19;
+                    SIGSYS = 31;
+                    SIGTSTP = 20;
+                    SIGTTIN = 21;
+                    SIGTTOU = 22;
+                    SIGURG = 23;
+                    SIGUSR1 = 10;
+                    SIGUSR2 = 12;
+                    SIGVTALRM = 26;
+                    SIGXCPU = 24;
+                    SIGXFSZ = 25;
 
-    public static interface Linux_Aarch64_Arm_I386_Ppc64_RiscV64_S390_X86_64_Defines {
+                }
+            }
+            MINSIGSTKSZ = switch (multiarchInfo.getArch()) {
+                case AARCH64 ->
+                    5120;
+                case POWER_PC_64 ->
+                    4096;
+                default ->
+                    2048;
+            };
+            SIGSTKSZ = switch (multiarchInfo.getArch()) {
+                case AARCH64, POWER_PC_64 ->
+                    16384;
+                default ->
+                    8192;
+            };
+        }
 
-        public final static int SA_NOCLDWAIT = 2;
-        public final static int SA_SIGINFO = 4;
-        public final static int SI_ASYNCIO = -4;
-        public final static int SI_MESGQ = -3;
-        public final static int SI_TIMER = -2;
-        public final static int SIG_BLOCK = 0;
-        public final static int SIG_SETMASK = 2;
-        public final static int SIG_UNBLOCK = 1;
-        public final static int SIGBUS = 7;
-        public final static int SIGCHLD = 17;
-        public final static int SIGCONT = 18;
-        public final static int SIGPOLL = 29;
-        public final static int SIGPROF = 27;
-        public final static int SIGSTOP = 19;
-        public final static int SIGSYS = 31;
-        public final static int SIGTSTP = 20;
-        public final static int SIGTTIN = 21;
-        public final static int SIGTTOU = 22;
-        public final static int SIGURG = 23;
-        public final static int SIGUSR1 = 10;
-        public final static int SIGUSR2 = 12;
-        public final static int SIGVTALRM = 26;
-        public final static int SIGXCPU = 24;
-        public final static int SIGXFSZ = 25;
-    }
-
-    public static interface Linux_AllArchs_Defines {
-
-        public final static int BUS_ADRALN = 1;
-        public final static int BUS_ADRERR = 2;
-        public final static int BUS_OBJERR = 3;
-        public final static int CLD_CONTINUED = 6;
-        public final static int CLD_DUMPED = 3;
-        public final static int CLD_EXITED = 1;
-        public final static int CLD_KILLED = 2;
-        public final static int CLD_STOPPED = 5;
-        public final static int CLD_TRAPPED = 4;
-        public final static int FPE_FLTDIV = 3;
-        public final static int FPE_FLTINV = 7;
-        public final static int FPE_FLTOVF = 4;
-        public final static int FPE_FLTRES = 6;
-        public final static int FPE_FLTSUB = 8;
-        public final static int FPE_FLTUND = 5;
-        public final static int FPE_INTDIV = 1;
-        public final static int FPE_INTOVF = 2;
-        public final static int ILL_BADSTK = 8;
-        public final static int ILL_COPROC = 7;
-        public final static int ILL_ILLADR = 3;
-        public final static int ILL_ILLOPC = 1;
-        public final static int ILL_ILLOPN = 2;
-        public final static int ILL_ILLTRP = 4;
-        public final static int ILL_PRVOPC = 5;
-        public final static int ILL_PRVREG = 6;
-        public final static int POLL_ERR = 4;
-        public final static int POLL_HUP = 6;
-        public final static int POLL_IN = 1;
-        public final static int POLL_MSG = 3;
-        public final static int POLL_OUT = 2;
-        public final static int POLL_PRI = 5;
-        public final static int SA_NOCLDSTOP = 1;
-        public final static int SA_NODEFER = 0x40000000;
-        public final static int SA_ONSTACK = 0x08000000;
-        public final static int SA_RESETHAND = 0x80000000;
-        public final static int SA_RESTART = 0x10000000;
-        public final static int SEGV_ACCERR = 2;
-        public final static int SEGV_MAPERR = 1;
-        public final static int SI_QUEUE = -1;
-        public final static int SI_USER = 0;
-        public final static FunctionPtr__V___I SIG_DFL = new FunctionPtr__V___I(MemoryAddress.ofLong(0));
-        public final static FunctionPtr__V___I SIG_ERR = new FunctionPtr__V___I(MemoryAddress.ofLong(-1));
-        public final static FunctionPtr__V___I SIG_HOLD = new FunctionPtr__V___I(MemoryAddress.ofLong(2));
-        public final static FunctionPtr__V___I SIG_IGN = new FunctionPtr__V___I(MemoryAddress.ofLong(1));
-        public final static int SIGABRT = 6;
-        public final static int SIGALRM = 14;
-        public final static int SIGEV_NONE = 1;
-        public final static int SIGEV_SIGNAL = 0;
-        public final static int SIGEV_THREAD = 2;
-        public final static int SIGFPE = 8;
-        public final static int SIGHUP = 1;
-        public final static int SIGILL = 4;
-        public final static int SIGINT = 2;
-        public final static int SIGKILL = 9;
-        public final static int SIGPIPE = 13;
-        public final static int SIGQUIT = 3;
-        public final static int SIGSEGV = 11;
-        public final static int SIGTERM = 15;
-        public final static int SIGTRAP = 5;
-        public final static int SS_DISABLE = 2;
-        public final static int SS_ONSTACK = 1;
-        public final static int TRAP_BRKPT = 1;
-        public final static int TRAP_TRACE = 2;
-    }
-
-    public static interface Linux_Arm_I386_RiscV64_S390_X86_64_Defines {
-
-        public final static int MINSIGSTKSZ = 2048;
-        public final static int SIGSTKSZ = 8192;
-    }
-
-    public static interface Linux_Mips_Mips64_Defines {
-
-        public final static int MINSIGSTKSZ = 2048;
-        public final static int SA_NOCLDWAIT = 65536;
-        public final static int SA_SIGINFO = 8;
-        public final static int SI_ASYNCIO = -2;
-        public final static int SI_MESGQ = -4;
-        public final static int SI_TIMER = -3;
-        public final static int SIG_BLOCK = 1;
-        public final static int SIG_SETMASK = 3;
-        public final static int SIG_UNBLOCK = 2;
-        public final static int SIGBUS = 10;
-        public final static int SIGCHLD = 18;
-        public final static int SIGCONT = 25;
-        public final static int SIGPOLL = 22;
-        public final static int SIGPROF = 29;
-        public final static int SIGSTKSZ = 8192;
-        public final static int SIGSTOP = 23;
-        public final static int SIGSYS = 12;
-        public final static int SIGTSTP = 24;
-        public final static int SIGTTIN = 26;
-        public final static int SIGTTOU = 27;
-        public final static int SIGURG = 21;
-        public final static int SIGUSR1 = 16;
-        public final static int SIGUSR2 = 17;
-        public final static int SIGVTALRM = 28;
-        public final static int SIGXCPU = 30;
-        public final static int SIGXFSZ = 31;
-    }
-
-    public static interface Linux_Ppc64_Defines {
-
-        public final static int MINSIGSTKSZ = 4096;
     }
 
     /**
@@ -995,37 +973,20 @@ public class Signal {
             return new NativeFunctionPointer(MEM_ACCESS.uintptr_t(memorySegment, Sigevent.offsetof_Sigev_notify_function));
         }
 
-        public final void sigev_notify_function(Callback__V__MA<T> sigev_notify_function) {
+        public final void sigev_notify_function(Callback__V__UnionSigval<T> sigev_notify_function) {
             this.sigev_notify_function = sigev_notify_function;
             MEM_ACCESS.uintptr_t(memorySegment, Sigevent.offsetof_Sigev_notify_function, sigev_notify_function);
         }
 
-        public final Callback__V__MA sigev_notify_functionAsCallback__V_Adr() {
-            if (sigev_notify_function instanceof Callback__V__MA result) {
+        public final Callback__V__UnionSigval sigev_notify_functionAsCallback__V_Struct_Sigval() {
+            if (sigev_notify_function instanceof Callback__V__UnionSigval result) {
                 if (Pointer.isSameAddress(sigev_notify_function(), result)) {
                     return result;
                 } else {
                     throw new RuntimeException("TODO not the same address");
                 }
             } else {
-                throw new RuntimeException("cached sigev_notify_function is not the class Callback_V_Adr");
-            }
-        }
-
-        public final void sigev_notify_function(Callback__V___I sigev_notify_function) {
-            this.sigev_notify_function = sigev_notify_function;
-            MEM_ACCESS.uintptr_t(memorySegment, Sigevent.offsetof_Sigev_notify_function, sigev_notify_function);
-        }
-
-        public final Callback__V___I sigev_notify_functionAsCallback__V_I() {
-            if (sigev_notify_function instanceof Callback__V___I result) {
-                if (Pointer.isSameAddress(sigev_notify_function(), result)) {
-                    return result;
-                } else {
-                    throw new RuntimeException("TODO not the same address");
-                }
-            } else {
-                throw new RuntimeException("cached sigev_notify_function is not the class Callback_V_Adr");
+                throw new RuntimeException("cached sigev_notify_function is not the class Callback_V_Struct_Sigval");
             }
         }
 
@@ -2666,37 +2627,39 @@ public class Signal {
      */
     static {
         switch (MultiarchTupelBuilder.getOS()) {
-            case LINUX:
+            case LINUX -> {
                 HAVE_SIGNAL_H = true;
 
-                BUS_ADRALN = Linux_AllArchs_Defines.BUS_ADRALN;
-                BUS_ADRERR = Linux_AllArchs_Defines.BUS_ADRERR;
-                BUS_OBJERR = Linux_AllArchs_Defines.BUS_OBJERR;
+                final LinuxDefines linuxDefines = new LinuxDefines(MultiarchTupelBuilder.getMultiarch());
 
-                CLD_CONTINUED = Linux_AllArchs_Defines.CLD_CONTINUED;
-                CLD_DUMPED = Linux_AllArchs_Defines.CLD_DUMPED;
-                CLD_EXITED = Linux_AllArchs_Defines.CLD_EXITED;
-                CLD_KILLED = Linux_AllArchs_Defines.CLD_KILLED;
-                CLD_STOPPED = Linux_AllArchs_Defines.CLD_STOPPED;
-                CLD_TRAPPED = Linux_AllArchs_Defines.CLD_TRAPPED;
+                BUS_ADRALN = linuxDefines.BUS_ADRALN;
+                BUS_ADRERR = linuxDefines.BUS_ADRERR;
+                BUS_OBJERR = linuxDefines.BUS_OBJERR;
 
-                FPE_FLTDIV = Linux_AllArchs_Defines.FPE_FLTDIV;
-                FPE_FLTINV = Linux_AllArchs_Defines.FPE_FLTINV;
-                FPE_FLTOVF = Linux_AllArchs_Defines.FPE_FLTOVF;
-                FPE_FLTRES = Linux_AllArchs_Defines.FPE_FLTRES;
-                FPE_FLTSUB = Linux_AllArchs_Defines.FPE_FLTSUB;
-                FPE_FLTUND = Linux_AllArchs_Defines.FPE_FLTUND;
-                FPE_INTDIV = Linux_AllArchs_Defines.FPE_INTDIV;
-                FPE_INTOVF = Linux_AllArchs_Defines.FPE_INTOVF;
+                CLD_CONTINUED = linuxDefines.CLD_CONTINUED;
+                CLD_DUMPED = linuxDefines.CLD_DUMPED;
+                CLD_EXITED = linuxDefines.CLD_EXITED;
+                CLD_KILLED = linuxDefines.CLD_KILLED;
+                CLD_STOPPED = linuxDefines.CLD_STOPPED;
+                CLD_TRAPPED = linuxDefines.CLD_TRAPPED;
 
-                ILL_BADSTK = Linux_AllArchs_Defines.ILL_BADSTK;
-                ILL_COPROC = Linux_AllArchs_Defines.ILL_COPROC;
-                ILL_ILLADR = Linux_AllArchs_Defines.ILL_ILLADR;
-                ILL_ILLOPC = Linux_AllArchs_Defines.ILL_ILLOPC;
-                ILL_ILLOPN = Linux_AllArchs_Defines.ILL_ILLOPN;
-                ILL_ILLTRP = Linux_AllArchs_Defines.ILL_ILLTRP;
-                ILL_PRVOPC = Linux_AllArchs_Defines.ILL_PRVOPC;
-                ILL_PRVREG = Linux_AllArchs_Defines.ILL_PRVREG;
+                FPE_FLTDIV = linuxDefines.FPE_FLTDIV;
+                FPE_FLTINV = linuxDefines.FPE_FLTINV;
+                FPE_FLTOVF = linuxDefines.FPE_FLTOVF;
+                FPE_FLTRES = linuxDefines.FPE_FLTRES;
+                FPE_FLTSUB = linuxDefines.FPE_FLTSUB;
+                FPE_FLTUND = linuxDefines.FPE_FLTUND;
+                FPE_INTDIV = linuxDefines.FPE_INTDIV;
+                FPE_INTOVF = linuxDefines.FPE_INTOVF;
+
+                ILL_BADSTK = linuxDefines.ILL_BADSTK;
+                ILL_COPROC = linuxDefines.ILL_COPROC;
+                ILL_ILLADR = linuxDefines.ILL_ILLADR;
+                ILL_ILLOPC = linuxDefines.ILL_ILLOPC;
+                ILL_ILLOPN = linuxDefines.ILL_ILLOPN;
+                ILL_ILLTRP = linuxDefines.ILL_ILLTRP;
+                ILL_PRVOPC = linuxDefines.ILL_PRVOPC;
+                ILL_PRVREG = linuxDefines.ILL_PRVREG;
                 if (Unistd._SC_MINSIGSTKSZ.isDefined()) {
                     try {
                         //TODO Bug in glibc 2.36??? _SC_SIGSTKSZ instead of _SC_MINSIGSTKSZ
@@ -2705,50 +2668,39 @@ public class Signal {
                         throw new RuntimeException(ex);
                     }
                 } else {
-                    MINSIGSTKSZ = switch (MultiarchTupelBuilder.getArch()) {
-                        case AARCH64 ->
-                            Linux_Aarc64_Defines.MINSIGSTKSZ;
-                        case ARM, I386, RISC_V_64, S390_X, X86_64 ->
-                            Linux_Arm_I386_RiscV64_S390_X86_64_Defines.MINSIGSTKSZ;
-                        case MIPS, MIPS_64 ->
-                            Linux_Mips_Mips64_Defines.MINSIGSTKSZ;
-                        case POWER_PC_64 ->
-                            Linux_Ppc64_Defines.MINSIGSTKSZ;
-                        default ->
-                            throw new NoClassDefFoundError("No signal.h linux defines for MINSIGSTKSZ " + MultiarchTupelBuilder.getMultiarch());
-                    };
+                    MINSIGSTKSZ = linuxDefines.MINSIGSTKSZ;
                 }
-                POLL_ERR = IntDefine.toIntDefine(Linux_AllArchs_Defines.POLL_ERR);
-                POLL_HUP = IntDefine.toIntDefine(Linux_AllArchs_Defines.POLL_HUP);
-                POLL_IN = IntDefine.toIntDefine(Linux_AllArchs_Defines.POLL_IN);
-                POLL_MSG = IntDefine.toIntDefine(Linux_AllArchs_Defines.POLL_MSG);
-                POLL_OUT = IntDefine.toIntDefine(Linux_AllArchs_Defines.POLL_OUT);
-                POLL_PRI = IntDefine.toIntDefine(Linux_AllArchs_Defines.POLL_PRI);
+                POLL_ERR = IntDefine.toIntDefine(linuxDefines.POLL_ERR);
+                POLL_HUP = IntDefine.toIntDefine(linuxDefines.POLL_HUP);
+                POLL_IN = IntDefine.toIntDefine(linuxDefines.POLL_IN);
+                POLL_MSG = IntDefine.toIntDefine(linuxDefines.POLL_MSG);
+                POLL_OUT = IntDefine.toIntDefine(linuxDefines.POLL_OUT);
+                POLL_PRI = IntDefine.toIntDefine(linuxDefines.POLL_PRI);
 
-                SA_NOCLDSTOP = Linux_AllArchs_Defines.SA_NOCLDSTOP;
-                SA_NODEFER = Linux_AllArchs_Defines.SA_NODEFER;
-                SA_ONSTACK = Linux_AllArchs_Defines.SA_ONSTACK;
-                SA_RESETHAND = Linux_AllArchs_Defines.SA_RESETHAND;
-                SA_RESTART = Linux_AllArchs_Defines.SA_RESTART;
+                SA_NOCLDSTOP = linuxDefines.SA_NOCLDSTOP;
+                SA_NODEFER = linuxDefines.SA_NODEFER;
+                SA_ONSTACK = linuxDefines.SA_ONSTACK;
+                SA_RESETHAND = linuxDefines.SA_RESETHAND;
+                SA_RESTART = linuxDefines.SA_RESTART;
 
-                SEGV_ACCERR = Linux_AllArchs_Defines.SEGV_ACCERR;
-                SEGV_MAPERR = Linux_AllArchs_Defines.SEGV_MAPERR;
+                SEGV_ACCERR = linuxDefines.SEGV_ACCERR;
+                SEGV_MAPERR = linuxDefines.SEGV_MAPERR;
 
-                SIGABRT = Linux_AllArchs_Defines.SIGABRT;
-                SIGALRM = Linux_AllArchs_Defines.SIGALRM;
+                SIGABRT = linuxDefines.SIGABRT;
+                SIGALRM = linuxDefines.SIGALRM;
 
-                SIGEV_NONE = IntDefine.toIntDefine(Linux_AllArchs_Defines.SIGEV_NONE);
-                SIGEV_SIGNAL = IntDefine.toIntDefine(Linux_AllArchs_Defines.SIGEV_SIGNAL);
-                SIGEV_THREAD = IntDefine.toIntDefine(Linux_AllArchs_Defines.SIGEV_THREAD);
+                SIGEV_NONE = IntDefine.toIntDefine(linuxDefines.SIGEV_NONE);
+                SIGEV_SIGNAL = IntDefine.toIntDefine(linuxDefines.SIGEV_SIGNAL);
+                SIGEV_THREAD = IntDefine.toIntDefine(linuxDefines.SIGEV_THREAD);
 
-                SIGFPE = Linux_AllArchs_Defines.SIGFPE;
-                SIGHUP = Linux_AllArchs_Defines.SIGHUP;
-                SIGILL = Linux_AllArchs_Defines.SIGILL;
-                SIGINT = Linux_AllArchs_Defines.SIGINT;
-                SIGKILL = Linux_AllArchs_Defines.SIGKILL;
-                SIGPIPE = Linux_AllArchs_Defines.SIGPIPE;
-                SIGQUIT = Linux_AllArchs_Defines.SIGQUIT;
-                SIGSEGV = Linux_AllArchs_Defines.SIGSEGV;
+                SIGFPE = linuxDefines.SIGFPE;
+                SIGHUP = linuxDefines.SIGHUP;
+                SIGILL = linuxDefines.SIGILL;
+                SIGINT = linuxDefines.SIGINT;
+                SIGKILL = linuxDefines.SIGKILL;
+                SIGPIPE = linuxDefines.SIGPIPE;
+                SIGQUIT = linuxDefines.SIGQUIT;
+                SIGSEGV = linuxDefines.SIGSEGV;
                 if (Unistd._SC_SIGSTKSZ.isDefined()) {
                     try {
                         SIGSTKSZ = Unistd.sysconf(Unistd._SC_SIGSTKSZ.get());
@@ -2756,105 +2708,52 @@ public class Signal {
                         throw new RuntimeException(ex);
                     }
                 } else {
-                    SIGSTKSZ = switch (MultiarchTupelBuilder.getArch()) {
-                        case AARCH64, POWER_PC_64 ->
-                            Linux_Aarc64_Ppc64_Defines.SIGSTKSZ;
-                        case ARM, I386,RISC_V_64,S390_X,X86_64 ->
-                            Linux_Arm_I386_RiscV64_S390_X86_64_Defines.SIGSTKSZ;
-                        case MIPS,MIPS_64 ->
-                            Linux_Mips_Mips64_Defines.SIGSTKSZ;
-                        default ->
-                            throw new NoClassDefFoundError("No signal.h linux defines for SIGSTKSZ " + MultiarchTupelBuilder.getMultiarch());
-                    };
+                    SIGSTKSZ = linuxDefines.SIGSTKSZ;
                 }
-                SIGTERM = Linux_AllArchs_Defines.SIGTERM;
-                SIGTRAP = Linux_AllArchs_Defines.SIGTRAP;
-                SIG_DFL = Linux_AllArchs_Defines.SIG_DFL;
-                SIG_ERR = Linux_AllArchs_Defines.SIG_ERR;
-                SIG_HOLD = ObjectDefine.toObjectDefine(Linux_AllArchs_Defines.SIG_HOLD);
-                SIG_IGN = Linux_AllArchs_Defines.SIG_IGN;
-                SI_QUEUE = Linux_AllArchs_Defines.SI_QUEUE;
-                SI_USER = Linux_AllArchs_Defines.SI_USER;
+                SIGTERM = linuxDefines.SIGTERM;
+                SIGTRAP = linuxDefines.SIGTRAP;
+                SIG_DFL = linuxDefines.SIG_DFL;
+                SIG_ERR = linuxDefines.SIG_ERR;
+                SIG_HOLD = ObjectDefine.toObjectDefine(linuxDefines.SIG_HOLD);
+                SIG_IGN = linuxDefines.SIG_IGN;
+                SI_QUEUE = linuxDefines.SI_QUEUE;
+                SI_USER = linuxDefines.SI_USER;
 
-                SS_DISABLE = Linux_AllArchs_Defines.SS_DISABLE;
-                SS_ONSTACK = Linux_AllArchs_Defines.SS_ONSTACK;
+                SS_DISABLE = linuxDefines.SS_DISABLE;
+                SS_ONSTACK = linuxDefines.SS_ONSTACK;
 
-                TRAP_BRKPT = Linux_AllArchs_Defines.TRAP_BRKPT;
-                TRAP_TRACE = Linux_AllArchs_Defines.TRAP_TRACE;
+                TRAP_BRKPT = linuxDefines.TRAP_BRKPT;
+                TRAP_TRACE = linuxDefines.TRAP_TRACE;
 
-                switch (MultiarchTupelBuilder.getArch()) {
-                    case MIPS:
-                    case MIPS_64:
-                        SA_NOCLDWAIT = Linux_Mips_Mips64_Defines.SA_NOCLDWAIT;
-                        SA_SIGINFO = Linux_Mips_Mips64_Defines.SA_SIGINFO;
+                SA_NOCLDWAIT = linuxDefines.SA_NOCLDWAIT;
+                SA_SIGINFO = linuxDefines.SA_SIGINFO;
 
-                        SIGBUS = Linux_Mips_Mips64_Defines.SIGBUS;
-                        SIGCHLD = Linux_Mips_Mips64_Defines.SIGCHLD;
-                        SIGCONT = Linux_Mips_Mips64_Defines.SIGCONT;
-                        SIGPOLL = IntDefine.toIntDefine(Linux_Mips_Mips64_Defines.SIGPOLL);
-                        SIGPROF = Linux_Mips_Mips64_Defines.SIGPROF;
-                        SIGSTOP = Linux_Mips_Mips64_Defines.SIGSTOP;
-                        SIGSYS = Linux_Mips_Mips64_Defines.SIGSYS;
-                        SIGTSTP = Linux_Mips_Mips64_Defines.SIGTSTP;
-                        SIGTTIN = Linux_Mips_Mips64_Defines.SIGTTIN;
-                        SIGTTOU = Linux_Mips_Mips64_Defines.SIGTTOU;
-                        SIGURG = Linux_Mips_Mips64_Defines.SIGURG;
-                        SIGUSR1 = Linux_Mips_Mips64_Defines.SIGUSR1;
-                        SIGUSR2 = Linux_Mips_Mips64_Defines.SIGUSR2;
-                        SIGVTALRM = Linux_Mips_Mips64_Defines.SIGVTALRM;
-                        SIGXCPU = Linux_Mips_Mips64_Defines.SIGXCPU;
-                        SIGXFSZ = Linux_Mips_Mips64_Defines.SIGXFSZ;
-                        SIG_BLOCK = Linux_Mips_Mips64_Defines.SIG_BLOCK;
+                SIGBUS = linuxDefines.SIGBUS;
+                SIGCHLD = linuxDefines.SIGCHLD;
+                SIGCONT = linuxDefines.SIGCONT;
+                SIGPOLL = IntDefine.toIntDefine(linuxDefines.SIGPOLL);
+                SIGPROF = linuxDefines.SIGPROF;
+                SIGSTOP = linuxDefines.SIGSTOP;
+                SIGSYS = linuxDefines.SIGSYS;
+                SIGTSTP = linuxDefines.SIGTSTP;
+                SIGTTIN = linuxDefines.SIGTTIN;
+                SIGTTOU = linuxDefines.SIGTTOU;
+                SIGURG = linuxDefines.SIGURG;
+                SIGUSR1 = linuxDefines.SIGUSR1;
+                SIGUSR2 = linuxDefines.SIGUSR2;
+                SIGVTALRM = linuxDefines.SIGVTALRM;
+                SIGXCPU = linuxDefines.SIGXCPU;
+                SIGXFSZ = linuxDefines.SIGXFSZ;
+                SIG_BLOCK = linuxDefines.SIG_BLOCK;
 
-                        SIG_SETMASK = Linux_Mips_Mips64_Defines.SIG_SETMASK;
-                        SIG_UNBLOCK = Linux_Mips_Mips64_Defines.SIG_UNBLOCK;
+                SIG_SETMASK = linuxDefines.SIG_SETMASK;
+                SIG_UNBLOCK = linuxDefines.SIG_UNBLOCK;
 
-                        SI_ASYNCIO = IntDefine.toIntDefine(Linux_Mips_Mips64_Defines.SI_ASYNCIO);
-                        SI_MESGQ = IntDefine.toIntDefine(Linux_Mips_Mips64_Defines.SI_MESGQ);
-                        SI_TIMER = Linux_Mips_Mips64_Defines.SI_TIMER;
-                        break;
-                    case AARCH64:
-                    case ARM:
-                    case I386:
-                    case POWER_PC_64:
-                    case RISC_V_64:
-                    case S390_X:
-                    case X86_64:
-                        SA_NOCLDWAIT = Linux_Aarch64_Arm_I386_Ppc64_RiscV64_S390_X86_64_Defines.SA_NOCLDWAIT;
-                        SA_SIGINFO = Linux_Aarch64_Arm_I386_Ppc64_RiscV64_S390_X86_64_Defines.SA_SIGINFO;
-
-                        SIGBUS = Linux_Aarch64_Arm_I386_Ppc64_RiscV64_S390_X86_64_Defines.SIGBUS;
-                        SIGCHLD = Linux_Aarch64_Arm_I386_Ppc64_RiscV64_S390_X86_64_Defines.SIGCHLD;
-                        SIGCONT = Linux_Aarch64_Arm_I386_Ppc64_RiscV64_S390_X86_64_Defines.SIGCONT;
-                        SIGPOLL = IntDefine.toIntDefine(Linux_Aarch64_Arm_I386_Ppc64_RiscV64_S390_X86_64_Defines.SIGPOLL);
-                        SIGPROF = Linux_Aarch64_Arm_I386_Ppc64_RiscV64_S390_X86_64_Defines.SIGPROF;
-                        SIGSTOP = Linux_Aarch64_Arm_I386_Ppc64_RiscV64_S390_X86_64_Defines.SIGSTOP;
-                        SIGSYS = Linux_Aarch64_Arm_I386_Ppc64_RiscV64_S390_X86_64_Defines.SIGSYS;
-                        SIGTSTP = Linux_Aarch64_Arm_I386_Ppc64_RiscV64_S390_X86_64_Defines.SIGTSTP;
-                        SIGTTIN = Linux_Aarch64_Arm_I386_Ppc64_RiscV64_S390_X86_64_Defines.SIGTTIN;
-                        SIGTTOU = Linux_Aarch64_Arm_I386_Ppc64_RiscV64_S390_X86_64_Defines.SIGTTOU;
-                        SIGURG = Linux_Aarch64_Arm_I386_Ppc64_RiscV64_S390_X86_64_Defines.SIGURG;
-                        SIGUSR1 = Linux_Aarch64_Arm_I386_Ppc64_RiscV64_S390_X86_64_Defines.SIGUSR1;
-                        SIGUSR2 = Linux_Aarch64_Arm_I386_Ppc64_RiscV64_S390_X86_64_Defines.SIGUSR2;
-                        SIGVTALRM = Linux_Aarch64_Arm_I386_Ppc64_RiscV64_S390_X86_64_Defines.SIGVTALRM;
-                        SIGXCPU = Linux_Aarch64_Arm_I386_Ppc64_RiscV64_S390_X86_64_Defines.SIGXCPU;
-                        SIGXFSZ = Linux_Aarch64_Arm_I386_Ppc64_RiscV64_S390_X86_64_Defines.SIGXFSZ;
-                        SIG_BLOCK = Linux_Aarch64_Arm_I386_Ppc64_RiscV64_S390_X86_64_Defines.SIG_BLOCK;
-
-                        SIG_SETMASK = Linux_Aarch64_Arm_I386_Ppc64_RiscV64_S390_X86_64_Defines.SIG_SETMASK;
-                        SIG_UNBLOCK = Linux_Aarch64_Arm_I386_Ppc64_RiscV64_S390_X86_64_Defines.SIG_UNBLOCK;
-
-                        SI_ASYNCIO = IntDefine.toIntDefine(Linux_Aarch64_Arm_I386_Ppc64_RiscV64_S390_X86_64_Defines.SI_ASYNCIO);
-                        SI_MESGQ = IntDefine.toIntDefine(Linux_Aarch64_Arm_I386_Ppc64_RiscV64_S390_X86_64_Defines.SI_MESGQ);
-                        SI_TIMER = Linux_Aarch64_Arm_I386_Ppc64_RiscV64_S390_X86_64_Defines.SI_TIMER;
-                        break;
-                    default:
-                        throw new NoClassDefFoundError("No signal.h linux defines for " + MultiarchTupelBuilder.getMultiarch());
-                }
-                break;
-            case DARWIN:
-            case FREE_BSD:
-            case OPEN_BSD:
+                SI_ASYNCIO = IntDefine.toIntDefine(linuxDefines.SI_ASYNCIO);
+                SI_MESGQ = IntDefine.toIntDefine(linuxDefines.SI_MESGQ);
+                SI_TIMER = linuxDefines.SI_TIMER;
+            }
+            case DARWIN, FREE_BSD, OPEN_BSD -> {
                 HAVE_SIGNAL_H = true;
 
                 BUS_ADRALN = BsdDefines.BUS_ADRALN;
@@ -2925,7 +2824,7 @@ public class Signal {
                 SIG_UNBLOCK = BsdDefines.SIG_UNBLOCK;
 
                 switch (MultiarchTupelBuilder.getOS()) {
-                    case DARWIN:
+                    case DARWIN -> {
                         FPE_INTDIV = DarwinDefines.FPE_INTDIV;
                         FPE_INTOVF = DarwinDefines.FPE_INTOVF;
                         MINSIGSTKSZ = DarwinDefines.MINSIGSTKSZ;
@@ -2960,9 +2859,8 @@ public class Signal {
                         ILL_ILLTRP = DarwinDefines.ILL_ILLTRP;
                         ILL_PRVOPC = DarwinDefines.ILL_PRVOPC;
                         ILL_PRVREG = DarwinDefines.ILL_PRVREG;
-
-                        break;
-                    case FREE_BSD:
+                    }
+                    case FREE_BSD -> {
                         FPE_INTDIV = FreeBsdDefines.FPE_INTDIV;
                         FPE_INTOVF = FreeBsdDefines.FPE_INTOVF;
                         MINSIGSTKSZ = FreeBsdDefines.MINSIGSTKSZ;
@@ -2997,9 +2895,8 @@ public class Signal {
                         ILL_ILLTRP = FreeBsdDefines.ILL_ILLTRP;
                         ILL_PRVOPC = FreeBsdDefines.ILL_PRVOPC;
                         ILL_PRVREG = FreeBsdDefines.ILL_PRVREG;
-
-                        break;
-                    case OPEN_BSD:
+                    }
+                    case OPEN_BSD -> {
                         FPE_INTDIV = OpenBsdDefines.FPE_INTDIV;
                         FPE_INTOVF = OpenBsdDefines.FPE_INTOVF;
                         MINSIGSTKSZ = OpenBsdDefines.MINSIGSTKSZ;
@@ -3034,40 +2931,43 @@ public class Signal {
                         ILL_ILLTRP = OpenBsdDefines.ILL_ILLTRP;
                         ILL_PRVOPC = OpenBsdDefines.ILL_PRVOPC;
                         ILL_PRVREG = OpenBsdDefines.ILL_PRVREG;
-
-                        break;
-                    default:
+                    }
+                    default ->
                         throw new NoClassDefFoundError("No signal.h BSD defines for " + MultiarchTupelBuilder.getMultiarch());
                 }
-                break;
-            default:
+            }
+            default ->
                 throw new NoClassDefFoundError("No signal.h OS defines for " + MultiarchTupelBuilder.getMultiarch());
         }
     }
 
     private final static JnhwMh_sI__sI_sI kill = JnhwMh_sI__sI_sI.of(
+            LibcLoader.LIB_C_SYMBOL_LOOKUP,
             "kill",
             BaseDataType.C_int,
             PosixDataType.pid_t,
             BaseDataType.C_int);
 
     private final static JnhwMh_sI__sI_sI killpg = JnhwMh_sI__sI_sI.of(
+            LibcLoader.LIB_C_SYMBOL_LOOKUP,
             "killpg",
             BaseDataType.C_int,
             PosixDataType.pid_t,
             BaseDataType.C_int);
 
     private final static JnhwMh__V___A__A psiginfo = JnhwMh__V___A__A.ofOrNull(
+            LibcLoader.LIB_C_SYMBOL_LOOKUP,
             "psiginfo",
             BaseDataType.C_const_struct_pointer,
             BaseDataType.C_const_char_pointer);
 
     private final static JnhwMh__V__sI__A psignal = JnhwMh__V__sI__A.ofOrNull(
+            LibcLoader.LIB_C_SYMBOL_LOOKUP,
             "psignal",
             BaseDataType.C_int,
             BaseDataType.C_const_char_pointer);
 
-    private final static JnhwPthreadKill pthread_kill = JnhwPthreadKill.of(
+    private final static JnhwMh_sI__PthreadT_sI pthread_kill = JnhwMh_sI__PthreadT_sI.of(
             LibrtLoader.LIB_RT_SYMBOL_LOOKUP,
             "pthread_kill",
             BaseDataType.C_int,
@@ -3075,6 +2975,7 @@ public class Signal {
             BaseDataType.C_int);
 
     private final static JnhwMh_sI__sI__A__A pthread_sigmask = JnhwMh_sI__sI__A__A.of(
+            LibcLoader.LIB_C_SYMBOL_LOOKUP,
             "pthread_sigmask",
             BaseDataType.C_int,
             BaseDataType.C_int,
@@ -3082,84 +2983,99 @@ public class Signal {
             BaseDataType.C_struct_pointer);
 
     private final static JnhwMh_sI__sI raise = JnhwMh_sI__sI.of(
+            LibcLoader.LIB_C_SYMBOL_LOOKUP,
             "raise",
             BaseDataType.C_int,
             BaseDataType.C_int);
 
     private final static JnhwMh_sI__sI__A__A sigaction = JnhwMh_sI__sI__A__A.of(
+            LibcLoader.LIB_C_SYMBOL_LOOKUP,
             "sigaction",
             BaseDataType.C_int,
             BaseDataType.C_int,
             BaseDataType.C_const_struct_pointer,
             BaseDataType.C_struct_pointer);
 
-    private final static JnhwMh_sI__A_sI sigaddset = JnhwMh_sI__A_sI.of(
+    private final static JnhwMh_sI___A_sI sigaddset = JnhwMh_sI___A_sI.of(
+            LibcLoader.LIB_C_SYMBOL_LOOKUP,
             "sigaddset",
             BaseDataType.C_int,
             BaseDataType.C_struct_pointer,
             BaseDataType.C_int);
 
     private final static JnhwMh_sI___A__A sigaltstack = JnhwMh_sI___A__A.of(
+            LibcLoader.LIB_C_SYMBOL_LOOKUP,
             "sigaltstack",
             BaseDataType.C_int,
             BaseDataType.C_const_struct_pointer,
             BaseDataType.C_struct_pointer);
 
-    private final static JnhwMh_sI__A_sI sigdelset = JnhwMh_sI__A_sI.of(
+    private final static JnhwMh_sI___A_sI sigdelset = JnhwMh_sI___A_sI.of(
+            LibcLoader.LIB_C_SYMBOL_LOOKUP,
             "sigdelset",
             BaseDataType.C_int,
             BaseDataType.C_struct_pointer,
             BaseDataType.C_int);
 
     private final static JnhwMh_sI___A sigemptyset = JnhwMh_sI___A.of(
+            LibcLoader.LIB_C_SYMBOL_LOOKUP,
             "sigemptyset",
             BaseDataType.C_int,
             BaseDataType.C_struct_pointer);
 
     private final static JnhwMh_sI___A sigfillset = JnhwMh_sI___A.of(
+            LibcLoader.LIB_C_SYMBOL_LOOKUP,
             "sigfillset",
             BaseDataType.C_int,
             BaseDataType.C_struct_pointer);
 
     private final static JnhwMh_sI__sI sighold = JnhwMh_sI__sI.ofOrNull(
+            LibcLoader.LIB_C_SYMBOL_LOOKUP,
             "sighold",
             BaseDataType.C_int,
             BaseDataType.C_int);
 
     private final static JnhwMh_sI__sI sigignore = JnhwMh_sI__sI.ofOrNull(
+            LibcLoader.LIB_C_SYMBOL_LOOKUP,
             "sigignore",
             BaseDataType.C_int,
             BaseDataType.C_int);
 
     private final static JnhwMh_sI__sI_sI siginterrupt = JnhwMh_sI__sI_sI.of(
+            LibcLoader.LIB_C_SYMBOL_LOOKUP,
             "siginterrupt",
             BaseDataType.C_int,
             BaseDataType.C_int,
             BaseDataType.C_int);
 
-    private final static JnhwMh_sI__A_sI sigismember = JnhwMh_sI__A_sI.of(
+    private final static JnhwMh_sI___A_sI sigismember = JnhwMh_sI___A_sI.of(
+            LibcLoader.LIB_C_SYMBOL_LOOKUP,
             "sigismember",
             BaseDataType.C_int,
             BaseDataType.C_const_struct_pointer,
             BaseDataType.C_int);
 
-    private final static JnhwMh__A__sI__A signal = JnhwMh__A__sI__A.of(
+    private final static JnhwMh_MA__sI__A signal = JnhwMh_MA__sI__A.of(
+            LibcLoader.LIB_C_SYMBOL_LOOKUP,
             "signal",
             BaseDataType.C_pointer,
             BaseDataType.C_int,
             BaseDataType.C_pointer);
 
     private final static JnhwMh_sI__sI sigpause = JnhwMh_sI__sI.ofOrNull(
+            LibcLoader.LIB_C_SYMBOL_LOOKUP,
             "sigpause",
             BaseDataType.C_int,
             BaseDataType.C_int);
 
     private final static JnhwMh_sI___A sigpending = JnhwMh_sI___A.of(
+            LibcLoader.LIB_C_SYMBOL_LOOKUP,
             "sigpending",
             BaseDataType.C_int,
             BaseDataType.C_struct_pointer);
 
     private final static JnhwMh_sI__sI__A__A sigprocmask = JnhwMh_sI__sI__A__A.of(
+            LibcLoader.LIB_C_SYMBOL_LOOKUP,
             "sigprocmask",
             BaseDataType.C_int,
             BaseDataType.C_int,
@@ -3169,6 +3085,7 @@ public class Signal {
     //sigval is union of int and pointer, so pointer will do here
     //TODO splitint call with int and pointer? BIG/LITTLE ENDIAN???
     private final static JnhwMh_sI__sI_sI__A sigqueue = JnhwMh_sI__sI_sI__A.ofOrNull(
+            LibcLoader.LIB_C_SYMBOL_LOOKUP,
             "sigqueue",
             BaseDataType.C_int,
             PosixDataType.pid_t,
@@ -3176,22 +3093,26 @@ public class Signal {
             BaseDataType.C_pointer);
 
     private final static JnhwMh_sI__sI sigrelse = JnhwMh_sI__sI.ofOrNull(
+            LibcLoader.LIB_C_SYMBOL_LOOKUP,
             "sigrelse",
             BaseDataType.C_int,
             BaseDataType.C_int);
 
-    private final static JnhwMh__A__sI__A sigset = JnhwMh__A__sI__A.ofOrNull(
+    private final static JnhwMh_MA__sI__A sigset = JnhwMh_MA__sI__A.ofOrNull(
+            LibcLoader.LIB_C_SYMBOL_LOOKUP,
             "sigset",
             BaseDataType.C_pointer,
             BaseDataType.C_int,
             BaseDataType.C_pointer);
 
     private final static JnhwMh_sI___A sigsuspend = JnhwMh_sI___A.of(
+            LibcLoader.LIB_C_SYMBOL_LOOKUP,
             "sigsuspend",
             BaseDataType.C_int,
             BaseDataType.C_const_struct_pointer);
 
     private final static JnhwMh_sI___A__A__A sigtimedwait = JnhwMh_sI___A__A__A.ofOrNull(
+            LibcLoader.LIB_C_SYMBOL_LOOKUP,
             "sigtimedwait",
             BaseDataType.C_int,
             BaseDataType.C_const_struct_pointer,
@@ -3199,12 +3120,14 @@ public class Signal {
             BaseDataType.C_const_struct_pointer);
 
     private final static JnhwMh_sI___A__A sigwait = JnhwMh_sI___A__A.of(
+            LibcLoader.LIB_C_SYMBOL_LOOKUP,
             "sigwait",
             BaseDataType.C_int,
             BaseDataType.C_const_struct_pointer,
             BaseDataType.C_int_pointer);
 
     private final static JnhwMh_sI___A__A sigwaitinfo = JnhwMh_sI___A__A.ofOrNull(
+            LibcLoader.LIB_C_SYMBOL_LOOKUP,
             "sigwaitinfo",
             BaseDataType.C_int,
             BaseDataType.C_const_struct_pointer,
@@ -3256,7 +3179,7 @@ public class Signal {
      * available natively.
      */
     public final static void psiginfo(Siginfo_t pinfo, String message) throws NativeErrorException, NoSuchNativeMethodException {
-        try ( MemorySession ms = MemorySession.openConfined()) {
+        try (MemorySession ms = MemorySession.openConfined()) {
             if (message == null) {
                 message = "";
             }
@@ -3264,7 +3187,7 @@ public class Signal {
             _message.setUtf8String(0, message);
             final int old_errno = Errno.errno();
             Errno.errno(0);
-            psiginfo.invoke_V__P_A(pinfo, _message);
+            psiginfo.invoke__V___P__A(pinfo, _message);
             if (Errno.errno() != 0) {
                 throw new NativeErrorException(Errno.errno());
             }
@@ -3288,7 +3211,7 @@ public class Signal {
      * indicates an error.
      */
     public final static void psignal(int signum, String message) throws NativeErrorException {
-        try ( MemorySession ms = MemorySession.openConfined()) {
+        try (MemorySession ms = MemorySession.openConfined()) {
             if (message == null) {
                 message = "";
             }
@@ -3314,7 +3237,7 @@ public class Signal {
      * indicates an error. This return value is the error number.
      */
     public final static void pthread_kill(Pthread.Pthread_t thread, int sig) throws NativeErrorException {
-        final int result = pthread_kill.invokeExact(thread, sig);
+        final int result = pthread_kill.invoke_sI__PthreadT_sI(thread, sig);
         if (result != 0) {
             throw new NativeErrorException(result);
         }
@@ -3382,7 +3305,7 @@ public class Signal {
      * indicates an error.
      */
     public final static void sigaddset(Sigset_t set, int signo) throws NativeErrorException {
-        if (sigaddset.invoke_sI__P_sI(set, signo) != 0) {
+        if (sigaddset.invoke_sI___P_sI(set, signo) != 0) {
             throw new NativeErrorException(Errno.errno());
         }
     }
@@ -3412,7 +3335,7 @@ public class Signal {
      * indicates an error.
      */
     public final static void sigdelset(Sigset_t set, int signo) throws NativeErrorException {
-        if (sigdelset.invoke_sI__P_sI(set, signo) != 0) {
+        if (sigdelset.invoke_sI___P_sI(set, signo) != 0) {
             throw new NativeErrorException(Errno.errno());
         }
     }
@@ -3522,7 +3445,7 @@ public class Signal {
      * indicates an error.
      */
     public final static boolean sigismember(Sigset_t set, int signo) throws NativeErrorException {
-        switch (sigismember.invoke_sI__P_sI(set, signo)) {
+        switch (sigismember.invoke_sI___P_sI(set, signo)) {
             case -1:
                 throw new NativeErrorException(Errno.errno());
             case 0:
@@ -3547,7 +3470,7 @@ public class Signal {
      * indicates an error.
      */
     public final static FunctionPtr__V___I signal(int sig, FunctionPtr__V___I func) throws NativeErrorException {
-        MemoryAddress result = signal.invoke_MA__sI_P(sig, func != null ? func : Pointer.NULL);
+        MemoryAddress result = signal.invoke_MA__sI__P(sig, func != null ? func : Pointer.NULL);
         if (SIG_ERR.toAddressable().equals(result)) {
             throw new NativeErrorException(Errno.errno());
         } else {
@@ -3693,7 +3616,7 @@ public class Signal {
     public final static void sigqueue(@pid_t int pid, int signo, Sigval value) throws NativeErrorException, NoSuchNativeMethodException {
         //TODO is this right?? int and pointer???
         try {
-            if (sigqueue.invoke_sI__sI_sI_A(pid, signo, value.sival_ptr()) != 0) {
+            if (sigqueue.invoke_sI__sI_sI__A(pid, signo, value.sival_ptr()) != 0) {
                 throw new NativeErrorException(Errno.errno());
             }
         } catch (NullPointerException npe) {
@@ -3742,7 +3665,7 @@ public class Signal {
      *///TODO args missing ....
     public final static FunctionPtr__V___I sigset(int sig, FunctionPtr__V___I disp) throws NativeErrorException, NoSuchNativeMethodException {
         try {
-            final MemoryAddress result = sigset.invoke_MA__sI_P(sig, disp != null ? disp : Pointer.NULL);
+            final MemoryAddress result = sigset.invoke_MA__sI__P(sig, disp != null ? disp : Pointer.NULL);
             if (SIG_ERR.toAddressable().equals(result)) {
                 throw new NativeErrorException(Errno.errno());
             } else {
@@ -3788,7 +3711,7 @@ public class Signal {
      * @throws NoSuchNativeMethodException if the method sigtimedwait is not
      * available natively.
      */
-    public final static int sigtimedwait(Sigset_t set, Siginfo_t info, Timespec timeout) throws NativeErrorException, NoSuchNativeMethodException {
+    public final static int sigtimedwait(Sigset_t set, Siginfo_t info, Time.Timespec timeout) throws NativeErrorException, NoSuchNativeMethodException {
         try {
             final int result = sigtimedwait.invoke_sI___P__P__P(set, info != null ? info : Pointer.NULL, timeout);
             if (result == -1) {

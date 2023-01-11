@@ -1,6 +1,6 @@
 /*
  * JNHW - Java Native header Wrapper, https://github.com/aploese/jnhw/
- * Copyright (C) 2019-2022, Arne Plöse and individual contributors as indicated
+ * Copyright (C) 2019-2023, Arne Plöse and individual contributors as indicated
  * by the @authors tag. See the copyright.txt in the distribution for a
  * full listing of individual contributors.
  *
@@ -23,7 +23,7 @@ package de.ibapl.jnhw.posix.sys;
 
 import de.ibapl.jnhw.common.annotation.Define;
 import de.ibapl.jnhw.common.annotation.Include;
-import de.ibapl.jnhw.common.datatypes.MultiarchTupelBuilder;
+import de.ibapl.jnhw.libloader.MultiarchTupelBuilder;
 
 /**
  * Wrapper around the {@code  <sys/stat.h>} header.
@@ -39,21 +39,34 @@ public class Stat {
 
     public static interface BsdDefines {
 
-        public final static int S_IRGRP = 32;
-        public final static int S_IROTH = 4;
-        public final static int S_IRUSR = 256;
-        public final static int S_IRWXG = 56;
-        public final static int S_IRWXO = 7;
-        public final static int S_IRWXU = 448;
-        public final static int S_ISGID = 1024;
-        public final static int S_ISUID = 2048;
-        public final static int S_ISVTX = 512;
-        public final static int S_IWGRP = 16;
-        public final static int S_IWOTH = 2;
-        public final static int S_IWUSR = 128;
-        public final static int S_IXGRP = 8;
-        public final static int S_IXOTH = 1;
-        public final static int S_IXUSR = 64;
+        public final static int S_IRWXU = 00700;
+        public final static int S_IRUSR = 00400;
+        public final static int S_IWUSR = 00200;
+        public final static int S_IXUSR = 00100;
+
+        public final static int S_IRWXG = 00070;
+        public final static int S_IRGRP = 00040;
+        public final static int S_IWGRP = 00020;
+        public final static int S_IXGRP = 00010;
+
+        public final static int S_IRWXO = 00007;
+        public final static int S_IROTH = 00004;
+        public final static int S_IWOTH = 00002;
+        public final static int S_IXOTH = 00001;
+
+        public final static int S_ISUID = 0004000;
+        public final static int S_ISGID = 0002000;
+        public final static int S_ISVTX = 0001000;
+
+        //TODO dummy values
+        public final static int S_IFMT = 0;
+        public final static int S_IFBLK = 0;
+        public final static int S_IFCHR = 0;
+        public final static int S_IFIFO = 0;
+        public final static int S_IFREG = 0;
+        public final static int S_IFDIR = 0;
+        public final static int S_IFLNK = 0;
+        public final static int S_IFSOCK = 0;
     }
 
     public static interface FreeBsdDefines extends BsdDefines {
@@ -62,21 +75,34 @@ public class Stat {
 
     public static interface LinuxDefines {
 
-        public final static int S_IRGRP = 32;
-        public final static int S_IROTH = 4;
-        public final static int S_IRUSR = 256;
-        public final static int S_IRWXG = 56;
-        public final static int S_IRWXO = 7;
-        public final static int S_IRWXU = 448;
-        public final static int S_ISGID = 1024;
-        public final static int S_ISUID = 2048;
-        public final static int S_ISVTX = 512;
-        public final static int S_IWGRP = 16;
-        public final static int S_IWOTH = 2;
-        public final static int S_IWUSR = 128;
-        public final static int S_IXGRP = 8;
-        public final static int S_IXOTH = 1;
-        public final static int S_IXUSR = 64;
+        public final static int S_IFMT = 00170000;
+        public final static int S_IFBLK = 0060000;
+        public final static int S_IFCHR = 0020000;
+        public final static int S_IFIFO = 0010000;
+        public final static int S_IFREG = 0100000;
+        public final static int S_IFDIR = 0040000;
+        public final static int S_IFLNK = 0120000;
+        public final static int S_IFSOCK = 0140000;
+
+        public final static int S_ISUID = 0004000;
+        public final static int S_ISGID = 0002000;
+        public final static int S_ISVTX = 0001000;
+
+        public final static int S_IRWXU = 00700;
+        public final static int S_IRUSR = 00400;
+        public final static int S_IWUSR = 00200;
+        public final static int S_IXUSR = 00100;
+
+        public final static int S_IRWXG = 00070;
+        public final static int S_IRGRP = 00040;
+        public final static int S_IWGRP = 00020;
+        public final static int S_IXGRP = 00010;
+
+        public final static int S_IRWXO = 00007;
+        public final static int S_IROTH = 00004;
+        public final static int S_IWOTH = 00002;
+        public final static int S_IXOTH = 00001;
+
     }
 
     public static interface OpenBsdDefines extends BsdDefines {
@@ -198,6 +224,62 @@ public class Stat {
     public final static int S_IXUSR;
 
     /**
+     * <b>POSIX.XSI:</b> Type of file.
+     *
+     */
+    @Define
+    public final static int S_IFMT;
+
+    /**
+     * <b>POSIX.XSI:</b> Block special.
+     *
+     */
+    @Define
+    public final static int S_IFBLK;
+
+    /**
+     * <b>POSIX.XSI:</b> Character special.
+     *
+     */
+    @Define
+    public final static int S_IFCHR;
+
+    /**
+     * <b>POSIX.XSI:</b> FIFO special.
+     *
+     */
+    @Define
+    public final static int S_IFIFO;
+
+    /**
+     * <b>POSIX.XSI:</b> Regular.
+     *
+     */
+    @Define
+    public final static int S_IFREG;
+
+    /**
+     * <b>POSIX.XSI:</b> Directory.
+     *
+     */
+    @Define
+    public final static int S_IFDIR;
+
+    /**
+     * <b>POSIX.XSI:</b> Symbolic link.
+     *
+     */
+    @Define
+    public final static int S_IFLNK;
+
+    /**
+     * <b>POSIX.XSI:</b> Socket.
+     *
+     */
+    @Define
+    public final static int S_IFSOCK;
+
+    /**
      *
      * @implNote The actual value for the define fields are injected by
      * initFields. The static initialization block is used to set the value here
@@ -209,6 +291,15 @@ public class Stat {
         switch (MultiarchTupelBuilder.getOS()) {
             case LINUX:
                 HAVE_SYS_STAT_H = true;
+                S_IFMT = LinuxDefines.S_IFMT;
+                S_IFBLK = LinuxDefines.S_IFBLK;
+                S_IFCHR = LinuxDefines.S_IFCHR;
+                S_IFIFO = LinuxDefines.S_IFIFO;
+                S_IFREG = LinuxDefines.S_IFREG;
+                S_IFDIR = LinuxDefines.S_IFDIR;
+                S_IFLNK = LinuxDefines.S_IFLNK;
+                S_IFSOCK = LinuxDefines.S_IFSOCK;
+
                 S_IRGRP = LinuxDefines.S_IRGRP;
                 S_IROTH = LinuxDefines.S_IROTH;
                 S_IRUSR = LinuxDefines.S_IRUSR;
@@ -230,6 +321,15 @@ public class Stat {
             case FREE_BSD:
             case OPEN_BSD:
                 HAVE_SYS_STAT_H = true;
+                S_IFMT = BsdDefines.S_IFMT;
+                S_IFBLK = BsdDefines.S_IFBLK;
+                S_IFCHR = BsdDefines.S_IFCHR;
+                S_IFIFO = BsdDefines.S_IFIFO;
+                S_IFREG = BsdDefines.S_IFREG;
+                S_IFDIR = BsdDefines.S_IFDIR;
+                S_IFLNK = BsdDefines.S_IFLNK;
+                S_IFSOCK = BsdDefines.S_IFSOCK;
+
                 S_IRGRP = BsdDefines.S_IRGRP;
                 S_IROTH = BsdDefines.S_IROTH;
                 S_IRUSR = BsdDefines.S_IRUSR;

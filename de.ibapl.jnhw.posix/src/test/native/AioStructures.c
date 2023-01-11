@@ -1,6 +1,6 @@
 /*
  * JNHW - Java Native header Wrapper, https://github.com/aploese/jnhw/
- * Copyright (C) 2019-2022, Arne Plöse and individual contributors as indicated
+ * Copyright (C) 2019-2023, Arne Plöse and individual contributors as indicated
  * by the @authors tag. See the copyright.txt in the distribution for a
  * full listing of individual contributors.
  *
@@ -36,39 +36,39 @@ JNHW_ASSERT__off_t__IS__int64_t__OR__int32_t
 JNHW_ASSERT__size_t__IS__uint64_t__OR__uint32_t
 JNHW_ASSERT__ssize_t__IS__int64_t__OR__int32_t
 
-int Aiocb_alignof() {
+int32_t Aiocb_alignof() {
     return __alignof__ (struct aiocb);
 }
 
-int Aiocb_sizeof() {
+int32_t Aiocb_sizeof() {
     return sizeof (struct aiocb);
 }
 
-int Aiocb_offsetof_aio_fildes() {
+int32_t Aiocb_offsetof_aio_fildes() {
     return offsetof(struct aiocb, aio_fildes);
 }
 
-int Aiocb_offsetof_aio_offset() {
+int32_t Aiocb_offsetof_aio_offset() {
     return offsetof(struct aiocb, aio_offset);
 }
 
-int Aiocb_offsetof_aio_buf() {
+int32_t Aiocb_offsetof_aio_buf() {
     return offsetof(struct aiocb, aio_buf);
 }
 
-int Aiocb_offsetof_aio_nbytes() {
+int32_t Aiocb_offsetof_aio_nbytes() {
     return offsetof(struct aiocb, aio_nbytes);
 }
 
-int Aiocb_offsetof_aio_reqprio() {
+int32_t Aiocb_offsetof_aio_reqprio() {
     return offsetof(struct aiocb, aio_reqprio);
 }
 
-int Aiocb_offsetof_aio_sigevent() {
+int32_t Aiocb_offsetof_aio_sigevent() {
     return offsetof(struct aiocb, aio_sigevent);
 }
 
-int Aiocb_offsetof_aio_lio_opcode() {
+int32_t Aiocb_offsetof_aio_lio_opcode() {
     return offsetof(struct aiocb, aio_lio_opcode);
 }
 

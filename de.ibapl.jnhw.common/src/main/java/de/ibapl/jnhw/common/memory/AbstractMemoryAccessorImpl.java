@@ -1,6 +1,6 @@
 /*
  * JNHW - Java Native header Wrapper, https://github.com/aploese/jnhw/
- * Copyright (C) 2019-2022, Arne Plöse and individual contributors as indicated
+ * Copyright (C) 2019-2023, Arne Plöse and individual contributors as indicated
  * by the @authors tag. See the copyright.txt in the distribution for a
  * full listing of individual contributors.
  *
@@ -22,6 +22,8 @@
 package de.ibapl.jnhw.common.memory;
 
 import de.ibapl.jnhw.common.datatypes.Pointer;
+import de.ibapl.jnhw.libloader.Arch;
+import de.ibapl.jnhw.libloader.MultiarchTupelBuilder;
 import java.lang.foreign.Addressable;
 import java.lang.foreign.MemoryAddress;
 import java.lang.foreign.MemorySegment;
@@ -63,14 +65,18 @@ public sealed abstract class AbstractMemoryAccessorImpl implements MemoryAccesso
 
     public AbstractMemoryAccessorImpl(ByteOrder byteOrder) {
         LAYOUT_INT8_T = ValueLayout.JAVA_BYTE.withOrder(byteOrder);
+        LAYOUT_UINT8_T = LAYOUT_INT8_T;
         LAYOUT_INT16_T = ValueLayout.JAVA_SHORT.withOrder(byteOrder);
+        LAYOUT_UINT16_T = LAYOUT_INT16_T;
         LAYOUT_INT32_T = ValueLayout.JAVA_INT.withOrder(byteOrder);
-        LAYOUT_INT64_T = ValueLayout.JAVA_LONG.withOrder(byteOrder);
-
-        LAYOUT_UINT8_T = ValueLayout.JAVA_BYTE.withOrder(byteOrder);
-        LAYOUT_UINT16_T = ValueLayout.JAVA_SHORT.withOrder(byteOrder);
-        LAYOUT_UINT32_T = ValueLayout.JAVA_INT.withOrder(byteOrder);
-        LAYOUT_UINT64_T = ValueLayout.JAVA_LONG.withOrder(byteOrder);
+        LAYOUT_UINT32_T = LAYOUT_INT32_T;
+        //TODOO BUG OpenJDK ??? alignment in struct is 4 not 8 for memory model ILP32 at arch I386!
+        if (MultiarchTupelBuilder.getArch() == Arch.I386) {
+            LAYOUT_INT64_T = ValueLayout.JAVA_LONG.withOrder(byteOrder).withBitAlignment(32);
+        } else {
+            LAYOUT_INT64_T = ValueLayout.JAVA_LONG.withOrder(byteOrder);
+        }
+        LAYOUT_UINT64_T = LAYOUT_INT64_T;
 
         LAYOUT_ADDRESS = ValueLayout.ADDRESS.withOrder(byteOrder);
         LAYOUT_INTPTR_T = LAYOUT_ADDRESS;
@@ -81,14 +87,13 @@ public sealed abstract class AbstractMemoryAccessorImpl implements MemoryAccesso
 
     public AbstractMemoryAccessorImpl(ByteOrder byteOrder, long alignmentBits) {
         LAYOUT_INT8_T = ValueLayout.JAVA_BYTE.withOrder(byteOrder).withBitAlignment(alignmentBits);
+        LAYOUT_UINT8_T = LAYOUT_INT8_T;
         LAYOUT_INT16_T = ValueLayout.JAVA_SHORT.withOrder(byteOrder).withBitAlignment(alignmentBits);
+        LAYOUT_UINT16_T = LAYOUT_INT16_T;
         LAYOUT_INT32_T = ValueLayout.JAVA_INT.withOrder(byteOrder).withBitAlignment(alignmentBits);
+        LAYOUT_UINT32_T = LAYOUT_INT32_T;
         LAYOUT_INT64_T = ValueLayout.JAVA_LONG.withOrder(byteOrder).withBitAlignment(alignmentBits);
-
-        LAYOUT_UINT8_T = ValueLayout.JAVA_BYTE.withOrder(byteOrder).withBitAlignment(alignmentBits);
-        LAYOUT_UINT16_T = ValueLayout.JAVA_SHORT.withOrder(byteOrder).withBitAlignment(alignmentBits);
-        LAYOUT_UINT32_T = ValueLayout.JAVA_INT.withOrder(byteOrder).withBitAlignment(alignmentBits);
-        LAYOUT_UINT64_T = ValueLayout.JAVA_LONG.withOrder(byteOrder).withBitAlignment(alignmentBits);
+        LAYOUT_UINT64_T = LAYOUT_INT64_T;
 
         LAYOUT_ADDRESS = ValueLayout.ADDRESS.withOrder(byteOrder).withBitAlignment(alignmentBits);
         LAYOUT_INTPTR_T = LAYOUT_ADDRESS;

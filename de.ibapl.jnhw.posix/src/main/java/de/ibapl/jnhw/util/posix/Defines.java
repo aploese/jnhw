@@ -1,6 +1,6 @@
 /*
  * JNHW - Java Native header Wrapper, https://github.com/aploese/jnhw/
- * Copyright (C) 2019-2022, Arne Plöse and individual contributors as indicated
+ * Copyright (C) 2019-2023, Arne Plöse and individual contributors as indicated
  * by the @authors tag. See the copyright.txt in the distribution for a
  * full listing of individual contributors.
  *
@@ -22,12 +22,13 @@
 package de.ibapl.jnhw.util.posix;
 
 import de.ibapl.jnhw.common.annotation.Define;
-import de.ibapl.jnhw.common.datatypes.Arch;
 import de.ibapl.jnhw.common.datatypes.BaseDataType;
-import de.ibapl.jnhw.common.datatypes.Endianess;
-import de.ibapl.jnhw.common.datatypes.MultiarchTupelBuilder;
-import de.ibapl.jnhw.common.datatypes.OS;
 import de.ibapl.jnhw.common.util.IntDefine;
+import de.ibapl.jnhw.libloader.Arch;
+import de.ibapl.jnhw.libloader.Endianess;
+import de.ibapl.jnhw.libloader.MemoryModel;
+import de.ibapl.jnhw.libloader.MultiarchTupelBuilder;
+import de.ibapl.jnhw.libloader.OS;
 
 /**
  * get the defines with gcc: create an empty file c.c run
@@ -253,16 +254,14 @@ public class Defines {
         __alpha__ = IntDefine.UNDEFINED;
         __amd64__ = arch == Arch.X86_64 ? IntDefine.toIntDefine(1) : IntDefine.UNDEFINED;
         __arm__ = arch == Arch.ARM ? IntDefine.toIntDefine(1) : IntDefine.UNDEFINED;
-        switch (arch) {
-            case AARCH64:
-                __ARM_ARCH = IntDefine.toIntDefine(8);
-                break;
-            case ARM:
-                __ARM_ARCH = IntDefine.toIntDefine(7);
-                break;
-            default:
-                __ARM_ARCH = IntDefine.UNDEFINED;
-        }
+        __ARM_ARCH = switch (arch) {
+            case AARCH64 ->
+                IntDefine.toIntDefine(8);
+            case ARM ->
+                IntDefine.toIntDefine(7);
+            default ->
+                IntDefine.UNDEFINED;
+        };
         __i386__ = arch == Arch.I386 ? IntDefine.toIntDefine(1) : IntDefine.UNDEFINED;
         __i686__ = arch == Arch.I386 ? IntDefine.toIntDefine(1) : IntDefine.UNDEFINED;
         __mips__ = (arch == Arch.MIPS) || (arch == Arch.MIPS_64) ? IntDefine.toIntDefine(1) : IntDefine.UNDEFINED;
@@ -288,116 +287,86 @@ public class Defines {
 
         _FILE_OFFSET_BITS = IntDefine.UNDEFINED;
         switch (os) {
-            case DARWIN:
-            case FREE_BSD:
-            case OPEN_BSD:
+            case DARWIN, FREE_BSD, OPEN_BSD -> {
                 _LARGEFILE64_SOURCE = IntDefine.UNDEFINED;
                 _LARGEFILE_SOURCE = IntDefine.UNDEFINED;
-                break;
-            case LINUX:
+            }
+            case LINUX -> {
                 _LARGEFILE64_SOURCE = IntDefine.toIntDefine(1);
                 _LARGEFILE_SOURCE = IntDefine.toIntDefine(1);
-                break;
-            case WINDOWS:
+            }
+            case WINDOWS -> {
                 _LARGEFILE64_SOURCE = IntDefine.UNDEFINED;
                 _LARGEFILE_SOURCE = IntDefine.UNDEFINED;
-                break;
-            default:
+            }
+            default ->
                 throw new NoClassDefFoundError("No default value for _LARGEFILE64_SOURCE and _LARGEFILE_SOURCE " + MultiarchTupelBuilder.getMultiarch());
         }
         switch (os) {
-            case DARWIN:
-            case FREE_BSD:
-            case OPEN_BSD:
-            case LINUX:
+            case DARWIN, FREE_BSD, OPEN_BSD, LINUX -> {
                 _POSIX_C_SOURCE = IntDefine.toIntDefine(200809);
                 _XOPEN_SOURCE = IntDefine.toIntDefine(700);
                 _XOPEN_SOURCE_EXTENDED = IntDefine.toIntDefine(1);
-                break;
-            case WINDOWS:
+            }
+            case WINDOWS -> {
                 _POSIX_C_SOURCE = IntDefine.UNDEFINED;
                 _XOPEN_SOURCE = IntDefine.UNDEFINED;
                 _XOPEN_SOURCE_EXTENDED = IntDefine.UNDEFINED;
-                break;
-            default:
+            }
+            default ->
                 throw new NoClassDefFoundError("No default value for _POSIX_C_SOURCE,_XOPEN_SOURCE and _XOPEN_SOURCE_EXTENDED " + MultiarchTupelBuilder.getMultiarch());
         }
 
         switch (arch) {
-            case AARCH64:
-            case I386:
-            case MIPS_64:
-            case X86_64:
-            case POWER_PC_64:
-            case RISC_V_64:
+            case AARCH64, I386, MIPS_64, X86_64, POWER_PC_64, RISC_V_64 ->
                 __BIGGEST_ALIGNMENT__ = 16;
-                break;
-            case S390_X:
+            case S390_X ->
                 __BIGGEST_ALIGNMENT__ = 8;
-                break;
-            case ARM:
-            case MIPS:
+            case ARM, MIPS ->
                 __BIGGEST_ALIGNMENT__ = 8;
-                break;
-            default:
+            default ->
                 throw new NoClassDefFoundError("No default value for __BIGGEST_ALIGNMENT__ " + MultiarchTupelBuilder.getMultiarch());
         }
 
         switch (os) {
-            case LINUX:
+            case LINUX -> {
                 __GLIBC_MINOR__ = IntDefine.toIntDefine(36);
                 __GLIBC__ = IntDefine.toIntDefine(2);
                 __GNU_LIBRARY__ = IntDefine.toIntDefine(6);
-                break;
-            case DARWIN:
-            case FREE_BSD:
-            case OPEN_BSD:
+            }
+            case DARWIN, FREE_BSD, OPEN_BSD -> {
                 __GLIBC_MINOR__ = IntDefine.UNDEFINED;
                 __GLIBC__ = IntDefine.UNDEFINED;
                 __GNU_LIBRARY__ = IntDefine.UNDEFINED;
-                break;
-            case WINDOWS:
+            }
+            case WINDOWS -> {
                 __GLIBC_MINOR__ = IntDefine.UNDEFINED;
                 __GLIBC__ = IntDefine.UNDEFINED;
                 __GNU_LIBRARY__ = IntDefine.UNDEFINED;
-                break;
-            default:
+            }
+            default ->
                 throw new NoClassDefFoundError("No default value for __GLIBC__, __GLIBC_MINOR__ and __GNU_LIBRARY__ " + MultiarchTupelBuilder.getMultiarch());
         }
 
-        __ILP32__ = IntDefine.UNDEFINED; // glibc > 2.31? arch == Arch.I386 ? IntDefine.toIntDefine(1) : IntDefine.UNDEFINED;
-        switch (os) {
-            case WINDOWS:
-                __LP64__ = IntDefine.UNDEFINED;
-                break;
-            default:
-                switch (arch) {
-                    case AARCH64:
-                    case MIPS_64:
-                    case POWER_PC_64:
-                    case RISC_V_64:
-                    case S390_X:
-                    case SPARC_64:
-                    case X86_64:
-                        __LP64__ = IntDefine.toIntDefine(1);
-                        break;
-                    case I386:
-                    case MIPS:
-                    case ARM:
-                        __LP64__ = IntDefine.UNDEFINED;
-                        break;
-                    default:
-                        throw new NoClassDefFoundError("No default value for __LP64__  " + MultiarchTupelBuilder.getMultiarch());
-                }
-        }
+        __ILP32__ = switch (MultiarchTupelBuilder.getMemoryModel()) {
+            case ILP32 ->
+                switch (MultiarchTupelBuilder.getMultiarch()) {
+                    case MIPS_EL__LINUX__GNU, ARM__LINUX__GNU_EABI_HF ->
+                        IntDefine.UNDEFINED;
+                    default ->
+                        IntDefine.toIntDefine(1);
+                };
+            default ->
+                IntDefine.UNDEFINED;
+        };
+        __LP64__ = MultiarchTupelBuilder.getMemoryModel() == MemoryModel.LP64 ? IntDefine.toIntDefine(1) : IntDefine.UNDEFINED;
+
         switch (e) {
-            case BIG:
+            case BIG ->
                 __BYTE_ORDER__ = 4321;
-                break;
-            case LITTLE:
+            case LITTLE ->
                 __BYTE_ORDER__ = 1234;
-                break;
-            default:
+            default ->
                 throw new NoClassDefFoundError("No default value for __BYTE_ORDER__  " + MultiarchTupelBuilder.getMultiarch());
         }
         __ORDER_BIG_ENDIAN__ = 4321;
@@ -407,25 +376,29 @@ public class Defines {
         __SIZEOF_LONG__ = MultiarchTupelBuilder.getMemoryModel().sizeOf_long.sizeInByte;
         __SIZEOF_POINTER__ = MultiarchTupelBuilder.getMemoryModel().sizeOf_pointer.sizeInByte;
 
+        // __TIMESIZE = IntDefine.UNDEFINED; // glibc > 2.31? IntDefine.toIntDefine(mi.getSizeOfPointer().sizeInBit);
         //Linux
         __TIMESIZE = switch (os) {
             case LINUX ->
-                IntDefine.toIntDefine(BaseDataType.uint64_t.SIZE_OF * 8);
+                switch (MultiarchTupelBuilder.getMemoryModel()) {
+                    case ILP32 ->
+                        IntDefine.toIntDefine(BaseDataType.uint64_t.SIZE_OF * 4);
+                    case LP64 ->
+                        IntDefine.toIntDefine(BaseDataType.uint64_t.SIZE_OF * 8);
+                    default ->
+                        throw new RuntimeException("Cant handle memory model: " + MultiarchTupelBuilder.getMemoryModel());
+                };
             case WINDOWS ->
                 IntDefine.UNDEFINED;
             default ->
                 throw new NoClassDefFoundError("No default value for __TIMESIZE  " + MultiarchTupelBuilder.getMultiarch());
         };
-        // __TIMESIZE = IntDefine.UNDEFINED; // glibc > 2.31? IntDefine.toIntDefine(mi.getSizeOfPointer().sizeInBit);
-
-        switch (os) {
-            case OPEN_BSD:
-            case WINDOWS:
-                __WORDSIZE = IntDefine.UNDEFINED;
-                break;
-            default:
-                __WORDSIZE = IntDefine.toIntDefine(MultiarchTupelBuilder.getMemoryModel().sizeOf_pointer.sizeInBit);
-        }
+        __WORDSIZE = switch (os) {
+            case OPEN_BSD, WINDOWS ->
+                IntDefine.UNDEFINED;
+            default ->
+                IntDefine.toIntDefine(MultiarchTupelBuilder.getMemoryModel().sizeOf_pointer.sizeInBit);
+        };
 
     }
 

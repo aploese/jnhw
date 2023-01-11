@@ -1,6 +1,6 @@
 /*
  * JNHW - Java Native header Wrapper, https://github.com/aploese/jnhw/
- * Copyright (C) 2019-2022, Arne Plöse and individual contributors as indicated
+ * Copyright (C) 2019-2023, Arne Plöse and individual contributors as indicated
  * by the @authors tag. See the copyright.txt in the distribution for a
  * full listing of individual contributors.
  *
@@ -26,107 +26,107 @@
     //for offsetof
 #include <stddef.h>
 
-int lconv_t_alignof() {
+int32_t lconv_t_alignof() {
     return __alignof__ (struct lconv);
 }
 
-int lconv_t_sizeof() {
+int32_t lconv_t_sizeof() {
     return sizeof (struct lconv);
 }
 
-int lconv_t_offsetof_currency_symbol() {
+int32_t lconv_t_offsetof_currency_symbol() {
     return offsetof(struct lconv, currency_symbol);
 }
 
-int lconv_t_offsetof_decimal_point() {
+int32_t lconv_t_offsetof_decimal_point() {
     return offsetof(struct lconv, decimal_point);
 }
 
-int lconv_t_offsetof_frac_digits() {
+int32_t lconv_t_offsetof_frac_digits() {
     return offsetof(struct lconv, frac_digits);
 }
 
-int lconv_t_offsetof_grouping() {
+int32_t lconv_t_offsetof_grouping() {
     return offsetof(struct lconv, grouping);
 }
 
-int lconv_t_offsetof_int_curr_symbol() {
+int32_t lconv_t_offsetof_int_curr_symbol() {
     return offsetof(struct lconv, int_curr_symbol);
 }
 
-int lconv_t_offsetof_int_frac_digits() {
+int32_t lconv_t_offsetof_int_frac_digits() {
     return offsetof(struct lconv, int_frac_digits);
 }
 
-int lconv_t_offsetof_int_n_cs_precedes() {
+int32_t lconv_t_offsetof_int_n_cs_precedes() {
     return offsetof(struct lconv, int_n_cs_precedes);
 }
 
-int lconv_t_offsetof_int_n_sep_by_space() {
+int32_t lconv_t_offsetof_int_n_sep_by_space() {
     return offsetof(struct lconv, int_n_sep_by_space);
 }
 
-int lconv_t_offsetof_int_n_sign_posn() {
+int32_t lconv_t_offsetof_int_n_sign_posn() {
     return offsetof(struct lconv, int_n_sign_posn);
 }
 
-int lconv_t_offsetof_int_p_cs_precedes() {
+int32_t lconv_t_offsetof_int_p_cs_precedes() {
     return offsetof(struct lconv, int_p_cs_precedes);
 }
 
-int lconv_t_offsetof_int_p_sep_by_space() {
+int32_t lconv_t_offsetof_int_p_sep_by_space() {
     return offsetof(struct lconv, int_p_sep_by_space);
 }
 
-int lconv_t_offsetof_int_p_sign_posn() {
+int32_t lconv_t_offsetof_int_p_sign_posn() {
     return offsetof(struct lconv, int_p_sign_posn);
 }
 
-int lconv_t_offsetof_mon_decimal_point() {
+int32_t lconv_t_offsetof_mon_decimal_point() {
     return offsetof(struct lconv, mon_decimal_point);
 }
 
-int lconv_t_offsetof_mon_grouping() {
+int32_t lconv_t_offsetof_mon_grouping() {
     return offsetof(struct lconv, mon_grouping);
 }
 
-int lconv_t_offsetof_mon_thousands_sep() {
+int32_t lconv_t_offsetof_mon_thousands_sep() {
     return offsetof(struct lconv, mon_thousands_sep);
 }
 
-int lconv_t_offsetof_negative_sign() {
+int32_t lconv_t_offsetof_negative_sign() {
     return offsetof(struct lconv, negative_sign);
 }
 
-int lconv_t_offsetof_n_cs_precedes() {
+int32_t lconv_t_offsetof_n_cs_precedes() {
     return offsetof(struct lconv, n_cs_precedes);
 }
 
-int lconv_t_offsetof_n_sep_by_space() {
+int32_t lconv_t_offsetof_n_sep_by_space() {
     return offsetof(struct lconv, n_sep_by_space);
 }
 
-int lconv_t_offsetof_n_sign_posn() {
+int32_t lconv_t_offsetof_n_sign_posn() {
     return offsetof(struct lconv, n_sign_posn);
 }
 
-int lconv_t_offsetof_positive_sign() {
+int32_t lconv_t_offsetof_positive_sign() {
     return offsetof(struct lconv, positive_sign);
 }
 
-int lconv_t_offsetof_p_cs_precedes() {
+int32_t lconv_t_offsetof_p_cs_precedes() {
     return offsetof(struct lconv, p_cs_precedes);
 }
 
-int lconv_t_offsetof_p_sep_by_space() {
+int32_t lconv_t_offsetof_p_sep_by_space() {
     return offsetof(struct lconv, p_sep_by_space);
 }
 
-int lconv_t_offsetof_p_sign_posn() {
+int32_t lconv_t_offsetof_p_sign_posn() {
     return offsetof(struct lconv, p_sign_posn);
 }
 
-int lconv_t_offsetof_thousands_sep() {
+int32_t lconv_t_offsetof_thousands_sep() {
     return offsetof(struct lconv, thousands_sep);
 }
 

@@ -1,6 +1,6 @@
 /*
  * JNHW - Java Native header Wrapper, https://github.com/aploese/jnhw/
- * Copyright (C) 2019-2022, Arne Plöse and individual contributors as indicated
+ * Copyright (C) 2019-2023, Arne Plöse and individual contributors as indicated
  * by the @authors tag. See the copyright.txt in the distribution for a
  * full listing of individual contributors.
  *
@@ -24,9 +24,9 @@ package de.ibapl.jnhw.winapi;
 import de.ibapl.jnhw.common.annotation.Define;
 import de.ibapl.jnhw.common.annotation.Include;
 import de.ibapl.jnhw.common.datatypes.Pointer;
-import de.ibapl.jnhw.common.downcall.wrapper.JnhwMh_sI___A;
-import de.ibapl.jnhw.common.downcall.wrapper.JnhwMh_sI___A__A_uI_uI__A;
-import de.ibapl.jnhw.common.downcall.wrapper.JnhwMh_sI___A_uI__A__A__A__A__A__A;
+import de.ibapl.jnhw.common.downcall.JnhwMh_sI___A;
+import de.ibapl.jnhw.common.downcall.JnhwMh_sI___A__A_uI_uI__A;
+import de.ibapl.jnhw.common.downcall.JnhwMh_sI___A_uI__A__A__A__A__A__A;
 import de.ibapl.jnhw.common.exception.NativeErrorException;
 import de.ibapl.jnhw.util.winapi.Kernel32Loader;
 import de.ibapl.jnhw.util.winapi.WinApiDataType;

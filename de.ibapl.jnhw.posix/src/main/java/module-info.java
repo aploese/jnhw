@@ -1,6 +1,6 @@
 /*
  * JNHW - Java Native header Wrapper, https://github.com/aploese/jnhw/
- * Copyright (C) 2019-2022, Arne Plöse and individual contributors as indicated
+ * Copyright (C) 2019-2023, Arne Plöse and individual contributors as indicated
  * by the @authors tag. See the copyright.txt in the distribution for a
  * full listing of individual contributors.
  *
@@ -54,16 +54,23 @@ module de.ibapl.jnhw.posix {
     requires transitive de.ibapl.jnhw.common;
 
     exports de.ibapl.jnhw.annotation.linux.sys;
+    exports de.ibapl.jnhw.annotation.posix.locale;
     exports de.ibapl.jnhw.annotation.posix.poll;
+    exports de.ibapl.jnhw.annotation.posix.stdio;
     exports de.ibapl.jnhw.annotation.posix.sys.types;
     exports de.ibapl.jnhw.annotation.posix.termios;
-    exports de.ibapl.jnhw.annotation.posix.locale;
-    exports de.ibapl.jnhw.linux.sys;
     exports de.ibapl.jnhw.isoc;
+    exports de.ibapl.jnhw.linux.sys;
     exports de.ibapl.jnhw.posix;
     exports de.ibapl.jnhw.posix.sys;
     exports de.ibapl.jnhw.unix.sys;
+    exports de.ibapl.jnhw.util.linux;
     exports de.ibapl.jnhw.util.posix;
+    exports de.ibapl.jnhw.util.posix.downcall;
+    exports de.ibapl.jnhw.util.posix.downcall.foreign;
+    exports de.ibapl.jnhw.util.posix.downcall.jni;
+    exports de.ibapl.jnhw.util.posix.memory;
+    exports de.ibapl.jnhw.util.posix.nativepointer;
+    exports de.ibapl.jnhw.util.posix.upcall;
     exports de.ibapl.jnhw.x_open;
-
 }

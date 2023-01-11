@@ -1,6 +1,6 @@
 /*
  * JNHW - Java Native header Wrapper, https://github.com/aploese/jnhw/
- * Copyright (C) 2019-2022, Arne Plöse and individual contributors as indicated
+ * Copyright (C) 2019-2023, Arne Plöse and individual contributors as indicated
  * by the @authors tag. See the copyright.txt in the distribution for a
  * full listing of individual contributors.
  *
@@ -27,7 +27,7 @@ package de.ibapl.jnhw.libloader;
  * @author aploese
  */
 public enum SizeInBit {
-    _8_BIT(8), _16_BIT(16), _32_BIT(32), _64_BIT(64);
+    _8_BIT(8), _16_BIT(16), _32_BIT(32), _64_BIT(64), _128_BIT(128);
     public final int sizeInBit;
     public final int sizeInByte;
 

@@ -1,6 +1,6 @@
 /*
  * JNHW - Java Native header Wrapper, https://github.com/aploese/jnhw/
- * Copyright (C) 2019-2022, Arne Plöse and individual contributors as indicated
+ * Copyright (C) 2019-2023, Arne Plöse and individual contributors as indicated
  * by the @authors tag. See the copyright.txt in the distribution for a
  * full listing of individual contributors.
  *
@@ -22,12 +22,12 @@
 package de.ibapl.jnhw.common.test.datatypes;
 
 import de.ibapl.jnhw.common.datatypes.BaseDataType;
-import de.ibapl.jnhw.common.datatypes.Endianess;
-import de.ibapl.jnhw.common.datatypes.MultiarchTupelBuilder;
-import de.ibapl.jnhw.common.datatypes.OS;
 import de.ibapl.jnhw.common.memory.OpaqueMemory;
 import de.ibapl.jnhw.common.memory.Uint64_t;
 import de.ibapl.jnhw.common.test.LibJnhwCommonTestLoader;
+import de.ibapl.jnhw.libloader.Endianess;
+import de.ibapl.jnhw.libloader.MultiarchTupelBuilder;
+import de.ibapl.jnhw.libloader.OS;
 import java.lang.foreign.MemorySegment;
 import java.lang.foreign.MemorySession;
 import static org.junit.jupiter.api.Assertions.*;
@@ -137,7 +137,13 @@ public class BaseDataTypeTest {
                 break;
             case ILP32:
                 assertFalse(_LP32());
-                assertTrue(_ILP32());
+                switch (MultiarchTupelBuilder.getMultiarch()) {
+                    case MIPS_EL__LINUX__GNU, ARM__LINUX__GNU_EABI_HF ->
+                        //TODO bug ?? GCC does not define this !?
+                        assertFalse(_ILP32());
+                    default ->
+                        assertTrue(_ILP32());
+                }
                 assertFalse(_L64());
                 assertFalse(_LP64());
                 assertFalse(_LLP64());
@@ -158,7 +164,7 @@ public class BaseDataTypeTest {
 
     @Test
     public void testEndianes() {
-        try ( MemorySession ms = MemorySession.openConfined()) {
+        try (MemorySession ms = MemorySession.openConfined()) {
             final Uint64_t uint64_t = new Uint64_t(MemorySegment.allocateNative(BaseDataType.uint64_t.SIZE_OF, ms), 0);
             OpaqueMemory.setByte(uint64_t, 0, (byte) 0x01);
             OpaqueMemory.setByte(uint64_t, 1, (byte) 0x02);

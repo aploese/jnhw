@@ -1,6 +1,6 @@
 /*
  * JNHW - Java Native header Wrapper, https://github.com/aploese/jnhw/
- * Copyright (C) 2019-2022, Arne Plöse and individual contributors as indicated
+ * Copyright (C) 2019-2023, Arne Plöse and individual contributors as indicated
  * by the @authors tag. See the copyright.txt in the distribution for a
  * full listing of individual contributors.
  *
@@ -21,11 +21,11 @@
  */
 package de.ibapl.jnhw.posix;
 
-import de.ibapl.jnhw.common.datatypes.MultiarchTupelBuilder;
-import de.ibapl.jnhw.common.datatypes.OS;
 import de.ibapl.jnhw.common.exception.NativeErrorException;
 import de.ibapl.jnhw.common.exception.NoSuchNativeMethodException;
 import de.ibapl.jnhw.common.exception.NoSuchNativeTypeMemberException;
+import de.ibapl.jnhw.libloader.MultiarchTupelBuilder;
+import de.ibapl.jnhw.libloader.OS;
 import de.ibapl.jnhw.util.posix.DefinesTest;
 import java.lang.foreign.MemorySession;
 import org.junit.jupiter.api.AfterEach;
@@ -69,25 +69,25 @@ public class SchedTest {
         }
         Assertions.assertAll(
                 () -> {
-                    Assertions.assertEquals(LibJnhwPosixTestLoader.invokeExact_Int_V("Sched_param_sizeof"), Sched.Sched_param.sizeof, "sizeof");
+                    Assertions.assertEquals(LibJnhwPosixTestLoader.invoke_sI___V("Sched_param_sizeof"), Sched.Sched_param.sizeof, "sizeof");
                 },
                 () -> {
-                    Assertions.assertEquals(LibJnhwPosixTestLoader.invokeExact_Int_V("Sched_param_alignof"), Sched.Sched_param.alignof.alignof, "alignof");
+                    Assertions.assertEquals(LibJnhwPosixTestLoader.invoke_sI___V("Sched_param_alignof"), Sched.Sched_param.alignof.alignof, "alignof");
                 },
                 () -> {
-                    Assertions.assertEquals(LibJnhwPosixTestLoader.invokeExact_Int_V("Sched_param_offsetof_sched_priority"), Sched.Sched_param.offsetof_Sched_priority, "offsetof_Sched_priority");
+                    Assertions.assertEquals(LibJnhwPosixTestLoader.invoke_sI___V("Sched_param_offsetof_sched_priority"), Sched.Sched_param.offsetof_Sched_priority, "offsetof_Sched_priority");
                 },
                 () -> {
-                    Assertions.assertEquals(LibJnhwPosixTestLoader.invokeExact_Int_V("Sched_param_offsetof_sched_ss_init_budget"), Sched.Sched_param.offsetof_Sched_ss_init_budget, "offsetof_Sched_ss_init_budget");
+                    Assertions.assertEquals(LibJnhwPosixTestLoader.invoke_sI___V("Sched_param_offsetof_sched_ss_init_budget"), Sched.Sched_param.offsetof_Sched_ss_init_budget, "offsetof_Sched_ss_init_budget");
                 },
                 () -> {
-                    Assertions.assertEquals(LibJnhwPosixTestLoader.invokeExact_Int_V("Sched_param_offsetof_sched_ss_low_priority"), Sched.Sched_param.offsetof_Sched_ss_low_priority, "offsetof_Sched_ss_low_priority");
+                    Assertions.assertEquals(LibJnhwPosixTestLoader.invoke_sI___V("Sched_param_offsetof_sched_ss_low_priority"), Sched.Sched_param.offsetof_Sched_ss_low_priority, "offsetof_Sched_ss_low_priority");
                 },
                 () -> {
-                    Assertions.assertEquals(LibJnhwPosixTestLoader.invokeExact_Int_V("Sched_param_offsetof_sched_ss_max_repl"), Sched.Sched_param.offsetof_Sched_ss_max_repl, "offsetof_Sched_ss_max_repl");
+                    Assertions.assertEquals(LibJnhwPosixTestLoader.invoke_sI___V("Sched_param_offsetof_sched_ss_max_repl"), Sched.Sched_param.offsetof_Sched_ss_max_repl, "offsetof_Sched_ss_max_repl");
                 },
                 () -> {
-                    Assertions.assertEquals(LibJnhwPosixTestLoader.invokeExact_Int_V("Sched_param_offsetof_sched_ss_repl_period"), Sched.Sched_param.offsetof_Sched_ss_repl_period, "offsetof_Sched_ss_repl_period");
+                    Assertions.assertEquals(LibJnhwPosixTestLoader.invoke_sI___V("Sched_param_offsetof_sched_ss_repl_period"), Sched.Sched_param.offsetof_Sched_ss_repl_period, "offsetof_Sched_ss_repl_period");
                 }
         );
     }

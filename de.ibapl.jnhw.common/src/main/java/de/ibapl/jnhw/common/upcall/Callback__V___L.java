@@ -1,6 +1,6 @@
 /*
  * JNHW - Java Native header Wrapper, https://github.com/aploese/jnhw/
- * Copyright (C) 2019-2022, Arne Plöse and individual contributors as indicated
+ * Copyright (C) 2019-2023, Arne Plöse and individual contributors as indicated
  * by the @authors tag. See the copyright.txt in the distribution for a
  * full listing of individual contributors.
  *
@@ -22,12 +22,12 @@
 package de.ibapl.jnhw.common.upcall;
 
 import de.ibapl.jnhw.common.nativepointer.FunctionPtr__V___L;
+import java.lang.foreign.MemoryAddress;
 import java.lang.ref.WeakReference;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.ListIterator;
 import java.util.function.Function;
-import java.lang.foreign.MemoryAddress;
 
 /**
  *
@@ -73,19 +73,31 @@ public abstract class Callback__V___L extends FunctionPtr__V___L {
         return null;
     }
 
+    /**
+     * new instance for that the native => java bridge must be obtaind by the
+     * caller.
+     */
     protected <T extends Callback__V___L> Callback__V___L(Function<T, MemoryAddress> producer) {
         super(producer);
         REFS.add(new WeakReference<>(this));
     }
 
-    protected Callback__V___L(MemoryAddress src) {
-        super(src);
+    protected Callback__V___L(MemoryAddress address) {
+        super(address);
         REFS.add(new WeakReference<>(this));
     }
 
+    /**
+     * new instance that will be registerd at the CallbackFactory__V___L.
+     *
+     */
     public Callback__V___L() {
         super(CallbackFactory__V___L::aquire);
         REFS.add(new WeakReference<>(this));
+    }
+
+    public void release() {
+        CallbackFactory__V___L.release(this);
     }
 
     /**

@@ -1,6 +1,6 @@
 /*
  * JNHW - Java Native header Wrapper, https://github.com/aploese/jnhw/
- * Copyright (C) 2019-2022, Arne Plöse and individual contributors as indicated
+ * Copyright (C) 2019-2023, Arne Plöse and individual contributors as indicated
  * by the @authors tag. See the copyright.txt in the distribution for a
  * full listing of individual contributors.
  *
@@ -27,13 +27,12 @@ import de.ibapl.jnhw.annotation.posix.sys.types.ssize_t;
 import de.ibapl.jnhw.common.annotation.Define;
 import de.ibapl.jnhw.common.annotation.Include;
 import de.ibapl.jnhw.common.datatypes.BaseDataType;
-import de.ibapl.jnhw.common.datatypes.MultiarchTupelBuilder;
 import de.ibapl.jnhw.common.datatypes.Pointer;
-import de.ibapl.jnhw.common.downcall.wrapper.JnhwMh_sI___A;
-import de.ibapl.jnhw.common.downcall.wrapper.JnhwMh_sI___A_sI__A;
-import de.ibapl.jnhw.common.downcall.wrapper.JnhwMh_sI__sI__A;
-import de.ibapl.jnhw.common.downcall.wrapper.JnhwMh_sI__sI__A_sI__A;
-import de.ibapl.jnhw.common.downcall.wrapper.JnhwMh_sL___A;
+import de.ibapl.jnhw.common.downcall.JnhwMh_sI___A;
+import de.ibapl.jnhw.common.downcall.JnhwMh_sI___A_sI__A;
+import de.ibapl.jnhw.common.downcall.JnhwMh_sI__sI__A;
+import de.ibapl.jnhw.common.downcall.JnhwMh_sI__sI__A_sI__A;
+import de.ibapl.jnhw.common.downcall.JnhwMh_sL___A;
 import de.ibapl.jnhw.common.exception.NativeErrorException;
 import de.ibapl.jnhw.common.exception.NoSuchNativeMethodException;
 import de.ibapl.jnhw.common.exception.NoSuchNativeTypeException;
@@ -42,6 +41,7 @@ import de.ibapl.jnhw.common.memory.PointerArray;
 import de.ibapl.jnhw.common.memory.layout.Alignment;
 import de.ibapl.jnhw.common.util.IntDefine;
 import de.ibapl.jnhw.common.util.JsonStringBuilder;
+import de.ibapl.jnhw.libloader.MultiarchTupelBuilder;
 import de.ibapl.jnhw.posix.Signal.Sigevent;
 import de.ibapl.jnhw.posix.Time.Timespec;
 import de.ibapl.jnhw.util.posix.LibrtLoader;

@@ -1,6 +1,6 @@
 /*
  * JNHW - Java Native header Wrapper, https://github.com/aploese/jnhw/
- * Copyright (C) 2019-2022, Arne Plöse and individual contributors as indicated
+ * Copyright (C) 2019-2023, Arne Plöse and individual contributors as indicated
  * by the @authors tag. See the copyright.txt in the distribution for a
  * full listing of individual contributors.
  *
@@ -27,11 +27,11 @@ import de.ibapl.jnhw.annotation.winapi.basetsd.WORD;
 import de.ibapl.jnhw.common.annotation.Define;
 import de.ibapl.jnhw.common.annotation.Include;
 import de.ibapl.jnhw.common.datatypes.Pointer;
-import de.ibapl.jnhw.common.downcall.wrapper.JnhwMh__B___A;
-import de.ibapl.jnhw.common.downcall.wrapper.JnhwMh__B___A__A;
-import de.ibapl.jnhw.common.downcall.wrapper.JnhwMh__B___A__A__A;
-import de.ibapl.jnhw.common.downcall.wrapper.JnhwMh__B___A__A_uI;
-import de.ibapl.jnhw.common.downcall.wrapper.JnhwMh__B___A_uI;
+import de.ibapl.jnhw.common.downcall.JnhwMh_BL___A;
+import de.ibapl.jnhw.common.downcall.JnhwMh_BL___A__A;
+import de.ibapl.jnhw.common.downcall.JnhwMh_BL___A__A__A;
+import de.ibapl.jnhw.common.downcall.JnhwMh_BL___A__A_uI;
+import de.ibapl.jnhw.common.downcall.JnhwMh_BL___A_uI;
 import de.ibapl.jnhw.common.exception.NativeErrorException;
 import de.ibapl.jnhw.common.memory.Int32_t;
 import de.ibapl.jnhw.common.memory.Uint32_t;
@@ -1214,7 +1214,7 @@ public abstract class Winbase {
     @Define
     public final static int WAIT_OBJECT_0 = Winnt.STATUS_WAIT_0;
 
-    private final static JnhwMh__B___A__A_uI BindIoCompletionCallback = JnhwMh__B___A__A_uI.of(
+    private final static JnhwMh_BL___A__A_uI BindIoCompletionCallback = JnhwMh_BL___A__A_uI.of(
             Kernel32Loader.DLL_KERNEL32_SYMBOL_LOOKUP,
             "BindIoCompletionCallback",
             WinApiDataType.BOOL,
@@ -1222,13 +1222,13 @@ public abstract class Winbase {
             WinApiDataType.LPOVERLAPPED_COMPLETION_ROUTINE,
             WinApiDataType.ULONG);
 
-    private final static JnhwMh__B___A ClearCommBreak = JnhwMh__B___A.of(
+    private final static JnhwMh_BL___A ClearCommBreak = JnhwMh_BL___A.of(
             Kernel32Loader.DLL_KERNEL32_SYMBOL_LOOKUP,
             "ClearCommBreak",
             WinApiDataType.BOOL,
             WinApiDataType.HANDLE);
 
-    private final static JnhwMh__B___A__A__A ClearCommError = JnhwMh__B___A__A__A.of(
+    private final static JnhwMh_BL___A__A__A ClearCommError = JnhwMh_BL___A__A__A.of(
             Kernel32Loader.DLL_KERNEL32_SYMBOL_LOOKUP,
             "ClearCommError",
             WinApiDataType.BOOL,
@@ -1236,55 +1236,55 @@ public abstract class Winbase {
             WinApiDataType.LPDWORD,
             WinApiDataType.LPCOMSTAT);
 
-    private final static JnhwMh__B___A_uI EscapeCommFunction = JnhwMh__B___A_uI.of(
+    private final static JnhwMh_BL___A_uI EscapeCommFunction = JnhwMh_BL___A_uI.of(
             Kernel32Loader.DLL_KERNEL32_SYMBOL_LOOKUP,
             "EscapeCommFunction",
             WinApiDataType.BOOL,
             WinApiDataType.HANDLE,
             WinApiDataType.DWORD);
 
-    private final static JnhwMh__B___A__A GetCommModemStatus = JnhwMh__B___A__A.of(
+    private final static JnhwMh_BL___A__A GetCommModemStatus = JnhwMh_BL___A__A.of(
             Kernel32Loader.DLL_KERNEL32_SYMBOL_LOOKUP,
             "GetCommModemStatus",
             WinApiDataType.BOOL,
             WinApiDataType.HANDLE,
             WinApiDataType.LPDWORD);
 
-    private final static JnhwMh__B___A__A GetCommState = JnhwMh__B___A__A.of(
+    private final static JnhwMh_BL___A__A GetCommState = JnhwMh_BL___A__A.of(
             Kernel32Loader.DLL_KERNEL32_SYMBOL_LOOKUP,
             "GetCommState",
             WinApiDataType.BOOL,
             WinApiDataType.HANDLE,
             WinApiDataType.LPDCB);
 
-    private final static JnhwMh__B___A__A GetCommTimeouts = JnhwMh__B___A__A.of(
+    private final static JnhwMh_BL___A__A GetCommTimeouts = JnhwMh_BL___A__A.of(
             Kernel32Loader.DLL_KERNEL32_SYMBOL_LOOKUP,
             "GetCommTimeouts",
             WinApiDataType.BOOL,
             WinApiDataType.HANDLE,
             WinApiDataType.LPDCB);
 
-    private final static JnhwMh__B___A SetCommBreak = JnhwMh__B___A.of(
+    private final static JnhwMh_BL___A SetCommBreak = JnhwMh_BL___A.of(
             Kernel32Loader.DLL_KERNEL32_SYMBOL_LOOKUP,
             "SetCommBreak",
             WinApiDataType.BOOL,
             WinApiDataType.HANDLE);
 
-    private final static JnhwMh__B___A__A SetCommState = JnhwMh__B___A__A.of(
+    private final static JnhwMh_BL___A__A SetCommState = JnhwMh_BL___A__A.of(
             Kernel32Loader.DLL_KERNEL32_SYMBOL_LOOKUP,
             "SetCommState",
             WinApiDataType.BOOL,
             WinApiDataType.HANDLE,
             WinApiDataType.LPDCB);
 
-    private final static JnhwMh__B___A__A SetCommTimeouts = JnhwMh__B___A__A.of(
+    private final static JnhwMh_BL___A__A SetCommTimeouts = JnhwMh_BL___A__A.of(
             Kernel32Loader.DLL_KERNEL32_SYMBOL_LOOKUP,
             "SetCommTimeouts",
             WinApiDataType.BOOL,
             WinApiDataType.HANDLE,
             WinApiDataType.LPDCB);
 
-    private final static JnhwMh__B___A_uI SetFileCompletionNotificationModes = JnhwMh__B___A_uI.of(
+    private final static JnhwMh_BL___A_uI SetFileCompletionNotificationModes = JnhwMh_BL___A_uI.of(
             Kernel32Loader.DLL_KERNEL32_SYMBOL_LOOKUP,
             "SetFileCompletionNotificationModes",
             WinApiDataType.BOOL,
@@ -1305,7 +1305,7 @@ public abstract class Winbase {
      */
     //TODO Test
     public final static void BindIoCompletionCallback(HANDLE FileHandle, Minwinbase.LPOVERLAPPED_COMPLETION_ROUTINE Function, int Flags) throws NativeErrorException {
-        if (!BindIoCompletionCallback.invoke__B___P__P_uI(FileHandle, Function, Flags)) {
+        if (!BindIoCompletionCallback.invoke_BL___P__P_uI(FileHandle, Function, Flags)) {
             throw new NativeErrorException(Errhandlingapi.GetLastError());
         }
     }
@@ -1323,7 +1323,7 @@ public abstract class Winbase {
      * indicates an error.
      */
     public final static void ClearCommBreak(HANDLE hFile) throws NativeErrorException {
-        if (!ClearCommBreak.invoke__B___P(hFile)) {
+        if (!ClearCommBreak.invoke_BL___P(hFile)) {
             throw new NativeErrorException(Errhandlingapi.GetLastError());
         }
     }
@@ -1348,7 +1348,7 @@ public abstract class Winbase {
      * indicates an error.
      */
     public final static void ClearCommError(HANDLE hFile, Int32_t lpErrors, COMSTAT lpStat) throws NativeErrorException {
-        if (!ClearCommError.invoke__B___P__P__P(hFile, lpErrors != null ? lpErrors : Pointer.NULL, lpStat != null ? lpStat : Pointer.NULL)) {
+        if (!ClearCommError.invoke_BL___P__P__P(hFile, lpErrors != null ? lpErrors : Pointer.NULL, lpStat != null ? lpStat : Pointer.NULL)) {
             throw new NativeErrorException(Errhandlingapi.GetLastError());
         }
     }
@@ -1369,7 +1369,7 @@ public abstract class Winbase {
      * indicates an error.
      */
     public final static void EscapeCommFunction(HANDLE hFile, int dwFunc) throws NativeErrorException {
-        if (!EscapeCommFunction.invoke__B___P_uI(hFile, dwFunc)) {
+        if (!EscapeCommFunction.invoke_BL___P_uI(hFile, dwFunc)) {
             throw new NativeErrorException(Errhandlingapi.GetLastError());
         }
     }
@@ -1390,7 +1390,7 @@ public abstract class Winbase {
      * indicates an error.
      */
     public final static void GetCommModemStatus(HANDLE hFile, Uint32_t lpModemStat) throws NativeErrorException {
-        if (!GetCommModemStatus.invoke__B___P__P(hFile, lpModemStat)) {
+        if (!GetCommModemStatus.invoke_BL___P__P(hFile, lpModemStat)) {
             throw new NativeErrorException(Errhandlingapi.GetLastError());
         }
     }
@@ -1410,7 +1410,7 @@ public abstract class Winbase {
      * indicates an error.
      */
     public final static void GetCommState(HANDLE hFile, DCB lpDCB) throws NativeErrorException {
-        if (!GetCommState.invoke__B___P__P(hFile, lpDCB)) {
+        if (!GetCommState.invoke_BL___P__P(hFile, lpDCB)) {
             throw new NativeErrorException(Errhandlingapi.GetLastError());
         }
     }
@@ -1430,7 +1430,7 @@ public abstract class Winbase {
      * indicates an error.
      */
     public final static void GetCommTimeouts(HANDLE hFile, COMMTIMEOUTS lpCommTimeouts) throws NativeErrorException {
-        if (!GetCommTimeouts.invoke__B___P__P(hFile, lpCommTimeouts)) {
+        if (!GetCommTimeouts.invoke_BL___P__P(hFile, lpCommTimeouts)) {
             throw new NativeErrorException(Errhandlingapi.GetLastError());
         }
     }
@@ -1449,7 +1449,7 @@ public abstract class Winbase {
      * indicates an error.
      */
     public final static void SetCommBreak(HANDLE hFile) throws NativeErrorException {
-        if (!SetCommBreak.invoke__B___P(hFile)) {
+        if (!SetCommBreak.invoke_BL___P(hFile)) {
             throw new NativeErrorException(Errhandlingapi.GetLastError());
         }
     }
@@ -1469,7 +1469,7 @@ public abstract class Winbase {
      * indicates an error.
      */
     public final static void SetCommState(HANDLE hFile, DCB lpDCB) throws NativeErrorException {
-        if (!SetCommState.invoke__B___P__P(hFile, lpDCB)) {
+        if (!SetCommState.invoke_BL___P__P(hFile, lpDCB)) {
             throw new NativeErrorException(Errhandlingapi.GetLastError());
         }
     }
@@ -1489,7 +1489,7 @@ public abstract class Winbase {
      * indicates an error.
      */
     public final static void SetCommTimeouts(HANDLE hFile, COMMTIMEOUTS lpCommTimeouts) throws NativeErrorException {
-        if (!SetCommTimeouts.invoke__B___P__P(hFile, lpCommTimeouts)) {
+        if (!SetCommTimeouts.invoke_BL___P__P(hFile, lpCommTimeouts)) {
             throw new NativeErrorException(Errhandlingapi.GetLastError());
         }
     }
@@ -1506,7 +1506,7 @@ public abstract class Winbase {
      */
     //TODO Test
     public final static void SetFileCompletionNotificationModes(HANDLE hFile, byte uFlags) throws NativeErrorException {
-        if (!SetFileCompletionNotificationModes.invoke__B___P_uI(hFile, uFlags)) {
+        if (!SetFileCompletionNotificationModes.invoke_BL___P_uI(hFile, uFlags)) {
             throw new NativeErrorException(Errhandlingapi.GetLastError());
         }
     }

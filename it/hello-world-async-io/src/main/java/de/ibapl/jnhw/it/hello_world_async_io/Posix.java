@@ -1,6 +1,6 @@
 /*
  * JNHW - Java Native header Wrapper, https://github.com/aploese/jnhw/
- * Copyright (C) 2019-2022, Arne Plöse and individual contributors as indicated
+ * Copyright (C) 2019-2023, Arne Plöse and individual contributors as indicated
  * by the @authors tag. See the copyright.txt in the distribution for a
  * full listing of individual contributors.
  *
@@ -26,7 +26,6 @@ import de.ibapl.jnhw.common.exception.NoSuchNativeMethodException;
 import de.ibapl.jnhw.common.exception.NoSuchNativeTypeException;
 import de.ibapl.jnhw.common.memory.MemoryHeap;
 import de.ibapl.jnhw.common.memory.OpaqueMemory;
-import de.ibapl.jnhw.common.upcall.Callback__V__MA;
 import de.ibapl.jnhw.common.util.OutputStreamAppender;
 import de.ibapl.jnhw.posix.Aio;
 import de.ibapl.jnhw.posix.Errno;
@@ -35,11 +34,13 @@ import de.ibapl.jnhw.posix.Pthread;
 import de.ibapl.jnhw.posix.Signal;
 import de.ibapl.jnhw.posix.StringHeader;
 import de.ibapl.jnhw.posix.Unistd;
+import de.ibapl.jnhw.util.posix.upcall.Callback__V__UnionSigval;
 import java.io.File;
 import java.io.IOException;
 import java.lang.foreign.MemoryAddress;
 import java.lang.foreign.MemorySegment;
 import java.lang.foreign.MemorySession;
+import java.util.function.ToIntFunction;
 
 public class Posix {
 
@@ -51,11 +52,11 @@ public class Posix {
     final Object[] objRef = new Object[1];
 
     //This is the callback to be called from the native side.
-    final Callback__V__MA<Aio.Aiocb> callback = new Callback__V__MA<>() {
+    final Callback__V__UnionSigval<Aio.Aiocb> callback = new Callback__V__UnionSigval<>() {
 
         @Override
         @SuppressWarnings("unchecked")
-        protected void callback(MemoryAddress address) {
+        protected void callback(MemoryAddress sival_ptr, int sival_int) {
             debugThread("Enter callback");
             try {
                 int errno = Aio.aio_error(aiocb);

@@ -1,6 +1,6 @@
 /*
  * JNHW - Java Native header Wrapper, https://github.com/aploese/jnhw/
- * Copyright (C) 2019-2022, Arne Plöse and individual contributors as indicated
+ * Copyright (C) 2019-2023, Arne Plöse and individual contributors as indicated
  * by the @authors tag. See the copyright.txt in the distribution for a
  * full listing of individual contributors.
  *
@@ -30,23 +30,22 @@ import de.ibapl.jnhw.annotation.posix.sys.types.timer_t;
 import de.ibapl.jnhw.common.annotation.Define;
 import de.ibapl.jnhw.common.annotation.Include;
 import de.ibapl.jnhw.common.datatypes.BaseDataType;
-import de.ibapl.jnhw.common.datatypes.MultiarchTupelBuilder;
 import de.ibapl.jnhw.common.datatypes.Pointer;
-import de.ibapl.jnhw.common.downcall.wrapper.JnhwMh_MA___A;
-import de.ibapl.jnhw.common.downcall.wrapper.JnhwMh_MA___A__A;
-import de.ibapl.jnhw.common.downcall.wrapper.JnhwMh__A___A__A__A;
-import de.ibapl.jnhw.common.downcall.wrapper.JnhwMh__D__sL_sL;
-import de.ibapl.jnhw.common.downcall.wrapper.JnhwMh__V___V;
-import de.ibapl.jnhw.common.downcall.wrapper.JnhwMh_sI___A;
-import de.ibapl.jnhw.common.downcall.wrapper.JnhwMh_sI___A__A;
-import de.ibapl.jnhw.common.downcall.wrapper.JnhwMh_sI___A_sI__A__A;
-import de.ibapl.jnhw.common.downcall.wrapper.JnhwMh_sI___A_uL__A__A;
-import de.ibapl.jnhw.common.downcall.wrapper.JnhwMh_sI___A_uL__A__A__A;
-import de.ibapl.jnhw.common.downcall.wrapper.JnhwMh_sI__sI__A;
-import de.ibapl.jnhw.common.downcall.wrapper.JnhwMh_sI__sI__A__A;
-import de.ibapl.jnhw.common.downcall.wrapper.JnhwMh_sI__sI_sI__A__A;
-import de.ibapl.jnhw.common.downcall.wrapper.JnhwMh_sL___A;
-import de.ibapl.jnhw.common.downcall.wrapper.JnhwMh_sL___V;
+import de.ibapl.jnhw.common.downcall.JnhwMh_MA___A;
+import de.ibapl.jnhw.common.downcall.JnhwMh_MA___A__A;
+import de.ibapl.jnhw.common.downcall.JnhwMh_MA___A__A__A;
+import de.ibapl.jnhw.common.downcall.JnhwMh__D__sL_sL;
+import de.ibapl.jnhw.common.downcall.JnhwMh__V___V;
+import de.ibapl.jnhw.common.downcall.JnhwMh_sI___A;
+import de.ibapl.jnhw.common.downcall.JnhwMh_sI___A__A;
+import de.ibapl.jnhw.common.downcall.JnhwMh_sI___A_sI__A__A;
+import de.ibapl.jnhw.common.downcall.JnhwMh_sI___A_uL__A__A;
+import de.ibapl.jnhw.common.downcall.JnhwMh_sI___A_uL__A__A__A;
+import de.ibapl.jnhw.common.downcall.JnhwMh_sI__sI__A;
+import de.ibapl.jnhw.common.downcall.JnhwMh_sI__sI__A__A;
+import de.ibapl.jnhw.common.downcall.JnhwMh_sI__sI_sI__A__A;
+import de.ibapl.jnhw.common.downcall.JnhwMh_sL___A;
+import de.ibapl.jnhw.common.downcall.JnhwMh_sL___V;
 import de.ibapl.jnhw.common.exception.NativeErrorException;
 import de.ibapl.jnhw.common.exception.NativeException;
 import de.ibapl.jnhw.common.exception.NoSuchNativeMethodException;
@@ -57,14 +56,15 @@ import de.ibapl.jnhw.common.memory.Struct;
 import de.ibapl.jnhw.common.memory.layout.Alignment;
 import de.ibapl.jnhw.common.util.IntDefine;
 import de.ibapl.jnhw.common.util.JsonStringBuilder;
+import de.ibapl.jnhw.libloader.MultiarchTupelBuilder;
 import de.ibapl.jnhw.posix.Signal.Sigevent;
 import de.ibapl.jnhw.posix.sys.Types;
 import de.ibapl.jnhw.posix.sys.Types.Clockid_t;
+import de.ibapl.jnhw.util.posix.LibcLoader;
 import de.ibapl.jnhw.util.posix.LibrtLoader;
 import de.ibapl.jnhw.util.posix.PosixDataType;
 import de.ibapl.jnhw.util.posix.memory.PosixStruct;
 import java.io.IOException;
-import java.lang.foreign.Linker;
 import java.lang.foreign.MemoryAddress;
 import java.lang.foreign.MemorySegment;
 import java.lang.foreign.MemorySession;
@@ -835,39 +835,46 @@ public class Time {
     }
 
     private final static JnhwMh_MA___A asctime = JnhwMh_MA___A.of(
+            LibcLoader.LIB_C_SYMBOL_LOOKUP,
             "asctime",
             BaseDataType.C_char_pointer,
             BaseDataType.C_const_struct_pointer);
 
     private final static JnhwMh_MA___A__A asctime_r = JnhwMh_MA___A__A.of(
+            LibcLoader.LIB_C_SYMBOL_LOOKUP,
             "asctime_r",
             BaseDataType.C_char_pointer,
             BaseDataType.C_const_struct_pointer,
             BaseDataType.C_char_pointer);
 
     private final static JnhwMh_sL___V clock = JnhwMh_sL___V.of(
+            LibcLoader.LIB_C_SYMBOL_LOOKUP,
             "clock",
             PosixDataType.clock_t);
 
     private final static JnhwMh_sI__sI__A clock_getcpuclockid = JnhwMh_sI__sI__A.ofOrNull(
+            LibcLoader.LIB_C_SYMBOL_LOOKUP,
             "clock_getcpuclockid",
             BaseDataType.C_int,
             PosixDataType.pid_t,
             PosixDataType.clockid_t_ptr);
 
     private final static JnhwMh_sI__sI__A clock_getres = JnhwMh_sI__sI__A.of(
+            LibcLoader.LIB_C_SYMBOL_LOOKUP,
             "clock_getres",
             BaseDataType.C_int,
             PosixDataType.clockid_t,
             BaseDataType.C_struct_pointer);
 
     private final static JnhwMh_sI__sI__A clock_gettime = JnhwMh_sI__sI__A.of(
+            LibcLoader.LIB_C_SYMBOL_LOOKUP,
             "clock_gettime",
             BaseDataType.C_int,
             PosixDataType.clockid_t,
             BaseDataType.C_struct_pointer);
 
     private final static JnhwMh_sI__sI_sI__A__A clock_nanosleep = JnhwMh_sI__sI_sI__A__A.ofOrNull(
+            LibcLoader.LIB_C_SYMBOL_LOOKUP,
             "clock_nanosleep",
             BaseDataType.C_int,
             PosixDataType.clockid_t,
@@ -876,67 +883,79 @@ public class Time {
             BaseDataType.C_struct_pointer);
 
     private final static JnhwMh_sI__sI__A clock_settime = JnhwMh_sI__sI__A.of(
+            LibcLoader.LIB_C_SYMBOL_LOOKUP,
             "clock_settime",
             BaseDataType.C_int,
             PosixDataType.clockid_t,
             BaseDataType.C_const_struct_pointer);
 
     private final static JnhwMh_MA___A ctime = JnhwMh_MA___A.of(
+            LibcLoader.LIB_C_SYMBOL_LOOKUP,
             "ctime",
             BaseDataType.C_char_pointer,
             BaseDataType.C_const_pointer);
 
     private final static JnhwMh_MA___A__A ctime_r = JnhwMh_MA___A__A.of(
+            LibcLoader.LIB_C_SYMBOL_LOOKUP,
             "ctime_r",
             BaseDataType.C_char_pointer,
             BaseDataType.C_const_pointer,
             BaseDataType.C_char_pointer);
 
     private final static JnhwMh__D__sL_sL difftime = JnhwMh__D__sL_sL.of(
+            LibcLoader.LIB_C_SYMBOL_LOOKUP,
             "difftime",
             BaseDataType._double,
             PosixDataType.time_t,
             PosixDataType.time_t);
 
     private final static JnhwMh_MA___A getdate = JnhwMh_MA___A.ofOrNull(
+            LibcLoader.LIB_C_SYMBOL_LOOKUP,
             "getdate",
             BaseDataType.C_struct_pointer,
             BaseDataType.C_char_pointer);
 
     private final static JnhwMh_MA___A gmtime = JnhwMh_MA___A.of(
+            LibcLoader.LIB_C_SYMBOL_LOOKUP,
             "gmtime",
             BaseDataType.C_struct_pointer,
             BaseDataType.C_pointer);
 
     private final static JnhwMh_MA___A__A gmtime_r = JnhwMh_MA___A__A.of(
+            LibcLoader.LIB_C_SYMBOL_LOOKUP,
             "gmtime_r",
             BaseDataType.C_struct_pointer,
             BaseDataType.C_pointer,
             BaseDataType.C_struct_pointer);
 
     private final static JnhwMh_MA___A localtime = JnhwMh_MA___A.of(
+            LibcLoader.LIB_C_SYMBOL_LOOKUP,
             "localtime",
             BaseDataType.C_struct_pointer,
             BaseDataType.C_pointer);
 
     private final static JnhwMh_MA___A__A localtime_r = JnhwMh_MA___A__A.of(
+            LibcLoader.LIB_C_SYMBOL_LOOKUP,
             "localtime_r",
             BaseDataType.C_struct_pointer,
             BaseDataType.C_pointer,
             BaseDataType.C_struct_pointer);
 
     private final static JnhwMh_sL___A mktime = JnhwMh_sL___A.of(
+            LibcLoader.LIB_C_SYMBOL_LOOKUP,
             "mktime",
             PosixDataType.time_t,
             BaseDataType.C_struct_pointer);
 
     private final static JnhwMh_sI___A__A nanosleep = JnhwMh_sI___A__A.of(
+            LibcLoader.LIB_C_SYMBOL_LOOKUP,
             "nanosleep",
             BaseDataType.C_int,
             BaseDataType.C_const_struct_pointer,
             BaseDataType.C_struct_pointer);
 
     private final static JnhwMh_sI___A_uL__A__A strftime = JnhwMh_sI___A_uL__A__A.of(
+            LibcLoader.LIB_C_SYMBOL_LOOKUP,
             "strftime",
             BaseDataType.C_int,
             BaseDataType.C_char_pointer,
@@ -945,6 +964,7 @@ public class Time {
             BaseDataType.C_const_struct_pointer);
 
     private final static JnhwMh_sI___A_uL__A__A__A strftime_l = JnhwMh_sI___A_uL__A__A__A.of(
+            LibcLoader.LIB_C_SYMBOL_LOOKUP,
             "strftime_l",
             BaseDataType.C_int,
             BaseDataType.C_char_pointer,
@@ -953,7 +973,8 @@ public class Time {
             BaseDataType.C_const_struct_pointer,
             BaseDataType.C_const_struct_pointer);
 
-    private final static JnhwMh__A___A__A__A strptime = JnhwMh__A___A__A__A.of(
+    private final static JnhwMh_MA___A__A__A strptime = JnhwMh_MA___A__A__A.of(
+            LibcLoader.LIB_C_SYMBOL_LOOKUP,
             "strptime",
             BaseDataType.C_char_pointer,
             BaseDataType.C_const_char_pointer,
@@ -961,12 +982,14 @@ public class Time {
             BaseDataType.C_struct_pointer);
 
     private final static JnhwMh_sL___A time = JnhwMh_sL___A.of(
+            LibcLoader.LIB_C_SYMBOL_LOOKUP,
             "time",
             PosixDataType.time_t,
             BaseDataType.C_pointer);
 
 //needs librt.so
-    private final static JnhwMh_sI__sI__A__A timer_create = JnhwMh_sI__sI__A__A.ofOrNull(LibrtLoader.LIB_RT_SYMBOL_LOOKUP,
+    private final static JnhwMh_sI__sI__A__A timer_create = JnhwMh_sI__sI__A__A.ofOrNull(
+            LibrtLoader.LIB_RT_SYMBOL_LOOKUP,
             "timer_create",
             BaseDataType.C_int,
             PosixDataType.clockid_t,
@@ -974,23 +997,27 @@ public class Time {
             BaseDataType.C_pointer);
 
     //TODO OpenBSD timer_t is int32_t not intptr_t
-    private final static JnhwMh_sI___A timer_delete = JnhwMh_sI___A.ofOrNull(LibrtLoader.LIB_RT_SYMBOL_LOOKUP,
+    private final static JnhwMh_sI___A timer_delete = JnhwMh_sI___A.ofOrNull(
+            LibrtLoader.LIB_RT_SYMBOL_LOOKUP,
             "timer_delete",
             BaseDataType.C_int,
             PosixDataType.timer_t);
 
-    private final static JnhwMh_sI___A timer_getoverrun = JnhwMh_sI___A.ofOrNull(LibrtLoader.LIB_RT_SYMBOL_LOOKUP,
+    private final static JnhwMh_sI___A timer_getoverrun = JnhwMh_sI___A.ofOrNull(
+            LibrtLoader.LIB_RT_SYMBOL_LOOKUP,
             "timer_getoverrun",
             BaseDataType.C_int,
             PosixDataType.timer_t);
 
-    private final static JnhwMh_sI___A__A timer_gettime = JnhwMh_sI___A__A.ofOrNull(LibrtLoader.LIB_RT_SYMBOL_LOOKUP,
+    private final static JnhwMh_sI___A__A timer_gettime = JnhwMh_sI___A__A.ofOrNull(
+            LibrtLoader.LIB_RT_SYMBOL_LOOKUP,
             "timer_gettime",
             BaseDataType.C_int,
             PosixDataType.timer_t,
             BaseDataType.C_struct_pointer);
 
-    private final static JnhwMh_sI___A_sI__A__A timer_settime = JnhwMh_sI___A_sI__A__A.ofOrNull(LibrtLoader.LIB_RT_SYMBOL_LOOKUP,
+    private final static JnhwMh_sI___A_sI__A__A timer_settime = JnhwMh_sI___A_sI__A__A.ofOrNull(
+            LibrtLoader.LIB_RT_SYMBOL_LOOKUP,
             "timer_settime",
             BaseDataType.C_int,
             PosixDataType.timer_t,
@@ -999,6 +1026,7 @@ public class Time {
             BaseDataType.C_struct_pointer);
 
     private final static JnhwMh__V___V tzset = JnhwMh__V___V.of(
+            LibcLoader.LIB_C_SYMBOL_LOOKUP,
             "tzset");
 
     /**
@@ -1011,7 +1039,7 @@ public class Time {
      * @return on succes the converted date and time, otherwise {@code null}
      */
     public final static String asctime(Tm tm) {
-        final MemoryAddress resultAdr = asctime.invoke_MA__P(tm);
+        final MemoryAddress resultAdr = asctime.invoke_MA___P(tm);
         if (resultAdr == MemoryAddress.NULL) {
             return null;
         } else {
@@ -1123,7 +1151,7 @@ public class Time {
 
     public final static void clock_nanosleep(@clockid_t int clock_id, int flags, Timespec rqtp) throws NativeErrorException, NoSuchNativeMethodException {
         try {
-            if (clock_nanosleep.invoke_sI__sI_sI__A__A(clock_id, flags, rqtp, Pointer.NULL) != 0) {
+            if (clock_nanosleep.invoke_sI__sI_sI__P__P(clock_id, flags, rqtp, Pointer.NULL) != 0) {
                 throw new NativeErrorException(Errno.errno());
             }
         } catch (NullPointerException npe) {
@@ -1153,7 +1181,7 @@ public class Time {
      */
     public final static void clock_nanosleep(@clockid_t int clock_id, int flags, Timespec rqtp, Timespec rmtp) throws NativeErrorException, NoSuchNativeMethodException {
         try {
-            if (clock_nanosleep.invoke_sI__sI_sI__A__A(clock_id, flags, rqtp, rmtp) != 0) {
+            if (clock_nanosleep.invoke_sI__sI_sI__P__P(clock_id, flags, rqtp, rmtp) != 0) {
                 throw new NativeErrorException(Errno.errno());
             }
         } catch (NullPointerException npe) {
@@ -1195,7 +1223,7 @@ public class Time {
      * @return on succes the converted time, otherwise {@code null}
      */
     public final static String ctime(Types.Time_t clock) {
-        final MemoryAddress resultAdr = ctime.invoke_MA__P(clock);
+        final MemoryAddress resultAdr = ctime.invoke_MA___P(clock);
         if (resultAdr == MemoryAddress.NULL) {
             return null;
         } else {
@@ -1238,7 +1266,7 @@ public class Time {
         return daylight.address().get(ValueLayout.JAVA_INT, 0);
     }
 
-    private final static MemorySegment daylight = Linker.nativeLinker().defaultLookup().lookup("daylight").get();
+    private final static MemorySegment daylight = LibcLoader.lookup("daylight").get();
 
     /**
      * <b>POSIX:</b>
@@ -1264,7 +1292,7 @@ public class Time {
         return getdate_err.address().get(ValueLayout.JAVA_INT, 0);
     }
 
-    private final static MemorySegment getdate_err = Linker.nativeLinker().defaultLookup().lookup("getdate_err").get();
+    private final static MemorySegment getdate_err = LibcLoader.LIB_C_SYMBOL_LOOKUP.lookup("getdate_err").get();
 
     /**
      * <b>POSIX:</b>
@@ -1281,10 +1309,10 @@ public class Time {
      * available natively.
      */
     public final static Tm getdate(String string) throws NativeException, NoSuchNativeMethodException {
-        try ( MemorySession ms = MemorySession.openConfined()) {
+        try (MemorySession ms = MemorySession.openConfined()) {
             MemorySegment _string = MemorySegment.allocateNative(string.length() + 1, ms);
             _string.setUtf8String(0, string);
-            final MemoryAddress result = getdate.invoke_MA__A(_string);
+            final MemoryAddress result = getdate.invoke_MA___A(_string);
             if (result == MemoryAddress.NULL) {
                 throw new NativeException("getdate");
             } else {
@@ -1311,7 +1339,7 @@ public class Time {
      * @return
      */
     public final static Tm gmtime(Types.Time_t timer) throws NativeErrorException {
-        final MemoryAddress result = gmtime.invoke_MA__P(timer);
+        final MemoryAddress result = gmtime.invoke_MA___P(timer);
         if (result == MemoryAddress.NULL) {
             throw new NativeErrorException(Errno.errno());
         } else {
@@ -1353,7 +1381,7 @@ public class Time {
      * indicates an error.
      */
     public final static Tm localtime(Types.Time_t timer) throws NativeErrorException {
-        final MemoryAddress result = localtime.invoke_MA__P(timer);
+        final MemoryAddress result = localtime.invoke_MA___P(timer);
         if (result == MemoryAddress.NULL) {
             throw new NativeErrorException(Errno.errno());
         } else {
@@ -1437,11 +1465,11 @@ public class Time {
      * @return on succes the converted time otherwise {@code null}.
      */
     public final static String strftime(@size_t long maxsize, String format, Tm timeptr) {
-        try ( MemorySession ms = MemorySession.openConfined()) {
+        try (MemorySession ms = MemorySession.openConfined()) {
             MemorySegment s = MemorySegment.allocateNative(maxsize, ms);
             MemorySegment _format = MemorySegment.allocateNative(format.length() + 1, ms);
             _format.setUtf8String(0, format);
-            final int result = strftime.invoke_sI__A_uL_A_P(s, maxsize, _format, timeptr);
+            final int result = strftime.invoke_sI___A_uL__A__P(s, maxsize, _format, timeptr);
             if (result == 0) {
                 return null;
             } else {
@@ -1464,11 +1492,11 @@ public class Time {
      * @return on succes the converted time otherwise {@code null}.
      */
     public final static String strftime_l(@size_t long maxsize, String format, Tm timeptr, Locale.Locale_t locale) {
-        try ( MemorySession ms = MemorySession.openConfined()) {
+        try (MemorySession ms = MemorySession.openConfined()) {
             MemorySegment s = MemorySegment.allocateNative(maxsize, ms);
             MemorySegment _format = MemorySegment.allocateNative(format.length() + 1, ms);
             _format.setUtf8String(0, format);
-            final int result = strftime_l.invoke_sI__A_uL_A_P_P(s, maxsize, _format, timeptr, locale);
+            final int result = strftime_l.invoke_sI___A_uL_A__P__P(s, maxsize, _format, timeptr, locale);
             if (result == 0) {
                 return null;
             } else {
@@ -1491,7 +1519,7 @@ public class Time {
      * character parsed.
      */
     public final static String strptime(String buf, String format, Tm tm) {
-        try ( MemorySession ms = MemorySession.openConfined()) {
+        try (MemorySession ms = MemorySession.openConfined()) {
             MemorySegment _format = MemorySegment.allocateNative(format.length() + 1, ms);
             _format.setUtf8String(0, format);
             MemorySegment _buf = MemorySegment.allocateNative(buf.length() + 1, ms);
@@ -1701,7 +1729,7 @@ public class Time {
         return timezone.address().get(ValueLayout.JAVA_LONG, 0);
     }
 
-    private final static MemorySegment timezone = Linker.nativeLinker().defaultLookup().lookup("timezone").get();
+    private final static MemorySegment timezone = LibcLoader.lookup("timezone").get();
 
     /**
      * <b>POSIX:</b>
@@ -1719,7 +1747,7 @@ public class Time {
         return result;
     }
 
-    private final static MemorySegment tzname = Linker.nativeLinker().defaultLookup().lookup("tzname").get();
+    private final static MemorySegment tzname = LibcLoader.lookup("tzname").get();
 
     /**
      * <b>POSIX:</b>

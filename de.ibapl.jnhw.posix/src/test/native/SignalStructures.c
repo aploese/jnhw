@@ -1,6 +1,6 @@
 /*
  * JNHW - Java Native header Wrapper, https://github.com/aploese/jnhw/
- * Copyright (C) 2019-2022, Arne Plöse and individual contributors as indicated
+ * Copyright (C) 2019-2023, Arne Plöse and individual contributors as indicated
  * by the @authors tag. See the copyright.txt in the distribution for a
  * full listing of individual contributors.
  *
@@ -27,7 +27,7 @@
     //for offsetof
 #include <stddef.h>
 
-int Mcontext_t_alignof() {
+int32_t Mcontext_t_alignof() {
 #if defined(__OpenBSD__)
     return 0;
 #else
@@ -35,7 +35,7 @@ int Mcontext_t_alignof() {
 #endif
 }
 
-int Mcontext_t_sizeof() {
+int32_t Mcontext_t_sizeof() {
 #if defined(__OpenBSD__)
     return 0;
 #else
@@ -43,31 +43,31 @@ int Mcontext_t_sizeof() {
 #endif
 }
 
-int Sigaction_alignof() {
+int32_t Sigaction_alignof() {
     return __alignof__ (struct sigaction);
 }
 
-int Sigaction_sizeof() {
+int32_t Sigaction_sizeof() {
     return sizeof (struct sigaction);
 }
 
-int Sigaction_offsetof_sa_handler() {
+int32_t Sigaction_offsetof_sa_handler() {
     return offsetof(struct sigaction, sa_handler);
 }
 
-int Sigaction_offsetof_sa_mask() {
+int32_t Sigaction_offsetof_sa_mask() {
     return offsetof(struct sigaction, sa_mask);
 }
 
-int Sigaction_offsetof_sa_flags() {
+int32_t Sigaction_offsetof_sa_flags() {
     return offsetof(struct sigaction, sa_flags);
 }
 
-int Sigaction_offsetof_sa_sigaction() {
+int32_t Sigaction_offsetof_sa_sigaction() {
     return offsetof(struct sigaction, sa_sigaction);
 }
 
-int Sigevent_alignof() {
+int32_t Sigevent_alignof() {
 #if defined(__OpenBSD__)
     return 0;
 #else
@@ -75,7 +75,7 @@ int Sigevent_alignof() {
 #endif
 }
 
-int Sigevent_sizeof() {
+int32_t Sigevent_sizeof() {
 #if defined(__OpenBSD__)
     return 0;
 #else
@@ -83,7 +83,7 @@ int Sigevent_sizeof() {
 #endif
 }
 
-int Sigevent_offsetof_sigev_notify() {
+int32_t Sigevent_offsetof_sigev_notify() {
 #if defined(__OpenBSD__)
     return -1;
 #else
@@ -91,7 +91,7 @@ int Sigevent_offsetof_sigev_notify() {
 #endif
 }
 
-int Sigevent_offsetof_sigev_signo() {
+int32_t Sigevent_offsetof_sigev_signo() {
 #if defined(__OpenBSD__)
     return -1;
 #else
@@ -99,7 +99,7 @@ int Sigevent_offsetof_sigev_signo() {
 #endif
 }
 
-int Sigevent_offsetof_sigev_value() {
+int32_t Sigevent_offsetof_sigev_value() {
 #if defined(__OpenBSD__)
     return -1;
 #else
@@ -107,7 +107,7 @@ int Sigevent_offsetof_sigev_value() {
 #endif
 }
 
-int Sigevent_offsetof_sigev_notify_function() {
+int32_t Sigevent_offsetof_sigev_notify_function() {
 #if defined(__OpenBSD__)
     return -1;
 #else
@@ -115,7 +115,7 @@ int Sigevent_offsetof_sigev_notify_function() {
 #endif
 }
 
-int Sigevent_offsetof_sigev_notify_attributes() {
+int32_t Sigevent_offsetof_sigev_notify_attributes() {
 #if defined(__OpenBSD__)
     return -1;
 #else
@@ -123,43 +123,43 @@ int Sigevent_offsetof_sigev_notify_attributes() {
 #endif
 }
 
-int Siginfo_t_alignof() {
+int32_t Siginfo_t_alignof() {
     return __alignof__ (siginfo_t);
 }
 
-int Siginfo_t_sizeof() {
+int32_t Siginfo_t_sizeof() {
     return sizeof (siginfo_t);
 }
 
-int Siginfo_t_offsetof_si_signo() {
+int32_t Siginfo_t_offsetof_si_signo() {
     return offsetof(siginfo_t, si_signo);
 }
 
-int Siginfo_t_offsetof_si_code() {
+int32_t Siginfo_t_offsetof_si_code() {
     return offsetof(siginfo_t, si_code);
 }
 
-int Siginfo_t_offsetof_si_errno() {
+int32_t Siginfo_t_offsetof_si_errno() {
     return offsetof(siginfo_t, si_errno);
 }
 
-int Siginfo_t_offsetof_si_pid() {
+int32_t Siginfo_t_offsetof_si_pid() {
     return offsetof(siginfo_t, si_pid);
 }
 
-int Siginfo_t_offsetof_si_uid() {
+int32_t Siginfo_t_offsetof_si_uid() {
     return offsetof(siginfo_t, si_uid);
 }
 
-int Siginfo_t_offsetof_si_addr() {
+int32_t Siginfo_t_offsetof_si_addr() {
     return offsetof(siginfo_t, si_addr);
 }
 
-int Siginfo_t_offsetof_si_status() {
+int32_t Siginfo_t_offsetof_si_status() {
     return offsetof(siginfo_t, si_status);
 }
 
-int Siginfo_t_offsetof_si_band() {
+int32_t Siginfo_t_offsetof_si_band() {
 #if defined(__OpenBSD__)
     return -1;
 #else
@@ -167,55 +167,55 @@ int Siginfo_t_offsetof_si_band() {
 #endif
 }
 
-int Siginfo_t_offsetof_si_value() {
+int32_t Siginfo_t_offsetof_si_value() {
     return offsetof(siginfo_t, si_value);
 }
 
-int Sigset_t_alignof() {
+int32_t Sigset_t_alignof() {
     return __alignof__ (sigset_t);
 }
 
-int Sigset_t_sizeof() {
+int32_t Sigset_t_sizeof() {
     return sizeof (sigset_t);
 }
 
-int Sigval_alignof() {
+int32_t Sigval_alignof() {
     return __alignof__ (union sigval);
 }
 
-int Sigval_sizeof() {
+int32_t Sigval_sizeof() {
     return sizeof (union sigval);
 }
 
-int Sigval_offsetof_sival_int() {
+int32_t Sigval_offsetof_sival_int() {
     return offsetof(union sigval, sival_int);
 }
 
-int Sigval_offsetof_sival_ptr() {
+int32_t Sigval_offsetof_sival_ptr() {
     return offsetof(union sigval, sival_ptr);
 }
 
-int Stack_t_alignof() {
+int32_t Stack_t_alignof() {
     return __alignof__ (stack_t);
 }
 
-int Stack_t_sizeof() {
+int32_t Stack_t_sizeof() {
     return sizeof (stack_t);
 }
 
-int Stack_t_offsetof_ss_sp() {
+int32_t Stack_t_offsetof_ss_sp() {
     return offsetof(stack_t, ss_sp);
 }
 
-int Stack_t_offsetof_ss_size() {
+int32_t Stack_t_offsetof_ss_size() {
     return offsetof(stack_t, ss_size);
 }
 
-int Stack_t_offsetof_ss_flags() {
+int32_t Stack_t_offsetof_ss_flags() {
     return offsetof(stack_t, ss_flags);
 }
 
-int Ucontext_t_alignof() {
+int32_t Ucontext_t_alignof() {
 #if defined(__APPLE__) || defined(__OpenBSD__)
     return 0;
 #elif defined(__FreeBSD__)
@@ -225,7 +225,7 @@ int Ucontext_t_alignof() {
 #endif
 }
 
-int Ucontext_t_sizeof() {
+int32_t Ucontext_t_sizeof() {
 #if defined(__APPLE__) || defined(__OpenBSD__)
     return 0;
 #elif defined(__FreeBSD__)
@@ -235,7 +235,7 @@ int Ucontext_t_sizeof() {
 #endif
 }
 
-int Ucontext_t_offsetof_uc_link() {
+int32_t Ucontext_t_offsetof_uc_link() {
 #if defined(__APPLE__) || defined(__OpenBSD__)
     return -1;
 #elif defined(__FreeBSD__)
@@ -245,7 +245,7 @@ int Ucontext_t_offsetof_uc_link() {
 #endif
 }
 
-int Ucontext_t_offsetof_uc_sigmask() {
+int32_t Ucontext_t_offsetof_uc_sigmask() {
 #if defined(__APPLE__) || defined(__OpenBSD__)
     return -1;
 #elif defined(__FreeBSD__)
@@ -255,7 +255,7 @@ int Ucontext_t_offsetof_uc_sigmask() {
 #endif
 }
 
-int Ucontext_t_offsetof_uc_stack() {
+int32_t Ucontext_t_offsetof_uc_stack() {
 #if defined(__APPLE__) || defined(__OpenBSD__)
     return -1;
 #elif defined(__FreeBSD__)
@@ -265,7 +265,7 @@ int Ucontext_t_offsetof_uc_stack() {
 #endif
 }
 
-int Ucontext_t_offsetof_uc_mcontext() {
+int32_t Ucontext_t_offsetof_uc_mcontext() {
 #if defined(__APPLE__) || defined(__OpenBSD__)
     return -1;
 #elif defined(__FreeBSD__)

@@ -1,6 +1,6 @@
 /*
  * JNHW - Java Native header Wrapper, https://github.com/aploese/jnhw/
- * Copyright (C) 2019-2022, Arne Plöse and individual contributors as indicated
+ * Copyright (C) 2019-2023, Arne Plöse and individual contributors as indicated
  * by the @authors tag. See the copyright.txt in the distribution for a
  * full listing of individual contributors.
  *
@@ -22,9 +22,9 @@
 package de.ibapl.jnhw.common.test.memory.layout;
 
 import de.ibapl.jnhw.common.datatypes.BaseDataType;
-import de.ibapl.jnhw.common.datatypes.MultiarchTupelBuilder;
 import de.ibapl.jnhw.common.memory.layout.Alignment;
 import de.ibapl.jnhw.common.test.LibJnhwCommonTestLoader;
+import de.ibapl.jnhw.libloader.MultiarchTupelBuilder;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -146,72 +146,72 @@ public class StructLayoutTest {
 
     @Test
     public void testStruct_Int8_t() {
-        Assertions.assertEquals(BaseDataType.int8_t.ALIGN_IN_STRUCT.alignof, alignOf_struct_int8_t(), "alignment ");
-        Assertions.assertEquals(BaseDataType.int8_t.SIZE_OF, sizeOf_struct_int8_t(), "size ");
+        Assertions.assertEquals(alignOf_struct_int8_t(), BaseDataType.int8_t.ALIGN_IN_STRUCT.alignof, "alignment ");
+        Assertions.assertEquals(sizeOf_struct_int8_t(), BaseDataType.int8_t.SIZE_OF, "size ");
     }
 
     @Test
     public void testStruct_Int16_t() {
-        Assertions.assertEquals(BaseDataType.int16_t.ALIGN_IN_STRUCT.alignof, alignOf_struct_int16_t(), "alignment ");
-        Assertions.assertEquals(BaseDataType.int16_t.SIZE_OF, sizeOf_struct_int16_t(), "size ");
+        Assertions.assertEquals(alignOf_struct_int16_t(), BaseDataType.int16_t.ALIGN_IN_STRUCT.alignof, "alignment ");
+        Assertions.assertEquals(sizeOf_struct_int16_t(), BaseDataType.int16_t.SIZE_OF, "size ");
     }
 
     @Test
     public void testStruct_Int32_t() {
-        Assertions.assertEquals(BaseDataType.int32_t.ALIGN_IN_STRUCT.alignof, alignOf_struct_int32_t(), "alignment ");
-        Assertions.assertEquals(BaseDataType.int32_t.SIZE_OF, sizeOf_struct_int32_t(), "size ");
+        Assertions.assertEquals(alignOf_struct_int32_t(), BaseDataType.int32_t.ALIGN_IN_STRUCT.alignof, "alignment ");
+        Assertions.assertEquals(sizeOf_struct_int32_t(), BaseDataType.int32_t.SIZE_OF, "size ");
     }
 
     @Test
     public void testStruct_Int64_t() {
-        Assertions.assertEquals(BaseDataType.int64_t.ALIGN_IN_STRUCT.alignof, alignOf_struct_int64_t(), "alignment ");
-        Assertions.assertEquals(BaseDataType.int64_t.SIZE_OF, sizeOf_struct_int64_t(), "size ");
+        Assertions.assertEquals(alignOf_struct_int64_t(), BaseDataType.int64_t.ALIGN_IN_STRUCT.alignof, "alignment ");
+        Assertions.assertEquals(sizeOf_struct_int64_t(), BaseDataType.int64_t.SIZE_OF, "size ");
     }
 
     @Test
     public void testStruct_int() {
-        Assertions.assertEquals(BaseDataType.C_int.ALIGN_IN_STRUCT.alignof, alignOf_struct_int(), "alignment ");
-        Assertions.assertEquals(BaseDataType.C_int.SIZE_OF, sizeOf_struct_int(), "size ");
+        Assertions.assertEquals(alignOf_struct_int(), BaseDataType.C_int.ALIGN_IN_STRUCT.alignof, "alignment ");
+        Assertions.assertEquals(sizeOf_struct_int(), BaseDataType.C_int.SIZE_OF, "size ");
     }
 
     @Test
     public void testStruct_long() {
-        Assertions.assertEquals(BaseDataType.C_long.ALIGN_IN_STRUCT.alignof, alignOf_struct_long(), "alignment ");
-        Assertions.assertEquals(BaseDataType.C_long.SIZE_OF, sizeOf_struct_long(), "size ");
+        Assertions.assertEquals(alignOf_struct_long(), BaseDataType.C_long.ALIGN_IN_STRUCT.alignof, "alignment ");
+        Assertions.assertEquals(sizeOf_struct_long(), BaseDataType.C_long.SIZE_OF, "size ");
     }
 
     @Test
     public void testStruct_long_long() {
-        Assertions.assertEquals(BaseDataType.C_long_long.ALIGN_IN_STRUCT.alignof, alignOf_struct_long_long(), "alignment ");
-        Assertions.assertEquals(BaseDataType.C_long_long.SIZE_OF, sizeOf_struct_long_long(), "size ");
+        Assertions.assertEquals(alignOf_struct_long_long(), BaseDataType.C_long_long.ALIGN_IN_STRUCT.alignof, "alignment ");
+        Assertions.assertEquals(sizeOf_struct_long_long(), BaseDataType.C_long_long.SIZE_OF, "size ");
     }
 
     @Test
     public void testStruct_intptr_t() {
-        Assertions.assertEquals(BaseDataType.intptr_t.ALIGN_IN_STRUCT.alignof, alignOf_struct_intptr_t(), "alignment ");
-        Assertions.assertEquals(BaseDataType.intptr_t.SIZE_OF, sizeOf_struct_intptr_t(), "size ");
+        Assertions.assertEquals(alignOf_struct_intptr_t(), BaseDataType.intptr_t.ALIGN_IN_STRUCT.alignof, "alignment ");
+        Assertions.assertEquals(sizeOf_struct_intptr_t(), BaseDataType.intptr_t.SIZE_OF, "size ");
 
         //The same for (void*)
-        Assertions.assertEquals(BaseDataType.intptr_t.ALIGN_IN_STRUCT.alignof, alignOf_struct_pointer(), "alignment ");
-        Assertions.assertEquals(BaseDataType.intptr_t.SIZE_OF, sizeOf_struct_pointer(), "size ");
+        Assertions.assertEquals(alignOf_struct_pointer(), BaseDataType.intptr_t.ALIGN_IN_STRUCT.alignof, "alignment ");
+        Assertions.assertEquals(sizeOf_struct_pointer(), BaseDataType.intptr_t.SIZE_OF, "size ");
     }
 
     @Test
     public void testStruct_float() {
-        Assertions.assertEquals(BaseDataType._float.ALIGN_IN_STRUCT.alignof, alignOf_struct_float(), "alignment ");
-        Assertions.assertEquals(BaseDataType._float.SIZE_OF, sizeOf_struct_float(), "size ");
+        Assertions.assertEquals(alignOf_struct_float(), BaseDataType._float.ALIGN_IN_STRUCT.alignof, "alignment ");
+        Assertions.assertEquals(sizeOf_struct_float(), BaseDataType._float.SIZE_OF, "size ");
     }
 
     @Test
     public void testStruct_double() {
-        Assertions.assertEquals(BaseDataType._double.ALIGN_IN_STRUCT.alignof, alignOf_struct_double(), "alignment ");
-        Assertions.assertEquals(BaseDataType._double.SIZE_OF, sizeOf_struct_double(), "size ");
+        Assertions.assertEquals(alignOf_struct_double(), BaseDataType._double.ALIGN_IN_STRUCT.alignof, "alignment ");
+        Assertions.assertEquals(sizeOf_struct_double(), BaseDataType._double.SIZE_OF, "size ");
     }
 
     @Test
     public void testStruct_long_double() {
-        Assertions.assertEquals(BaseDataType._long_double.ALIGN_IN_STRUCT.alignof, alignOf_struct_long_double(), "alignment ");
-        Assertions.assertEquals(BaseDataType._long_double.SIZE_OF, sizeOf_struct_long_double(), "size ");
+        Assertions.assertEquals(alignOf_struct_long_double(), BaseDataType._long_double.ALIGN_IN_STRUCT.alignof, "alignment ");
+        Assertions.assertEquals(sizeOf_struct_long_double(), BaseDataType._long_double.SIZE_OF, "size ");
     }
 
     @Test
@@ -252,6 +252,35 @@ public class StructLayoutTest {
     public void testNativeLayout() {
         S_i8_i64Impl.Layout nativeLayout = new S_i8_i64Impl.Layout();
 
+        Assertions.assertEquals(0, nativeLayout.offsetof_0_i8);
+        Assertions.assertEquals(2, nativeLayout.offsetof_1_i16);
+        Assertions.assertEquals(4, nativeLayout.offsetof_2_i8);
+        Assertions.assertEquals(8, nativeLayout.offsetof_3_i32);
+        Assertions.assertEquals(12, nativeLayout.offsetof_4_i8);
+        Assertions.assertEquals(16, nativeLayout.offsetof_5_i64);
+        Assertions.assertEquals(24, nativeLayout.offsetof_6_i8);
+        switch (MultiarchTupelBuilder.getArch()) {
+            case I386:
+                Assertions.assertEquals(28, nativeLayout.offsetof_7_i64);
+                Assertions.assertEquals(36, nativeLayout.offsetof_8_i8);
+                Assertions.assertEquals(40, nativeLayout.offsetof_9_i32);
+                Assertions.assertEquals(44, nativeLayout.offsetof_10_i8);
+                Assertions.assertEquals(46, nativeLayout.offsetof_11_i16);
+                Assertions.assertEquals(48, nativeLayout.offsetof_12_i8);
+                Assertions.assertEquals(52, nativeLayout.sizeof);
+                Assertions.assertEquals(Alignment.AT_4, nativeLayout.alignment);
+                break;
+            default:
+                Assertions.assertEquals(32, nativeLayout.offsetof_7_i64);
+                Assertions.assertEquals(40, nativeLayout.offsetof_8_i8);
+                Assertions.assertEquals(44, nativeLayout.offsetof_9_i32);
+                Assertions.assertEquals(48, nativeLayout.offsetof_10_i8);
+                Assertions.assertEquals(50, nativeLayout.offsetof_11_i16);
+                Assertions.assertEquals(52, nativeLayout.offsetof_12_i8);
+                Assertions.assertEquals(56, nativeLayout.sizeof);
+                Assertions.assertEquals(Alignment.AT_8, nativeLayout.alignment);
+        }
+
         Assertions.assertEquals(S_i8_i64Impl.offsetOf_0_i8(), nativeLayout.offsetof_0_i8);
         Assertions.assertEquals(S_i8_i64Impl.offsetOf_1_i16(), nativeLayout.offsetof_1_i16);
         Assertions.assertEquals(S_i8_i64Impl.offsetOf_2_i8(), nativeLayout.offsetof_2_i8);
@@ -268,34 +297,6 @@ public class StructLayoutTest {
         Assertions.assertEquals(S_i8_i64Impl.sizeOf(), nativeLayout.sizeof);
         Assertions.assertEquals(S_i8_i64Impl.alignOf(), nativeLayout.alignment.alignof);
 
-        Assertions.assertEquals(0, nativeLayout.offsetof_0_i8);
-        Assertions.assertEquals(2, nativeLayout.offsetof_1_i16);
-        Assertions.assertEquals(4, nativeLayout.offsetof_2_i8);
-        Assertions.assertEquals(8, nativeLayout.offsetof_3_i32);
-        Assertions.assertEquals(12, nativeLayout.offsetof_4_i8);
-        Assertions.assertEquals(16, nativeLayout.offsetof_5_i64);
-        Assertions.assertEquals(24, nativeLayout.offsetof_6_i8);
-        switch (MultiarchTupelBuilder.getArch()) {
-            case I386:
-                Assertions.assertEquals(28, nativeLayout.offsetof_7_i64);
-                Assertions.assertEquals(36, nativeLayout.offsetof_8_i8);
-                Assertions.assertEquals(40, nativeLayout.offsetof_9_i32);
-                Assertions.assertEquals(44, nativeLayout.offsetof_10_i8);
-                Assertions.assertEquals(48, nativeLayout.offsetof_11_i16);
-                Assertions.assertEquals(52, nativeLayout.offsetof_12_i8);
-                Assertions.assertEquals(52, nativeLayout.sizeof);
-                Assertions.assertEquals(Alignment.AT_4, nativeLayout.alignment);
-                break;
-            default:
-                Assertions.assertEquals(32, nativeLayout.offsetof_7_i64);
-                Assertions.assertEquals(40, nativeLayout.offsetof_8_i8);
-                Assertions.assertEquals(44, nativeLayout.offsetof_9_i32);
-                Assertions.assertEquals(48, nativeLayout.offsetof_10_i8);
-                Assertions.assertEquals(50, nativeLayout.offsetof_11_i16);
-                Assertions.assertEquals(52, nativeLayout.offsetof_12_i8);
-                Assertions.assertEquals(56, nativeLayout.sizeof);
-                Assertions.assertEquals(Alignment.AT_8, nativeLayout.alignment);
-        }
     }
 
 }

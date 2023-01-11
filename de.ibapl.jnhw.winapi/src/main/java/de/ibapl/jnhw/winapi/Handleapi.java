@@ -1,6 +1,6 @@
 /*
  * JNHW - Java Native header Wrapper, https://github.com/aploese/jnhw/
- * Copyright (C) 2019-2022, Arne Plöse and individual contributors as indicated
+ * Copyright (C) 2019-2023, Arne Plöse and individual contributors as indicated
  * by the @authors tag. See the copyright.txt in the distribution for a
  * full listing of individual contributors.
  *
@@ -23,12 +23,11 @@ package de.ibapl.jnhw.winapi;
 
 import de.ibapl.jnhw.annotation.winapi.basetsd.LONG_PTR;
 import de.ibapl.jnhw.common.annotation.Include;
+import de.ibapl.jnhw.common.downcall.JnhwMh_BL___A;
 import de.ibapl.jnhw.common.exception.NativeErrorException;
-import de.ibapl.jnhw.common.downcall.wrapper.JnhwMh__B___A;
 import de.ibapl.jnhw.util.winapi.Kernel32Loader;
 import de.ibapl.jnhw.util.winapi.WinApiDataType;
 import de.ibapl.jnhw.winapi.Winnt.HANDLE;
-import java.lang.foreign.MemoryAddress;
 
 /**
  * Wrapper around the
@@ -40,7 +39,7 @@ import java.lang.foreign.MemoryAddress;
 @Include("handleapi.h")
 public abstract class Handleapi {
 
-    private final static JnhwMh__B___A CloseHandle = JnhwMh__B___A.of(
+    private final static JnhwMh_BL___A CloseHandle = JnhwMh_BL___A.of(
             Kernel32Loader.DLL_KERNEL32_SYMBOL_LOOKUP,
             "CloseHandle",
             WinApiDataType.BOOL,
@@ -65,7 +64,7 @@ public abstract class Handleapi {
      * indicates an error.
      */
     public final static void CloseHandle(HANDLE hObject) throws NativeErrorException {
-        if (!CloseHandle.invoke__B___P(hObject)) {
+        if (!CloseHandle.invoke_BL___P(hObject)) {
             throw new NativeErrorException(Errhandlingapi.GetLastError());
         }
     }

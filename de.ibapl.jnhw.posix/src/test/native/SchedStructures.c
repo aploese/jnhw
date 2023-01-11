@@ -1,6 +1,6 @@
 /*
  * JNHW - Java Native header Wrapper, https://github.com/aploese/jnhw/
- * Copyright (C) 2019-2022, Arne Plöse and individual contributors as indicated
+ * Copyright (C) 2019-2023, Arne Plöse and individual contributors as indicated
  * by the @authors tag. See the copyright.txt in the distribution for a
  * full listing of individual contributors.
  *
@@ -28,19 +28,19 @@
 #ifdef _POSIX_VERSION
 #include <sched.h>
 
-int Sched_param_alignof() {
+int32_t Sched_param_alignof() {
     return __alignof__ (struct sched_param);
 }
 
-int Sched_param_sizeof() {
+int32_t Sched_param_sizeof() {
     return sizeof (struct sched_param);
 }
 
-int Sched_param_offsetof_sched_priority() {
+int32_t Sched_param_offsetof_sched_priority() {
     return offsetof(struct sched_param, sched_priority);
 }
 
-int Sched_param_offsetof_sched_ss_low_priority() {
+int32_t Sched_param_offsetof_sched_ss_low_priority() {
 #if defined(__linux__) || defined(__APPLE__) || defined(__FreeBSD__) || defined(__OpenBSD__)
     return -1;
 #else
@@ -48,7 +48,7 @@ int Sched_param_offsetof_sched_ss_low_priority() {
 #endif
 }
 
-int Sched_param_offsetof_sched_ss_repl_period() {
+int32_t Sched_param_offsetof_sched_ss_repl_period() {
 #if defined(__linux__) || defined(__APPLE__) || defined(__FreeBSD__) || defined(__OpenBSD__)
     return -1;
 #else
@@ -56,7 +56,7 @@ int Sched_param_offsetof_sched_ss_repl_period() {
 #endif
 }
 
-int Sched_param_offsetof_sched_ss_init_budget() {
+int32_t Sched_param_offsetof_sched_ss_init_budget() {
 #if defined(__linux__) || defined(__APPLE__) || defined(__FreeBSD__) || defined(__OpenBSD__)
     return -1;
 #else
@@ -64,7 +64,7 @@ int Sched_param_offsetof_sched_ss_init_budget() {
 #endif
 }
 
-int Sched_param_offsetof_sched_ss_max_repl() {
+int32_t Sched_param_offsetof_sched_ss_max_repl() {
 #if defined(__linux__) || defined(__APPLE__) || defined(__FreeBSD__) || defined(__OpenBSD__)
     return -1;
 #else

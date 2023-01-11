@@ -1,6 +1,6 @@
 /*
  * JNHW - Java Native header Wrapper, https://github.com/aploese/jnhw/
- * Copyright (C) 2019-2022, Arne Plöse and individual contributors as indicated
+ * Copyright (C) 2019-2023, Arne Plöse and individual contributors as indicated
  * by the @authors tag. See the copyright.txt in the distribution for a
  * full listing of individual contributors.
  *
@@ -26,16 +26,17 @@ import de.ibapl.jnhw.common.annotation.Define;
 import de.ibapl.jnhw.common.annotation.Include;
 import de.ibapl.jnhw.common.annotation.Unsigned;
 import de.ibapl.jnhw.common.datatypes.BaseDataType;
-import de.ibapl.jnhw.common.datatypes.MultiarchTupelBuilder;
-import de.ibapl.jnhw.common.downcall.wrapper.JnhwMh_sI__sI__A;
-import de.ibapl.jnhw.common.downcall.wrapper.JnhwMh_sI__sI_uL;
-import de.ibapl.jnhw.common.downcall.wrapper.JnhwMh_sI__uI_sI;
+import de.ibapl.jnhw.common.downcall.JnhwMh_sI__sI__A;
+import de.ibapl.jnhw.common.downcall.JnhwMh_sI__sI_uL;
+import de.ibapl.jnhw.common.downcall.JnhwMh_sI__uI_sI;
 import de.ibapl.jnhw.common.exception.NativeErrorException;
 import de.ibapl.jnhw.common.memory.OpaqueMemory;
 import de.ibapl.jnhw.common.memory.Uint64_t;
 import static de.ibapl.jnhw.common.memory.Uint64_t.DATA_TYPE;
 import de.ibapl.jnhw.isoc.Errno;
+import de.ibapl.jnhw.libloader.MultiarchTupelBuilder;
 import de.ibapl.jnhw.util.linux.LinuxDataType;
+import de.ibapl.jnhw.util.posix.LibcLoader;
 import java.lang.foreign.MemorySegment;
 import java.lang.foreign.MemorySession;
 
@@ -122,18 +123,21 @@ public final class Eventfd {
     }
 
     private final static JnhwMh_sI__uI_sI eventfd = JnhwMh_sI__uI_sI.of(
+            LibcLoader.LIB_C_SYMBOL_LOOKUP,
             "eventfd",
             BaseDataType.C_int,
             BaseDataType.C_unsigned_int,
             BaseDataType.C_int);
 
     private final static JnhwMh_sI__sI__A eventfd_read = JnhwMh_sI__sI__A.of(
+            LibcLoader.LIB_C_SYMBOL_LOOKUP,
             "eventfd_read",
             BaseDataType.C_int,
             BaseDataType.C_int,
             LinuxDataType.eventfd_t_pointer);
 
     private final static JnhwMh_sI__sI_uL eventfd_write = JnhwMh_sI__sI_uL.of(
+            LibcLoader.LIB_C_SYMBOL_LOOKUP,
             "eventfd_write",
             BaseDataType.C_int,
             BaseDataType.C_int,

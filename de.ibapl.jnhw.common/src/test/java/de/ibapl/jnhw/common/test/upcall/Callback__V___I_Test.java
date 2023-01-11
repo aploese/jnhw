@@ -1,6 +1,6 @@
 /*
  * JNHW - Java Native header Wrapper, https://github.com/aploese/jnhw/
- * Copyright (C) 2019-2022, Arne Plöse and individual contributors as indicated
+ * Copyright (C) 2019-2023, Arne Plöse and individual contributors as indicated
  * by the @authors tag. See the copyright.txt in the distribution for a
  * full listing of individual contributors.
  *
@@ -21,22 +21,24 @@
  */
 package de.ibapl.jnhw.common.test.upcall;
 
-import de.ibapl.jnhw.common.downcall.JnhwMi__V___I;
+import de.ibapl.jnhw.common.datatypes.BaseDataType;
+import de.ibapl.jnhw.common.downcall.JnhwMh_MA___V;
+import de.ibapl.jnhw.common.downcall.JnhwMh__V__BL_sI;
+import de.ibapl.jnhw.common.downcall.JnhwMh__V___A;
+import de.ibapl.jnhw.common.downcall.JnhwMh__V__sI;
 import de.ibapl.jnhw.common.memory.NativeFunctionPointer;
 import de.ibapl.jnhw.common.nativepointer.FunctionPtr__V___I;
 import de.ibapl.jnhw.common.test.LibJnhwCommonTestLoader;
 import de.ibapl.jnhw.common.upcall.CallbackFactory__V___I;
 import de.ibapl.jnhw.common.upcall.Callback__V___I;
-import java.lang.foreign.FunctionDescriptor;
 import java.lang.foreign.MemoryAddress;
 import java.lang.foreign.MemorySession;
-import java.lang.foreign.ValueLayout;
-import java.lang.invoke.MethodHandle;
-import java.lang.ref.Cleaner;
 import org.junit.jupiter.api.AfterEach;
 import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 
 /**
  *
@@ -44,27 +46,27 @@ import org.junit.jupiter.api.Test;
  */
 public class Callback__V___I_Test {
 
-    final static MethodHandle setCallback__V___I;
-    final static MethodHandle getCallback__V___I;
-    final static MethodHandle doCallback__V___I;
+    private final static JnhwMh__V___A setCallback__V___I;
+    private final static JnhwMh_MA___V getCallback__V___I;
+    private final static JnhwMh__V__BL_sI doCallback__V___I;
 
     static {
         LibJnhwCommonTestLoader.touch();
-        setCallback__V___I = LibJnhwCommonTestLoader.downcallHandle("setCallback__V___I", FunctionDescriptor.ofVoid(ValueLayout.ADDRESS));
-        getCallback__V___I = LibJnhwCommonTestLoader.downcallHandle("getCallback__V___I", FunctionDescriptor.of(ValueLayout.ADDRESS));
-        doCallback__V___I = LibJnhwCommonTestLoader.downcallHandle("doCallback__V___I", FunctionDescriptor.ofVoid(ValueLayout.JAVA_BOOLEAN, ValueLayout.JAVA_INT));
+        setCallback__V___I = JnhwMh__V___A.of(LibJnhwCommonTestLoader.SYMBOL_LOOKUP, "setCallback__V___I", BaseDataType.uintptr_t);
+        getCallback__V___I = JnhwMh_MA___V.of(LibJnhwCommonTestLoader.SYMBOL_LOOKUP, "getCallback__V___I", BaseDataType.uintptr_t);
+        doCallback__V___I = JnhwMh__V__BL_sI.of(LibJnhwCommonTestLoader.SYMBOL_LOOKUP, "doCallback__V___I", BaseDataType.C_char, BaseDataType.int32_t);
     }
-
-    private MemorySession ms;
 
     private class DummyCB extends Callback__V___I {
 
         @Override
         protected void callback(int value) {
-            throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+            throw new UnsupportedOperationException("Not supported yet.");
         }
 
     }
+
+    private MemorySession ms;
 
     @BeforeEach
     public void setUpBefore() throws Exception {
@@ -77,9 +79,9 @@ public class Callback__V___I_Test {
         ms.close();
     }
 
-    private FunctionPtr__V___I getCallback__V___I() {
+    private static FunctionPtr__V___I getCallback__V___I() {
         try {
-            return FunctionPtr__V___I.wrap((MemoryAddress) getCallback__V___I.invokeExact());
+            return FunctionPtr__V___I.wrap(getCallback__V___I.invoke_MA___V());
         } catch (Throwable t) {
             throw new RuntimeException(t);
         }
@@ -87,7 +89,7 @@ public class Callback__V___I_Test {
 
     private static void setCallback__V___I(FunctionPtr__V___I callback) {
         try {
-            setCallback__V___I.invokeExact(callback.toAddressable());
+            setCallback__V___I.invoke__V___P(callback);
         } catch (Throwable t) {
             throw new RuntimeException(t);
         }
@@ -95,7 +97,7 @@ public class Callback__V___I_Test {
 
     private static void doCallback__V___I(boolean newThread, int value) {
         try {
-            doCallback__V___I.invokeExact(newThread, value);
+            doCallback__V___I.invoke__V__BL_sI(newThread, value);
         } catch (Throwable t) {
             throw new RuntimeException(t);
         }
@@ -108,11 +110,12 @@ public class Callback__V___I_Test {
     @Test
     public void testMAX_CALL_BACKS() {
         System.out.println("MAX_CALL_BACKS");
-        assertEquals(16, CallbackFactory__V___I.MAX_CALL_BACKS);
-        Callback__V___I[] cbs = new Callback__V___I[CallbackFactory__V___I.MAX_CALL_BACKS];
+        int maxCB = CallbackFactory__V___I.MAX_CALL_BACKS;
+        assertEquals(16, maxCB);
+        Callback__V___I[] cbs = new Callback__V___I[maxCB];
         for (int i = 0; i < cbs.length; i++) {
             cbs[i] = new DummyCB();
-            assertEquals(CallbackFactory__V___I.MAX_CALL_BACKS - (i + 1), CallbackFactory__V___I.callbacksAvailable());
+            assertEquals(maxCB - (i + 1), CallbackFactory__V___I.callbacksAvailable());
         }
 
         RuntimeException re = assertThrows(RuntimeException.class, () -> {
@@ -120,136 +123,100 @@ public class Callback__V___I_Test {
         });
         assertEquals("No more Callbacks available! max: 16 reached", re.getMessage());
 
-        cbs = null;
+        for (Callback__V___I cb : cbs) {
+            cb.release();
+        }
 
-        System.gc();
-
-        assertEquals(CallbackFactory__V___I.MAX_CALL_BACKS, CallbackFactory__V___I.callbacksAvailable());
+        assertEquals(maxCB, CallbackFactory__V___I.callbacksAvailable());
     }
 
     @Test
-    public void testNativeFunctionPointer() throws Exception {
-        final Callback__V___I testPtr = new Callback__V___I(MemoryAddress.ofLong(121)) {
+    public void testNativeFunctionPointer() {
+        final Callback__V___I testPtr = new Callback__V___I((t) -> MemoryAddress.ofLong(121)) {
             @Override
             protected void callback(int value) {
-                throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+                throw new UnsupportedOperationException("Not supported yet.");
             }
 
+            @Override
+            public void release() {
+                throw new UnsupportedOperationException("This was not aquired - so there is nothing to be released");
+            }
         };
         setCallback__V___I(testPtr);
-        assertEquals(getCallback__V___I().toAddressable().address(), testPtr.toAddressable().address());
+        assertEquals(getCallback__V___I(), testPtr);
+
+        //Its not aquired ... so do not release
+        //testPtr.release();
     }
 
     /**
-     * Test of release method, of class IntConsumerCallbackFactory.
+     * Test of release method
      */
-    @Test
-    public void testReleaseByGarbageCollector() throws Exception {
-        System.out.println("release");
-        final int[] intref = new int[1];
-        final Callback__V___I NULL_PTR = new Callback__V___I(MemoryAddress.NULL) {
+    @ParameterizedTest
+    @ValueSource(ints = {
+        0x04030201,
+        0xf4030201})
+    public void testCallAndRelease(final int testValue) {
+        System.out.printf("Callback__V__L_Test.testCallAndRelease 0x%08x %1$d \n", testValue);
+        final int[] ref = new int[1];
+        final Callback__V___I NULL_PTR = new Callback__V___I((t) -> MemoryAddress.NULL) {
             @Override
             protected void callback(int value) {
-                throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+                throw new UnsupportedOperationException("Not supported yet.");
             }
 
+            @Override
+            public void release() {
+                throw new UnsupportedOperationException("This was not aquired - so there is nothing to be released");
+            }
         };
         final Thread t = Thread.currentThread();
         Callback__V___I callback = new Callback__V___I() {
 
             @Override
             protected void callback(int value) {
-                if (!t.equals(Thread.currentThread())) {
-                    intref[0] = value;
+                if (t.equals(Thread.currentThread())) {
+                    ref[0] = -value;
                 } else {
-                    intref[0] = -value;
+                    ref[0] = value;
                 }
             }
 
         };
         final NativeFunctionPointer nativeCallbackPointer = NativeFunctionPointer.wrap(callback.toAddressable().address());
+        try {
 
-        setCallback__V___I(callback);
+            setCallback__V___I(callback);
 
-        assertEquals(getCallback__V___I(), callback);
-        assertSame(Callback__V___I.find(getCallback__V___I()), callback);
+            assertEquals(getCallback__V___I(), callback);
+            assertSame(Callback__V___I.find(getCallback__V___I()), callback);
+            doCallback__V___I(true, 42);
+            assertEquals(42, ref[0]);
 
-        intref[0] = 0;
-        doCallback__V___I(true, 42);
-        assertEquals(42, intref[0]);
+            //Call native from java
+            ref[0] = 0;
+            JnhwMh__V__sI.of(getCallback__V___I().toAddressable(), ms, BaseDataType.int32_t).invoke__V__sI(testValue);
+            assertEquals(-testValue, ref[0]);
 
-        intref[0] = 0;
-        new JnhwMi__V___I(getCallback__V___I().toAddressable().address(), ms).invoke__V__sI(42);
-        assertEquals(-42, intref[0]);
-
-        callback = null;
-
-        System.gc();
+        } finally {
+            callback.release();
+        }
 
         assertEquals(CallbackFactory__V___I.MAX_CALL_BACKS, CallbackFactory__V___I.callbacksAvailable());
         //it is still callable, but its is only logged...
         assertEquals(getCallback__V___I(), nativeCallbackPointer);
 
         //Just check that the reference is gone...
-        intref[0] = -1;
-        doCallback__V___I(true, 84);
-        assertEquals(-1, intref[0]);
+        ref[0] = -1;
+        doCallback__V___I(false, testValue / 2);
+        assertEquals(-1, ref[0]);
 
-        intref[0] = -1;
-        //The logs shoud show: Unassigned callback for trampoline(0, 84)
-        new JnhwMi__V___I(getCallback__V___I().toAddressable().address(), ms).invoke__V__sI(84);
-        assertEquals(-1, intref[0]);
-    }
-
-    /**
-     * Test of release method, of class IntConsumerCallbackFactory.
-     */
-    @Test
-    public void testReleaseByGarbageCollectorAndCleanup() throws Exception {
-        System.out.println("release");
-        Cleaner CLEANER = Cleaner.create();
-
-        final int[] intref = new int[1];
-        final Callback__V___I NULL_PTR = new Callback__V___I(MemoryAddress.NULL) {
-            @Override
-            protected void callback(int value) {
-                throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-            }
-        };
-        Callback__V___I callback = new Callback__V___I() {
-
-            @Override
-            protected void callback(int value) {
-                intref[0] = value;
-            }
-
-        };
-        CLEANER.register(callback, () -> {
-            try {
-                setCallback__V___I(NULL_PTR);
-            } catch (Throwable ex) {
-                ex.printStackTrace();
-            }
-        });
-
-        setCallback__V___I(callback);
-
-        assertEquals(getCallback__V___I(), callback);
-        doCallback__V___I(true, 42);
-        assertEquals(42, intref[0]);
-
-        intref[0] = 0;
-        new JnhwMi__V___I(getCallback__V___I().toAddressable().address(), ms).invoke__V__sI(42);
-        assertEquals(42, intref[0]);
-
-        callback = null;
-
-        System.gc();
-
-        //sleep here, to let the CLEANER do it cleanup....
-        Thread.sleep(10);
-
-        assertEquals(getCallback__V___I(), NULL_PTR);
+        ref[0] = -1;
+        //The logs shoud show: Unassigned callback for trampoline_o(testValue/2)
+        JnhwMh__V__sI.of(getCallback__V___I().toAddressable().address(), ms, BaseDataType.int32_t).invoke__V__sI(testValue / 2);
+        assertEquals(-1, ref[0]);
 
     }
+
 }

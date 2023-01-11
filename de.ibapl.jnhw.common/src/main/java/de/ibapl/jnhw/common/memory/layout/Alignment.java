@@ -1,6 +1,6 @@
 /*
  * JNHW - Java Native header Wrapper, https://github.com/aploese/jnhw/
- * Copyright (C) 2019-2022, Arne Plöse and individual contributors as indicated
+ * Copyright (C) 2019-2023, Arne Plöse and individual contributors as indicated
  * by the @authors tag. See the copyright.txt in the distribution for a
  * full listing of individual contributors.
  *
@@ -22,7 +22,7 @@
 package de.ibapl.jnhw.common.memory.layout;
 
 import de.ibapl.jnhw.common.annotation.Define;
-import de.ibapl.jnhw.common.datatypes.MultiarchTupelBuilder;
+import de.ibapl.jnhw.libloader.MultiarchTupelBuilder;
 
 /**
  *
@@ -148,10 +148,7 @@ public enum Alignment {
         // This get called after the Constructor of BaseDataType...
 
         switch (MultiarchTupelBuilder.getMultiarch()) {
-            case ARM__LINUX__GNU_EABI:
-            case ARM__LINUX__GNU_EABI_HF:
-            case MIPS__LINUX__GNU:
-            case MIPS_EL__LINUX__GNU:
+            case ARM__LINUX__GNU_EABI, ARM__LINUX__GNU_EABI_HF, MIPS__LINUX__GNU, MIPS_EL__LINUX__GNU -> {
                 //32 bit, but __BIGGEST_ALIGNMENT__ is 8
                 __BIGGEST_ALIGNMENT__ = Alignment.AT_8;
                 __ALIGN_OF_INT = Alignment.AT_4;
@@ -165,7 +162,12 @@ public enum Alignment {
                 __ALIGN_OF_FLOAT = Alignment.AT_4;
                 __ALIGN_OF_STRUCT_FLOAT = Alignment.AT_4;
                 __ALIGN_OF_DOUBLE = Alignment.AT_8;
-                __ALIGN_OF_STRUCT_DOUBLE = Alignment.AT_4;
+                __ALIGN_OF_STRUCT_DOUBLE = switch (MultiarchTupelBuilder.getMultiarch()) {
+                    case MIPS_EL__LINUX__GNU, ARM__LINUX__GNU_EABI_HF ->
+                        Alignment.AT_8;
+                    default ->
+                        Alignment.AT_4;
+                };
                 __ALIGN_OF_LONG_DOUBLE = Alignment.AT_8;
                 __ALIGN_OF_STRUCT_LONG_DOUBLE = Alignment.AT_8;
                 __ALIGN_OF_INT8_T = Alignment.AT_1;
@@ -178,8 +180,8 @@ public enum Alignment {
                 __ALIGN_OF_STRUCT_INT64_T = Alignment.AT_8;
                 __ALIGN_OF_INTPTR_T = Alignment.AT_4;
                 __ALIGN_OF_STRUCT_INTPTR_T = Alignment.AT_4;
-                break;
-            case I386__LINUX__GNU:
+            }
+            case I386__LINUX__GNU -> {
                 //classical 32bit anything is at 4 byte aligned
                 __BIGGEST_ALIGNMENT__ = Alignment.AT_16;
                 __ALIGN_OF_INT = Alignment.AT_4;
@@ -207,8 +209,8 @@ public enum Alignment {
                 __ALIGN_OF_STRUCT_INT64_T = Alignment.AT_4;
                 __ALIGN_OF_INTPTR_T = Alignment.AT_4;
                 __ALIGN_OF_STRUCT_INTPTR_T = Alignment.AT_4;
-                break;
-            case S390_X__LINUX__GNU:
+            }
+            case S390_X__LINUX__GNU -> {
                 __BIGGEST_ALIGNMENT__ = Alignment.AT_8;
                 __ALIGN_OF_INT = Alignment.AT_4;
                 __ALIGN_OF_STRUCT_INT = Alignment.AT_4;
@@ -234,9 +236,8 @@ public enum Alignment {
                 __ALIGN_OF_STRUCT_INT64_T = Alignment.AT_8;
                 __ALIGN_OF_INTPTR_T = Alignment.AT_8;
                 __ALIGN_OF_STRUCT_INTPTR_T = Alignment.AT_8;
-                break;
-            case MIPS_64__LINUX__GNU_ABI_64:
-            case MIPS_64_EL__LINUX__GNU_ABI_64:
+            }
+            case MIPS_64__LINUX__GNU_ABI_64, MIPS_64_EL__LINUX__GNU_ABI_64 -> {
                 __BIGGEST_ALIGNMENT__ = Alignment.AT_16;
                 __ALIGN_OF_INT = Alignment.AT_4;
                 __ALIGN_OF_STRUCT_INT = Alignment.AT_4;
@@ -262,11 +263,8 @@ public enum Alignment {
                 __ALIGN_OF_STRUCT_INT64_T = Alignment.AT_8;
                 __ALIGN_OF_INTPTR_T = Alignment.AT_8;
                 __ALIGN_OF_STRUCT_INTPTR_T = Alignment.AT_8;
-                break;
-            case AARCH64__LINUX__GNU:
-            case POWER_PC_64_LE__LINUX__GNU:
-            case RISC_V_64__LINUX__GNU:
-            case X86_64__LINUX__GNU:
+            }
+            case AARCH64__LINUX__GNU, POWER_PC_64_LE__LINUX__GNU, RISC_V_64__LINUX__GNU, X86_64__LINUX__GNU -> {
                 //classical 64bit anything is at 8 byte aligned
                 __BIGGEST_ALIGNMENT__ = Alignment.AT_16;
                 __ALIGN_OF_INT = Alignment.AT_4;
@@ -293,8 +291,8 @@ public enum Alignment {
                 __ALIGN_OF_STRUCT_INT64_T = Alignment.AT_8;
                 __ALIGN_OF_INTPTR_T = Alignment.AT_8;
                 __ALIGN_OF_STRUCT_INTPTR_T = Alignment.AT_8;
-                break;
-            case X86_64__WINDOWS__PE32_PLUS:
+            }
+            case X86_64__WINDOWS__PE32_PLUS -> {
                 //classical 64bit anything is at 8 byte aligned long is 4 bytes long ...
                 __BIGGEST_ALIGNMENT__ = Alignment.AT_16;
                 __ALIGN_OF_INT = Alignment.AT_4;
@@ -321,11 +319,8 @@ public enum Alignment {
                 __ALIGN_OF_STRUCT_INT64_T = Alignment.AT_8;
                 __ALIGN_OF_INTPTR_T = Alignment.AT_8;
                 __ALIGN_OF_STRUCT_INTPTR_T = Alignment.AT_8;
-                break;
-            case AARCH64__OPEN_BSD__BSD:
-            case X86_64__DARWIN__BSD:
-            case X86_64__FREE_BSD__BSD:
-            case X86_64__OPEN_BSD__BSD:
+            }
+            case AARCH64__OPEN_BSD__BSD, X86_64__DARWIN__BSD, X86_64__FREE_BSD__BSD, X86_64__OPEN_BSD__BSD -> {
                 //classical 64bit anything is at 8 byte aligned
                 __BIGGEST_ALIGNMENT__ = Alignment.AT_16;
                 __ALIGN_OF_INT = Alignment.AT_4;
@@ -352,8 +347,8 @@ public enum Alignment {
                 __ALIGN_OF_STRUCT_INT64_T = Alignment.AT_8;
                 __ALIGN_OF_INTPTR_T = Alignment.AT_8;
                 __ALIGN_OF_STRUCT_INTPTR_T = Alignment.AT_8;
-                break;
-            default:
+            }
+            default ->
                 throw new RuntimeException("No alignment values for multiarch: " + MultiarchTupelBuilder.getMultiarch());
 
         }

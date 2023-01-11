@@ -1,6 +1,6 @@
 /*
  * JNHW - Java Native header Wrapper, https://github.com/aploese/jnhw/
- * Copyright (C) 2019-2022, Arne Plöse and individual contributors as indicated
+ * Copyright (C) 2019-2023, Arne Plöse and individual contributors as indicated
  * by the @authors tag. See the copyright.txt in the distribution for a
  * full listing of individual contributors.
  *
@@ -27,20 +27,22 @@ import de.ibapl.jnhw.annotation.posix.sys.types.off_t;
 import de.ibapl.jnhw.common.annotation.Define;
 import de.ibapl.jnhw.common.annotation.Include;
 import de.ibapl.jnhw.common.datatypes.BaseDataType;
-import de.ibapl.jnhw.common.datatypes.MultiarchTupelBuilder;
-import de.ibapl.jnhw.common.downcall.wrapper.JnhwMh_sI__A_sI;
-import de.ibapl.jnhw.common.downcall.wrapper.JnhwMh_sI__A_sI_uI;
-import de.ibapl.jnhw.common.downcall.wrapper.JnhwMh_sI__A_uI;
-import de.ibapl.jnhw.common.downcall.wrapper.JnhwMh_sI__sI__A_sI;
-import de.ibapl.jnhw.common.downcall.wrapper.JnhwMh_sI__sI__A_sI_uI;
-import de.ibapl.jnhw.common.downcall.wrapper.JnhwMh_sI__sI_sI;
-import de.ibapl.jnhw.common.downcall.wrapper.JnhwMh_sI__sI_sI_sI;
-import de.ibapl.jnhw.common.downcall.wrapper.JnhwMh_sI__sI_sL_sL;
-import de.ibapl.jnhw.common.downcall.wrapper.JnhwMh_sI__sI_sL_sL_sI;
+import de.ibapl.jnhw.common.downcall.JnhwMh_sI___A_sI;
+import de.ibapl.jnhw.common.downcall.JnhwMh_sI___A_sI_uI;
+import de.ibapl.jnhw.common.downcall.JnhwMh_sI___A_uI;
+import de.ibapl.jnhw.common.downcall.JnhwMh_sI__sI__A_sI;
+import de.ibapl.jnhw.common.downcall.JnhwMh_sI__sI__A_sI_uI;
+import de.ibapl.jnhw.common.downcall.JnhwMh_sI__sI_sI;
+import de.ibapl.jnhw.common.downcall.JnhwMh_sI__sI_sI_sI;
+import de.ibapl.jnhw.common.downcall.JnhwMh_sI__sI_sL_sL;
+import de.ibapl.jnhw.common.downcall.JnhwMh_sI__sI_sL_sL_sI;
 import de.ibapl.jnhw.common.exception.NativeErrorException;
 import de.ibapl.jnhw.common.exception.NoSuchNativeMethodException;
 import de.ibapl.jnhw.common.util.IntDefine;
+import de.ibapl.jnhw.libloader.MultiarchInfo;
+import de.ibapl.jnhw.libloader.MultiarchTupelBuilder;
 import de.ibapl.jnhw.posix.sys.Stat;
+import de.ibapl.jnhw.util.posix.LibcLoader;
 import de.ibapl.jnhw.util.posix.PosixDataType;
 import java.lang.foreign.MemorySegment;
 import java.lang.foreign.MemorySession;
@@ -108,30 +110,6 @@ public final class Fcntl {
 
     }
 
-    public static interface Defines_LINUX_ARM extends LinuxDefines, Linux_NonMips_Defines, Linux_Aarch64_Arm_Defines, Linux_Arm_Defines {
-
-    }
-
-    public static interface Defines_LINUX_ARM64 extends LinuxDefines, Linux_NonMips_Defines, Linux_Aarch64_Arm_Defines, Linux_Aarch64_Mips64_Ppc64_RiscV64_S390_X86_64_Defines {
-
-    }
-
-    public static interface Defines_LINUX_I386 extends LinuxDefines, Linux_NonMips_Defines, Linux_I386_X86_64_Defines, Linux_I386_Defines {
-
-    }
-
-    public static interface Defines_LINUX_MIPS extends LinuxDefines, Linux_Mips_Mips64_Defines, Linux_Mips_Defines {
-
-    }
-
-    public static interface Defines_LINUX_MIPS64 extends LinuxDefines, Linux_Mips_Mips64_Defines, Linux_Aarch64_Mips64_Ppc64_RiscV64_S390_X86_64_Defines {
-
-    }
-
-    public static interface Defines_LINUX_X86_64 extends LinuxDefines, Linux_NonMips_Defines, Linux_I386_X86_64_Defines, Linux_Aarch64_Mips64_Ppc64_RiscV64_S390_X86_64_Defines {
-
-    }
-
     public static interface FreeBsdDefines extends BsdDefines {
 
         public final static int AT_EACCESS = 256;
@@ -160,130 +138,137 @@ public final class Fcntl {
 
     }
 
-    public static interface Linux_Aarch64_Arm_Defines {
+    public static class LinuxDefines {
 
-        public final static int O_DIRECTORY = 040000;
-        public final static int O_NOFOLLOW = 0100000;
-    }
+        public final int AT_EACCESS = 0x200;
+        public final int AT_FDCWD = -100;
+        public final int AT_REMOVEDIR = 0x200;
+        public final int AT_SYMLINK_FOLLOW = 0x400;
+        public final int AT_SYMLINK_NOFOLLOW = 0x100;
+        public final int F_DUPFD = 0;
+        public final int F_DUPFD_CLOEXEC = 1030;
+        public final int F_GETFD = 1;
+        public final int F_GETFL = 3;
+        public final int F_RDLCK = 0;
+        public final int F_SETFD = 2;
+        public final int F_SETFL = 4;
+        public final int F_SETLK = 6;
+        public final int F_SETLKW = 7;
+        public final int F_UNLCK = 2;
+        public final int F_WRLCK = 1;
+        public final int FD_CLOEXEC = 1;
+        public final int O_ACCMODE = 0003;
+        public final int O_CLOEXEC = 02000000;
+        public final int O_RDONLY = 00;
+        public final int O_RDWR = 02;
+        public final int O_TRUNC = 01000;
+        public final int O_WRONLY = 01;
+        public final int POSIX_FADV_NORMAL = 0;
+        public final int POSIX_FADV_RANDOM = 1;
+        public final int POSIX_FADV_SEQUENTIAL = 2;
+        public final int POSIX_FADV_WILLNEED = 3;
+        public final int POSIX_FADV_DONTNEED;
+        public final int POSIX_FADV_NOREUSE;
 
-    public static interface Linux_Aarch64_Mips64_Ppc64_RiscV64_S390_X86_64_Defines {
+        public final int F_GETLK;
+        public final int F_GETOWN;
+        public final int F_SETOWN;
+        public final int O_APPEND;
+        public final int O_ASYNC;
+        public final int O_CREAT;
+        public final int O_DIRECTORY;
+        public final int O_DSYNC;
+        public final int O_EXCL;
+        public final int O_FSYNC;
+        public final int O_NOCTTY;
+        public final int O_NOFOLLOW;
+        public final int O_NONBLOCK;
 
-        public final static int O_LARGEFILE = 0;
-    }
+        public final int O_RSYNC;
+        public final int O_SYNC;
 
-    public static interface Linux_Arm_Defines {
+        public final int O_LARGEFILE;
 
-        public final static int O_LARGEFILE = 0400000;
-    }
-
-    public static interface Linux_I386_Defines {
-
-        public final static int O_LARGEFILE = 0100000;
-    }
-
-    public static interface Linux_I386_X86_64_Defines {
-
-        public final static int O_DIRECTORY = 0200000;
-        public final static int O_NOFOLLOW = 0400000;
-    }
-
-    public static interface Linux_Mips_Defines {
-
-        public final static int O_LARGEFILE = 020000;
-    }
-
-    public static interface Linux_Mips_Mips64_Defines {
-
-        public final static int F_GETLK = 14;
-        public final static int F_GETOWN = 23;
-        public final static int F_SETOWN = 24;
-        public final static int O_APPEND = 010;
-        public final static int O_ASYNC = 010000;
-        public final static int O_CREAT = 0400;
-        public final static int O_DIRECTORY = 0200000;
-        public final static int O_DSYNC = 020;
-        public final static int O_EXCL = 02000;
-        public final static int O_FSYNC = 040020;
-        public final static int O_NOCTTY = 04000;
-        public final static int O_NOFOLLOW = 0400000;
-        public final static int O_NONBLOCK = 0200;
-
-        public final static int O_RSYNC = 040020;
-        public final static int O_SYNC = 040020;
-    }
-
-    public static interface Linux_NonMips_Defines {
-
-        public final static int F_GETLK = 5;
-        public final static int F_GETOWN = 9;
-        public final static int F_SETOWN = 8;
-        public final static int O_APPEND = 02000;
-        public final static int O_ASYNC = 020000;
-        public final static int O_CREAT = 0100;
-        public final static int O_DSYNC = 010000;
-        public final static int O_EXCL = 0200;
-        public final static int O_FSYNC = 04010000;
-        public final static int O_NOCTTY = 0400;
-        public final static int O_NONBLOCK = 04000;
-        public final static int O_RSYNC = 04010000;
-        public final static int O_SYNC = 04010000;
-    }
-
-    public static interface Linux_NonS390_Defines {
-
-        public final static int POSIX_FADV_DONTNEED = 4;
-        public final static int POSIX_FADV_NOREUSE = 5;
-
-    }
-
-    public static interface Linux_Ppc64_Defines {
-
-        public final static int O_DIRECTORY = 040000;
-        public final static int O_NOFOLLOW = 0100000;
-    }
-
-    public static interface Linux_RiscV64_S390_Defines {
-
-        public final static int O_DIRECTORY = 65536;
-        public final static int O_NOFOLLOW = 131072;
-    }
-
-    public static interface Linux_S390_Defines {
-
-        public final static int POSIX_FADV_DONTNEED = 6;
-        public final static int POSIX_FADV_NOREUSE = 7;
-
-    }
-
-    public static interface LinuxDefines {
-
-        public final static int AT_EACCESS = 0x200;
-        public final static int AT_FDCWD = -100;
-        public final static int AT_REMOVEDIR = 0x200;
-        public final static int AT_SYMLINK_FOLLOW = 0x400;
-        public final static int AT_SYMLINK_NOFOLLOW = 0x100;
-        public final static int F_DUPFD = 0;
-        public final static int F_DUPFD_CLOEXEC = 1030;
-        public final static int F_GETFD = 1;
-        public final static int F_GETFL = 3;
-        public final static int F_RDLCK = 0;
-        public final static int F_SETFD = 2;
-        public final static int F_SETFL = 4;
-        public final static int F_SETLK = 6;
-        public final static int F_SETLKW = 7;
-        public final static int F_UNLCK = 2;
-        public final static int F_WRLCK = 1;
-        public final static int FD_CLOEXEC = 1;
-        public final static int O_ACCMODE = 0003;
-        public final static int O_CLOEXEC = 02000000;
-        public final static int O_RDONLY = 00;
-        public final static int O_RDWR = 02;
-        public final static int O_TRUNC = 01000;
-        public final static int O_WRONLY = 01;
-        public final static int POSIX_FADV_NORMAL = 0;
-        public final static int POSIX_FADV_RANDOM = 1;
-        public final static int POSIX_FADV_SEQUENTIAL = 2;
-        public final static int POSIX_FADV_WILLNEED = 3;
+        public LinuxDefines(MultiarchInfo multiarchInfo) {
+            switch (multiarchInfo.getArch()) {
+                case MIPS, MIPS_64 -> {
+                    F_GETLK = 14;
+                    F_GETOWN = 23;
+                    F_SETOWN = 24;
+                    O_APPEND = 010;
+                    O_ASYNC = 010000;
+                    O_CREAT = 0400;
+                    O_DSYNC = 020;
+                    O_EXCL = 02000;
+                    O_FSYNC = 040020;
+                    O_NOCTTY = 04000;
+                    O_NONBLOCK = 0200;
+                    O_RSYNC = 040020;
+                    O_SYNC = 040020;
+                }
+                default -> {
+                    F_GETLK = 5;
+                    F_GETOWN = 9;
+                    F_SETOWN = 8;
+                    O_APPEND = 02000;
+                    O_ASYNC = 020000;
+                    O_CREAT = 0100;
+                    O_DSYNC = 010000;
+                    O_EXCL = 0200;
+                    O_FSYNC = 04010000;
+                    O_NOCTTY = 0400;
+                    O_NONBLOCK = 04000;
+                    O_RSYNC = 04010000;
+                    O_SYNC = 04010000;
+                }
+            }
+            switch (multiarchInfo.getArch()) {
+                case S390_X -> {
+                    POSIX_FADV_DONTNEED = 6;
+                    POSIX_FADV_NOREUSE = 7;
+                }
+                default -> {
+                    POSIX_FADV_DONTNEED = 4;
+                    POSIX_FADV_NOREUSE = 5;
+                }
+            }
+            switch (multiarchInfo.getArch()) {
+                case ARM, AARCH64 -> {
+                    O_DIRECTORY = 040000;
+                    O_NOFOLLOW = 0100000;
+                }
+                case I386, X86_64 -> {
+                    O_DIRECTORY = 0200000;
+                    O_NOFOLLOW = 0400000;
+                }
+                case MIPS, MIPS_64 -> {
+                    O_DIRECTORY = 0200000;
+                    O_NOFOLLOW = 0400000;
+                }
+                case POWER_PC_64 -> {
+                    O_DIRECTORY = 040000;
+                    O_NOFOLLOW = 0100000;
+                }
+                case RISC_V_64, S390_X -> {
+                    O_DIRECTORY = 65536;
+                    O_NOFOLLOW = 131072;
+                }
+                default ->
+                    throw new RuntimeException("No O_DIRECTORY or O_NOFOLLOW for: " + multiarchInfo);
+            }
+            switch (multiarchInfo.getArch()) {
+                case ARM ->
+                    O_LARGEFILE = 0400000;
+                case AARCH64, MIPS_64, POWER_PC_64, S390_X, X86_64 ->
+                    O_LARGEFILE = 0;
+                case I386 ->
+                    O_LARGEFILE = 0100000;
+                case MIPS ->
+                    O_LARGEFILE = 020000;
+                default ->
+                    throw new RuntimeException("No O_LARGEFILE for: " + multiarchInfo);
+            }
+        }
     }
 
     public static interface OpenBsdDefines extends BsdDefines {
@@ -701,142 +686,67 @@ public final class Fcntl {
         SEEK_SET = Stdio.SEEK_SET;
 
         switch (MultiarchTupelBuilder.getOS()) {
-            case LINUX:
+            case LINUX -> {
                 HAVE_FCNTL_H = true;
 
-                AT_EACCESS = LinuxDefines.AT_EACCESS;
-                AT_FDCWD = LinuxDefines.AT_FDCWD;
-                AT_REMOVEDIR = LinuxDefines.AT_REMOVEDIR;
-                AT_SYMLINK_FOLLOW = LinuxDefines.AT_SYMLINK_FOLLOW;
-                AT_SYMLINK_NOFOLLOW = LinuxDefines.AT_SYMLINK_NOFOLLOW;
+                final LinuxDefines linuxDefines = new LinuxDefines(MultiarchTupelBuilder.getMultiarch());
 
-                FD_CLOEXEC = LinuxDefines.FD_CLOEXEC;
+                AT_EACCESS = linuxDefines.AT_EACCESS;
+                AT_FDCWD = linuxDefines.AT_FDCWD;
+                AT_REMOVEDIR = linuxDefines.AT_REMOVEDIR;
+                AT_SYMLINK_FOLLOW = linuxDefines.AT_SYMLINK_FOLLOW;
+                AT_SYMLINK_NOFOLLOW = linuxDefines.AT_SYMLINK_NOFOLLOW;
 
-                F_DUPFD = LinuxDefines.F_DUPFD;
-                F_DUPFD_CLOEXEC = LinuxDefines.F_DUPFD_CLOEXEC;
-                F_GETFD = LinuxDefines.F_GETFD;
-                F_GETFL = LinuxDefines.F_GETFL;
-                F_RDLCK = LinuxDefines.F_RDLCK;
-                F_SETFD = LinuxDefines.F_SETFD;
-                F_SETFL = LinuxDefines.F_SETFL;
-                F_SETLK = LinuxDefines.F_SETLK;
-                F_SETLKW = LinuxDefines.F_SETLKW;
-                F_UNLCK = LinuxDefines.F_UNLCK;
-                F_WRLCK = LinuxDefines.F_WRLCK;
+                FD_CLOEXEC = linuxDefines.FD_CLOEXEC;
 
-                O_ACCMODE = LinuxDefines.O_ACCMODE;
-                O_CLOEXEC = LinuxDefines.O_CLOEXEC;
+                F_DUPFD = linuxDefines.F_DUPFD;
+                F_DUPFD_CLOEXEC = linuxDefines.F_DUPFD_CLOEXEC;
+                F_GETFD = linuxDefines.F_GETFD;
+                F_GETFL = linuxDefines.F_GETFL;
+                F_RDLCK = linuxDefines.F_RDLCK;
+                F_SETFD = linuxDefines.F_SETFD;
+                F_SETFL = linuxDefines.F_SETFL;
+                F_SETLK = linuxDefines.F_SETLK;
+                F_SETLKW = linuxDefines.F_SETLKW;
+                F_UNLCK = linuxDefines.F_UNLCK;
+                F_WRLCK = linuxDefines.F_WRLCK;
+
+                O_ACCMODE = linuxDefines.O_ACCMODE;
+                O_CLOEXEC = linuxDefines.O_CLOEXEC;
                 O_EXEC = IntDefine.UNDEFINED;
-                O_RDONLY = LinuxDefines.O_RDONLY;
-                O_RDWR = LinuxDefines.O_RDWR;
+                O_RDONLY = linuxDefines.O_RDONLY;
+                O_RDWR = linuxDefines.O_RDWR;
                 O_SEARCH = IntDefine.UNDEFINED;
-                O_TRUNC = LinuxDefines.O_TRUNC;
+                O_TRUNC = linuxDefines.O_TRUNC;
                 O_TTY_INIT = IntDefine.UNDEFINED;
-                O_WRONLY = LinuxDefines.O_WRONLY;
+                O_WRONLY = linuxDefines.O_WRONLY;
 
-                POSIX_FADV_NORMAL = IntDefine.toIntDefine(LinuxDefines.POSIX_FADV_NORMAL);
-                POSIX_FADV_RANDOM = IntDefine.toIntDefine(LinuxDefines.POSIX_FADV_RANDOM);
-                POSIX_FADV_SEQUENTIAL = IntDefine.toIntDefine(LinuxDefines.POSIX_FADV_SEQUENTIAL);
-                POSIX_FADV_WILLNEED = IntDefine.toIntDefine(LinuxDefines.POSIX_FADV_WILLNEED);
+                POSIX_FADV_NORMAL = IntDefine.toIntDefine(linuxDefines.POSIX_FADV_NORMAL);
+                POSIX_FADV_RANDOM = IntDefine.toIntDefine(linuxDefines.POSIX_FADV_RANDOM);
+                POSIX_FADV_SEQUENTIAL = IntDefine.toIntDefine(linuxDefines.POSIX_FADV_SEQUENTIAL);
+                POSIX_FADV_WILLNEED = IntDefine.toIntDefine(linuxDefines.POSIX_FADV_WILLNEED);
 
-                switch (MultiarchTupelBuilder.getArch()) {
-                    case S390_X:
-                        POSIX_FADV_DONTNEED = IntDefine.toIntDefine(Linux_S390_Defines.POSIX_FADV_DONTNEED);
-                        POSIX_FADV_NOREUSE = IntDefine.toIntDefine(Linux_S390_Defines.POSIX_FADV_NOREUSE);
-                        break;
-                    default:
-                        POSIX_FADV_DONTNEED = IntDefine.toIntDefine(Linux_NonS390_Defines.POSIX_FADV_DONTNEED);
-                        POSIX_FADV_NOREUSE = IntDefine.toIntDefine(Linux_NonS390_Defines.POSIX_FADV_NOREUSE);
-                }
+                POSIX_FADV_DONTNEED = IntDefine.toIntDefine(linuxDefines.POSIX_FADV_DONTNEED);
+                POSIX_FADV_NOREUSE = IntDefine.toIntDefine(linuxDefines.POSIX_FADV_NOREUSE);
 
-                switch (MultiarchTupelBuilder.getArch()) {
-                    case AARCH64:
-                    case MIPS_64:
-                    case POWER_PC_64:
-                    case RISC_V_64:
-                    case S390_X:
-                    case X86_64:
-                        O_LARGEFILE = IntDefine.toIntDefine(Linux_Aarch64_Mips64_Ppc64_RiscV64_S390_X86_64_Defines.O_LARGEFILE);
-                        break;
-                    case ARM:
-                        O_LARGEFILE = IntDefine.toIntDefine(Linux_Arm_Defines.O_LARGEFILE);
-                        break;
-                    case I386:
-                        O_LARGEFILE = IntDefine.toIntDefine(Linux_I386_Defines.O_LARGEFILE);
-                        break;
-                    case MIPS:
-                        O_LARGEFILE = IntDefine.toIntDefine(Linux_Mips_Defines.O_LARGEFILE);
-                        break;
-                    default:
-                        throw new NoClassDefFoundError("No fcntl.h defines for " + MultiarchTupelBuilder.getMultiarch());
-                }
-
-                switch (MultiarchTupelBuilder.getArch()) {
-                    case MIPS:
-                    case MIPS_64:
-                        F_GETLK = Linux_Mips_Mips64_Defines.F_GETLK;
-                        F_GETOWN = Linux_Mips_Mips64_Defines.F_GETOWN;
-                        F_SETOWN = Linux_Mips_Mips64_Defines.F_SETOWN;
-                        O_APPEND = Linux_Mips_Mips64_Defines.O_APPEND;
-                        O_ASYNC = IntDefine.toIntDefine(Linux_Mips_Mips64_Defines.O_ASYNC);
-                        O_CREAT = Linux_Mips_Mips64_Defines.O_CREAT;
-                        O_DSYNC = Linux_Mips_Mips64_Defines.O_DSYNC;
-                        O_EXCL = Linux_Mips_Mips64_Defines.O_EXCL;
-                        O_FSYNC = IntDefine.toIntDefine(Linux_Mips_Mips64_Defines.O_FSYNC);
-                        O_NOCTTY = Linux_Mips_Mips64_Defines.O_NOCTTY;
-                        O_NONBLOCK = Linux_Mips_Mips64_Defines.O_NONBLOCK;
-                        O_RSYNC = IntDefine.toIntDefine(Linux_Mips_Mips64_Defines.O_RSYNC);
-                        O_SYNC = Linux_Mips_Mips64_Defines.O_SYNC;
-
-                        break;
-                    default:
-                        F_GETLK = Linux_NonMips_Defines.F_GETLK;
-                        F_GETOWN = Linux_NonMips_Defines.F_GETOWN;
-                        F_SETOWN = Linux_NonMips_Defines.F_SETOWN;
-                        O_APPEND = Linux_NonMips_Defines.O_APPEND;
-                        O_ASYNC = IntDefine.toIntDefine(Linux_NonMips_Defines.O_ASYNC);
-                        O_CREAT = Linux_NonMips_Defines.O_CREAT;
-                        O_DSYNC = Linux_NonMips_Defines.O_DSYNC;
-                        O_EXCL = Linux_NonMips_Defines.O_EXCL;
-                        O_FSYNC = IntDefine.toIntDefine(Linux_NonMips_Defines.O_FSYNC);
-                        O_NOCTTY = Linux_NonMips_Defines.O_NOCTTY;
-                        O_NONBLOCK = Linux_NonMips_Defines.O_NONBLOCK;
-                        O_RSYNC = IntDefine.toIntDefine(Linux_NonMips_Defines.O_RSYNC);
-                        O_SYNC = Linux_NonMips_Defines.O_SYNC;
-
-                }
-                switch (MultiarchTupelBuilder.getArch()) {
-                    case AARCH64:
-                    case ARM:
-                        O_DIRECTORY = Linux_Aarch64_Arm_Defines.O_DIRECTORY;
-                        O_NOFOLLOW = Linux_Aarch64_Arm_Defines.O_NOFOLLOW;
-                        break;
-                    case MIPS:
-                    case MIPS_64:
-                        O_DIRECTORY = Linux_Mips_Mips64_Defines.O_DIRECTORY;
-                        O_NOFOLLOW = Linux_Mips_Mips64_Defines.O_NOFOLLOW;
-                        break;
-                    case POWER_PC_64:
-                        O_DIRECTORY = Linux_Ppc64_Defines.O_DIRECTORY;
-                        O_NOFOLLOW = Linux_Ppc64_Defines.O_NOFOLLOW;
-                        break;
-                    case RISC_V_64:
-                    case S390_X:
-                        O_DIRECTORY = Linux_RiscV64_S390_Defines.O_DIRECTORY;
-                        O_NOFOLLOW = Linux_RiscV64_S390_Defines.O_NOFOLLOW;
-                        break;
-                    case I386:
-                    case X86_64:
-                        O_DIRECTORY = Linux_I386_X86_64_Defines.O_DIRECTORY;
-                        O_NOFOLLOW = Linux_I386_X86_64_Defines.O_NOFOLLOW;
-                        break;
-                    default:
-                        throw new NoClassDefFoundError("No fcntl.h defines for " + MultiarchTupelBuilder.getMultiarch());
-                }
-                break;
-            case DARWIN:
-            case FREE_BSD:
-            case OPEN_BSD:
+                O_LARGEFILE = IntDefine.toIntDefine(linuxDefines.O_LARGEFILE);
+                F_GETLK = linuxDefines.F_GETLK;
+                F_GETOWN = linuxDefines.F_GETOWN;
+                F_SETOWN = linuxDefines.F_SETOWN;
+                O_APPEND = linuxDefines.O_APPEND;
+                O_ASYNC = IntDefine.toIntDefine(linuxDefines.O_ASYNC);
+                O_CREAT = linuxDefines.O_CREAT;
+                O_DSYNC = linuxDefines.O_DSYNC;
+                O_EXCL = linuxDefines.O_EXCL;
+                O_FSYNC = IntDefine.toIntDefine(linuxDefines.O_FSYNC);
+                O_NOCTTY = linuxDefines.O_NOCTTY;
+                O_NONBLOCK = linuxDefines.O_NONBLOCK;
+                O_RSYNC = IntDefine.toIntDefine(linuxDefines.O_RSYNC);
+                O_SYNC = linuxDefines.O_SYNC;
+                O_DIRECTORY = linuxDefines.O_DIRECTORY;
+                O_NOFOLLOW = linuxDefines.O_NOFOLLOW;
+            }
+            case DARWIN, FREE_BSD, OPEN_BSD -> {
                 HAVE_FCNTL_H = true;
 
                 FD_CLOEXEC = BsdDefines.FD_CLOEXEC;
@@ -948,37 +858,42 @@ public final class Fcntl {
                     default:
                         throw new NoClassDefFoundError("No fcntl.h BSD defines for " + MultiarchTupelBuilder.getMultiarch());
                 }
-                break;
-            default:
+            }
+            default ->
                 throw new NoClassDefFoundError("No fcntl.h defines for " + MultiarchTupelBuilder.getMultiarch());
         }
     }
 
-    private final static JnhwMh_sI__A_uI creat = JnhwMh_sI__A_uI.of(
+    private final static JnhwMh_sI___A_uI creat = JnhwMh_sI___A_uI.of(
+            LibcLoader.LIB_C_SYMBOL_LOOKUP,
             "creat",
             BaseDataType.C_int,
             BaseDataType.C_const_char_pointer,
             PosixDataType.mode_t);
 
-    private final static JnhwMh_sI__A_uI creat64 = JnhwMh_sI__A_uI.ofOrNull(
+    private final static JnhwMh_sI___A_uI creat64 = JnhwMh_sI___A_uI.ofOrNull(
+            LibcLoader.LIB_C_SYMBOL_LOOKUP,
             "creat64",
             BaseDataType.C_int,
             BaseDataType.C_const_char_pointer,
             PosixDataType.mode_t);
 
     private final static JnhwMh_sI__sI_sI fcntl = JnhwMh_sI__sI_sI.of(
+            LibcLoader.LIB_C_SYMBOL_LOOKUP,
             "fcntl",
             BaseDataType.C_int,
             BaseDataType.C_int,
             BaseDataType.C_int);
 
     private final static JnhwMh_sI__sI_sI fcntl64 = JnhwMh_sI__sI_sI.ofOrNull(
+            LibcLoader.LIB_C_SYMBOL_LOOKUP,
             "fcntl64",
             BaseDataType.C_int,
             BaseDataType.C_int,
             BaseDataType.C_int);
 
     private final static JnhwMh_sI__sI_sI_sI fcntl__with_1vararg = JnhwMh_sI__sI_sI_sI.ofOrNull(
+            LibcLoader.LIB_C_SYMBOL_LOOKUP,
             "fcntl",
             BaseDataType.C_int,
             BaseDataType.C_int,
@@ -986,32 +901,37 @@ public final class Fcntl {
             BaseDataType.C_int);
 
     private final static JnhwMh_sI__sI_sI_sI fcntl64__with_1vararg = JnhwMh_sI__sI_sI_sI.ofOrNull(
+            LibcLoader.LIB_C_SYMBOL_LOOKUP,
             "fcntl64",
             BaseDataType.C_int,
             BaseDataType.C_int,
             BaseDataType.C_int,
             BaseDataType.C_int);
 
-    private final static JnhwMh_sI__A_sI open = JnhwMh_sI__A_sI.of(
+    private final static JnhwMh_sI___A_sI open = JnhwMh_sI___A_sI.of(
+            LibcLoader.LIB_C_SYMBOL_LOOKUP,
             "open",
             BaseDataType.C_int,
             BaseDataType.C_const_char_pointer,
             BaseDataType.C_int);
 
-    private final static JnhwMh_sI__A_sI open64 = JnhwMh_sI__A_sI.of(
+    private final static JnhwMh_sI___A_sI open64 = JnhwMh_sI___A_sI.of(
+            LibcLoader.LIB_C_SYMBOL_LOOKUP,
             "open64",
             BaseDataType.C_int,
             BaseDataType.C_const_char_pointer,
             BaseDataType.C_int);
 
-    private final static JnhwMh_sI__A_sI_uI open__with_ModeArg = JnhwMh_sI__A_sI_uI.of(
+    private final static JnhwMh_sI___A_sI_uI open__with_ModeArg = JnhwMh_sI___A_sI_uI.of(
+            LibcLoader.LIB_C_SYMBOL_LOOKUP,
             "open",
             BaseDataType.C_int,
             BaseDataType.C_const_char_pointer,
             BaseDataType.C_int,
             PosixDataType.mode_t);
 
-    private final static JnhwMh_sI__A_sI_uI open64__with_ModeArg = JnhwMh_sI__A_sI_uI.of(
+    private final static JnhwMh_sI___A_sI_uI open64__with_ModeArg = JnhwMh_sI___A_sI_uI.of(
+            LibcLoader.LIB_C_SYMBOL_LOOKUP,
             "open64",
             BaseDataType.C_int,
             BaseDataType.C_const_char_pointer,
@@ -1019,6 +939,7 @@ public final class Fcntl {
             PosixDataType.mode_t);
 
     private final static JnhwMh_sI__sI__A_sI openat = JnhwMh_sI__sI__A_sI.of(
+            LibcLoader.LIB_C_SYMBOL_LOOKUP,
             "openat",
             BaseDataType.C_int,
             BaseDataType.C_int,
@@ -1026,6 +947,7 @@ public final class Fcntl {
             BaseDataType.C_int);
 
     private final static JnhwMh_sI__sI__A_sI_uI openat__with_ModeArg = JnhwMh_sI__sI__A_sI_uI.of(
+            LibcLoader.LIB_C_SYMBOL_LOOKUP,
             "openat",
             BaseDataType.C_int,
             BaseDataType.C_int,
@@ -1034,6 +956,7 @@ public final class Fcntl {
             PosixDataType.mode_t);
 
     private final static JnhwMh_sI__sI__A_sI openat64 = JnhwMh_sI__sI__A_sI.ofOrNull(
+            LibcLoader.LIB_C_SYMBOL_LOOKUP,
             "openat64",
             BaseDataType.C_int,
             BaseDataType.C_int,
@@ -1041,6 +964,7 @@ public final class Fcntl {
             BaseDataType.C_int);
 
     private final static JnhwMh_sI__sI__A_sI_uI openat64__with_ModeArg = JnhwMh_sI__sI__A_sI_uI.ofOrNull(
+            LibcLoader.LIB_C_SYMBOL_LOOKUP,
             "openat64",
             BaseDataType.C_int,
             BaseDataType.C_int,
@@ -1049,6 +973,7 @@ public final class Fcntl {
             PosixDataType.mode_t);
 
     private final static JnhwMh_sI__sI_sL_sL_sI posix_fadvise = JnhwMh_sI__sI_sL_sL_sI.ofOrNull(
+            LibcLoader.LIB_C_SYMBOL_LOOKUP,
             "posix_fadvise",
             BaseDataType.C_int,
             BaseDataType.C_int,
@@ -1057,6 +982,7 @@ public final class Fcntl {
             BaseDataType.C_int);
 
     private final static JnhwMh_sI__sI_sL_sL_sI posix_fadvise64 = JnhwMh_sI__sI_sL_sL_sI.of(
+            LibcLoader.LIB_C_SYMBOL_LOOKUP,
             "posix_fadvise64",
             BaseDataType.C_int,
             BaseDataType.C_int,
@@ -1065,6 +991,7 @@ public final class Fcntl {
             BaseDataType.C_int);
 
     private final static JnhwMh_sI__sI_sL_sL posix_fallocate = JnhwMh_sI__sI_sL_sL.of(
+            LibcLoader.LIB_C_SYMBOL_LOOKUP,
             "posix_fallocate",
             BaseDataType.C_int,
             BaseDataType.C_int,
@@ -1072,6 +999,7 @@ public final class Fcntl {
             PosixDataType.off_t);
 
     private final static JnhwMh_sI__sI_sL_sL posix_fallocate64 = JnhwMh_sI__sI_sL_sL.of(
+            LibcLoader.LIB_C_SYMBOL_LOOKUP,
             "posix_fallocate64",
             BaseDataType.C_int,
             BaseDataType.C_int,
@@ -1089,10 +1017,10 @@ public final class Fcntl {
      *
      */
     public final static int creat(String path, @mode_t int mode) throws NativeErrorException {
-        try ( MemorySession ms = MemorySession.openConfined()) {
+        try (MemorySession ms = MemorySession.openConfined()) {
             MemorySegment _path = MemorySegment.allocateNative(path.length() + 1, ms);
             _path.setUtf8String(0, path);
-            final int result = creat.invoke_sI__A_uI(_path, mode);
+            final int result = creat.invoke_sI___A_uI(_path, mode);
             if (result == -1) {
                 throw new NativeErrorException(Errno.errno());
             }
@@ -1111,10 +1039,10 @@ public final class Fcntl {
      * defined.
      */
     public final static int creat64(String path, @mode_t int mode) throws NativeErrorException, NoSuchNativeMethodException {
-        try ( MemorySession ms = MemorySession.openConfined()) {
+        try (MemorySession ms = MemorySession.openConfined()) {
             MemorySegment _path = MemorySegment.allocateNative(path.length() + 1, ms);
             _path.setUtf8String(0, path);
-            final int result = creat64.invoke_sI__A_uI(_path, mode);
+            final int result = creat64.invoke_sI___A_uI(_path, mode);
             if (result == -1) {
                 throw new NativeErrorException(Errno.errno());
             }
@@ -1241,10 +1169,10 @@ public final class Fcntl {
      * indicates an error.
      */
     public final static int open(String path, int oflag) throws NativeErrorException {
-        try ( MemorySession ms = MemorySession.openConfined()) {
+        try (MemorySession ms = MemorySession.openConfined()) {
             MemorySegment _path = MemorySegment.allocateNative(path.length() + 1, ms);
             _path.setUtf8String(0, path);
-            final int result = open.invoke_sI__A_sI(_path, oflag);
+            final int result = open.invoke_sI___A_sI(_path, oflag);
             if (result == -1) {
                 throw new NativeErrorException(Errno.errno());
             } else {
@@ -1265,10 +1193,10 @@ public final class Fcntl {
      *
      */
     public final static int open(String path, int oflag, @mode_t int mode) throws NativeErrorException {
-        try ( MemorySession ms = MemorySession.openConfined()) {
+        try (MemorySession ms = MemorySession.openConfined()) {
             MemorySegment _path = MemorySegment.allocateNative(path.length() + 1, ms);
             _path.setUtf8String(0, path);
-            final int result = open__with_ModeArg.invoke_sI__A_sI_uI(_path, oflag, mode);
+            final int result = open__with_ModeArg.invoke_sI___A_sI_uI(_path, oflag, mode);
             if (result == -1) {
                 throw new NativeErrorException(Errno.errno());
             }
@@ -1291,10 +1219,10 @@ public final class Fcntl {
      * defined.
      */
     public final static int open64(String path, int oflag) throws NativeErrorException, NoSuchNativeMethodException {
-        try ( MemorySession ms = MemorySession.openConfined()) {
+        try (MemorySession ms = MemorySession.openConfined()) {
             MemorySegment _path = MemorySegment.allocateNative(path.length() + 1, ms);
             _path.setUtf8String(0, path);
-            final int result = open64.invoke_sI__A_sI(_path, oflag);
+            final int result = open64.invoke_sI___A_sI(_path, oflag);
             if (result == -1) {
                 throw new NativeErrorException(Errno.errno());
             }
@@ -1324,10 +1252,10 @@ public final class Fcntl {
      * defined.
      */
     public final static int open64(String path, int oflag, @mode_t int mode) throws NativeErrorException, NoSuchNativeMethodException {
-        try ( MemorySession ms = MemorySession.openConfined()) {
+        try (MemorySession ms = MemorySession.openConfined()) {
             MemorySegment _path = MemorySegment.allocateNative(path.length() + 1, ms);
             _path.setUtf8String(0, path);
-            final int result = open64__with_ModeArg.invoke_sI__A_sI_uI(_path, oflag, mode);
+            final int result = open64__with_ModeArg.invoke_sI___A_sI_uI(_path, oflag, mode);
             if (result == -1) {
                 throw new NativeErrorException(Errno.errno());
             } else {
@@ -1358,10 +1286,10 @@ public final class Fcntl {
      *
      */
     public final static int openat(int fd, String path, int oflag) throws NativeErrorException {
-        try ( MemorySession ms = MemorySession.openConfined()) {
+        try (MemorySession ms = MemorySession.openConfined()) {
             MemorySegment _path = MemorySegment.allocateNative(path.length() + 1, ms);
             _path.setUtf8String(0, path);
-            final int result = openat.invoke_sI__sI_A_sI(fd, _path, oflag);
+            final int result = openat.invoke_sI__sI__A_sI(fd, _path, oflag);
             if (result == -1) {
                 throw new NativeErrorException(Errno.errno());
             } else {
@@ -1384,7 +1312,7 @@ public final class Fcntl {
      *
      */
     public final static int openat(int fd, String path, int oflag, @mode_t int mode) throws NativeErrorException {
-        try ( MemorySession ms = MemorySession.openConfined()) {
+        try (MemorySession ms = MemorySession.openConfined()) {
             MemorySegment _path = MemorySegment.allocateNative(path.length() + 1, ms);
             _path.setUtf8String(0, path);
             final int result = openat__with_ModeArg.invoke_sI__sI__A_sI_uI(fd, _path, oflag, mode);
@@ -1411,10 +1339,10 @@ public final class Fcntl {
      * defined.
      */
     public final static int openat64(int fd, String path, int oflag) throws NativeErrorException, NoSuchNativeMethodException {
-        try ( MemorySession ms = MemorySession.openConfined()) {
+        try (MemorySession ms = MemorySession.openConfined()) {
             MemorySegment _path = MemorySegment.allocateNative(path.length() + 1, ms);
             _path.setUtf8String(0, path);
-            final int result = openat64.invoke_sI__sI_A_sI(fd, _path, oflag);
+            final int result = openat64.invoke_sI__sI__A_sI(fd, _path, oflag);
             if (result == -1) {
                 throw new NativeErrorException(Errno.errno());
             } else {
@@ -1445,7 +1373,7 @@ public final class Fcntl {
      * defined.
      */
     public final static int openat64(int fd, String path, int oflag, @mode_t int mode) throws NativeErrorException, NoSuchNativeMethodException {
-        try ( MemorySession ms = MemorySession.openConfined()) {
+        try (MemorySession ms = MemorySession.openConfined()) {
             MemorySegment _path = MemorySegment.allocateNative(path.length() + 1, ms);
             _path.setUtf8String(0, path);
             final int result = openat64__with_ModeArg.invoke_sI__sI__A_sI_uI(fd, _path, oflag, mode);

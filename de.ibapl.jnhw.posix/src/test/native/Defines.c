@@ -1,6 +1,6 @@
 /*
  * JNHW - Java Native header Wrapper, https://github.com/aploese/jnhw/
- * Copyright (C) 2019-2022, Arne Plöse and individual contributors as indicated
+ * Copyright (C) 2019-2023, Arne Plöse and individual contributors as indicated
  * by the @authors tag. See the copyright.txt in the distribution for a
  * full listing of individual contributors.
  *
@@ -25,7 +25,7 @@
 #include <unistd.h>
 
 
-int* tryGetValueOf__BSD_SOURCE(int* value) {
+int32_t* tryGetValueOf__BSD_SOURCE(int32_t* value) {
 #if defined (_BSD_SOURCE)
     *value = _BSD_SOURCE;
 #else
@@ -34,7 +34,7 @@ int* tryGetValueOf__BSD_SOURCE(int* value) {
     return value;
 }
 
-int* tryGetValueOf__FILE_OFFSET_BITS(int* value) {
+int32_t* tryGetValueOf__FILE_OFFSET_BITS(int32_t* value) {
 #if defined (_FILE_OFFSET_BITS)
     *value = _FILE_OFFSET_BITS;
 #else
@@ -43,7 +43,7 @@ int* tryGetValueOf__FILE_OFFSET_BITS(int* value) {
     return value;
 }
 
-int* tryGetValueOf__LARGEFILE64_SOURCE(int* value) {
+int32_t* tryGetValueOf__LARGEFILE64_SOURCE(int32_t* value) {
 #if defined(_LARGEFILE64_SOURCE)
     *value = _LARGEFILE64_SOURCE;
 #else
@@ -52,7 +52,7 @@ int* tryGetValueOf__LARGEFILE64_SOURCE(int* value) {
     return value;
 }
 
-int* tryGetValueOf__LARGEFILE_SOURCE(int* value) {
+int32_t* tryGetValueOf__LARGEFILE_SOURCE(int32_t* value) {
 #if defined(_LARGEFILE_SOURCE)
     *value = _LARGEFILE_SOURCE;
 #else
@@ -61,7 +61,7 @@ int* tryGetValueOf__LARGEFILE_SOURCE(int* value) {
     return value;
 }
 
-int* tryGetValueOf__POSIX_C_SOURCE(int* value) {
+int32_t* tryGetValueOf__POSIX_C_SOURCE(int32_t* value) {
 #if defined (_POSIX_C_SOURCE)
     *value = _POSIX_C_SOURCE;
 #else
@@ -70,7 +70,7 @@ int* tryGetValueOf__POSIX_C_SOURCE(int* value) {
     return value;
 }
 
-int* tryGetValueOf__XOPEN_SOURCE(int* value) {
+int32_t* tryGetValueOf__XOPEN_SOURCE(int32_t* value) {
 #if defined (_XOPEN_SOURCE)
     *value = _XOPEN_SOURCE;
 #else
@@ -79,7 +79,7 @@ int* tryGetValueOf__XOPEN_SOURCE(int* value) {
     return value;
 }
 
-int* tryGetValueOf__XOPEN_SOURCE_EXTENDED(int* value) {
+int32_t* tryGetValueOf__XOPEN_SOURCE_EXTENDED(int32_t* value) {
 #if defined (_XOPEN_SOURCE_EXTENDED)
     *value = _XOPEN_SOURCE_EXTENDED;
 #else
@@ -88,7 +88,7 @@ int* tryGetValueOf__XOPEN_SOURCE_EXTENDED(int* value) {
     return value;
 }
 
-int* tryGetValueOf___aarch64__(int* value) {
+int32_t* tryGetValueOf___aarch64__(int32_t* value) {
 #if defined(__aarch64__)
     *value = __aarch64__;
 #else
@@ -97,7 +97,7 @@ int* tryGetValueOf___aarch64__(int* value) {
     return value;
 }
 
-int* tryGetValueOf___alpha__(int* value) {
+int32_t* tryGetValueOf___alpha__(int32_t* value) {
 #if defined(__alpha__)
     *value = __alpha__;
 #else
@@ -106,7 +106,7 @@ int* tryGetValueOf___alpha__(int* value) {
     return value;
 }
 
-int* tryGetValueOf___amd64__(int* value) {
+int32_t* tryGetValueOf___amd64__(int32_t* value) {
 #if defined(__amd64__)
     *value = __amd64__;
 #else
@@ -115,7 +115,7 @@ int* tryGetValueOf___amd64__(int* value) {
     return value;
 }
 
-int* tryGetValueOf___APPLE__(int* value) {
+int32_t* tryGetValueOf___APPLE__(int32_t* value) {
 #if defined(__APPLE__)
     *value = __APPLE__;
 #else
@@ -124,7 +124,7 @@ int* tryGetValueOf___APPLE__(int* value) {
     return value;
 }
 
-int* tryGetValueOf___arm__(int* value) {
+int32_t* tryGetValueOf___arm__(int32_t* value) {
 #if defined(__arm__)
     *value = __arm__;
 #else
@@ -133,7 +133,7 @@ int* tryGetValueOf___arm__(int* value) {
     return value;
 }
 
-int* tryGetValueOf___ARM_ARCH(int* value) {
+int32_t* tryGetValueOf___ARM_ARCH(int32_t* value) {
 #if defined(__ARM_ARCH)
     *value = __ARM_ARCH;
 #else
@@ -142,15 +142,15 @@ int* tryGetValueOf___ARM_ARCH(int* value) {
     return value;
 }
 
-int getValueOf___BIGGEST_ALIGNMENT__() {
+int32_t getValueOf___BIGGEST_ALIGNMENT__() {
     return __BIGGEST_ALIGNMENT__;
 }
 
-int getValueOf___BYTE_ORDER__() {
+int32_t getValueOf___BYTE_ORDER__() {
     return __BYTE_ORDER__;
 }
 
-int* tryGetValueOf___FreeBSD__(int* value) {
+int32_t* tryGetValueOf___FreeBSD__(int32_t* value) {
 #if defined(__FreeBSD__)
     *value = __FreeBSD__;
 #else
@@ -159,7 +159,7 @@ int* tryGetValueOf___FreeBSD__(int* value) {
     return value;
 }
 
-int* tryGetValueOf___GLIBC_MINOR__(int* value) {
+int32_t* tryGetValueOf___GLIBC_MINOR__(int32_t* value) {
 #if defined(__GLIBC_MINOR__)
     *value = __GLIBC_MINOR__;
 #else
@@ -168,7 +168,7 @@ int* tryGetValueOf___GLIBC_MINOR__(int* value) {
     return value;
 }
 
-int* tryGetValueOf___GLIBC__(int* value) {
+int32_t* tryGetValueOf___GLIBC__(int32_t* value) {
 #if defined(__GLIBC__)
     *value = __GLIBC__;
 #else
@@ -177,7 +177,7 @@ int* tryGetValueOf___GLIBC__(int* value) {
     return value;
 }
 
-int* tryGetValueOf___GNU_LIBRARY__(int* value) {
+int32_t* tryGetValueOf___GNU_LIBRARY__(int32_t* value) {
 #if defined(__GNU_LIBRARY__)
     *value = __GNU_LIBRARY__;
 #else
@@ -186,7 +186,7 @@ int* tryGetValueOf___GNU_LIBRARY__(int* value) {
     return value;
 }
 
-int* tryGetValueOf___i386__(int* value) {
+int32_t* tryGetValueOf___i386__(int32_t* value) {
 #if defined(__i386__)
     *value = __i386__;
 #else
@@ -195,7 +195,7 @@ int* tryGetValueOf___i386__(int* value) {
     return value;
 }
 
-int* tryGetValueOf___i686__(int* value) {
+int32_t* tryGetValueOf___i686__(int32_t* value) {
 #if defined(__i686__)
     *value = __i686__;
 #else
@@ -204,7 +204,7 @@ int* tryGetValueOf___i686__(int* value) {
     return value;
 }
 
-int* tryGetValueOf___ILP32__(int* value) {
+int32_t* tryGetValueOf___ILP32__(int32_t* value) {
 #if defined (__ILP32__)
     *value = __ILP32__;
 #else
@@ -213,7 +213,7 @@ int* tryGetValueOf___ILP32__(int* value) {
     return value;
 }
 
-int* tryGetValueOf___linux__(int* value) {
+int32_t* tryGetValueOf___linux__(int32_t* value) {
 #if defined(__linux__)
     *value = __linux__;
 #else
@@ -222,7 +222,7 @@ int* tryGetValueOf___linux__(int* value) {
     return value;
 }
 
-int* tryGetValueOf___LP64__(int* value) {
+int32_t* tryGetValueOf___LP64__(int32_t* value) {
 #if defined (__LP64__)
     *value = __LP64__;
 #else
@@ -231,7 +231,7 @@ int* tryGetValueOf___LP64__(int* value) {
     return value;
 }
 
-int* tryGetValueOf___mips__(int* value) {
+int32_t* tryGetValueOf___mips__(int32_t* value) {
 #if defined(__mips__)
     *value = __mips__;
 #else
@@ -240,7 +240,7 @@ int* tryGetValueOf___mips__(int* value) {
     return value;
 }
 
-int* tryGetValueOf___mips64(int* value) {
+int32_t* tryGetValueOf___mips64(int32_t* value) {
 #if defined(__mips64)
     *value = __mips64;
 #else
@@ -249,7 +249,7 @@ int* tryGetValueOf___mips64(int* value) {
     return value;
 }
 
-int* tryGetValueOf___MIPSEB__(int* value) {
+int32_t* tryGetValueOf___MIPSEB__(int32_t* value) {
 #if defined(__MIPSEB__)
     *value = __MIPSEB__;
 #else
@@ -258,7 +258,7 @@ int* tryGetValueOf___MIPSEB__(int* value) {
     return value;
 }
 
-int* tryGetValueOf___MIPSEL__(int* value) {
+int32_t* tryGetValueOf___MIPSEL__(int32_t* value) {
 #if defined(__MIPSEL__)
     *value = __MIPSEL__;
 #else
@@ -267,19 +267,19 @@ int* tryGetValueOf___MIPSEL__(int* value) {
     return value;
 }
 
-int getValueOf___ORDER_BIG_ENDIAN__() {
+int32_t getValueOf___ORDER_BIG_ENDIAN__() {
     return __ORDER_BIG_ENDIAN__;
 }
 
-int getValueOf___ORDER_LITTLE_ENDIAN__() {
+int32_t getValueOf___ORDER_LITTLE_ENDIAN__() {
     return __ORDER_LITTLE_ENDIAN__;
 }
 
-int getValueOf___ORDER_PDP_ENDIAN__() {
+int32_t getValueOf___ORDER_PDP_ENDIAN__() {
     return __ORDER_PDP_ENDIAN__;
 }
 
-int* tryGetValueOf___OpenBSD__(int* value) {
+int32_t* tryGetValueOf___OpenBSD__(int32_t* value) {
 #if defined(__OpenBSD__)
     *value = __OpenBSD__;
 #else
@@ -288,7 +288,7 @@ int* tryGetValueOf___OpenBSD__(int* value) {
     return value;
 }
 
-int* tryGetValueOf___powerpc__(int* value) {
+int32_t* tryGetValueOf___powerpc__(int32_t* value) {
 #if defined(__powerpc__)
     *value = __powerpc__;
 #else
@@ -297,7 +297,7 @@ int* tryGetValueOf___powerpc__(int* value) {
     return value;
 }
 
-int* tryGetValueOf___powerpc64__(int* value) {
+int32_t* tryGetValueOf___powerpc64__(int32_t* value) {
 #if defined(__powerpc64__)
     *value = __powerpc64__;
 #else
@@ -306,7 +306,7 @@ int* tryGetValueOf___powerpc64__(int* value) {
     return value;
 }
 
-int* tryGetValueOf___riscv(int* value) {
+int32_t* tryGetValueOf___riscv(int32_t* value) {
 #if defined( __riscv)
     *value = __riscv;
 #else
@@ -315,7 +315,7 @@ int* tryGetValueOf___riscv(int* value) {
     return value;
 }
 
-int* tryGetValueOf___SH4__(int* value) {
+int32_t* tryGetValueOf___SH4__(int32_t* value) {
 #if defined(__SH4__)
     *value = __SH4__;
 #else
@@ -324,15 +324,15 @@ int* tryGetValueOf___SH4__(int* value) {
     return value;
 }
 
-int getValueOf___SIZEOF_LONG__() {
+int32_t getValueOf___SIZEOF_LONG__() {
     return __SIZEOF_LONG__;
 }
 
-int getValueOf___SIZEOF_POINTER__() {
+int32_t getValueOf___SIZEOF_POINTER__() {
     return __SIZEOF_POINTER__;
 }
 
-int* tryGetValueOf___s390__(int* value) {
+int32_t* tryGetValueOf___s390__(int32_t* value) {
 #if defined(__s390__)
     *value = __s390__;
 #else
@@ -341,7 +341,7 @@ int* tryGetValueOf___s390__(int* value) {
     return value;
 }
 
-int* tryGetValueOf___s390x__(int* value) {
+int32_t* tryGetValueOf___s390x__(int32_t* value) {
 #if defined(__s390x__)
     *value = __s390x__;
 #else
@@ -350,7 +350,7 @@ int* tryGetValueOf___s390x__(int* value) {
     return value;
 }
 
-int* tryGetValueOf___sh__(int* value) {
+int32_t* tryGetValueOf___sh__(int32_t* value) {
 #if defined(__sh__)
     *value = __sh__;
 #else
@@ -359,7 +359,7 @@ int* tryGetValueOf___sh__(int* value) {
     return value;
 }
 
-int* tryGetValueOf___sparc64__(int* value) {
+int32_t* tryGetValueOf___sparc64__(int32_t* value) {
 #if defined(__sparc64__)
     *value = __sparc64__;
 #else
@@ -368,7 +368,7 @@ int* tryGetValueOf___sparc64__(int* value) {
     return value;
 }
 
-int* tryGetValueOf___sparc__(int* value) {
+int32_t* tryGetValueOf___sparc__(int32_t* value) {
 #if defined(__sparc__)
     *value = __sparc__;
 #else
@@ -377,7 +377,7 @@ int* tryGetValueOf___sparc__(int* value) {
     return value;
 }
 
-int* tryGetValueOf___TIMESIZE(int* value) {
+int32_t* tryGetValueOf___TIMESIZE(int32_t* value) {
 #if defined(__TIMESIZE)
     *value = __TIMESIZE;
 #else
@@ -386,7 +386,7 @@ int* tryGetValueOf___TIMESIZE(int* value) {
     return value;
 }
 
-int* tryGetValueOf___WORDSIZE(int* value) {
+int32_t* tryGetValueOf___WORDSIZE(int32_t* value) {
 #if defined (__WIN32__) || defined(__OpenBSD__)
 #if !defined(__WORDSIZE)
     value = NULL;
@@ -399,7 +399,7 @@ int* tryGetValueOf___WORDSIZE(int* value) {
     return value;
 }
 
-int* tryGetValueOf___x86_64__(int* value) {
+int32_t* tryGetValueOf___x86_64__(int32_t* value) {
 #if defined(__x86_64__)
     *value = __x86_64__;
 #else

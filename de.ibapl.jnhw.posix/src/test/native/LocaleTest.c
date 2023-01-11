@@ -1,6 +1,6 @@
 /*
  * JNHW - Java Native header Wrapper, https://github.com/aploese/jnhw/
- * Copyright (C) 2019-2022, Arne Plöse and individual contributors as indicated
+ * Copyright (C) 2019-2023, Arne Plöse and individual contributors as indicated
  * by the @authors tag. See the copyright.txt in the distribution for a
  * full listing of individual contributors.
  *
@@ -29,11 +29,11 @@
 #include <xlocale.h>
 #endif
 
-int sizeof__locale_t() {
+int32_t sizeof__locale_t() {
     return sizeof (locale_t);
 }
 
-char test_LC_GLOBAL_LOCALE_equals(locale_t value) {
+int8_t test_LC_GLOBAL_LOCALE_equals(locale_t value) {
     return (LC_GLOBAL_LOCALE == value);
 }
 

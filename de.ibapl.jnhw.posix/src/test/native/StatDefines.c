@@ -1,6 +1,6 @@
 /*
  * JNHW - Java Native header Wrapper, https://github.com/aploese/jnhw/
- * Copyright (C) 2019-2022, Arne Plöse and individual contributors as indicated
+ * Copyright (C) 2019-2023, Arne Plöse and individual contributors as indicated
  * by the @authors tag. See the copyright.txt in the distribution for a
  * full listing of individual contributors.
  *
@@ -25,73 +25,105 @@
     //We need the POSIX version ...
 #if !defined(HAVE_SYS_STAT_H) || !defined(_POSIX_VERSION)
 
-int getValueOf_HAVE_SYS_STAT_H() {
+int32_t getValueOf_HAVE_SYS_STAT_H() {
     return 0;
 }
 #else
 #include <sys/stat.h>
 
-int getValueOf_HAVE_SYS_STAT_H() {
+int32_t getValueOf_HAVE_SYS_STAT_H() {
     return 1;
 }
 
-int getValueOf_S_IRGRP() {
+int32_t getValueOf_S_IFMT() {
+    return S_IFMT;
+}
+
+int32_t getValueOf_S_IFBLK() {
+    return S_IFBLK;
+}
+
+int32_t getValueOf_S_IFCHR() {
+    return S_IFCHR;
+}
+
+int32_t getValueOf_S_IFIFO() {
+    return S_IFIFO;
+}
+
+int32_t getValueOf_S_IFREG() {
+    return S_IFREG;
+}
+
+int32_t getValueOf_S_IFDIR() {
+    return S_IFDIR;
+}
+
+int32_t getValueOf_S_IFLNK() {
+    return S_IFLNK;
+}
+
+int32_t getValueOf_S_IFSOCK() {
+    return S_IFSOCK;
+}
+
+int32_t getValueOf_S_IRGRP() {
     return S_IRGRP;
 }
 
-int getValueOf_S_IROTH() {
+int32_t getValueOf_S_IROTH() {
     return S_IROTH;
 }
 
-int getValueOf_S_IRUSR() {
+int32_t getValueOf_S_IRUSR() {
     return S_IRUSR;
 }
 
-int getValueOf_S_IRWXG() {
+int32_t getValueOf_S_IRWXG() {
     return S_IRWXG;
 }
 
-int getValueOf_S_IRWXO() {
+int32_t getValueOf_S_IRWXO() {
     return S_IRWXO;
 }
 
-int getValueOf_S_IRWXU() {
+int32_t getValueOf_S_IRWXU() {
     return S_IRWXU;
 }
 
-int getValueOf_S_ISGID() {
+int32_t getValueOf_S_ISGID() {
     return S_ISGID;
 }
 
-int getValueOf_S_ISUID() {
+int32_t getValueOf_S_ISUID() {
     return S_ISUID;
 }
 
-int getValueOf_S_ISVTX() {
+int32_t getValueOf_S_ISVTX() {
     return S_ISVTX;
 }
 
-int getValueOf_S_IWGRP() {
+int32_t getValueOf_S_IWGRP() {
     return S_IWGRP;
 }
 
-int getValueOf_S_IWOTH() {
+int32_t getValueOf_S_IWOTH() {
     return S_IWOTH;
 }
 
-int getValueOf_S_IWUSR() {
+int32_t getValueOf_S_IWUSR() {
     return S_IWUSR;
 }
 
-int getValueOf_S_IXGRP() {
+int32_t getValueOf_S_IXGRP() {
     return S_IXGRP;
 }
 
-int getValueOf_S_IXOTH() {
+int32_t getValueOf_S_IXOTH() {
     return S_IXOTH;
 }
 
-int getValueOf_S_IXUSR() {
+int32_t getValueOf_S_IXUSR() {
     return S_IXUSR;
 }
 

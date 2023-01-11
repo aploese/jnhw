@@ -1,6 +1,6 @@
 /*
  * JNHW - Java Native header Wrapper, https://github.com/aploese/jnhw/
- * Copyright (C) 2019-2022, Arne Plöse and individual contributors as indicated
+ * Copyright (C) 2019-2023, Arne Plöse and individual contributors as indicated
  * by the @authors tag. See the copyright.txt in the distribution for a
  * full listing of individual contributors.
  *
@@ -32,16 +32,15 @@ import de.ibapl.jnhw.annotation.posix.sys.types.useconds_t;
 import de.ibapl.jnhw.common.annotation.Define;
 import de.ibapl.jnhw.common.annotation.Include;
 import de.ibapl.jnhw.common.datatypes.BaseDataType;
-import de.ibapl.jnhw.common.datatypes.MultiarchTupelBuilder;
-import de.ibapl.jnhw.common.downcall.wrapper.JnhwMh_sI___A;
-import de.ibapl.jnhw.common.downcall.wrapper.JnhwMh_sI___V;
-import de.ibapl.jnhw.common.downcall.wrapper.JnhwMh_sI__sI;
-import de.ibapl.jnhw.common.downcall.wrapper.JnhwMh_sI__uI;
-import de.ibapl.jnhw.common.downcall.wrapper.JnhwMh_sI__uI_uI;
-import de.ibapl.jnhw.common.downcall.wrapper.JnhwMh_sL__sI;
-import de.ibapl.jnhw.common.downcall.wrapper.JnhwMh_sL__sI_sL_sI;
-import de.ibapl.jnhw.common.downcall.wrapper.JnhwMh_sL_sI__A_uL;
-import de.ibapl.jnhw.common.downcall.wrapper.JnhwMh_uI___V;
+import de.ibapl.jnhw.common.downcall.JnhwMh_sI___A;
+import de.ibapl.jnhw.common.downcall.JnhwMh_sI___V;
+import de.ibapl.jnhw.common.downcall.JnhwMh_sI__sI;
+import de.ibapl.jnhw.common.downcall.JnhwMh_sI__uI;
+import de.ibapl.jnhw.common.downcall.JnhwMh_sI__uI_uI;
+import de.ibapl.jnhw.common.downcall.JnhwMh_sL__sI;
+import de.ibapl.jnhw.common.downcall.JnhwMh_sL__sI__A_uL;
+import de.ibapl.jnhw.common.downcall.JnhwMh_sL__sI_sL_sI;
+import de.ibapl.jnhw.common.downcall.JnhwMh_uI___V;
 import de.ibapl.jnhw.common.exception.NativeErrorException;
 import de.ibapl.jnhw.common.exception.NoSuchNativeMethodException;
 import de.ibapl.jnhw.common.memory.Int32_t;
@@ -49,6 +48,8 @@ import de.ibapl.jnhw.common.memory.MemoryArray;
 import de.ibapl.jnhw.common.memory.OpaqueMemory;
 import de.ibapl.jnhw.common.util.ByteBufferUtils;
 import de.ibapl.jnhw.common.util.IntDefine;
+import de.ibapl.jnhw.libloader.MultiarchTupelBuilder;
+import de.ibapl.jnhw.util.posix.LibcLoader;
 import de.ibapl.jnhw.util.posix.PosixDataType;
 import java.lang.foreign.MemorySegment;
 import java.lang.foreign.MemorySession;
@@ -308,44 +309,54 @@ public final class Unistd {
     }
 
     private final static JnhwMh_sI__sI close = JnhwMh_sI__sI.of(
+            LibcLoader.LIB_C_SYMBOL_LOOKUP,
             "close",
             BaseDataType.C_int,
             BaseDataType.C_int);
 
     private final static JnhwMh_sI__sI fsync = JnhwMh_sI__sI.of(
+            LibcLoader.LIB_C_SYMBOL_LOOKUP,
             "fsync",
             BaseDataType.C_int,
             BaseDataType.C_int);
 
     private final static JnhwMh_uI___V getegid = JnhwMh_uI___V.of(
+            LibcLoader.LIB_C_SYMBOL_LOOKUP,
             "getegid",
             PosixDataType.gid_t);
 
     private final static JnhwMh_uI___V geteuid = JnhwMh_uI___V.of(
+            LibcLoader.LIB_C_SYMBOL_LOOKUP,
             "geteuid",
             PosixDataType.uid_t);
 
     private final static JnhwMh_sI___V getpgrp = JnhwMh_sI___V.of(
+            LibcLoader.LIB_C_SYMBOL_LOOKUP,
             "getpgrp",
             PosixDataType.pid_t);
 
     private final static JnhwMh_sI___V getppid = JnhwMh_sI___V.of(
+            LibcLoader.LIB_C_SYMBOL_LOOKUP,
             "getppid",
             PosixDataType.pid_t);
 
     private final static JnhwMh_uI___V getgid = JnhwMh_uI___V.of(
+            LibcLoader.LIB_C_SYMBOL_LOOKUP,
             "getgid",
             PosixDataType.gid_t);
 
     private final static JnhwMh_uI___V getuid = JnhwMh_uI___V.of(
+            LibcLoader.LIB_C_SYMBOL_LOOKUP,
             "getuid",
             PosixDataType.uid_t);
 
     private final static JnhwMh_sI___V getpid = JnhwMh_sI___V.of(
+            LibcLoader.LIB_C_SYMBOL_LOOKUP,
             "getpid",
             PosixDataType.pid_t);
 
     private final static JnhwMh_sL__sI_sL_sI lseek = JnhwMh_sL__sI_sL_sI.of(
+            LibcLoader.LIB_C_SYMBOL_LOOKUP,
             "lseek",
             PosixDataType.off_t,
             BaseDataType.C_int,
@@ -353,18 +364,21 @@ public final class Unistd {
             BaseDataType.C_int);
 
     private final static JnhwMh_sL__sI_sL_sI lseek64 = JnhwMh_sL__sI_sL_sI.ofOrNull(
+            LibcLoader.LIB_C_SYMBOL_LOOKUP,
             "lseek64",
-            PosixDataType.off_t,
+            PosixDataType.off64_t,
             BaseDataType.C_int,
-            PosixDataType.off_t,
+            PosixDataType.off64_t,
             BaseDataType.C_int);
 
     private final static JnhwMh_sI___A pipe = JnhwMh_sI___A.of(
+            LibcLoader.LIB_C_SYMBOL_LOOKUP,
             "pipe",
             BaseDataType.C_int,
             BaseDataType.C_pointer);
 
-    private final static JnhwMh_sL_sI__A_uL read = JnhwMh_sL_sI__A_uL.of(
+    private final static JnhwMh_sL__sI__A_uL read = JnhwMh_sL__sI__A_uL.of(
+            LibcLoader.LIB_C_SYMBOL_LOOKUP,
             "read",
             PosixDataType.ssize_t,
             BaseDataType.C_int,
@@ -372,43 +386,51 @@ public final class Unistd {
             PosixDataType.size_t);
 
     private final static JnhwMh_sL__sI sysconf = JnhwMh_sL__sI.of(
+            LibcLoader.LIB_C_SYMBOL_LOOKUP,
             "sysconf",
             BaseDataType.C_long,
             BaseDataType.C_int);
 
     private final static JnhwMh_sI__uI setegid = JnhwMh_sI__uI.of(
+            LibcLoader.LIB_C_SYMBOL_LOOKUP,
             "setegid",
             BaseDataType.C_int,
             PosixDataType.gid_t);
 
     private final static JnhwMh_sI__uI seteuid = JnhwMh_sI__uI.of(
+            LibcLoader.LIB_C_SYMBOL_LOOKUP,
             "seteuid",
             BaseDataType.C_int,
             PosixDataType.uid_t);
 
     private final static JnhwMh_sI__uI_uI setregid = JnhwMh_sI__uI_uI.of(
+            LibcLoader.LIB_C_SYMBOL_LOOKUP,
             "setregid",
             BaseDataType.C_int,
             PosixDataType.gid_t,
             PosixDataType.gid_t);
 
     private final static JnhwMh_sI__uI_uI setreuid = JnhwMh_sI__uI_uI.of(
+            LibcLoader.LIB_C_SYMBOL_LOOKUP,
             "setreuid",
             BaseDataType.C_int,
             PosixDataType.uid_t,
             PosixDataType.uid_t);
 
     private final static JnhwMh_sI__uI setgid = JnhwMh_sI__uI.of(
+            LibcLoader.LIB_C_SYMBOL_LOOKUP,
             "setgid",
             BaseDataType.C_int,
             PosixDataType.gid_t);
 
     private final static JnhwMh_sI__uI setuid = JnhwMh_sI__uI.of(
+            LibcLoader.LIB_C_SYMBOL_LOOKUP,
             "setuid",
             BaseDataType.C_int,
             PosixDataType.uid_t);
 
-    private final static JnhwMh_sL_sI__A_uL write = JnhwMh_sL_sI__A_uL.of(
+    private final static JnhwMh_sL__sI__A_uL write = JnhwMh_sL__sI__A_uL.of(
+            LibcLoader.LIB_C_SYMBOL_LOOKUP,
             "write",
             PosixDataType.ssize_t,
             BaseDataType.C_int,
@@ -618,9 +640,9 @@ public final class Unistd {
      */
     @ssize_t
     public final static int read(int fildes, byte[] buf) throws NativeErrorException {
-        try ( MemorySession ms = MemorySession.openConfined()) {
+        try (MemorySession ms = MemorySession.openConfined()) {
             final MemorySegment mem = MemorySegment.allocateNative(buf.length, ms);
-            final long result = read.invoke_sL__sI_A_uL(fildes, mem, buf.length);
+            final long result = read.invoke_sL__sI__A_uL(fildes, mem, buf.length);
             if (result == -1) {
                 throw new NativeErrorException(Errno.errno());
             }
@@ -652,9 +674,9 @@ public final class Unistd {
     @ssize_t
     public final static int read(int fildes, byte[] buf, int destOff, @size_t int nbyte) throws NativeErrorException {
         Objects.checkFromIndexSize(destOff, nbyte, buf.length);
-        try ( MemorySession ms = MemorySession.openConfined()) {
+        try (MemorySession ms = MemorySession.openConfined()) {
             final MemorySegment mem = MemorySegment.allocateNative(nbyte, ms);
-            final long result = read.invoke_sL__sI_A_uL(fildes, mem, nbyte);
+            final long result = read.invoke_sL__sI__A_uL(fildes, mem, nbyte);
             if (result == -1) {
                 throw new NativeErrorException(Errno.errno());
             }
@@ -687,7 +709,7 @@ public final class Unistd {
     public final static int read(int fildes, ByteBuffer buffer) throws NativeErrorException {
         final long result;
         if (buffer.isDirect()) {
-            result = read.invoke_sL__sI_A_uL(fildes, MemorySegment.ofBuffer(buffer), buffer.remaining());
+            result = read.invoke_sL__sI__A_uL(fildes, MemorySegment.ofBuffer(buffer), buffer.remaining());
             if (result == -1) {
                 throw new NativeErrorException(Errno.errno());
             }
@@ -718,7 +740,7 @@ public final class Unistd {
      */
     @ssize_t
     public final static long read(int fildes, OpaqueMemory mem) throws NativeErrorException {
-        final long result = read.invoke_sL__sI_P_uL(fildes, mem, mem.sizeof());
+        final long result = read.invoke_sL__sI__P_uL(fildes, mem, mem.sizeof());
         if (result == -1) {
             throw new NativeErrorException(Errno.errno());
         }
@@ -742,7 +764,7 @@ public final class Unistd {
      */
     @ssize_t
     public final static long read(int fildes, MemorySegment mem) throws NativeErrorException {
-        final long result = read.invoke_sL__sI_A_uL(fildes, mem, mem.byteSize());
+        final long result = read.invoke_sL__sI__A_uL(fildes, mem, mem.byteSize());
         if (result == -1) {
             throw new NativeErrorException(Errno.errno());
         }
@@ -772,7 +794,7 @@ public final class Unistd {
      */
     @ssize_t
     public final static long read(int fildes, OpaqueMemory mem, long destOff, @size_t long nbyte) throws NativeErrorException {
-        final long result = read.invoke_sL__sI_A_uL(fildes, OpaqueMemory.sliceMemorySegment(mem, destOff, nbyte), nbyte);
+        final long result = read.invoke_sL__sI__A_uL(fildes, OpaqueMemory.sliceMemorySegment(mem, destOff, nbyte), nbyte);
         if (result == -1) {
             throw new NativeErrorException(Errno.errno());
         }
@@ -802,7 +824,7 @@ public final class Unistd {
      */
     @ssize_t
     public final static long read(int fildes, MemorySegment mem, long destOff, @size_t long nbyte) throws NativeErrorException {
-        final long result = read.invoke_sL__sI_A_uL(fildes, mem.asSlice(destOff, nbyte), nbyte);
+        final long result = read.invoke_sL__sI__A_uL(fildes, mem.asSlice(destOff, nbyte), nbyte);
         if (result == -1) {
             throw new NativeErrorException(Errno.errno());
         }
@@ -947,10 +969,10 @@ public final class Unistd {
      */
     @ssize_t
     public final static int write(int fildes, byte[] buf) throws NativeErrorException {
-        try ( MemorySession ms = MemorySession.openConfined()) {
+        try (MemorySession ms = MemorySession.openConfined()) {
             final MemorySegment mem = MemorySegment.allocateNative(buf.length, ms);
             mem.copyFrom(MemorySegment.ofArray(buf));
-            final long result = write.invoke_sL__sI_A_uL(fildes, mem, buf.length);
+            final long result = write.invoke_sL__sI__A_uL(fildes, mem, buf.length);
             if (result == -1) {
                 throw new NativeErrorException(Errno.errno());
             }
@@ -981,10 +1003,10 @@ public final class Unistd {
     @ssize_t
     public final static int write(int fildes, byte[] buf, int srcOff, @size_t int nbyte) throws NativeErrorException {
         Objects.checkFromIndexSize(srcOff, nbyte, buf.length);
-        try ( MemorySession ms = MemorySession.openConfined()) {
+        try (MemorySession ms = MemorySession.openConfined()) {
             final MemorySegment mem = MemorySegment.allocateNative(nbyte, ms);
             mem.copyFrom(MemorySegment.ofArray(buf).asSlice(srcOff, nbyte));
-            final long result = write.invoke_sL__sI_A_uL(fildes, mem, nbyte);
+            final long result = write.invoke_sL__sI__A_uL(fildes, mem, nbyte);
             if (result == -1) {
                 throw new NativeErrorException(Errno.errno());
             }
@@ -1014,7 +1036,7 @@ public final class Unistd {
     public final static int write(int fildes, ByteBuffer buffer) throws NativeErrorException {
         final long result;
         if (buffer.isDirect()) {
-            result = write.invoke_sL__sI_A_uL(fildes, MemorySegment.ofBuffer(buffer), buffer.remaining());
+            result = write.invoke_sL__sI__A_uL(fildes, MemorySegment.ofBuffer(buffer), buffer.remaining());
             if (result == -1) {
                 throw new NativeErrorException(Errno.errno());
             }
@@ -1043,7 +1065,7 @@ public final class Unistd {
      */
     @ssize_t
     public final static long write(int fildes, OpaqueMemory mem) throws NativeErrorException {
-        final long result = write.invoke_sL__sI_P_uL(fildes, mem, mem.sizeof());
+        final long result = write.invoke_sL__sI__P_uL(fildes, mem, mem.sizeof());
         if (result == -1) {
             throw new NativeErrorException(Errno.errno());
         }
@@ -1065,7 +1087,7 @@ public final class Unistd {
      */
     @ssize_t
     public final static long write(int fildes, MemorySegment mem) throws NativeErrorException {
-        final long result = write.invoke_sL__sI_A_uL(fildes, mem, mem.byteSize());
+        final long result = write.invoke_sL__sI__A_uL(fildes, mem, mem.byteSize());
         if (result == -1) {
             throw new NativeErrorException(Errno.errno());
         }
@@ -1094,7 +1116,7 @@ public final class Unistd {
     @ssize_t
     public final static long write(int fildes, OpaqueMemory mem,
             long srcOff, @size_t long nbyte) throws NativeErrorException {
-        final long result = write.invoke_sL__sI_A_uL(fildes, OpaqueMemory.sliceMemorySegment(mem, srcOff, nbyte), nbyte);
+        final long result = write.invoke_sL__sI__A_uL(fildes, OpaqueMemory.sliceMemorySegment(mem, srcOff, nbyte), nbyte);
         if (result == -1) {
             throw new NativeErrorException(Errno.errno());
         }
@@ -1123,7 +1145,7 @@ public final class Unistd {
     @ssize_t
     public final static long write(int fildes, MemorySegment mem,
             long srcOff, @size_t long nbyte) throws NativeErrorException {
-        final long result = write.invoke_sL__sI_A_uL(fildes, mem.asSlice(srcOff, nbyte), nbyte);
+        final long result = write.invoke_sL__sI__A_uL(fildes, mem.asSlice(srcOff, nbyte), nbyte);
         if (result == -1) {
             throw new NativeErrorException(Errno.errno());
         }

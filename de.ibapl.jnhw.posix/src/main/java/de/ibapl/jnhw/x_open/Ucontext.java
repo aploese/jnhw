@@ -1,6 +1,6 @@
 /*
  * JNHW - Java Native header Wrapper, https://github.com/aploese/jnhw/
- * Copyright (C) 2019-2022, Arne Plöse and individual contributors as indicated
+ * Copyright (C) 2019-2023, Arne Plöse and individual contributors as indicated
  * by the @authors tag. See the copyright.txt in the distribution for a
  * full listing of individual contributors.
  *
@@ -23,13 +23,14 @@ package de.ibapl.jnhw.x_open;
 
 import de.ibapl.jnhw.common.annotation.Include;
 import de.ibapl.jnhw.common.datatypes.BaseDataType;
-import de.ibapl.jnhw.common.datatypes.MultiarchTupelBuilder;
+import de.ibapl.jnhw.common.downcall.JnhwMh_sI___A;
+import de.ibapl.jnhw.common.downcall.JnhwMh_sI___A__A;
 import de.ibapl.jnhw.common.exception.NativeErrorException;
 import de.ibapl.jnhw.common.exception.NoSuchNativeMethodException;
-import de.ibapl.jnhw.common.downcall.wrapper.JnhwMh_sI___A;
-import de.ibapl.jnhw.common.downcall.wrapper.JnhwMh_sI___A__A;
+import de.ibapl.jnhw.libloader.MultiarchTupelBuilder;
 import de.ibapl.jnhw.posix.Errno;
 import de.ibapl.jnhw.posix.Signal;
+import de.ibapl.jnhw.util.posix.LibcLoader;
 
 /**
  * Wrapper around the {@code  <ucontext.h>} header.
@@ -71,16 +72,19 @@ public class Ucontext {
     }
 
     private final static JnhwMh_sI___A getcontext = JnhwMh_sI___A.ofOrNull(
+            LibcLoader.LIB_C_SYMBOL_LOOKUP,
             "getcontext",
             BaseDataType.C_int,
             BaseDataType.C_const_struct_pointer);
 
     private final static JnhwMh_sI___A setcontext = JnhwMh_sI___A.ofOrNull(
+            LibcLoader.LIB_C_SYMBOL_LOOKUP,
             "setcontext",
             BaseDataType.C_int,
             BaseDataType.C_const_struct_pointer);
 
     private final static JnhwMh_sI___A__A swapcontext = JnhwMh_sI___A__A.ofOrNull(
+            LibcLoader.LIB_C_SYMBOL_LOOKUP,
             "swapcontext",
             BaseDataType.C_int,
             BaseDataType.C_const_struct_pointer,

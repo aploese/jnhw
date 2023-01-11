@@ -1,6 +1,6 @@
 /*
  * JNHW - Java Native header Wrapper, https://github.com/aploese/jnhw/
- * Copyright (C) 2019-2022, Arne Plöse and individual contributors as indicated
+ * Copyright (C) 2019-2023, Arne Plöse and individual contributors as indicated
  * by the @authors tag. See the copyright.txt in the distribution for a
  * full listing of individual contributors.
  *
@@ -21,6 +21,7 @@
  */
 package de.ibapl.jnhw.common.memory;
 
+import java.lang.foreign.MemoryAddress;
 import java.lang.foreign.MemorySegment;
 import java.lang.foreign.ValueLayout;
 import java.nio.ByteOrder;
@@ -35,18 +36,22 @@ public final class MemoryAccessorImpl_ILP32 extends AbstractMemoryAccessorImpl {
 
     private final ValueLayout.OfInt LAYOUT__UNSIGNED_LONG;
 
+    private final ValueLayout.OfInt LAYOUT_UINTPTR_T;
+
     private final static int LONG_SIZE = 4;
 
     public MemoryAccessorImpl_ILP32(ByteOrder byteOrder) {
         super(byteOrder);
         LAYOUT__LONG = ValueLayout.JAVA_INT.withOrder(byteOrder);
         LAYOUT__UNSIGNED_LONG = ValueLayout.JAVA_INT.withOrder(byteOrder);
+        LAYOUT_UINTPTR_T = ValueLayout.JAVA_INT.withOrder(byteOrder);
     }
 
     public MemoryAccessorImpl_ILP32(ByteOrder byteOrder, long alignmentBits) {
         super(byteOrder, alignmentBits);
         LAYOUT__LONG = ValueLayout.JAVA_INT.withOrder(byteOrder).withBitAlignment(alignmentBits);
         LAYOUT__UNSIGNED_LONG = ValueLayout.JAVA_INT.withOrder(byteOrder).withBitAlignment(alignmentBits);
+        LAYOUT_UINTPTR_T = ValueLayout.JAVA_INT.withOrder(byteOrder).withBitAlignment(alignmentBits);
     }
 
     @Override
@@ -107,14 +112,26 @@ public final class MemoryAccessorImpl_ILP32 extends AbstractMemoryAccessorImpl {
         mem.set(LAYOUT__UNSIGNED_LONG, offset + LONG_SIZE * index, (int) value);
     }
 
+    //TODO BUG on arm
+    @Override
+    public MemoryAddress uintptr_t_AtIndex(MemorySegment mem, long index) {
+        return MemoryAddress.ofLong(0xffffffffL & mem.getAtIndex(LAYOUT_UINTPTR_T, index));
+    }
+
+    //TODO BUG on arm
+    @Override
+    public MemoryAddress uintptr_t(MemorySegment mem, long offset) {
+        return MemoryAddress.ofLong(0xffffffffL & mem.get(LAYOUT_UINTPTR_T, offset));
+    }
+
     @Override
     public String intptr_t_AsHex(MemorySegment mem, long offset) {
-        return String.format("0x%08x", intptr_t(mem, offset));
+        return String.format("0x%08x", (int) intptr_t(mem, offset).toRawLongValue());
     }
 
     @Override
     public String uintptr_t_AsHex(MemorySegment mem, long offset) {
-        return String.format("0x%08x", uintptr_t(mem, offset));
+        return String.format("0x%08x", (int) uintptr_t(mem, offset).toRawLongValue());
     }
 
 }

@@ -1,6 +1,6 @@
 /*
  * JNHW - Java Native header Wrapper, https://github.com/aploese/jnhw/
- * Copyright (C) 2019-2022, Arne Plöse and individual contributors as indicated
+ * Copyright (C) 2019-2023, Arne Plöse and individual contributors as indicated
  * by the @authors tag. See the copyright.txt in the distribution for a
  * full listing of individual contributors.
  *
@@ -21,22 +21,26 @@
  */
 package de.ibapl.jnhw.posix;
 
-import de.ibapl.jnhw.common.exception.NoSuchNativeMethodException;
+import de.ibapl.jnhw.common.datatypes.BaseDataType;
+import de.ibapl.jnhw.common.downcall.JnhwMh_MA___A;
+import de.ibapl.jnhw.common.downcall.JnhwMh_MA___A_sI;
+import de.ibapl.jnhw.common.downcall.JnhwMh_MA___V;
+import de.ibapl.jnhw.common.downcall.JnhwMh_sB___A;
+import de.ibapl.jnhw.common.downcall.JnhwMh_sB___V;
+import de.ibapl.jnhw.common.downcall.JnhwMh_sI___V;
+import de.ibapl.jnhw.common.downcall.JnhwMh_sI__sB_sI;
+import de.ibapl.jnhw.common.downcall.JnhwMh_sI__sI_sB_sI_sI;
+import de.ibapl.jnhw.common.downcall.JnhwMh_sL___V;
+import de.ibapl.jnhw.common.downcall.JnhwMh_sS___V;
 import de.ibapl.jnhw.common.memory.Int32_t;
 import de.ibapl.jnhw.common.memory.IntPtr_t;
 import de.ibapl.jnhw.libloader.LoadResult;
 import de.ibapl.jnhw.libloader.LoadState;
 import de.ibapl.jnhw.libloader.NativeLibResolver;
 import java.lang.foreign.Addressable;
-import java.lang.foreign.FunctionDescriptor;
-import java.lang.foreign.Linker;
 import java.lang.foreign.MemoryAddress;
-import java.lang.foreign.MemorySegment;
 import java.lang.foreign.MemorySession;
 import java.lang.foreign.SymbolLookup;
-import java.lang.foreign.ValueLayout;
-import java.lang.invoke.MethodHandle;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
@@ -52,14 +56,15 @@ public final class LibJnhwPosixTestLoader {
     public final static int LIB_JNHW_POSIX_TEST_VERSION = 4;
     private final static Object loadLock = new Object();
     private static LoadState state = LoadState.INIT;
-    private final static Linker NATIVE_LINKER = Linker.nativeLinker();
+    public static SymbolLookup LIB_JNHW_POSIX_TEST_SYMBOL_LOOKUP = null;
+    private final static MemorySession LIB_JNHW_POSIX_TEST_MEMORY_SESSION = MemorySession.openShared();
 
     static {
         LibJnhwPosixTestLoader.touch();
     }
 
-    protected static void doSystemLoad(String absoluteLibName) {
-        System.load(absoluteLibName);
+    protected static void doLoadTestLib(String absoluteLibName) {
+        LIB_JNHW_POSIX_TEST_SYMBOL_LOOKUP = SymbolLookup.libraryLookup(absoluteLibName, LIB_JNHW_POSIX_TEST_MEMORY_SESSION);
     }
 
     public static LoadResult getLoadResult() {
@@ -79,7 +84,7 @@ public final class LibJnhwPosixTestLoader {
             }
             state = LoadState.LOADING;
         }
-        LIB_JNHW_POSIX_TEST_LOAD_RESULT = NativeLibResolver.loadNativeLib(LIB_JNHW_POSIX_TEST, LIB_JNHW_POSIX_TEST_VERSION, LibJnhwPosixTestLoader::doSystemLoad);
+        LIB_JNHW_POSIX_TEST_LOAD_RESULT = NativeLibResolver.loadNativeLib(LIB_JNHW_POSIX_TEST, LIB_JNHW_POSIX_TEST_VERSION, LibJnhwPosixTestLoader::doLoadTestLib);
         synchronized (loadLock) {
             if (LIB_JNHW_POSIX_TEST_LOAD_RESULT.isLoaded()) {
                 state = LoadState.SUCCESS;
@@ -90,133 +95,54 @@ public final class LibJnhwPosixTestLoader {
         return state;
     }
 
-    private static MethodHandle downcallHandle(String name, FunctionDescriptor function) throws NoSuchNativeMethodException {
-        SymbolLookup loaderLookup = SymbolLookup.loaderLookup();
-        try {
-            MemorySegment ns = loaderLookup.lookup(name).orElseThrow(() -> {
-                return new NoSuchNativeMethodException(name);
-            });
-            return NATIVE_LINKER.downcallHandle(ns, function);
-        } catch (Throwable t) {
-            LOG.log(Level.SEVERE, "d.i.j.p.LibJnhwPosixTestLoader.downcallHandle(\"" + name + "\")", t);
-            throw t;
-        }
+    public static byte invoke_sB___V(String name) {
+        return JnhwMh_sB___V.of(LIB_JNHW_POSIX_TEST_SYMBOL_LOOKUP, name, BaseDataType.int8_t).invoke_sB___V();
     }
 
-    public static byte invokeExact_Byte_V(String name) {
-        try {
-            final MethodHandle handle = downcallHandle(name, FunctionDescriptor.of(ValueLayout.JAVA_BYTE));
-            return (byte) handle.invokeExact();
-        } catch (Throwable t) {
-            LOG.log(Level.SEVERE, "d.i.j.p.LibJnhwPosixTestLoader.invokeExact_Byte_V(\"" + name + "\")", t);
-            throw new RuntimeException(t);
-        }
-    }
-
-    public static short invokeExact_Short_V(String name) {
-        try {
-            final MethodHandle handle = downcallHandle(name, FunctionDescriptor.of(ValueLayout.JAVA_SHORT));
-            return (short) handle.invokeExact();
-        } catch (Throwable t) {
-            LOG.log(Level.SEVERE, "d.i.j.p.LibJnhwPosixTestLoader.invokeExact_Short_V(\"" + name + "\")", t);
-            throw new RuntimeException(t);
-        }
+    public static short invoke_sS___V(String name) {
+        return JnhwMh_sS___V.of(LIB_JNHW_POSIX_TEST_SYMBOL_LOOKUP, name, BaseDataType.int16_t).invoke_sS___V();
     }
 
     public static boolean invokeExact_CharToBool_V(String name) {
-        try {
-            final MethodHandle handle = downcallHandle(name, FunctionDescriptor.of(ValueLayout.JAVA_BYTE));
-            return ((byte) handle.invokeExact()) != 0;
-        } catch (Throwable t) {
-            LOG.log(Level.SEVERE, "d.i.j.p.LibJnhwPosixTestLoader.invokeExact_CharToBool_V(\"" + name + "\")", t);
-            throw new RuntimeException(t);
-        }
+        return JnhwMh_sB___V.of(LIB_JNHW_POSIX_TEST_SYMBOL_LOOKUP, name, BaseDataType.int8_t).invoke_sB___V() != 0;
     }
 
-    public static boolean invokeExact_CharToBool_Adr(String name, Addressable adr) {
-        try {
-            final MethodHandle handle = downcallHandle(name, FunctionDescriptor.of(ValueLayout.JAVA_BYTE, ValueLayout.ADDRESS));
-            return ((byte) handle.invokeExact(adr)) != 0;
-        } catch (Throwable t) {
-            LOG.log(Level.SEVERE, "d.i.j.p.LibJnhwPosixTestLoader.invokeExact_CharToBool_Adr(\"" + name + "\")", t);
-            throw new RuntimeException(t);
-        }
+    public static boolean invokeExact_CharToBool_Adr(String name, Addressable arg1) {
+        return JnhwMh_sB___A.of(LIB_JNHW_POSIX_TEST_SYMBOL_LOOKUP, name, BaseDataType.int8_t, BaseDataType.intptr_t).invoke_sB___A(arg1) != 0;
     }
 
-    public static int invokeExact_Int_V(String name) {
-        try {
-            final MethodHandle handle = downcallHandle(name, FunctionDescriptor.of(ValueLayout.JAVA_INT));
-            return (int) handle.invokeExact();
-        } catch (Throwable t) {
-            LOG.log(Level.SEVERE, "d.i.j.p.LibJnhwPosixTestLoader.invokeExact_Int_V(\"" + name + "\")", t);
-            throw new RuntimeException(t);
-        }
+    public static int invoke_sI___V(String name) {
+        return JnhwMh_sI___V.of(LIB_JNHW_POSIX_TEST_SYMBOL_LOOKUP, name, BaseDataType.int32_t).invoke_sI___V();
     }
 
-    public static int invokeExact_Int_Byte_Int(String name, byte arg1, int arg2) {
-        try {
-            final MethodHandle handle = downcallHandle(name, FunctionDescriptor.of(ValueLayout.JAVA_INT, ValueLayout.JAVA_BYTE, ValueLayout.JAVA_INT));
-            return (int) handle.invokeExact(arg1, arg2);
-        } catch (Throwable t) {
-            LOG.log(Level.SEVERE, "d.i.j.p.LibJnhwPosixTestLoader.invokeExact_Int_Byte_Int(\"" + name + "\")", t);
-            throw new RuntimeException(t);
-        }
+    public static int invoke_sI__sB_sI(String name, byte arg1, int arg2) {
+        return JnhwMh_sI__sB_sI.of(LIB_JNHW_POSIX_TEST_SYMBOL_LOOKUP, name, BaseDataType.int32_t, BaseDataType.int8_t, BaseDataType.int32_t).invoke_sI__sB_sI(arg1, arg2);
     }
 
-    public static int invokeExact_Int_Int_Byte_Int_Int(String name, int arg1, byte arg2, int arg3, int arg4) {
-        try {
-            final MethodHandle handle = downcallHandle(name, FunctionDescriptor.of(ValueLayout.JAVA_INT, ValueLayout.JAVA_INT, ValueLayout.JAVA_BYTE, ValueLayout.JAVA_INT, ValueLayout.JAVA_INT));
-            return (int) handle.invokeExact(arg1, arg2, arg3, arg4);
-        } catch (Throwable t) {
-            LOG.log(Level.SEVERE, "d.i.j.p.LibJnhwPosixTestLoader.invokeExact_Int_Byte_Int(\"" + name + "\")", t);
-            throw new RuntimeException(t);
-        }
+    public static int invoke_sI__sI_sB_sI_sI(String name, int arg1, byte arg2, int arg3, int arg4) {
+        return JnhwMh_sI__sI_sB_sI_sI.of(LIB_JNHW_POSIX_TEST_SYMBOL_LOOKUP, name, BaseDataType.int32_t, BaseDataType.int32_t, BaseDataType.int8_t, BaseDataType.int32_t, BaseDataType.int32_t).invoke_sI__sI_sB_sI_sI(arg1, arg2, arg3, arg4);
     }
 
-    public static MemoryAddress invokeExact_Adr_V(String name) {
-        try {
-            final MethodHandle handle = downcallHandle(name, FunctionDescriptor.of(ValueLayout.ADDRESS));
-            return (MemoryAddress) handle.invokeExact();
-        } catch (Throwable t) {
-            LOG.log(Level.SEVERE, "d.i.j.p.LibJnhwPosixTestLoader.invokeExact_Adr_V(\"" + name + "\")", t);
-            throw new RuntimeException(t);
-        }
+    public static MemoryAddress invoke_MA___V(String name) {
+        return JnhwMh_MA___V.of(LIB_JNHW_POSIX_TEST_SYMBOL_LOOKUP, name, BaseDataType.intptr_t).invoke_MA___V();
     }
 
-    public static MemoryAddress invokeExact_MA___A_sI(String name, Addressable arg1, int arg2) {
-        try {
-            final MethodHandle handle = downcallHandle(name, FunctionDescriptor.of(ValueLayout.ADDRESS, ValueLayout.ADDRESS, ValueLayout.JAVA_INT));
-            return (MemoryAddress) handle.invokeExact(arg1, arg2);
-        } catch (Throwable t) {
-            LOG.log(Level.SEVERE, "d.i.j.p.LibJnhwPosixTestLoader.invokeExact_Adr_Adr_Int(\"" + name + "\")", t);
-            throw new RuntimeException(t);
-        }
+    public static MemoryAddress invoke_MA___A_sI(String name, Addressable arg1, int arg2) {
+        return JnhwMh_MA___A_sI.of(LIB_JNHW_POSIX_TEST_SYMBOL_LOOKUP, name, BaseDataType.uintptr_t, BaseDataType.uintptr_t, BaseDataType.int32_t).invoke_MA___A_sI(arg1, arg2);
     }
 
-    public static long invokeExact_Long_V(String name) {
-        try {
-            final MethodHandle handle = downcallHandle(name, FunctionDescriptor.of(ValueLayout.JAVA_LONG));
-            return (long) handle.invokeExact();
-        } catch (Throwable t) {
-            LOG.log(Level.SEVERE, "d.i.j.p.LibJnhwPosixTestLoader.invokeExact_Long_V(\"" + name + "\")", t);
-            throw new RuntimeException(t);
-        }
+    public static long invoke_sL___V(String name) {
+        return JnhwMh_sL___V.of(LIB_JNHW_POSIX_TEST_SYMBOL_LOOKUP, name, BaseDataType.int64_t).invoke_sL___V();
     }
 
-    public static MemoryAddress invokeExact_Adr_Adr(String name, Addressable address) {
-        try {
-            final MethodHandle handle = downcallHandle(name, FunctionDescriptor.of(ValueLayout.ADDRESS, ValueLayout.ADDRESS));
-            return (MemoryAddress) handle.invokeExact(address);
-        } catch (Throwable t) {
-            LOG.log(Level.SEVERE, "d.i.j.p.LibJnhwPosixTestLoader.invokeExact_Adr_Adr(\"" + name + "\")", t);
-            throw new RuntimeException(t);
-        }
+    public static MemoryAddress invoke_MA___A(String name, Addressable arg1) {
+        return JnhwMh_MA___A.of(LIB_JNHW_POSIX_TEST_SYMBOL_LOOKUP, name, BaseDataType.uintptr_t, BaseDataType.uintptr_t).invoke_MA___A(arg1);
     }
 
     public static Integer getClassIntegerDefine(String name) {
-        try ( MemorySession ms = MemorySession.openConfined()) {
+        try (MemorySession ms = MemorySession.openConfined()) {
             Int32_t value = Int32_t.allocateNative(ms);
-            MemoryAddress result = LibJnhwPosixTestLoader.invokeExact_Adr_Adr("tryGetValueOf_" + name, value.toAddressable().address());
+            MemoryAddress result = invoke_MA___A("tryGetValueOf_" + name, value.toAddressable().address());
             if (MemoryAddress.NULL == result) {
                 return null;
             } else {
@@ -226,32 +152,32 @@ public final class LibJnhwPosixTestLoader {
     }
 
     public static int getByteDefine(String name) {
-        return LibJnhwPosixTestLoader.invokeExact_Byte_V("getValueOf_" + name);
+        return invoke_sB___V("getValueOf_" + name);
     }
 
     public static int getShortDefine(String name) {
-        return LibJnhwPosixTestLoader.invokeExact_Short_V("getValueOf_" + name);
+        return invoke_sS___V("getValueOf_" + name);
     }
 
     public static int getIntDefine(String name) {
-        return LibJnhwPosixTestLoader.invokeExact_Int_V("getValueOf_" + name);
+        return invoke_sI___V("getValueOf_" + name);
     }
 
     public static long getLongDefine(String name) {
-        return LibJnhwPosixTestLoader.invokeExact_Long_V("getValueOf_" + name);
+        return invoke_sL___V("getValueOf_" + name);
     }
 
     public static MemoryAddress getAdrDefine(String name) {
-        return LibJnhwPosixTestLoader.invokeExact_Adr_V("getValueOf_" + name);
+        return invoke_MA___V("getValueOf_" + name);
     }
 
     private LibJnhwPosixTestLoader() {
     }
 
     public static MemoryAddress tryGetAdrDefine(String name) {
-        try ( MemorySession ms = MemorySession.openConfined()) {
+        try (MemorySession ms = MemorySession.openConfined()) {
             IntPtr_t value = IntPtr_t.allocateNative(ms);
-            MemoryAddress result = LibJnhwPosixTestLoader.invokeExact_Adr_Adr("tryGetValueOf_" + name, value.toAddressable().address());
+            MemoryAddress result = invoke_MA___A("tryGetValueOf_" + name, value.toAddressable().address());
             if (MemoryAddress.NULL == result) {
                 return null;
             } else {

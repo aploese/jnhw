@@ -3,11 +3,13 @@ Export-Package: \
 	de.ibapl.jnhw.common.annotation,\
 	de.ibapl.jnhw.common.datatypes,\
         de.ibapl.jnhw.common.downcall,\
-        de.ibapl.jnhw.common.downcall.wrapper,\
+        de.ibapl.jnhw.common.downcall.foreign,\
+        de.ibapl.jnhw.common.downcall.jni,\
 	de.ibapl.jnhw.common.exception,\
 	de.ibapl.jnhw.common.memory,\
 	de.ibapl.jnhw.common.memory.layout,\
-        de.ibapl.jnhw.common.methodhandles,\
         de.ibapl.jnhw.common.nativepointer,\
 	de.ibapl.jnhw.common.upcall,\
+	de.ibapl.jnhw.common.upcall.foreign,\
+	de.ibapl.jnhw.common.upcall.jni,\
 	de.ibapl.jnhw.common.util

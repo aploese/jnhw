@@ -1,6 +1,6 @@
 /*
  * JNHW - Java Native header Wrapper, https://github.com/aploese/jnhw/
- * Copyright (C) 2019-2022, Arne Plöse and individual contributors as indicated
+ * Copyright (C) 2019-2023, Arne Plöse and individual contributors as indicated
  * by the @authors tag. See the copyright.txt in the distribution for a
  * full listing of individual contributors.
  *
@@ -33,6 +33,13 @@ import java.lang.foreign.MemorySegment;
  */
 public class PointerArray<T extends OpaqueMemory> extends OpaqueMemory {
 
+    private final OpaqueMemory[] cachedReferences;
+
+    public PointerArray(MemorySegment memorySegment, long offset, int arrayLength) {
+        super(memorySegment, offset, arrayLength * BaseDataType.uintptr_t.SIZE_OF);
+        cachedReferences = new OpaqueMemory[arrayLength];
+    }
+
     public void set(int i, T element) {
         cachedReferences[i] = element;
         MEM_ACCESS.uintptr_t_AtIndex(memorySegment, i, element.memorySegment);
@@ -46,27 +53,6 @@ public class PointerArray<T extends OpaqueMemory> extends OpaqueMemory {
     @Override
     public String nativeToHexString() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @FunctionalInterface
-    public static interface ElementProducer<T extends OpaqueMemory> {
-
-        /**
-         *
-         * @param baseAddress
-         * @param index
-         * @param cachedElement
-         * @return
-         */
-        T produce(MemoryAddress baseAddress, int index, T cachedElement);
-
-    }
-
-    private final OpaqueMemory[] cachedReferences;
-
-    public PointerArray(MemorySegment memorySegment, long offset, int arrayLength) {
-        super(memorySegment, offset, arrayLength * BaseDataType.uintptr_t.SIZE_OF);
-        cachedReferences = new OpaqueMemory[arrayLength];
     }
 
     public final T get(int index, ElementProducer<T> p) {
@@ -117,6 +103,20 @@ public class PointerArray<T extends OpaqueMemory> extends OpaqueMemory {
             }
         }
         sb.append("]");
+    }
+
+    @FunctionalInterface
+    public static interface ElementProducer<T extends OpaqueMemory> {
+
+        /**
+         *
+         * @param baseAddress
+         * @param index
+         * @param cachedElement
+         * @return
+         */
+        T produce(MemoryAddress baseAddress, int index, T cachedElement);
+
     }
 
 }

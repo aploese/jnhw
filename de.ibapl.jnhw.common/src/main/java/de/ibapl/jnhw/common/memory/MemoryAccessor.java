@@ -1,6 +1,6 @@
 /*
  * JNHW - Java Native header Wrapper, https://github.com/aploese/jnhw/
- * Copyright (C) 2019-2022, Arne Plöse and individual contributors as indicated
+ * Copyright (C) 2019-2023, Arne Plöse and individual contributors as indicated
  * by the @authors tag. See the copyright.txt in the distribution for a
  * full listing of individual contributors.
  *
@@ -31,10 +31,10 @@ import de.ibapl.jnhw.common.annotation.uint32_t;
 import de.ibapl.jnhw.common.annotation.uint64_t;
 import de.ibapl.jnhw.common.annotation.uint8_t;
 import de.ibapl.jnhw.common.annotation.uintptr_t;
-import de.ibapl.jnhw.common.datatypes.MultiarchTupelBuilder;
 import de.ibapl.jnhw.common.datatypes.Pointer;
 import de.ibapl.jnhw.common.util.ConversionsJava2Native;
 import de.ibapl.jnhw.common.util.ConversionsNative2Java;
+import de.ibapl.jnhw.libloader.MultiarchTupelBuilder;
 import java.lang.foreign.Addressable;
 import java.lang.foreign.MemoryAddress;
 import java.lang.foreign.MemorySegment;
@@ -670,7 +670,7 @@ public sealed interface MemoryAccessor permits AbstractMemoryAccessorImpl {
 
     static long getBitsInLong(long value, int bitpos, int bitsize) {
         final long mask = (0xffffffffffffffffL >>> (64 - bitsize)); // just shift the mask...
-        return (value >> bitpos) & mask;
+        return (value >>> bitpos) & mask;
     }
 
     static long setBitsInLong(long value, int bitpos, int bitsize, long bitsToSet) {
@@ -698,7 +698,7 @@ public sealed interface MemoryAccessor permits AbstractMemoryAccessorImpl {
 
     static int getBitsInInt(int value, int bitpos, int bitsize) {
         final int mask = (0xffffffff >>> (32 - bitsize)); // just shift the mask...
-        return (value >> bitpos) & mask;
+        return (value >>> bitpos) & mask;
     }
 
     static int setBitsInInt(int value, int bitpos, int bitsize, int bitsToSet) {
@@ -712,7 +712,7 @@ public sealed interface MemoryAccessor permits AbstractMemoryAccessorImpl {
 
     static short getBitsInShort(short value, int bitpos, int bitsize) {
         final short mask = (short) (0xffff >>> (16 - bitsize)); // just shift the mask...
-        return (short) ((value >> bitpos) & mask);
+        return (short) ((value >>> bitpos) & mask);
     }
 
     static short setBitsInShort(short value, int bitpos, int bitsize, short bitsToSet) {
@@ -726,7 +726,7 @@ public sealed interface MemoryAccessor permits AbstractMemoryAccessorImpl {
 
     static byte getBitsInByte(byte value, int bitpos, int bitsize) {
         final byte mask = (byte) (0xff >>> (8 - bitsize)); // just shift the mask...
-        return (byte) ((value >> bitpos) & mask);
+        return (byte) ((value >>> bitpos) & mask);
     }
 
     static byte setBitsInByte(byte value, int bitpos, int bitsize, byte bitsToSet) {

@@ -1,6 +1,6 @@
 /*
  * JNHW - Java Native header Wrapper, https://github.com/aploese/jnhw/
- * Copyright (C) 2019-2022, Arne Plöse and individual contributors as indicated
+ * Copyright (C) 2019-2023, Arne Plöse and individual contributors as indicated
  * by the @authors tag. See the copyright.txt in the distribution for a
  * full listing of individual contributors.
  *
@@ -21,11 +21,19 @@
  */
 package de.ibapl.jnhw.posix;
 
-import de.ibapl.jnhw.common.datatypes.MultiarchTupelBuilder;
-import de.ibapl.jnhw.common.datatypes.OS;
+import de.ibapl.jnhw.common.datatypes.BaseDataType;
+import de.ibapl.jnhw.common.downcall.JnhwMh_sI___A_sI_uI;
+import de.ibapl.jnhw.common.downcall.jni.JniMi__I___A__I__I;
 import de.ibapl.jnhw.common.exception.NativeErrorException;
+import de.ibapl.jnhw.libloader.MultiarchTupelBuilder;
+import de.ibapl.jnhw.libloader.OS;
+import de.ibapl.jnhw.posix.sys.Stat;
 import de.ibapl.jnhw.util.posix.DefinesTest;
+import de.ibapl.jnhw.util.posix.LibcLoader;
+import de.ibapl.jnhw.util.posix.PosixDataType;
 import java.io.File;
+import java.lang.foreign.MemorySegment;
+import java.lang.foreign.MemorySession;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -69,11 +77,14 @@ public class FcntlTest {
     public void testOpen() throws Exception {
         File file = File.createTempFile("jnhw-posix-fcntl-test", ".txt");
         NativeErrorException nee = Assertions.assertThrows(NativeErrorException.class, () -> {
-            Fcntl.open(file.getAbsolutePath(), Fcntl.O_CREAT | Fcntl.O_EXCL);
+            Fcntl.open(file.getAbsolutePath(), Fcntl.O_CREAT | Fcntl.O_EXCL, Stat.S_IRWXU | Stat.S_IRWXG);
         });
-        System.err.println("ERRR " + Errno.getErrnoSymbol(Errno.errno()));
-        //TODO in single test Errno.ENOENT will show up here why???
-        Assertions.assertEquals(Errno.EEXIST, Errno.errno());
+        switch (MultiarchTupelBuilder.getMultiarch()) {
+            case AARCH64__LINUX__GNU, I386__LINUX__GNU, POWER_PC_64_LE__LINUX__GNU ->
+                Assertions.assertEquals(Errno.ENOENT, Errno.errno());
+            default ->
+                Assertions.assertEquals(Errno.EEXIST, Errno.errno());
+        }
     }
 
 }

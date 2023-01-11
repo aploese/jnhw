@@ -1,6 +1,6 @@
 /*
  * JNHW - Java Native header Wrapper, https://github.com/aploese/jnhw/
- * Copyright (C) 2019-2022, Arne Plöse and individual contributors as indicated
+ * Copyright (C) 2019-2023, Arne Plöse and individual contributors as indicated
  * by the @authors tag. See the copyright.txt in the distribution for a
  * full listing of individual contributors.
  *
@@ -37,6 +37,22 @@ public final class ConversionsJava2Native {
         return value ? 1 : 0;
     }
 
+    @int32_t
+    public final static byte boolean_TO_int8_t(boolean value) {
+        return value ? (byte) 1 : 0;
+    }
+
+    @int32_t
+    public final static int long_TO_int32_t(long value) {
+        if (value < Integer.MIN_VALUE) {
+            throw new IllegalArgumentException("value must not be smaller then Integer.MIN_VALUE :" + value);
+        } else if (value > Integer.MAX_VALUE) {
+            throw new IllegalArgumentException("value must not be bigger then Integer.MAX_VALUE :" + value);
+        } else {
+            return (int) value;
+        }
+    }
+
     @uint32_t
     public final static int long_TO_uint32_t(long value) {
         if (value < 0) {
@@ -68,6 +84,10 @@ public final class ConversionsJava2Native {
         } else {
             return (byte) value;
         }
+    }
+
+    public static long int_TO_uint64_t(int value) {
+        return 0xffffffffL & value;
     }
 
 }

@@ -1,6 +1,6 @@
 /*
  * JNHW - Java Native header Wrapper, https://github.com/aploese/jnhw/
- * Copyright (C) 2019-2022, Arne Plöse and individual contributors as indicated
+ * Copyright (C) 2019-2023, Arne Plöse and individual contributors as indicated
  * by the @authors tag. See the copyright.txt in the distribution for a
  * full listing of individual contributors.
  *
@@ -23,13 +23,14 @@ package de.ibapl.jnhw.posix;
 
 import de.ibapl.jnhw.common.annotation.Include;
 import de.ibapl.jnhw.common.datatypes.BaseDataType;
-import de.ibapl.jnhw.common.datatypes.MultiarchTupelBuilder;
+import de.ibapl.jnhw.common.downcall.JnhwMh_MA__sI;
+import de.ibapl.jnhw.common.downcall.JnhwMh_MA__sI__A;
 import de.ibapl.jnhw.common.exception.NativeErrorException;
 import de.ibapl.jnhw.common.exception.NoSuchNativeMethodException;
+import de.ibapl.jnhw.libloader.MultiarchTupelBuilder;
+import de.ibapl.jnhw.util.posix.LibcLoader;
 import de.ibapl.jnhw.util.posix.PosixDataType;
 import java.lang.foreign.MemoryAddress;
-import de.ibapl.jnhw.common.downcall.wrapper.JnhwMh__A__sI__A;
-import de.ibapl.jnhw.common.downcall.wrapper.JnhwMh_MA__sI;
 
 /**
  * Wrapper around the {@code <string.h>} header.
@@ -68,17 +69,20 @@ public class StringHeader {
         }
     }
     private final static JnhwMh_MA__sI strerror = JnhwMh_MA__sI.of(
+            LibcLoader.LIB_C_SYMBOL_LOOKUP,
             "strerror",
             BaseDataType.C_char_pointer,
             BaseDataType.C_int);
 
-    private final static JnhwMh__A__sI__A strerror_l = JnhwMh__A__sI__A.ofOrNull(
+    private final static JnhwMh_MA__sI__A strerror_l = JnhwMh_MA__sI__A.ofOrNull(
+            LibcLoader.LIB_C_SYMBOL_LOOKUP,
             "strerror_l",
             BaseDataType.C_char_pointer,
             BaseDataType.C_int,
             PosixDataType.locale_t);
 
     private final static JnhwMh_MA__sI strsignal = JnhwMh_MA__sI.of(
+            LibcLoader.LIB_C_SYMBOL_LOOKUP,
             "strsignal",
             BaseDataType.C_char_pointer,
             BaseDataType.C_int);
@@ -106,7 +110,7 @@ public class StringHeader {
      */
     public final static String strerror_l(int errnum, Locale.Locale_t locale) throws NoSuchNativeMethodException, NativeErrorException {
         try {
-            final MemoryAddress result = strerror_l.invoke_MA__sI_P(errnum, locale);
+            final MemoryAddress result = strerror_l.invoke_MA__sI__P(errnum, locale);
             if (result == MemoryAddress.NULL) {
                 throw new NativeErrorException(Errno.errno());
             }

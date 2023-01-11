@@ -1,6 +1,6 @@
 /*
  * JNHW - Java Native header Wrapper, https://github.com/aploese/jnhw/
- * Copyright (C) 2019-2022, Arne Plöse and individual contributors as indicated
+ * Copyright (C) 2019-2023, Arne Plöse and individual contributors as indicated
  * by the @authors tag. See the copyright.txt in the distribution for a
  * full listing of individual contributors.
  *
@@ -65,7 +65,7 @@ __attribute__ ((visibility ("hidden"))) void * thr_fn_V_PtrInt32_t(void *args) {
 #endif
 
 
-void doCallback__V___I(char newThread, int32_t value) {
+void doCallback__V___I(int8_t newThread, int32_t value) {
     if (newThread) {
 
 #ifdef HAVE_WINDOWS_H

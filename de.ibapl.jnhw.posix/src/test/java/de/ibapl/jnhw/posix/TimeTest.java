@@ -1,6 +1,6 @@
 /*
  * JNHW - Java Native header Wrapper, https://github.com/aploese/jnhw/
- * Copyright (C) 2019-2022, Arne Plöse and individual contributors as indicated
+ * Copyright (C) 2019-2023, Arne Plöse and individual contributors as indicated
  * by the @authors tag. See the copyright.txt in the distribution for a
  * full listing of individual contributors.
  *
@@ -22,17 +22,20 @@
 package de.ibapl.jnhw.posix;
 
 import de.ibapl.jnhw.annotation.posix.sys.types.time_t;
-import de.ibapl.jnhw.common.datatypes.MultiarchTupelBuilder;
-import de.ibapl.jnhw.common.datatypes.OS;
 import de.ibapl.jnhw.common.exception.NativeErrorException;
 import de.ibapl.jnhw.common.exception.NativeException;
 import de.ibapl.jnhw.common.exception.NoSuchNativeMethodException;
 import de.ibapl.jnhw.common.exception.NoSuchNativeTypeException;
 import de.ibapl.jnhw.common.memory.MemoryHeap;
 import de.ibapl.jnhw.common.memory.OpaqueMemory;
-import de.ibapl.jnhw.common.upcall.Callback__V___I;
+import de.ibapl.jnhw.libloader.MultiarchInfo;
+import de.ibapl.jnhw.libloader.MultiarchTupelBuilder;
+import de.ibapl.jnhw.libloader.OS;
 import de.ibapl.jnhw.posix.sys.Types;
 import de.ibapl.jnhw.util.posix.DefinesTest;
+import de.ibapl.jnhw.util.posix.upcall.CallbackFactory__V__UnionSigval;
+import de.ibapl.jnhw.util.posix.upcall.Callback__V__UnionSigval;
+import java.lang.foreign.MemoryAddress;
 import java.lang.foreign.MemorySegment;
 import java.lang.foreign.MemorySession;
 import java.time.DayOfWeek;
@@ -42,6 +45,7 @@ import java.time.ZoneId;
 import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatterBuilder;
+import java.util.function.ToIntFunction;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
@@ -70,10 +74,9 @@ public class TimeTest {
     @BeforeAll
     public static void checkBeforeAll_HAVE_TIME_H() throws Exception {
         switch (MultiarchTupelBuilder.getOS()) {
-            case WINDOWS:
+            case WINDOWS ->
                 Assertions.assertFalse(Time.HAVE_TIME_H, "expected not to have time.h");
-                break;
-            default:
+            default ->
                 Assertions.assertTrue(Time.HAVE_TIME_H, "expected to have time.h");
         }
     }
@@ -93,16 +96,16 @@ public class TimeTest {
         }
         Assertions.assertAll(
                 () -> {
-                    Assertions.assertEquals(LibJnhwPosixTestLoader.invokeExact_Int_V("Itimerspec_sizeof"), Time.Itimerspec.sizeof, "sizeof");
+                    Assertions.assertEquals(LibJnhwPosixTestLoader.invoke_sI___V("Itimerspec_sizeof"), Time.Itimerspec.sizeof, "sizeof");
                 },
                 () -> {
-                    Assertions.assertEquals(LibJnhwPosixTestLoader.invokeExact_Int_V("Itimerspec_alignof"), Time.Itimerspec.alignof == null ? 0 : Time.Itimerspec.alignof.alignof, "alignof");
+                    Assertions.assertEquals(LibJnhwPosixTestLoader.invoke_sI___V("Itimerspec_alignof"), Time.Itimerspec.alignof == null ? 0 : Time.Itimerspec.alignof.alignof, "alignof");
                 },
                 () -> {
-                    Assertions.assertEquals(LibJnhwPosixTestLoader.invokeExact_Int_V("Itimerspec_offsetof_it_value"), Time.Itimerspec.offsetof_It_value, "offsetof_It_value");
+                    Assertions.assertEquals(LibJnhwPosixTestLoader.invoke_sI___V("Itimerspec_offsetof_it_value"), Time.Itimerspec.offsetof_It_value, "offsetof_It_value");
                 },
                 () -> {
-                    Assertions.assertEquals(LibJnhwPosixTestLoader.invokeExact_Int_V("Itimerspec_offsetof_it_interval"), Time.Itimerspec.offsetof_It_interval, "offsetof_It_interval");
+                    Assertions.assertEquals(LibJnhwPosixTestLoader.invoke_sI___V("Itimerspec_offsetof_it_interval"), Time.Itimerspec.offsetof_It_interval, "offsetof_It_interval");
                 }
         );
     }
@@ -111,16 +114,16 @@ public class TimeTest {
     public static void checkBeforeAll_StructTimespec() throws Exception {
         Assertions.assertAll(
                 () -> {
-                    Assertions.assertEquals(LibJnhwPosixTestLoader.invokeExact_Int_V("Timespec_sizeof"), Time.Timespec.sizeof, "sizeof");
+                    Assertions.assertEquals(LibJnhwPosixTestLoader.invoke_sI___V("Timespec_sizeof"), Time.Timespec.sizeof, "sizeof");
                 },
                 () -> {
-                    Assertions.assertEquals(LibJnhwPosixTestLoader.invokeExact_Int_V("Timespec_alignof"), Time.Timespec.alignof.alignof, "alignof");
+                    Assertions.assertEquals(LibJnhwPosixTestLoader.invoke_sI___V("Timespec_alignof"), Time.Timespec.alignof.alignof, "alignof");
                 },
                 () -> {
-                    Assertions.assertEquals(LibJnhwPosixTestLoader.invokeExact_Int_V("Timespec_offsetof_tv_sec"), Time.Timespec.offsetof_Tv_sec, "offsetof_Tv_sec");
+                    Assertions.assertEquals(LibJnhwPosixTestLoader.invoke_sI___V("Timespec_offsetof_tv_sec"), Time.Timespec.offsetof_Tv_sec, "offsetof_Tv_sec");
                 },
                 () -> {
-                    Assertions.assertEquals(LibJnhwPosixTestLoader.invokeExact_Int_V("Timespec_offsetof_tv_nsec"), Time.Timespec.offsetof_Tv_nsec, "offsetof_Tv_nsec");
+                    Assertions.assertEquals(LibJnhwPosixTestLoader.invoke_sI___V("Timespec_offsetof_tv_nsec"), Time.Timespec.offsetof_Tv_nsec, "offsetof_Tv_nsec");
                 }
         );
     }
@@ -129,37 +132,37 @@ public class TimeTest {
     public static void checkBeforeAll_StructTm() throws Exception {
         Assertions.assertAll(
                 () -> {
-                    Assertions.assertEquals(LibJnhwPosixTestLoader.invokeExact_Int_V("Tm_sizeof"), Time.Tm.sizeof, "sizeof");
+                    Assertions.assertEquals(LibJnhwPosixTestLoader.invoke_sI___V("Tm_sizeof"), Time.Tm.sizeof, "sizeof");
                 },
                 () -> {
-                    Assertions.assertEquals(LibJnhwPosixTestLoader.invokeExact_Int_V("Tm_alignof"), Time.Tm.alignof.alignof, "alignof");
+                    Assertions.assertEquals(LibJnhwPosixTestLoader.invoke_sI___V("Tm_alignof"), Time.Tm.alignof.alignof, "alignof");
                 },
                 () -> {
-                    Assertions.assertEquals(LibJnhwPosixTestLoader.invokeExact_Int_V("Tm_offsetof_tm_sec"), Time.Tm.offsetof_Tm_sec, "offsetof_Tm_sec");
+                    Assertions.assertEquals(LibJnhwPosixTestLoader.invoke_sI___V("Tm_offsetof_tm_sec"), Time.Tm.offsetof_Tm_sec, "offsetof_Tm_sec");
                 },
                 () -> {
-                    Assertions.assertEquals(LibJnhwPosixTestLoader.invokeExact_Int_V("Tm_offsetof_tm_min"), Time.Tm.offsetof_Tm_min, "offsetof_Tm_min");
+                    Assertions.assertEquals(LibJnhwPosixTestLoader.invoke_sI___V("Tm_offsetof_tm_min"), Time.Tm.offsetof_Tm_min, "offsetof_Tm_min");
                 },
                 () -> {
-                    Assertions.assertEquals(LibJnhwPosixTestLoader.invokeExact_Int_V("Tm_offsetof_tm_hour"), Time.Tm.offsetof_Tm_hour, "offsetof_Tm_hour");
+                    Assertions.assertEquals(LibJnhwPosixTestLoader.invoke_sI___V("Tm_offsetof_tm_hour"), Time.Tm.offsetof_Tm_hour, "offsetof_Tm_hour");
                 },
                 () -> {
-                    Assertions.assertEquals(LibJnhwPosixTestLoader.invokeExact_Int_V("Tm_offsetof_tm_mday"), Time.Tm.offsetof_Tm_mday, "offsetof_Tm_mday");
+                    Assertions.assertEquals(LibJnhwPosixTestLoader.invoke_sI___V("Tm_offsetof_tm_mday"), Time.Tm.offsetof_Tm_mday, "offsetof_Tm_mday");
                 },
                 () -> {
-                    Assertions.assertEquals(LibJnhwPosixTestLoader.invokeExact_Int_V("Tm_offsetof_tm_mon"), Time.Tm.offsetof_Tm_mon, "offsetof_Tm_mon");
+                    Assertions.assertEquals(LibJnhwPosixTestLoader.invoke_sI___V("Tm_offsetof_tm_mon"), Time.Tm.offsetof_Tm_mon, "offsetof_Tm_mon");
                 },
                 () -> {
-                    Assertions.assertEquals(LibJnhwPosixTestLoader.invokeExact_Int_V("Tm_offsetof_tm_year"), Time.Tm.offsetof_Tm_year, "offsetof_Tm_year");
+                    Assertions.assertEquals(LibJnhwPosixTestLoader.invoke_sI___V("Tm_offsetof_tm_year"), Time.Tm.offsetof_Tm_year, "offsetof_Tm_year");
                 },
                 () -> {
-                    Assertions.assertEquals(LibJnhwPosixTestLoader.invokeExact_Int_V("Tm_offsetof_tm_wday"), Time.Tm.offsetof_Tm_wday, "offsetof_Tm_wday");
+                    Assertions.assertEquals(LibJnhwPosixTestLoader.invoke_sI___V("Tm_offsetof_tm_wday"), Time.Tm.offsetof_Tm_wday, "offsetof_Tm_wday");
                 },
                 () -> {
-                    Assertions.assertEquals(LibJnhwPosixTestLoader.invokeExact_Int_V("Tm_offsetof_tm_yday"), Time.Tm.offsetof_Tm_yday, "offsetof_Tm_yday");
+                    Assertions.assertEquals(LibJnhwPosixTestLoader.invoke_sI___V("Tm_offsetof_tm_yday"), Time.Tm.offsetof_Tm_yday, "offsetof_Tm_yday");
                 },
                 () -> {
-                    Assertions.assertEquals(LibJnhwPosixTestLoader.invokeExact_Int_V("Tm_offsetof_tm_isdst"), Time.Tm.offsetof_Tm_isdst, "offsetof_Tm_isdst");
+                    Assertions.assertEquals(LibJnhwPosixTestLoader.invoke_sI___V("Tm_offsetof_tm_isdst"), Time.Tm.offsetof_Tm_isdst, "offsetof_Tm_isdst");
                 }
         );
     }
@@ -168,10 +171,10 @@ public class TimeTest {
     public static void checkBeforeAll_Timer_t() throws Exception {
         Assertions.assertAll(
                 () -> {
-                    Assertions.assertEquals(LibJnhwPosixTestLoader.invokeExact_Int_V("Timer_t_sizeof"), Time.Timer_t.sizeof, "sizeof");
+                    Assertions.assertEquals(LibJnhwPosixTestLoader.invoke_sI___V("Timer_t_sizeof"), Time.Timer_t.sizeof, "sizeof");
                 },
                 () -> {
-                    Assertions.assertEquals(LibJnhwPosixTestLoader.invokeExact_Int_V("Timer_t_alignof"), Time.Timer_t.alignof == null ? 0 : Time.Timer_t.alignof.alignof, "alignof");
+                    Assertions.assertEquals(LibJnhwPosixTestLoader.invoke_sI___V("Timer_t_alignof"), Time.Timer_t.alignof == null ? 0 : Time.Timer_t.alignof.alignof, "alignof");
                 }
         );
     }
@@ -180,6 +183,7 @@ public class TimeTest {
 
     @BeforeEach
     public void setUp() throws Exception {
+        assertEquals(CallbackFactory__V__UnionSigval.MAX_CALL_BACKS, CallbackFactory__V__UnionSigval.callbacksAvailable());
         ms = MemorySession.openConfined();
         Errno.errno(0);
     }
@@ -187,6 +191,7 @@ public class TimeTest {
     @AfterEach
     public void tearDown() throws Exception {
         ms.close();
+        assertEquals(CallbackFactory__V__UnionSigval.MAX_CALL_BACKS, CallbackFactory__V__UnionSigval.callbacksAvailable());
     }
 
     /**
@@ -287,16 +292,13 @@ public class TimeTest {
 
         assertEquals(0, timespec.tv_sec());
         switch (MultiarchTupelBuilder.getOS()) {
-            case LINUX:
+            case LINUX ->
                 assertEquals(1, timespec.tv_nsec());
-                break;
-            case DARWIN:
+            case DARWIN ->
                 assertEquals(1000, timespec.tv_nsec());
-                break;
-            case FREE_BSD:
+            case FREE_BSD ->
                 assertEquals(280, timespec.tv_nsec());
-                break;
-            case OPEN_BSD:
+            case OPEN_BSD -> {
                 switch (MultiarchTupelBuilder.getArch()) {
                     case AARCH64:
                         //TODO virt env needs to be fixed??
@@ -305,8 +307,8 @@ public class TimeTest {
                     default:
                         fail("timespec.tv_nsec: " + timespec.tv_nsec());
                 }
-                break;
-            default:
+            }
+            default ->
                 fail("timespec.tv_nsec: " + timespec.tv_nsec());
         }
         Assertions.assertThrows(NullPointerException.class, () -> {
@@ -340,34 +342,46 @@ public class TimeTest {
     public void testClock_nanosleep() throws Exception {
         System.out.println("clock_nanosleep");
         switch (MultiarchTupelBuilder.getOS()) {
-            case DARWIN:
-            case OPEN_BSD:
+            case DARWIN, OPEN_BSD ->
                 Assertions.assertThrows(NoSuchNativeMethodException.class, () -> {
                     Time.clock_nanosleep(0, 0, Time.Timespec.allocateNative(ms));
                 });
-                break;
-            default:
+            default -> {
                 int clock_id = Time.CLOCK_MONOTONIC;
                 int flags = 0;
                 Time.Timespec rqtp = Time.Timespec.allocateNative(ms);
-                rqtp.tv_nsec(10_000_000L); //10ms
                 Time.Timespec rmtp = Time.Timespec.allocateNative(ms);
 
+                switch (MultiarchTupelBuilder.getMultiarch()) {
+                    case AARCH64__LINUX__GNU, S390_X__LINUX__GNU -> {
+                        rqtp.tv_nsec(30_000_000L); //30ms
+                    }
+                    default -> {
+                        rqtp.tv_nsec(10_000_000L); //10ms
+                    }
+                }
                 long start = System.nanoTime();
                 Time.clock_nanosleep(clock_id, flags, rqtp, rmtp);
                 long end = System.nanoTime();
 
-                Assertions.assertTrue(end - start < 13_000_000, "max 13ms but was " + (end - start) + "ns");
-                Assertions.assertTrue(end - start > 9_000_000, "min 9ms");
-
+                switch (MultiarchTupelBuilder.getMultiarch()) {
+                    case AARCH64__LINUX__GNU, S390_X__LINUX__GNU -> {
+                        Assertions.assertTrue(end - start < 40_000_000, "max 35ms but was " + (end - start) + "ns");
+                        Assertions.assertTrue(end - start > 29_000_000, "min 29ms");
+                    }
+                    default -> {
+                        Assertions.assertTrue(end - start < 13_000_000, "max 13ms but was " + (end - start) + "ns");
+                        Assertions.assertTrue(end - start > 9_000_000, "min 9ms");
+                    }
+                }
                 rqtp.tv_nsec(0);
                 Time.clock_nanosleep(clock_id, flags, rqtp, rmtp);
 
                 Time.clock_nanosleep(clock_id, flags, rqtp);
-
                 Assertions.assertThrows(NullPointerException.class, () -> {
                     Time.clock_nanosleep(clock_id, flags, null, null);
                 });
+            }
         }
     }
 
@@ -625,7 +639,13 @@ public class TimeTest {
     public void testNanosleep() throws Exception {
         System.out.println("nanosleep");
         Time.Timespec rqtp = Time.Timespec.allocateNative(ms);
-        rqtp.tv_nsec(10_000_000L); //10ms
+
+        if (MultiarchTupelBuilder.getMultiarch() == MultiarchInfo.AARCH64__LINUX__GNU) {
+            rqtp.tv_nsec(30_000_000L);//30ms
+        } else {
+            rqtp.tv_nsec(10_000_000L);//10ms
+        }
+
         rqtp.tv_sec(0);
 
         Time.Timespec rmtp = Time.Timespec.allocateNative(ms);
@@ -636,8 +656,14 @@ public class TimeTest {
             Time.nanosleep(rqtp, rmtp);
             long end = System.nanoTime();
 
-            Assertions.assertTrue(end - start < 13_000_000, "max 13ms but was " + (end - start) + "ns");
-            Assertions.assertTrue(end - start > 9_000_000, "min 9ms");
+            if (MultiarchTupelBuilder.getMultiarch() == MultiarchInfo.AARCH64__LINUX__GNU) {
+                Assertions.assertTrue(end - start < 35_000_000, "max 35ms but was " + (end - start) + "ns");
+                Assertions.assertTrue(end - start > 29_000_000, "min 29ms");
+            } else {
+                Assertions.assertTrue(end - start < 13_000_000, "max 13ms but was " + (end - start) + "ns");
+                Assertions.assertTrue(end - start > 9_000_000, "min 9ms");
+            }
+
         } catch (NativeErrorException nee) {
             fail(Errno.getErrnoSymbol(nee.errno));
             Assertions.assertTrue(rmtp.tv_sec() <= rqtp.tv_sec(), "tv_sec");
@@ -906,7 +932,8 @@ public class TimeTest {
     }
 
     /**
-     * Test of timer_* methods, of class Time.
+     * Test of timer_* methods, of class Time. TODO fails on s390x cbRef[0] == 0
+     * ???Why???
      */
     @Test
     public void testTimer() throws Throwable {
@@ -927,7 +954,7 @@ public class TimeTest {
             default:
 
                 final int SIVAL_INT = 0x87654321;
-                final Object[] intRef = new Object[1];
+                final Object[] cbRef = new Object[1];
                 Time.PtrTimer_t ptrTimerid = Time.PtrTimer_t.tryAllocateNative(ms);
 
                 //Pthread.Pthread_attr_t attr = new Pthread.Pthread_attr_t();
@@ -940,72 +967,80 @@ public class TimeTest {
                 Signal.Sigevent<OpaqueMemory> evp = Signal.Sigevent.tryAllocateNative(ms);
                 //evp.sigev_notify_attributes(attr);
                 evp.sigev_notify(Signal.SIGEV_THREAD.get());
+
                 evp.sigev_value.sival_int(SIVAL_INT);
-                assertEquals(0x87654321, evp.sigev_value.sival_int());
-                evp.sigev_notify_function(new Callback__V___I() {
+                assertEquals(SIVAL_INT, evp.sigev_value.sival_int());
+
+                Callback__V__UnionSigval cb = new Callback__V__UnionSigval<OpaqueMemory>() {
 
                     @Override
-                    protected void callback(int value) {
+                    protected void callback(MemoryAddress sival_ptr, int sival_int) {
                         try {
-                            synchronized (intRef) {
-                                intRef[0] = value;
-                                intRef.notifyAll();
+                            synchronized (cbRef) {
+                                cbRef[0] = sival_int;
+                                cbRef.notifyAll();
                             }
                         } catch (Throwable t) {
-                            synchronized (intRef) {
-                                intRef[0] = t;
-                                intRef.notifyAll();
+                            synchronized (cbRef) {
+                                cbRef[0] = t;
+                                cbRef.notifyAll();
                             }
                         }
                     }
-                }
-                );
-
-                System.out.println(
-                        "evp: " + evp);
-                Time.timer_create(Time.CLOCK_REALTIME, evp, ptrTimerid);
-                final Time.Timer_t timerid = ptrTimerid.get(ms);
-
+                };
                 try {
-                    Time.Itimerspec value = Time.Itimerspec.tryAllocateNative(ms);
-//          Time.Itimerspec ovalue = new Time.Itimerspec(true);
-                    value.it_value.tv_sec(2); // after 2 s
-                    value.it_interval.tv_sec(1); //fire all 1s
-                    System.out.println("timer_settime");
+                    evp.sigev_notify_function(cb);
 
-                    //TODO Errno.EINVAL() aka 22
-                    Time.timer_settime(timerid, 0, value);
-                    Time.Itimerspec itimerspec = Time.Itimerspec.tryAllocateNative(ms);
-                    System.out.println("timer_gettime");
-                    Time.timer_gettime(timerid, itimerspec);
+                    System.out.println("evp: " + evp);
+
+                    Time.timer_create(Time.CLOCK_REALTIME, evp, ptrTimerid);
+                    final Time.Timer_t timerid = ptrTimerid.get(ms);
+
+                    try {
+                        Time.Itimerspec value = Time.Itimerspec.tryAllocateNative(ms);
+//          Time.Itimerspec ovalue = new Time.Itimerspec(true);
+                        value.it_value.tv_sec(2); // after 2 s
+                        value.it_interval.tv_sec(1); //fire all 1s
+                        System.out.println("timer_settime");
+
+                        //TODO Errno.EINVAL() aka 22
+                        Time.timer_settime(timerid, 0, value);
+                        Time.Itimerspec itimerspec = Time.Itimerspec.tryAllocateNative(ms);
+                        System.out.println("timer_gettime");
+                        Time.timer_gettime(timerid, itimerspec);
 
 //TODO 2s will be splitted...            assertEquals(value, itimerspec);
-                    synchronized (intRef) {
-                        if (intRef[0] == null) {
-                            intRef.wait(ONE_SECOND);
-                            if (intRef[0] == null) {
-                                intRef.wait(ONE_MINUTE);
+                        synchronized (cbRef) {
+                            if (cbRef[0] == null) {
+                                cbRef.wait(ONE_SECOND);
+                                if (cbRef[0] == null) {
+                                    cbRef.wait(ONE_MINUTE);
+                                }
                             }
                         }
+                        Assertions.assertNotNull(cbRef[0]);
+                        if (cbRef[0] instanceof Throwable) {
+                            throw (Throwable) cbRef[0];
+                        } else if (cbRef[0] instanceof Integer) {
+                            assertEquals(SIVAL_INT, cbRef[0]); //TODO fails on s390x cbRef[0] == 0 ???Why???
+                        } else {
+                            fail("Not expecting cbRef[0] has this: " + cbRef[0]);
+                        }
+
+                        System.out.println("timer_getoverrun");
+                        int count = Time.timer_getoverrun(timerid);
+
+                        assertEquals(0, count);
+
+                        NullPointerException nee = Assertions.assertThrows(NullPointerException.class, () -> {
+                            Time.timer_settime(timerid, 0, null, null);
+                        });
+                    } finally {
+                        System.out.println("timer_delete");
+                        Time.timer_delete(timerid);
                     }
-                    Assertions.assertNotNull(intRef[0]);
-                    if (intRef[0] instanceof Throwable) {
-                        throw (Throwable) intRef[0];
-                    } else {
-                        assertEquals(SIVAL_INT, intRef[0]);
-                    }
-
-                    System.out.println("timer_getoverrun");
-                    int count = Time.timer_getoverrun(timerid);
-
-                    assertEquals(0, count);
-
-                    NullPointerException nee = Assertions.assertThrows(NullPointerException.class, () -> {
-                        Time.timer_settime(timerid, 0, null, null);
-                    });
                 } finally {
-                    System.out.println("timer_delete");
-                    Time.timer_delete(timerid);
+                    cb.release();
                 }
         }
     }

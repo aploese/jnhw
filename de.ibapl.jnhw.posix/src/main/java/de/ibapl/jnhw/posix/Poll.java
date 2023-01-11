@@ -1,6 +1,6 @@
 /*
  * JNHW - Java Native header Wrapper, https://github.com/aploese/jnhw/
- * Copyright (C) 2019-2022, Arne Plöse and individual contributors as indicated
+ * Copyright (C) 2019-2023, Arne Plöse and individual contributors as indicated
  * by the @authors tag. See the copyright.txt in the distribution for a
  * full listing of individual contributors.
  *
@@ -25,8 +25,7 @@ import de.ibapl.jnhw.annotation.posix.poll.nfds_t;
 import de.ibapl.jnhw.common.annotation.Define;
 import de.ibapl.jnhw.common.annotation.Include;
 import de.ibapl.jnhw.common.datatypes.BaseDataType;
-import de.ibapl.jnhw.common.datatypes.MultiarchTupelBuilder;
-import de.ibapl.jnhw.common.downcall.wrapper.JnhwMh_sI___A_uL_sI;
+import de.ibapl.jnhw.common.downcall.JnhwMh_sI___A_uL_sI;
 import de.ibapl.jnhw.common.exception.NativeErrorException;
 import de.ibapl.jnhw.common.memory.AsUnsignedLong;
 import de.ibapl.jnhw.common.memory.MemoryArray;
@@ -34,6 +33,9 @@ import de.ibapl.jnhw.common.memory.OpaqueMemory;
 import de.ibapl.jnhw.common.memory.Struct;
 import de.ibapl.jnhw.common.memory.layout.Alignment;
 import de.ibapl.jnhw.common.util.JsonStringBuilder;
+import de.ibapl.jnhw.libloader.MultiarchInfo;
+import de.ibapl.jnhw.libloader.MultiarchTupelBuilder;
+import de.ibapl.jnhw.util.posix.LibcLoader;
 import de.ibapl.jnhw.util.posix.PosixDataType;
 import java.io.IOException;
 import java.lang.foreign.MemorySegment;
@@ -77,28 +79,32 @@ public final class Poll {
 
     }
 
-    public static interface Linux_Mips_Mips64_Defines {
+    public static class LinuxDefines {
 
-        public final static short POLLWRBAND = 0x0100;
-        public final static short POLLWRNORM = 0x0004;
-    }
+        public final short POLLERR = 0x0008;
+        public final short POLLHUP = 0x0010;
+        public final short POLLIN = 0x0001;
+        public final short POLLNVAL = 0x0020;
+        public final short POLLOUT = 0x0004;
+        public final short POLLPRI = 0x0002;
+        public final short POLLRDBAND = 0x0080;
+        public final short POLLRDNORM = 0x0040;
 
-    public static interface Linux_NON_Mips_Mips64_Defines {
+        public final short POLLWRBAND;
+        public final short POLLWRNORM;
 
-        public final static short POLLWRBAND = 0x0200;
-        public final static short POLLWRNORM = 0x0100;
-    }
-
-    public static interface LinuxDefines {
-
-        public final static short POLLERR = 0x0008;
-        public final static short POLLHUP = 0x0010;
-        public final static short POLLIN = 0x0001;
-        public final static short POLLNVAL = 0x0020;
-        public final static short POLLOUT = 0x0004;
-        public final static short POLLPRI = 0x0002;
-        public final static short POLLRDBAND = 0x0080;
-        public final static short POLLRDNORM = 0x0040;
+        public LinuxDefines(MultiarchInfo multiarchInfo) {
+            switch (multiarchInfo.getArch()) {
+                case MIPS, MIPS_64 -> {
+                    POLLWRBAND = 0x0100;
+                    POLLWRNORM = 0x0004;
+                }
+                default -> {
+                    POLLWRBAND = 0x0200;
+                    POLLWRNORM = 0x0100;
+                }
+            }
+        }
     }
 
     /**
@@ -369,30 +375,21 @@ public final class Poll {
      */
     static {
         switch (MultiarchTupelBuilder.getOS()) {
-            case LINUX:
+            case LINUX -> {
                 HAVE_POLL_H = true;
-                POLLERR = LinuxDefines.POLLERR;
-                POLLHUP = LinuxDefines.POLLHUP;
-                POLLIN = LinuxDefines.POLLIN;
-                POLLNVAL = LinuxDefines.POLLNVAL;
-                POLLOUT = LinuxDefines.POLLOUT;
-                POLLPRI = LinuxDefines.POLLPRI;
-                POLLRDBAND = LinuxDefines.POLLRDBAND;
-                POLLRDNORM = LinuxDefines.POLLRDNORM;
-                switch (MultiarchTupelBuilder.getArch()) {
-                    case MIPS:
-                    case MIPS_64:
-                        POLLWRBAND = Linux_Mips_Mips64_Defines.POLLWRBAND;
-                        POLLWRNORM = Linux_Mips_Mips64_Defines.POLLWRNORM;
-                        break;
-                    default:
-                        POLLWRBAND = Linux_NON_Mips_Mips64_Defines.POLLWRBAND;
-                        POLLWRNORM = Linux_NON_Mips_Mips64_Defines.POLLWRNORM;
-                }
-                break;
-            case DARWIN:
-            case FREE_BSD:
-            case OPEN_BSD:
+                final LinuxDefines linuxDefines = new LinuxDefines(MultiarchTupelBuilder.getMultiarch());
+                POLLERR = linuxDefines.POLLERR;
+                POLLHUP = linuxDefines.POLLHUP;
+                POLLIN = linuxDefines.POLLIN;
+                POLLNVAL = linuxDefines.POLLNVAL;
+                POLLOUT = linuxDefines.POLLOUT;
+                POLLPRI = linuxDefines.POLLPRI;
+                POLLRDBAND = linuxDefines.POLLRDBAND;
+                POLLRDNORM = linuxDefines.POLLRDNORM;
+                POLLWRBAND = linuxDefines.POLLWRBAND;
+                POLLWRNORM = linuxDefines.POLLWRNORM;
+            }
+            case DARWIN, FREE_BSD, OPEN_BSD -> {
                 HAVE_POLL_H = true;
                 POLLERR = BsdDefines.POLLERR;
                 POLLHUP = BsdDefines.POLLHUP;
@@ -404,13 +401,14 @@ public final class Poll {
                 POLLRDNORM = BsdDefines.POLLRDNORM;
                 POLLWRBAND = BsdDefines.POLLWRBAND;
                 POLLWRNORM = BsdDefines.POLLWRNORM;
-                break;
-            default:
+            }
+            default ->
                 throw new NoClassDefFoundError("No poll.h defines for " + MultiarchTupelBuilder.getMultiarch());
         }
     }
 
     private final static JnhwMh_sI___A_uL_sI poll = JnhwMh_sI___A_uL_sI.of(
+            LibcLoader.LIB_C_SYMBOL_LOOKUP,
             "poll",
             BaseDataType.C_int,
             PosixDataType.struct_pollfd_array,

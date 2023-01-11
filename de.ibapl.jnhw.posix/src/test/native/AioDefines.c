@@ -1,6 +1,6 @@
 /*
  * JNHW - Java Native header Wrapper, https://github.com/aploese/jnhw/
- * Copyright (C) 2019-2022, Arne Plöse and individual contributors as indicated
+ * Copyright (C) 2019-2023, Arne Plöse and individual contributors as indicated
  * by the @authors tag. See the copyright.txt in the distribution for a
  * full listing of individual contributors.
  *
@@ -24,7 +24,7 @@
 //We need the POSIX version ...
 #if !defined(HAVE_AIO_H) || !defined(_POSIX_VERSION)
 
-int getValueOf_HAVE_AIO_H() {
+int32_t getValueOf_HAVE_AIO_H() {
     return 0;
 }
 
@@ -36,12 +36,12 @@ int getValueOf_HAVE_AIO_H() {
 
 #include <aio.h>
 
-int getValueOf_HAVE_AIO_H() {
+int32_t getValueOf_HAVE_AIO_H() {
     return 1;
 }
 
 
-int* tryGetValueOf_AIO_ALLDONE(int* value) {
+int32_t* tryGetValueOf_AIO_ALLDONE(int32_t* value) {
 #if defined (__linux__) || defined(__FreeBSD__) || defined(__APPLE__)
     *value = AIO_ALLDONE;
 #else
@@ -54,7 +54,7 @@ int* tryGetValueOf_AIO_ALLDONE(int* value) {
     return value;
 }
 
-int* tryGetValueOf_AIO_CANCELED(int* value) {
+int32_t* tryGetValueOf_AIO_CANCELED(int32_t* value) {
 #if defined (__linux__) || defined(__FreeBSD__) || defined(__APPLE__)
     *value = AIO_CANCELED;
 #else
@@ -68,7 +68,7 @@ int* tryGetValueOf_AIO_CANCELED(int* value) {
 }
 
 
-int* tryGetValueOf_AIO_NOTCANCELED(int* value) {
+int32_t* tryGetValueOf_AIO_NOTCANCELED(int32_t* value) {
 #if defined (__linux__) || defined(__FreeBSD__) || defined(__APPLE__)
     *value = AIO_NOTCANCELED;
 #else
@@ -82,7 +82,7 @@ int* tryGetValueOf_AIO_NOTCANCELED(int* value) {
 }
 
 
-int* tryGetValueOf_LIO_NOP(int* value) {
+int32_t* tryGetValueOf_LIO_NOP(int32_t* value) {
 #if defined (__linux__) || defined(__FreeBSD__) || defined(__APPLE__)
     *value = LIO_NOP;
 #else
@@ -95,7 +95,7 @@ int* tryGetValueOf_LIO_NOP(int* value) {
     return value;
 }
 
-int* tryGetValueOf_LIO_NOWAIT(int* value) {
+int32_t* tryGetValueOf_LIO_NOWAIT(int32_t* value) {
 #if defined (__linux__) || defined(__FreeBSD__) || defined(__APPLE__)
     *value = LIO_NOWAIT;
 #else
@@ -108,7 +108,7 @@ int* tryGetValueOf_LIO_NOWAIT(int* value) {
     return value;
 }
 
-int* tryGetValueOf_LIO_READ(int* value) {
+int32_t* tryGetValueOf_LIO_READ(int32_t* value) {
 #if defined (__linux__) || defined(__FreeBSD__) || defined(__APPLE__)
     *value = LIO_READ;
 #else
@@ -121,7 +121,7 @@ int* tryGetValueOf_LIO_READ(int* value) {
     return value;
 }
 
-int* tryGetValueOf_LIO_WAIT(int* value) {
+int32_t* tryGetValueOf_LIO_WAIT(int32_t* value) {
 #if defined (__linux__) || defined(__FreeBSD__) || defined(__APPLE__)
     *value = LIO_WAIT;
 #else
@@ -134,7 +134,7 @@ int* tryGetValueOf_LIO_WAIT(int* value) {
     return value;
 }
 
-int* tryGetValueOf_LIO_WRITE(int* value) {
+int32_t* tryGetValueOf_LIO_WRITE(int32_t* value) {
 #if defined (__linux__) || defined(__FreeBSD__) || defined(__APPLE__)
     *value = LIO_WRITE;
 #else

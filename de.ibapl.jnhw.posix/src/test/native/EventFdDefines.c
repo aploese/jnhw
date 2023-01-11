@@ -1,6 +1,6 @@
 /*
  * JNHW - Java Native header Wrapper, https://github.com/aploese/jnhw/
- * Copyright (C) 2019-2022, Arne Plöse and individual contributors as indicated
+ * Copyright (C) 2019-2023, Arne Plöse and individual contributors as indicated
  * by the @authors tag. See the copyright.txt in the distribution for a
  * full listing of individual contributors.
  *
@@ -23,26 +23,26 @@
 
 #ifndef HAVE_SYS_EVENTFD_H
 
-int getValueOf_HAVE_SYS_EVENTFD_H() {
+int32_t getValueOf_HAVE_SYS_EVENTFD_H() {
     return 0;
 }
 
 #else
 #include <sys/eventfd.h>
 
-int getValueOf_HAVE_SYS_EVENTFD_H() {
+int32_t getValueOf_HAVE_SYS_EVENTFD_H() {
     return 1;
 }
 
-int getValueOf_EFD_CLOEXEC() {
+int32_t getValueOf_EFD_CLOEXEC() {
     return EFD_CLOEXEC;
 }
 
-int getValueOf_EFD_NONBLOCK() {
+int32_t getValueOf_EFD_NONBLOCK() {
     return EFD_NONBLOCK;
 }
 
-int getValueOf_EFD_SEMAPHORE() {
+int32_t getValueOf_EFD_SEMAPHORE() {
     return EFD_SEMAPHORE;
 }
 

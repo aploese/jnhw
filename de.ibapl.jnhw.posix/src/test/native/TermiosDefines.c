@@ -3,7 +3,7 @@
 
 /*
  * JNHW - Java Native header Wrapper, https://github.com/aploese/jnhw/
- * Copyright (C) 2019-2022, Arne Plöse and individual contributors as indicated
+ * Copyright (C) 2019-2023, Arne Plöse and individual contributors as indicated
  * by the @authors tag. See the copyright.txt in the distribution for a
  * full listing of individual contributors.
  *
@@ -27,18 +27,18 @@
     //We need the POSIX version ...
 #if !defined(HAVE_TERMIOS_H) || !defined(_POSIX_VERSION)
 
-int getValueOf_HAVE_TERMIOS_H() {
+int32_t getValueOf_HAVE_TERMIOS_H() {
     return 0;
 }
 #else
 #include <termios.h>
 #include <errno.h>
 
-int getValueOf_HAVE_TERMIOS_H() {
+int32_t getValueOf_HAVE_TERMIOS_H() {
     return 1;
 }
 
-int* tryGetValueOf__HAVE_STRUCT_TERMIOS_C_ISPEED(int* value) {
+int32_t* tryGetValueOf__HAVE_STRUCT_TERMIOS_C_ISPEED(int32_t* value) {
 #if defined(_HAVE_STRUCT_TERMIOS_C_ISPEED)
     *value = _HAVE_STRUCT_TERMIOS_C_ISPEED;
 #else
@@ -47,7 +47,7 @@ int* tryGetValueOf__HAVE_STRUCT_TERMIOS_C_ISPEED(int* value) {
     return value;
 }
 
-int* tryGetValueOf__HAVE_STRUCT_TERMIOS_C_OSPEED(int* value) {
+int32_t* tryGetValueOf__HAVE_STRUCT_TERMIOS_C_OSPEED(int32_t* value) {
 #if defined(_HAVE_STRUCT_TERMIOS_C_OSPEED)
     *value = _HAVE_STRUCT_TERMIOS_C_OSPEED;
 #else
@@ -56,11 +56,11 @@ value = NULL;
     return value;
 }
 
-int getValueOf_B0() {
+int32_t getValueOf_B0() {
     return B0;
 }
 
-int* tryGetValueOf_B1000000(int* value) {
+int32_t* tryGetValueOf_B1000000(int32_t* value) {
 #if defined (__linux__)
     *value = B1000000;
 #else
@@ -73,15 +73,15 @@ valuie = NULL;
     return value;
 }
 
-int getValueOf_B110() {
+int32_t getValueOf_B110() {
     return B110;
 }
 
-int getValueOf_B115200() {
+int32_t getValueOf_B115200() {
     return B115200;
 }
 
-int* tryGetValueOf_B1152000(int* value) {
+int32_t* tryGetValueOf_B1152000(int32_t* value) {
 #if defined (__linux__)
     *value = B1152000;
 #else
@@ -94,19 +94,19 @@ value = NULL;
     return value;
 }
 
-int getValueOf_B1200() {
+int32_t getValueOf_B1200() {
     return B1200;
 }
 
-int getValueOf_B134() {
+int32_t getValueOf_B134() {
     return B134;
 }
 
-int getValueOf_B150() {
+int32_t getValueOf_B150() {
     return B150;
 }
 
-int* tryGetValueOf_B1500000(int* value) {
+int32_t* tryGetValueOf_B1500000(int32_t* value) {
 #if defined (__linux__)
     *value = B1500000;
 #else
@@ -119,19 +119,19 @@ int* tryGetValueOf_B1500000(int* value) {
     return value;
 }
 
-int getValueOf_B1800() {
+int32_t getValueOf_B1800() {
     return B1800;
 }
 
-int getValueOf_B19200() {
+int32_t getValueOf_B19200() {
     return B19200;
 }
 
-int getValueOf_B200() {
+int32_t getValueOf_B200() {
     return B200;
 }
 
-int* tryGetValueOf_B2000000(int* value) {
+int32_t* tryGetValueOf_B2000000(int32_t* value) {
 #if defined (__linux__)
     *value = B2000000;
 #else
@@ -144,15 +144,15 @@ int* tryGetValueOf_B2000000(int* value) {
     return value;
 }
 
-int getValueOf_B230400() {
+int32_t getValueOf_B230400() {
     return B230400;
 }
 
-int getValueOf_B2400() {
+int32_t getValueOf_B2400() {
     return B2400;
 }
 
-int* tryGetValueOf_B2500000(int* value) {
+int32_t* tryGetValueOf_B2500000(int32_t* value) {
 #if defined (__linux__) && !defined(__sparc__)
     *value = B2500000;
 #else
@@ -165,11 +165,11 @@ int* tryGetValueOf_B2500000(int* value) {
     return value;
 }
 
-int getValueOf_B300() {
+int32_t getValueOf_B300() {
     return B300;
 }
 
-int* tryGetValueOf_B3000000(int* value) {
+int32_t* tryGetValueOf_B3000000(int32_t* value) {
 #if defined (__linux__) && !defined(__sparc__)
     *value = B3000000;
 #else
@@ -182,7 +182,7 @@ int* tryGetValueOf_B3000000(int* value) {
     return value;
 }
 
-int* tryGetValueOf_B3500000(int* value) {
+int32_t* tryGetValueOf_B3500000(int32_t* value) {
 #if defined (__linux__) && !defined(__sparc__)
     *value = B3500000;
 #else
@@ -195,11 +195,11 @@ int* tryGetValueOf_B3500000(int* value) {
     return value;
 }
 
-int getValueOf_B38400() {
+int32_t getValueOf_B38400() {
     return B38400;
 }
 
-int* tryGetValueOf_B4000000(int* value) {
+int32_t* tryGetValueOf_B4000000(int32_t* value) {
 #if defined (__linux__) && !defined(__sparc__)
     *value = B4000000;
 #else
@@ -212,7 +212,7 @@ int* tryGetValueOf_B4000000(int* value) {
     return value;
 }
 
-int* tryGetValueOf_B460800(int* value) {
+int32_t* tryGetValueOf_B460800(int32_t* value) {
 #if defined (__linux__) || defined (__FreeBSD__)
     *value = B460800;
 #else
@@ -225,15 +225,15 @@ int* tryGetValueOf_B460800(int* value) {
     return value;
 }
 
-int getValueOf_B4800() {
+int32_t getValueOf_B4800() {
     return B4800;
 }
 
-int getValueOf_B50() {
+int32_t getValueOf_B50() {
     return B50;
 }
 
-int* tryGetValueOf_B500000(int* value) {
+int32_t* tryGetValueOf_B500000(int32_t* value) {
 #if defined (__linux__)
     *value = B500000;
 #else
@@ -246,11 +246,11 @@ int* tryGetValueOf_B500000(int* value) {
     return value;
 }
 
-int getValueOf_B57600() {
+int32_t getValueOf_B57600() {
     return B57600;
 }
 
-int* tryGetValueOf_B576000(int* value) {
+int32_t* tryGetValueOf_B576000(int32_t* value) {
 #if defined (__linux__)
     *value = B576000;
 #else
@@ -263,15 +263,15 @@ int* tryGetValueOf_B576000(int* value) {
     return value;
 }
 
-int getValueOf_B600() {
+int32_t getValueOf_B600() {
     return B600;
 }
 
-int getValueOf_B75() {
+int32_t getValueOf_B75() {
     return B75;
 }
 
-int* tryGetValueOf_B921600(int* value) {
+int32_t* tryGetValueOf_B921600(int32_t* value) {
 #if defined (__linux__) || defined (__FreeBSD__)
     *value = B921600;
 #else
@@ -284,15 +284,15 @@ int* tryGetValueOf_B921600(int* value) {
     return value;
 }
 
-int getValueOf_B9600() {
+int32_t getValueOf_B9600() {
     return B9600;
 }
 
-int getValueOf_BRKINT() {
+int32_t getValueOf_BRKINT() {
     return BRKINT;
 }
 
-int* tryGetValueOf_BS0(int* value) {
+int32_t* tryGetValueOf_BS0(int32_t* value) {
 #if defined (__linux__) || defined (__APPLE__)
     *value = BS0;
 #else
@@ -305,7 +305,7 @@ int* tryGetValueOf_BS0(int* value) {
     return value;
 }
 
-int* tryGetValueOf_BS1(int* value) {
+int32_t* tryGetValueOf_BS1(int32_t* value) {
 #if defined (__linux__) || defined (__APPLE__)
     *value = BS1;
 #else
@@ -318,7 +318,7 @@ int* tryGetValueOf_BS1(int* value) {
     return value;
 }
 
-int* tryGetValueOf_BSDLY(int* value) {
+int32_t* tryGetValueOf_BSDLY(int32_t* value) {
 #if defined (__linux__) || defined (__APPLE__)
     *value = BSDLY;
 #else
@@ -331,11 +331,11 @@ int* tryGetValueOf_BSDLY(int* value) {
     return value;
 }
 
-int getValueOf_CLOCAL() {
+int32_t getValueOf_CLOCAL() {
     return CLOCAL;
 }
 
-int* tryGetValueOf_CMSPAR(int* value) {
+int32_t* tryGetValueOf_CMSPAR(int32_t* value) {
 #if defined(__linux__)
 #if defined(CMSPAR)
         //it is defined for mips at least since glibc 2.31
@@ -349,7 +349,7 @@ int* tryGetValueOf_CMSPAR(int* value) {
     return value;
 }
 
-int* tryGetValueOf_CR0(int* value) {
+int32_t* tryGetValueOf_CR0(int32_t* value) {
 #if defined (__linux__) || defined (__APPLE__)
     *value = CR0;
 #else
@@ -362,7 +362,7 @@ int* tryGetValueOf_CR0(int* value) {
     return value;
 }
 
-int* tryGetValueOf_CR1(int* value) {
+int32_t* tryGetValueOf_CR1(int32_t* value) {
 #if defined (__linux__) || defined (__APPLE__)
     *value = CR1;
 #else
@@ -375,7 +375,7 @@ int* tryGetValueOf_CR1(int* value) {
     return value;
 }
 
-int* tryGetValueOf_CR2(int* value) {
+int32_t* tryGetValueOf_CR2(int32_t* value) {
 #if defined (__linux__) || defined (__APPLE__)
     *value = CR2;
 #else
@@ -388,7 +388,7 @@ int* tryGetValueOf_CR2(int* value) {
     return value;
 }
 
-int* tryGetValueOf_CR3(int* value) {
+int32_t* tryGetValueOf_CR3(int32_t* value) {
 #if defined (__linux__) || defined (__APPLE__)
     *value = CR3;
 #else
@@ -401,7 +401,7 @@ int* tryGetValueOf_CR3(int* value) {
     return value;
 }
 
-int* tryGetValueOf_CRDLY(int* value) {
+int32_t* tryGetValueOf_CRDLY(int32_t* value) {
 #if defined (__linux__) || defined (__APPLE__)
     *value = CRDLY;
 #else
@@ -414,61 +414,61 @@ int* tryGetValueOf_CRDLY(int* value) {
     return value;
 }
 
-int getValueOf_CREAD() {
+int32_t getValueOf_CREAD() {
     return CREAD;
 }
 
-int getValueOf_CRTSCTS() {
-#if defined (__linux__) && (defined(__x86_64__) || defined(__aarch64__))
+int32_t getValueOf_CRTSCTS() {
+#if defined (__linux__)
 // detect at compiletime if unsigned
-    unsigned int RESULT = CRTSCTS;
-    return (int)RESULT;
+    uint32_t RESULT = CRTSCTS;
+    return (int32_t)RESULT;
 #else
     return CRTSCTS;
 #endif
 }
 
-int getValueOf_CS5() {
+int32_t getValueOf_CS5() {
     return CS5;
 }
 
-int getValueOf_CS6() {
+int32_t getValueOf_CS6() {
     return CS6;
 }
 
-int getValueOf_CS7() {
+int32_t getValueOf_CS7() {
     return CS7;
 }
 
-int getValueOf_CS8() {
+int32_t getValueOf_CS8() {
     return CS8;
 }
 
-int getValueOf_CSIZE() {
+int32_t getValueOf_CSIZE() {
     return CSIZE;
 }
 
-int getValueOf_CSTOPB() {
+int32_t getValueOf_CSTOPB() {
     return CSTOPB;
 }
 
-int getValueOf_ECHO() {
+int32_t getValueOf_ECHO() {
     return ECHO;
 }
 
-int getValueOf_ECHOE() {
+int32_t getValueOf_ECHOE() {
     return ECHOE;
 }
 
-int getValueOf_ECHOK() {
+int32_t getValueOf_ECHOK() {
     return ECHOK;
 }
 
-int getValueOf_ECHONL() {
+int32_t getValueOf_ECHONL() {
     return ECHONL;
 }
 
-int* tryGetValueOf_FF0(int* value) {
+int32_t* tryGetValueOf_FF0(int32_t* value) {
 #if defined (__linux__) || defined (__APPLE__)
     *value = FF0;
 #else
@@ -481,7 +481,7 @@ int* tryGetValueOf_FF0(int* value) {
     return value;
 }
 
-int* tryGetValueOf_FF1(int* value) {
+int32_t* tryGetValueOf_FF1(int32_t* value) {
 #if defined (__linux__) || defined (__APPLE__)
     *value = FF1;
 #else
@@ -494,7 +494,7 @@ int* tryGetValueOf_FF1(int* value) {
     return value;
 }
 
-int* tryGetValueOf_FFDLY(int* value) {
+int32_t* tryGetValueOf_FFDLY(int32_t* value) {
 #if defined (__linux__) || defined (__APPLE__)
     *value = FFDLY;
 #else
@@ -507,67 +507,67 @@ int* tryGetValueOf_FFDLY(int* value) {
     return value;
 }
 
-int getValueOf_HUPCL() {
+int32_t getValueOf_HUPCL() {
     return HUPCL;
 }
 
-int getValueOf_ICANON() {
+int32_t getValueOf_ICANON() {
     return ICANON;
 }
 
-int getValueOf_ICRNL() {
+int32_t getValueOf_ICRNL() {
     return ICRNL;
 }
 
-int getValueOf_IEXTEN() {
+int32_t getValueOf_IEXTEN() {
     return IEXTEN;
 }
 
-int getValueOf_IGNBRK() {
+int32_t getValueOf_IGNBRK() {
     return IGNBRK;
 }
 
-int getValueOf_IGNCR() {
+int32_t getValueOf_IGNCR() {
     return IGNCR;
 }
 
-int getValueOf_IGNPAR() {
+int32_t getValueOf_IGNPAR() {
     return IGNPAR;
 }
 
-int getValueOf_INLCR() {
+int32_t getValueOf_INLCR() {
     return INLCR;
 }
 
-int getValueOf_INPCK() {
+int32_t getValueOf_INPCK() {
     return INPCK;
 }
 
-int getValueOf_ISIG() {
+int32_t getValueOf_ISIG() {
     return ISIG;
 }
 
-int getValueOf_ISTRIP() {
+int32_t getValueOf_ISTRIP() {
     return ISTRIP;
 }
 
-int getValueOf_IXANY() {
+int32_t getValueOf_IXANY() {
     return IXANY;
 }
 
-int getValueOf_IXOFF() {
+int32_t getValueOf_IXOFF() {
     return IXOFF;
 }
 
-int getValueOf_IXON() {
+int32_t getValueOf_IXON() {
     return IXON;
 }
 
-int getValueOf_NCCS() {
+int32_t getValueOf_NCCS() {
     return NCCS;
 }
 
-int* tryGetValueOf_NL0(int* value) {
+int32_t* tryGetValueOf_NL0(int32_t* value) {
 #if defined (__linux__) || defined (__APPLE__)
     *value = NL0;
 #else
@@ -580,7 +580,7 @@ int* tryGetValueOf_NL0(int* value) {
     return value;
 }
 
-int* tryGetValueOf_NL1(int* value) {
+int32_t* tryGetValueOf_NL1(int32_t* value) {
 #if defined (__linux__) || defined (__APPLE__)
     *value = NL1;
 #else
@@ -593,7 +593,7 @@ int* tryGetValueOf_NL1(int* value) {
     return value;
 }
 
-int* tryGetValueOf_NLDLY(int* value) {
+int32_t* tryGetValueOf_NLDLY(int32_t* value) {
 #if defined (__linux__) || defined (__APPLE__)
     *value = NLDLY;
 #else
@@ -606,7 +606,7 @@ int* tryGetValueOf_NLDLY(int* value) {
     return value;
 }
 
-int getValueOf_NOFLSH() {
+int32_t getValueOf_NOFLSH() {
 #if defined (__APPLE__) || defined (__FreeBSD__) || defined (__OpenBSD__) || (defined(__linux__) && (defined(__powerpc__) || defined(__alpha__)))
         return (int32_t) NOFLSH;
 #else
@@ -614,11 +614,11 @@ int getValueOf_NOFLSH() {
 #endif
 }
 
-int getValueOf_OCRNL() {
+int32_t getValueOf_OCRNL() {
     return OCRNL;
 }
 
-int* tryGetValueOf_OFDEL(int* value) {
+int32_t* tryGetValueOf_OFDEL(int32_t* value) {
 #if defined (__linux__) || defined (__APPLE__)
     *value = OFDEL;
 #else
@@ -631,7 +631,7 @@ int* tryGetValueOf_OFDEL(int* value) {
     return value;
 }
 
-int* tryGetValueOf_OFILL(int* value) {
+int32_t* tryGetValueOf_OFILL(int32_t* value) {
 #if defined (__linux__) || defined (__APPLE__)
     *value = OFILL;
 #else
@@ -644,27 +644,27 @@ int* tryGetValueOf_OFILL(int* value) {
     return value;
 }
 
-int getValueOf_ONLCR() {
+int32_t getValueOf_ONLCR() {
     return ONLCR;
 }
 
-int getValueOf_ONLRET() {
+int32_t getValueOf_ONLRET() {
     return ONLRET;
 }
 
-int getValueOf_ONOCR() {
+int32_t getValueOf_ONOCR() {
     return ONOCR;
 }
 
-int getValueOf_OPOST() {
+int32_t getValueOf_OPOST() {
     return OPOST;
 }
 
-int getValueOf_PARENB() {
+int32_t getValueOf_PARENB() {
     return PARENB;
 }
 
-int* tryGetValueOf_PAREXT(int* value) {
+int32_t* tryGetValueOf_PAREXT(int32_t* value) {
 #if !defined(PAREXT)
     value = NULL;
 #else
@@ -673,15 +673,15 @@ int* tryGetValueOf_PAREXT(int* value) {
     return value;
 }
 
-int getValueOf_PARMRK() {
+int32_t getValueOf_PARMRK() {
     return PARMRK;
 }
 
-int getValueOf_PARODD() {
+int32_t getValueOf_PARODD() {
     return PARODD;
 }
 
-int* tryGetValueOf_TAB0(int* value) {
+int32_t* tryGetValueOf_TAB0(int32_t* value) {
 #if defined(__OpenBSD__)
 #if !defined(TAB0)
     value = NULL;
@@ -694,7 +694,7 @@ int* tryGetValueOf_TAB0(int* value) {
     return value;
 }
 
-int* tryGetValueOf_TAB1(int* value) {
+int32_t* tryGetValueOf_TAB1(int32_t* value) {
 #if defined (__linux__) || defined (__APPLE__)
     *value = TAB1;
 #else
@@ -707,7 +707,7 @@ int* tryGetValueOf_TAB1(int* value) {
     return value;
 }
 
-int* tryGetValueOf_TAB2(int* value) {
+int32_t* tryGetValueOf_TAB2(int32_t* value) {
 #if defined (__linux__) || defined (__APPLE__)
     *value = TAB2;
 #else
@@ -720,7 +720,7 @@ int* tryGetValueOf_TAB2(int* value) {
     return value;
 }
 
-int* tryGetValueOf_TAB3(int* value) {
+int32_t* tryGetValueOf_TAB3(int32_t* value) {
 #if defined(__OpenBSD__)
 #if !defined(TAB3)
     value = NULL;
@@ -733,7 +733,7 @@ int* tryGetValueOf_TAB3(int* value) {
     return value;
 }
 
-int* tryGetValueOf_TABDLY(int* value) {
+int32_t* tryGetValueOf_TABDLY(int32_t* value) {
 #if defined(__OpenBSD__)
 #if !defined(TABDLY)
     value = NULL;
@@ -746,91 +746,91 @@ int* tryGetValueOf_TABDLY(int* value) {
     return value;
 }
 
-int getValueOf_TCIFLUSH() {
+int32_t getValueOf_TCIFLUSH() {
     return TCIFLUSH;
 }
 
-int getValueOf_TCIOFF() {
+int32_t getValueOf_TCIOFF() {
     return TCIOFF;
 }
 
-int getValueOf_TCIOFLUSH() {
+int32_t getValueOf_TCIOFLUSH() {
     return TCIOFLUSH;
 }
 
-int getValueOf_TCION() {
+int32_t getValueOf_TCION() {
     return TCION;
 }
 
-int getValueOf_TCOFLUSH() {
+int32_t getValueOf_TCOFLUSH() {
     return TCOFLUSH;
 }
 
-int getValueOf_TCOOFF() {
+int32_t getValueOf_TCOOFF() {
     return TCOOFF;
 }
 
-int getValueOf_TCOON() {
+int32_t getValueOf_TCOON() {
     return TCOON;
 }
 
-int getValueOf_TCSADRAIN() {
+int32_t getValueOf_TCSADRAIN() {
     return TCSADRAIN;
 }
 
-int getValueOf_TCSAFLUSH() {
+int32_t getValueOf_TCSAFLUSH() {
     return TCSAFLUSH;
 }
 
-int getValueOf_TCSANOW() {
+int32_t getValueOf_TCSANOW() {
     return TCSANOW;
 }
 
-int getValueOf_TOSTOP() {
+int32_t getValueOf_TOSTOP() {
     return TOSTOP;
 }
 
-int getValueOf_VEOF() {
+int32_t getValueOf_VEOF() {
     return VEOF;
 }
 
-int getValueOf_VEOL() {
+int32_t getValueOf_VEOL() {
     return VEOL;
 }
 
-int getValueOf_VERASE() {
+int32_t getValueOf_VERASE() {
     return VERASE;
 }
 
-int getValueOf_VINTR() {
+int32_t getValueOf_VINTR() {
     return VINTR;
 }
 
-int getValueOf_VKILL() {
+int32_t getValueOf_VKILL() {
     return VKILL;
 }
 
-int getValueOf_VMIN() {
+int32_t getValueOf_VMIN() {
     return VMIN;
 }
 
-int getValueOf_VQUIT() {
+int32_t getValueOf_VQUIT() {
     return VQUIT;
 }
 
-int getValueOf_VSTART() {
+int32_t getValueOf_VSTART() {
     return VSTART;
 }
 
-int getValueOf_VSTOP() {
+int32_t getValueOf_VSTOP() {
     return VSTOP;
 }
 
-int getValueOf_VSUSP() {
+int32_t getValueOf_VSUSP() {
     return VSUSP;
 }
 
-int* tryGetValueOf_VT0(int* value) {
+int32_t* tryGetValueOf_VT0(int32_t* value) {
 #if defined (__linux__) || defined (__APPLE__)
     *value = VT0;
 #else
@@ -843,7 +843,7 @@ int* tryGetValueOf_VT0(int* value) {
     return value;
 }
 
-int* tryGetValueOf_VT1(int* value) {
+int32_t* tryGetValueOf_VT1(int32_t* value) {
 #if defined (__linux__) || defined (__APPLE__)
     *value = VT1;
 #else
@@ -856,7 +856,7 @@ int* tryGetValueOf_VT1(int* value) {
     return value;
 }
 
-int* tryGetValueOf_VTDLY(int* value) {
+int32_t* tryGetValueOf_VTDLY(int32_t* value) {
 #if defined (__linux__) || defined (__APPLE__)
     *value = VTDLY;
 #else
@@ -869,7 +869,7 @@ int* tryGetValueOf_VTDLY(int* value) {
     return value;
 }
 
-int getValueOf_VTIME() {
+int32_t getValueOf_VTIME() {
     return VTIME;
 }
 

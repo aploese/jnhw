@@ -1,6 +1,6 @@
 /*
  * JNHW - Java Native header Wrapper, https://github.com/aploese/jnhw/
- * Copyright (C) 2019-2022, Arne Plöse and individual contributors as indicated
+ * Copyright (C) 2019-2023, Arne Plöse and individual contributors as indicated
  * by the @authors tag. See the copyright.txt in the distribution for a
  * full listing of individual contributors.
  *
@@ -24,39 +24,39 @@
 //We need the POSIX version ...
 #if !defined(HAVE_TIME_H) || !defined(_POSIX_VERSION)
 
-int getValueOf_HAVE_TIME_H() {
+int32_t getValueOf_HAVE_TIME_H() {
     return 0;
 }
 
 #else
 #include <time.h>
 
-int getValueOf_HAVE_TIME_H() {
+int32_t getValueOf_HAVE_TIME_H() {
     return 1;
 }
 
 
-int getValueOf_CLOCKS_PER_SEC() {
+int32_t getValueOf_CLOCKS_PER_SEC() {
     return CLOCKS_PER_SEC;
 }
 
-int getValueOf_CLOCK_MONOTONIC() {
+int32_t getValueOf_CLOCK_MONOTONIC() {
     return CLOCK_MONOTONIC;
 }
 
-int getValueOf_CLOCK_PROCESS_CPUTIME_ID() {
+int32_t getValueOf_CLOCK_PROCESS_CPUTIME_ID() {
     return CLOCK_PROCESS_CPUTIME_ID;
 }
 
-int getValueOf_CLOCK_REALTIME() {
+int32_t getValueOf_CLOCK_REALTIME() {
     return CLOCK_REALTIME;
 }
 
-int getValueOf_CLOCK_THREAD_CPUTIME_ID() {
+int32_t getValueOf_CLOCK_THREAD_CPUTIME_ID() {
     return CLOCK_THREAD_CPUTIME_ID;
 }
 
-int* tryGetValueOf_TIMER_ABSTIME(int* value) {
+int32_t* tryGetValueOf_TIMER_ABSTIME(int32_t* value) {
 #if defined(__APPLE__)
 #if defined(TIMER_ABSTIME)
 #error "TIMER_ABSTIME defined"

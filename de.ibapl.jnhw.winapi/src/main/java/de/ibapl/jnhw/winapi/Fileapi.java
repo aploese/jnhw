@@ -1,6 +1,6 @@
 /*
  * JNHW - Java Native header Wrapper, https://github.com/aploese/jnhw/
- * Copyright (C) 2019-2022, Arne Plöse and individual contributors as indicated
+ * Copyright (C) 2019-2023, Arne Plöse and individual contributors as indicated
  * by the @authors tag. See the copyright.txt in the distribution for a
  * full listing of individual contributors.
  *
@@ -24,9 +24,9 @@ package de.ibapl.jnhw.winapi;
 import de.ibapl.jnhw.common.annotation.Define;
 import de.ibapl.jnhw.common.annotation.Include;
 import de.ibapl.jnhw.common.datatypes.Pointer;
-import de.ibapl.jnhw.common.downcall.wrapper.JnhwMh_MA___A_uI_uI__A_uI_uI__A;
-import de.ibapl.jnhw.common.downcall.wrapper.JnhwMh__B___A;
-import de.ibapl.jnhw.common.downcall.wrapper.JnhwMh__B___A__A_uI__A__A;
+import de.ibapl.jnhw.common.downcall.JnhwMh_BL___A;
+import de.ibapl.jnhw.common.downcall.JnhwMh_BL___A__A_uI__A__A;
+import de.ibapl.jnhw.common.downcall.JnhwMh_MA___A_uI_uI__A_uI_uI__A;
 import de.ibapl.jnhw.common.exception.NativeErrorException;
 import de.ibapl.jnhw.common.memory.OpaqueMemory;
 import de.ibapl.jnhw.common.util.ByteBufferUtils;
@@ -104,13 +104,13 @@ public final class Fileapi {
             WinApiDataType.DWORD,
             WinApiDataType.HANDLE);
 
-    private final static JnhwMh__B___A FlushFileBuffers = JnhwMh__B___A.of(
+    private final static JnhwMh_BL___A FlushFileBuffers = JnhwMh_BL___A.of(
             Kernel32Loader.DLL_KERNEL32_SYMBOL_LOOKUP,
             "FlushFileBuffers",
             WinApiDataType.BOOL,
             WinApiDataType.HANDLE);
 
-    private final static JnhwMh__B___A__A_uI__A__A ReadFile = JnhwMh__B___A__A_uI__A__A.of(
+    private final static JnhwMh_BL___A__A_uI__A__A ReadFile = JnhwMh_BL___A__A_uI__A__A.of(
             Kernel32Loader.DLL_KERNEL32_SYMBOL_LOOKUP,
             "ReadFile",
             WinApiDataType.BOOL,
@@ -120,7 +120,7 @@ public final class Fileapi {
             WinApiDataType.LPDWORD,
             WinApiDataType.LPOVERLAPPED);
 
-    private final static JnhwMh__B___A__A_uI__A__A ReadFileEx = JnhwMh__B___A__A_uI__A__A.of(
+    private final static JnhwMh_BL___A__A_uI__A__A ReadFileEx = JnhwMh_BL___A__A_uI__A__A.of(
             Kernel32Loader.DLL_KERNEL32_SYMBOL_LOOKUP,
             "ReadFileEx",
             WinApiDataType.BOOL,
@@ -130,7 +130,7 @@ public final class Fileapi {
             WinApiDataType.LPOVERLAPPED,
             WinApiDataType.LPOVERLAPPED_COMPLETION_ROUTINE);
 
-    private final static JnhwMh__B___A__A_uI__A__A WriteFile = JnhwMh__B___A__A_uI__A__A.of(
+    private final static JnhwMh_BL___A__A_uI__A__A WriteFile = JnhwMh_BL___A__A_uI__A__A.of(
             Kernel32Loader.DLL_KERNEL32_SYMBOL_LOOKUP,
             "WriteFile",
             WinApiDataType.BOOL,
@@ -140,7 +140,7 @@ public final class Fileapi {
             WinApiDataType.LPDWORD,
             WinApiDataType.LPOVERLAPPED);
 
-    private final static JnhwMh__B___A__A_uI__A__A WriteFileEx = JnhwMh__B___A__A_uI__A__A.of(
+    private final static JnhwMh_BL___A__A_uI__A__A WriteFileEx = JnhwMh_BL___A__A_uI__A__A.of(
             Kernel32Loader.DLL_KERNEL32_SYMBOL_LOOKUP,
             "WriteFileEx",
             WinApiDataType.BOOL,
@@ -249,7 +249,7 @@ public final class Fileapi {
      * indicates an error.
      */
     public final static void FlushFileBuffers(HANDLE hFile) throws NativeErrorException {
-        if (!FlushFileBuffers.invoke__B___P(hFile)) {
+        if (!FlushFileBuffers.invoke_BL___P(hFile)) {
             throw new NativeErrorException(Errhandlingapi.GetLastError());
         }
     }
@@ -277,7 +277,7 @@ public final class Fileapi {
     public static void ReadFile(HANDLE hFile, byte[] lpBuffer, WinDef.LPDWORD lpNumberOfBytesRead) throws NativeErrorException {
         try ( MemorySession ms = MemorySession.openConfined()) {
             final MemorySegment _lpBuffer = MemorySegment.allocateNative(lpBuffer.length, ms);
-            if (!ReadFile.invoke__B___P__A_uI__P__P(
+            if (!ReadFile.invoke_BL___P__A_uI__P__P(
                     hFile,
                     _lpBuffer,
                     lpBuffer.length,
@@ -315,7 +315,7 @@ public final class Fileapi {
     public final static void ReadFile(HANDLE hFile, byte[] lpBuffer, int off, int nNumberOfBytesToRead, WinDef.LPDWORD lpNumberOfBytesRead) throws NativeErrorException {
         try ( MemorySession ms = MemorySession.openConfined()) {
             final MemorySegment _lpBuffer = MemorySegment.allocateNative(nNumberOfBytesToRead, ms);
-            if (!ReadFile.invoke__B___P__A_uI__P__P(
+            if (!ReadFile.invoke_BL___P__A_uI__P__P(
                     hFile,
                     _lpBuffer,
                     nNumberOfBytesToRead,
@@ -346,7 +346,7 @@ public final class Fileapi {
      */
     public final static void ReadFile(HANDLE hFile, ByteBuffer lpBuffer, WinDef.LPDWORD lpNumberOfBytesRead) throws NativeErrorException {
         if (lpBuffer.isDirect()) {
-            if (!ReadFile.invoke__B___P__A_uI__P__P(
+            if (!ReadFile.invoke_BL___P__A_uI__P__P(
                     hFile,
                     MemorySegment.ofBuffer(lpBuffer),
                     lpBuffer.remaining(),
@@ -398,7 +398,7 @@ public final class Fileapi {
      */
     public final static void ReadFile(HANDLE hFile, ByteBuffer lpBuffer, LPOVERLAPPED lpOverlapped) throws NativeErrorException {
         if (lpBuffer.isDirect()) {
-            if (!ReadFile.invoke__B___P__A_uI__P__P(
+            if (!ReadFile.invoke_BL___P__A_uI__P__P(
                     hFile,
                     MemorySegment.ofBuffer(lpBuffer),
                     lpBuffer.remaining(),
@@ -438,7 +438,7 @@ public final class Fileapi {
      * indicates an error.
      */
     public final static void ReadFile(HANDLE hFile, OpaqueMemory lpBuffer, int off, int nNumberOfBytesToRead, WinDef.LPDWORD lpNumberOfBytesRead) throws NativeErrorException {
-        if (!ReadFile.invoke__B___P__A_uI__P__P(
+        if (!ReadFile.invoke_BL___P__A_uI__P__P(
                 hFile,
                 OpaqueMemory.sliceMemorySegment(lpBuffer, off, nNumberOfBytesToRead),
                 nNumberOfBytesToRead,
@@ -473,7 +473,7 @@ public final class Fileapi {
      * indicates an error.
      */
     public final static void ReadFile(HANDLE hFile, OpaqueMemory lpBuffer, int off, int nNumberOfBytesToRead, LPOVERLAPPED lpOverlapped) throws NativeErrorException {
-        if (!ReadFile.invoke__B___P__A_uI__P__P(
+        if (!ReadFile.invoke_BL___P__A_uI__P__P(
                 hFile,
                 OpaqueMemory.sliceMemorySegment(lpBuffer, off, nNumberOfBytesToRead),
                 nNumberOfBytesToRead,
@@ -504,7 +504,7 @@ public final class Fileapi {
      * indicates an error.
      */
     public static void ReadFile(HANDLE hFile, OpaqueMemory lpBuffer, LPOVERLAPPED lpOverlapped) throws NativeErrorException {
-        if (!ReadFile.invoke__B___P__P_uI__P__P(
+        if (!ReadFile.invoke_BL___P__P_uI__P__P(
                 hFile,
                 lpBuffer,
                 ConversionsJava2Native.long_TO_uint32_t(lpBuffer.sizeof()),
@@ -535,7 +535,7 @@ public final class Fileapi {
      * indicates an error.
      */
     public static void ReadFile(HANDLE hFile, MemorySegment lpBuffer, LPOVERLAPPED lpOverlapped) throws NativeErrorException {
-        if (!ReadFile.invoke__B___P__A_uI__P__P(
+        if (!ReadFile.invoke_BL___P__A_uI__P__P(
                 hFile,
                 lpBuffer,
                 ConversionsJava2Native.long_TO_uint32_t(lpBuffer.byteSize()),
@@ -571,7 +571,7 @@ public final class Fileapi {
      * indicates an error.
      */
     public final static void ReadFile(HANDLE hFile, OpaqueMemory lpBuffer, long off, int nNumberOfBytesToRead, WinDef.LPDWORD lpNumberOfBytesRead) throws NativeErrorException {
-        if (!ReadFile.invoke__B___P__A_uI__P__P(
+        if (!ReadFile.invoke_BL___P__A_uI__P__P(
                 hFile,
                 OpaqueMemory.sliceMemorySegment(lpBuffer, off, nNumberOfBytesToRead),
                 nNumberOfBytesToRead,
@@ -606,7 +606,7 @@ public final class Fileapi {
      * indicates an error.
      */
     public static void ReadFile(HANDLE hFile, OpaqueMemory lpBuffer, long off, int nNumberOfBytesToRead, LPOVERLAPPED lpOverlapped) throws NativeErrorException {
-        if (!ReadFile.invoke__B___P__A_uI__P__P(
+        if (!ReadFile.invoke_BL___P__A_uI__P__P(
                 hFile,
                 OpaqueMemory.sliceMemorySegment(lpBuffer, off, nNumberOfBytesToRead),
                 nNumberOfBytesToRead,
@@ -651,7 +651,7 @@ public final class Fileapi {
      */
     public final static void ReadFileEx(HANDLE hFile, ByteBuffer lpBuffer, LPOVERLAPPED lpOverlapped, Minwinbase.LPOVERLAPPED_COMPLETION_ROUTINE lpCompletionRoutine) throws NativeErrorException {
         if (lpBuffer.isDirect()) {
-            if (!ReadFileEx.invoke__B___P__A_uI__P__P(
+            if (!ReadFileEx.invoke_BL___P__A_uI__P__P(
                     hFile,
                     MemorySegment.ofBuffer(lpBuffer),
                     lpBuffer.remaining(),
@@ -695,7 +695,7 @@ public final class Fileapi {
      * indicates an error.
      */
     public final static void ReadFileEx(HANDLE hFile, OpaqueMemory lpBuffer, int off, int nNumberOfBytesToRead, LPOVERLAPPED lpOverlapped, Minwinbase.LPOVERLAPPED_COMPLETION_ROUTINE lpCompletionRoutine) throws NativeErrorException {
-        if (!ReadFileEx.invoke__B___P__A_uI__P__P(
+        if (!ReadFileEx.invoke_BL___P__A_uI__P__P(
                 hFile,
                 OpaqueMemory.sliceMemorySegment(lpBuffer, off, nNumberOfBytesToRead),
                 nNumberOfBytesToRead,
@@ -727,7 +727,7 @@ public final class Fileapi {
      * indicates an error.
      */
     public static void ReadFileEx(HANDLE hFile, OpaqueMemory lpBuffer, LPOVERLAPPED lpOverlapped, Minwinbase.LPOVERLAPPED_COMPLETION_ROUTINE lpCompletionRoutine) throws NativeErrorException {
-        if (!ReadFileEx.invoke__B___P__P_uI__P__P(
+        if (!ReadFileEx.invoke_BL___P__P_uI__P__P(
                 hFile,
                 lpBuffer,
                 ConversionsJava2Native.long_TO_uint32_t(lpBuffer.sizeof()),
@@ -765,7 +765,7 @@ public final class Fileapi {
      * indicates an error.
      */
     public final static void ReadFileEx(HANDLE hFile, OpaqueMemory lpBuffer, long off, int nNumberOfBytesToRead, LPOVERLAPPED lpOverlapped, Minwinbase.LPOVERLAPPED_COMPLETION_ROUTINE lpCompletionRoutine) throws NativeErrorException {
-        if (!ReadFileEx.invoke__B___P__A_uI__P__P(
+        if (!ReadFileEx.invoke_BL___P__A_uI__P__P(
                 hFile,
                 OpaqueMemory.sliceMemorySegment(lpBuffer, off, nNumberOfBytesToRead),
                 nNumberOfBytesToRead,
@@ -799,7 +799,7 @@ public final class Fileapi {
         try ( MemorySession ms = MemorySession.openConfined()) {
             final MemorySegment _lpBuffer = MemorySegment.allocateNative(lpBuffer.length, ms);
             _lpBuffer.copyFrom(MemorySegment.ofArray(lpBuffer));
-            if (!WriteFile.invoke__B___P__A_uI__P__P(
+            if (!WriteFile.invoke_BL___P__A_uI__P__P(
                     hFile,
                     _lpBuffer,
                     lpBuffer.length,
@@ -836,7 +836,7 @@ public final class Fileapi {
         try ( MemorySession ms = MemorySession.openConfined()) {
             final MemorySegment _lpBuffer = MemorySegment.allocateNative(nNumberOfBytesToWrite, ms);
             _lpBuffer.copyFrom(MemorySegment.ofArray(lpBuffer).asSlice(off, nNumberOfBytesToWrite));
-            if (!WriteFile.invoke__B___P__A_uI__P__P(
+            if (!WriteFile.invoke_BL___P__A_uI__P__P(
                     hFile,
                     _lpBuffer,
                     nNumberOfBytesToWrite,
@@ -865,7 +865,7 @@ public final class Fileapi {
      */
     public final static void WriteFile(HANDLE hFile, ByteBuffer lpBuffer, WinDef.LPDWORD lpNumberOfBytesWritten) throws NativeErrorException {
         if (lpBuffer.isDirect()) {
-            if (!WriteFile.invoke__B___P__A_uI__P__P(
+            if (!WriteFile.invoke_BL___P__A_uI__P__P(
                     hFile,
                     MemorySegment.ofBuffer(lpBuffer),
                     lpBuffer.remaining(),
@@ -934,7 +934,7 @@ public final class Fileapi {
 //TODO Not setting or reading LastError will fail the call to writeFile
 //            Errhandlingapi.SetLastError(Winerror.ERROR_SUCCESS);
             System.err.println("de.ibapl.jnhw.winapi.Fileapi.WriteFile()" + Errhandlingapi.GetLastError());
-            if (!WriteFile.invoke__B___P__A_uI__P__P(
+            if (!WriteFile.invoke_BL___P__A_uI__P__P(
                     hFile,
                     MemorySegment.ofBuffer(lpBuffer),
                     lpBuffer.remaining(),
@@ -973,7 +973,7 @@ public final class Fileapi {
      * indicates an error.
      */
     public final static void WriteFile(HANDLE hFile, OpaqueMemory lpBuffer, int off, int nNumberOfBytesToWrite, WinDef.LPDWORD lpNumberOfBytesWritten) throws NativeErrorException {
-        if (!WriteFile.invoke__B___P__A_uI__P__P(
+        if (!WriteFile.invoke_BL___P__A_uI__P__P(
                 hFile,
                 OpaqueMemory.sliceMemorySegment(lpBuffer, off, nNumberOfBytesToWrite),
                 nNumberOfBytesToWrite,
@@ -1006,7 +1006,7 @@ public final class Fileapi {
      * indicates an error.
      */
     public final static void WriteFile(HANDLE hFile, OpaqueMemory lpBuffer, int off, int nNumberOfBytesToWrite, LPOVERLAPPED lpOverlapped) throws NativeErrorException {
-        if (!WriteFile.invoke__B___P__A_uI__P__P(
+        if (!WriteFile.invoke_BL___P__A_uI__P__P(
                 hFile,
                 OpaqueMemory.sliceMemorySegment(lpBuffer, off, nNumberOfBytesToWrite),
                 nNumberOfBytesToWrite,
@@ -1036,7 +1036,7 @@ public final class Fileapi {
      * indicates an error.
      */
     public static void WriteFile(HANDLE hFile, OpaqueMemory lpBuffer, LPOVERLAPPED lpOverlapped) throws NativeErrorException {
-        if (!WriteFile.invoke__B___P__P_uI__P__P(
+        if (!WriteFile.invoke_BL___P__P_uI__P__P(
                 hFile,
                 lpBuffer,
                 ConversionsJava2Native.long_TO_uint32_t(lpBuffer.sizeof()),
@@ -1066,7 +1066,7 @@ public final class Fileapi {
      * indicates an error.
      */
     public static void WriteFile(HANDLE hFile, MemorySegment lpBuffer, LPOVERLAPPED lpOverlapped) throws NativeErrorException {
-        if (!WriteFile.invoke__B___P__A_uI__P__P(
+        if (!WriteFile.invoke_BL___P__A_uI__P__P(
                 hFile,
                 lpBuffer,
                 ConversionsJava2Native.long_TO_uint32_t(lpBuffer.byteSize()),
@@ -1101,7 +1101,7 @@ public final class Fileapi {
      * indicates an error.
      */
     public final static void WriteFile(HANDLE hFile, OpaqueMemory lpBuffer, long off, int nNumberOfBytesToWrite, WinDef.LPDWORD lpNumberOfBytesWritten) throws NativeErrorException {
-        if (!WriteFile.invoke__B___P__A_uI__P__P(
+        if (!WriteFile.invoke_BL___P__A_uI__P__P(
                 hFile,
                 OpaqueMemory.sliceMemorySegment(lpBuffer, off, nNumberOfBytesToWrite),
                 nNumberOfBytesToWrite,
@@ -1134,7 +1134,7 @@ public final class Fileapi {
      * indicates an error.
      */
     public final static void WriteFile(HANDLE hFile, OpaqueMemory lpBuffer, long off, int nNumberOfBytesToWrite, LPOVERLAPPED lpOverlapped) throws NativeErrorException {
-        if (!WriteFile.invoke__B___P__A_uI__P__P(
+        if (!WriteFile.invoke_BL___P__A_uI__P__P(
                 hFile,
                 OpaqueMemory.sliceMemorySegment(lpBuffer, off, nNumberOfBytesToWrite),
                 nNumberOfBytesToWrite,
@@ -1182,7 +1182,7 @@ public final class Fileapi {
      */
     public final static void WriteFileEx(HANDLE hFile, ByteBuffer lpBuffer, LPOVERLAPPED lpOverlapped, Minwinbase.LPOVERLAPPED_COMPLETION_ROUTINE lpCompletionRoutine) throws NativeErrorException {
         if (lpBuffer.isDirect()) {
-            if (!WriteFileEx.invoke__B___P__A_uI__P__P(
+            if (!WriteFileEx.invoke_BL___P__A_uI__P__P(
                     hFile,
                     MemorySegment.ofBuffer(lpBuffer),
                     lpBuffer.remaining(),
@@ -1222,7 +1222,7 @@ public final class Fileapi {
      * indicates an error.
      */
     public final static void WriteFileEx(HANDLE hFile, OpaqueMemory lpBuffer, int off, int nNumberOfBytesToWrite, LPOVERLAPPED lpOverlapped, Minwinbase.LPOVERLAPPED_COMPLETION_ROUTINE lpCompletionRoutine) throws NativeErrorException {
-        if (!WriteFileEx.invoke__B___P__A_uI__P__P(
+        if (!WriteFileEx.invoke_BL___P__A_uI__P__P(
                 hFile,
                 OpaqueMemory.sliceMemorySegment(lpBuffer, off, nNumberOfBytesToWrite),
                 nNumberOfBytesToWrite,
@@ -1253,7 +1253,7 @@ public final class Fileapi {
      * indicates an error.
      */
     public static void WriteFileEx(HANDLE hFile, OpaqueMemory lpBuffer, LPOVERLAPPED lpOverlapped, Minwinbase.LPOVERLAPPED_COMPLETION_ROUTINE lpCompletionRoutine) throws NativeErrorException {
-        if (!WriteFileEx.invoke__B___P__P_uI__P__P(
+        if (!WriteFileEx.invoke_BL___P__P_uI__P__P(
                 hFile,
                 lpBuffer,
                 ConversionsJava2Native.long_TO_uint32_t(lpBuffer.sizeof()),
@@ -1289,7 +1289,7 @@ public final class Fileapi {
      * indicates an error.
      */
     public final static void WriteFileEx(HANDLE hFile, OpaqueMemory lpBuffer, long off, int nNumberOfBytesToWrite, LPOVERLAPPED lpOverlapped, Minwinbase.LPOVERLAPPED_COMPLETION_ROUTINE lpCompletionRoutine) throws NativeErrorException {
-        if (!WriteFileEx.invoke__B___P__A_uI__P__P(
+        if (!WriteFileEx.invoke_BL___P__A_uI__P__P(
                 hFile,
                 OpaqueMemory.sliceMemorySegment(lpBuffer, off, nNumberOfBytesToWrite),
                 nNumberOfBytesToWrite,

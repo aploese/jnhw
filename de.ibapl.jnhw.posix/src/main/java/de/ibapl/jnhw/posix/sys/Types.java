@@ -1,6 +1,6 @@
 /*
  * JNHW - Java Native header Wrapper, https://github.com/aploese/jnhw/
- * Copyright (C) 2019-2022, Arne Plöse and individual contributors as indicated
+ * Copyright (C) 2019-2023, Arne Plöse and individual contributors as indicated
  * by the @authors tag. See the copyright.txt in the distribution for a
  * full listing of individual contributors.
  *
@@ -33,13 +33,13 @@ import de.ibapl.jnhw.annotation.posix.sys.types.time_t;
 import de.ibapl.jnhw.annotation.posix.sys.types.uid_t;
 import de.ibapl.jnhw.common.annotation.Include;
 import de.ibapl.jnhw.common.datatypes.BaseDataType;
-import de.ibapl.jnhw.common.datatypes.MultiarchTupelBuilder;
 import de.ibapl.jnhw.common.memory.AsSignedLong;
 import de.ibapl.jnhw.common.memory.AsUnsignedInt;
 import de.ibapl.jnhw.common.memory.AsUnsignedLong;
 import de.ibapl.jnhw.common.memory.Int32_t;
 import de.ibapl.jnhw.common.memory.NativeIntNumber;
 import de.ibapl.jnhw.common.memory.Uint32_t;
+import de.ibapl.jnhw.libloader.MultiarchTupelBuilder;
 import de.ibapl.jnhw.util.posix.PosixDataType;
 import java.io.IOException;
 import java.lang.foreign.MemorySegment;

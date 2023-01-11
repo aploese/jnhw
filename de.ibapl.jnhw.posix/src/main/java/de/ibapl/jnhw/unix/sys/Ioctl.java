@@ -1,6 +1,6 @@
 /*
  * JNHW - Java Native header Wrapper, https://github.com/aploese/jnhw/
- * Copyright (C) 2019-2022, Arne Plöse and individual contributors as indicated
+ * Copyright (C) 2019-2023, Arne Plöse and individual contributors as indicated
  * by the @authors tag. See the copyright.txt in the distribution for a
  * full listing of individual contributors.
  *
@@ -24,14 +24,15 @@ package de.ibapl.jnhw.unix.sys;
 import de.ibapl.jnhw.common.annotation.Define;
 import de.ibapl.jnhw.common.annotation.Include;
 import de.ibapl.jnhw.common.datatypes.BaseDataType;
-import de.ibapl.jnhw.common.datatypes.MultiarchTupelBuilder;
-import de.ibapl.jnhw.common.downcall.wrapper.JnhwMh_sI__sI_uL;
-import de.ibapl.jnhw.common.downcall.wrapper.JnhwMh_sI__sI_uL__A;
+import de.ibapl.jnhw.common.downcall.JnhwMh_sI__sI_uL;
+import de.ibapl.jnhw.common.downcall.JnhwMh_sI__sI_uL__A;
 import de.ibapl.jnhw.common.exception.NativeErrorException;
 import de.ibapl.jnhw.common.memory.Int32_t;
 import de.ibapl.jnhw.common.util.IntDefine;
+import de.ibapl.jnhw.libloader.MultiarchInfo;
+import de.ibapl.jnhw.libloader.MultiarchTupelBuilder;
 import de.ibapl.jnhw.posix.Errno;
-import java.lang.foreign.VaList;
+import de.ibapl.jnhw.util.posix.LibcLoader;
 
 /**
  * Wrapper around the {@code  <sys/ioctl.h>} header. execute
@@ -78,94 +79,140 @@ public final class Ioctl {
         public final static int IOCPARM_MAX = 8192;
     }
 
-    public static interface Linux_AllArchs_Defines {
+    public static class LinuxDefines {
 
-        public final static int _IOC_NRBITS = 8;
-        public final static int _IOC_TYPEBITS = 8;
-        public final static int _IOC_SIZEBITS = 14;
-        public final static int _IOC_DIRBITS = 2;
+        public final int _IOC_NRBITS = 8;
+        public final int _IOC_TYPEBITS = 8;
+        public final int _IOC_SIZEBITS;
+        public final int _IOC_DIRBITS;
 
-        public final static int _IOC_NRMASK = (1 << _IOC_NRBITS) - 1;
-        public final static int _IOC_TYPEMASK = (1 << _IOC_TYPEBITS) - 1;
-        public final static int _IOC_SIZEMASK = (1 << _IOC_SIZEBITS) - 1;
-        public final static int _IOC_DIRMASK = (1 << _IOC_DIRBITS) - 1;
+        public final int _IOC_NRMASK = (1 << _IOC_NRBITS) - 1;
+        public final int _IOC_TYPEMASK = (1 << _IOC_TYPEBITS) - 1;
+        public final int _IOC_SIZEMASK;
+        public final int _IOC_DIRMASK;
 
-        public final static int _IOC_NRSHIFT = 0;
-        public final static int _IOC_TYPESHIFT = _IOC_NRSHIFT + _IOC_NRBITS;
-        public final static int _IOC_SIZESHIFT = _IOC_TYPESHIFT + _IOC_TYPEBITS;
-        public final static int _IOC_DIRSHIFT = _IOC_SIZESHIFT + _IOC_SIZEBITS;
+        public final int _IOC_NRSHIFT = 0;
+        public final int _IOC_TYPESHIFT = _IOC_NRSHIFT + _IOC_NRBITS;
+        public final int _IOC_SIZESHIFT = _IOC_TYPESHIFT + _IOC_TYPEBITS;
+        public final int _IOC_DIRSHIFT;
 
-        public final static int _IOC_NONE = 0;
-        public final static int _IOC_WRITE = 1;
-        public final static int _IOC_READ = 2;
+        public final int _IOC_NONE;
+        public final int _IOC_WRITE;
+        public final int _IOC_READ = 2;
 
-        public final static int IOC_IN = _IOC_WRITE << _IOC_DIRSHIFT;
-        public final static int IOC_OUT = _IOC_READ << _IOC_DIRSHIFT;
-        public final static int IOC_INOUT = (_IOC_WRITE | _IOC_READ) << _IOC_DIRSHIFT;
-        public final static int IOCSIZE_MASK = _IOC_SIZEMASK << _IOC_SIZESHIFT;
-        public final static int IOCSIZE_SHIFT = _IOC_SIZESHIFT;
+        public final int IOC_IN;
+        public final int IOC_OUT;
+        public final int IOC_INOUT;
+        public final int IOCSIZE_MASK;
+        public final int IOCSIZE_SHIFT = _IOC_SIZESHIFT;
 
-        public final static int TIOCCBRK = 21544;
-        public final static int TIOCM_DTR = 2;
-        public final static int TIOCM_LE = 1;
-        public final static int TIOCM_RTS = 4;
-        public final static int TIOCSBRK = 21543;
-    }
+        public final int TIOCCBRK = 21544;
+        public final int TIOCM_DTR = 2;
+        public final int TIOCM_LE = 1;
+        public final int TIOCM_RTS = 4;
+        public final int TIOCSBRK = 21543;
 
-    public static interface Linux_Aarch64_Arm_I386_Ppc64_RiscV64_S390_X86_64_Defines {
+        public final int FIONREAD;
 
-        public final static int TIOCEXCL = 21516;
-        public final static int TIOCGICOUNT = 21597;
-        public final static int TIOCGSOFTCAR = 21529;
-        public final static int TIOCM_CAR = 64;
-        public final static int TIOCM_CD = 64;
-        public final static int TIOCM_CTS = 32;
-        public final static int TIOCM_DSR = 256;
-        public final static int TIOCM_RI = 128;
-        public final static int TIOCM_RNG = 128;
-        public final static int TIOCM_SR = 16;
-        public final static int TIOCM_ST = 8;
-        public final static int TIOCMBIC = 21527;
-        public final static int TIOCMBIS = 21526;
-        public final static int TIOCMGET = 21525;
-        public final static int TIOCMIWAIT = 21596;
-        public final static int TIOCMSET = 21528;
-        public final static int TIOCSSOFTCAR = 21530;
-    }
+        public final int TIOCOUTQ;
+        public final int TIOCEXCL;
+        public final int TIOCGICOUNT;
+        public final int TIOCGSOFTCAR;
+        public final int TIOCM_CAR;
+        public final int TIOCM_CD;
+        public final int TIOCM_CTS;
+        public final int TIOCM_DSR;
+        public final int TIOCM_RI;
+        public final int TIOCM_RNG;
+        public final int TIOCM_SR;
+        public final int TIOCM_ST;
+        public final int TIOCMBIC;
+        public final int TIOCMBIS;
+        public final int TIOCMGET;
+        public final int TIOCMIWAIT;
+        public final int TIOCMSET;
+        public final int TIOCSSOFTCAR;
 
-    public static interface Linux_Aarch64_Arm_I386_RiscV64_S390_X86_64_Defines {
+        public LinuxDefines(MultiarchInfo mi) {
+            switch (mi.getArch()) {
+                case POWER_PC_64, MIPS -> {
+                    _IOC_SIZEBITS = 13;
+                    _IOC_DIRBITS = 3;
+                    _IOC_NONE = 1;
+                    _IOC_WRITE = 4;
+                }
+                default -> {
+                    _IOC_SIZEBITS = 14;
+                    _IOC_DIRBITS = 2;
+                    _IOC_NONE = 0;
+                    _IOC_WRITE = 1;
+                }
+            }
+            _IOC_DIRSHIFT = _IOC_SIZESHIFT + _IOC_SIZEBITS;
 
-        public final static int FIONREAD = 21531;
-        public final static int TIOCOUTQ = 21521;
-    }
+            IOC_IN = _IOC_WRITE << _IOC_DIRSHIFT;
+            IOC_OUT = _IOC_READ << _IOC_DIRSHIFT;
+            IOC_INOUT = (_IOC_WRITE | _IOC_READ) << _IOC_DIRSHIFT;
+            _IOC_SIZEMASK = (1 << _IOC_SIZEBITS) - 1;
+            _IOC_DIRMASK = (1 << _IOC_DIRBITS) - 1;
+            IOCSIZE_MASK = _IOC_SIZEMASK << _IOC_SIZESHIFT;
 
-    public static interface Linux_Mips_Mips64_Defines {
+            switch (mi.getArch()) {
+                case MIPS, MIPS_64 -> {
+                    FIONREAD = 18047;
+                    TIOCOUTQ = 29810;
+                }
+                case POWER_PC_64 -> {
+                    FIONREAD = 1074030207;
+                    TIOCOUTQ = 1074033779;
+                }
+                default -> {
+                    FIONREAD = 21531;
+                    TIOCOUTQ = 21521;
+                }
+            }
+            switch (mi.getArch()) {
+                case MIPS, MIPS_64 -> {
+                    TIOCEXCL = 29709;
+                    TIOCGICOUNT = 21650;
+                    TIOCGSOFTCAR = 21633;
+                    TIOCM_CAR = 256;
+                    TIOCM_CD = 256;
+                    TIOCM_CTS = 64;
+                    TIOCM_DSR = 1024;
+                    TIOCM_RI = 512;
+                    TIOCM_RNG = 512;
+                    TIOCM_SR = 32;
+                    TIOCM_ST = 16;
+                    TIOCMBIC = 29724;
+                    TIOCMBIS = 29723;
+                    TIOCMGET = 29725;
+                    TIOCMIWAIT = 21649;
+                    TIOCMSET = 29722;
+                    TIOCSSOFTCAR = 21634;
+                }
+                default -> {
+                    TIOCEXCL = 21516;
+                    TIOCGICOUNT = 21597;
+                    TIOCGSOFTCAR = 21529;
+                    TIOCM_CAR = 64;
+                    TIOCM_CD = 64;
+                    TIOCM_CTS = 32;
+                    TIOCM_DSR = 256;
+                    TIOCM_RI = 128;
+                    TIOCM_RNG = 128;
+                    TIOCM_SR = 16;
+                    TIOCM_ST = 8;
+                    TIOCMBIC = 21527;
+                    TIOCMBIS = 21526;
+                    TIOCMGET = 21525;
+                    TIOCMIWAIT = 21596;
+                    TIOCMSET = 21528;
+                    TIOCSSOFTCAR = 21530;
+                }
+            }
 
-        public final static int FIONREAD = 18047;
-        public final static int TIOCEXCL = 29709;
-        public final static int TIOCGICOUNT = 21650;
-        public final static int TIOCGSOFTCAR = 21633;
-        public final static int TIOCM_CAR = 256;
-        public final static int TIOCM_CD = 256;
-        public final static int TIOCM_CTS = 64;
-        public final static int TIOCM_DSR = 1024;
-        public final static int TIOCM_RI = 512;
-        public final static int TIOCM_RNG = 512;
-        public final static int TIOCM_SR = 32;
-        public final static int TIOCM_ST = 16;
-        public final static int TIOCMBIC = 29724;
-        public final static int TIOCMBIS = 29723;
-        public final static int TIOCMGET = 29725;
-        public final static int TIOCMIWAIT = 21649;
-        public final static int TIOCMSET = 29722;
-        public final static int TIOCOUTQ = 29810;
-        public final static int TIOCSSOFTCAR = 21634;
-    }
-
-    public static interface Linux_Ppc64_Defines {
-
-        public final static int FIONREAD = 1074030207;
-        public final static int TIOCOUTQ = 1074033779;
+        }
     }
 
     public static interface OpenBsdDefines extends BsdDefines {
@@ -415,116 +462,64 @@ public final class Ioctl {
             case LINUX:
                 HAVE_SYS_IOCTL_H = true;
 
-                TIOCCBRK = Linux_AllArchs_Defines.TIOCCBRK;
-                TIOCM_DTR = Linux_AllArchs_Defines.TIOCM_DTR;
-                TIOCM_LE = Linux_AllArchs_Defines.TIOCM_LE;
-                TIOCM_RTS = Linux_AllArchs_Defines.TIOCM_RTS;
-                TIOCSBRK = Linux_AllArchs_Defines.TIOCSBRK;
+                final LinuxDefines linuxDefines = new LinuxDefines(MultiarchTupelBuilder.getMultiarch());
+
+                TIOCCBRK = linuxDefines.TIOCCBRK;
+                TIOCM_DTR = linuxDefines.TIOCM_DTR;
+                TIOCM_LE = linuxDefines.TIOCM_LE;
+                TIOCM_RTS = linuxDefines.TIOCM_RTS;
+                TIOCSBRK = linuxDefines.TIOCSBRK;
 
                 IOCPARM_MASK = IntDefine.UNDEFINED;
                 IOCPARM_MAX = IntDefine.UNDEFINED;
                 IOC_VOID = IntDefine.UNDEFINED;
                 IOC_DIRMASK = IntDefine.UNDEFINED;
 
-                _IOC_NRBITS = IntDefine.toIntDefine(Linux_AllArchs_Defines._IOC_NRBITS);
-                _IOC_TYPEBITS = IntDefine.toIntDefine(Linux_AllArchs_Defines._IOC_TYPEBITS);
-                _IOC_SIZEBITS = IntDefine.toIntDefine(Linux_AllArchs_Defines._IOC_SIZEBITS);
-                _IOC_DIRBITS = IntDefine.toIntDefine(Linux_AllArchs_Defines._IOC_DIRBITS);
+                _IOC_NRBITS = IntDefine.toIntDefine(linuxDefines._IOC_NRBITS);
+                _IOC_TYPEBITS = IntDefine.toIntDefine(linuxDefines._IOC_TYPEBITS);
+                _IOC_SIZEBITS = IntDefine.toIntDefine(linuxDefines._IOC_SIZEBITS);
+                _IOC_DIRBITS = IntDefine.toIntDefine(linuxDefines._IOC_DIRBITS);
 
-                _IOC_NRMASK = IntDefine.toIntDefine(Linux_AllArchs_Defines._IOC_NRMASK);
-                _IOC_TYPEMASK = IntDefine.toIntDefine(Linux_AllArchs_Defines._IOC_TYPEMASK);
-                _IOC_SIZEMASK = IntDefine.toIntDefine(Linux_AllArchs_Defines._IOC_SIZEMASK);
-                _IOC_DIRMASK = IntDefine.toIntDefine(Linux_AllArchs_Defines._IOC_DIRMASK);
+                _IOC_NRMASK = IntDefine.toIntDefine(linuxDefines._IOC_NRMASK);
+                _IOC_TYPEMASK = IntDefine.toIntDefine(linuxDefines._IOC_TYPEMASK);
+                _IOC_SIZEMASK = IntDefine.toIntDefine(linuxDefines._IOC_SIZEMASK);
+                _IOC_DIRMASK = IntDefine.toIntDefine(linuxDefines._IOC_DIRMASK);
 
-                _IOC_NRSHIFT = IntDefine.toIntDefine(Linux_AllArchs_Defines._IOC_NRSHIFT);
-                _IOC_TYPESHIFT = IntDefine.toIntDefine(Linux_AllArchs_Defines._IOC_TYPESHIFT);
-                _IOC_SIZESHIFT = IntDefine.toIntDefine(Linux_AllArchs_Defines._IOC_SIZESHIFT);
-                _IOC_DIRSHIFT = IntDefine.toIntDefine(Linux_AllArchs_Defines._IOC_DIRSHIFT);
+                _IOC_NRSHIFT = IntDefine.toIntDefine(linuxDefines._IOC_NRSHIFT);
+                _IOC_TYPESHIFT = IntDefine.toIntDefine(linuxDefines._IOC_TYPESHIFT);
+                _IOC_SIZESHIFT = IntDefine.toIntDefine(linuxDefines._IOC_SIZESHIFT);
+                _IOC_DIRSHIFT = IntDefine.toIntDefine(linuxDefines._IOC_DIRSHIFT);
 
-                _IOC_NONE = IntDefine.toIntDefine(Linux_AllArchs_Defines._IOC_NONE);
-                _IOC_WRITE = IntDefine.toIntDefine(Linux_AllArchs_Defines._IOC_WRITE);
-                _IOC_READ = IntDefine.toIntDefine(Linux_AllArchs_Defines._IOC_READ);
+                _IOC_NONE = IntDefine.toIntDefine(linuxDefines._IOC_NONE);
+                _IOC_WRITE = IntDefine.toIntDefine(linuxDefines._IOC_WRITE);
+                _IOC_READ = IntDefine.toIntDefine(linuxDefines._IOC_READ);
 
-                IOC_IN = Linux_AllArchs_Defines.IOC_IN;
-                IOC_OUT = Linux_AllArchs_Defines.IOC_OUT;
-                IOC_INOUT = Linux_AllArchs_Defines.IOC_INOUT;
-                IOCSIZE_MASK = IntDefine.toIntDefine(Linux_AllArchs_Defines.IOCSIZE_MASK);
-                IOCSIZE_SHIFT = IntDefine.toIntDefine(Linux_AllArchs_Defines.IOCSIZE_SHIFT);
+                IOC_IN = linuxDefines.IOC_IN;
+                IOC_OUT = linuxDefines.IOC_OUT;
+                IOC_INOUT = linuxDefines.IOC_INOUT;
+                IOCSIZE_MASK = IntDefine.toIntDefine(linuxDefines.IOCSIZE_MASK);
+                IOCSIZE_SHIFT = IntDefine.toIntDefine(linuxDefines.IOCSIZE_SHIFT);
 
-                switch (MultiarchTupelBuilder.getArch()) {
-                    case MIPS:
-                    case MIPS_64:
-                        FIONREAD = Linux_Mips_Mips64_Defines.FIONREAD;
-                        TIOCEXCL = Linux_Mips_Mips64_Defines.TIOCEXCL;
-                        TIOCGICOUNT = IntDefine.toIntDefine(Linux_Mips_Mips64_Defines.TIOCGICOUNT);
-                        TIOCGSOFTCAR = IntDefine.toIntDefine(Linux_Mips_Mips64_Defines.TIOCGSOFTCAR);
-                        TIOCMBIC = Linux_Mips_Mips64_Defines.TIOCMBIC;
-                        TIOCMBIS = Linux_Mips_Mips64_Defines.TIOCMBIS;
-                        TIOCMGET = Linux_Mips_Mips64_Defines.TIOCMGET;
-                        TIOCMIWAIT = IntDefine.toIntDefine(Linux_Mips_Mips64_Defines.TIOCMIWAIT);
-                        TIOCMSET = Linux_Mips_Mips64_Defines.TIOCMSET;
-                        TIOCM_CAR = Linux_Mips_Mips64_Defines.TIOCM_CAR;
-                        TIOCM_CD = Linux_Mips_Mips64_Defines.TIOCM_CD;
-                        TIOCM_CTS = Linux_Mips_Mips64_Defines.TIOCM_CTS;
-                        TIOCM_DSR = Linux_Mips_Mips64_Defines.TIOCM_DSR;
-                        TIOCM_RI = Linux_Mips_Mips64_Defines.TIOCM_RI;
-                        TIOCM_RNG = Linux_Mips_Mips64_Defines.TIOCM_RNG;
-                        TIOCM_SR = Linux_Mips_Mips64_Defines.TIOCM_SR;
-                        TIOCM_ST = Linux_Mips_Mips64_Defines.TIOCM_ST;
-                        TIOCOUTQ = Linux_Mips_Mips64_Defines.TIOCOUTQ;
-                        TIOCSSOFTCAR = IntDefine.toIntDefine(Linux_Mips_Mips64_Defines.TIOCSSOFTCAR);
-                        break;
-                    case POWER_PC_64:
-                        FIONREAD = Linux_Ppc64_Defines.FIONREAD;
-                        TIOCOUTQ = Linux_Ppc64_Defines.TIOCOUTQ;
-                        TIOCEXCL = Linux_Aarch64_Arm_I386_Ppc64_RiscV64_S390_X86_64_Defines.TIOCEXCL;
-                        TIOCGICOUNT = IntDefine.toIntDefine(Linux_Aarch64_Arm_I386_Ppc64_RiscV64_S390_X86_64_Defines.TIOCGICOUNT);
-                        TIOCGSOFTCAR = IntDefine.toIntDefine(Linux_Aarch64_Arm_I386_Ppc64_RiscV64_S390_X86_64_Defines.TIOCGSOFTCAR);
-                        TIOCMBIC = Linux_Aarch64_Arm_I386_Ppc64_RiscV64_S390_X86_64_Defines.TIOCMBIC;
-                        TIOCMBIS = Linux_Aarch64_Arm_I386_Ppc64_RiscV64_S390_X86_64_Defines.TIOCMBIS;
-                        TIOCMGET = Linux_Aarch64_Arm_I386_Ppc64_RiscV64_S390_X86_64_Defines.TIOCMGET;
-                        TIOCMIWAIT = IntDefine.toIntDefine(Linux_Aarch64_Arm_I386_Ppc64_RiscV64_S390_X86_64_Defines.TIOCMIWAIT);
-                        TIOCMSET = Linux_Aarch64_Arm_I386_Ppc64_RiscV64_S390_X86_64_Defines.TIOCMSET;
-                        TIOCM_CAR = Linux_Aarch64_Arm_I386_Ppc64_RiscV64_S390_X86_64_Defines.TIOCM_CAR;
-                        TIOCM_CD = Linux_Aarch64_Arm_I386_Ppc64_RiscV64_S390_X86_64_Defines.TIOCM_CD;
-                        TIOCM_CTS = Linux_Aarch64_Arm_I386_Ppc64_RiscV64_S390_X86_64_Defines.TIOCM_CTS;
-                        TIOCM_DSR = Linux_Aarch64_Arm_I386_Ppc64_RiscV64_S390_X86_64_Defines.TIOCM_DSR;
-                        TIOCM_RI = Linux_Aarch64_Arm_I386_Ppc64_RiscV64_S390_X86_64_Defines.TIOCM_RI;
-                        TIOCM_RNG = Linux_Aarch64_Arm_I386_Ppc64_RiscV64_S390_X86_64_Defines.TIOCM_RNG;
-                        TIOCM_SR = Linux_Aarch64_Arm_I386_Ppc64_RiscV64_S390_X86_64_Defines.TIOCM_SR;
-                        TIOCM_ST = Linux_Aarch64_Arm_I386_Ppc64_RiscV64_S390_X86_64_Defines.TIOCM_ST;
-                        TIOCSSOFTCAR = IntDefine.toIntDefine(Linux_Aarch64_Arm_I386_Ppc64_RiscV64_S390_X86_64_Defines.TIOCSSOFTCAR);
-                        break;
-                    case AARCH64:
-                    case ARM:
-                    case I386:
-                    case RISC_V_64:
-                    case S390_X:
-                    case X86_64:
-                        FIONREAD = Linux_Aarch64_Arm_I386_RiscV64_S390_X86_64_Defines.FIONREAD;
-                        TIOCOUTQ = Linux_Aarch64_Arm_I386_RiscV64_S390_X86_64_Defines.TIOCOUTQ;
+                FIONREAD = linuxDefines.FIONREAD;
 
-                        TIOCEXCL = Linux_Aarch64_Arm_I386_Ppc64_RiscV64_S390_X86_64_Defines.TIOCEXCL;
-                        TIOCGICOUNT = IntDefine.toIntDefine(Linux_Aarch64_Arm_I386_Ppc64_RiscV64_S390_X86_64_Defines.TIOCGICOUNT);
-                        TIOCGSOFTCAR = IntDefine.toIntDefine(Linux_Aarch64_Arm_I386_Ppc64_RiscV64_S390_X86_64_Defines.TIOCGSOFTCAR);
-                        TIOCMBIC = Linux_Aarch64_Arm_I386_Ppc64_RiscV64_S390_X86_64_Defines.TIOCMBIC;
-                        TIOCMBIS = Linux_Aarch64_Arm_I386_Ppc64_RiscV64_S390_X86_64_Defines.TIOCMBIS;
-                        TIOCMGET = Linux_Aarch64_Arm_I386_Ppc64_RiscV64_S390_X86_64_Defines.TIOCMGET;
-                        TIOCMIWAIT = IntDefine.toIntDefine(Linux_Aarch64_Arm_I386_Ppc64_RiscV64_S390_X86_64_Defines.TIOCMIWAIT);
-                        TIOCMSET = Linux_Aarch64_Arm_I386_Ppc64_RiscV64_S390_X86_64_Defines.TIOCMSET;
-                        TIOCM_CAR = Linux_Aarch64_Arm_I386_Ppc64_RiscV64_S390_X86_64_Defines.TIOCM_CAR;
-                        TIOCM_CD = Linux_Aarch64_Arm_I386_Ppc64_RiscV64_S390_X86_64_Defines.TIOCM_CD;
-                        TIOCM_CTS = Linux_Aarch64_Arm_I386_Ppc64_RiscV64_S390_X86_64_Defines.TIOCM_CTS;
-                        TIOCM_DSR = Linux_Aarch64_Arm_I386_Ppc64_RiscV64_S390_X86_64_Defines.TIOCM_DSR;
-                        TIOCM_RI = Linux_Aarch64_Arm_I386_Ppc64_RiscV64_S390_X86_64_Defines.TIOCM_RI;
-                        TIOCM_RNG = Linux_Aarch64_Arm_I386_Ppc64_RiscV64_S390_X86_64_Defines.TIOCM_RNG;
-                        TIOCM_SR = Linux_Aarch64_Arm_I386_Ppc64_RiscV64_S390_X86_64_Defines.TIOCM_SR;
-                        TIOCM_ST = Linux_Aarch64_Arm_I386_Ppc64_RiscV64_S390_X86_64_Defines.TIOCM_ST;
-                        TIOCSSOFTCAR = IntDefine.toIntDefine(Linux_Aarch64_Arm_I386_Ppc64_RiscV64_S390_X86_64_Defines.TIOCSSOFTCAR);
-                        break;
-                    default:
-                        throw new NoClassDefFoundError("No ioctl.h linux defines for " + MultiarchTupelBuilder.getMultiarch());
-                }
+                TIOCEXCL = linuxDefines.TIOCEXCL;
+                TIOCGICOUNT = IntDefine.toIntDefine(linuxDefines.TIOCGICOUNT);
+                TIOCGSOFTCAR = IntDefine.toIntDefine(linuxDefines.TIOCGSOFTCAR);
+                TIOCMBIC = linuxDefines.TIOCMBIC;
+                TIOCMBIS = linuxDefines.TIOCMBIS;
+                TIOCMGET = linuxDefines.TIOCMGET;
+                TIOCMIWAIT = IntDefine.toIntDefine(linuxDefines.TIOCMIWAIT);
+                TIOCMSET = linuxDefines.TIOCMSET;
+                TIOCM_CAR = linuxDefines.TIOCM_CAR;
+                TIOCM_CD = linuxDefines.TIOCM_CD;
+                TIOCM_CTS = linuxDefines.TIOCM_CTS;
+                TIOCM_DSR = linuxDefines.TIOCM_DSR;
+                TIOCM_RI = linuxDefines.TIOCM_RI;
+                TIOCM_RNG = linuxDefines.TIOCM_RNG;
+                TIOCM_SR = linuxDefines.TIOCM_SR;
+                TIOCM_ST = linuxDefines.TIOCM_ST;
+                TIOCOUTQ = linuxDefines.TIOCOUTQ;
+                TIOCSSOFTCAR = IntDefine.toIntDefine(linuxDefines.TIOCSSOFTCAR);
                 break;
             case DARWIN:
             case FREE_BSD:
@@ -600,23 +595,26 @@ public final class Ioctl {
     }
 
     private final static JnhwMh_sI__sI_uL ioctl = JnhwMh_sI__sI_uL.of(
+            LibcLoader.LIB_C_SYMBOL_LOOKUP,
             "ioctl",
             BaseDataType.C_int,
             BaseDataType.C_int,
             BaseDataType.C_unsigned_long_int);
 
-    private final static JnhwMh_sI__sI_uL__A ioctl_int_int_vaList = JnhwMh_sI__sI_uL__A.of(
+    //TODO introduce vaList
+    private final static JnhwMh_sI__sI_uL__A ioctl_sI__uL_VA = JnhwMh_sI__sI_uL__A.of(
+            LibcLoader.LIB_C_SYMBOL_LOOKUP,
             "ioctl",
             BaseDataType.C_int,
             BaseDataType.C_int,
             BaseDataType.C_unsigned_long_int,
-            BaseDataType.C_pointer);
+            BaseDataType.C_VaList);
 
     /*
- * Used to create numbers.
- *
- * NOTE: _IOW means userland is writing and kernel is reading. _IOR
- * means userland is reading and kernel is writing.
+     * Used to create numbers.
+     *
+     * NOTE: _IOW means userland is writing and kernel is reading. _IOR
+     * means userland is reading and kernel is writing.
      */
     public final static int _IO(char type, int nr) {
         switch (MultiarchTupelBuilder.getOS()) {
@@ -813,8 +811,9 @@ public final class Ioctl {
      * @throws NativeErrorException if the return value of the native function
      * indicates an error.
      */
+    //TODO introduce vaList
     public final static int ioctl(int fd, long request, Int32_t value) throws NativeErrorException {
-        final int result = ioctl_int_int_vaList.invoke_sI__sI_uL__P(fd, request, value);
+        final int result = ioctl_sI__uL_VA.invoke_sI__sI_uL__P(fd, request, value);
         if (result == -1) {
             throw new NativeErrorException(Errno.errno());
         } else {
@@ -822,15 +821,16 @@ public final class Ioctl {
         }
     }
 
+    /*
     public final static int ioctl(int fd, long request, VaList value) throws NativeErrorException {
-        final int result = ioctl_int_int_vaList.invoke_sI__sI_uL__A(fd, request, value);
+        final int result = ioctl_sI__sIvsI.invoke_sI__sI_uLv_A(fd, request, value);
         if (result == -1) {
             throw new NativeErrorException(Errno.errno());
         } else {
             return result;
         }
     }
-
+     */
     private Ioctl() {
 
     }

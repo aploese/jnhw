@@ -1,6 +1,6 @@
 /*
  * JNHW - Java Native header Wrapper, https://github.com/aploese/jnhw/
- * Copyright (C) 2019-2022, Arne Plöse and individual contributors as indicated
+ * Copyright (C) 2019-2023, Arne Plöse and individual contributors as indicated
  * by the @authors tag. See the copyright.txt in the distribution for a
  * full listing of individual contributors.
  *
@@ -21,8 +21,6 @@
  */
 package de.ibapl.jnhw.posix;
 
-import de.ibapl.jnhw.common.datatypes.MultiarchTupelBuilder;
-import de.ibapl.jnhw.common.datatypes.OS;
 import de.ibapl.jnhw.common.exception.NativeErrorException;
 import de.ibapl.jnhw.common.exception.NoSuchNativeMethodException;
 import de.ibapl.jnhw.common.exception.NoSuchNativeTypeException;
@@ -31,14 +29,17 @@ import de.ibapl.jnhw.common.memory.Int32_t;
 import de.ibapl.jnhw.common.memory.MemoryHeap;
 import de.ibapl.jnhw.common.memory.OpaqueMemory;
 import de.ibapl.jnhw.common.nativepointer.FunctionPtr__V___I;
-import de.ibapl.jnhw.common.upcall.Callback__V__MA;
 import de.ibapl.jnhw.common.upcall.Callback__V___I;
 import de.ibapl.jnhw.common.upcall.Callback__V___I_MA_MA;
 import de.ibapl.jnhw.common.util.ObjectDefine;
+import de.ibapl.jnhw.libloader.MultiarchTupelBuilder;
+import de.ibapl.jnhw.libloader.OS;
 import de.ibapl.jnhw.util.posix.DefinesTest;
+import de.ibapl.jnhw.util.posix.upcall.Callback__V__UnionSigval;
 import java.lang.foreign.MemoryAddress;
 import java.lang.foreign.MemorySegment;
 import java.lang.foreign.MemorySession;
+import java.util.function.ToIntFunction;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -86,10 +87,10 @@ public class SignalTest {
         }
         Assertions.assertAll(
                 () -> {
-                    Assertions.assertEquals(LibJnhwPosixTestLoader.invokeExact_Int_V("Mcontext_t_sizeof"), Signal.Mcontext_t.sizeof, "sizeof");
+                    Assertions.assertEquals(LibJnhwPosixTestLoader.invoke_sI___V("Mcontext_t_sizeof"), Signal.Mcontext_t.sizeof, "sizeof");
                 },
                 () -> {
-                    Assertions.assertEquals(LibJnhwPosixTestLoader.invokeExact_Int_V("Mcontext_t_alignof"), Signal.Mcontext_t.alignof == null ? 0 : Signal.Mcontext_t.alignof.alignof, "alignof");
+                    Assertions.assertEquals(LibJnhwPosixTestLoader.invoke_sI___V("Mcontext_t_alignof"), Signal.Mcontext_t.alignof == null ? 0 : Signal.Mcontext_t.alignof.alignof, "alignof");
                 }
         );
     }
@@ -101,30 +102,30 @@ public class SignalTest {
         }
         Assertions.assertAll(
                 () -> {
-                    Assertions.assertEquals(LibJnhwPosixTestLoader.invokeExact_Int_V("Sigset_t_sizeof"), Signal.Sigset_t.sizeof, "sizeof");
+                    Assertions.assertEquals(LibJnhwPosixTestLoader.invoke_sI___V("Sigset_t_sizeof"), Signal.Sigset_t.sizeof, "sizeof");
                 },
                 () -> {
-                    Assertions.assertEquals(LibJnhwPosixTestLoader.invokeExact_Int_V("Sigset_t_alignof"), Signal.Sigset_t.alignof.alignof, "alignof");
+                    Assertions.assertEquals(LibJnhwPosixTestLoader.invoke_sI___V("Sigset_t_alignof"), Signal.Sigset_t.alignof.alignof, "alignof");
                 }
         );
     }
 
     @BeforeAll
-    public static void checkBeforeAll_StructSigval() throws Exception {
+    public static void checkBeforeAll_UnionSigval() throws Exception {
         if (MultiarchTupelBuilder.getOS() == OS.WINDOWS) {
             return;
         }
         Assertions.assertAll(() -> {
-            Assertions.assertEquals(LibJnhwPosixTestLoader.invokeExact_Int_V("Sigval_sizeof"), Signal.Sigval.sizeof, "sizeof");
+            Assertions.assertEquals(LibJnhwPosixTestLoader.invoke_sI___V("Sigval_sizeof"), Signal.Sigval.sizeof, "sizeof");
         },
                 () -> {
-                    Assertions.assertEquals(LibJnhwPosixTestLoader.invokeExact_Int_V("Sigval_alignof"), Signal.Sigval.alignof.alignof, "alignof");
+                    Assertions.assertEquals(LibJnhwPosixTestLoader.invoke_sI___V("Sigval_alignof"), Signal.Sigval.alignof.alignof, "alignof");
                 },
                 () -> {
-                    Assertions.assertEquals(LibJnhwPosixTestLoader.invokeExact_Int_V("Sigval_offsetof_sival_int"), Signal.Sigval.offsetof_Sival_int, "offsetof_Sival_int");
+                    Assertions.assertEquals(LibJnhwPosixTestLoader.invoke_sI___V("Sigval_offsetof_sival_int"), Signal.Sigval.offsetof_Sival_int, "offsetof_Sival_int");
                 },
                 () -> {
-                    Assertions.assertEquals(LibJnhwPosixTestLoader.invokeExact_Int_V("Sigval_offsetof_sival_ptr"), Signal.Sigval.offsetof_Sival_ptr, "offsetof_Sival_ptr");
+                    Assertions.assertEquals(LibJnhwPosixTestLoader.invoke_sI___V("Sigval_offsetof_sival_ptr"), Signal.Sigval.offsetof_Sival_ptr, "offsetof_Sival_ptr");
                 }
         );
     }
@@ -135,25 +136,25 @@ public class SignalTest {
             return;
         }
         Assertions.assertAll(() -> {
-            Assertions.assertEquals(LibJnhwPosixTestLoader.invokeExact_Int_V("Sigevent_sizeof"), Signal.Sigevent.sizeof, "sizeof");
+            Assertions.assertEquals(LibJnhwPosixTestLoader.invoke_sI___V("Sigevent_sizeof"), Signal.Sigevent.sizeof, "sizeof");
         },
                 () -> {
-                    Assertions.assertEquals(LibJnhwPosixTestLoader.invokeExact_Int_V("Sigevent_alignof"), Signal.Sigevent.alignof == null ? 0 : Signal.Sigevent.alignof.alignof, "alignof");
+                    Assertions.assertEquals(LibJnhwPosixTestLoader.invoke_sI___V("Sigevent_alignof"), Signal.Sigevent.alignof == null ? 0 : Signal.Sigevent.alignof.alignof, "alignof");
                 },
                 () -> {
-                    Assertions.assertEquals(LibJnhwPosixTestLoader.invokeExact_Int_V("Sigevent_offsetof_sigev_notify"), Signal.Sigevent.offsetof_Sigev_notify, "offsetof_Sigev_notify");
+                    Assertions.assertEquals(LibJnhwPosixTestLoader.invoke_sI___V("Sigevent_offsetof_sigev_notify"), Signal.Sigevent.offsetof_Sigev_notify, "offsetof_Sigev_notify");
                 },
                 () -> {
-                    Assertions.assertEquals(LibJnhwPosixTestLoader.invokeExact_Int_V("Sigevent_offsetof_sigev_notify_attributes"), Signal.Sigevent.offsetof_Sigev_notify_attributes, "offsetof_Sigev_notify_attributes");
+                    Assertions.assertEquals(LibJnhwPosixTestLoader.invoke_sI___V("Sigevent_offsetof_sigev_notify_attributes"), Signal.Sigevent.offsetof_Sigev_notify_attributes, "offsetof_Sigev_notify_attributes");
                 },
                 () -> {
-                    Assertions.assertEquals(LibJnhwPosixTestLoader.invokeExact_Int_V("Sigevent_offsetof_sigev_notify_function"), Signal.Sigevent.offsetof_Sigev_notify_function, "offsetof_Sigev_notify_function");
+                    Assertions.assertEquals(LibJnhwPosixTestLoader.invoke_sI___V("Sigevent_offsetof_sigev_notify_function"), Signal.Sigevent.offsetof_Sigev_notify_function, "offsetof_Sigev_notify_function");
                 },
                 () -> {
-                    Assertions.assertEquals(LibJnhwPosixTestLoader.invokeExact_Int_V("Sigevent_offsetof_sigev_signo"), Signal.Sigevent.offsetof_Sigev_signo, "offsetof_Sigev_signo");
+                    Assertions.assertEquals(LibJnhwPosixTestLoader.invoke_sI___V("Sigevent_offsetof_sigev_signo"), Signal.Sigevent.offsetof_Sigev_signo, "offsetof_Sigev_signo");
                 },
                 () -> {
-                    Assertions.assertEquals(LibJnhwPosixTestLoader.invokeExact_Int_V("Sigevent_offsetof_sigev_value"), Signal.Sigevent.offsetof_Sigev_value, "offsetof_Sigev_value");
+                    Assertions.assertEquals(LibJnhwPosixTestLoader.invoke_sI___V("Sigevent_offsetof_sigev_value"), Signal.Sigevent.offsetof_Sigev_value, "offsetof_Sigev_value");
                 }
         );
     }
@@ -164,22 +165,22 @@ public class SignalTest {
             return;
         }
         Assertions.assertAll(() -> {
-            Assertions.assertEquals(LibJnhwPosixTestLoader.invokeExact_Int_V("Sigaction_sizeof"), Signal.Sigaction.sizeof, "sizeof");
+            Assertions.assertEquals(LibJnhwPosixTestLoader.invoke_sI___V("Sigaction_sizeof"), Signal.Sigaction.sizeof, "sizeof");
         },
                 () -> {
-                    Assertions.assertEquals(LibJnhwPosixTestLoader.invokeExact_Int_V("Sigaction_alignof"), Signal.Sigaction.alignof.alignof, "alignof");
+                    Assertions.assertEquals(LibJnhwPosixTestLoader.invoke_sI___V("Sigaction_alignof"), Signal.Sigaction.alignof.alignof, "alignof");
                 },
                 () -> {
-                    Assertions.assertEquals(LibJnhwPosixTestLoader.invokeExact_Int_V("Sigaction_offsetof_sa_handler"), Signal.Sigaction.offsetof_Sa_handler, "offsetof_Sa_handler");
+                    Assertions.assertEquals(LibJnhwPosixTestLoader.invoke_sI___V("Sigaction_offsetof_sa_handler"), Signal.Sigaction.offsetof_Sa_handler, "offsetof_Sa_handler");
                 },
                 () -> {
-                    Assertions.assertEquals(LibJnhwPosixTestLoader.invokeExact_Int_V("Sigaction_offsetof_sa_mask"), Signal.Sigaction.offsetof_Sa_mask, "offsetof_Sa_mask");
+                    Assertions.assertEquals(LibJnhwPosixTestLoader.invoke_sI___V("Sigaction_offsetof_sa_mask"), Signal.Sigaction.offsetof_Sa_mask, "offsetof_Sa_mask");
                 },
                 () -> {
-                    Assertions.assertEquals(LibJnhwPosixTestLoader.invokeExact_Int_V("Sigaction_offsetof_sa_flags"), Signal.Sigaction.offsetof_Sa_flags, "offsetof_Sa_flags");
+                    Assertions.assertEquals(LibJnhwPosixTestLoader.invoke_sI___V("Sigaction_offsetof_sa_flags"), Signal.Sigaction.offsetof_Sa_flags, "offsetof_Sa_flags");
                 },
                 () -> {
-                    Assertions.assertEquals(LibJnhwPosixTestLoader.invokeExact_Int_V("Sigaction_offsetof_sa_sigaction"), Signal.Sigaction.offsetof_Sa_sigaction, "offsetof_Sa_sigaction");
+                    Assertions.assertEquals(LibJnhwPosixTestLoader.invoke_sI___V("Sigaction_offsetof_sa_sigaction"), Signal.Sigaction.offsetof_Sa_sigaction, "offsetof_Sa_sigaction");
                 }
         );
     }
@@ -190,19 +191,19 @@ public class SignalTest {
             return;
         }
         Assertions.assertAll(() -> {
-            Assertions.assertEquals(LibJnhwPosixTestLoader.invokeExact_Int_V("Stack_t_sizeof"), Signal.Stack_t.sizeof, "sizeof");
+            Assertions.assertEquals(LibJnhwPosixTestLoader.invoke_sI___V("Stack_t_sizeof"), Signal.Stack_t.sizeof, "sizeof");
         },
                 () -> {
-                    Assertions.assertEquals(LibJnhwPosixTestLoader.invokeExact_Int_V("Stack_t_alignof"), Signal.Stack_t.alignof.alignof, "alignof");
+                    Assertions.assertEquals(LibJnhwPosixTestLoader.invoke_sI___V("Stack_t_alignof"), Signal.Stack_t.alignof.alignof, "alignof");
                 },
                 () -> {
-                    Assertions.assertEquals(LibJnhwPosixTestLoader.invokeExact_Int_V("Stack_t_offsetof_ss_sp"), Signal.Stack_t.offsetof_Ss_sp, "offsetof_Ss_sp");
+                    Assertions.assertEquals(LibJnhwPosixTestLoader.invoke_sI___V("Stack_t_offsetof_ss_sp"), Signal.Stack_t.offsetof_Ss_sp, "offsetof_Ss_sp");
                 },
                 () -> {
-                    Assertions.assertEquals(LibJnhwPosixTestLoader.invokeExact_Int_V("Stack_t_offsetof_ss_size"), Signal.Stack_t.offsetof_Ss_size, "offsetof_Ss_size");
+                    Assertions.assertEquals(LibJnhwPosixTestLoader.invoke_sI___V("Stack_t_offsetof_ss_size"), Signal.Stack_t.offsetof_Ss_size, "offsetof_Ss_size");
                 },
                 () -> {
-                    Assertions.assertEquals(LibJnhwPosixTestLoader.invokeExact_Int_V("Stack_t_offsetof_ss_flags"), Signal.Stack_t.offsetof_Ss_flags, "offsetof_Ss_flags");
+                    Assertions.assertEquals(LibJnhwPosixTestLoader.invoke_sI___V("Stack_t_offsetof_ss_flags"), Signal.Stack_t.offsetof_Ss_flags, "offsetof_Ss_flags");
                 }
         );
     }
@@ -213,37 +214,37 @@ public class SignalTest {
             return;
         }
         Assertions.assertAll(() -> {
-            Assertions.assertEquals(LibJnhwPosixTestLoader.invokeExact_Int_V("Siginfo_t_sizeof"), Signal.Siginfo_t.sizeof, "sizeof");
+            Assertions.assertEquals(LibJnhwPosixTestLoader.invoke_sI___V("Siginfo_t_sizeof"), Signal.Siginfo_t.sizeof, "sizeof");
         },
                 () -> {
-                    Assertions.assertEquals(LibJnhwPosixTestLoader.invokeExact_Int_V("Siginfo_t_alignof"), Signal.Siginfo_t.alignof.alignof, "alignof");
+                    Assertions.assertEquals(LibJnhwPosixTestLoader.invoke_sI___V("Siginfo_t_alignof"), Signal.Siginfo_t.alignof.alignof, "alignof");
                 },
                 () -> {
-                    Assertions.assertEquals(LibJnhwPosixTestLoader.invokeExact_Int_V("Siginfo_t_offsetof_si_signo"), Signal.Siginfo_t.offsetof_Si_signo, "offsetof_Si_signo");
+                    Assertions.assertEquals(LibJnhwPosixTestLoader.invoke_sI___V("Siginfo_t_offsetof_si_signo"), Signal.Siginfo_t.offsetof_Si_signo, "offsetof_Si_signo");
                 },
                 () -> {
-                    Assertions.assertEquals(LibJnhwPosixTestLoader.invokeExact_Int_V("Siginfo_t_offsetof_si_code"), Signal.Siginfo_t.offsetof_Si_code, "offsetof_Si_code");
+                    Assertions.assertEquals(LibJnhwPosixTestLoader.invoke_sI___V("Siginfo_t_offsetof_si_code"), Signal.Siginfo_t.offsetof_Si_code, "offsetof_Si_code");
                 },
                 () -> {
-                    Assertions.assertEquals(LibJnhwPosixTestLoader.invokeExact_Int_V("Siginfo_t_offsetof_si_errno"), Signal.Siginfo_t.offsetof_Si_errno, "offsetof_Si_errno");
+                    Assertions.assertEquals(LibJnhwPosixTestLoader.invoke_sI___V("Siginfo_t_offsetof_si_errno"), Signal.Siginfo_t.offsetof_Si_errno, "offsetof_Si_errno");
                 },
                 () -> {
-                    Assertions.assertEquals(LibJnhwPosixTestLoader.invokeExact_Int_V("Siginfo_t_offsetof_si_pid"), Signal.Siginfo_t.offsetof_Si_pid, "offsetof_Si_pid");
+                    Assertions.assertEquals(LibJnhwPosixTestLoader.invoke_sI___V("Siginfo_t_offsetof_si_pid"), Signal.Siginfo_t.offsetof_Si_pid, "offsetof_Si_pid");
                 },
                 () -> {
-                    Assertions.assertEquals(LibJnhwPosixTestLoader.invokeExact_Int_V("Siginfo_t_offsetof_si_uid"), Signal.Siginfo_t.offsetof_Si_uid, "offsetof_Si_uid");
+                    Assertions.assertEquals(LibJnhwPosixTestLoader.invoke_sI___V("Siginfo_t_offsetof_si_uid"), Signal.Siginfo_t.offsetof_Si_uid, "offsetof_Si_uid");
                 },
                 () -> {
-                    Assertions.assertEquals(LibJnhwPosixTestLoader.invokeExact_Int_V("Siginfo_t_offsetof_si_addr"), Signal.Siginfo_t.offsetof_Si_addr, "offsetof_Si_addr");
+                    Assertions.assertEquals(LibJnhwPosixTestLoader.invoke_sI___V("Siginfo_t_offsetof_si_addr"), Signal.Siginfo_t.offsetof_Si_addr, "offsetof_Si_addr");
                 },
                 () -> {
-                    Assertions.assertEquals(LibJnhwPosixTestLoader.invokeExact_Int_V("Siginfo_t_offsetof_si_status"), Signal.Siginfo_t.offsetof_Si_status, "offsetof_Si_status");
+                    Assertions.assertEquals(LibJnhwPosixTestLoader.invoke_sI___V("Siginfo_t_offsetof_si_status"), Signal.Siginfo_t.offsetof_Si_status, "offsetof_Si_status");
                 },
                 () -> {
-                    Assertions.assertEquals(LibJnhwPosixTestLoader.invokeExact_Int_V("Siginfo_t_offsetof_si_band"), Signal.Siginfo_t.offsetof_Si_band, "offsetof_Si_band");
+                    Assertions.assertEquals(LibJnhwPosixTestLoader.invoke_sI___V("Siginfo_t_offsetof_si_band"), Signal.Siginfo_t.offsetof_Si_band, "offsetof_Si_band");
                 },
                 () -> {
-                    Assertions.assertEquals(LibJnhwPosixTestLoader.invokeExact_Int_V("Siginfo_t_offsetof_si_value"), Signal.Siginfo_t.offsetof_Si_value, "offsetof_Si_value");
+                    Assertions.assertEquals(LibJnhwPosixTestLoader.invoke_sI___V("Siginfo_t_offsetof_si_value"), Signal.Siginfo_t.offsetof_Si_value, "offsetof_Si_value");
                 }
         );
     }
@@ -254,22 +255,22 @@ public class SignalTest {
             return;
         }
         Assertions.assertAll(() -> {
-            Assertions.assertEquals(LibJnhwPosixTestLoader.invokeExact_Int_V("Ucontext_t_sizeof"), Signal.Ucontext_t.sizeof, "sizeof");
+            Assertions.assertEquals(LibJnhwPosixTestLoader.invoke_sI___V("Ucontext_t_sizeof"), Signal.Ucontext_t.sizeof, "sizeof");
         },
                 () -> {
-                    Assertions.assertEquals(LibJnhwPosixTestLoader.invokeExact_Int_V("Ucontext_t_alignof"), Signal.Ucontext_t.alignof == null ? 0 : Signal.Ucontext_t.alignof.alignof, "alignof");
+                    Assertions.assertEquals(LibJnhwPosixTestLoader.invoke_sI___V("Ucontext_t_alignof"), Signal.Ucontext_t.alignof == null ? 0 : Signal.Ucontext_t.alignof.alignof, "alignof");
                 },
                 () -> {
-                    Assertions.assertEquals(LibJnhwPosixTestLoader.invokeExact_Int_V("Ucontext_t_offsetof_uc_link"), Signal.Ucontext_t.offsetof_Uc_link, "offsetof_Uc_link");
+                    Assertions.assertEquals(LibJnhwPosixTestLoader.invoke_sI___V("Ucontext_t_offsetof_uc_link"), Signal.Ucontext_t.offsetof_Uc_link, "offsetof_Uc_link");
                 },
                 () -> {
-                    Assertions.assertEquals(LibJnhwPosixTestLoader.invokeExact_Int_V("Ucontext_t_offsetof_uc_sigmask"), Signal.Ucontext_t.offsetof_Uc_sigmask, "offsetof_Uc_sigmask");
+                    Assertions.assertEquals(LibJnhwPosixTestLoader.invoke_sI___V("Ucontext_t_offsetof_uc_sigmask"), Signal.Ucontext_t.offsetof_Uc_sigmask, "offsetof_Uc_sigmask");
                 },
                 () -> {
-                    Assertions.assertEquals(LibJnhwPosixTestLoader.invokeExact_Int_V("Ucontext_t_offsetof_uc_stack"), Signal.Ucontext_t.offsetof_Uc_stack, "offsetof_Uc_stack");
+                    Assertions.assertEquals(LibJnhwPosixTestLoader.invoke_sI___V("Ucontext_t_offsetof_uc_stack"), Signal.Ucontext_t.offsetof_Uc_stack, "offsetof_Uc_stack");
                 },
                 () -> {
-                    Assertions.assertEquals(LibJnhwPosixTestLoader.invokeExact_Int_V("Ucontext_t_offsetof_uc_mcontext"), Signal.Ucontext_t.offsetof_Uc_mcontext, "offsetof_Uc_mcontext");
+                    Assertions.assertEquals(LibJnhwPosixTestLoader.invoke_sI___V("Ucontext_t_offsetof_uc_mcontext"), Signal.Ucontext_t.offsetof_Uc_mcontext, "offsetof_Uc_mcontext");
                 }
         );
     }
@@ -416,7 +417,17 @@ public class SignalTest {
     public void testPsignal() throws Exception {
         System.out.println("psignal");
         System.err.print("psignal MSG >>>");
-        Signal.psignal(Signal.SIGUSR1, "Send SIGUSR1 to std err");
+        try {
+            Signal.psignal(Signal.SIGUSR1, "Send SIGUSR1 to std err");
+        } catch (NativeErrorException nee) {
+            if (nee.errno == Errno.EAGAIN) {
+                /* Just try it again....
+                 * POSIX fputc : The O_NONBLOCK flag is set for the file descriptor
+                 * underlying stream and the thread would be delayed in the write operation.
+                 */
+                Signal.psignal(Signal.SIGUSR1, "Send SIGUSR1 to std err again");
+            }
+        }
         System.err.println("<<< psignal MSG");
         System.err.flush();
         System.out.flush();
@@ -1247,14 +1258,14 @@ public class SignalTest {
             sigevent.sigev_signo(Signal.SIGBUS);
             assertEquals(Signal.SIGBUS, sigevent.sigev_signo());
 
-            Callback__V__MA<OpaqueMemory> sigev_notify_function_dummy = new Callback__V__MA<>(MemoryAddress.ofLong(44)) {
+            Callback__V__UnionSigval<OpaqueMemory> sigev_notify_function_dummy = new Callback__V__UnionSigval(MemoryAddress.ofLong(44)) {
                 @Override
-                protected void callback(MemoryAddress address) {
-                    throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+                protected void callback(MemoryAddress sival_ptr, int sival_int) {
+                    throw new UnsupportedOperationException("Not supported yet.");
                 }
             };
             sigevent.sigev_notify_function(sigev_notify_function_dummy);
-            Assertions.assertSame(sigev_notify_function_dummy, sigevent.sigev_notify_functionAsCallback__V_Adr());
+            Assertions.assertSame(sigev_notify_function_dummy, sigevent.sigev_notify_functionAsCallback__V_Struct_Sigval());
 
             Pthread.Pthread_attr_t pthread_attr_t = Pthread.Pthread_attr_t.allocateNative(ms);
             Pthread.pthread_attr_init(pthread_attr_t);
@@ -1327,7 +1338,7 @@ public class SignalTest {
         Callback__V___I sa_handler = new Callback__V___I(MemoryAddress.ofLong(33)) {
             @Override
             protected void callback(int value) {
-                throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+                throw new UnsupportedOperationException("Not supported yet.");
             }
         };
         sigaction.sa_handler(sa_handler);

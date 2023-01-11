@@ -1,6 +1,6 @@
 /*
  * JNHW - Java Native header Wrapper, https://github.com/aploese/jnhw/
- * Copyright (C) 2019-2022, Arne Plöse and individual contributors as indicated
+ * Copyright (C) 2019-2023, Arne Plöse and individual contributors as indicated
  * by the @authors tag. See the copyright.txt in the distribution for a
  * full listing of individual contributors.
  *
@@ -23,10 +23,10 @@ package de.ibapl.jnhw.winapi;
 
 import de.ibapl.jnhw.common.annotation.Include;
 import de.ibapl.jnhw.common.datatypes.Pointer;
-import de.ibapl.jnhw.common.downcall.wrapper.JnhwMh__B___A;
-import de.ibapl.jnhw.common.downcall.wrapper.JnhwMh__B___A__A;
-import de.ibapl.jnhw.common.downcall.wrapper.JnhwMh__B___A__A__A_sI;
-import de.ibapl.jnhw.common.downcall.wrapper.JnhwMh__B___A_uL__A_uL__A_uL__A__A;
+import de.ibapl.jnhw.common.downcall.JnhwMh_BL___A;
+import de.ibapl.jnhw.common.downcall.JnhwMh_BL___A__A;
+import de.ibapl.jnhw.common.downcall.JnhwMh_BL___A__A__A_sI;
+import de.ibapl.jnhw.common.downcall.JnhwMh_BL___A_uL__A_uL__A_uL__A__A;
 import de.ibapl.jnhw.common.exception.NativeErrorException;
 import de.ibapl.jnhw.common.memory.OpaqueMemory;
 import de.ibapl.jnhw.util.winapi.Kernel32Loader;
@@ -45,20 +45,20 @@ import java.nio.ByteBuffer;
 @Include("ioapiset.h")
 public final class Ioapiset {
 
-    private final static JnhwMh__B___A CancelIo = JnhwMh__B___A.of(
+    private final static JnhwMh_BL___A CancelIo = JnhwMh_BL___A.of(
             Kernel32Loader.DLL_KERNEL32_SYMBOL_LOOKUP,
             "CancelIo",
             WinApiDataType.BOOL,
             WinApiDataType.HANDLE);
 
-    private final static JnhwMh__B___A__A CancelIoEx = JnhwMh__B___A__A.of(
+    private final static JnhwMh_BL___A__A CancelIoEx = JnhwMh_BL___A__A.of(
             Kernel32Loader.DLL_KERNEL32_SYMBOL_LOOKUP,
             "CancelIo",
             WinApiDataType.BOOL,
             WinApiDataType.HANDLE,
             WinApiDataType.LPOVERLAPPED);
 
-    private final static JnhwMh__B___A_uL__A_uL__A_uL__A__A DeviceIoControl = JnhwMh__B___A_uL__A_uL__A_uL__A__A.of(
+    private final static JnhwMh_BL___A_uL__A_uL__A_uL__A__A DeviceIoControl = JnhwMh_BL___A_uL__A_uL__A_uL__A__A.of(
             Kernel32Loader.DLL_KERNEL32_SYMBOL_LOOKUP,
             "DeviceIoControl",
             WinApiDataType.BOOL,
@@ -71,7 +71,7 @@ public final class Ioapiset {
             WinApiDataType.LPDWORD,
             WinApiDataType.LPOVERLAPPED);
 
-    private final static JnhwMh__B___A__A__A_sI GetOverlappedResult = JnhwMh__B___A__A__A_sI.of(
+    private final static JnhwMh_BL___A__A__A_sI GetOverlappedResult = JnhwMh_BL___A__A__A_sI.of(
             Kernel32Loader.DLL_KERNEL32_SYMBOL_LOOKUP,
             "GetOverlappedResult",
             WinApiDataType.BOOL,
@@ -92,7 +92,7 @@ public final class Ioapiset {
      * indicates an error.
      */
     public final static void CancelIo(HANDLE hFile) throws NativeErrorException {
-        if (!CancelIo.invoke__B___P(hFile)) {
+        if (!CancelIo.invoke_BL___P(hFile)) {
             throw new NativeErrorException(Errhandlingapi.GetLastError());
         }
     }
@@ -111,7 +111,7 @@ public final class Ioapiset {
      * indicates an error.
      */
     public final static void CancelIoEx(HANDLE hFile, LPOVERLAPPED lpOverlapped) throws NativeErrorException {
-        if (!CancelIoEx.invoke__B___P__P(hFile, lpOverlapped)) {
+        if (!CancelIoEx.invoke_BL___P__P(hFile, lpOverlapped)) {
             throw new NativeErrorException(Errhandlingapi.GetLastError());
         }
     }
@@ -135,7 +135,7 @@ public final class Ioapiset {
 //TODO Not setting or reading LastError will fail the call to DeviceIoControl
         Errhandlingapi.SetLastError(Winerror.ERROR_SUCCESS);
 //        System.err.println("de.ibapl.jnhw.winapi.Ioapiset.DeviceIOControl()" + Errhandlingapi.GetLastError());
-        if (!DeviceIoControl.invoke__B___P_uI__P_uL__P_uL__P__P(
+        if (!DeviceIoControl.invoke_BL___P_uI__P_uL__P_uL__P__P(
                 hDevice,
                 dwIoControlCode,
                 lpInBuffer != null ? lpInBuffer : Pointer.NULL,
@@ -178,7 +178,7 @@ public final class Ioapiset {
      * indicates an error.
      */
     public final static void GetOverlappedResult(HANDLE hFile, LPOVERLAPPED lpOverlapped, WinDef.LPDWORD lpNumberOfBytesTransferred, boolean bWait) throws NativeErrorException {
-        if (!GetOverlappedResult.invoke__B___P__P__P__B(
+        if (!GetOverlappedResult.invoke_BL___P__P__P_BL(
                 hFile,
                 lpOverlapped,
                 lpNumberOfBytesTransferred,
@@ -215,7 +215,7 @@ public final class Ioapiset {
      * indicates an error.
      */
     public final static void GetOverlappedResult(HANDLE hFile, LPOVERLAPPED lpOverlapped, ByteBuffer lpBuffer, WinDef.LPDWORD lpNumberOfBytesTransferred, boolean bWait) throws NativeErrorException {
-        if (!GetOverlappedResult.invoke__B___P__P__P__B(
+        if (!GetOverlappedResult.invoke_BL___P__P__P_BL(
                 hFile,
                 lpOverlapped,
                 lpNumberOfBytesTransferred,

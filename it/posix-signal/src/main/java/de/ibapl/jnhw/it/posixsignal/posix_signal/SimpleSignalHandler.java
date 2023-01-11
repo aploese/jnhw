@@ -1,6 +1,6 @@
 /*
  * JNHW - Java Native header Wrapper, https://github.com/aploese/jnhw/
- * Copyright (C) 2019-2022, Arne Plöse and individual contributors as indicated
+ * Copyright (C) 2019-2023, Arne Plöse and individual contributors as indicated
  * by the @authors tag. See the copyright.txt in the distribution for a
  * full listing of individual contributors.
  *
@@ -21,7 +21,7 @@
  */
 package de.ibapl.jnhw.it.posixsignal.posix_signal;
 
-import de.ibapl.jnhw.common.downcall.JnhwMi__V___I;
+import de.ibapl.jnhw.common.downcall.foreign.JnhwMi__V___I;
 import de.ibapl.jnhw.common.nativepointer.FunctionPtr__V___I;
 import de.ibapl.jnhw.common.upcall.Callback__V___I;
 import de.ibapl.jnhw.posix.Signal;

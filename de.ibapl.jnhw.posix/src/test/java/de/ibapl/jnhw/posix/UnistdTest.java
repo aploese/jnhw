@@ -1,6 +1,6 @@
 /*
  * JNHW - Java Native header Wrapper, https://github.com/aploese/jnhw/
- * Copyright (C) 2019-2022, Arne Plöse and individual contributors as indicated
+ * Copyright (C) 2019-2023, Arne Plöse and individual contributors as indicated
  * by the @authors tag. See the copyright.txt in the distribution for a
  * full listing of individual contributors.
  *
@@ -21,8 +21,6 @@
  */
 package de.ibapl.jnhw.posix;
 
-import de.ibapl.jnhw.common.datatypes.MultiarchTupelBuilder;
-import de.ibapl.jnhw.common.datatypes.OS;
 import de.ibapl.jnhw.common.exception.NativeErrorException;
 import de.ibapl.jnhw.common.exception.NoSuchNativeMethodException;
 import de.ibapl.jnhw.common.memory.Int32_t;
@@ -30,6 +28,8 @@ import de.ibapl.jnhw.common.memory.Int8_t;
 import de.ibapl.jnhw.common.memory.MemoryArray;
 import de.ibapl.jnhw.common.memory.MemoryHeap;
 import de.ibapl.jnhw.common.memory.OpaqueMemory;
+import de.ibapl.jnhw.libloader.MultiarchTupelBuilder;
+import de.ibapl.jnhw.libloader.OS;
 import de.ibapl.jnhw.posix.sys.Stat;
 import de.ibapl.jnhw.util.posix.Defines;
 import de.ibapl.jnhw.util.posix.DefinesTest;
@@ -92,7 +92,7 @@ public class UnistdTest {
     public byte[] readData() throws Exception {
         byte[] result = new byte[TEST_DATA.length];
         int length = 0;
-        try ( FileInputStream fis = new FileInputStream(f.getAbsoluteFile())) {
+        try (FileInputStream fis = new FileInputStream(f.getAbsoluteFile())) {
             length = fis.read(result, POS, LEN);
         }
         Assertions.assertEquals(LEN, length);
@@ -635,7 +635,7 @@ public class UnistdTest {
     }
 
     private void writeData() throws Exception {
-        try ( FileOutputStream fos = new FileOutputStream(f.getAbsoluteFile())) {
+        try (FileOutputStream fos = new FileOutputStream(f.getAbsoluteFile())) {
             fos.write(TEST_DATA, POS, LEN);
         }
     }

@@ -1,6 +1,6 @@
 /*
  * JNHW - Java Native header Wrapper, https://github.com/aploese/jnhw/
- * Copyright (C) 2019-2022, Arne Plöse and individual contributors as indicated
+ * Copyright (C) 2019-2023, Arne Plöse and individual contributors as indicated
  * by the @authors tag. See the copyright.txt in the distribution for a
  * full listing of individual contributors.
  *
@@ -21,9 +21,9 @@
  */
 package de.ibapl.jnhw.posix;
 
-import de.ibapl.jnhw.common.datatypes.MultiarchTupelBuilder;
-import de.ibapl.jnhw.common.datatypes.OS;
 import de.ibapl.jnhw.common.exception.NoSuchNativeTypeMemberException;
+import de.ibapl.jnhw.libloader.MultiarchTupelBuilder;
+import de.ibapl.jnhw.libloader.OS;
 import static de.ibapl.jnhw.posix.Termios.CLOCAL;
 import static de.ibapl.jnhw.posix.Termios.CREAD;
 import static de.ibapl.jnhw.posix.Termios.CRTSCTS;
@@ -68,34 +68,34 @@ public class TermiosTest {
             default:
                 Assertions.assertAll(
                         () -> {
-                            Assertions.assertEquals(LibJnhwPosixTestLoader.invokeExact_Int_V("StructTermios_sizeof"), Termios.StructTermios.sizeof, "sizeof");
+                            Assertions.assertEquals(LibJnhwPosixTestLoader.invoke_sI___V("StructTermios_sizeof"), Termios.StructTermios.sizeof, "sizeof");
                         },
                         () -> {
-                            Assertions.assertEquals(LibJnhwPosixTestLoader.invokeExact_Int_V("StructTermios_alignof"), Termios.StructTermios.alignof.alignof, "alignof");
+                            Assertions.assertEquals(LibJnhwPosixTestLoader.invoke_sI___V("StructTermios_alignof"), Termios.StructTermios.alignof.alignof, "alignof");
                         },
                         () -> {
-                            Assertions.assertEquals(LibJnhwPosixTestLoader.invokeExact_Int_V("StructTermios_offsetof_c_iflag"), Termios.StructTermios.offsetof_C_iflag, "offsetof_C_iflag");
+                            Assertions.assertEquals(LibJnhwPosixTestLoader.invoke_sI___V("StructTermios_offsetof_c_iflag"), Termios.StructTermios.offsetof_C_iflag, "offsetof_C_iflag");
                         },
                         () -> {
-                            Assertions.assertEquals(LibJnhwPosixTestLoader.invokeExact_Int_V("StructTermios_offsetof_c_oflag"), Termios.StructTermios.offsetof_C_oflag, "offsetof_C_oflag");
+                            Assertions.assertEquals(LibJnhwPosixTestLoader.invoke_sI___V("StructTermios_offsetof_c_oflag"), Termios.StructTermios.offsetof_C_oflag, "offsetof_C_oflag");
                         },
                         () -> {
-                            Assertions.assertEquals(LibJnhwPosixTestLoader.invokeExact_Int_V("StructTermios_offsetof_c_cflag"), Termios.StructTermios.offsetof_C_cflag, "offsetof_C_cflag");
+                            Assertions.assertEquals(LibJnhwPosixTestLoader.invoke_sI___V("StructTermios_offsetof_c_cflag"), Termios.StructTermios.offsetof_C_cflag, "offsetof_C_cflag");
                         },
                         () -> {
-                            Assertions.assertEquals(LibJnhwPosixTestLoader.invokeExact_Int_V("StructTermios_offsetof_c_lflag"), Termios.StructTermios.offsetof_C_lflag, "offsetof_C_lflag");
+                            Assertions.assertEquals(LibJnhwPosixTestLoader.invoke_sI___V("StructTermios_offsetof_c_lflag"), Termios.StructTermios.offsetof_C_lflag, "offsetof_C_lflag");
                         },
                         () -> {
-                            Assertions.assertEquals(LibJnhwPosixTestLoader.invokeExact_Int_V("StructTermios_offsetof_c_cc"), Termios.StructTermios.offsetof_C_cc, "offsetof_C_cc");
+                            Assertions.assertEquals(LibJnhwPosixTestLoader.invoke_sI___V("StructTermios_offsetof_c_cc"), Termios.StructTermios.offsetof_C_cc, "offsetof_C_cc");
                         },
                         () -> {
-                            Assertions.assertEquals(LibJnhwPosixTestLoader.invokeExact_Int_V("StructTermios_offsetof_c_line"), Termios.StructTermios.offsetof_C_line, "offsetof_C_line");
+                            Assertions.assertEquals(LibJnhwPosixTestLoader.invoke_sI___V("StructTermios_offsetof_c_line"), Termios.StructTermios.offsetof_C_line, "offsetof_C_line");
                         },
                         () -> {
-                            Assertions.assertEquals(LibJnhwPosixTestLoader.invokeExact_Int_V("StructTermios_offsetof_c_ispeed"), Termios.StructTermios.offsetof_C_ispeed, "offsetof_C_ispeed");
+                            Assertions.assertEquals(LibJnhwPosixTestLoader.invoke_sI___V("StructTermios_offsetof_c_ispeed"), Termios.StructTermios.offsetof_C_ispeed, "offsetof_C_ispeed");
                         },
                         () -> {
-                            Assertions.assertEquals(LibJnhwPosixTestLoader.invokeExact_Int_V("StructTermios_offsetof_c_ospeed"), Termios.StructTermios.offsetof_C_ospeed, "offsetof_C_ospeed");
+                            Assertions.assertEquals(LibJnhwPosixTestLoader.invoke_sI___V("StructTermios_offsetof_c_ospeed"), Termios.StructTermios.offsetof_C_ospeed, "offsetof_C_ospeed");
                         }
                 );
         }
@@ -117,26 +117,27 @@ public class TermiosTest {
     public void structTermios_c_ispeed() throws Exception {
         Termios.StructTermios structTermios = Termios.StructTermios.allocateNative(ms);
         switch (MultiarchTupelBuilder.getOS()) {
-            case LINUX:
-                if (!Termios._HAVE_STRUCT_TERMIOS_C_ISPEED.isDefined()) {
+            case LINUX -> {
+                if (!Termios._HAVE_STRUCT_TERMIOS_C_ISPEED.isDefined() | Termios._HAVE_STRUCT_TERMIOS_C_ISPEED.isEqualsTo(0)) {
                     Assertions.assertThrows(NoSuchNativeTypeMemberException.class, () -> {
                         structTermios.c_ispeed();
                     });
                     return;
                 }
-                break;
-            case FREE_BSD:
+            }
+            case FREE_BSD -> {
                 //Do the test
-                break;
-            case OPEN_BSD:
+            }
+            case OPEN_BSD -> {
                 Assertions.assertThrows(NoSuchNativeTypeMemberException.class, () -> {
                     structTermios.c_ispeed();
                 });
                 return;
-            case DARWIN:
+            }
+            case DARWIN -> {
                 //Do the test
-                break;
-            default:
+            }
+            default ->
                 throw new RuntimeException("Add test wether struct termios has c_ispeed or not!");
         }
         try {
@@ -151,26 +152,27 @@ public class TermiosTest {
     public void structTermios_c_ospeed() throws Exception {
         Termios.StructTermios structTermios = Termios.StructTermios.allocateNative(ms);
         switch (MultiarchTupelBuilder.getOS()) {
-            case LINUX:
-                if (!Termios._HAVE_STRUCT_TERMIOS_C_OSPEED.isDefined()) {
+            case LINUX -> {
+                if (!Termios._HAVE_STRUCT_TERMIOS_C_OSPEED.isDefined() | Termios._HAVE_STRUCT_TERMIOS_C_OSPEED.isEqualsTo(0)) {
                     Assertions.assertThrows(NoSuchNativeTypeMemberException.class, () -> {
                         structTermios.c_ospeed();
                     });
                     return;
                 }
-                break;
-            case FREE_BSD:
+            }
+            case FREE_BSD -> {
                 //Do the test
-                break;
-            case OPEN_BSD:
+            }
+            case OPEN_BSD -> {
                 Assertions.assertThrows(NoSuchNativeTypeMemberException.class, () -> {
                     structTermios.c_ospeed();
                 });
                 return;
-            case DARWIN:
+            }
+            case DARWIN -> {
                 //Do the test
-                break;
-            default:
+            }
+            default ->
                 throw new RuntimeException("Add test wether struct termios has c_ospeed or not!");
         }
         try {

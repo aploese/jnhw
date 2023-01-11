@@ -1,6 +1,6 @@
 /*
  * JNHW - Java Native header Wrapper, https://github.com/aploese/jnhw/
- * Copyright (C) 2019-2022, Arne Plöse and individual contributors as indicated
+ * Copyright (C) 2019-2023, Arne Plöse and individual contributors as indicated
  * by the @authors tag. See the copyright.txt in the distribution for a
  * full listing of individual contributors.
  *
@@ -21,12 +21,12 @@
  */
 package de.ibapl.jnhw.common.test;
 
-import de.ibapl.jnhw.common.datatypes.MultiarchTupelBuilder;
 import de.ibapl.jnhw.common.memory.Int8_t;
 import de.ibapl.jnhw.common.memory.MemoryArray;
 import de.ibapl.jnhw.common.memory.OpaqueMemory;
 import de.ibapl.jnhw.common.memory.Struct;
 import de.ibapl.jnhw.common.util.JsonStringBuilder;
+import de.ibapl.jnhw.libloader.MultiarchTupelBuilder;
 import java.io.IOException;
 import java.lang.foreign.MemoryAddress;
 import java.lang.foreign.MemorySegment;
@@ -117,7 +117,7 @@ public class JnhwStringBuilderTest {
 
     @Test
     public void testFormatCompact() throws Exception {
-        try ( MemorySession ms = MemorySession.openConfined()) {
+        try (MemorySession ms = MemorySession.openConfined()) {
             JsonStringBuilder jsb = new JsonStringBuilder("", "");
             jsb.appendByteMember("_byte", Byte.MAX_VALUE);
             jsb.appendCharMember("_char", 'a');
@@ -137,7 +137,7 @@ public class JnhwStringBuilderTest {
 
     @Test
     public void testFormatPretty() throws Exception {
-        try ( MemorySession ms = MemorySession.openConfined()) {
+        try (MemorySession ms = MemorySession.openConfined()) {
             JsonStringBuilder jsb = new JsonStringBuilder("", " ");
             jsb.appendByteMember("_byte", Byte.MAX_VALUE);
             jsb.appendCharMember("_char", 'a');

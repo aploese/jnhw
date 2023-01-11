@@ -1,6 +1,6 @@
 /*
  * JNHW - Java Native header Wrapper, https://github.com/aploese/jnhw/
- * Copyright (C) 2019-2022, Arne Plöse and individual contributors as indicated
+ * Copyright (C) 2019-2023, Arne Plöse and individual contributors as indicated
  * by the @authors tag. See the copyright.txt in the distribution for a
  * full listing of individual contributors.
  *
@@ -22,16 +22,10 @@
 package de.ibapl.jnhw.common.upcall;
 
 import de.ibapl.jnhw.common.memory.NativeFunctionPointer;
-import java.lang.foreign.FunctionDescriptor;
-import java.lang.foreign.Linker;
+import de.ibapl.jnhw.common.upcall.foreign.JnhwCallbackFactory__V___L;
+import de.ibapl.jnhw.common.upcall.jni.JniCallbackFactory__V___L;
+import de.ibapl.jnhw.common.util.NativeProvider;
 import java.lang.foreign.MemoryAddress;
-import java.lang.foreign.MemorySegment;
-import java.lang.foreign.MemorySession;
-import java.lang.foreign.ValueLayout;
-import java.lang.invoke.MethodHandle;
-import java.lang.invoke.MethodHandles;
-import java.lang.invoke.MethodType;
-import java.lang.ref.WeakReference;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -40,26 +34,27 @@ import java.util.logging.Logger;
  * @author aploese
  */
 @SuppressWarnings("unchecked")
-public class CallbackFactory__V___L {
+public abstract class CallbackFactory__V___L {
 
-    private final static Logger LOG = Logger.getLogger("d.i.j.c.CallbackFactory__V___L");
+    protected final static Logger LOG = Logger.getLogger("d.i.j.c.CallbackFactory__V___L");
 
-    private final static Linker NATIVE_LINKER = Linker.nativeLinker();
+    private final static CallbackFactory__V___L INSTANCE = NativeProvider.getProvider(
+            () -> new JnhwCallbackFactory__V___L(),
+            () -> new JniCallbackFactory__V___L());
 
     public static final int MAX_CALL_BACKS = 16;
+    protected static final Callback__V___L[] REFS = new Callback__V___L[MAX_CALL_BACKS];
 
-    private static final WeakReference<Callback__V___L> REFS[] = new WeakReference[MAX_CALL_BACKS];
-    private static final MemorySegment NATIVE_SYMBOLS[] = new MemorySegment[MAX_CALL_BACKS];
-
-    static {
-        for (int i = 0; i < MAX_CALL_BACKS; i++) {
-            REFS[i] = new WeakReference(null);
-        }
+    static synchronized MemoryAddress aquire(Callback__V___L cb) {
+        return INSTANCE.aquire0(cb);
     }
 
-    static Callback__V___L find(NativeFunctionPointer callbackPtr) {
-        for (WeakReference<Callback__V___L> wr : REFS) {
-            Callback__V___L cb = wr.get();
+    public static int callbacksAvailable() {
+        return INSTANCE.callbacksAvailable0();
+    }
+
+    protected static Callback__V___L find(NativeFunctionPointer callbackPtr) {
+        for (Callback__V___L cb : REFS) {
             if (cb != null) {
                 if (cb.equals(callbackPtr)) {
                     return cb;
@@ -69,252 +64,174 @@ public class CallbackFactory__V___L {
         return null;
     }
 
-    static MemorySegment registerCallBack(int index) throws NoSuchMethodException, IllegalAccessException {
-        MethodHandle handle = MethodHandles.lookup().findStatic(CallbackFactory__V___L.class, "trampoline_" + index, MethodType.methodType(void.class, long.class));
-        return NATIVE_LINKER.upcallStub(handle, FunctionDescriptor.ofVoid(ValueLayout.JAVA_LONG), MemorySession.global());
+    static synchronized void release(Callback__V___L cb) {
+        INSTANCE.release0(cb);
     }
 
-    /**
-     * this is just an estimation ...
-     *
-     * @return
-     */
-    public static int callbacksAvailable() {
-        int result = 0;
-        for (WeakReference<Callback__V___L> ref : REFS) {
-            if (ref.get() == null) {
-                result++;
-            }
-        }
-        return result;
-    }
-
-    private static void trampoline_0(final long value) {
+    protected final static void trampoline_0(final long value) {
         try {
-            final Callback__V___L ref = REFS[0].get();
-            if (ref == null) {
-                LOG.log(Level.SEVERE, String.format("Unassigned callback for trampoline_0(%d)", value));
-            } else {
-                ref.callback(value);
-            }
+            REFS[0].callback(value);
+        } catch (NullPointerException npe) {
+            LOG.log(Level.SEVERE, String.format("Unassigned callback for trampoline_0(%d)", value));
         } catch (Throwable t) {
             LOG.log(Level.SEVERE, String.format("Exception was thrown in  trampoline_0(%d)", value), t);
         }
     }
 
-    private static void trampoline_1(final long value) {
+    protected final static void trampoline_1(final long value) {
         try {
-            final Callback__V___L ref = REFS[1].get();
-            if (ref == null) {
-                LOG.log(Level.SEVERE, String.format("Unassigned callback for trampoline_1(%d)", value));
-            } else {
-                ref.callback(value);
-            }
+            REFS[1].callback(value);
+        } catch (NullPointerException npe) {
+            LOG.log(Level.SEVERE, String.format("Unassigned callback for trampoline_1(%d)", value));
         } catch (Throwable t) {
             LOG.log(Level.SEVERE, String.format("Exception was thrown in  trampoline_1(%d)", value), t);
         }
     }
 
-    private static void trampoline_2(final long value) {
+    protected final static void trampoline_2(final long value) {
         try {
-            final Callback__V___L ref = REFS[2].get();
-            if (ref == null) {
-                LOG.log(Level.SEVERE, String.format("Unassigned callback for trampoline_2(%d)", value));
-            } else {
-                ref.callback(value);
-            }
+            REFS[2].callback(value);
+        } catch (NullPointerException npe) {
+            LOG.log(Level.SEVERE, String.format("Unassigned callback for trampoline_2(%d)", value));
         } catch (Throwable t) {
             LOG.log(Level.SEVERE, String.format("Exception was thrown in  trampoline_2(%d)", value), t);
         }
     }
 
-    private static void trampoline_3(final long value) {
+    protected final static void trampoline_3(final long value) {
         try {
-            final Callback__V___L ref = REFS[3].get();
-            if (ref == null) {
-                LOG.log(Level.SEVERE, String.format("Unassigned callback for trampoline_3(%d)", value));
-            } else {
-                ref.callback(value);
-            }
+            REFS[3].callback(value);
+        } catch (NullPointerException npe) {
+            LOG.log(Level.SEVERE, String.format("Unassigned callback for trampoline_3(%d)", value));
         } catch (Throwable t) {
             LOG.log(Level.SEVERE, String.format("Exception was thrown in  trampoline_3(%d)", value), t);
         }
     }
 
-    private static void trampoline_4(final long value) {
+    protected final static void trampoline_4(final long value) {
         try {
-            final Callback__V___L ref = REFS[4].get();
-            if (ref == null) {
-                LOG.log(Level.SEVERE, String.format("Unassigned callback for trampoline_4(%d)", value));
-            } else {
-                ref.callback(value);
-            }
+            REFS[4].callback(value);
+        } catch (NullPointerException npe) {
+            LOG.log(Level.SEVERE, String.format("Unassigned callback for trampoline_4(%d)", value));
         } catch (Throwable t) {
             LOG.log(Level.SEVERE, String.format("Exception was thrown in  trampoline_4(%d)", value), t);
         }
     }
 
-    private static void trampoline_5(final long value) {
+    protected final static void trampoline_5(final long value) {
         try {
-            final Callback__V___L ref = REFS[5].get();
-            if (ref == null) {
-                LOG.log(Level.SEVERE, String.format("Unassigned callback for trampoline_5(%d)", value));
-            } else {
-                ref.callback(value);
-            }
+            REFS[5].callback(value);
+        } catch (NullPointerException npe) {
+            LOG.log(Level.SEVERE, String.format("Unassigned callback for trampoline_5(%d)", value));
         } catch (Throwable t) {
             LOG.log(Level.SEVERE, String.format("Exception was thrown in  trampoline_5(%d)", value), t);
         }
     }
 
-    private static void trampoline_6(final long value) {
+    protected final static void trampoline_6(final long value) {
         try {
-            final Callback__V___L ref = REFS[6].get();
-            if (ref == null) {
-                LOG.log(Level.SEVERE, String.format("Unassigned callback for trampoline_6(%d)", value));
-            } else {
-                ref.callback(value);
-            }
+            REFS[6].callback(value);
+        } catch (NullPointerException npe) {
+            LOG.log(Level.SEVERE, String.format("Unassigned callback for trampoline_6(%d)", value));
         } catch (Throwable t) {
             LOG.log(Level.SEVERE, String.format("Exception was thrown in  trampoline_6(%d)", value), t);
         }
     }
 
-    private static void trampoline_7(final long value) {
+    protected final static void trampoline_7(final long value) {
         try {
-            final Callback__V___L ref = REFS[7].get();
-            if (ref == null) {
-                LOG.log(Level.SEVERE, String.format("Unassigned callback for trampoline_7(%d)", value));
-            } else {
-                ref.callback(value);
-            }
+            REFS[7].callback(value);
+        } catch (NullPointerException npe) {
+            LOG.log(Level.SEVERE, String.format("Unassigned callback for trampoline_7(%d)", value));
         } catch (Throwable t) {
             LOG.log(Level.SEVERE, String.format("Exception was thrown in  trampoline_7(%d)", value), t);
         }
     }
 
-    private static void trampoline_8(final long value) {
+    protected final static void trampoline_8(final long value) {
         try {
-            final Callback__V___L ref = REFS[8].get();
-            if (ref == null) {
-                LOG.log(Level.SEVERE, String.format("Unassigned callback for trampoline_8(%d)", value));
-            } else {
-                ref.callback(value);
-            }
+            REFS[8].callback(value);
+        } catch (NullPointerException npe) {
+            LOG.log(Level.SEVERE, String.format("Unassigned callback for trampoline_8(%d)", value));
         } catch (Throwable t) {
             LOG.log(Level.SEVERE, String.format("Exception was thrown in  trampoline_8(%d)", value), t);
         }
     }
 
-    private static void trampoline_9(final long value) {
+    protected final static void trampoline_9(final long value) {
         try {
-            final Callback__V___L ref = REFS[9].get();
-            if (ref == null) {
-                LOG.log(Level.SEVERE, String.format("Unassigned callback for trampoline_9(%d)", value));
-            } else {
-                ref.callback(value);
-            }
+            REFS[9].callback(value);
+        } catch (NullPointerException npe) {
+            LOG.log(Level.SEVERE, String.format("Unassigned callback for trampoline_9(%d)", value));
         } catch (Throwable t) {
             LOG.log(Level.SEVERE, String.format("Exception was thrown in  trampoline_9(%d)", value), t);
         }
     }
 
-    private static void trampoline_10(final long value) {
+    protected final static void trampoline_10(final long value) {
         try {
-            final Callback__V___L ref = REFS[10].get();
-            if (ref == null) {
-                LOG.log(Level.SEVERE, String.format("Unassigned callback for trampoline_10(%d)", value));
-            } else {
-                ref.callback(value);
-            }
+            REFS[10].callback(value);
+        } catch (NullPointerException npe) {
+            LOG.log(Level.SEVERE, String.format("Unassigned callback for trampoline_10(%d)", value));
         } catch (Throwable t) {
             LOG.log(Level.SEVERE, String.format("Exception was thrown in  trampoline_10(%d)", value), t);
         }
     }
 
-    private static void trampoline_11(final long value) {
+    protected final static void trampoline_11(final long value) {
         try {
-            final Callback__V___L ref = REFS[11].get();
-            if (ref == null) {
-                LOG.log(Level.SEVERE, String.format("Unassigned callback for trampoline_11(%d)", value));
-            } else {
-                ref.callback(value);
-            }
+            REFS[11].callback(value);
+        } catch (NullPointerException npe) {
+            LOG.log(Level.SEVERE, String.format("Unassigned callback for trampoline_11(%d)", value));
         } catch (Throwable t) {
             LOG.log(Level.SEVERE, String.format("Exception was thrown in  trampoline_11(%d)", value), t);
         }
     }
 
-    private static void trampoline_12(final long value) {
+    protected final static void trampoline_12(final long value) {
         try {
-            final Callback__V___L ref = REFS[12].get();
-            if (ref == null) {
-                LOG.log(Level.SEVERE, String.format("Unassigned callback for trampoline_12(%d)", value));
-            } else {
-                ref.callback(value);
-            }
+            REFS[12].callback(value);
+        } catch (NullPointerException npe) {
+            LOG.log(Level.SEVERE, String.format("Unassigned callback for trampoline_12(%d)", value));
         } catch (Throwable t) {
             LOG.log(Level.SEVERE, String.format("Exception was thrown in  trampoline_12(%d)", value), t);
         }
     }
 
-    private static void trampoline_13(final long value) {
+    protected final static void trampoline_13(final long value) {
         try {
-            final Callback__V___L ref = REFS[13].get();
-            if (ref == null) {
-                LOG.log(Level.SEVERE, String.format("Unassigned callback for trampoline_13(%d)", value));
-            } else {
-                ref.callback(value);
-            }
+            REFS[13].callback(value);
+        } catch (NullPointerException npe) {
+            LOG.log(Level.SEVERE, String.format("Unassigned callback for trampoline_13(%d)", value));
         } catch (Throwable t) {
             LOG.log(Level.SEVERE, String.format("Exception was thrown in  trampoline_13(%d)", value), t);
         }
     }
 
-    private static void trampoline_14(final long value) {
+    protected final static void trampoline_14(final long value) {
         try {
-            final Callback__V___L ref = REFS[14].get();
-            if (ref == null) {
-                LOG.log(Level.SEVERE, String.format("Unassigned callback for trampoline_14(%d)", value));
-            } else {
-                ref.callback(value);
-            }
+            REFS[14].callback(value);
+        } catch (NullPointerException npe) {
+            LOG.log(Level.SEVERE, String.format("Unassigned callback for trampoline_14(%d)", value));
         } catch (Throwable t) {
             LOG.log(Level.SEVERE, String.format("Exception was thrown in  trampoline_14(%d)", value), t);
         }
     }
 
-    private static void trampoline_15(final long value) {
+    protected final static void trampoline_15(final long value) {
         try {
-            final Callback__V___L ref = REFS[15].get();
-            if (ref == null) {
-                LOG.log(Level.SEVERE, String.format("Unassigned callback for trampoline_15(%d)", value));
-            } else {
-                ref.callback(value);
-            }
+            REFS[15].callback(value);
+        } catch (NullPointerException npe) {
+            LOG.log(Level.SEVERE, String.format("Unassigned callback for trampoline_15(%d)", value));
         } catch (Throwable t) {
             LOG.log(Level.SEVERE, String.format("Exception was thrown in  trampoline_15(%d)", value), t);
         }
     }
 
-    static synchronized MemoryAddress aquire(Callback__V___L cb) {
-        for (int i = 0; i < MAX_CALL_BACKS; i++) {
-            if (REFS[i].get() == null) {
-                REFS[i] = new WeakReference(cb);
-                //Lazy initialize the handles
-                if (NATIVE_SYMBOLS[i] == null) {
-                    try {
-                        NATIVE_SYMBOLS[i] = registerCallBack(i);
-                    } catch (NoSuchMethodException | IllegalAccessException ex) {
-                        LOG.log(Level.SEVERE, "Failed registerCallBack(" + i + ")", ex);
-                        throw new RuntimeException(ex);
-                    }
-                }
-                return NATIVE_SYMBOLS[i].address();
-            }
-        }
-        //Hint: Try run GC to free any??? or add more cbs...
-        throw new RuntimeException("No more Callbacks available! max: " + MAX_CALL_BACKS + " reached");
-    }
+    protected abstract MemoryAddress aquire0(Callback__V___L cb);
+
+    protected abstract void release0(Callback__V___L cb);
+
+    protected abstract int callbacksAvailable0();
 
 }

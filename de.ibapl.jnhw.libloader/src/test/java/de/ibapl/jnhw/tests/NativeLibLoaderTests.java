@@ -1,6 +1,6 @@
 /*
  * JNHW - Java Native header Wrapper, https://github.com/aploese/jnhw/
- * Copyright (C) 2019-2022, Arne Plöse and individual contributors as indicated
+ * Copyright (C) 2019-2023, Arne Plöse and individual contributors as indicated
  * by the @authors tag. See the copyright.txt in the distribution for a
  * full listing of individual contributors.
  *
@@ -21,15 +21,11 @@
  */
 package de.ibapl.jnhw.tests;
 
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-
 import de.ibapl.jnhw.libloader.LoadResult;
+import de.ibapl.jnhw.libloader.MultiarchTupelBuilder;
 import de.ibapl.jnhw.libloader.NativeLibResolver;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 public class NativeLibLoaderTests {
 
@@ -46,4 +42,10 @@ public class NativeLibLoaderTests {
         System.out.println(lr.loadError);
     }
 
+    @Test
+    public void testListSystemProps() {
+        System.out.println(">>>>>>>>>>>>>>> System properties  BEGIN <<<<<<<<<<<<<<<<<<<<<<<");
+        System.out.println(MultiarchTupelBuilder.listSystemProperties());
+        System.out.println(">>>>>>>>>>>>>>> System properties  END <<<<<<<<<<<<<<<<<<<<<<<");
+    }
 }

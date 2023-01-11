@@ -2,7 +2,8 @@
 
 #autoreconf -i
 
-mvn clean compile test-compile || exit 1
+# no need to compile java anymore 
+#mvn clean compile test-compile || exit 1
 
 # "x86_64-linux-gnu"
 # "i386-linux-gnu"
@@ -17,19 +18,24 @@ mvn clean compile test-compile || exit 1
 #sparc is not tested...
 # "sparc64-linux-gnu"
 
+#not supported anymore by debian - no OpenJDK > 19
+# "mips-linux-gnu"\
+# "mips64-linux-gnuabi64"\
+
+#not testable so we do not build this...
+# Fcntl.open will crash VM
+# "powerpc64le-linux-gnu"\
+
 for d in\
  "aarch64-linux-gnu"\
  "arm-linux-gnueabi"\
  "arm-linux-gnueabihf"\
- "mips-linux-gnu"\
  "mipsel-linux-gnu"\
- "mips64-linux-gnuabi64"\
  "mips64el-linux-gnuabi64"\
- "powerpc64le-linux-gnu"\
  "riscv64-linux-gnu"\
  "s390x-linux-gnu"
 do
-export CC=$d-gcc
+export CC=$d-gcc-12
   $CC --version || exit 1
   ./configure --host=$d || exit 1
   make clean || exit 1

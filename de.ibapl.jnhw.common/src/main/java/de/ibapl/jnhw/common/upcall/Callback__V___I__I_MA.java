@@ -1,6 +1,6 @@
 /*
  * JNHW - Java Native header Wrapper, https://github.com/aploese/jnhw/
- * Copyright (C) 2019-2022, Arne Plöse and individual contributors as indicated
+ * Copyright (C) 2019-2023, Arne Plöse and individual contributors as indicated
  * by the @authors tag. See the copyright.txt in the distribution for a
  * full listing of individual contributors.
  *
@@ -21,15 +21,14 @@
  */
 package de.ibapl.jnhw.common.upcall;
 
-import de.ibapl.jnhw.common.memory.NativeFunctionPointer;
 import de.ibapl.jnhw.common.memory.OpaqueMemory;
 import de.ibapl.jnhw.common.nativepointer.FunctionPtr__V___I__I_MA;
+import java.lang.foreign.MemoryAddress;
 import java.lang.ref.WeakReference;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.ListIterator;
 import java.util.function.Function;
-import java.lang.foreign.MemoryAddress;
 
 /**
  *
@@ -80,14 +79,18 @@ public abstract class Callback__V___I__I_MA<A extends OpaqueMemory> extends Func
         REFS.add(new WeakReference<>(this));
     }
 
-    public Callback__V___I__I_MA(MemoryAddress src) {
-        super(src);
+    protected Callback__V___I__I_MA(MemoryAddress address) {
+        super(address);
         REFS.add(new WeakReference<>(this));
     }
 
     public Callback__V___I__I_MA() {
         super(CallbackFactory__V___I__I_MA::aquire);
         REFS.add(new WeakReference<>(this));
+    }
+
+    public void release() {
+        CallbackFactory__V___I__I_MA.release(this);
     }
 
     /**

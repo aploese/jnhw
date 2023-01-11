@@ -1,6 +1,6 @@
 /*
  * JNHW - Java Native header Wrapper, https://github.com/aploese/jnhw/
- * Copyright (C) 2019-2022, Arne Plöse and individual contributors as indicated
+ * Copyright (C) 2019-2023, Arne Plöse and individual contributors as indicated
  * by the @authors tag. See the copyright.txt in the distribution for a
  * full listing of individual contributors.
  *
@@ -21,8 +21,8 @@
  */
 package de.ibapl.jnhw.it.hello_world_async_io;
 
-import de.ibapl.jnhw.common.datatypes.MultiarchTupelBuilder;
-import de.ibapl.jnhw.common.datatypes.OS;
+import de.ibapl.jnhw.libloader.MultiarchTupelBuilder;
+import de.ibapl.jnhw.libloader.OS;
 import java.io.File;
 import java.lang.foreign.MemorySegment;
 import java.lang.foreign.MemorySession;
@@ -34,7 +34,7 @@ import java.lang.foreign.MemorySession;
 public class App {
 
     public static void main(String[] args) throws Exception {
-        try ( MemorySession ms = MemorySession.openConfined()) {
+        try (MemorySession ms = MemorySession.openConfined()) {
             String STRING_TO_WRITE = "\n\t\tHello World! - AIO from POSIX\n\n";
             final MemorySegment aioBuffer = MemorySegment.allocateNative(STRING_TO_WRITE.length() + 1, ms);
             aioBuffer.setUtf8String(0, STRING_TO_WRITE);

@@ -76,12 +76,12 @@
 
     <dependencyManagement>
         <dependencies>
+
             <dependency>
-                
                 <groupId>org.junit.jupiter</groupId>
                 <artifactId>junit-jupiter-api</artifactId>
                 <scope>test</scope>
-                <version>5.9.1</version><!--last running 5.5.2-->
+                <version>5.9.1</version>
             </dependency>
             <dependency>
                 <groupId>org.junit.jupiter</groupId>
@@ -139,6 +139,7 @@
                     <artifactId>maven-compiler-plugin</artifactId>
                     <version>3.10.1</version>
                     <configuration>
+                        <arg>--enable-preview</arg>        
                         <source>${compile.source}</source>
                         <release>${compile.target}</release>
                         <encoding>${project.build.sourceEncoding}</encoding>
@@ -150,7 +151,7 @@
                     <artifactId>maven-resources-plugin</artifactId>
                     <version>3.3.0</version>
                     <configuration>
-                        <encoding>${sourceEncoding}</encoding>
+                        <encoding>${project.build.sourceEncoding}</encoding>
                     </configuration>
                 </plugin>
                 <plugin>
@@ -239,10 +240,6 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
-                <configuration>
-                    <source>19</source>
-                    <target>19</target>
-                </configuration>
             </plugin>
             <plugin>
                 <groupId>biz.aQute.bnd</groupId>
@@ -251,9 +248,6 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-resources-plugin</artifactId>
-                <configuration>
-                    <encoding>${project.build.sourceEncoding}</encoding>
-                </configuration>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -280,7 +274,7 @@
                     <aggregate>true</aggregate>
                     <strictCheck>true</strictCheck>
                     <properties>
-                        <copyright-range>${project.inceptionYear}-2022</copyright-range>
+                        <copyright-range>${project.inceptionYear}-2023</copyright-range>
                     </properties>
                 </configuration>
                 <executions>
@@ -318,10 +312,10 @@
                                 <include>**/*.h</include>
                             </includes>
                             <excludes>
-                                <exclude>jni-includes/**</exclude>
 
                                 <exclude>de.ibapl.jnhw.common/config.h</exclude>
                                 <exclude>de.ibapl.jnhw.common/.ccls-cache/**</exclude>
+                                <exclude>de.ibapl.jnhw.common/src/main/native/include/*.h</exclude>
                           
                                 <exclude>de.ibapl.jnhw.posix/config.h</exclude>
                                 <exclude>de.ibapl.jnhw.posix/.ccls-cache/**</exclude>

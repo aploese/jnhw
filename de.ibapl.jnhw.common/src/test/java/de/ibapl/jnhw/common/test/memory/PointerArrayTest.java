@@ -1,6 +1,6 @@
 /*
  * JNHW - Java Native header Wrapper, https://github.com/aploese/jnhw/
- * Copyright (C) 2019-2022, Arne Plöse and individual contributors as indicated
+ * Copyright (C) 2019-2023, Arne Plöse and individual contributors as indicated
  * by the @authors tag. See the copyright.txt in the distribution for a
  * full listing of individual contributors.
  *
@@ -22,14 +22,16 @@
 package de.ibapl.jnhw.common.test.memory;
 
 import de.ibapl.jnhw.common.datatypes.BaseDataType;
-import de.ibapl.jnhw.common.datatypes.MultiarchTupelBuilder;
 import de.ibapl.jnhw.common.memory.MemoryHeap;
 import de.ibapl.jnhw.common.memory.OpaqueMemory;
 import de.ibapl.jnhw.common.memory.PointerArray;
 import de.ibapl.jnhw.common.memory.layout.Alignment;
 import de.ibapl.jnhw.common.test.LibJnhwCommonTestLoader;
+import de.ibapl.jnhw.libloader.MultiarchTupelBuilder;
+import java.lang.foreign.MemoryAddress;
 import java.lang.foreign.MemorySegment;
 import java.lang.foreign.MemorySession;
+import java.lang.foreign.ValueLayout;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -85,23 +87,38 @@ public class PointerArrayTest {
     @Test
     @SuppressWarnings("unchecked")
     public void testSetAndGet() {
-        try ( MemorySession ms = MemorySession.openConfined()) {
-            System.out.println("set");
+        System.out.println("de.ibapl.jnhw.common.test.memory.PointerArrayTest.testSetAndGet()");
+        try (MemorySession ms = MemorySession.openConfined()) {
+            final OpaqueMemory element1 = MemoryHeap.wrap(MemorySegment.allocateNative(8, ms));
+            OpaqueMemory.setByte(element1, 0, (byte) 1);
+            final OpaqueMemory element2 = MemoryHeap.wrap(MemorySegment.allocateNative(8, ms));
+            OpaqueMemory.setByte(element2, 0, (byte) 2);
+
             PointerArray.ElementProducer<OpaqueMemory> producerFail = (baseAddress, index, cachedElement) -> {
-                Assertions.fail("Not expecting to be called for index: " + index);
+                Assertions.fail(String.format(
+                        """
+                        Not expecting to be called for index: %d baseaddress: \"%s\
+                        cachedElement: \"%s\" element1: \"%s\" element2: \"%s\"
+                        """,
+                        index,
+                        baseAddress,
+                        cachedElement,
+                        element1,
+                        element2
+                ));
                 return null;
             };
+
             PointerArray<OpaqueMemory> instance = new PointerArray<>(MemorySegment.allocateNative(16 * BaseDataType.uintptr_t.SIZE_OF, ms), 0, 16);
-            OpaqueMemory element1 = MemoryHeap.wrap(MemorySegment.allocateNative(8, ms));
-            OpaqueMemory.setByte(element1, 0, (byte) 1);
+
             instance.set(1, element1);
+            Assertions.assertEquals(1, OpaqueMemory.getByte(instance.get(1, producerFail), 0));
             for (int i = 0; i < instance.length(); i++) {
                 instance.get(i, producerFail);
             }
 
-            OpaqueMemory element2 = MemoryHeap.wrap(MemorySegment.allocateNative(8, ms));
-            OpaqueMemory.setByte(element2, 0, (byte) 2);
             instance.set(2, element2);
+            Assertions.assertEquals(2, OpaqueMemory.getByte(instance.get(2, producerFail), 0));
             for (int i = 0; i < instance.length(); i++) {
                 instance.get(i, producerFail);
             }
@@ -119,7 +136,7 @@ public class PointerArrayTest {
     @Test
     @SuppressWarnings("unchecked")
     public void testNativeToString() {
-        try ( MemorySession ms = MemorySession.openConfined()) {
+        try (MemorySession ms = MemorySession.openConfined()) {
             System.out.println("toString");
             PointerArray<OpaqueMemory> instance = new PointerArray<>(MemorySegment.allocateNative(6 * BaseDataType.uintptr_t.SIZE_OF, ms), 0, 6);
             OpaqueMemory element1 = MemoryHeap.wrap(MemorySegment.allocateNative(1, ms));
@@ -132,7 +149,7 @@ public class PointerArrayTest {
     @Test
     @SuppressWarnings("unchecked")
     public void testArrayBounds() {
-        try ( MemorySession ms = MemorySession.openConfined()) {
+        try (MemorySession ms = MemorySession.openConfined()) {
             PointerArray<OpaqueMemory> instance = new PointerArray<>(MemorySegment.allocateNative(2 * BaseDataType.uintptr_t.SIZE_OF, ms), 0, 2);
 
             Assertions.assertThrows(ArrayIndexOutOfBoundsException.class, () -> {
