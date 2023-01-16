@@ -26,34 +26,55 @@ import static de.ibapl.jnhw.common.datatypes.BaseDataType.uintptr_t;
 import de.ibapl.jnhw.common.datatypes.Pointer;
 import de.ibapl.jnhw.common.downcall.foreign.JnhwMi_MA___A;
 import de.ibapl.jnhw.common.downcall.jni.JniMi_MA___A;
+import de.ibapl.jnhw.common.exception.NoSuchNativeMethodException;
 import de.ibapl.jnhw.common.util.NativeProvider;
 import java.lang.foreign.Addressable;
 import java.lang.foreign.MemoryAddress;
+import java.lang.foreign.MemorySegment;
 import java.lang.foreign.SymbolLookup;
-import java.util.NoSuchElementException;
 
 /**
  *
  * @author aploese
  */
+@FunctionalInterface
 public interface JnhwMh_MA___A extends JnhwMethodHandle {
 
-    static JnhwMh_MA___A ofOrNull(SymbolLookup symbolLookup, String name, BaseDataType result, BaseDataType arg1) {
-        try {
-            return of(symbolLookup, name, result, arg1);
-        } catch (NoSuchElementException elementException) {
-            return null;
+    @FunctionalInterface
+    interface ExceptionErased extends JnhwMh_MA___A {
+
+        @Override
+        default MemoryAddress invoke_MA___P(Pointer<?> arg1) {
+            return invoke_MA___A(arg1.toAddressable());
         }
+
+        @Override
+        MemoryAddress invoke_MA___A(Addressable arg1);
     }
 
-    static JnhwMh_MA___A of(SymbolLookup symbolLookup, String name, BaseDataType result, BaseDataType arg1) {
+    static JnhwMh_MA___A.ExceptionErased mandatoryOf(SymbolLookup symbolLookup, String name, BaseDataType result, BaseDataType arg1) {
+        return Util.buidExistingMethod(symbolLookup,
+                name,
+                (oms) -> of(oms, name, result, arg1));
+    }
+
+    static JnhwMh_MA___A optionalOf(SymbolLookup symbolLookup, String name, BaseDataType result, BaseDataType arg1) {
+        return Util.buidOptionalMethod(symbolLookup,
+                name,
+                (oms) -> of(oms, name, result, arg1),
+                () -> (JnhwMh_MA___A) (cArg1) -> {
+                    throw new NoSuchNativeMethodException(name);
+                });
+    }
+
+    static JnhwMh_MA___A.ExceptionErased of(MemorySegment methodAddress, String name, BaseDataType result, BaseDataType arg1) {
         return switch (result) {
             case intptr_t, uintptr_t ->
                 switch (arg1) {
                     case intptr_t, uintptr_t ->
                         NativeProvider.getProvider(
-                        () -> new JnhwMi_MA___A(symbolLookup, name),
-                        () -> new JniMi_MA___A(symbolLookup, name));
+                        () -> new JnhwMi_MA___A(methodAddress, name),
+                        () -> new JniMi_MA___A(methodAddress, name));
                     default ->
                         throw new IllegalArgumentException("arg1 unexpected data type: " + name + " " + arg1);
                 };
@@ -62,10 +83,9 @@ public interface JnhwMh_MA___A extends JnhwMethodHandle {
         };
     }
 
-    default MemoryAddress invoke_MA___P(Pointer<?> arg1) {
+    default MemoryAddress invoke_MA___P(Pointer<?> arg1) throws NoSuchNativeMethodException {
         return invoke_MA___A(arg1.toAddressable());
     }
 
-    MemoryAddress invoke_MA___A(Addressable arg1);
-
+    MemoryAddress invoke_MA___A(Addressable arg1) throws NoSuchNativeMethodException;
 }

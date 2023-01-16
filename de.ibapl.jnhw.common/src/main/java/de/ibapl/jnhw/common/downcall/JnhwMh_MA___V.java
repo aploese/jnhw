@@ -25,36 +25,52 @@ import de.ibapl.jnhw.common.datatypes.BaseDataType;
 import static de.ibapl.jnhw.common.datatypes.BaseDataType.uintptr_t;
 import de.ibapl.jnhw.common.downcall.foreign.JnhwMi_MA___V;
 import de.ibapl.jnhw.common.downcall.jni.JniMi_MA___V;
+import de.ibapl.jnhw.common.exception.NoSuchNativeMethodException;
 import de.ibapl.jnhw.common.util.NativeProvider;
 import java.lang.foreign.MemoryAddress;
+import java.lang.foreign.MemorySegment;
 import java.lang.foreign.SymbolLookup;
-import java.util.NoSuchElementException;
 
 /**
  *
  * @author aploese
  */
+@FunctionalInterface
 public interface JnhwMh_MA___V extends JnhwMethodHandle {
 
-    public static JnhwMh_MA___V ofOrNull(SymbolLookup symbolLookup, String name, BaseDataType result) {
-        try {
-            return of(symbolLookup, name, result);
-        } catch (NoSuchElementException elementException) {
-            return null;
-        }
+    @FunctionalInterface
+    interface ExceptionErased extends JnhwMh_MA___V {
+
+        @Override
+        MemoryAddress invoke_MA___V();
     }
 
-    public static JnhwMh_MA___V of(SymbolLookup symbolLookup, String name, BaseDataType result) {
+    static JnhwMh_MA___V.ExceptionErased mandatoryOf(SymbolLookup symbolLookup, String name, BaseDataType result) {
+        return Util.buidExistingMethod(symbolLookup,
+                name,
+                (oms) -> of(oms, name, result));
+    }
+
+    static JnhwMh_MA___V optionalOf(SymbolLookup symbolLookup, String name, BaseDataType result) {
+        return Util.buidOptionalMethod(symbolLookup,
+                name,
+                (oms) -> of(oms, name, result),
+                () -> (JnhwMh_MA___V) () -> {
+                    throw new NoSuchNativeMethodException(name);
+                });
+    }
+
+    public static JnhwMh_MA___V.ExceptionErased of(MemorySegment methodAddress, String name, BaseDataType result) {
         return switch (result) {
             case intptr_t, uintptr_t ->
                 NativeProvider.getProvider(
-                () -> new JnhwMi_MA___V(symbolLookup, name),
-                () -> new JniMi_MA___V(symbolLookup, name));
+                () -> new JnhwMi_MA___V(methodAddress, name),
+                () -> new JniMi_MA___V(methodAddress, name));
             default ->
                 throw new IllegalArgumentException("result unexpected data type: " + name + " " + result);
         };
     }
 
-    MemoryAddress invoke_MA___V();
+    MemoryAddress invoke_MA___V() throws NoSuchNativeMethodException;
 
 }

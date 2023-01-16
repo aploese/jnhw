@@ -69,17 +69,16 @@ public class UcontextTest {
     @Test
     public void testGetcontext() throws Exception {
         switch (MultiarchTupelBuilder.getOS()) {
-            case OPEN_BSD:
-            case DARWIN:
+            case OPEN_BSD, DARWIN ->
                 assertThrows(NoSuchNativeTypeException.class, () -> Ucontext.getcontext(Signal.Ucontext_t.tryAllocateNative(ms)));
-                break;
-            default:
+            default -> {
                 assertThrows(NullPointerException.class, () -> Ucontext.getcontext(null));
                 Signal.Ucontext_t ucp = Signal.Ucontext_t.tryAllocateNative(ms);
                 Ucontext.getcontext(ucp);
                 StringBuilder sb = new StringBuilder();
                 ucp.nativeToString(sb, "", " ");
                 System.out.println("ucontext:" + sb.toString());
+            }
         }
     }
 
@@ -92,11 +91,9 @@ public class UcontextTest {
     @Disabled
     public void testSetcontext() throws Exception {
         switch (MultiarchTupelBuilder.getOS()) {
-            case OPEN_BSD:
-            case DARWIN:
+            case OPEN_BSD, DARWIN ->
                 assertThrows(NoSuchNativeMethodException.class, () -> Ucontext.setcontext(null));
-                break;
-            default:
+            default -> {
                 assertThrows(NullPointerException.class, () -> Ucontext.setcontext(null));
                 Signal.Ucontext_t ucp = Signal.Ucontext_t.tryAllocateNative(ms);
                 count = 0;
@@ -110,6 +107,7 @@ public class UcontextTest {
                     System.out.println("stop loop");
                 }
                 assertEquals(10, count);
+            }
         }
     }
 
@@ -120,17 +118,16 @@ public class UcontextTest {
     @Disabled
     public void testSwapcontext() throws Exception {
         switch (MultiarchTupelBuilder.getOS()) {
-            case OPEN_BSD:
-            case DARWIN:
+            case OPEN_BSD, DARWIN ->
                 assertThrows(NoSuchNativeMethodException.class, () -> Ucontext.swapcontext(null, null));
-                break;
-            default:
+            default -> {
                 fail("The test will crash the jvm - so stop here!");
                 System.out.println("swapcontext");
                 Signal.Ucontext_t oucp = null;
                 Signal.Ucontext_t ucp = null;
                 int expResult = 0;
                 Ucontext.swapcontext(oucp, ucp);
+            }
         }
     }
 

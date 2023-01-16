@@ -22,10 +22,11 @@
 /**
  * Anything needed to load a native lib.
  * It resolves the name and a library path like GNU gcc Multiarchtupels.
- * 
+ *
  */
 module de.ibapl.jnhw.libloader {
     requires java.logging;
 
     exports de.ibapl.jnhw.libloader;
+    exports de.ibapl.jnhw.libloader.librarys;
 }

@@ -21,6 +21,8 @@
  */
 package de.ibapl.jnhw.it.posixsignal.posix_signal;
 
+import de.ibapl.jnhw.common.datatypes.BaseDataType;
+import de.ibapl.jnhw.common.downcall.JnhwMh__V__sI__A__A;
 import de.ibapl.jnhw.common.downcall.foreign.JnhwMi__V___I__A__A;
 import de.ibapl.jnhw.common.exception.NoSuchNativeTypeException;
 import de.ibapl.jnhw.common.upcall.Callback__V___I_MA_MA;
@@ -28,6 +30,7 @@ import de.ibapl.jnhw.common.util.OutputStreamAppender;
 import de.ibapl.jnhw.posix.Signal;
 import java.io.IOException;
 import java.lang.foreign.MemoryAddress;
+import java.lang.foreign.MemorySegment;
 import java.lang.foreign.MemorySession;
 
 /**
@@ -59,17 +62,22 @@ public class SigactionSignalHandler extends SignalHandler {
                 sb.append("\n");
 
                 switch (signalAction) {
-                    case PRINT_MSG:
-                        break;
-                    case PRINT_MSG_AND_SYSTEM_EXIT:
-                        System.exit(value);
-                        break;
-                    case PRINT_MSG_AND_CALL_OLD_HANDLER:
-                        try ( MemorySession ms = MemorySession.openConfined()) {
-                        new JnhwMi__V___I__A__A(oact.sa_sigaction().toAddressable(), ms).invoke__V__sI__P__P(value, siginfo, ucontext);
+                    case PRINT_MSG -> {
                     }
-                    break;
-                    default:
+                    case PRINT_MSG_AND_SYSTEM_EXIT ->
+                        System.exit(value);
+                    case PRINT_MSG_AND_CALL_OLD_HANDLER -> {
+                        try (MemorySession ms = MemorySession.openConfined()) {
+                            JnhwMh__V__sI__A__A.of(
+                                    MemorySegment.ofAddress(oact.sa_sigaction().toAddressable().address(), 0, ms),
+                                    "testCallback",
+                                    BaseDataType.C_int,
+                                    BaseDataType.C_pointer,
+                                    BaseDataType.C_pointer
+                            ).invoke__V__sI__P__P(value, siginfo, ucontext);
+                        }
+                    }
+                    default ->
                         thrownInHandler = new RuntimeException("Can't handle signalAction: " + signalAction);
                 }
                 signalHandled = true;

@@ -28,26 +28,56 @@ import de.ibapl.jnhw.common.downcall.foreign.JnhwMi__I___A__I__A__A;
 import de.ibapl.jnhw.common.downcall.foreign.JnhwMi__I___A__L__A__A;
 import de.ibapl.jnhw.common.downcall.jni.JniMi__I___A__I__A__A;
 import de.ibapl.jnhw.common.downcall.jni.JniMi__I___A__L__A__A;
+import de.ibapl.jnhw.common.exception.NoSuchNativeMethodException;
 import de.ibapl.jnhw.common.util.NativeProvider;
 import java.lang.foreign.Addressable;
+import java.lang.foreign.MemorySegment;
 import java.lang.foreign.SymbolLookup;
-import java.util.NoSuchElementException;
 
 /**
  *
  * @author aploese
  */
+@FunctionalInterface
 public interface JnhwMh_sI___A_uL__A__A extends JnhwMethodHandle {
 
-    public static JnhwMh_sI___A_uL__A__A ofOrNull(SymbolLookup symbolLookup, String name, BaseDataType result, BaseDataType arg1, BaseDataType arg2, BaseDataType arg3, BaseDataType arg4) {
-        try {
-            return of(symbolLookup, name, result, arg1, arg2, arg3, arg4);
-        } catch (NoSuchElementException elementException) {
-            return null;
+    @FunctionalInterface
+    interface ExceptionErased extends JnhwMh_sI___A_uL__A__A {
+
+        @Override
+        default int invoke_sI___P_uL__P__P(Pointer<?> arg1, long arg2, Pointer<?> arg3, Pointer<?> arg4) {
+            return invoke_sI___A_uL__A__A(
+                    arg1.toAddressable(),
+                    arg2,
+                    arg3.toAddressable(),
+                    arg4.toAddressable());
         }
+
+        @Override
+        default int invoke_sI___A_uL__A__P(Addressable arg1, long arg2, Addressable arg3, Pointer<?> arg4) {
+            return invoke_sI___A_uL__A__A(arg1, arg2, arg3, arg4.toAddressable());
+        }
+
+        @Override
+        int invoke_sI___A_uL__A__A(Addressable arg1, long arg2, Addressable arg3, Addressable arg4);
     }
 
-    public static JnhwMh_sI___A_uL__A__A of(SymbolLookup symbolLookup, String name, BaseDataType result, BaseDataType arg1, BaseDataType arg2, BaseDataType arg3, BaseDataType arg4) {
+    static JnhwMh_sI___A_uL__A__A.ExceptionErased mandatoryOf(SymbolLookup symbolLookup, String name, BaseDataType result, BaseDataType arg1, BaseDataType arg2, BaseDataType arg3, BaseDataType arg4) {
+        return Util.buidExistingMethod(symbolLookup,
+                name,
+                (oms) -> of(oms, name, result, arg1, arg2, arg3, arg4));
+    }
+
+    static JnhwMh_sI___A_uL__A__A optionalOf(SymbolLookup symbolLookup, String name, BaseDataType result, BaseDataType arg1, BaseDataType arg2, BaseDataType arg3, BaseDataType arg4) {
+        return Util.buidOptionalMethod(symbolLookup,
+                name,
+                (oms) -> of(oms, name, result, arg1, arg2, arg3, arg4),
+                () -> (JnhwMh_sI___A_uL__A__A) (cArg1, cArg2, cArg3, cArg4) -> {
+                    throw new NoSuchNativeMethodException(name);
+                });
+    }
+
+    public static JnhwMh_sI___A_uL__A__A.ExceptionErased of(MemorySegment methodAddress, String name, BaseDataType result, BaseDataType arg1, BaseDataType arg2, BaseDataType arg3, BaseDataType arg4) {
         return switch (result) {
             case int32_t ->
                 switch (arg1) {
@@ -59,8 +89,8 @@ public interface JnhwMh_sI___A_uL__A__A extends JnhwMethodHandle {
                                         switch (arg4) {
                                             case intptr_t, uintptr_t ->
                                                 NativeProvider.getProvider(
-                                                () -> new JnhwMi__I___A__I__A__A(symbolLookup, name),
-                                                () -> new JniMi__I___A__I__A__A(symbolLookup, name));
+                                                () -> new JnhwMi__I___A__I__A__A(methodAddress, name),
+                                                () -> new JniMi__I___A__I__A__A(methodAddress, name));
                                             default ->
                                                 throw new IllegalArgumentException("arg4 unexpected data type: " + name + " " + arg4);
                                         };
@@ -73,8 +103,8 @@ public interface JnhwMh_sI___A_uL__A__A extends JnhwMethodHandle {
                                         switch (arg4) {
                                             case intptr_t, uintptr_t ->
                                                 NativeProvider.getProvider(
-                                                () -> new JnhwMi__I___A__L__A__A(symbolLookup, name),
-                                                () -> new JniMi__I___A__L__A__A(symbolLookup, name));
+                                                () -> new JnhwMi__I___A__L__A__A(methodAddress, name),
+                                                () -> new JniMi__I___A__L__A__A(methodAddress, name));
                                             default ->
                                                 throw new IllegalArgumentException("arg4 unexpected data type: " + name + " " + arg4);
                                         };
@@ -92,13 +122,17 @@ public interface JnhwMh_sI___A_uL__A__A extends JnhwMethodHandle {
         };
     }
 
-    default int invoke_sI___P_uL__P__P(Pointer<?> arg1, long arg2, Pointer<?> arg3, Pointer<?> arg4) {
-        return invoke_sI___A_uL__A__A(arg1.toAddressable(), arg2, arg3.toAddressable(), arg4.toAddressable());
+    default int invoke_sI___P_uL__P__P(Pointer<?> arg1, long arg2, Pointer<?> arg3, Pointer<?> arg4) throws NoSuchNativeMethodException {
+        return invoke_sI___A_uL__A__A(
+                arg1.toAddressable(),
+                arg2,
+                arg3.toAddressable(),
+                arg4.toAddressable());
     }
 
-    default int invoke_sI___A_uL__A__P(Addressable arg1, long arg2, Addressable arg3, Pointer<?> arg4) {
+    default int invoke_sI___A_uL__A__P(Addressable arg1, long arg2, Addressable arg3, Pointer<?> arg4) throws NoSuchNativeMethodException {
         return invoke_sI___A_uL__A__A(arg1, arg2, arg3, arg4.toAddressable());
     }
 
-    int invoke_sI___A_uL__A__A(Addressable arg1, long arg2, Addressable arg3, Addressable arg4);
+    int invoke_sI___A_uL__A__A(Addressable arg1, long arg2, Addressable arg3, Addressable arg4) throws NoSuchNativeMethodException;
 }

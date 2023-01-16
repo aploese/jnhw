@@ -35,16 +35,16 @@ extern "C" {
     void _jnhw_trampoline__V___L__ ## index (int64_t value) {\
         struct  cb_refs callback_refs = callback_refs_ ## index; \
         if ((callback_refs.callbackClassRef == NULL) || (callback_refs.trampolineMethodID == 0)) { \
-            printf("unassigned Callback__V___L to %d", index); \
+            jnhw_log_stderr("unassigned Callback__V___L %d @0x%08lx no upcall handle", index, (uint64_t)(uintptr_t)&_jnhw_trampoline__V___L__ ## index); \
             return; \
         } \
         JNIEnv *env;\
         if ((*common_jvm)->AttachCurrentThread(common_jvm, (void**) &env, NULL)) {\
-            printf("Callback__V___L %d cant attach to thread", index); \
+            jnhw_log_stderr("Callback__V___L %d @0x%08lx can't attach to thread", index, (uint64_t)(uintptr_t)&_jnhw_trampoline__V___L__ ## index); \
             return;\
         } else {\
             if (*env == NULL) {\
-                printf("Callback__V___L %d no env", index); \
+            jnhw_log_stderr("Callback__V___L %d @0x%08lx can't get env", index, (uint64_t)(uintptr_t)&_jnhw_trampoline__V___L__ ## index); \
                 return;\
             }\
             (*env)->CallStaticVoidMethod(env, callback_refs.callbackClassRef, callback_refs.trampolineMethodID, value);\

@@ -52,17 +52,19 @@ public class StructLayoutFactoryImpl implements StructLayoutFactory {
             structAlignment = currentAlignment;
         }
         switch (type) {
-            case STRUCT:
+            case STRUCT -> {
                 final Alignment intAlignment = Alignment.calcElementAlignmentInStruct(structAlignment, currentAlignment);
                 final long offset = intAlignment.doAlignment(nextOffsetUnaligned);
                 nextOffsetUnaligned = offset + currentSizeInBytes;
                 return offset;
-            case UNION:
+            }
+            case UNION -> {
                 if (nextOffsetUnaligned < currentSizeInBytes) {
                     nextOffsetUnaligned = currentSizeInBytes;
                 }
                 return 0;
-            default:
+            }
+            default ->
                 throw new IllegalStateException("Unknown type to build: " + type);
         }
 

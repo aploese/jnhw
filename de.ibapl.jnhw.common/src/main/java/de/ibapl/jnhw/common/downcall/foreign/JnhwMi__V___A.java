@@ -24,24 +24,18 @@ package de.ibapl.jnhw.common.downcall.foreign;
 import de.ibapl.jnhw.common.downcall.JnhwMh__V___A;
 import java.lang.foreign.Addressable;
 import java.lang.foreign.FunctionDescriptor;
+import java.lang.foreign.MemorySegment;
 import java.lang.foreign.MemorySession;
-import java.lang.foreign.SymbolLookup;
 import java.lang.foreign.ValueLayout;
 
 /**
  *
  * @author aploese
  */
-public class JnhwMi__V___A extends JnhwMethodInvoker implements JnhwMh__V___A {
+public class JnhwMi__V___A extends JnhwMethodInvoker implements JnhwMh__V___A.ExceptionErased {
 
-    private final static FunctionDescriptor FD = FunctionDescriptor.ofVoid(ValueLayout.ADDRESS);
-
-    public JnhwMi__V___A(SymbolLookup symbolLookup, String name) {
-        super(symbolLookup, name, FD);
-    }
-
-    public JnhwMi__V___A(Addressable srcm, MemorySession ms) {
-        super(srcm, FD, ms);
+    public JnhwMi__V___A(MemorySegment methodAddress, String name) {
+        super(methodAddress, name, FunctionDescriptor.ofVoid(ValueLayout.ADDRESS));
     }
 
     @Override

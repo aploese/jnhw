@@ -98,31 +98,31 @@ public class BaseDataTypeTest {
     public void testMemoryModel() {
 
         switch (MultiarchTupelBuilder.getMemoryModel()) {
-            case L64:
+            case L64 -> {
                 assertFalse(_LP32());
                 assertFalse(_ILP32());
                 assertTrue(_L64());
                 assertFalse(_LP64());
                 assertFalse(_LLP64());
                 assertFalse(_ILP64());
-                break;
-            case LP64:
+            }
+            case LP64 -> {
                 assertFalse(_LP32());
                 assertFalse(_ILP32());
                 assertFalse(_L64());
                 assertTrue(_LP64());
                 assertFalse(_LLP64());
                 assertFalse(_ILP64());
-                break;
-            case ILP64:
+            }
+            case ILP64 -> {
                 assertFalse(_LP32());
                 assertFalse(_ILP32());
                 assertFalse(_L64());
                 assertFalse(_LP64());
                 assertFalse(_LLP64());
                 assertTrue(_ILP64());
-                break;
-            case LLP64:
+            }
+            case LLP64 -> {
                 assertFalse(_LP32());
                 assertFalse(_ILP32());
                 assertFalse(_L64());
@@ -134,8 +134,8 @@ public class BaseDataTypeTest {
                 } else {
                     assertTrue(_LLP64());
                 }
-                break;
-            case ILP32:
+            }
+            case ILP32 -> {
                 assertFalse(_LP32());
                 switch (MultiarchTupelBuilder.getMultiarch()) {
                     case MIPS_EL__LINUX__GNU, ARM__LINUX__GNU_EABI_HF ->
@@ -148,16 +148,16 @@ public class BaseDataTypeTest {
                 assertFalse(_LP64());
                 assertFalse(_LLP64());
                 assertFalse(_ILP64());
-                break;
-            case LP32:
+            }
+            case LP32 -> {
                 assertTrue(_LP32());
                 assertFalse(_ILP32());
                 assertFalse(_L64());
                 assertFalse(_LP64());
                 assertFalse(_LLP64());
                 assertFalse(_ILP64());
-                break;
-            default:
+            }
+            default ->
                 throw new AssertionError("Unknown memory model: " + MultiarchTupelBuilder.getMemoryModel());
         }
     }

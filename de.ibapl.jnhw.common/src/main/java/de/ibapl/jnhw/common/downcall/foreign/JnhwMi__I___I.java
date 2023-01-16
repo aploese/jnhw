@@ -25,17 +25,17 @@ import de.ibapl.jnhw.common.downcall.JnhwMh_sI__sI;
 import de.ibapl.jnhw.common.downcall.JnhwMh_sI__uI;
 import de.ibapl.jnhw.common.downcall.JnhwMh_sL__sI;
 import java.lang.foreign.FunctionDescriptor;
-import java.lang.foreign.SymbolLookup;
+import java.lang.foreign.MemorySegment;
 import java.lang.foreign.ValueLayout;
 
 /**
  *
  * @author aploese
  */
-public class JnhwMi__I___I extends JnhwMethodInvoker implements JnhwMh_sI__sI, JnhwMh_sI__uI, JnhwMh_sL__sI {
+public class JnhwMi__I___I extends JnhwMethodInvoker implements JnhwMh_sI__sI.ExceptionErased, JnhwMh_sI__uI.ExceptionErased, JnhwMh_sL__sI.ExceptionErased {
 
-    public JnhwMi__I___I(SymbolLookup symbolLookup, String name) {
-        super(symbolLookup, name, FunctionDescriptor.of(ValueLayout.JAVA_INT, ValueLayout.JAVA_INT));
+    public JnhwMi__I___I(MemorySegment methodAddress, String name) {
+        super(methodAddress, name, FunctionDescriptor.of(ValueLayout.JAVA_INT, ValueLayout.JAVA_INT));
     }
 
     protected final int invoke__I___I(int arg1) {

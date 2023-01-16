@@ -41,7 +41,7 @@ public class VaListTest {
     @Test
     public void testEmptyVaList() {
         switch (MultiarchTupelBuilder.getMultiarch()) {
-            case AARCH64__LINUX__GNU, X86_64__LINUX__GNU, X86_64__WINDOWS__PE32_PLUS -> {
+            case AARCH64__LINUX__GNU, X86_64__FREE_BSD__BSD, X86_64__LINUX__GNU, X86_64__WINDOWS__PE32_PLUS -> {
                 VaList vaList = VaList.empty();
             }
             default ->
@@ -65,7 +65,7 @@ public class VaListTest {
     public void testVaListOfAddress() {
         try (MemorySession ms = MemorySession.openConfined()) {
             switch (MultiarchTupelBuilder.getMultiarch()) {
-                case AARCH64__LINUX__GNU, X86_64__LINUX__GNU, X86_64__WINDOWS__PE32_PLUS -> {
+                case AARCH64__LINUX__GNU, X86_64__FREE_BSD__BSD, X86_64__LINUX__GNU, X86_64__WINDOWS__PE32_PLUS -> {
                     VaList mem = VaList.make((t) -> {
                         t.addVarg(ValueLayout.JAVA_INT, 42);
                     }, ms);
@@ -90,7 +90,7 @@ public class VaListTest {
     public void testVaList() {
         try (MemorySession ms = MemorySession.openConfined()) {
             switch (MultiarchTupelBuilder.getMultiarch()) {
-                case AARCH64__LINUX__GNU, X86_64__LINUX__GNU, X86_64__WINDOWS__PE32_PLUS -> {
+                case AARCH64__LINUX__GNU, X86_64__FREE_BSD__BSD, X86_64__LINUX__GNU, X86_64__WINDOWS__PE32_PLUS -> {
                     VaList vaList = VaList.make((t) -> {
                         t.addVarg(ValueLayout.JAVA_INT, 42);
                     }, ms);

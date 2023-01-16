@@ -36,7 +36,7 @@ import static de.ibapl.jnhw.common.memory.Uint64_t.DATA_TYPE;
 import de.ibapl.jnhw.isoc.Errno;
 import de.ibapl.jnhw.libloader.MultiarchTupelBuilder;
 import de.ibapl.jnhw.util.linux.LinuxDataType;
-import de.ibapl.jnhw.util.posix.LibcLoader;
+import de.ibapl.jnhw.libloader.librarys.LibcLoader;
 import java.lang.foreign.MemorySegment;
 import java.lang.foreign.MemorySession;
 
@@ -101,42 +101,42 @@ public final class Eventfd {
      */
     static {
         switch (MultiarchTupelBuilder.getOS()) {
-            case LINUX:
+            case LINUX -> {
                 HAVE_SYS_EVENTFD_H = true;
                 EFD_CLOEXEC = 02000000;
-                switch (MultiarchTupelBuilder.getArch()) {
-                    case MIPS:
-                    case MIPS_64:
-                        EFD_NONBLOCK = 00000200;
-                        break;
-                    default:
-                        EFD_NONBLOCK = 00004000;
-                }
+                EFD_NONBLOCK = switch (MultiarchTupelBuilder.getArch()) {
+                    case MIPS, MIPS_64 ->
+                        00000200;
+                    default ->
+                        00004000;
+                };
                 EFD_SEMAPHORE = 00000001;
-                break;
-            default:
+            }
+
+            default -> {
                 HAVE_SYS_EVENTFD_H = false;
                 EFD_CLOEXEC = -1;
                 EFD_NONBLOCK = -1;
                 EFD_SEMAPHORE = -1;
+            }
         }
     }
 
-    private final static JnhwMh_sI__uI_sI eventfd = JnhwMh_sI__uI_sI.of(
+    private final static JnhwMh_sI__uI_sI.ExceptionErased eventfd = JnhwMh_sI__uI_sI.mandatoryOf(
             LibcLoader.LIB_C_SYMBOL_LOOKUP,
             "eventfd",
             BaseDataType.C_int,
             BaseDataType.C_unsigned_int,
             BaseDataType.C_int);
 
-    private final static JnhwMh_sI__sI__A eventfd_read = JnhwMh_sI__sI__A.of(
+    private final static JnhwMh_sI__sI__A.ExceptionErased eventfd_read = JnhwMh_sI__sI__A.mandatoryOf(
             LibcLoader.LIB_C_SYMBOL_LOOKUP,
             "eventfd_read",
             BaseDataType.C_int,
             BaseDataType.C_int,
             LinuxDataType.eventfd_t_pointer);
 
-    private final static JnhwMh_sI__sI_uL eventfd_write = JnhwMh_sI__sI_uL.of(
+    private final static JnhwMh_sI__sI_uL.ExceptionErased eventfd_write = JnhwMh_sI__sI_uL.mandatoryOf(
             LibcLoader.LIB_C_SYMBOL_LOOKUP,
             "eventfd_write",
             BaseDataType.C_int,

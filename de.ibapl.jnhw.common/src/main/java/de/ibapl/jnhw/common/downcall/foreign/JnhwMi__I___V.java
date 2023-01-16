@@ -24,24 +24,18 @@ package de.ibapl.jnhw.common.downcall.foreign;
 import de.ibapl.jnhw.common.downcall.JnhwMh_sI___V;
 import de.ibapl.jnhw.common.downcall.JnhwMh_sL___V;
 import de.ibapl.jnhw.common.downcall.JnhwMh_uI___V;
-import java.lang.foreign.Addressable;
 import java.lang.foreign.FunctionDescriptor;
-import java.lang.foreign.MemorySession;
-import java.lang.foreign.SymbolLookup;
+import java.lang.foreign.MemorySegment;
 import java.lang.foreign.ValueLayout;
 
 /**
  *
  * @author aploese
  */
-public class JnhwMi__I___V extends JnhwMethodInvoker implements JnhwMh_sI___V, JnhwMh_uI___V, JnhwMh_sL___V {
+public class JnhwMi__I___V extends JnhwMethodInvoker implements JnhwMh_sI___V.ExceptionErased, JnhwMh_uI___V.ExceptionErased, JnhwMh_sL___V.ExceptionErased {
 
-    public JnhwMi__I___V(SymbolLookup symbolLookup, String name) {
-        super(symbolLookup, name, FunctionDescriptor.of(ValueLayout.JAVA_INT));
-    }
-
-    public JnhwMi__I___V(Addressable addressable, MemorySession ms) {
-        super(addressable, FunctionDescriptor.of(ValueLayout.JAVA_INT), ms);
+    public JnhwMi__I___V(MemorySegment methodAddress, String name) {
+        super(methodAddress, name, FunctionDescriptor.of(ValueLayout.JAVA_INT));
     }
 
     protected final int invoke__I___V() {

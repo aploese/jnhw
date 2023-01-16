@@ -24,16 +24,16 @@ package de.ibapl.jnhw.util.posix.downcall.foreign;
 import de.ibapl.jnhw.common.downcall.foreign.JnhwMi__I___I__I;
 import de.ibapl.jnhw.posix.Pthread;
 import de.ibapl.jnhw.util.posix.downcall.JnhwMh_sI__PthreadT_PthreadT;
-import java.lang.foreign.SymbolLookup;
+import java.lang.foreign.MemorySegment;
 
 /**
  *
  * @author aploese
  */
-public class JnhwMi__I__PthreadTI_PthreadTI extends JnhwMi__I___I__I implements JnhwMh_sI__PthreadT_PthreadT {
+public class JnhwMi__I__PthreadTI_PthreadTI extends JnhwMi__I___I__I implements JnhwMh_sI__PthreadT_PthreadT.ExceptionErased {
 
-    public JnhwMi__I__PthreadTI_PthreadTI(SymbolLookup symbolLookup, String name) {
-        super(symbolLookup, name);
+    public JnhwMi__I__PthreadTI_PthreadTI(MemorySegment methodAddress, String name) {
+        super(methodAddress, name);
     }
 
     @Override

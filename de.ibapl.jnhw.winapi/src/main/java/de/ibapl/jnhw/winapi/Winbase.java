@@ -1214,7 +1214,7 @@ public abstract class Winbase {
     @Define
     public final static int WAIT_OBJECT_0 = Winnt.STATUS_WAIT_0;
 
-    private final static JnhwMh_BL___A__A_uI BindIoCompletionCallback = JnhwMh_BL___A__A_uI.of(
+    private final static JnhwMh_BL___A__A_uI.ExceptionErased BindIoCompletionCallback = JnhwMh_BL___A__A_uI.mandatoryOf(
             Kernel32Loader.DLL_KERNEL32_SYMBOL_LOOKUP,
             "BindIoCompletionCallback",
             WinApiDataType.BOOL,
@@ -1222,13 +1222,13 @@ public abstract class Winbase {
             WinApiDataType.LPOVERLAPPED_COMPLETION_ROUTINE,
             WinApiDataType.ULONG);
 
-    private final static JnhwMh_BL___A ClearCommBreak = JnhwMh_BL___A.of(
+    private final static JnhwMh_BL___A.ExceptionErased ClearCommBreak = JnhwMh_BL___A.mandatoryOf(
             Kernel32Loader.DLL_KERNEL32_SYMBOL_LOOKUP,
             "ClearCommBreak",
             WinApiDataType.BOOL,
             WinApiDataType.HANDLE);
 
-    private final static JnhwMh_BL___A__A__A ClearCommError = JnhwMh_BL___A__A__A.of(
+    private final static JnhwMh_BL___A__A__A.ExceptionErased ClearCommError = JnhwMh_BL___A__A__A.mandatoryOf(
             Kernel32Loader.DLL_KERNEL32_SYMBOL_LOOKUP,
             "ClearCommError",
             WinApiDataType.BOOL,
@@ -1236,55 +1236,55 @@ public abstract class Winbase {
             WinApiDataType.LPDWORD,
             WinApiDataType.LPCOMSTAT);
 
-    private final static JnhwMh_BL___A_uI EscapeCommFunction = JnhwMh_BL___A_uI.of(
+    private final static JnhwMh_BL___A_uI.ExceptionErased EscapeCommFunction = JnhwMh_BL___A_uI.mandatoryOf(
             Kernel32Loader.DLL_KERNEL32_SYMBOL_LOOKUP,
             "EscapeCommFunction",
             WinApiDataType.BOOL,
             WinApiDataType.HANDLE,
             WinApiDataType.DWORD);
 
-    private final static JnhwMh_BL___A__A GetCommModemStatus = JnhwMh_BL___A__A.of(
+    private final static JnhwMh_BL___A__A.ExceptionErased GetCommModemStatus = JnhwMh_BL___A__A.mandatoryOf(
             Kernel32Loader.DLL_KERNEL32_SYMBOL_LOOKUP,
             "GetCommModemStatus",
             WinApiDataType.BOOL,
             WinApiDataType.HANDLE,
             WinApiDataType.LPDWORD);
 
-    private final static JnhwMh_BL___A__A GetCommState = JnhwMh_BL___A__A.of(
+    private final static JnhwMh_BL___A__A.ExceptionErased GetCommState = JnhwMh_BL___A__A.mandatoryOf(
             Kernel32Loader.DLL_KERNEL32_SYMBOL_LOOKUP,
             "GetCommState",
             WinApiDataType.BOOL,
             WinApiDataType.HANDLE,
             WinApiDataType.LPDCB);
 
-    private final static JnhwMh_BL___A__A GetCommTimeouts = JnhwMh_BL___A__A.of(
+    private final static JnhwMh_BL___A__A.ExceptionErased GetCommTimeouts = JnhwMh_BL___A__A.mandatoryOf(
             Kernel32Loader.DLL_KERNEL32_SYMBOL_LOOKUP,
             "GetCommTimeouts",
             WinApiDataType.BOOL,
             WinApiDataType.HANDLE,
             WinApiDataType.LPDCB);
 
-    private final static JnhwMh_BL___A SetCommBreak = JnhwMh_BL___A.of(
+    private final static JnhwMh_BL___A.ExceptionErased SetCommBreak = JnhwMh_BL___A.mandatoryOf(
             Kernel32Loader.DLL_KERNEL32_SYMBOL_LOOKUP,
             "SetCommBreak",
             WinApiDataType.BOOL,
             WinApiDataType.HANDLE);
 
-    private final static JnhwMh_BL___A__A SetCommState = JnhwMh_BL___A__A.of(
+    private final static JnhwMh_BL___A__A.ExceptionErased SetCommState = JnhwMh_BL___A__A.mandatoryOf(
             Kernel32Loader.DLL_KERNEL32_SYMBOL_LOOKUP,
             "SetCommState",
             WinApiDataType.BOOL,
             WinApiDataType.HANDLE,
             WinApiDataType.LPDCB);
 
-    private final static JnhwMh_BL___A__A SetCommTimeouts = JnhwMh_BL___A__A.of(
+    private final static JnhwMh_BL___A__A.ExceptionErased SetCommTimeouts = JnhwMh_BL___A__A.mandatoryOf(
             Kernel32Loader.DLL_KERNEL32_SYMBOL_LOOKUP,
             "SetCommTimeouts",
             WinApiDataType.BOOL,
             WinApiDataType.HANDLE,
             WinApiDataType.LPDCB);
 
-    private final static JnhwMh_BL___A_uI SetFileCompletionNotificationModes = JnhwMh_BL___A_uI.of(
+    private final static JnhwMh_BL___A_uI.ExceptionErased SetFileCompletionNotificationModes = JnhwMh_BL___A_uI.mandatoryOf(
             Kernel32Loader.DLL_KERNEL32_SYMBOL_LOOKUP,
             "SetFileCompletionNotificationModes",
             WinApiDataType.BOOL,

@@ -30,6 +30,7 @@ import de.ibapl.jnhw.common.downcall.JnhwMh_uI___A_uI_BL;
 import de.ibapl.jnhw.common.downcall.JnhwMh_uI__uI__A_BL_uI;
 import de.ibapl.jnhw.common.downcall.JnhwMh_uI__uI__A_BL_uI_BL;
 import de.ibapl.jnhw.common.downcall.JnhwMh_uI__uI_sI;
+import de.ibapl.jnhw.common.downcall.JnhwMh_uL__uI_BL;
 import de.ibapl.jnhw.common.exception.NativeErrorException;
 import de.ibapl.jnhw.util.winapi.Kernel32Loader;
 import de.ibapl.jnhw.util.winapi.WinApiDataType;
@@ -50,7 +51,7 @@ import java.lang.foreign.MemorySession;
 @Include("synchapi.h")
 public abstract class Synchapi {
 
-    private final static JnhwMh_MA___A_BL_BL__A CreateEventW = JnhwMh_MA___A_BL_BL__A.of(
+    private final static JnhwMh_MA___A_BL_BL__A.ExceptionErased CreateEventW = JnhwMh_MA___A_BL_BL__A.mandatoryOf(
             Kernel32Loader.DLL_KERNEL32_SYMBOL_LOOKUP,
             "CreateEventW",
             WinApiDataType.HANDLE,
@@ -59,26 +60,26 @@ public abstract class Synchapi {
             WinApiDataType.BOOL,
             WinApiDataType.LPCWSTR);
 
-    private final static JnhwMh_BL___A ResetEvent = JnhwMh_BL___A.of(
+    private final static JnhwMh_BL___A.ExceptionErased ResetEvent = JnhwMh_BL___A.mandatoryOf(
             Kernel32Loader.DLL_KERNEL32_SYMBOL_LOOKUP,
             "ResetEvent",
             WinApiDataType.BOOL,
             WinApiDataType.HANDLE);
 
-    private final static JnhwMh_BL___A SetEvent = JnhwMh_BL___A.of(
+    private final static JnhwMh_BL___A.ExceptionErased SetEvent = JnhwMh_BL___A.mandatoryOf(
             Kernel32Loader.DLL_KERNEL32_SYMBOL_LOOKUP,
             "SetEvent",
             WinApiDataType.BOOL,
             WinApiDataType.HANDLE);
 
-    private final static JnhwMh_uI__uI_sI SleepEx = JnhwMh_uI__uI_sI.of(
+    private final static JnhwMh_uL__uI_BL.ExceptionErased SleepEx = JnhwMh_uL__uI_BL.mandatoryOf(
             Kernel32Loader.DLL_KERNEL32_SYMBOL_LOOKUP,
             "SleepEx",
             WinApiDataType.DWORD,
             WinApiDataType.DWORD,
             WinApiDataType.BOOL);
 
-    private final static JnhwMh_uI__uI__A_BL_uI WaitForMultipleObjects = JnhwMh_uI__uI__A_BL_uI.of(
+    private final static JnhwMh_uI__uI__A_BL_uI.ExceptionErased WaitForMultipleObjects = JnhwMh_uI__uI__A_BL_uI.mandatoryOf(
             Kernel32Loader.DLL_KERNEL32_SYMBOL_LOOKUP,
             "WaitForMultipleObjects",
             WinApiDataType.DWORD,
@@ -87,7 +88,7 @@ public abstract class Synchapi {
             WinApiDataType.BOOL,
             WinApiDataType.DWORD);
 
-    private final static JnhwMh_uI__uI__A_BL_uI_BL WaitForMultipleObjectsEx = JnhwMh_uI__uI__A_BL_uI_BL.of(
+    private final static JnhwMh_uI__uI__A_BL_uI_BL.ExceptionErased WaitForMultipleObjectsEx = JnhwMh_uI__uI__A_BL_uI_BL.mandatoryOf(
             Kernel32Loader.DLL_KERNEL32_SYMBOL_LOOKUP,
             "WaitForMultipleObjectsEx",
             WinApiDataType.DWORD,
@@ -97,14 +98,14 @@ public abstract class Synchapi {
             WinApiDataType.DWORD,
             WinApiDataType.BOOL);
 
-    private final static JnhwMh_uI___A_uI WaitForSingleObject = JnhwMh_uI___A_uI.of(
+    private final static JnhwMh_uI___A_uI.ExceptionErased WaitForSingleObject = JnhwMh_uI___A_uI.mandatoryOf(
             Kernel32Loader.DLL_KERNEL32_SYMBOL_LOOKUP,
             "WaitForSingleObject",
             WinApiDataType.DWORD,
             WinApiDataType.HANDLE,
             WinApiDataType.DWORD);
 
-    private final static JnhwMh_uI___A_uI_BL WaitForSingleObjectEx = JnhwMh_uI___A_uI_BL.of(
+    private final static JnhwMh_uI___A_uI_BL.ExceptionErased WaitForSingleObjectEx = JnhwMh_uI___A_uI_BL.mandatoryOf(
             Kernel32Loader.DLL_KERNEL32_SYMBOL_LOOKUP,
             "WaitForSingleObjectEx",
             WinApiDataType.DWORD,
@@ -202,7 +203,7 @@ public abstract class Synchapi {
         if ((dwMilliseconds < 0) && (dwMilliseconds != Winbase.INFINITE)) {
             throw new IllegalArgumentException("dwMilliseconds < 0");
         }
-        return SleepEx.invoke_uL__uI__B((int) dwMilliseconds, bAlertable);
+        return SleepEx.invoke_uL__uI_BL((int) dwMilliseconds, bAlertable);
     }
 
     /**

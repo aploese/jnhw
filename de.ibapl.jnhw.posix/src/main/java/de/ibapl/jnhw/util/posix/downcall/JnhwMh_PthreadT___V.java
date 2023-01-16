@@ -23,6 +23,8 @@ package de.ibapl.jnhw.util.posix.downcall;
 
 import de.ibapl.jnhw.common.datatypes.BaseDataType;
 import de.ibapl.jnhw.common.downcall.JnhwMethodHandle;
+import de.ibapl.jnhw.common.downcall.Util;
+import de.ibapl.jnhw.common.exception.NoSuchNativeMethodException;
 import de.ibapl.jnhw.common.util.NativeProvider;
 import de.ibapl.jnhw.posix.Pthread;
 import de.ibapl.jnhw.util.posix.downcall.foreign.JnhwMi_PthreadTI___V;
@@ -31,6 +33,7 @@ import de.ibapl.jnhw.util.posix.downcall.foreign.JnhwMi_PthreadTMA___V;
 import de.ibapl.jnhw.util.posix.downcall.jni.JniMi_PthreadTI___V;
 import de.ibapl.jnhw.util.posix.downcall.jni.JniMi_PthreadTL___V;
 import de.ibapl.jnhw.util.posix.downcall.jni.JniMi_PthreadTMA___V;
+import java.lang.foreign.MemorySegment;
 import java.lang.foreign.MemorySession;
 import java.lang.foreign.SymbolLookup;
 
@@ -40,25 +43,47 @@ import java.lang.foreign.SymbolLookup;
  */
 public interface JnhwMh_PthreadT___V extends JnhwMethodHandle {
 
-    static JnhwMh_PthreadT___V of(SymbolLookup symbolLookup, String name, BaseDataType result) {
+    @FunctionalInterface
+    interface ExceptionErased extends JnhwMh_PthreadT___V {
+
+        @Override
+        Pthread.Pthread_t invoke_PthreadT___V(MemorySession ms);
+    }
+
+    static JnhwMh_PthreadT___V.ExceptionErased mandatoryOf(SymbolLookup symbolLookup, String name, BaseDataType result) {
+        return Util.buidExistingMethod(symbolLookup,
+                name,
+                (oms) -> of(oms, name, result));
+    }
+
+    static JnhwMh_PthreadT___V optionalOf(SymbolLookup symbolLookup, String name, BaseDataType result) {
+        return Util.buidOptionalMethod(symbolLookup,
+                name,
+                (oms) -> of(oms, name, result),
+                () -> (JnhwMh_PthreadT___V) (ms) -> {
+                    throw new NoSuchNativeMethodException(name);
+                });
+    }
+
+    static JnhwMh_PthreadT___V.ExceptionErased of(MemorySegment memoryAddress, String name, BaseDataType result) {
         return switch (result) {
             case uint32_t ->
                 NativeProvider.getProvider(
-                () -> new JnhwMi_PthreadTI___V(symbolLookup, name),
-                () -> new JniMi_PthreadTI___V(symbolLookup, name));
+                () -> new JnhwMi_PthreadTI___V(memoryAddress, name),
+                () -> new JniMi_PthreadTI___V(memoryAddress, name));
             case uint64_t ->
                 NativeProvider.getProvider(
-                () -> new JnhwMi_PthreadTL___V(symbolLookup, name),
-                () -> new JniMi_PthreadTL___V(symbolLookup, name));
+                () -> new JnhwMi_PthreadTL___V(memoryAddress, name),
+                () -> new JniMi_PthreadTL___V(memoryAddress, name));
             case uintptr_t, intptr_t ->
                 NativeProvider.getProvider(
-                () -> new JnhwMi_PthreadTMA___V(symbolLookup, name),
-                () -> new JniMi_PthreadTMA___V(symbolLookup, name));
+                () -> new JnhwMi_PthreadTMA___V(memoryAddress, name),
+                () -> new JniMi_PthreadTMA___V(memoryAddress, name));
             default ->
-                throw new AssertionError("result unexpected data type: " + name + " " + result);
+                throw new IllegalArgumentException("result unexpected data type: " + name + " " + result);
         };
     }
 
-    Pthread.Pthread_t invoke_PthreadT___V(MemorySession ms);
+    Pthread.Pthread_t invoke_PthreadT___V(MemorySession ms) throws NoSuchNativeMethodException;
 
 }

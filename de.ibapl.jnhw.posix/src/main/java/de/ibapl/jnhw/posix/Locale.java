@@ -36,7 +36,7 @@ import de.ibapl.jnhw.common.memory.layout.Alignment;
 import de.ibapl.jnhw.common.util.JsonStringBuilder;
 import de.ibapl.jnhw.libloader.MultiarchInfo;
 import de.ibapl.jnhw.libloader.MultiarchTupelBuilder;
-import de.ibapl.jnhw.util.posix.LibcLoader;
+import de.ibapl.jnhw.libloader.librarys.LibcLoader;
 import de.ibapl.jnhw.util.posix.PosixDataType;
 import de.ibapl.jnhw.util.posix.memory.PosixStruct;
 import java.io.IOException;
@@ -131,9 +131,9 @@ public class Locale {
          */
         static {
             switch (MultiarchTupelBuilder.getOS()) {
-                case LINUX:
+                case LINUX -> {
                     switch (MultiarchTupelBuilder.getMemoryModel()) {
-                        case ILP32:
+                        case ILP32 -> {
                             alignof = Alignment.AT_4;
                             sizeof = 56;
                             offsetof_Currency_symbol = 16;
@@ -160,8 +160,8 @@ public class Locale {
                             offsetof_P_sep_by_space = 43;
                             offsetof_P_sign_posn = 46;
                             offsetof_Thousands_sep = 4;
-                            break;
-                        case LP64:
+                        }
+                        case LP64 -> {
                             alignof = Alignment.AT_8;
                             sizeof = 96;
                             offsetof_Currency_symbol = 32;
@@ -188,13 +188,12 @@ public class Locale {
                             offsetof_P_sep_by_space = 83;
                             offsetof_P_sign_posn = 86;
                             offsetof_Thousands_sep = 8;
-                            break;
-                        default:
+                        }
+                        default ->
                             throw new NoClassDefFoundError("No locale.h linux defines for " + MultiarchTupelBuilder.getMultiarch());
                     }
-                    break;
-                case DARWIN:
-                case FREE_BSD:
+                }
+                case DARWIN, FREE_BSD -> {
                     alignof = Alignment.AT_8;
                     sizeof = 96;
                     offsetof_Currency_symbol = 32;
@@ -221,8 +220,8 @@ public class Locale {
                     offsetof_P_sep_by_space = 83;
                     offsetof_P_sign_posn = 86;
                     offsetof_Thousands_sep = 8;
-                    break;
-                case OPEN_BSD:
+                }
+                case OPEN_BSD -> {
                     alignof = Alignment.AT_8;
                     sizeof = 96;
                     offsetof_Currency_symbol = 32;
@@ -249,8 +248,8 @@ public class Locale {
                     offsetof_P_sep_by_space = 83;
                     offsetof_P_sign_posn = 86;
                     offsetof_Thousands_sep = 8;
-                    break;
-                default:
+                }
+                default ->
                     throw new NoClassDefFoundError("No locale.h OS defines for " + MultiarchTupelBuilder.getMultiarch());
             }
         }
@@ -843,23 +842,23 @@ public class Locale {
         }
     }
 
-    private final static JnhwMh_MA___A duplocale = JnhwMh_MA___A.of(
+    private final static JnhwMh_MA___A.ExceptionErased duplocale = JnhwMh_MA___A.mandatoryOf(
             LibcLoader.LIB_C_SYMBOL_LOOKUP,
             "duplocale",
             PosixDataType.locale_t,
             PosixDataType.locale_t);
 
-    private final static JnhwMh__V___A freelocale = JnhwMh__V___A.of(
+    private final static JnhwMh__V___A.ExceptionErased freelocale = JnhwMh__V___A.mandatoryOf(
             LibcLoader.LIB_C_SYMBOL_LOOKUP,
             "freelocale",
             PosixDataType.locale_t);
 
-    private final static JnhwMh_MA___V localeconv = JnhwMh_MA___V.of(
+    private final static JnhwMh_MA___V.ExceptionErased localeconv = JnhwMh_MA___V.mandatoryOf(
             LibcLoader.LIB_C_SYMBOL_LOOKUP,
             "localeconv",
             BaseDataType.C_pointer);
 
-    private final static JnhwMh_MA__sI__A__A newlocale = JnhwMh_MA__sI__A__A.of(
+    private final static JnhwMh_MA__sI__A__A.ExceptionErased newlocale = JnhwMh_MA__sI__A__A.mandatoryOf(
             LibcLoader.LIB_C_SYMBOL_LOOKUP,
             "newlocale",
             PosixDataType.locale_t,
@@ -867,14 +866,14 @@ public class Locale {
             BaseDataType.C_const_char_pointer,
             PosixDataType.locale_t);
 
-    private final static JnhwMh_MA__sI__A setlocale = JnhwMh_MA__sI__A.of(
+    private final static JnhwMh_MA__sI__A.ExceptionErased setlocale = JnhwMh_MA__sI__A.mandatoryOf(
             LibcLoader.LIB_C_SYMBOL_LOOKUP,
             "setlocale",
             BaseDataType.C_char_pointer,
             BaseDataType.C_int,
             BaseDataType.C_const_char_pointer);
 
-    private final static JnhwMh_MA___A uselocale = JnhwMh_MA___A.of(
+    private final static JnhwMh_MA___A.ExceptionErased uselocale = JnhwMh_MA___A.mandatoryOf(
             LibcLoader.LIB_C_SYMBOL_LOOKUP,
             "uselocale",
             PosixDataType.locale_t,

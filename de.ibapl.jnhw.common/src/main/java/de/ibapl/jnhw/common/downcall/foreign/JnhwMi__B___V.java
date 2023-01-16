@@ -23,17 +23,18 @@ package de.ibapl.jnhw.common.downcall.foreign;
 
 import de.ibapl.jnhw.common.downcall.JnhwMh_sB___V;
 import java.lang.foreign.FunctionDescriptor;
-import java.lang.foreign.SymbolLookup;
+import java.lang.foreign.MemorySegment;
+
 import java.lang.foreign.ValueLayout;
 
 /**
  *
  * @author aploese
  */
-public class JnhwMi__B___V extends JnhwMethodInvoker implements JnhwMh_sB___V {
+public class JnhwMi__B___V extends JnhwMethodInvoker implements JnhwMh_sB___V.ExceptionErased {
 
-    public JnhwMi__B___V(SymbolLookup symbolLookup, String name) {
-        super(symbolLookup, name, FunctionDescriptor.of(ValueLayout.JAVA_BYTE));
+    public JnhwMi__B___V(MemorySegment methodAddress, String name) {
+        super(methodAddress, name, FunctionDescriptor.of(ValueLayout.JAVA_BYTE));
     }
 
     @Override

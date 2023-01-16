@@ -44,7 +44,7 @@ import de.ibapl.jnhw.common.util.JsonStringBuilder;
 import de.ibapl.jnhw.libloader.MultiarchTupelBuilder;
 import de.ibapl.jnhw.posix.Signal.Sigevent;
 import de.ibapl.jnhw.posix.Time.Timespec;
-import de.ibapl.jnhw.util.posix.LibrtLoader;
+import de.ibapl.jnhw.libloader.librarys.LibrtLoader;
 import de.ibapl.jnhw.util.posix.PosixDataType;
 import de.ibapl.jnhw.util.posix.memory.PosixStruct;
 import java.io.IOException;
@@ -52,6 +52,7 @@ import java.lang.foreign.MemoryAddress;
 import java.lang.foreign.MemorySegment;
 import java.lang.foreign.MemorySession;
 import java.nio.ByteBuffer;
+import java.util.Optional;
 
 /**
  * Wrapper around the {@code <aio.h>} header.
@@ -84,9 +85,9 @@ public class Aio {
 
         static {
             switch (MultiarchTupelBuilder.getOS()) {
-                case LINUX:
+                case LINUX -> {
                     switch (MultiarchTupelBuilder.getMemoryModel()) {
-                        case ILP32:
+                        case ILP32 -> {
                             offsetof_Aio_fildes = 0;
                             offsetof_Aio_offset = 104;
                             offsetof_Aio_buf = 12;
@@ -96,8 +97,8 @@ public class Aio {
                             offsetof_Aio_lio_opcode = 4;
                             alignof = Alignment.AT_4;
                             sizeof = 144;
-                            break;
-                        case LP64:
+                        }
+                        case LP64 -> {
                             offsetof_Aio_fildes = 0;
                             offsetof_Aio_offset = 128;
                             offsetof_Aio_buf = 16;
@@ -107,12 +108,12 @@ public class Aio {
                             offsetof_Aio_lio_opcode = 4;
                             alignof = Alignment.AT_8;
                             sizeof = 168;
-                            break;
-                        default:
+                        }
+                        default ->
                             throw new NoClassDefFoundError("No aio.h defines for " + MultiarchTupelBuilder.getMultiarch());
                     }
-                    break;
-                case DARWIN:
+                }
+                case DARWIN -> {
                     offsetof_Aio_fildes = 0;
                     offsetof_Aio_offset = 8;
                     offsetof_Aio_buf = 16;
@@ -122,8 +123,8 @@ public class Aio {
                     offsetof_Aio_lio_opcode = 72;
                     alignof = Alignment.AT_8;
                     sizeof = 80;
-                    break;
-                case FREE_BSD:
+                }
+                case FREE_BSD -> {
                     offsetof_Aio_fildes = 0;
                     offsetof_Aio_offset = 8;
                     offsetof_Aio_buf = 16;
@@ -133,8 +134,8 @@ public class Aio {
                     offsetof_Aio_lio_opcode = 48;
                     alignof = Alignment.AT_8;
                     sizeof = 160;
-                    break;
-                case OPEN_BSD:
+                }
+                case OPEN_BSD -> {
                     offsetof_Aio_fildes = -1;
                     offsetof_Aio_offset = -1;
                     offsetof_Aio_buf = -1;
@@ -144,8 +145,8 @@ public class Aio {
                     offsetof_Aio_lio_opcode = -1;
                     alignof = null;
                     sizeof = 0;
-                    break;
-                default:
+                }
+                default ->
                     throw new NoClassDefFoundError("No aio.h OS defines for " + MultiarchTupelBuilder.getMultiarch());
             }
         }
@@ -655,7 +656,7 @@ public class Aio {
      */
     static {
         switch (MultiarchTupelBuilder.getOS()) {
-            case LINUX:
+            case LINUX -> {
                 HAVE_AIO_H = true;
                 AIO_ALLDONE = IntDefine.toIntDefine(LinuxDefines.AIO_ALLDONE);
                 AIO_CANCELED = IntDefine.toIntDefine(LinuxDefines.AIO_CANCELED);
@@ -665,8 +666,8 @@ public class Aio {
                 LIO_READ = IntDefine.toIntDefine(LinuxDefines.LIO_READ);
                 LIO_WAIT = IntDefine.toIntDefine(LinuxDefines.LIO_WAIT);
                 LIO_WRITE = IntDefine.toIntDefine(LinuxDefines.LIO_WRITE);
-                break;
-            case DARWIN:
+            }
+            case DARWIN -> {
                 HAVE_AIO_H = true;
                 AIO_ALLDONE = IntDefine.toIntDefine(DarwinDefines.AIO_ALLDONE);
                 AIO_CANCELED = IntDefine.toIntDefine(DarwinDefines.AIO_CANCELED);
@@ -676,8 +677,8 @@ public class Aio {
                 LIO_READ = IntDefine.toIntDefine(DarwinDefines.LIO_READ);
                 LIO_WAIT = IntDefine.toIntDefine(DarwinDefines.LIO_WAIT);
                 LIO_WRITE = IntDefine.toIntDefine(DarwinDefines.LIO_WRITE);
-                break;
-            case FREE_BSD:
+            }
+            case FREE_BSD -> {
                 HAVE_AIO_H = true;
                 AIO_ALLDONE = IntDefine.toIntDefine(FreeBsdDefines.AIO_ALLDONE);
                 AIO_CANCELED = IntDefine.toIntDefine(FreeBsdDefines.AIO_CANCELED);
@@ -687,9 +688,8 @@ public class Aio {
                 LIO_READ = IntDefine.toIntDefine(FreeBsdDefines.LIO_READ);
                 LIO_WAIT = IntDefine.toIntDefine(FreeBsdDefines.LIO_WAIT);
                 LIO_WRITE = IntDefine.toIntDefine(FreeBsdDefines.LIO_WRITE);
-                break;
-            case OPEN_BSD:
-            case WINDOWS:
+            }
+            case OPEN_BSD, WINDOWS -> {
                 HAVE_AIO_H = false;
                 AIO_ALLDONE = IntDefine.UNDEFINED;
                 AIO_CANCELED = IntDefine.UNDEFINED;
@@ -699,45 +699,45 @@ public class Aio {
                 LIO_READ = IntDefine.UNDEFINED;
                 LIO_WAIT = IntDefine.UNDEFINED;
                 LIO_WRITE = IntDefine.UNDEFINED;
-                break;
-            default:
+            }
+            default ->
                 throw new NoClassDefFoundError("No aio.h defines for " + MultiarchTupelBuilder.getMultiarch());
         }
     }
 
-    private final static JnhwMh_sI__sI__A aio_cancel = JnhwMh_sI__sI__A.ofOrNull(
+    private final static JnhwMh_sI__sI__A aio_cancel = JnhwMh_sI__sI__A.optionalOf(
             LibrtLoader.LIB_RT_SYMBOL_LOOKUP,
             "aio_cancel",
             BaseDataType.C_int,
             BaseDataType.C_int,
             BaseDataType.C_struct_pointer);
 
-    private final static JnhwMh_sI___A aio_error = JnhwMh_sI___A.ofOrNull(
+    private final static JnhwMh_sI___A aio_error = JnhwMh_sI___A.optionalOf(
             LibrtLoader.LIB_RT_SYMBOL_LOOKUP,
             "aio_error",
             BaseDataType.C_int,
             BaseDataType.C_const_struct_pointer);
 
-    private final static JnhwMh_sI__sI__A aio_fsync = JnhwMh_sI__sI__A.ofOrNull(
+    private final static JnhwMh_sI__sI__A aio_fsync = JnhwMh_sI__sI__A.optionalOf(
             LibrtLoader.LIB_RT_SYMBOL_LOOKUP,
             "aio_fsync",
             BaseDataType.C_int,
             BaseDataType.C_int,
             BaseDataType.C_struct_pointer);
 
-    private final static JnhwMh_sI___A aio_read = JnhwMh_sI___A.ofOrNull(
+    private final static JnhwMh_sI___A aio_read = JnhwMh_sI___A.optionalOf(
             LibrtLoader.LIB_RT_SYMBOL_LOOKUP,
             "aio_read",
             BaseDataType.C_int,
             BaseDataType.C_struct_pointer);
 
-    private final static JnhwMh_sL___A aio_return = JnhwMh_sL___A.ofOrNull(
+    private final static JnhwMh_sL___A aio_return = JnhwMh_sL___A.optionalOf(
             LibrtLoader.LIB_RT_SYMBOL_LOOKUP,
             "aio_return",
             PosixDataType.ssize_t,
             BaseDataType.C_struct_pointer);
 
-    private final static JnhwMh_sI___A_sI__A aio_suspend = JnhwMh_sI___A_sI__A.ofOrNull(
+    private final static JnhwMh_sI___A_sI__A aio_suspend = JnhwMh_sI___A_sI__A.optionalOf(
             LibrtLoader.LIB_RT_SYMBOL_LOOKUP,
             "aio_suspend",
             BaseDataType.C_int,
@@ -745,13 +745,13 @@ public class Aio {
             BaseDataType.C_int,
             BaseDataType.C_struct_pointer);
 
-    private final static JnhwMh_sI___A aio_write = JnhwMh_sI___A.ofOrNull(
+    private final static JnhwMh_sI___A aio_write = JnhwMh_sI___A.optionalOf(
             LibrtLoader.LIB_RT_SYMBOL_LOOKUP,
             "aio_write",
             BaseDataType.C_int,
             BaseDataType.C_struct_pointer);
 
-    private final static JnhwMh_sI__sI__A_sI__A lio_listio = JnhwMh_sI__sI__A_sI__A.ofOrNull(
+    private final static JnhwMh_sI__sI__A_sI__A lio_listio = JnhwMh_sI__sI__A_sI__A.optionalOf(
             LibrtLoader.LIB_RT_SYMBOL_LOOKUP,
             "lio_listio",
             BaseDataType.C_int,
@@ -780,19 +780,11 @@ public class Aio {
      * available natively.
      */
     public final static int aio_cancel(Aiocb aiocbp) throws NativeErrorException, NoSuchNativeMethodException {
-        try {
-            final int result = aio_cancel.invoke_sI__sI__P(aiocbp.aio_fildes(), aiocbp);
-            if (result == -1) {
-                throw new NativeErrorException(Errno.errno());
-            } else {
-                return result;
-            }
-        } catch (NullPointerException npe) {
-            if (aio_cancel == null) {
-                throw new NoSuchNativeMethodException("aio_cancel");
-            } else {
-                throw npe;
-            }
+        final int result = aio_cancel.invoke_sI__sI__P(aiocbp.aio_fildes(), aiocbp);
+        if (result == -1) {
+            throw new NativeErrorException(Errno.errno());
+        } else {
+            return result;
         }
     }
 
@@ -816,19 +808,11 @@ public class Aio {
      * available natively.
      */
     public final static int aio_cancel(int fildes) throws NativeErrorException, NoSuchNativeMethodException {
-        try {
-            final int result = aio_cancel.invoke_sI__sI__P(fildes, Pointer.NULL);
-            if (result == -1) {
-                throw new NativeErrorException(Errno.errno());
-            } else {
-                return result;
-            }
-        } catch (NullPointerException npe) {
-            if (aio_cancel == null) {
-                throw new NoSuchNativeMethodException("aio_cancel");
-            } else {
-                throw npe;
-            }
+        final int result = aio_cancel.invoke_sI__sI__P(fildes, Pointer.NULL);
+        if (result == -1) {
+            throw new NativeErrorException(Errno.errno());
+        } else {
+            return result;
         }
     }
 
@@ -849,19 +833,11 @@ public class Aio {
      * available natively.
      */
     public final static int aio_error(Aiocb aiocb) throws NativeErrorException, NoSuchNativeMethodException {
-        try {
-            final int result = aio_error.invoke_sI___P(aiocb);
-            if (result == -1) {
-                throw new NativeErrorException(Errno.errno());
-            } else {
-                return result;
-            }
-        } catch (NullPointerException npe) {
-            if (aio_error == null) {
-                throw new NoSuchNativeMethodException("aio_error");
-            } else {
-                throw npe;
-            }
+        final int result = aio_error.invoke_sI___P(aiocb);
+        if (result == 0) {
+            return result;
+        } else {
+            throw new NativeErrorException(Errno.errno());
         }
     }
 
@@ -879,16 +855,8 @@ public class Aio {
      * available natively.
      */
     public final static void aio_fsync(int op, Aiocb aiocb) throws NativeErrorException, NoSuchNativeMethodException {
-        try {
-            if (aio_fsync.invoke_sI__sI__P(op, aiocb) != 0) {
-                throw new NativeErrorException(Errno.errno());
-            }
-        } catch (NullPointerException npe) {
-            if (aio_fsync == null) {
-                throw new NoSuchNativeMethodException("aio_fsync");
-            } else {
-                throw npe;
-            }
+        if (aio_fsync.invoke_sI__sI__P(op, aiocb) != 0) {
+            throw new NativeErrorException(Errno.errno());
         }
     }
 
@@ -905,16 +873,8 @@ public class Aio {
      * available natively.
      */
     public final static void aio_read(Aiocb aiocb) throws NativeErrorException, NoSuchNativeMethodException {
-        try {
-            if (aio_read.invoke_sI___P(aiocb) != 0) {
-                throw new NativeErrorException(Errno.errno());
-            }
-        } catch (NullPointerException npe) {
-            if (aio_read == null) {
-                throw new NoSuchNativeMethodException("aio_read");
-            } else {
-                throw npe;
-            }
+        if (aio_read.invoke_sI___P(aiocb) != 0) {
+            throw new NativeErrorException(Errno.errno());
         }
     }
 
@@ -935,19 +895,11 @@ public class Aio {
      */
     @ssize_t
     public final static long aio_return(Aiocb aiocb) throws NativeErrorException, NoSuchNativeMethodException {
-        try {
-            final long result = aio_return.invoke_sL___P(aiocb);
-            if (result == -1) {
-                throw new NativeErrorException(Errno.errno());
-            } else {
-                return result;
-            }
-        } catch (NullPointerException npe) {
-            if (aio_return == null) {
-                throw new NoSuchNativeMethodException("aio_return");
-            } else {
-                throw npe;
-            }
+        final long result = aio_return.invoke_sL___P(aiocb);
+        if (result == -1) {
+            throw new NativeErrorException(Errno.errno());
+        } else {
+            return result;
         }
     }
 
@@ -965,16 +917,8 @@ public class Aio {
      * available natively.
      */
     public final static void aio_suspend(Aiocbs list, Timespec timeout) throws NativeErrorException, NoSuchNativeMethodException {
-        try {
-            if (aio_suspend.invoke_sI___P_sI__P(list, list.length(), timeout) != 0) {
-                throw new NativeErrorException(Errno.errno());
-            }
-        } catch (NullPointerException npe) {
-            if (aio_suspend == null) {
-                throw new NoSuchNativeMethodException("aio_suspend");
-            } else {
-                throw npe;
-            }
+        if (aio_suspend.invoke_sI___P_sI__P(list, list.length(), timeout) != 0) {
+            throw new NativeErrorException(Errno.errno());
         }
     }
 
@@ -991,30 +935,14 @@ public class Aio {
      * available natively.
      */
     public final static void aio_write(Aiocb aiocb) throws NativeErrorException, NoSuchNativeMethodException {
-        try {
-            if (aio_write.invoke_sI___P(aiocb) != 0) {
-                throw new NativeErrorException(Errno.errno());
-            }
-        } catch (NullPointerException npe) {
-            if (aio_write == null) {
-                throw new NoSuchNativeMethodException("aio_write");
-            } else {
-                throw npe;
-            }
+        if (aio_write.invoke_sI___P(aiocb) != 0) {
+            throw new NativeErrorException(Errno.errno());
         }
     }
 
     public final static void lio_listio(int mode, Aiocbs list) throws NativeErrorException, NoSuchNativeMethodException {
-        try {
-            if (lio_listio.invoke_sI__sI__P_sI__P(mode, list, list.length(), Pointer.NULL) != 0) {
-                throw new NativeErrorException(Errno.errno());
-            }
-        } catch (NullPointerException npe) {
-            if (lio_listio == null) {
-                throw new NoSuchNativeMethodException("lio_listio");
-            } else {
-                throw npe;
-            }
+        if (lio_listio.invoke_sI__sI__P_sI__P(mode, list, list.length(), Pointer.NULL) != 0) {
+            throw new NativeErrorException(Errno.errno());
         }
     }
 
@@ -1033,16 +961,8 @@ public class Aio {
      * available natively.
      */
     public final static void lio_listio(int mode, Aiocbs list, Sigevent sig) throws NativeErrorException, NoSuchNativeMethodException {
-        try {
-            if (lio_listio.invoke_sI__sI__P_sI__P(mode, list, list.length(), sig) != 0) {
-                throw new NativeErrorException(Errno.errno());
-            }
-        } catch (NullPointerException npe) {
-            if (lio_listio == null) {
-                throw new NoSuchNativeMethodException("lio_listio");
-            } else {
-                throw npe;
-            }
+        if (lio_listio.invoke_sI__sI__P_sI__P(mode, list, list.length(), sig) != 0) {
+            throw new NativeErrorException(Errno.errno());
         }
     }
 

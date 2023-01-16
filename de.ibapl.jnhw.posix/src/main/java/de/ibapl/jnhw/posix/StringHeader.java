@@ -28,9 +28,10 @@ import de.ibapl.jnhw.common.downcall.JnhwMh_MA__sI__A;
 import de.ibapl.jnhw.common.exception.NativeErrorException;
 import de.ibapl.jnhw.common.exception.NoSuchNativeMethodException;
 import de.ibapl.jnhw.libloader.MultiarchTupelBuilder;
-import de.ibapl.jnhw.util.posix.LibcLoader;
+import de.ibapl.jnhw.libloader.librarys.LibcLoader;
 import de.ibapl.jnhw.util.posix.PosixDataType;
 import java.lang.foreign.MemoryAddress;
+import java.util.Optional;
 
 /**
  * Wrapper around the {@code <string.h>} header.
@@ -55,33 +56,28 @@ public class StringHeader {
      */
     static {
         switch (MultiarchTupelBuilder.getOS()) {
-            case DARWIN:
-            case FREE_BSD:
-            case OPEN_BSD:
-            case LINUX:
+            case DARWIN, FREE_BSD, OPEN_BSD, LINUX ->
                 HAVE_STRING_H = true;
-                break;
-            case WINDOWS:
+            case WINDOWS ->
                 HAVE_STRING_H = false;
-                break;
-            default:
+            default ->
                 throw new NoClassDefFoundError("No string.h defines for " + MultiarchTupelBuilder.getMultiarch());
         }
     }
-    private final static JnhwMh_MA__sI strerror = JnhwMh_MA__sI.of(
+    private final static JnhwMh_MA__sI.ExceptionErased strerror = JnhwMh_MA__sI.mandatoryOf(
             LibcLoader.LIB_C_SYMBOL_LOOKUP,
             "strerror",
             BaseDataType.C_char_pointer,
             BaseDataType.C_int);
 
-    private final static JnhwMh_MA__sI__A strerror_l = JnhwMh_MA__sI__A.ofOrNull(
+    private final static JnhwMh_MA__sI__A strerror_l = JnhwMh_MA__sI__A.optionalOf(
             LibcLoader.LIB_C_SYMBOL_LOOKUP,
             "strerror_l",
             BaseDataType.C_char_pointer,
             BaseDataType.C_int,
             PosixDataType.locale_t);
 
-    private final static JnhwMh_MA__sI strsignal = JnhwMh_MA__sI.of(
+    private final static JnhwMh_MA__sI.ExceptionErased strsignal = JnhwMh_MA__sI.mandatoryOf(
             LibcLoader.LIB_C_SYMBOL_LOOKUP,
             "strsignal",
             BaseDataType.C_char_pointer,
@@ -109,19 +105,11 @@ public class StringHeader {
      * available natively.
      */
     public final static String strerror_l(int errnum, Locale.Locale_t locale) throws NoSuchNativeMethodException, NativeErrorException {
-        try {
-            final MemoryAddress result = strerror_l.invoke_MA__sI__P(errnum, locale);
-            if (result == MemoryAddress.NULL) {
-                throw new NativeErrorException(Errno.errno());
-            }
-            return result.getUtf8String(0);
-        } catch (NullPointerException npe) {
-            if (strerror_l == null) {
-                throw new NoSuchNativeMethodException("strerror_l");
-            } else {
-                throw npe;
-            }
+        final MemoryAddress result = strerror_l.invoke_MA__sI__P(errnum, locale);
+        if (result == MemoryAddress.NULL) {
+            throw new NativeErrorException(Errno.errno());
         }
+        return result.getUtf8String(0);
     }
 
     /**

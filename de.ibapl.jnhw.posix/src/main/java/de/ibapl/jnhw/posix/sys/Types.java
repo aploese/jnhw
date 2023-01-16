@@ -281,16 +281,11 @@ public class Types {
      */
     static {
         switch (MultiarchTupelBuilder.getOS()) {
-            case DARWIN:
-            case FREE_BSD:
-            case LINUX:
-            case OPEN_BSD:
+            case DARWIN, FREE_BSD, LINUX, OPEN_BSD ->
                 HAVE_SYS_TYPES_H = true;
-                break;
-            case WINDOWS:
+            case WINDOWS ->
                 HAVE_SYS_TYPES_H = false;
-                break;
-            default:
+            default ->
                 throw new NoClassDefFoundError("No sys/types.h defines for " + MultiarchTupelBuilder.getMultiarch());
         }
     }

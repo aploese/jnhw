@@ -21,7 +21,7 @@
  */
 package de.ibapl.jnhw.common.downcall.jni;
 
-import java.lang.foreign.SymbolLookup;
+import java.lang.foreign.MemorySegment;
 
 /**
  *
@@ -31,8 +31,8 @@ public class JniMi__I___L__I extends JniMethodInvoker {
 
     protected final static native int invoke__I___L__I(long address, long arg1, int arg2);
 
-    public JniMi__I___L__I(SymbolLookup symbolLookup, String name) {
-        super(symbolLookup, name);
+    public JniMi__I___L__I(MemorySegment methodAddress, String name) {
+        super(methodAddress, name);
     }
 
     public int invoke_sI__uL_sI(long arg1, int arg2) {

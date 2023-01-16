@@ -56,13 +56,11 @@ public class PointerArrayTest {
     @Test
     public void testSizeofPointer() {
         switch (MultiarchTupelBuilder.getMemoryModel().sizeOf_pointer) {
-            case _32_BIT:
+            case _32_BIT ->
                 Assertions.assertEquals(4, BaseDataType.uintptr_t.SIZE_OF);
-                break;
-            case _64_BIT:
+            case _64_BIT ->
                 Assertions.assertEquals(8, BaseDataType.uintptr_t.SIZE_OF);
-                break;
-            default:
+            default ->
                 throw new RuntimeException("Unknown SizeOfPointer");
         }
     }
@@ -70,13 +68,11 @@ public class PointerArrayTest {
     @Test
     public void testAlignofPointer() {
         switch (MultiarchTupelBuilder.getMemoryModel().sizeOf_pointer) {
-            case _32_BIT:
+            case _32_BIT ->
                 Assertions.assertEquals(Alignment.AT_4, BaseDataType.uintptr_t.ALIGN_OF);
-                break;
-            case _64_BIT:
+            case _64_BIT ->
                 Assertions.assertEquals(Alignment.AT_8, BaseDataType.uintptr_t.ALIGN_OF);
-                break;
-            default:
+            default ->
                 throw new RuntimeException("Unknown SizeOfPointer");
         }
     }

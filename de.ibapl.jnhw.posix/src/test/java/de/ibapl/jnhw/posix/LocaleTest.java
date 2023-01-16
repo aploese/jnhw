@@ -66,12 +66,12 @@ public class LocaleTest {
             return;
         }
         DefinesTest.testDefines(Locale.class, "HAVE_LOCALE_H", (name) -> {
-            switch (name) {
-                case "LC_GLOBAL_LOCALE":
-                    return Locale.Locale_t.of(LibJnhwPosixTestLoader.getAdrDefine(name));
-                default:
+            return switch (name) {
+                case "LC_GLOBAL_LOCALE" ->
+                    Locale.Locale_t.of(LibJnhwPosixTestLoader.getAdrDefine(name));
+                default ->
                     throw new AssertionError();
-            }
+            };
         });
     }
 

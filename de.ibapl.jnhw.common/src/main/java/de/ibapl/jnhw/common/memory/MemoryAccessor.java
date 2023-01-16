@@ -353,57 +353,54 @@ public sealed interface MemoryAccessor permits AbstractMemoryAccessorImpl {
     void uintptr_t_AtIndex(MemorySegment mem, long index, @uintptr_t MemorySegment dest);
 
     default int getSignedIntOf(MemorySegment mem, long offset, int realSize) {
-        switch (realSize) {
-            case 1:
-                return int8_t(mem, offset);
-            case 2:
-                return int16_t(mem, offset);
-            case 4:
-                return int32_t(mem, offset);
-            default:
+        return switch (realSize) {
+            case 1 ->
+                int8_t(mem, offset);
+            case 2 ->
+                int16_t(mem, offset);
+            case 4 ->
+                int32_t(mem, offset);
+            default ->
                 throw new IllegalArgumentException("size is not supported: " + realSize);
-        }
+        };
     }
 
     default void setSignedIntOf(final MemorySegment mem, long offset, final int realSize, final int value) {
         switch (realSize) {
-            case 1:
+            case 1 -> {
                 if ((value > Byte.MAX_VALUE) || (value < Byte.MIN_VALUE)) {
                     throw new IllegalArgumentException("value outside of int8_t: " + value);
                 }
                 int8_t(mem, offset, (byte) value);
-                break;
-            case 2:
+            }
+            case 2 -> {
                 if ((value > Short.MAX_VALUE) || (value < Short.MIN_VALUE)) {
                     throw new IllegalArgumentException("value outside of int16_t: " + value);
                 }
                 int16_t(mem, offset, (short) value);
-                break;
-            case 4:
+            }
+            case 4 ->
                 int32_t(mem, offset, value);
-                break;
-            default:
+            default ->
                 throw new IllegalArgumentException("size is not supported: " + realSize);
         }
     }
 
     default void setUnsignedIntOf(final MemorySegment mem, long offset, final int realSize, final int value) {
         switch (realSize) {
-            case 1:
+            case 1 -> {
                 if (value > 0x00ff) {
                     throw new IllegalArgumentException("value too big for uint8_t: " + value);
                 } else if (value < 0) {
                     throw new IllegalArgumentException("value is negative: " + value);
                 }
                 uint8_t_FromShort(mem, offset, (short) value);
-                break;
-            case 2:
+            }
+            case 2 ->
                 uint16_t_FromInt(mem, offset, value);
-                break;
-            case 4:
+            case 4 ->
                 uint32_t(mem, offset, value);
-                break;
-            default:
+            default ->
                 throw new IllegalArgumentException("size is not supported: " + realSize);
         }
     }
@@ -420,68 +417,68 @@ public sealed interface MemoryAccessor permits AbstractMemoryAccessorImpl {
      * @return
      */
     default int getUnsignedIntOf(MemorySegment mem, long offset, int realSize) {
-        switch (realSize) {
-            case 1:
-                return uint8_t_AsShort(mem, offset);
-            case 2:
-                return uint16_t_AsInt(mem, offset);
-            case 4:
-                return uint32_t(mem, offset);
-            default:
+        return switch (realSize) {
+            case 1 ->
+                uint8_t_AsShort(mem, offset);
+            case 2 ->
+                uint16_t_AsInt(mem, offset);
+            case 4 ->
+                uint32_t(mem, offset);
+            default ->
                 throw new IllegalArgumentException("size is not supported: " + realSize);
-        }
+        };
     }
 
     default String getUnsignedIntOf_AsHex(MemorySegment mem, long offset, int realSize) {
-        switch (realSize) {
-            case 1:
-                return uint8_t_AsHex(mem, offset);
-            case 2:
-                return uint16_t_AsHex(mem, offset);
-            case 4:
-                return uint32_t_AsHex(mem, offset);
-            default:
+        return switch (realSize) {
+            case 1 ->
+                uint8_t_AsHex(mem, offset);
+            case 2 ->
+                uint16_t_AsHex(mem, offset);
+            case 4 ->
+                uint32_t_AsHex(mem, offset);
+            default ->
                 throw new IllegalArgumentException("size is not supported: " + realSize);
-        }
+        };
     }
 
     default String getSignedIntOf_AsHex(MemorySegment mem, long offset, int realSize) {
-        switch (realSize) {
-            case 1:
-                return int8_t_AsHex(mem, offset);
-            case 2:
-                return int16_t_AsHex(mem, offset);
-            case 4:
-                return int32_t_AsHex(mem, offset);
-            default:
+        return switch (realSize) {
+            case 1 ->
+                int8_t_AsHex(mem, offset);
+            case 2 ->
+                int16_t_AsHex(mem, offset);
+            case 4 ->
+                int32_t_AsHex(mem, offset);
+            default ->
                 throw new IllegalArgumentException("size is not supported: " + realSize);
-        }
+        };
     }
 
     default String getUnsignedIntOf_nativeToString(MemorySegment mem, long offset, int realSize) {
-        switch (realSize) {
-            case 1:
-                return uint8_t_nativeToString(mem, offset);
-            case 2:
-                return uint16_t_nativeToString(mem, offset);
-            case 4:
-                return uint32_t_nativeToString(mem, offset);
-            default:
+        return switch (realSize) {
+            case 1 ->
+                uint8_t_nativeToString(mem, offset);
+            case 2 ->
+                uint16_t_nativeToString(mem, offset);
+            case 4 ->
+                uint32_t_nativeToString(mem, offset);
+            default ->
                 throw new IllegalArgumentException("size is not supported: " + realSize);
-        }
+        };
     }
 
     default String getSignedIntOf_nativeToString(MemorySegment mem, long offset, int realSize) {
-        switch (realSize) {
-            case 1:
-                return int8_t_nativeToString(mem, offset);
-            case 2:
-                return int16_t_nativeToString(mem, offset);
-            case 4:
-                return int32_t_nativeToString(mem, offset);
-            default:
+        return switch (realSize) {
+            case 1 ->
+                int8_t_nativeToString(mem, offset);
+            case 2 ->
+                int16_t_nativeToString(mem, offset);
+            case 4 ->
+                int32_t_nativeToString(mem, offset);
+            default ->
                 throw new IllegalArgumentException("size is not supported: " + realSize);
-        }
+        };
     }
 
     /**
@@ -496,72 +493,70 @@ public sealed interface MemoryAccessor permits AbstractMemoryAccessorImpl {
      * @return
      */
     default long getSignedLongOf(MemorySegment mem, long offset, int realSize) {
-        switch (realSize) {
-            case 1:
-                return int8_t(mem, offset);
-            case 2:
-                return int16_t(mem, offset);
-            case 4:
-                return int32_t(mem, offset);
-            case 8:
-                return int64_t(mem, offset);
-            default:
+        return switch (realSize) {
+            case 1 ->
+                int8_t(mem, offset);
+            case 2 ->
+                int16_t(mem, offset);
+            case 4 ->
+                int32_t(mem, offset);
+            case 8 ->
+                int64_t(mem, offset);
+            default ->
                 throw new IllegalArgumentException("size is not supported: " + realSize);
-        }
+        };
     }
 
     default void setSignedLongOf(final MemorySegment mem, long offset, final int realSize, final long value) {
         switch (realSize) {
-            case 1:
+            case 1 -> {
                 if ((value > Byte.MAX_VALUE) || (value < Byte.MIN_VALUE)) {
                     throw new IllegalArgumentException("value outside of int8_t: " + value);
                 }
                 int8_t(mem, offset, (byte) value);
-                break;
-            case 2:
+            }
+            case 2 -> {
                 if ((value > Short.MAX_VALUE) || (value < Short.MIN_VALUE)) {
                     throw new IllegalArgumentException("value outside of int16_t: " + value);
                 }
                 int16_t(mem, offset, (short) value);
-                break;
-            case 4:
+            }
+            case 4 -> {
                 if ((value > Integer.MAX_VALUE) || (value < Integer.MIN_VALUE)) {
                     throw new IllegalArgumentException("value outside of int32_t: " + value);
                 }
                 int32_t(mem, offset, (int) value);
-                break;
-            case 8:
+            }
+            case 8 ->
                 int64_t(mem, offset, value);
-                break;
-            default:
+            default ->
                 throw new IllegalArgumentException("size is not supported: " + realSize);
         }
     }
 
     default void setUnsignedLongOf(final MemorySegment mem, long offset, final int realSize, final long value) {
         switch (realSize) {
-            case 1:
+            case 1 -> {
                 if (value > 0x00ff) {
                     throw new IllegalArgumentException("value too big for uint8_t: " + value);
                 }
                 uint8_t_FromShort(mem, offset, (short) value);
-                break;
-            case 2:
+            }
+            case 2 -> {
                 if (value > 0x0000ffff) {
                     throw new IllegalArgumentException("value too big for uint16_t: " + value);
                 }
                 uint16_t_FromInt(mem, offset, (int) value);
-                break;
-            case 4:
+            }
+            case 4 -> {
                 if (value > 0x00000000ffffffffL) {
                     throw new IllegalArgumentException("value too big for uint32_t: " + value);
                 }
                 uint32_t_FromLong(mem, offset, value);
-                break;
-            case 8:
+            }
+            case 8 ->
                 uint64_t(mem, offset, value);
-                break;
-            default:
+            default ->
                 throw new IllegalArgumentException("size is not supported: " + realSize);
         }
     }
@@ -578,78 +573,78 @@ public sealed interface MemoryAccessor permits AbstractMemoryAccessorImpl {
      * @return
      */
     default long getUnsignedLongOf(MemorySegment mem, long offset, int realSize) {
-        switch (realSize) {
-            case 1:
-                return uint8_t_AsShort(mem, offset);
-            case 2:
-                return uint16_t_AsInt(mem, offset);
-            case 4:
-                return uint32_t_AsLong(mem, offset);
-            case 8:
-                return uint64_t(mem, offset);
-            default:
+        return switch (realSize) {
+            case 1 ->
+                uint8_t_AsShort(mem, offset);
+            case 2 ->
+                uint16_t_AsInt(mem, offset);
+            case 4 ->
+                uint32_t_AsLong(mem, offset);
+            case 8 ->
+                uint64_t(mem, offset);
+            default ->
                 throw new IllegalArgumentException("size is not supported: " + realSize);
-        }
+        };
     }
 
     default String getUnsignedLongOf_AsHex(MemorySegment mem, long offset, int realSize) {
-        switch (realSize) {
-            case 1:
-                return uint8_t_AsHex(mem, offset);
-            case 2:
-                return uint16_t_AsHex(mem, offset);
-            case 4:
-                return uint32_t_AsHex(mem, offset);
-            case 8:
-                return uint64_t_AsHex(mem, offset);
-            default:
+        return switch (realSize) {
+            case 1 ->
+                uint8_t_AsHex(mem, offset);
+            case 2 ->
+                uint16_t_AsHex(mem, offset);
+            case 4 ->
+                uint32_t_AsHex(mem, offset);
+            case 8 ->
+                uint64_t_AsHex(mem, offset);
+            default ->
                 throw new IllegalArgumentException("size is not supported: " + realSize);
-        }
+        };
     }
 
     default String getSignedLongOf_AsHex(MemorySegment mem, long offset, int realSize) {
-        switch (realSize) {
-            case 1:
-                return int8_t_AsHex(mem, offset);
-            case 2:
-                return int16_t_AsHex(mem, offset);
-            case 4:
-                return int32_t_AsHex(mem, offset);
-            case 8:
-                return int64_t_AsHex(mem, offset);
-            default:
+        return switch (realSize) {
+            case 1 ->
+                int8_t_AsHex(mem, offset);
+            case 2 ->
+                int16_t_AsHex(mem, offset);
+            case 4 ->
+                int32_t_AsHex(mem, offset);
+            case 8 ->
+                int64_t_AsHex(mem, offset);
+            default ->
                 throw new IllegalArgumentException("size is not supported: " + realSize);
-        }
+        };
     }
 
     default String getUnsignedLongOf_nativeToString(MemorySegment mem, long offset, int realSize) {
-        switch (realSize) {
-            case 1:
-                return uint8_t_nativeToString(mem, offset);
-            case 2:
-                return uint16_t_nativeToString(mem, offset);
-            case 4:
-                return uint32_t_nativeToString(mem, offset);
-            case 8:
-                return uint64_t_nativeToString(mem, offset);
-            default:
+        return switch (realSize) {
+            case 1 ->
+                uint8_t_nativeToString(mem, offset);
+            case 2 ->
+                uint16_t_nativeToString(mem, offset);
+            case 4 ->
+                uint32_t_nativeToString(mem, offset);
+            case 8 ->
+                uint64_t_nativeToString(mem, offset);
+            default ->
                 throw new IllegalArgumentException("size is not supported: " + realSize);
-        }
+        };
     }
 
     default String getSignedLongOf_nativeToString(MemorySegment mem, long offset, int realSize) {
-        switch (realSize) {
-            case 1:
-                return int8_t_nativeToString(mem, offset);
-            case 2:
-                return int16_t_nativeToString(mem, offset);
-            case 4:
-                return int32_t_nativeToString(mem, offset);
-            case 8:
-                return int64_t_nativeToString(mem, offset);
-            default:
+        return switch (realSize) {
+            case 1 ->
+                int8_t_nativeToString(mem, offset);
+            case 2 ->
+                int16_t_nativeToString(mem, offset);
+            case 4 ->
+                int32_t_nativeToString(mem, offset);
+            case 8 ->
+                int64_t_nativeToString(mem, offset);
+            default ->
                 throw new IllegalArgumentException("size is not supported: " + realSize);
-        }
+        };
     }
 
     /**

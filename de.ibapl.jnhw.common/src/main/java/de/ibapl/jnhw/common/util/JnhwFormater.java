@@ -41,9 +41,10 @@ public class JnhwFormater {
      */
     public static String formatAddress(MemoryAddress address) {
         switch (POINTER_SIZE) {
-            case _64_BIT:
+            case _64_BIT -> {
                 return String.format("0x%016x", address.toRawLongValue());
-            case _32_BIT:
+            }
+            case _32_BIT -> {
                 final long upper32 = address.toRawLongValue() & 0xFFFFFFFF00000000L;
                 final long lower32 = address.toRawLongValue() & 0x00000000FFFFFFFFL;
                 if (upper32 == 0L) {
@@ -52,7 +53,8 @@ public class JnhwFormater {
                     //Error?? on 32 bit we got the upper 32 set??
                     return String.format("0x(!>>>)%08x(<<<!)%08x", upper32 >>> 32, lower32);
                 }
-            default:
+            }
+            default ->
                 throw new RuntimeException("UnknownWordsize");
         }
 

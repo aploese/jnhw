@@ -30,7 +30,8 @@ import de.ibapl.jnhw.common.exception.NoSuchNativeMethodException;
 import de.ibapl.jnhw.libloader.MultiarchTupelBuilder;
 import de.ibapl.jnhw.posix.Errno;
 import de.ibapl.jnhw.posix.Signal;
-import de.ibapl.jnhw.util.posix.LibcLoader;
+import de.ibapl.jnhw.libloader.librarys.LibcLoader;
+import java.util.Optional;
 
 /**
  * Wrapper around the {@code  <ucontext.h>} header.
@@ -41,49 +42,28 @@ import de.ibapl.jnhw.util.posix.LibcLoader;
 @Include("#include <ucontext.h>")
 public class Ucontext {
 
-    public final static boolean HAVE_UCONTEXT_H;
+    public final static boolean HAVE_UCONTEXT_H = switch (MultiarchTupelBuilder.getOS()) {
+        case DARWIN, OPEN_BSD ->
+            false;
+        case FREE_BSD, LINUX ->
+            true;
+        default ->
+            throw new NoClassDefFoundError("No ucontext.h defines for " + MultiarchTupelBuilder.getMultiarch());
+    };
 
-    /**
-     * Make sure the native lib is loaded
-     *
-     * @implNote The actual value for the define fields are injected by
-     * initFields. The static initialization block is used to set the value here
-     * to communicate that this static final fields are not statically foldable.
-     * {
-     * @see String#COMPACT_STRINGS}
-     */
-    static {
-        switch (MultiarchTupelBuilder.getOS()) {
-            case DARWIN:
-                HAVE_UCONTEXT_H = false;
-                break;
-            case FREE_BSD:
-                HAVE_UCONTEXT_H = true;
-                break;
-            case LINUX:
-                HAVE_UCONTEXT_H = true;
-                break;
-            case OPEN_BSD:
-                HAVE_UCONTEXT_H = false;
-                break;
-            default:
-                throw new NoClassDefFoundError("No ucontext.h defines for " + MultiarchTupelBuilder.getMultiarch());
-        }
-    }
-
-    private final static JnhwMh_sI___A getcontext = JnhwMh_sI___A.ofOrNull(
+    private final static JnhwMh_sI___A getcontext = JnhwMh_sI___A.optionalOf(
             LibcLoader.LIB_C_SYMBOL_LOOKUP,
             "getcontext",
             BaseDataType.C_int,
             BaseDataType.C_const_struct_pointer);
 
-    private final static JnhwMh_sI___A setcontext = JnhwMh_sI___A.ofOrNull(
+    private final static JnhwMh_sI___A setcontext = JnhwMh_sI___A.optionalOf(
             LibcLoader.LIB_C_SYMBOL_LOOKUP,
             "setcontext",
             BaseDataType.C_int,
             BaseDataType.C_const_struct_pointer);
 
-    private final static JnhwMh_sI___A__A swapcontext = JnhwMh_sI___A__A.ofOrNull(
+    private final static JnhwMh_sI___A__A swapcontext = JnhwMh_sI___A__A.optionalOf(
             LibcLoader.LIB_C_SYMBOL_LOOKUP,
             "swapcontext",
             BaseDataType.C_int,
@@ -94,16 +74,8 @@ public class Ucontext {
      * Get user context and store it in variable pointed to by UCP.
      */
     public final static void getcontext(Signal.Ucontext_t ucp) throws NativeErrorException, NoSuchNativeMethodException {
-        try {
-            if (getcontext.invoke_sI___P(ucp) != 0) {
-                throw new NativeErrorException(Errno.errno());
-            }
-        } catch (NullPointerException npe) {
-            if (getcontext == null) {
-                throw new NoSuchNativeMethodException("getcontext");
-            } else {
-                throw npe;
-            }
+        if (getcontext.invoke_sI___P(ucp) != 0) {
+            throw new NativeErrorException(Errno.errno());
         }
     }
 
@@ -111,14 +83,8 @@ public class Ucontext {
      * Set user context from information of variable pointed to by UCP.
      */
     final static void setcontext(final Signal.Ucontext_t ucp) throws NativeErrorException, NoSuchNativeMethodException {
-        try {
-            if (setcontext.invoke_sI___P(ucp) != 0) {
-                throw new NativeErrorException(Errno.errno());
-            }
-        } catch (NullPointerException npe) {
-            if (setcontext == null) {
-                throw new NoSuchNativeMethodException("setcontext");
-            }
+        if (setcontext.invoke_sI___P(ucp) != 0) {
+            throw new NativeErrorException(Errno.errno());
         }
     }
 
@@ -127,14 +93,8 @@ public class Ucontext {
      * context from variable pointed to by UCP.
      */
     final static void swapcontext(Signal.Ucontext_t oucp, final Signal.Ucontext_t ucp) throws NativeErrorException, NoSuchNativeMethodException {
-        try {
-            if (swapcontext.invoke_sI___P__P(oucp, ucp) != 0) {
-                throw new NativeErrorException(Errno.errno());
-            }
-        } catch (NullPointerException npe) {
-            if (swapcontext == null) {
-                throw new NoSuchNativeMethodException("swapcontext");
-            }
+        if (swapcontext.invoke_sI___P__P(oucp, ucp) != 0) {
+            throw new NativeErrorException(Errno.errno());
         }
     }
 

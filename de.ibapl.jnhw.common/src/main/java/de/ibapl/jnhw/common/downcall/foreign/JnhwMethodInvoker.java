@@ -26,10 +26,9 @@ import java.lang.foreign.FunctionDescriptor;
 import java.lang.foreign.Linker;
 import java.lang.foreign.MemorySegment;
 import java.lang.foreign.MemorySession;
-import java.lang.foreign.SymbolLookup;
+
 import java.lang.invoke.MethodHandle;
-import java.util.NoSuchElementException;
-import java.util.Optional;
+import java.util.Objects;
 
 /**
  *
@@ -40,28 +39,36 @@ public abstract class JnhwMethodInvoker {
     public final static Linker NATIVE_LINKER = Linker.nativeLinker();
 
     protected final MethodHandle methodHandle;
-    private final MemorySegment ns;
+    private final MemorySegment methodAddress;
     private final String name;
 
-    public JnhwMethodInvoker(SymbolLookup symbolLookup, String name, FunctionDescriptor fd) {
-        this.name = name;
-        final Optional<MemorySegment> oms = symbolLookup.lookup(name);
-        if (oms.isEmpty()) {
-            throw new NoSuchElementException("Native symbol: \"" + name + "\" not found!");
+    public JnhwMethodInvoker(MemorySegment methodAddress, String name, FunctionDescriptor fd) {
+        if (methodAddress == null) {
+            throw new IllegalArgumentException("methodAddress of: \"" + name + "\" is null!");
         }
-        ns = oms.get();
-        methodHandle = NATIVE_LINKER.downcallHandle(ns, fd);
-    }
-
-    //TODO use MemoryAddresas instead of Addressable??
-    public JnhwMethodInvoker(Addressable srcm, FunctionDescriptor fd, MemorySession session) {
-        this.name = String.format("%s@0x%08x", getClass().getSimpleName(), srcm.address().toRawLongValue());
-        ns = MemorySegment.ofAddress(srcm.address(), 0, session); //length is 0 @see java.lang.foreign.SymbolLookup#lookup(String)
-        methodHandle = NATIVE_LINKER.downcallHandle(ns, fd);
+        this.name = name;
+        this.methodAddress = methodAddress;
+        methodHandle = NATIVE_LINKER.downcallHandle(methodAddress, fd);
     }
 
     protected RuntimeException createRuntimeExceptionInvoke(Throwable t) {
         throw new RuntimeException("Native call to: \"" + name + "=>" + methodHandle.toString() + "\" failed!", t);
+    }
+
+    @Override
+    public String toString() {
+        return "{name=\"" + name + "\"" + " ns: " + methodAddress + "}";
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(this.methodAddress);
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        return obj instanceof JnhwMethodInvoker that
+                && Objects.equals(methodAddress, that.methodAddress);
     }
 
 }

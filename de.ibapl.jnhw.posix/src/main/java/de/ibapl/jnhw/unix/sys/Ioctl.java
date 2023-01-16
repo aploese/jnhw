@@ -24,15 +24,15 @@ package de.ibapl.jnhw.unix.sys;
 import de.ibapl.jnhw.common.annotation.Define;
 import de.ibapl.jnhw.common.annotation.Include;
 import de.ibapl.jnhw.common.datatypes.BaseDataType;
-import de.ibapl.jnhw.common.downcall.JnhwMh_sI__sI_uL;
-import de.ibapl.jnhw.common.downcall.JnhwMh_sI__sI_uL__A;
+import de.ibapl.jnhw.common.downcall.JnhwMh_sI__sI_uL_VARARGS_NONE;
+import de.ibapl.jnhw.common.downcall.JnhwMh_sI__sI_uL_VARARGS__A;
 import de.ibapl.jnhw.common.exception.NativeErrorException;
 import de.ibapl.jnhw.common.memory.Int32_t;
 import de.ibapl.jnhw.common.util.IntDefine;
 import de.ibapl.jnhw.libloader.MultiarchInfo;
 import de.ibapl.jnhw.libloader.MultiarchTupelBuilder;
 import de.ibapl.jnhw.posix.Errno;
-import de.ibapl.jnhw.util.posix.LibcLoader;
+import de.ibapl.jnhw.libloader.librarys.LibcLoader;
 
 /**
  * Wrapper around the {@code  <sys/ioctl.h>} header. execute
@@ -459,7 +459,7 @@ public final class Ioctl {
      */
     static {
         switch (MultiarchTupelBuilder.getOS()) {
-            case LINUX:
+            case LINUX -> {
                 HAVE_SYS_IOCTL_H = true;
 
                 final LinuxDefines linuxDefines = new LinuxDefines(MultiarchTupelBuilder.getMultiarch());
@@ -520,10 +520,8 @@ public final class Ioctl {
                 TIOCM_ST = linuxDefines.TIOCM_ST;
                 TIOCOUTQ = linuxDefines.TIOCOUTQ;
                 TIOCSSOFTCAR = IntDefine.toIntDefine(linuxDefines.TIOCSSOFTCAR);
-                break;
-            case DARWIN:
-            case FREE_BSD:
-            case OPEN_BSD:
+            }
+            case DARWIN, FREE_BSD, OPEN_BSD -> {
                 HAVE_SYS_IOCTL_H = true;
 
                 TIOCCBRK = BsdDefines.TIOCCBRK;
@@ -578,31 +576,27 @@ public final class Ioctl {
 
                 IOCSIZE_MASK = IntDefine.UNDEFINED;
                 switch (MultiarchTupelBuilder.getOS()) {
-                    case DARWIN:
-                    case FREE_BSD:
+                    case DARWIN, FREE_BSD ->
                         IOCPARM_MAX = IntDefine.toIntDefine(FreeBsdDefines.IOCPARM_MAX);
-                        break;
-                    case OPEN_BSD:
+                    case OPEN_BSD ->
                         IOCPARM_MAX = IntDefine.toIntDefine(OpenBsdDefines.IOCPARM_MAX);
-                        break;
-                    default:
+                    default ->
                         throw new NoClassDefFoundError("No ioctl.h BSD defines for " + MultiarchTupelBuilder.getMultiarch());
                 }
-                break;
-            default:
+            }
+            default ->
                 throw new NoClassDefFoundError("No ioctl.h OS defines for " + MultiarchTupelBuilder.getMultiarch());
         }
     }
 
-    private final static JnhwMh_sI__sI_uL ioctl = JnhwMh_sI__sI_uL.of(
+    private final static JnhwMh_sI__sI_uL_VARARGS_NONE.ExceptionErased ioctl = JnhwMh_sI__sI_uL_VARARGS_NONE.mandatoryOf(
             LibcLoader.LIB_C_SYMBOL_LOOKUP,
             "ioctl",
             BaseDataType.C_int,
             BaseDataType.C_int,
             BaseDataType.C_unsigned_long_int);
 
-    //TODO introduce vaList
-    private final static JnhwMh_sI__sI_uL__A ioctl_sI__uL_VA = JnhwMh_sI__sI_uL__A.of(
+    private final static JnhwMh_sI__sI_uL_VARARGS__A.ExceptionErased ioctl_VARARG_intptr_t = JnhwMh_sI__sI_uL_VARARGS__A.mandatoryOf(
             LibcLoader.LIB_C_SYMBOL_LOOKUP,
             "ioctl",
             BaseDataType.C_int,
@@ -617,61 +611,68 @@ public final class Ioctl {
      * means userland is reading and kernel is writing.
      */
     public final static int _IO(char type, int nr) {
-        switch (MultiarchTupelBuilder.getOS()) {
-            case LINUX:
-                return _IOC(_IOC_NONE.get(), (type), (nr), 0);
-            default:
+        return switch (MultiarchTupelBuilder.getOS()) {
+            case DARWIN, FREE_BSD, OPEN_BSD ->
+                // _IO(g,n) _IOC(IOC_VOID, (g), (n), 0)
+                _IOC(IOC_VOID.get(), type, nr, 0);
+            case LINUX ->
+                _IOC(_IOC_NONE.get(), type, nr, 0);
+            default ->
                 throw new RuntimeException("No _IO in ioctl.h OS defines for " + MultiarchTupelBuilder.getMultiarch());
-        }
+        };
     }
 
     public final static int _IOC(int dir, char type, int nr, int size) {
-        switch (MultiarchTupelBuilder.getOS()) {
-            case LINUX:
-                return ((dir << _IOC_DIRSHIFT.get())
-                        | (type << _IOC_TYPESHIFT.get())
-                        | (nr << _IOC_NRSHIFT.get())
-                        | (size << _IOC_SIZESHIFT.get()));
-            default:
+        return switch (MultiarchTupelBuilder.getOS()) {
+            case DARWIN, FREE_BSD, OPEN_BSD ->
+                // _IOC(inout,group,num,len) ((unsigned long) ((inout) | (((len) & IOCPARM_MASK) << 16) | ((group) << 8) | (num)))
+                // TODO result unsigned long ???
+                dir | ((size & IOCPARM_MASK.get()) << 16) | (type << 8) | nr;
+            case LINUX ->
+                (dir << _IOC_DIRSHIFT.get())
+                | (type << _IOC_TYPESHIFT.get())
+                | (nr << _IOC_NRSHIFT.get())
+                | (size << _IOC_SIZESHIFT.get());
+            default ->
                 throw new RuntimeException("No _IOC in ioctl.h OS defines for " + MultiarchTupelBuilder.getMultiarch());
-        }
+        };
     }
 
     /* used to decode ioctl numbers.. */
     public final static int _IOC_DIR(int nr) throws NoSuchMethodException {
-        switch (MultiarchTupelBuilder.getOS()) {
-            case LINUX:
-                return ((nr >> _IOC_DIRSHIFT.get()) & _IOC_DIRMASK.get());
-            default:
+        return switch (MultiarchTupelBuilder.getOS()) {
+            case LINUX ->
+                ((nr >> _IOC_DIRSHIFT.get()) & _IOC_DIRMASK.get());
+            default ->
                 throw new NoSuchMethodException("No _IOC_DIR in ioctl.h OS defines for " + MultiarchTupelBuilder.getMultiarch());
-        }
+        };
     }
 
     public final static int _IOC_NR(int nr) throws NoSuchMethodException {
-        switch (MultiarchTupelBuilder.getOS()) {
-            case LINUX:
-                return ((nr >> _IOC_NRSHIFT.get()) & _IOC_NRMASK.get());
-            default:
+        return switch (MultiarchTupelBuilder.getOS()) {
+            case LINUX ->
+                ((nr >> _IOC_NRSHIFT.get()) & _IOC_NRMASK.get());
+            default ->
                 throw new NoSuchMethodException("No _IOC_NR in ioctl.h OS defines for " + MultiarchTupelBuilder.getMultiarch());
-        }
+        };
     }
 
     public final static int _IOC_SIZE(int nr) throws NoSuchMethodException {
-        switch (MultiarchTupelBuilder.getOS()) {
-            case LINUX:
-                return ((nr >> _IOC_SIZESHIFT.get()) & _IOC_SIZEMASK.get());
-            default:
+        return switch (MultiarchTupelBuilder.getOS()) {
+            case LINUX ->
+                ((nr >> _IOC_SIZESHIFT.get()) & _IOC_SIZEMASK.get());
+            default ->
                 throw new NoSuchMethodException("No _IOC_SIZE in ioctl.h OS defines for " + MultiarchTupelBuilder.getMultiarch());
-        }
+        };
     }
 
     public final static char _IOC_TYPE(int nr) throws NoSuchMethodException {
-        switch (MultiarchTupelBuilder.getOS()) {
-            case LINUX:
-                return (char) ((nr >> _IOC_TYPESHIFT.get()) & _IOC_TYPEMASK.get());
-            default:
+        return switch (MultiarchTupelBuilder.getOS()) {
+            case LINUX ->
+                (char) ((nr >> _IOC_TYPESHIFT.get()) & _IOC_TYPEMASK.get());
+            default ->
                 throw new NoSuchMethodException("No _IOC_TYPE in ioctl.h OS defines for " + MultiarchTupelBuilder.getMultiarch());
-        }
+        };
     }
 
     /**
@@ -683,16 +684,14 @@ public final class Ioctl {
      * @return
      */
     public final static int _IOR(char type, int nr, int size) {
-        switch (MultiarchTupelBuilder.getOS()) {
-            case LINUX:
-                return _IOC(_IOC_READ.get(), type, nr, size);
-            case DARWIN:
-            case FREE_BSD:
-            case OPEN_BSD:
-                return _IOC(IOC_OUT, type, nr, size);
-            default:
+        return switch (MultiarchTupelBuilder.getOS()) {
+            case DARWIN, FREE_BSD, OPEN_BSD ->
+                _IOC(IOC_OUT, type, nr, size);
+            case LINUX ->
+                _IOC(_IOC_READ.get(), type, nr, size);
+            default ->
                 throw new RuntimeException("OS not implememented :" + MultiarchTupelBuilder.getOS());
-        }
+        };
     }
 
     /**
@@ -704,16 +703,14 @@ public final class Ioctl {
      * @return
      */
     public final static int _IOW(char type, int nr, int size) {
-        switch (MultiarchTupelBuilder.getOS()) {
-            case LINUX:
-                return _IOC(_IOC_WRITE.get(), type, nr, size);
-            case DARWIN:
-            case FREE_BSD:
-            case OPEN_BSD:
-                return _IOC(IOC_IN, type, nr, size);
-            default:
+        return switch (MultiarchTupelBuilder.getOS()) {
+            case DARWIN, FREE_BSD, OPEN_BSD ->
+                _IOC(IOC_IN, type, nr, size);
+            case LINUX ->
+                _IOC(_IOC_WRITE.get(), type, nr, size);
+            default ->
                 throw new RuntimeException("OS not implememented :" + MultiarchTupelBuilder.getOS());
-        }
+        };
     }
 
     /**
@@ -725,49 +722,41 @@ public final class Ioctl {
      * @return
      */
     public final static int _IOWR(char type, int nr, int size) {
-        switch (MultiarchTupelBuilder.getOS()) {
-            case LINUX:
-                return _IOC(_IOC_READ.get() | _IOC_WRITE.get(), type, nr, size);
-            case DARWIN:
-            case FREE_BSD:
-            case OPEN_BSD:
-                return _IOC(IOC_INOUT, type, nr, size);
-            default:
+        return switch (MultiarchTupelBuilder.getOS()) {
+            case DARWIN, FREE_BSD, OPEN_BSD ->
+                _IOC(IOC_INOUT, type, nr, size);
+            case LINUX ->
+                _IOC(_IOC_READ.get() | _IOC_WRITE.get(), type, nr, size);
+            default ->
                 throw new RuntimeException("OS not implememented :" + MultiarchTupelBuilder.getOS());
-        }
+        };
     }
 
     public final static int IOCBASECMD(int x) throws NoSuchMethodException {
-        switch (MultiarchTupelBuilder.getOS()) {
-            case FREE_BSD:
-            case OPEN_BSD:
-            case DARWIN:
-                throw new RuntimeException("TODO Not implemented yet IOCBASECMD in ioctl.h OS defines for " + MultiarchTupelBuilder.getMultiarch());
-            default:
+        return switch (MultiarchTupelBuilder.getOS()) {
+            case DARWIN, FREE_BSD, OPEN_BSD ->
+                (x & ~(IOCPARM_MASK.get() << 16));
+            default ->
                 throw new NoSuchMethodException("No IOCBASECMD in ioctl.h OS defines for " + MultiarchTupelBuilder.getMultiarch());
-        }
+        };
     }
 
     public final static int IOCGROUP(int x) throws NoSuchMethodException {
-        switch (MultiarchTupelBuilder.getOS()) {
-            case FREE_BSD:
-            case OPEN_BSD:
-            case DARWIN:
-                throw new RuntimeException("TODO Not implemented yet IOCGROUP in ioctl.h OS defines for " + MultiarchTupelBuilder.getMultiarch());
-            default:
+        return switch (MultiarchTupelBuilder.getOS()) {
+            case DARWIN, FREE_BSD, OPEN_BSD ->
+                ((x >> 8) & 0xff);
+            default ->
                 throw new NoSuchMethodException("No IOCGROUP in ioctl.h OS defines for " + MultiarchTupelBuilder.getMultiarch());
-        }
+        };
     }
 
     public final static int IOCPARM_LEN(int x) throws NoSuchMethodException {
-        switch (MultiarchTupelBuilder.getOS()) {
-            case FREE_BSD:
-            case OPEN_BSD:
-            case DARWIN:
-                throw new RuntimeException("TODO Not implemented yet IOCPARM_LEN in ioctl.h OS defines for " + MultiarchTupelBuilder.getMultiarch());
-            default:
+        return switch (MultiarchTupelBuilder.getOS()) {
+            case DARWIN, FREE_BSD, OPEN_BSD ->
+                ((x >> 16) & IOCPARM_MASK.get());
+            default ->
                 throw new NoSuchMethodException("No IOCPARM_LEN in ioctl.h OS defines for " + MultiarchTupelBuilder.getMultiarch());
-        }
+        };
     }
 
     /**
@@ -813,7 +802,7 @@ public final class Ioctl {
      */
     //TODO introduce vaList
     public final static int ioctl(int fd, long request, Int32_t value) throws NativeErrorException {
-        final int result = ioctl_sI__uL_VA.invoke_sI__sI_uL__P(fd, request, value);
+        final int result = ioctl_VARARG_intptr_t.invoke_sI__sI_uL__P(fd, request, value);
         if (result == -1) {
             throw new NativeErrorException(Errno.errno());
         } else {

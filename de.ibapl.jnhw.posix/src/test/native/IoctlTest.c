@@ -44,7 +44,7 @@ int32_t get_IOC(int32_t arg1, uint8_t arg2, int32_t arg3, int32_t arg4) {
     return (int32_t) _IOC((uint32_t) arg1, (uint32_t) arg2, (uint32_t) arg3, (uint32_t) arg4);
 }
 
-int32_t* tryGet_IOC_DIR(int32_t* result, int32_t arg1) {
+int32_t* tryGet_IOC_DIR(__attribute__ ((unused))int32_t* result, __attribute__ ((unused))int32_t arg1) {
 #if defined(__linux__)
     *result = (int32_t) _IOC_DIR((uint32_t) arg1);
 #else
@@ -53,7 +53,7 @@ int32_t* tryGet_IOC_DIR(int32_t* result, int32_t arg1) {
     return result;
 }
 
-int32_t* tryGet_IOC_NR(int32_t* result, int32_t arg1) {
+int32_t* tryGet_IOC_NR(__attribute__ ((unused))int32_t* result, __attribute__ ((unused))int32_t arg1) {
 #if defined(__linux__)
     *result = (int32_t) _IOC_NR((uint32_t) arg1);
 #else
@@ -62,7 +62,7 @@ int32_t* tryGet_IOC_NR(int32_t* result, int32_t arg1) {
     return result;
 }
 
-int32_t* tryGet_IOC_SIZE(int32_t* result, int32_t arg1) {
+int32_t* tryGet_IOC_SIZE(__attribute__ ((unused))int32_t* result, __attribute__ ((unused))int32_t arg1) {
 #if defined(__linux__)
     *result = (int32_t) _IOC_SIZE((uint32_t) arg1);
 #else
@@ -71,7 +71,7 @@ int32_t* tryGet_IOC_SIZE(int32_t* result, int32_t arg1) {
     return result;
 }
 
-int32_t* tryGet_IOC_TYPE(int32_t* result, int32_t arg1) {
+int32_t* tryGet_IOC_TYPE(__attribute__ ((unused))int32_t* result, __attribute__ ((unused))int32_t arg1) {
 #if defined(__linux__)
     *result = (int32_t) _IOC_TYPE((uint32_t) arg1);
 #else

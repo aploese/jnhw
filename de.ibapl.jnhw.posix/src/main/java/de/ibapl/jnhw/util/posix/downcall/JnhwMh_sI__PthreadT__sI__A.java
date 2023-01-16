@@ -24,6 +24,8 @@ package de.ibapl.jnhw.util.posix.downcall;
 import de.ibapl.jnhw.common.datatypes.BaseDataType;
 import de.ibapl.jnhw.common.datatypes.Pointer;
 import de.ibapl.jnhw.common.downcall.JnhwMethodHandle;
+import de.ibapl.jnhw.common.downcall.Util;
+import de.ibapl.jnhw.common.exception.NoSuchNativeMethodException;
 import de.ibapl.jnhw.common.util.NativeProvider;
 import de.ibapl.jnhw.posix.Pthread;
 import de.ibapl.jnhw.util.posix.downcall.foreign.JnhwMi__I__PthreadTA__I__A;
@@ -33,6 +35,7 @@ import de.ibapl.jnhw.util.posix.downcall.jni.JniMi__I__PthreadTA__I__A;
 import de.ibapl.jnhw.util.posix.downcall.jni.JniMi__I__PthreadTI__I__A;
 import de.ibapl.jnhw.util.posix.downcall.jni.JniMi__I__PthreadTL__I__A;
 import java.lang.foreign.Addressable;
+import java.lang.foreign.MemorySegment;
 import java.lang.foreign.SymbolLookup;
 
 /**
@@ -41,7 +44,34 @@ import java.lang.foreign.SymbolLookup;
  */
 public interface JnhwMh_sI__PthreadT__sI__A extends JnhwMethodHandle {
 
-    static JnhwMh_sI__PthreadT__sI__A of(SymbolLookup symbolLookup, String name, BaseDataType result, BaseDataType arg1, BaseDataType arg2, BaseDataType arg3) {
+    @FunctionalInterface
+    interface ExceptionErased extends JnhwMh_sI__PthreadT__sI__A {
+
+        @Override
+        default int invoke_sI__PthreadT__sI__P(Pthread.Pthread_t arg1, int arg2, Pointer<?> arg3) {
+            return invoke_sI__PthreadT__sI__A(arg1, arg2, arg3.toAddressable());
+        }
+
+        @Override
+        int invoke_sI__PthreadT__sI__A(Pthread.Pthread_t arg1, int arg2, Addressable arg3);
+    }
+
+    static JnhwMh_sI__PthreadT__sI__A.ExceptionErased mandatoryOf(SymbolLookup symbolLookup, String name, BaseDataType result, BaseDataType arg1, BaseDataType arg2, BaseDataType arg3) {
+        return Util.buidExistingMethod(symbolLookup,
+                name,
+                (oms) -> of(oms, name, result, arg1, arg2, arg3));
+    }
+
+    static JnhwMh_sI__PthreadT__sI__A optionalOf(SymbolLookup symbolLookup, String name, BaseDataType result, BaseDataType arg1, BaseDataType arg2, BaseDataType arg3) {
+        return Util.buidOptionalMethod(symbolLookup,
+                name,
+                (oms) -> of(oms, name, result, arg1, arg2, arg3),
+                () -> (JnhwMh_sI__PthreadT__sI__A) (cArg1, cArg2, cArg3) -> {
+                    throw new NoSuchNativeMethodException(name);
+                });
+    }
+
+    static JnhwMh_sI__PthreadT__sI__A.ExceptionErased of(MemorySegment methodAddress, String name, BaseDataType result, BaseDataType arg1, BaseDataType arg2, BaseDataType arg3) {
         return switch (result) {
             case int32_t ->
                 switch (arg1) {
@@ -51,14 +81,14 @@ public interface JnhwMh_sI__PthreadT__sI__A extends JnhwMethodHandle {
                                 switch (arg3) {
                                     case uintptr_t, intptr_t ->
                                         NativeProvider.getProvider(
-                                        () -> new JnhwMi__I__PthreadTI__I__A(symbolLookup, name),
-                                        () -> new JniMi__I__PthreadTI__I__A(symbolLookup, name));
+                                        () -> new JnhwMi__I__PthreadTI__I__A(methodAddress, name),
+                                        () -> new JniMi__I__PthreadTI__I__A(methodAddress, name));
 
                                     default ->
-                                        throw new AssertionError("arg3 unexpected data type: " + name + " " + arg3);
+                                        throw new IllegalArgumentException("arg3 unexpected data type: " + name + " " + arg3);
                                 };
                             default ->
-                                throw new AssertionError("arg2 unexpected data type: " + name + " " + arg2);
+                                throw new IllegalArgumentException("arg2 unexpected data type: " + name + " " + arg2);
                         };
                     case uint64_t ->
                         switch (arg2) {
@@ -66,13 +96,13 @@ public interface JnhwMh_sI__PthreadT__sI__A extends JnhwMethodHandle {
                                 switch (arg3) {
                                     case uintptr_t, intptr_t ->
                                         NativeProvider.getProvider(
-                                        () -> new JnhwMi__I__PthreadTL__I__A(symbolLookup, name),
-                                        () -> new JniMi__I__PthreadTL__I__A(symbolLookup, name));
+                                        () -> new JnhwMi__I__PthreadTL__I__A(methodAddress, name),
+                                        () -> new JniMi__I__PthreadTL__I__A(methodAddress, name));
                                     default ->
-                                        throw new AssertionError("arg3 unexpected data type: " + name + " " + arg3);
+                                        throw new IllegalArgumentException("arg3 unexpected data type: " + name + " " + arg3);
                                 };
                             default ->
-                                throw new AssertionError("arg2 unexpected data type: " + name + " " + arg2);
+                                throw new IllegalArgumentException("arg2 unexpected data type: " + name + " " + arg2);
                         };
                     case uintptr_t, intptr_t ->
                         switch (arg2) {
@@ -80,25 +110,25 @@ public interface JnhwMh_sI__PthreadT__sI__A extends JnhwMethodHandle {
                                 switch (arg3) {
                                     case uintptr_t, intptr_t ->
                                         NativeProvider.getProvider(
-                                        () -> new JnhwMi__I__PthreadTA__I__A(symbolLookup, name),
-                                        () -> new JniMi__I__PthreadTA__I__A(symbolLookup, name));
+                                        () -> new JnhwMi__I__PthreadTA__I__A(methodAddress, name),
+                                        () -> new JniMi__I__PthreadTA__I__A(methodAddress, name));
                                     default ->
-                                        throw new AssertionError("arg3 unexpected data type: " + name + " " + arg3);
+                                        throw new IllegalArgumentException("arg3 unexpected data type: " + name + " " + arg3);
                                 };
                             default ->
-                                throw new AssertionError("arg2 unexpected data type: " + name + " " + arg2);
+                                throw new IllegalArgumentException("arg2 unexpected data type: " + name + " " + arg2);
                         };
                     default ->
-                        throw new AssertionError("arg1 unexpected data type: " + name + " " + arg1);
+                        throw new IllegalArgumentException("arg1 unexpected data type: " + name + " " + arg1);
                 };
             default ->
-                throw new AssertionError("result unexpected data type: " + name + " " + result);
+                throw new IllegalArgumentException("result unexpected data type: " + name + " " + result);
         };
     }
 
-    default int invoke_sI__PthreadT__sI__P(Pthread.Pthread_t arg1, int arg2, Pointer<?> arg3) {
+    default int invoke_sI__PthreadT__sI__P(Pthread.Pthread_t arg1, int arg2, Pointer<?> arg3) throws NoSuchNativeMethodException {
         return invoke_sI__PthreadT__sI__A(arg1, arg2, arg3.toAddressable());
     }
 
-    int invoke_sI__PthreadT__sI__A(Pthread.Pthread_t arg1, int arg2, Addressable arg3);
+    int invoke_sI__PthreadT__sI__A(Pthread.Pthread_t arg1, int arg2, Addressable arg3) throws NoSuchNativeMethodException;
 }

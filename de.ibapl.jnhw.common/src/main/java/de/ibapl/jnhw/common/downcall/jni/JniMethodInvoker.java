@@ -26,7 +26,7 @@ import java.lang.foreign.Addressable;
 import java.lang.foreign.MemorySegment;
 import java.lang.foreign.MemorySession;
 import java.lang.foreign.SymbolLookup;
-import java.util.NoSuchElementException;
+
 import java.util.Optional;
 
 /**
@@ -42,18 +42,9 @@ public abstract class JniMethodInvoker {
     protected final MemorySegment ns;
     private final String name;
 
-    public JniMethodInvoker(SymbolLookup symbolLookup, String name) {
+    public JniMethodInvoker(MemorySegment methodAddress, String name) {
         this.name = name;
-        Optional<MemorySegment> oms = symbolLookup.lookup(name);
-        if (oms.isEmpty()) {
-            throw new NoSuchElementException("Native symbol: \"" + name + "\" not found!");
-        }
-        ns = oms.get();
-    }
-
-    public JniMethodInvoker(Addressable srcm, MemorySession session) {
-        this.name = String.format("%s@0x%08x", getClass().getSimpleName(), srcm.address().toRawLongValue());
-        ns = MemorySegment.ofAddress(srcm.address(), 0, session); //length is 0 @see java.lang.foreign.SymbolLookup#lookup(String)
+        ns = methodAddress;
     }
 
     protected RuntimeException createRuntimeExceptionInvoke(Throwable t) {

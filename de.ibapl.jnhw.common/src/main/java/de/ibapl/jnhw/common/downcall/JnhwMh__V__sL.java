@@ -24,50 +24,51 @@ package de.ibapl.jnhw.common.downcall;
 import de.ibapl.jnhw.common.datatypes.BaseDataType;
 import de.ibapl.jnhw.common.downcall.foreign.JnhwMi__V___L;
 import de.ibapl.jnhw.common.downcall.jni.JniMi__V___L;
+import de.ibapl.jnhw.common.exception.NoSuchNativeMethodException;
 import de.ibapl.jnhw.common.util.NativeProvider;
-import java.lang.foreign.Addressable;
-import java.lang.foreign.MemorySession;
+import java.lang.foreign.MemorySegment;
 import java.lang.foreign.SymbolLookup;
-import java.util.NoSuchElementException;
 
 /**
  *
  * @author aploese
  */
+@FunctionalInterface
 public interface JnhwMh__V__sL extends JnhwMethodHandle {
 
-    static JnhwMh__V__sL ofOrNull(SymbolLookup symbolLookup, String name, BaseDataType arg1) {
-        try {
-            return of(symbolLookup, name, arg1);
-        } catch (NoSuchElementException elementException) {
-            return null;
-        }
+    @FunctionalInterface
+    interface ExceptionErased extends JnhwMh__V__sL {
+
+        @Override
+        void invoke__V__sL(long arg1);
     }
 
-    static JnhwMh__V__sL of(SymbolLookup symbolLookup, String name, BaseDataType arg1) {
+    static JnhwMh__V__sL.ExceptionErased mandatoryOf(SymbolLookup symbolLookup, String name, BaseDataType arg1) {
+        return Util.buidExistingMethod(symbolLookup,
+                name,
+                (oms) -> of(oms, name, arg1));
+    }
+
+    static JnhwMh__V__sL optionalOf(SymbolLookup symbolLookup, String name, BaseDataType arg1) {
+        return Util.buidOptionalMethod(symbolLookup,
+                name,
+                (oms) -> of(oms, name, arg1),
+                () -> (JnhwMh__V__sL) (cArg1) -> {
+                    throw new NoSuchNativeMethodException(name);
+                });
+    }
+
+    static JnhwMh__V__sL.ExceptionErased of(MemorySegment methodAddress, String name, BaseDataType arg1) {
         return switch (arg1) {
             case int64_t ->
                 NativeProvider.getProvider(
-                () -> new JnhwMi__V___L(symbolLookup, name),
-                () -> new JniMi__V___L(symbolLookup, name));
+                () -> new JnhwMi__V___L(methodAddress, name),
+                () -> new JniMi__V___L(methodAddress, name));
 
             default ->
                 throw new IllegalArgumentException("arg1 unexpected data type: " + name + " " + arg1);
         };
     }
 
-    static JnhwMh__V__sL of(Addressable address, MemorySession ms, BaseDataType arg1) {
-        return switch (arg1) {
-            case int64_t ->
-                NativeProvider.getProvider(
-                () -> new JnhwMi__V___L(address, ms),
-                () -> new JniMi__V___L(address, ms));
-
-            default ->
-                throw new IllegalArgumentException("arg1 unexpected data type: " + address + " " + arg1);
-        };
-    }
-
-    void invoke__V__sL(long arg1);
-
+    void invoke__V__sL(long arg1) throws NoSuchNativeMethodException;
 }

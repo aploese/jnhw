@@ -92,7 +92,7 @@ public final class Fileapi {
     @Define
     public final static int TRUNCATE_EXISTING = 5;
 
-    private final static JnhwMh_MA___A_uI_uI__A_uI_uI__A CreateFileW = JnhwMh_MA___A_uI_uI__A_uI_uI__A.of(
+    private final static JnhwMh_MA___A_uI_uI__A_uI_uI__A.ExceptionErased CreateFileW = JnhwMh_MA___A_uI_uI__A_uI_uI__A.mandatoryOf(
             Kernel32Loader.DLL_KERNEL32_SYMBOL_LOOKUP,
             "CreateFileW",
             WinApiDataType.HANDLE,
@@ -104,13 +104,13 @@ public final class Fileapi {
             WinApiDataType.DWORD,
             WinApiDataType.HANDLE);
 
-    private final static JnhwMh_BL___A FlushFileBuffers = JnhwMh_BL___A.of(
+    private final static JnhwMh_BL___A.ExceptionErased FlushFileBuffers = JnhwMh_BL___A.mandatoryOf(
             Kernel32Loader.DLL_KERNEL32_SYMBOL_LOOKUP,
             "FlushFileBuffers",
             WinApiDataType.BOOL,
             WinApiDataType.HANDLE);
 
-    private final static JnhwMh_BL___A__A_uI__A__A ReadFile = JnhwMh_BL___A__A_uI__A__A.of(
+    private final static JnhwMh_BL___A__A_uI__A__A.ExceptionErased ReadFile = JnhwMh_BL___A__A_uI__A__A.mandatoryOf(
             Kernel32Loader.DLL_KERNEL32_SYMBOL_LOOKUP,
             "ReadFile",
             WinApiDataType.BOOL,
@@ -120,7 +120,7 @@ public final class Fileapi {
             WinApiDataType.LPDWORD,
             WinApiDataType.LPOVERLAPPED);
 
-    private final static JnhwMh_BL___A__A_uI__A__A ReadFileEx = JnhwMh_BL___A__A_uI__A__A.of(
+    private final static JnhwMh_BL___A__A_uI__A__A.ExceptionErased ReadFileEx = JnhwMh_BL___A__A_uI__A__A.mandatoryOf(
             Kernel32Loader.DLL_KERNEL32_SYMBOL_LOOKUP,
             "ReadFileEx",
             WinApiDataType.BOOL,
@@ -130,7 +130,7 @@ public final class Fileapi {
             WinApiDataType.LPOVERLAPPED,
             WinApiDataType.LPOVERLAPPED_COMPLETION_ROUTINE);
 
-    private final static JnhwMh_BL___A__A_uI__A__A WriteFile = JnhwMh_BL___A__A_uI__A__A.of(
+    private final static JnhwMh_BL___A__A_uI__A__A.ExceptionErased WriteFile = JnhwMh_BL___A__A_uI__A__A.mandatoryOf(
             Kernel32Loader.DLL_KERNEL32_SYMBOL_LOOKUP,
             "WriteFile",
             WinApiDataType.BOOL,
@@ -140,7 +140,7 @@ public final class Fileapi {
             WinApiDataType.LPDWORD,
             WinApiDataType.LPOVERLAPPED);
 
-    private final static JnhwMh_BL___A__A_uI__A__A WriteFileEx = JnhwMh_BL___A__A_uI__A__A.of(
+    private final static JnhwMh_BL___A__A_uI__A__A.ExceptionErased WriteFileEx = JnhwMh_BL___A__A_uI__A__A.mandatoryOf(
             Kernel32Loader.DLL_KERNEL32_SYMBOL_LOOKUP,
             "WriteFileEx",
             WinApiDataType.BOOL,
@@ -219,7 +219,7 @@ public final class Fileapi {
      * indicates an error.
      */
     public final static HANDLE CreateFileW(String lpFileName, int dwDesiredAccess, int dwShareMode, SECURITY_ATTRIBUTES lpSecurityAttributes, int dwCreationDisposition, int dwFlagsAndAttributes, HANDLE hTemplateFile) throws NativeErrorException {
-        try ( MemorySession ms = MemorySession.openConfined()) {
+        try (MemorySession ms = MemorySession.openConfined()) {
             WinDef.LPWSTR _lpFileName = WinDef.LPWSTR.wrap(lpFileName, true, ms);
             final MemoryAddress result = CreateFileW.invoke_MA___P_uI_uI__P_uI_uI__P(
                     _lpFileName,
@@ -275,7 +275,7 @@ public final class Fileapi {
      * indicates an error.
      */
     public static void ReadFile(HANDLE hFile, byte[] lpBuffer, WinDef.LPDWORD lpNumberOfBytesRead) throws NativeErrorException {
-        try ( MemorySession ms = MemorySession.openConfined()) {
+        try (MemorySession ms = MemorySession.openConfined()) {
             final MemorySegment _lpBuffer = MemorySegment.allocateNative(lpBuffer.length, ms);
             if (!ReadFile.invoke_BL___P__A_uI__P__P(
                     hFile,
@@ -313,7 +313,7 @@ public final class Fileapi {
      * indicates an error.
      */
     public final static void ReadFile(HANDLE hFile, byte[] lpBuffer, int off, int nNumberOfBytesToRead, WinDef.LPDWORD lpNumberOfBytesRead) throws NativeErrorException {
-        try ( MemorySession ms = MemorySession.openConfined()) {
+        try (MemorySession ms = MemorySession.openConfined()) {
             final MemorySegment _lpBuffer = MemorySegment.allocateNative(nNumberOfBytesToRead, ms);
             if (!ReadFile.invoke_BL___P__A_uI__P__P(
                     hFile,
@@ -796,7 +796,7 @@ public final class Fileapi {
      * indicates an error.
      */
     public static void WriteFile(HANDLE hFile, byte[] lpBuffer, WinDef.LPDWORD lpNumberOfBytesWritten) throws NativeErrorException {
-        try ( MemorySession ms = MemorySession.openConfined()) {
+        try (MemorySession ms = MemorySession.openConfined()) {
             final MemorySegment _lpBuffer = MemorySegment.allocateNative(lpBuffer.length, ms);
             _lpBuffer.copyFrom(MemorySegment.ofArray(lpBuffer));
             if (!WriteFile.invoke_BL___P__A_uI__P__P(
@@ -833,7 +833,7 @@ public final class Fileapi {
      * indicates an error.
      */
     public final static void WriteFile(HANDLE hFile, byte[] lpBuffer, int off, int nNumberOfBytesToWrite, WinDef.LPDWORD lpNumberOfBytesWritten) throws NativeErrorException {
-        try ( MemorySession ms = MemorySession.openConfined()) {
+        try (MemorySession ms = MemorySession.openConfined()) {
             final MemorySegment _lpBuffer = MemorySegment.allocateNative(nNumberOfBytesToWrite, ms);
             _lpBuffer.copyFrom(MemorySegment.ofArray(lpBuffer).asSlice(off, nNumberOfBytesToWrite));
             if (!WriteFile.invoke_BL___P__A_uI__P__P(

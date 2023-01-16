@@ -38,6 +38,7 @@ import de.ibapl.jnhw.util.posix.nativepointer.FunctionPtr__V__UnionSigval;
 import de.ibapl.jnhw.util.posix.upcall.CallbackFactory__V__UnionSigval;
 import de.ibapl.jnhw.util.posix.upcall.Callback__V__UnionSigval;
 import java.lang.foreign.MemoryAddress;
+import java.lang.foreign.MemorySegment;
 import java.lang.foreign.MemorySession;
 import org.junit.jupiter.api.AfterEach;
 import static org.junit.jupiter.api.Assertions.*;
@@ -52,17 +53,17 @@ import org.junit.jupiter.params.provider.ValueSource;
  */
 public class Callback__V__UnionSigval_Test {
 
-    private final static JnhwMh__V___A setCallback__V__UnionSigval;
-    private final static JnhwMh_MA___V getCallback__V__UnionSigval;
-    private final static JnhwMh__V___A doCallback__V__UnionSigval_A;
-    private final static JnhwMh__V__sI doCallback__V__UnionSigval_I;
+    private final static JnhwMh__V___A.ExceptionErased setCallback__V__UnionSigval;
+    private final static JnhwMh_MA___V.ExceptionErased getCallback__V__UnionSigval;
+    private final static JnhwMh__V___A.ExceptionErased doCallback__V__UnionSigval_A;
+    private final static JnhwMh__V__sI.ExceptionErased doCallback__V__UnionSigval_I;
 
     static {
         LibJnhwPosixTestLoader.touch();
-        setCallback__V__UnionSigval = JnhwMh__V___A.of(LibJnhwPosixTestLoader.LIB_JNHW_POSIX_TEST_SYMBOL_LOOKUP, "setCallback__V__UnionSigval", BaseDataType.uintptr_t);
-        getCallback__V__UnionSigval = JnhwMh_MA___V.of(LibJnhwPosixTestLoader.LIB_JNHW_POSIX_TEST_SYMBOL_LOOKUP, "getCallback__V__UnionSigval", BaseDataType.uintptr_t);
-        doCallback__V__UnionSigval_A = JnhwMh__V___A.of(LibJnhwPosixTestLoader.LIB_JNHW_POSIX_TEST_SYMBOL_LOOKUP, "doCallback__V__UnionSigval_A", BaseDataType.uintptr_t);
-        doCallback__V__UnionSigval_I = JnhwMh__V__sI.of(LibJnhwPosixTestLoader.LIB_JNHW_POSIX_TEST_SYMBOL_LOOKUP, "doCallback__V__UnionSigval_I", BaseDataType.int32_t);
+        setCallback__V__UnionSigval = JnhwMh__V___A.mandatoryOf(LibJnhwPosixTestLoader.LIB_JNHW_POSIX_TEST_SYMBOL_LOOKUP, "setCallback__V__UnionSigval", BaseDataType.uintptr_t);
+        getCallback__V__UnionSigval = JnhwMh_MA___V.mandatoryOf(LibJnhwPosixTestLoader.LIB_JNHW_POSIX_TEST_SYMBOL_LOOKUP, "getCallback__V__UnionSigval", BaseDataType.uintptr_t);
+        doCallback__V__UnionSigval_A = JnhwMh__V___A.mandatoryOf(LibJnhwPosixTestLoader.LIB_JNHW_POSIX_TEST_SYMBOL_LOOKUP, "doCallback__V__UnionSigval_A", BaseDataType.uintptr_t);
+        doCallback__V__UnionSigval_I = JnhwMh__V__sI.mandatoryOf(LibJnhwPosixTestLoader.LIB_JNHW_POSIX_TEST_SYMBOL_LOOKUP, "doCallback__V__UnionSigval_I", BaseDataType.int32_t);
     }
 
     private class DummyCB extends Callback__V__UnionSigval<OpaqueMemory> {
@@ -240,8 +241,11 @@ public class Callback__V__UnionSigval_Test {
             addressValueRef[0] = 0;
             intValueRef[0] = 0;
             JnhwMh__V___A.of(
-                    getCallback__V__UnionSigval().toAddressable(),
-                    ms,
+                    MemorySegment.ofAddress(
+                            getCallback__V__UnionSigval().toAddressable().address(),
+                            0,
+                            ms),
+                    "testCalllback",
                     BaseDataType.uintptr_t
             ).invoke__V___A(MemoryAddress.ofLong(testValue));
 
@@ -285,8 +289,11 @@ public class Callback__V__UnionSigval_Test {
 
 //The logs should show: Unassigned callback for trampoline_0(testValue/2)
         JnhwMh__V__sL.of(
-                getCallback__V__UnionSigval().toAddressable().address(),
-                ms,
+                MemorySegment.ofAddress(
+                        getCallback__V__UnionSigval().toAddressable().address(),
+                        0,
+                        ms),
+                "testCallback",
                 BaseDataType.int64_t
         ).invoke__V__sL(testValue / 2);
 
@@ -351,14 +358,20 @@ public class Callback__V__UnionSigval_Test {
             switch (MultiarchTupelBuilder.getMemoryModel()) {
                 case ILP32 ->
                     JnhwMh__V__sI.of(
-                            getCallback__V__UnionSigval().toAddressable(),
-                            ms,
+                            MemorySegment.ofAddress(
+                                    getCallback__V__UnionSigval().toAddressable().address(),
+                                    0,
+                                    ms),
+                            "testCallback",
                             BaseDataType.int32_t
                     ).invoke__V__sI(testValue);
                 case LP64 ->
                     JnhwMh__V__sL.of(
-                            getCallback__V__UnionSigval().toAddressable(),
-                            ms,
+                            MemorySegment.ofAddress(
+                                    getCallback__V__UnionSigval().toAddressable().address(),
+                                    0,
+                                    ms),
+                            "testCallback",
                             BaseDataType.int64_t
                     ).invoke__V__sL(switch (MultiarchTupelBuilder.getEndianess()) {
                         case BIG ->
@@ -407,7 +420,14 @@ public class Callback__V__UnionSigval_Test {
         intValueRef[0] = -1;
         addressValueRef[0] = -1;
         //The logs shoud show: Unassigned callback for trampoline_o(testValue/2)
-        JnhwMh__V__sI.of(getCallback__V__UnionSigval().toAddressable().address(), ms, BaseDataType.int32_t).invoke__V__sI(testValue / 2);
+        JnhwMh__V__sI.of(
+                MemorySegment.ofAddress(
+                        getCallback__V__UnionSigval().toAddressable().address(),
+                        0,
+                        ms),
+                "testCallback",
+                BaseDataType.int32_t
+        ).invoke__V__sI(testValue / 2);
         assertEquals(-1, addressValueRef[0]);
         assertEquals(-1, intValueRef[0]);
 

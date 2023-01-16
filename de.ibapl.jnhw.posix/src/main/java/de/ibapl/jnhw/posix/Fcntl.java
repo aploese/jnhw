@@ -27,13 +27,9 @@ import de.ibapl.jnhw.annotation.posix.sys.types.off_t;
 import de.ibapl.jnhw.common.annotation.Define;
 import de.ibapl.jnhw.common.annotation.Include;
 import de.ibapl.jnhw.common.datatypes.BaseDataType;
-import de.ibapl.jnhw.common.downcall.JnhwMh_sI___A_sI;
-import de.ibapl.jnhw.common.downcall.JnhwMh_sI___A_sI_uI;
+import de.ibapl.jnhw.common.downcall.JnhwMh_sI___A_sI_VARARGS_NONE;
 import de.ibapl.jnhw.common.downcall.JnhwMh_sI___A_uI;
-import de.ibapl.jnhw.common.downcall.JnhwMh_sI__sI__A_sI;
-import de.ibapl.jnhw.common.downcall.JnhwMh_sI__sI__A_sI_uI;
-import de.ibapl.jnhw.common.downcall.JnhwMh_sI__sI_sI;
-import de.ibapl.jnhw.common.downcall.JnhwMh_sI__sI_sI_sI;
+import de.ibapl.jnhw.common.downcall.JnhwMh_sI__sI_sI_VARARGS_NONE;
 import de.ibapl.jnhw.common.downcall.JnhwMh_sI__sI_sL_sL;
 import de.ibapl.jnhw.common.downcall.JnhwMh_sI__sI_sL_sL_sI;
 import de.ibapl.jnhw.common.exception.NativeErrorException;
@@ -42,10 +38,14 @@ import de.ibapl.jnhw.common.util.IntDefine;
 import de.ibapl.jnhw.libloader.MultiarchInfo;
 import de.ibapl.jnhw.libloader.MultiarchTupelBuilder;
 import de.ibapl.jnhw.posix.sys.Stat;
-import de.ibapl.jnhw.util.posix.LibcLoader;
+import de.ibapl.jnhw.libloader.librarys.LibcLoader;
 import de.ibapl.jnhw.util.posix.PosixDataType;
 import java.lang.foreign.MemorySegment;
 import java.lang.foreign.MemorySession;
+import de.ibapl.jnhw.common.downcall.JnhwMh_sI__sI_sI_VARARGS_sI;
+import de.ibapl.jnhw.common.downcall.JnhwMh_sI___A_sI_VARARGS_uI;
+import de.ibapl.jnhw.common.downcall.JnhwMh_sI__sI__A_sI_VARARGS_NONE;
+import de.ibapl.jnhw.common.downcall.JnhwMh_sI__sI__A_sI_VARARGS_uI;
 
 /**
  * Wrapper around the {@code <fcntl.h>} header.
@@ -777,7 +777,7 @@ public final class Fcntl {
                 O_NONBLOCK = BsdDefines.O_NONBLOCK;
                 O_SYNC = BsdDefines.O_SYNC;
                 switch (MultiarchTupelBuilder.getOS()) {
-                    case DARWIN:
+                    case DARWIN -> {
                         AT_EACCESS = DarwinDefines.AT_EACCESS;
                         AT_FDCWD = DarwinDefines.AT_FDCWD;
                         AT_REMOVEDIR = DarwinDefines.AT_REMOVEDIR;
@@ -802,8 +802,8 @@ public final class Fcntl {
                         POSIX_FADV_RANDOM = IntDefine.UNDEFINED;
                         POSIX_FADV_SEQUENTIAL = IntDefine.UNDEFINED;
                         POSIX_FADV_WILLNEED = IntDefine.UNDEFINED;
-                        break;
-                    case FREE_BSD:
+                    }
+                    case FREE_BSD -> {
                         AT_EACCESS = FreeBsdDefines.AT_EACCESS;
                         AT_FDCWD = FreeBsdDefines.AT_FDCWD;
                         AT_REMOVEDIR = FreeBsdDefines.AT_REMOVEDIR;
@@ -828,8 +828,8 @@ public final class Fcntl {
                         POSIX_FADV_RANDOM = IntDefine.toIntDefine(FreeBsdDefines.POSIX_FADV_RANDOM);
                         POSIX_FADV_SEQUENTIAL = IntDefine.toIntDefine(FreeBsdDefines.POSIX_FADV_SEQUENTIAL);
                         POSIX_FADV_WILLNEED = IntDefine.toIntDefine(FreeBsdDefines.POSIX_FADV_WILLNEED);
-                        break;
-                    case OPEN_BSD:
+                    }
+                    case OPEN_BSD -> {
                         AT_EACCESS = OpenBsdDefines.AT_EACCESS;
                         AT_FDCWD = OpenBsdDefines.AT_FDCWD;
                         AT_REMOVEDIR = OpenBsdDefines.AT_REMOVEDIR;
@@ -854,8 +854,8 @@ public final class Fcntl {
                         POSIX_FADV_RANDOM = IntDefine.UNDEFINED;
                         POSIX_FADV_SEQUENTIAL = IntDefine.UNDEFINED;
                         POSIX_FADV_WILLNEED = IntDefine.UNDEFINED;
-                        break;
-                    default:
+                    }
+                    default ->
                         throw new NoClassDefFoundError("No fcntl.h BSD defines for " + MultiarchTupelBuilder.getMultiarch());
                 }
             }
@@ -864,35 +864,35 @@ public final class Fcntl {
         }
     }
 
-    private final static JnhwMh_sI___A_uI creat = JnhwMh_sI___A_uI.of(
+    private final static JnhwMh_sI___A_uI.ExceptionErased creat = JnhwMh_sI___A_uI.mandatoryOf(
             LibcLoader.LIB_C_SYMBOL_LOOKUP,
             "creat",
             BaseDataType.C_int,
             BaseDataType.C_const_char_pointer,
             PosixDataType.mode_t);
 
-    private final static JnhwMh_sI___A_uI creat64 = JnhwMh_sI___A_uI.ofOrNull(
+    private final static JnhwMh_sI___A_uI creat64 = JnhwMh_sI___A_uI.optionalOf(
             LibcLoader.LIB_C_SYMBOL_LOOKUP,
             "creat64",
             BaseDataType.C_int,
             BaseDataType.C_const_char_pointer,
             PosixDataType.mode_t);
 
-    private final static JnhwMh_sI__sI_sI fcntl = JnhwMh_sI__sI_sI.of(
+    private final static JnhwMh_sI__sI_sI_VARARGS_NONE.ExceptionErased fcntl = JnhwMh_sI__sI_sI_VARARGS_NONE.mandatoryOf(
             LibcLoader.LIB_C_SYMBOL_LOOKUP,
             "fcntl",
             BaseDataType.C_int,
             BaseDataType.C_int,
             BaseDataType.C_int);
 
-    private final static JnhwMh_sI__sI_sI fcntl64 = JnhwMh_sI__sI_sI.ofOrNull(
+    private final static JnhwMh_sI__sI_sI_VARARGS_NONE fcntl64 = JnhwMh_sI__sI_sI_VARARGS_NONE.optionalOf(
             LibcLoader.LIB_C_SYMBOL_LOOKUP,
             "fcntl64",
             BaseDataType.C_int,
             BaseDataType.C_int,
             BaseDataType.C_int);
 
-    private final static JnhwMh_sI__sI_sI_sI fcntl__with_1vararg = JnhwMh_sI__sI_sI_sI.ofOrNull(
+    private final static JnhwMh_sI__sI_sI_VARARGS_sI.ExceptionErased fcntl__VARARG_sI = JnhwMh_sI__sI_sI_VARARGS_sI.mandatoryOf(
             LibcLoader.LIB_C_SYMBOL_LOOKUP,
             "fcntl",
             BaseDataType.C_int,
@@ -900,7 +900,7 @@ public final class Fcntl {
             BaseDataType.C_int,
             BaseDataType.C_int);
 
-    private final static JnhwMh_sI__sI_sI_sI fcntl64__with_1vararg = JnhwMh_sI__sI_sI_sI.ofOrNull(
+    private final static JnhwMh_sI__sI_sI_VARARGS_sI fcntl64__VARARG_sI = JnhwMh_sI__sI_sI_VARARGS_sI.optionalOf(
             LibcLoader.LIB_C_SYMBOL_LOOKUP,
             "fcntl64",
             BaseDataType.C_int,
@@ -908,21 +908,21 @@ public final class Fcntl {
             BaseDataType.C_int,
             BaseDataType.C_int);
 
-    private final static JnhwMh_sI___A_sI open = JnhwMh_sI___A_sI.of(
+    private final static JnhwMh_sI___A_sI_VARARGS_NONE.ExceptionErased open = JnhwMh_sI___A_sI_VARARGS_NONE.mandatoryOf(
             LibcLoader.LIB_C_SYMBOL_LOOKUP,
             "open",
             BaseDataType.C_int,
             BaseDataType.C_const_char_pointer,
             BaseDataType.C_int);
 
-    private final static JnhwMh_sI___A_sI open64 = JnhwMh_sI___A_sI.of(
+    private final static JnhwMh_sI___A_sI_VARARGS_NONE open64 = JnhwMh_sI___A_sI_VARARGS_NONE.optionalOf(
             LibcLoader.LIB_C_SYMBOL_LOOKUP,
             "open64",
             BaseDataType.C_int,
             BaseDataType.C_const_char_pointer,
             BaseDataType.C_int);
 
-    private final static JnhwMh_sI___A_sI_uI open__with_ModeArg = JnhwMh_sI___A_sI_uI.of(
+    private final static JnhwMh_sI___A_sI_VARARGS_uI.ExceptionErased open__VARARG_mode_t = JnhwMh_sI___A_sI_VARARGS_uI.mandatoryOf(
             LibcLoader.LIB_C_SYMBOL_LOOKUP,
             "open",
             BaseDataType.C_int,
@@ -930,7 +930,7 @@ public final class Fcntl {
             BaseDataType.C_int,
             PosixDataType.mode_t);
 
-    private final static JnhwMh_sI___A_sI_uI open64__with_ModeArg = JnhwMh_sI___A_sI_uI.of(
+    private final static JnhwMh_sI___A_sI_VARARGS_uI open64__VARARG_mode_t = JnhwMh_sI___A_sI_VARARGS_uI.optionalOf(
             LibcLoader.LIB_C_SYMBOL_LOOKUP,
             "open64",
             BaseDataType.C_int,
@@ -938,7 +938,7 @@ public final class Fcntl {
             BaseDataType.C_int,
             PosixDataType.mode_t);
 
-    private final static JnhwMh_sI__sI__A_sI openat = JnhwMh_sI__sI__A_sI.of(
+    private final static JnhwMh_sI__sI__A_sI_VARARGS_NONE.ExceptionErased openat = JnhwMh_sI__sI__A_sI_VARARGS_NONE.mandatoryOf(
             LibcLoader.LIB_C_SYMBOL_LOOKUP,
             "openat",
             BaseDataType.C_int,
@@ -946,7 +946,7 @@ public final class Fcntl {
             BaseDataType.C_const_char_pointer,
             BaseDataType.C_int);
 
-    private final static JnhwMh_sI__sI__A_sI_uI openat__with_ModeArg = JnhwMh_sI__sI__A_sI_uI.of(
+    private final static JnhwMh_sI__sI__A_sI_VARARGS_uI.ExceptionErased openat__VARARG_mode_t = JnhwMh_sI__sI__A_sI_VARARGS_uI.mandatoryOf(
             LibcLoader.LIB_C_SYMBOL_LOOKUP,
             "openat",
             BaseDataType.C_int,
@@ -955,7 +955,7 @@ public final class Fcntl {
             BaseDataType.C_int,
             PosixDataType.mode_t);
 
-    private final static JnhwMh_sI__sI__A_sI openat64 = JnhwMh_sI__sI__A_sI.ofOrNull(
+    private final static JnhwMh_sI__sI__A_sI_VARARGS_NONE openat64 = JnhwMh_sI__sI__A_sI_VARARGS_NONE.optionalOf(
             LibcLoader.LIB_C_SYMBOL_LOOKUP,
             "openat64",
             BaseDataType.C_int,
@@ -963,7 +963,7 @@ public final class Fcntl {
             BaseDataType.C_const_char_pointer,
             BaseDataType.C_int);
 
-    private final static JnhwMh_sI__sI__A_sI_uI openat64__with_ModeArg = JnhwMh_sI__sI__A_sI_uI.ofOrNull(
+    private final static JnhwMh_sI__sI__A_sI_VARARGS_uI openat64__VARARG_mode_t = JnhwMh_sI__sI__A_sI_VARARGS_uI.optionalOf(
             LibcLoader.LIB_C_SYMBOL_LOOKUP,
             "openat64",
             BaseDataType.C_int,
@@ -972,7 +972,7 @@ public final class Fcntl {
             BaseDataType.C_int,
             PosixDataType.mode_t);
 
-    private final static JnhwMh_sI__sI_sL_sL_sI posix_fadvise = JnhwMh_sI__sI_sL_sL_sI.ofOrNull(
+    private final static JnhwMh_sI__sI_sL_sL_sI posix_fadvise = JnhwMh_sI__sI_sL_sL_sI.optionalOf(
             LibcLoader.LIB_C_SYMBOL_LOOKUP,
             "posix_fadvise",
             BaseDataType.C_int,
@@ -981,7 +981,7 @@ public final class Fcntl {
             PosixDataType.off_t,
             BaseDataType.C_int);
 
-    private final static JnhwMh_sI__sI_sL_sL_sI posix_fadvise64 = JnhwMh_sI__sI_sL_sL_sI.of(
+    private final static JnhwMh_sI__sI_sL_sL_sI posix_fadvise64 = JnhwMh_sI__sI_sL_sL_sI.optionalOf(
             LibcLoader.LIB_C_SYMBOL_LOOKUP,
             "posix_fadvise64",
             BaseDataType.C_int,
@@ -990,7 +990,7 @@ public final class Fcntl {
             PosixDataType.off_t,
             BaseDataType.C_int);
 
-    private final static JnhwMh_sI__sI_sL_sL posix_fallocate = JnhwMh_sI__sI_sL_sL.of(
+    private final static JnhwMh_sI__sI_sL_sL.ExceptionErased posix_fallocate = JnhwMh_sI__sI_sL_sL.mandatoryOf(
             LibcLoader.LIB_C_SYMBOL_LOOKUP,
             "posix_fallocate",
             BaseDataType.C_int,
@@ -998,7 +998,7 @@ public final class Fcntl {
             PosixDataType.off_t,
             PosixDataType.off_t);
 
-    private final static JnhwMh_sI__sI_sL_sL posix_fallocate64 = JnhwMh_sI__sI_sL_sL.of(
+    private final static JnhwMh_sI__sI_sL_sL posix_fallocate64 = JnhwMh_sI__sI_sL_sL.optionalOf(
             LibcLoader.LIB_C_SYMBOL_LOOKUP,
             "posix_fallocate64",
             BaseDataType.C_int,
@@ -1047,12 +1047,6 @@ public final class Fcntl {
                 throw new NativeErrorException(Errno.errno());
             }
             return result;
-        } catch (NullPointerException npe) {
-            if (creat64 == null) {
-                throw new NoSuchNativeMethodException("creat64");
-            } else {
-                throw npe;
-            }
         }
     }
 
@@ -1091,7 +1085,7 @@ public final class Fcntl {
      * indicates an error.
      */
     public final static int fcntl(int fildes, int cmd, int vararg_0) throws NativeErrorException {
-        final int result = fcntl__with_1vararg.invoke_sI__sI_sI_sI(fildes, cmd, vararg_0);
+        final int result = fcntl__VARARG_sI.invoke_sI__sI_sI_sI(fildes, cmd, vararg_0);
         if (result == -1) {
             throw new NativeErrorException(Errno.errno());
         } else {
@@ -1111,19 +1105,11 @@ public final class Fcntl {
      * defined.
      */
     public final static int fcntl64(int fildes, int cmd) throws NativeErrorException, NoSuchNativeMethodException {
-        try {
-            final int result = fcntl64.invoke_sI__sI_sI(fildes, cmd);
-            if (result == -1) {
-                throw new NativeErrorException(Errno.errno());
-            } else {
-                return result;
-            }
-        } catch (NullPointerException npe) {
-            if (fcntl64 == null) {
-                throw new NoSuchNativeMethodException("fcntl64");
-            } else {
-                throw npe;
-            }
+        final int result = fcntl64.invoke_sI__sI_sI(fildes, cmd);
+        if (result == -1) {
+            throw new NativeErrorException(Errno.errno());
+        } else {
+            return result;
         }
     }
 
@@ -1140,19 +1126,11 @@ public final class Fcntl {
      * defined.
      */
     public final static int fcntl64(int fildes, int cmd, int vararg_0) throws NativeErrorException, NoSuchNativeMethodException {
-        try {
-            final int result = fcntl64__with_1vararg.invoke_sI__sI_sI_sI(fildes, cmd, vararg_0);
-            if (result == -1) {
-                throw new NativeErrorException(Errno.errno());
-            } else {
-                return result;
-            }
-        } catch (NullPointerException npe) {
-            if (fcntl64__with_1vararg == null) {
-                throw new NoSuchNativeMethodException("fcntl64");
-            } else {
-                throw npe;
-            }
+        final int result = fcntl64__VARARG_sI.invoke_sI__sI_sI_sI(fildes, cmd, vararg_0);
+        if (result == -1) {
+            throw new NativeErrorException(Errno.errno());
+        } else {
+            return result;
         }
     }
 
@@ -1196,7 +1174,7 @@ public final class Fcntl {
         try (MemorySession ms = MemorySession.openConfined()) {
             MemorySegment _path = MemorySegment.allocateNative(path.length() + 1, ms);
             _path.setUtf8String(0, path);
-            final int result = open__with_ModeArg.invoke_sI___A_sI_uI(_path, oflag, mode);
+            final int result = open__VARARG_mode_t.invoke_sI___A_sI_uI(_path, oflag, mode);
             if (result == -1) {
                 throw new NativeErrorException(Errno.errno());
             }
@@ -1227,12 +1205,6 @@ public final class Fcntl {
                 throw new NativeErrorException(Errno.errno());
             }
             return result;
-        } catch (NullPointerException npe) {
-            if (open64 == null) {
-                throw new NoSuchNativeMethodException("open64");
-            } else {
-                throw npe;
-            }
         }
     }
 
@@ -1255,17 +1227,11 @@ public final class Fcntl {
         try (MemorySession ms = MemorySession.openConfined()) {
             MemorySegment _path = MemorySegment.allocateNative(path.length() + 1, ms);
             _path.setUtf8String(0, path);
-            final int result = open64__with_ModeArg.invoke_sI___A_sI_uI(_path, oflag, mode);
+            final int result = open64__VARARG_mode_t.invoke_sI___A_sI_uI(_path, oflag, mode);
             if (result == -1) {
                 throw new NativeErrorException(Errno.errno());
             } else {
                 return result;
-            }
-        } catch (NullPointerException npe) {
-            if (open64__with_ModeArg == null) {
-                throw new NoSuchNativeMethodException("open64");
-            } else {
-                throw npe;
             }
         }
     }
@@ -1315,7 +1281,7 @@ public final class Fcntl {
         try (MemorySession ms = MemorySession.openConfined()) {
             MemorySegment _path = MemorySegment.allocateNative(path.length() + 1, ms);
             _path.setUtf8String(0, path);
-            final int result = openat__with_ModeArg.invoke_sI__sI__A_sI_uI(fd, _path, oflag, mode);
+            final int result = openat__VARARG_mode_t.invoke_sI__sI__A_sI_uI(fd, _path, oflag, mode);
             if (result == -1) {
                 throw new NativeErrorException(Errno.errno());
             } else {
@@ -1348,12 +1314,6 @@ public final class Fcntl {
             } else {
                 return result;
             }
-        } catch (NullPointerException npe) {
-            if (openat64 == null) {
-                throw new NoSuchNativeMethodException("openat64");
-            } else {
-                throw npe;
-            }
         }
     }
 
@@ -1376,17 +1336,11 @@ public final class Fcntl {
         try (MemorySession ms = MemorySession.openConfined()) {
             MemorySegment _path = MemorySegment.allocateNative(path.length() + 1, ms);
             _path.setUtf8String(0, path);
-            final int result = openat64__with_ModeArg.invoke_sI__sI__A_sI_uI(fd, _path, oflag, mode);
+            final int result = openat64__VARARG_mode_t.invoke_sI__sI__A_sI_uI(fd, _path, oflag, mode);
             if (result == -1) {
                 throw new NativeErrorException(Errno.errno());
             }
             return result;
-        } catch (NullPointerException npe) {
-            if (openat64__with_ModeArg == null) {
-                throw new NoSuchNativeMethodException("openat64");
-            } else {
-                throw npe;
-            }
         }
     }
 
@@ -1404,16 +1358,8 @@ public final class Fcntl {
      * @throws NoSuchNativeMethodException
      */
     public final static void posix_fadvise(int fildes, @off_t long offset, @off_t long len, int advice) throws NativeErrorException, NoSuchNativeMethodException {
-        try {
-            if (posix_fadvise.invoke_sI__sI_sL_sL_sI(fildes, offset, len, advice) == -1) {
-                throw new NativeErrorException(Errno.errno());
-            }
-        } catch (NullPointerException npe) {
-            if (posix_fadvise == null) {
-                throw new NoSuchNativeMethodException("posix_fadvise");
-            } else {
-                throw npe;
-            }
+        if (posix_fadvise.invoke_sI__sI_sL_sL_sI(fildes, offset, len, advice) == -1) {
+            throw new NativeErrorException(Errno.errno());
         }
     }
 
@@ -1431,16 +1377,8 @@ public final class Fcntl {
      * @throws NoSuchNativeMethodException
      */
     public final static void posix_fadvise64(int fildes, @off64_t long offset, @off64_t long len, int advice) throws NativeErrorException, NoSuchNativeMethodException {
-        try {
-            if (posix_fadvise64.invoke_sI__sI_sL_sL_sI(fildes, offset, len, advice) == -1) {
-                throw new NativeErrorException(Errno.errno());
-            }
-        } catch (NullPointerException npe) {
-            if (posix_fadvise64 == null) {
-                throw new NoSuchNativeMethodException("posix_fadvise64");
-            } else {
-                throw npe;
-            }
+        if (posix_fadvise64.invoke_sI__sI_sL_sL_sI(fildes, offset, len, advice) == -1) {
+            throw new NativeErrorException(Errno.errno());
         }
     }
 
@@ -1481,16 +1419,8 @@ public final class Fcntl {
      * @throws NoSuchNativeMethodException
      */
     public final static void posix_fallocate64(int fildes, @off64_t long offset, @off64_t long len) throws NativeErrorException, NoSuchNativeMethodException {
-        try {
-            if (posix_fallocate64.invoke_sI__sI_sL_sL(fildes, offset, len) == -1) {
-                throw new NativeErrorException(Errno.errno());
-            }
-        } catch (NullPointerException npe) {
-            if (posix_fallocate64 == null) {
-                throw new NoSuchNativeMethodException("posix_fallocate64");
-            } else {
-                throw npe;
-            }
+        if (posix_fallocate64.invoke_sI__sI_sL_sL(fildes, offset, len) == -1) {
+            throw new NativeErrorException(Errno.errno());
         }
     }
 

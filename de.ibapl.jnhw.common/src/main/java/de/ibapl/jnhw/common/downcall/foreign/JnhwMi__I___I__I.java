@@ -29,17 +29,18 @@ import de.ibapl.jnhw.common.downcall.JnhwMh_uI__uI_sI;
 import de.ibapl.jnhw.common.util.ConversionsJava2Native;
 import de.ibapl.jnhw.common.util.ConversionsNative2Java;
 import java.lang.foreign.FunctionDescriptor;
-import java.lang.foreign.SymbolLookup;
 import java.lang.foreign.ValueLayout;
+import de.ibapl.jnhw.common.downcall.JnhwMh_uL__uI_BL;
+import java.lang.foreign.MemorySegment;
 
 /**
  *
  * @author aploese
  */
-public class JnhwMi__I___I__I extends JnhwMethodInvoker implements JnhwMh_uI__uI_sI, JnhwMh_sI__sI_uL, JnhwMh_sI__sI_sI, JnhwMh_sI__uI_sI, JnhwMh_sI__uI_uI {
+public class JnhwMi__I___I__I extends JnhwMethodInvoker implements JnhwMh_uI__uI_sI.ExceptionErased, JnhwMh_uL__uI_BL.ExceptionErased, JnhwMh_sI__sI_uL.ExceptionErased, JnhwMh_sI__sI_sI.ExceptionErased, JnhwMh_sI__uI_sI.ExceptionErased, JnhwMh_sI__uI_uI.ExceptionErased {
 
-    public JnhwMi__I___I__I(SymbolLookup symbolLookup, String name) {
-        super(symbolLookup, name, FunctionDescriptor.of(ValueLayout.JAVA_INT, ValueLayout.JAVA_INT, ValueLayout.JAVA_INT));
+    public JnhwMi__I___I__I(MemorySegment methodAddress, String name) {
+        super(methodAddress, name, FunctionDescriptor.of(ValueLayout.JAVA_INT, ValueLayout.JAVA_INT, ValueLayout.JAVA_INT));
     }
 
     private int invoke__I___I__I(int arg1, int arg2) {
@@ -58,7 +59,7 @@ public class JnhwMi__I___I__I extends JnhwMethodInvoker implements JnhwMh_uI__uI
     }
 
     @Override
-    public final long invoke_uL__uI__B(int arg1, boolean arg2) {
+    public final long invoke_uL__uI_BL(int arg1, boolean arg2) {
         return ConversionsNative2Java.uint32_t_TO_long(
                 invoke__I___I__I(
                         arg1,

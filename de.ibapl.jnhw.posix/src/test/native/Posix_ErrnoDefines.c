@@ -132,7 +132,7 @@ int32_t* tryGetValueOf_EBFONT(int32_t* value) {
 #if defined (__linux__)
     *value = EBFONT;
 #elif !defined(EBFONT)
-    valkue = NULL;
+    value = NULL;
 #else
 #error "EBFONT defined"
 #endif

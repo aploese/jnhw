@@ -25,12 +25,14 @@ import de.ibapl.jnhw.annotation.posix.sys.types.time_t;
 import de.ibapl.jnhw.common.exception.NativeErrorException;
 import de.ibapl.jnhw.common.exception.NativeException;
 import de.ibapl.jnhw.common.exception.NoSuchNativeMethodException;
+import de.ibapl.jnhw.common.exception.NoSuchNativeSymbolException;
 import de.ibapl.jnhw.common.exception.NoSuchNativeTypeException;
 import de.ibapl.jnhw.common.memory.MemoryHeap;
 import de.ibapl.jnhw.common.memory.OpaqueMemory;
 import de.ibapl.jnhw.libloader.MultiarchInfo;
 import de.ibapl.jnhw.libloader.MultiarchTupelBuilder;
 import de.ibapl.jnhw.libloader.OS;
+import de.ibapl.jnhw.libloader.librarys.LibrtLoader;
 import de.ibapl.jnhw.posix.sys.Types;
 import de.ibapl.jnhw.util.posix.DefinesTest;
 import de.ibapl.jnhw.util.posix.upcall.CallbackFactory__V__UnionSigval;
@@ -85,6 +87,12 @@ public class TimeTest {
     public static void checkBeforeAll_TimeDefines() throws Exception {
         if (MultiarchTupelBuilder.getOS() == OS.WINDOWS) {
             return;
+        }
+        try {
+            int i = Time.CLOCKS_PER_SEC;
+        } catch (Throwable t) {
+            t.printStackTrace();
+            throw t;
         }
         DefinesTest.testDefines(Time.class, "HAVE_TIME_H");
     }
@@ -300,11 +308,9 @@ public class TimeTest {
                 assertEquals(280, timespec.tv_nsec());
             case OPEN_BSD -> {
                 switch (MultiarchTupelBuilder.getArch()) {
-                    case AARCH64:
-                        //TODO virt env needs to be fixed??
+                    case AARCH64 -> //TODO virt env needs to be fixed??
                         assertEquals(15, timespec.tv_nsec());
-                        break;
-                    default:
+                    default ->
                         fail("timespec.tv_nsec: " + timespec.tv_nsec());
                 }
             }
@@ -456,7 +462,7 @@ public class TimeTest {
     public void testDaylight() throws Exception {
         System.out.println("daylight");
         if (MultiarchTupelBuilder.getOS() == OS.FREE_BSD) {
-            Assertions.assertThrows(NoSuchNativeMethodException.class, () -> {
+            Assertions.assertThrows(NoSuchNativeSymbolException.class, () -> {
                 Time.daylight();
             });
         } else {
@@ -477,24 +483,43 @@ public class TimeTest {
     }
 
     /**
+     * Test of getdate_err symbol, of class Time.
+     */
+    @Test
+    public void testGetdate_err() throws Exception {
+        System.out.println("getdate_err");
+        switch (MultiarchTupelBuilder.getOS()) {
+            case FREE_BSD, OPEN_BSD -> {
+                Assertions.assertThrows(NoSuchNativeSymbolException.class, () -> {
+                    Time.getdate_err();
+                });
+            }
+            default -> {
+                // TODDO convert with getdate succesfully before ???
+                assertEquals(0, Time.getdate_err(), "getdate_err no error expected");
+            }
+        }
+    }
+
+    /**
      * Test of getdate method, of class Time.
      */
     @Test
-    public void testGetdate() {
+    public void testGetdate() throws Exception {
         System.out.println("getdate");
         String string = "Tue Dec  3 15:20:44 2019\n";
         switch (MultiarchTupelBuilder.getOS()) {
-            case FREE_BSD:
-            case OPEN_BSD:
+            case FREE_BSD, OPEN_BSD -> {
                 Assertions.assertThrows(NoSuchNativeMethodException.class, () -> {
                     Time.Tm result = Time.getdate(string);
                 });
-                break;
-            default:
+            }
+            default -> {
                 NativeException nee = Assertions.assertThrows(NativeException.class, () -> {
                     Time.Tm result = Time.getdate(string);
                 });
                 assertEquals(1, Time.getdate_err(), "getdate_err no DATEMSK expected");
+            }
         }
     }
 
@@ -810,7 +835,7 @@ public class TimeTest {
     public void testTimer_create_delete() throws Exception {
         System.out.println("timer_create");
         switch (MultiarchTupelBuilder.getOS()) {
-            case OPEN_BSD:
+            case OPEN_BSD -> {
                 Assertions.assertThrows(NoSuchNativeMethodException.class, () -> {
                     Time.timer_create(0, Time.PtrTimer_t.tryAllocateNative(ms));
                 });
@@ -818,7 +843,8 @@ public class TimeTest {
                     Time.timer_delete(Time.Timer_t.tryAllocateNative(ms));
                 });
                 return;
-            case DARWIN:
+            }
+            case DARWIN -> {
                 // precondition for tests not available
                 Assertions.assertThrows(NoSuchNativeTypeException.class, () -> {
                     Time.PtrTimer_t.allocateNative(ms);
@@ -830,6 +856,7 @@ public class TimeTest {
                     Time.timer_delete(Time.Timer_t.tryAllocateNative(ms));
                 });
                 return;
+            }
         }
 
         final Time.PtrTimer_t ptrTimerid = Time.PtrTimer_t.tryAllocateNative(ms);
@@ -891,13 +918,12 @@ public class TimeTest {
     public void testTimer_SIGEV_NONE() throws Exception {
         System.out.println("timer_create Signal");
         switch (MultiarchTupelBuilder.getOS()) {
-            case OPEN_BSD:
-                // precondition for tests not available
+            case OPEN_BSD -> {// precondition for tests not available
                 Assertions.assertThrows(NoSuchNativeTypeException.class, () -> {
                     Signal.Sigevent.tryAllocateNative(ms);
                 });
-                break;
-            case DARWIN:
+            }
+            case DARWIN -> {
                 // precondition for tests not available
                 Assertions.assertThrows(NoSuchNativeTypeException.class, () -> {
                     Time.PtrTimer_t.tryAllocateNative(ms);
@@ -905,8 +931,8 @@ public class TimeTest {
                 Assertions.assertThrows(NoSuchNativeTypeException.class, () -> {
                     Time.Itimerspec.tryAllocateNative(ms);
                 });
-                break;
-            default:
+            }
+            default -> {
                 Time.PtrTimer_t ptrTimerid = Time.PtrTimer_t.tryAllocateNative(ms);
                 Time.Itimerspec trigger = Time.Itimerspec.tryAllocateNative(ms);
                 Signal.Sigevent sev = Signal.Sigevent.tryAllocateNative(ms);
@@ -928,6 +954,7 @@ public class TimeTest {
                 Thread.sleep(1000);
 
                 Time.timer_delete(timerid);
+            }
         }
     }
 
@@ -939,20 +966,33 @@ public class TimeTest {
     public void testTimer() throws Throwable {
         System.out.println("timer_create");
         switch (MultiarchTupelBuilder.getOS()) {
-            case OPEN_BSD:
+            case OPEN_BSD -> {
+                // preconditions not met can only test this this way.
+                Assertions.assertTrue(LibrtLoader.LIB_RT_SYMBOL_LOOKUP.lookup("timer_create").isEmpty(), "timer_create is available");
+                Assertions.assertTrue(LibrtLoader.LIB_RT_SYMBOL_LOOKUP.lookup("timer_gettime").isEmpty(), "timer_gettime is available");
+                Assertions.assertTrue(LibrtLoader.LIB_RT_SYMBOL_LOOKUP.lookup("timer_settime").isEmpty(), "timer_settime is available");
+                Assertions.assertTrue(LibrtLoader.LIB_RT_SYMBOL_LOOKUP.lookup("timer_getoverrun").isEmpty(), "timer_getoverrun is available");
+                Assertions.assertTrue(LibrtLoader.LIB_RT_SYMBOL_LOOKUP.lookup("timer_delete").isEmpty(), "timer_delete is available");
+
                 // precondition for tests not available
                 Assertions.assertThrows(NoSuchNativeTypeException.class, () -> {
                     Signal.Sigevent.tryAllocateNative(ms);
                 });
-                break;
-            case DARWIN:
+            }
+            case DARWIN -> {
+                // preconditions not met can only test this this way.
+                Assertions.assertTrue(LibrtLoader.LIB_RT_SYMBOL_LOOKUP.lookup("timer_create").isEmpty(), "timer_create is available");
+                Assertions.assertTrue(LibrtLoader.LIB_RT_SYMBOL_LOOKUP.lookup("timer_gettime").isEmpty(), "timer_gettime is available");
+                Assertions.assertTrue(LibrtLoader.LIB_RT_SYMBOL_LOOKUP.lookup("timer_settime").isEmpty(), "timer_settime is available");
+                Assertions.assertTrue(LibrtLoader.LIB_RT_SYMBOL_LOOKUP.lookup("timer_getoverrun").isEmpty(), "timer_getoverrun is available");
+                Assertions.assertTrue(LibrtLoader.LIB_RT_SYMBOL_LOOKUP.lookup("timer_delete").isEmpty(), "timer_delete is available");
+
                 // precondition for tests not available
                 Assertions.assertThrows(NoSuchNativeTypeException.class, () -> {
                     Time.Timer_t.tryAllocateNative(ms);
                 });
-                break;
-            default:
-
+            }
+            default -> {
                 final int SIVAL_INT = 0x87654321;
                 final Object[] cbRef = new Object[1];
                 Time.PtrTimer_t ptrTimerid = Time.PtrTimer_t.tryAllocateNative(ms);
@@ -960,9 +1000,9 @@ public class TimeTest {
                 //Pthread.Pthread_attr_t attr = new Pthread.Pthread_attr_t();
                 //Pthread.pthread_attr_init(attr);
                 /*
-        Sched.Sched_param parm = new Sched.Sched_param();
-        parm.sched_priority(0); //TODO Was 255 but got EINVAL
-        Pthread.pthread_attr_setschedparam(attr, parm);
+                Sched.Sched_param parm = new Sched.Sched_param();
+                parm.sched_priority(0); //TODO Was 255 but got EINVAL
+                Pthread.pthread_attr_setschedparam(attr, parm);
                  */
                 Signal.Sigevent<OpaqueMemory> evp = Signal.Sigevent.tryAllocateNative(ms);
                 //evp.sigev_notify_attributes(attr);
@@ -1003,7 +1043,7 @@ public class TimeTest {
                         value.it_interval.tv_sec(1); //fire all 1s
                         System.out.println("timer_settime");
 
-                        //TODO Errno.EINVAL() aka 22
+//TODO Errno.EINVAL() aka 22
                         Time.timer_settime(timerid, 0, value);
                         Time.Itimerspec itimerspec = Time.Itimerspec.tryAllocateNative(ms);
                         System.out.println("timer_gettime");
@@ -1042,6 +1082,7 @@ public class TimeTest {
                 } finally {
                     cb.release();
                 }
+            }
         }
     }
 
@@ -1099,13 +1140,11 @@ public class TimeTest {
         } else {
             Time.Timer_t timer_t = Time.Timer_t.tryAllocateNative(ms);
             switch (Time.Timer_t.sizeof) {
-                case 4:
+                case 4 ->
                     Assertions.assertEquals("0x00000000", timer_t.nativeToHexString());
-                    break;
-                case 8:
+                case 8 ->
                     Assertions.assertEquals("0x0000000000000000", timer_t.nativeToHexString());
-                    break;
-                default:
+                default ->
                     fail("Timer_t.sizeof not supported");
             }
         }

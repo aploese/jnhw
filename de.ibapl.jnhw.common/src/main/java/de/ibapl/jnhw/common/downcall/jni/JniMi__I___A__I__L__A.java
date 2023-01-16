@@ -24,18 +24,19 @@ package de.ibapl.jnhw.common.downcall.jni;
 import de.ibapl.jnhw.common.downcall.JnhwMh_BL___A_uI_uL__A;
 import de.ibapl.jnhw.common.util.ConversionsNative2Java;
 import java.lang.foreign.Addressable;
+import java.lang.foreign.MemorySegment;
 import java.lang.foreign.SymbolLookup;
 
 /**
  *
  * @author aploese
  */
-public class JniMi__I___A__I__L__A extends JniMethodInvoker implements JnhwMh_BL___A_uI_uL__A {
+public class JniMi__I___A__I__L__A extends JniMethodInvoker implements JnhwMh_BL___A_uI_uL__A.ExceptionErased {
 
     protected final static native int invoke__I___A__I__L__A(long address, long arg1, int arg2, long arg3, long arg4);
 
-    public JniMi__I___A__I__L__A(SymbolLookup symbolLookup, String name) {
-        super(symbolLookup, name);
+    public JniMi__I___A__I__L__A(MemorySegment methodAddress, String name) {
+        super(methodAddress, name);
     }
 
     @Override

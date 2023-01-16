@@ -80,7 +80,7 @@ public final class LibJnhwCommonTestLoader {
     }
 
     public static int invokeExact_Int_V(String name) {
-        return JnhwMh_sI___V.of(SYMBOL_LOOKUP, name, BaseDataType.int32_t).invoke_sI___V();
+        return JnhwMh_sI___V.mandatoryOf(SYMBOL_LOOKUP, name, BaseDataType.int32_t).invoke_sI___V();
     }
 
     private LibJnhwCommonTestLoader() {

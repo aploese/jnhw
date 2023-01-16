@@ -38,25 +38,25 @@ public final class MultiarchTupelBuilder {
     private final static MultiarchTupelBuilder INSTANCE = new MultiarchTupelBuilder();
 
     private SizeInBit sun_arch_data_modelAsWordsize() {
-        switch (sun_arch_data_model) {
-            case "32":
-                return SizeInBit._32_BIT;
-            case "64":
-                return SizeInBit._64_BIT;
-            default:
+        return switch (sun_arch_data_model) {
+            case "32" ->
+                SizeInBit._32_BIT;
+            case "64" ->
+                SizeInBit._64_BIT;
+            default ->
                 throw new RuntimeException("Unknown WordSize" + sun_arch_data_model);
-        }
+        };
     }
 
     private Endianess sun_cpu_endianAsEndianess() {
-        switch (sun_cpu_endian) {
-            case "little":
-                return Endianess.LITTLE;
-            case "big":
-                return Endianess.BIG;
-            default:
+        return switch (sun_cpu_endian) {
+            case "little" ->
+                Endianess.LITTLE;
+            case "big" ->
+                Endianess.BIG;
+            default ->
                 throw new RuntimeException("Unknown endian" + sun_cpu_endian);
-        }
+        };
     }
 
     public static MemoryModel getMemoryModel() {
@@ -122,7 +122,7 @@ public final class MultiarchTupelBuilder {
     private Set<MultiarchInfo> guessLinux() {
         Set<MultiarchInfo> result = EnumSet.noneOf(MultiarchInfo.class);
         switch (os_arch) {
-            case "amd64":
+            case "amd64" -> {
                 if (SizeInBit._64_BIT != sun_arch_data_modelAsWordsize()) {
                     throw new UnsupportedOperationException(
                             "Can't handle sun.arch.data.model of amd64 linux\n" + listSystemProperties());
@@ -136,7 +136,8 @@ public final class MultiarchTupelBuilder {
                     throw new UnsupportedOperationException(
                             "Can't handle sun.arch.abi of amd64 linux\n" + listSystemProperties());
                 }
-            case "i386":
+            }
+            case "i386" -> {
                 if (SizeInBit._32_BIT != sun_arch_data_modelAsWordsize()) {
                     throw new UnsupportedOperationException(
                             "Can't handle sun.arch.data.model of i386 linux\n" + listSystemProperties());
@@ -150,7 +151,8 @@ public final class MultiarchTupelBuilder {
                     throw new UnsupportedOperationException(
                             "Can't handle sun.arch.abi of i386 linux\n" + listSystemProperties());
                 }
-            case "arm":
+            }
+            case "arm" -> {
                 if (SizeInBit._32_BIT != sun_arch_data_modelAsWordsize()) {
                     throw new UnsupportedOperationException(
                             "Can't handle sun.arch.data.model of arm linux\n" + listSystemProperties());
@@ -164,18 +166,21 @@ public final class MultiarchTupelBuilder {
                     return result;
                 } else {
                     switch (sun_arch_abi) {
-                        case "gnueabi":
+                        case "gnueabi" -> {
                             result.add(MultiarchInfo.ARM__LINUX__GNU_EABI);
                             return result;
-                        case "gnueabihf":
+                        }
+                        case "gnueabihf" -> {
                             result.add(MultiarchInfo.ARM__LINUX__GNU_EABI_HF);
                             return result;
-                        default:
+                        }
+                        default ->
                             throw new UnsupportedOperationException(
                                     "Can't handle sun.arch.abi of arm linux\n" + listSystemProperties());
                     }
                 }
-            case "aarch64":
+            }
+            case "aarch64" -> {
                 if (SizeInBit._64_BIT != sun_arch_data_modelAsWordsize()) {
                     throw new UnsupportedOperationException(
                             "Can't handle sun.arch.data.model of aarch64 linux\n" + listSystemProperties());
@@ -189,7 +194,8 @@ public final class MultiarchTupelBuilder {
                     throw new UnsupportedOperationException(
                             "Can't handle sun.arch.abi of aarch64 linux\n" + listSystemProperties());
                 }
-            case "mips":
+            }
+            case "mips" -> {
                 if (SizeInBit._32_BIT != sun_arch_data_modelAsWordsize()) {
                     throw new UnsupportedOperationException(
                             "Can't handle sun.arch.data.model of mips linux\n" + listSystemProperties());
@@ -203,7 +209,8 @@ public final class MultiarchTupelBuilder {
                     throw new UnsupportedOperationException(
                             "Can't handle sun.arch.abi of mips linux\n" + listSystemProperties());
                 }
-            case "mipsel":
+            }
+            case "mipsel" -> {
                 if (SizeInBit._32_BIT != sun_arch_data_modelAsWordsize()) {
                     throw new UnsupportedOperationException(
                             "Can't handle sun.arch.data.model of mipsel linux\n" + listSystemProperties());
@@ -217,7 +224,8 @@ public final class MultiarchTupelBuilder {
                     throw new UnsupportedOperationException(
                             "Can't handle sun.arch.abi of mipsel linux\n" + listSystemProperties());
                 }
-            case "mips64":
+            }
+            case "mips64" -> {
                 if (SizeInBit._64_BIT != sun_arch_data_modelAsWordsize()) {
                     throw new UnsupportedOperationException(
                             "Can't handle sun.arch.data.model of mips linux\n" + listSystemProperties());
@@ -231,7 +239,8 @@ public final class MultiarchTupelBuilder {
                     throw new UnsupportedOperationException(
                             "Can't handle sun.arch.abi of mips64 linux\n" + listSystemProperties());
                 }
-            case "mips64el":
+            }
+            case "mips64el" -> {
                 if (SizeInBit._64_BIT != sun_arch_data_modelAsWordsize()) {
                     throw new UnsupportedOperationException(
                             "Can't handle sun.arch.data.model of mipsel linux\n" + listSystemProperties());
@@ -245,7 +254,8 @@ public final class MultiarchTupelBuilder {
                     throw new UnsupportedOperationException(
                             "Can't handle sun.arch.abi of mips64el linux\n" + listSystemProperties());
                 }
-            case "ppc64le":
+            }
+            case "ppc64le" -> {
                 if (SizeInBit._64_BIT != sun_arch_data_modelAsWordsize()) {
                     throw new UnsupportedOperationException(
                             "Can't handle sun.arch.data.model of ppc64le linux\n" + listSystemProperties());
@@ -256,7 +266,8 @@ public final class MultiarchTupelBuilder {
                     result.add(MultiarchInfo.POWER_PC_64_LE__LINUX__GNU);
                     return result;
                 }
-            case "ppc64":
+            }
+            case "ppc64" -> {
                 if (SizeInBit._64_BIT != sun_arch_data_modelAsWordsize()) {
                     throw new UnsupportedOperationException(
                             "Can't handle sun.arch.data.model of ppc64le linux\n" + listSystemProperties());
@@ -267,7 +278,8 @@ public final class MultiarchTupelBuilder {
                     result.add(MultiarchInfo.POWER_PC_64__LINUX__GNU);
                     return result;
                 }
-            case "riscv64":
+            }
+            case "riscv64" -> {
                 if (SizeInBit._64_BIT != sun_arch_data_modelAsWordsize()) {
                     throw new UnsupportedOperationException(
                             "Can't handle sun.arch.data.model of riscv64 linux\n" + listSystemProperties());
@@ -278,7 +290,8 @@ public final class MultiarchTupelBuilder {
                     result.add(MultiarchInfo.RISC_V_64__LINUX__GNU);
                     return result;
                 }
-            case "s390x":
+            }
+            case "s390x" -> {
                 if (SizeInBit._64_BIT != sun_arch_data_modelAsWordsize()) {
                     throw new UnsupportedOperationException(
                             "Can't handle sun.arch.data.model of s390 linux\n" + listSystemProperties());
@@ -289,7 +302,8 @@ public final class MultiarchTupelBuilder {
                     result.add(MultiarchInfo.S390_X__LINUX__GNU);
                     return result;
                 }
-            case "sparc64":
+            }
+            case "sparc64" -> {
                 if (SizeInBit._64_BIT != sun_arch_data_modelAsWordsize()) {
                     throw new UnsupportedOperationException(
                             "Can't handle sun.arch.data.model of sparc64 linux\n" + listSystemProperties());
@@ -300,7 +314,8 @@ public final class MultiarchTupelBuilder {
                     result.add(MultiarchInfo.SPARC_64__LINUX__GNU);
                     return result;
                 }
-            default:
+            }
+            default ->
                 throw new UnsupportedOperationException("Can't handle os.arch of linux\n" + listSystemProperties());
         }
 
@@ -309,7 +324,7 @@ public final class MultiarchTupelBuilder {
     private Set<MultiarchInfo> guessFreeBSD() {
         Set<MultiarchInfo> result = EnumSet.noneOf(MultiarchInfo.class);
         switch (os_arch) {
-            case "amd64":
+            case "amd64" -> {
                 if (SizeInBit._64_BIT != sun_arch_data_modelAsWordsize()) {
                     throw new UnsupportedOperationException(
                             "Can't handle sun.arch.data.model of amd64 FreeBSD\n" + listSystemProperties());
@@ -323,7 +338,8 @@ public final class MultiarchTupelBuilder {
                     throw new UnsupportedOperationException(
                             "Can't handle sun.arch.abi of amd64 FreeBSD\n" + listSystemProperties());
                 }
-            default:
+            }
+            default ->
                 throw new UnsupportedOperationException("Can't handle os.arch of amd64 FreeBSD\n" + listSystemProperties());
         }
 
@@ -332,7 +348,7 @@ public final class MultiarchTupelBuilder {
     private Set<MultiarchInfo> guessOpenBSD() {
         Set<MultiarchInfo> result = EnumSet.noneOf(MultiarchInfo.class);
         switch (os_arch) {
-            case "amd64":
+            case "amd64" -> {
                 if (SizeInBit._64_BIT != sun_arch_data_modelAsWordsize()) {
                     throw new UnsupportedOperationException(
                             "Can't handle sun.arch.data.model of amd64 OpenBSD\n" + listSystemProperties());
@@ -346,7 +362,8 @@ public final class MultiarchTupelBuilder {
                     throw new UnsupportedOperationException(
                             "Can't handle sun.arch.abi of amd64 OpenBSD\n" + listSystemProperties());
                 }
-            case "aarch64":
+            }
+            case "aarch64" -> {
                 if (SizeInBit._64_BIT != sun_arch_data_modelAsWordsize()) {
                     throw new UnsupportedOperationException(
                             "Can't handle sun.arch.data.model of aarch64 OpenBSD\n" + listSystemProperties());
@@ -360,7 +377,8 @@ public final class MultiarchTupelBuilder {
                     throw new UnsupportedOperationException(
                             "Can't handle sun.arch.abi of aarch64 OpenBSD\n" + listSystemProperties());
                 }
-            default:
+            }
+            default ->
                 throw new UnsupportedOperationException("Can't handle os.arch of OpenBSD\n" + listSystemProperties());
         }
 
@@ -370,7 +388,7 @@ public final class MultiarchTupelBuilder {
         Set<MultiarchInfo> result = EnumSet.noneOf(MultiarchInfo.class
         );
         switch (os_arch) {
-            case "x86_64":
+            case "x86_64" -> {
                 if (SizeInBit._64_BIT != sun_arch_data_modelAsWordsize()) {
                     throw new UnsupportedOperationException(
                             "Can't handle sun.arch.data.model of x86_64 Mac OS X\n" + listSystemProperties());
@@ -384,7 +402,8 @@ public final class MultiarchTupelBuilder {
                     throw new UnsupportedOperationException(
                             "Can't handle sun.arch.abi of x86_64 Mac OS X\n" + listSystemProperties());
                 }
-            default:
+            }
+            default ->
                 throw new UnsupportedOperationException("Can't handle os.arch of Mac OS X\n" + listSystemProperties());
         }
 
@@ -394,15 +413,17 @@ public final class MultiarchTupelBuilder {
         Set<MultiarchInfo> result = EnumSet.noneOf(MultiarchInfo.class
         );
         switch (os_arch) {
-            case "amd64":
+            case "amd64" -> {
                 result.add(MultiarchInfo.X86_64__WINDOWS__PE32_PLUS);
                 return result;
-            case "x86":
+            }
+            case "x86" -> {
                 //Add first HW specific top down i.e. i686, i586, i486, i386 and then the generic x86
                 result.add(MultiarchInfo.I386__WINDOWS__PE32);
                 result.add(MultiarchInfo.X86__WINDOWS__PE32);
                 return result;
-            default:
+            }
+            default ->
                 throw new UnsupportedOperationException("Cant handle Windows architecture: " + os_arch);
         }
 
@@ -410,20 +431,25 @@ public final class MultiarchTupelBuilder {
 
     private Set<MultiarchInfo> guessMultiarch() {
         switch (os_name) {
-            case "Linux":
+            case "Linux" -> {
                 return guessLinux();
-            case "FreeBSD":
+            }
+            case "FreeBSD" -> {
                 return guessFreeBSD();
-            case "OpenBSD":
+            }
+            case "OpenBSD" -> {
                 return guessOpenBSD();
-            case "Mac OS X":
+            }
+            case "Mac OS X" -> {
                 return guessMacOS();
-            default:
+            }
+            default -> {
                 if (os_name.startsWith("Windows")) {
                     return guessWindows();
                 } else {
                     throw new IllegalArgumentException("Unknown OS: " + os_name);
                 }
+            }
         }
     }
 

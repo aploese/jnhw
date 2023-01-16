@@ -141,13 +141,13 @@ public abstract class Winreg {
     @Define
     public final static HKEY HKEY_USERS = HKEY.of(MemoryAddress.ofLong(0x80000003L));
 
-    private final static JnhwMh_sI___A RegCloseKey = JnhwMh_sI___A.of(
+    private final static JnhwMh_sI___A.ExceptionErased RegCloseKey = JnhwMh_sI___A.mandatoryOf(
             Kernel32Loader.DLL_KERNEL32_SYMBOL_LOOKUP,
             "RegCloseKey",
             WinApiDataType.LSTATUS,
             WinApiDataType.HKEY);
 
-    private final static JnhwMh_sI___A_uI__A__A__A__A__A__A RegEnumValueW = JnhwMh_sI___A_uI__A__A__A__A__A__A.of(
+    private final static JnhwMh_sI___A_uI__A__A__A__A__A__A.ExceptionErased RegEnumValueW = JnhwMh_sI___A_uI__A__A__A__A__A__A.mandatoryOf(
             Kernel32Loader.DLL_KERNEL32_SYMBOL_LOOKUP,
             "RegEnumValueW",
             WinApiDataType.LSTATUS,
@@ -160,7 +160,7 @@ public abstract class Winreg {
             WinApiDataType.LPBYTE,
             WinApiDataType.LPDWORD);
 
-    private final static JnhwMh_sI___A__A_uI_uI__A RegOpenKeyExW = JnhwMh_sI___A__A_uI_uI__A.of(
+    private final static JnhwMh_sI___A__A_uI_uI__A.ExceptionErased RegOpenKeyExW = JnhwMh_sI___A__A_uI_uI__A.mandatoryOf(
             Kernel32Loader.DLL_KERNEL32_SYMBOL_LOOKUP,
             "RegOpenKeyExW",
             WinApiDataType.LSTATUS,
@@ -268,7 +268,7 @@ public abstract class Winreg {
      * indicates an error.
      */
     public final static void RegOpenKeyExW(HKEY hKey, String lpSubKey, int ulOptions, int samDesired, WinDef.PHKEY phkResult) throws NativeErrorException {
-        try ( MemorySession ms = MemorySession.openConfined()) {
+        try (MemorySession ms = MemorySession.openConfined()) {
             Pointer<WinDef.LPWSTR> _lpSubKey = lpSubKey != null ? WinDef.LPWSTR.wrap(lpSubKey, true, ms) : Pointer.NULL;
             final int result = RegOpenKeyExW.invoke_sI___P__P_uI_uI__P(
                     hKey,

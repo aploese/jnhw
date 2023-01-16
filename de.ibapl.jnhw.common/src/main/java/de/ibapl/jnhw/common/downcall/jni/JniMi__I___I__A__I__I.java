@@ -21,40 +21,24 @@
  */
 package de.ibapl.jnhw.common.downcall.jni;
 
-import de.ibapl.jnhw.common.downcall.JnhwMh_sI__sI__A_sI_uI;
 import de.ibapl.jnhw.common.downcall.JnhwMh_uI__uI__A_BL_uI;
 import de.ibapl.jnhw.common.downcall.JnhwMh_uI__uI__A_uI_uI;
 import de.ibapl.jnhw.common.util.ConversionsJava2Native;
 import de.ibapl.jnhw.common.util.ConversionsNative2Java;
 import java.lang.foreign.Addressable;
+import java.lang.foreign.MemorySegment;
 import java.lang.foreign.SymbolLookup;
 
 /**
  *
  * @author aploese
  */
-public class JniMi__I___I__A__I__I extends JniMethodInvoker implements JnhwMh_sI__sI__A_sI_uI, JnhwMh_uI__uI__A_uI_uI, JnhwMh_uI__uI__A_BL_uI {
+public class JniMi__I___I__A__I__I extends JniMethodInvoker implements JnhwMh_uI__uI__A_uI_uI.ExceptionErased, JnhwMh_uI__uI__A_BL_uI.ExceptionErased {
 
     protected final static native int invoke__I___I__A__I__I(long address, int arg1, long arg2, int arg3, int arg4);
 
-    public JniMi__I___I__A__I__I(SymbolLookup symbolLookup, String name) {
-        super(symbolLookup, name);
-    }
-
-    @Override
-    public int invoke_sI__sI__A_sI_uI(int arg1, Addressable arg2, int arg3, int arg4) {
-        try {
-            return invoke__I___I__A__I__I(
-                    ns.address().toRawLongValue(),
-                    arg1,
-                    arg2.address().toRawLongValue(),
-                    arg3,
-                    arg4);
-        } catch (IllegalArgumentException | NullPointerException e) {
-            throw e;
-        } catch (Throwable t) {
-            throw createRuntimeExceptionInvoke(t);
-        }
+    public JniMi__I___I__A__I__I(MemorySegment methodAddress, String name) {
+        super(methodAddress, name);
     }
 
     @Override

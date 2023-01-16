@@ -383,12 +383,9 @@ public class SignalTest {
         System.out.println("psiginfo");
         Signal.Siginfo_t pinfo = Signal.Siginfo_t.allocateNative(ms);
         switch (MultiarchTupelBuilder.getOS()) {
-            case DARWIN:
-            case FREE_BSD:
-            case OPEN_BSD:
+            case DARWIN, FREE_BSD, OPEN_BSD ->
                 Assertions.assertThrows(NoSuchNativeMethodException.class, () -> Signal.psiginfo(pinfo, "JNHW Test for Signal.psiginfo"));
-                break;
-            default:
+            default -> {
                 System.err.print("psiginfo MSG >>>");
                 try {
                     Signal.psiginfo(pinfo, "JNHW Test for Signal.psiginfo");
@@ -405,6 +402,7 @@ public class SignalTest {
                 Assertions.assertThrows(NullPointerException.class, () -> {
                     Signal.psiginfo(null, "JNHW Test for Signal.psiginfo");
                 });
+            }
         }
         //TODO mark as not executing as expected but do not fail??
     }
@@ -868,11 +866,9 @@ public class SignalTest {
         System.out.println("sigqueue");
         final int SIG = Signal.SIGUSR2;
         switch (MultiarchTupelBuilder.getOS()) {
-            case DARWIN:
-            case OPEN_BSD:
+            case DARWIN, OPEN_BSD ->
                 Assertions.assertThrows(NoSuchNativeMethodException.class, () -> Signal.sigqueue(Unistd.getpid(), SIG, Signal.Sigval.allocateNative(ms)));
-                break;
-            default:
+            default -> {
                 final Signal.Sigaction act = Signal.Sigaction.allocateNative(ms);
                 OpaqueMemory.clear(act);
                 act.sa_flags(Signal.SA_SIGINFO);
@@ -940,6 +936,7 @@ public class SignalTest {
                 } finally {
                     Signal.sigaction(SIG, oact, null);
                 }
+            }
         }
     }
 
@@ -1004,8 +1001,7 @@ public class SignalTest {
     public void testSigtimedwait() throws Exception {
         System.out.println("sigtimedwait");
         switch (MultiarchTupelBuilder.getOS()) {
-            case DARWIN:
-            case OPEN_BSD: {
+            case DARWIN, OPEN_BSD -> {
                 final Signal.Sigset_t set = Signal.Sigset_t.allocateNative(ms);
                 Signal.sigemptyset(set);
                 Signal.sigaddset(set, Signal.SIGALRM);
@@ -1016,23 +1012,16 @@ public class SignalTest {
                     Signal.sigtimedwait(set, info, timeout);
                 });
             }
-            break;
-            default:
-
+            default -> {
                 final int SIG = Signal.SIGALRM;
-
                 final Signal.Sigset_t set = Signal.Sigset_t.allocateNative(ms);
                 Signal.sigemptyset(set);
                 Signal.sigaddset(set, SIG);
-
                 final Signal.Sigset_t oset = Signal.Sigset_t.allocateNative(ms);
-
                 final Signal.Siginfo_t info = Signal.Siginfo_t.allocateNative(ms);
-
                 final Time.Timespec timeout = Time.Timespec.allocateNative(ms);
                 timeout.tv_nsec(0);
                 timeout.tv_sec(10);
-
                 Signal.sigprocmask(Signal.SIG_BLOCK, set, oset);
                 try {
                     Signal.pthread_kill(Pthread.pthread_self(ms), SIG); //We need to fire in this thread ...
@@ -1078,6 +1067,7 @@ public class SignalTest {
                     //Restore signal mask
                     Signal.sigprocmask(Signal.SIG_SETMASK, oset, null);
                 }
+            }
         }
     }
 
@@ -1128,8 +1118,7 @@ public class SignalTest {
         System.out.println("sigwaitinfo");
 
         switch (MultiarchTupelBuilder.getOS()) {
-            case DARWIN:
-            case OPEN_BSD: {
+            case DARWIN, OPEN_BSD -> {
                 final Signal.Sigset_t set = Signal.Sigset_t.allocateNative(ms);
                 Signal.sigemptyset(set);
                 Signal.sigaddset(set, Signal.SIGALRM);
@@ -1138,25 +1127,21 @@ public class SignalTest {
                     Signal.sigwaitinfo(set, info);
                 });
             }
-            break;
-            default:
-
+            default -> {
                 final int SIG = Signal.SIGALRM;
-
                 Signal.signal(SIG, Signal.SIG_DFL);
                 final Signal.Sigset_t set = Signal.Sigset_t.allocateNative(ms);
                 Signal.sigemptyset(set);
                 Signal.sigaddset(set, SIG);
                 final Signal.Sigset_t oset = Signal.Sigset_t.allocateNative(ms);
-
                 Signal.sigprocmask(Signal.SIG_BLOCK, set, oset);
                 try {
                     final Signal.Sigset_t testSet = Signal.Sigset_t.allocateNative(ms);
                     Signal.sigemptyset(testSet);
                     /*
-             If the test fails after raising the signal
-             and before processing the signal in the test,
-             the whole testsuite will crash!
+                    If the test fails after raising the signal
+                    and before processing the signal in the test,
+                    the whole testsuite will crash!
                      */
                     Signal.raise(SIG);
                     Signal.sigpending(testSet);
@@ -1209,6 +1194,7 @@ public class SignalTest {
                     //Restore signal mask
                     Signal.sigprocmask(Signal.SIG_SETMASK, oset, null);
                 }
+            }
         }
     }
 
@@ -1296,12 +1282,10 @@ public class SignalTest {
     @Test
     public void testStructUcontext_t() throws Exception {
         switch (MultiarchTupelBuilder.getOS()) {
-            case DARWIN:
-            case OPEN_BSD:
+            case DARWIN, OPEN_BSD ->
                 Assertions.assertThrows(NoSuchNativeTypeException.class,
                         () -> Signal.Ucontext_t.tryAllocateNative(ms));
-                break;
-            default:
+            default -> {
                 Signal.Ucontext_t ucontext_t = Signal.Ucontext_t.tryAllocateNative(ms);
                 Assertions.assertNull(ucontext_t.uc_link((baseAddress, scope, parent) -> {
                     try {
@@ -1314,6 +1298,7 @@ public class SignalTest {
                 Assertions.assertNotNull(ucontext_t.uc_mcontext);
                 Assertions.assertNotNull(ucontext_t.uc_sigmask);
                 Assertions.assertNotNull(ucontext_t.uc_stack);
+            }
         }
     }
 

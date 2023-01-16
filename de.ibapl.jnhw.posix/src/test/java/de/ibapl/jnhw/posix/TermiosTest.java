@@ -63,42 +63,18 @@ public class TermiosTest {
         if (MultiarchTupelBuilder.getOS() == OS.WINDOWS) {
             return;
         }
-        switch (MultiarchTupelBuilder.getOS()) {
-            case LINUX:
-            default:
-                Assertions.assertAll(
-                        () -> {
-                            Assertions.assertEquals(LibJnhwPosixTestLoader.invoke_sI___V("StructTermios_sizeof"), Termios.StructTermios.sizeof, "sizeof");
-                        },
-                        () -> {
-                            Assertions.assertEquals(LibJnhwPosixTestLoader.invoke_sI___V("StructTermios_alignof"), Termios.StructTermios.alignof.alignof, "alignof");
-                        },
-                        () -> {
-                            Assertions.assertEquals(LibJnhwPosixTestLoader.invoke_sI___V("StructTermios_offsetof_c_iflag"), Termios.StructTermios.offsetof_C_iflag, "offsetof_C_iflag");
-                        },
-                        () -> {
-                            Assertions.assertEquals(LibJnhwPosixTestLoader.invoke_sI___V("StructTermios_offsetof_c_oflag"), Termios.StructTermios.offsetof_C_oflag, "offsetof_C_oflag");
-                        },
-                        () -> {
-                            Assertions.assertEquals(LibJnhwPosixTestLoader.invoke_sI___V("StructTermios_offsetof_c_cflag"), Termios.StructTermios.offsetof_C_cflag, "offsetof_C_cflag");
-                        },
-                        () -> {
-                            Assertions.assertEquals(LibJnhwPosixTestLoader.invoke_sI___V("StructTermios_offsetof_c_lflag"), Termios.StructTermios.offsetof_C_lflag, "offsetof_C_lflag");
-                        },
-                        () -> {
-                            Assertions.assertEquals(LibJnhwPosixTestLoader.invoke_sI___V("StructTermios_offsetof_c_cc"), Termios.StructTermios.offsetof_C_cc, "offsetof_C_cc");
-                        },
-                        () -> {
-                            Assertions.assertEquals(LibJnhwPosixTestLoader.invoke_sI___V("StructTermios_offsetof_c_line"), Termios.StructTermios.offsetof_C_line, "offsetof_C_line");
-                        },
-                        () -> {
-                            Assertions.assertEquals(LibJnhwPosixTestLoader.invoke_sI___V("StructTermios_offsetof_c_ispeed"), Termios.StructTermios.offsetof_C_ispeed, "offsetof_C_ispeed");
-                        },
-                        () -> {
-                            Assertions.assertEquals(LibJnhwPosixTestLoader.invoke_sI___V("StructTermios_offsetof_c_ospeed"), Termios.StructTermios.offsetof_C_ospeed, "offsetof_C_ospeed");
-                        }
-                );
-        }
+        Assertions.assertAll(
+                () -> Assertions.assertEquals(LibJnhwPosixTestLoader.invoke_sI___V("StructTermios_sizeof"), Termios.StructTermios.sizeof, "sizeof"),
+                () -> Assertions.assertEquals(LibJnhwPosixTestLoader.invoke_sI___V("StructTermios_alignof"), Termios.StructTermios.alignof.alignof, "alignof"),
+                () -> Assertions.assertEquals(LibJnhwPosixTestLoader.invoke_sI___V("StructTermios_offsetof_c_iflag"), Termios.StructTermios.offsetof_C_iflag, "offsetof_C_iflag"),
+                () -> Assertions.assertEquals(LibJnhwPosixTestLoader.invoke_sI___V("StructTermios_offsetof_c_oflag"), Termios.StructTermios.offsetof_C_oflag, "offsetof_C_oflag"),
+                () -> Assertions.assertEquals(LibJnhwPosixTestLoader.invoke_sI___V("StructTermios_offsetof_c_cflag"), Termios.StructTermios.offsetof_C_cflag, "offsetof_C_cflag"),
+                () -> Assertions.assertEquals(LibJnhwPosixTestLoader.invoke_sI___V("StructTermios_offsetof_c_lflag"), Termios.StructTermios.offsetof_C_lflag, "offsetof_C_lflag"),
+                () -> Assertions.assertEquals(LibJnhwPosixTestLoader.invoke_sI___V("StructTermios_offsetof_c_cc"), Termios.StructTermios.offsetof_C_cc, "offsetof_C_cc"),
+                () -> Assertions.assertEquals(LibJnhwPosixTestLoader.invoke_sI___V("StructTermios_offsetof_c_line"), Termios.StructTermios.offsetof_C_line, "offsetof_C_line"),
+                () -> Assertions.assertEquals(LibJnhwPosixTestLoader.invoke_sI___V("StructTermios_offsetof_c_ispeed"), Termios.StructTermios.offsetof_C_ispeed, "offsetof_C_ispeed"),
+                () -> Assertions.assertEquals(LibJnhwPosixTestLoader.invoke_sI___V("StructTermios_offsetof_c_ospeed"), Termios.StructTermios.offsetof_C_ospeed, "offsetof_C_ospeed")
+        );
     }
 
     private MemorySession ms;

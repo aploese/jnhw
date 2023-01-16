@@ -226,7 +226,7 @@ public class StructLayoutTest {
         Assertions.assertEquals(16, definedLayout.offsetof_5_i64);
         Assertions.assertEquals(24, definedLayout.offsetof_6_i8);
         switch (MultiarchTupelBuilder.getArch()) {
-            case I386:
+            case I386 -> {
                 Assertions.assertEquals(28, definedLayout.offsetof_7_i64);
                 Assertions.assertEquals(36, definedLayout.offsetof_8_i8);
                 Assertions.assertEquals(40, definedLayout.offsetof_9_i32);
@@ -235,8 +235,8 @@ public class StructLayoutTest {
                 Assertions.assertEquals(48, definedLayout.offsetof_12_i8);
                 Assertions.assertEquals(52, definedLayout.sizeof);
                 Assertions.assertEquals(Alignment.AT_4, definedLayout.alignment);
-                break;
-            default:
+            }
+            default -> {
                 Assertions.assertEquals(32, definedLayout.offsetof_7_i64);
                 Assertions.assertEquals(40, definedLayout.offsetof_8_i8);
                 Assertions.assertEquals(44, definedLayout.offsetof_9_i32);
@@ -245,6 +245,7 @@ public class StructLayoutTest {
                 Assertions.assertEquals(52, definedLayout.offsetof_12_i8);
                 Assertions.assertEquals(56, definedLayout.sizeof);
                 Assertions.assertEquals(Alignment.AT_8, definedLayout.alignment);
+            }
         }
     }
 
@@ -260,7 +261,7 @@ public class StructLayoutTest {
         Assertions.assertEquals(16, nativeLayout.offsetof_5_i64);
         Assertions.assertEquals(24, nativeLayout.offsetof_6_i8);
         switch (MultiarchTupelBuilder.getArch()) {
-            case I386:
+            case I386 -> {
                 Assertions.assertEquals(28, nativeLayout.offsetof_7_i64);
                 Assertions.assertEquals(36, nativeLayout.offsetof_8_i8);
                 Assertions.assertEquals(40, nativeLayout.offsetof_9_i32);
@@ -269,8 +270,8 @@ public class StructLayoutTest {
                 Assertions.assertEquals(48, nativeLayout.offsetof_12_i8);
                 Assertions.assertEquals(52, nativeLayout.sizeof);
                 Assertions.assertEquals(Alignment.AT_4, nativeLayout.alignment);
-                break;
-            default:
+            }
+            default -> {
                 Assertions.assertEquals(32, nativeLayout.offsetof_7_i64);
                 Assertions.assertEquals(40, nativeLayout.offsetof_8_i8);
                 Assertions.assertEquals(44, nativeLayout.offsetof_9_i32);
@@ -279,6 +280,7 @@ public class StructLayoutTest {
                 Assertions.assertEquals(52, nativeLayout.offsetof_12_i8);
                 Assertions.assertEquals(56, nativeLayout.sizeof);
                 Assertions.assertEquals(Alignment.AT_8, nativeLayout.alignment);
+            }
         }
 
         Assertions.assertEquals(S_i8_i64Impl.offsetOf_0_i8(), nativeLayout.offsetof_0_i8);

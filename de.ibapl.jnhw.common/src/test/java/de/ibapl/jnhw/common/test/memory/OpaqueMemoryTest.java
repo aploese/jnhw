@@ -230,17 +230,17 @@ public class OpaqueMemoryTest {
             OpaqueMemory mem1 = new MemToTest(MemorySegment.ofAddress(MemoryAddress.ofLong(42L), 8, ms));
             OpaqueMemory mem2 = new MemToTest(OpaqueMemory.getMemorySegment(mem));
             switch (MultiarchTupelBuilder.getMemoryModel().sizeOf_pointer) {
-                case _32_BIT:
+                case _32_BIT -> {
                     Assertions.assertEquals("{baseAddress : 0x0000002a, sizeof : 8}", mem.toString());
                     Assertions.assertEquals("{baseAddress : 0x0000002a, sizeof : 8}", mem1.toString());
                     Assertions.assertEquals("{baseAddress : 0x0000002a, sizeof : 8}", mem2.toString());
-                    break;
-                case _64_BIT:
+                }
+                case _64_BIT -> {
                     Assertions.assertEquals("{baseAddress : 0x000000000000002a, sizeof : 8}", mem.toString());
                     Assertions.assertEquals("{baseAddress : 0x000000000000002a, sizeof : 8}", mem1.toString());
                     Assertions.assertEquals("{baseAddress : 0x000000000000002a, sizeof : 8}", mem2.toString());
-                    break;
-                default:
+                }
+                default ->
                     throw new RuntimeException();
             }
             Assertions.assertEquals(mem, mem1);
@@ -289,7 +289,7 @@ public class OpaqueMemoryTest {
             struct._6_i8((byte) 0x77);
 
             switch (MultiarchTupelBuilder.getArch()) {
-                case I386:
+                case I386 -> {
                     //int64_t is aligned at 4
                     Assertions.assertEquals(28, OpaqueMemory.offsetof(struct, struct._7_i64));
                     struct._7_i64(0x8888888888888888L);
@@ -308,8 +308,8 @@ public class OpaqueMemoryTest {
 
                     Assertions.assertEquals(48, OpaqueMemory.offsetof(struct, struct._12_i8));
                     struct._12_i8((byte) 0xBB);
-                    break;
-                default:
+                }
+                default -> {
                     Assertions.assertEquals(32, OpaqueMemory.offsetof(struct, struct._7_i64));
                     struct._7_i64(0x8888888888888888L);
 
@@ -328,27 +328,28 @@ public class OpaqueMemoryTest {
                     Assertions.assertEquals(52, OpaqueMemory.offsetof(struct, struct._12_i8));
                     struct._12_i8((byte) 0xBB);
                     Assertions.assertEquals(56, struct.sizeof);
+                }
             }
             String expected = null;
             switch (MultiarchTupelBuilder.getArch()) {
-                case I386:
+                case I386 -> {
                     Assertions.assertEquals(52, struct.sizeof);
                     Assertions.assertEquals(Alignment.AT_4, struct.alignment);
                     expected = """
-                               11002222 33000000  44444444 55000000 | \u0011\u0000\u0022\u0022\u0033\u0000\u0000\u0000\u0044\u0044\u0044\u0044\u0055\u0000\u0000\u0000
-                               66666666 66666666  77000000 88888888 | \u0066\u0066\u0066\u0066\u0066\u0066\u0066\u0066\u0077\u0000\u0000\u0000\u0088\u0088\u0088\u0088
-                               88888888 88000000  55555555 9900aaaa | \u0088\u0088\u0088\u0088\u0088\u0000\u0000\u0000\u0055\u0055\u0055\u0055\u0099\u0000\u00aa\u00aa
-                               bb000000 00000000  00000000 00000000 | \u00bb\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000""";
-                    break;
-                default:
+                                                   11002222 33000000  44444444 55000000 | \u0011\u0000\u0022\u0022\u0033\u0000\u0000\u0000\u0044\u0044\u0044\u0044\u0055\u0000\u0000\u0000
+                                                   66666666 66666666  77000000 88888888 | \u0066\u0066\u0066\u0066\u0066\u0066\u0066\u0066\u0077\u0000\u0000\u0000\u0088\u0088\u0088\u0088
+                                                   88888888 88000000  55555555 9900aaaa | \u0088\u0088\u0088\u0088\u0088\u0000\u0000\u0000\u0055\u0055\u0055\u0055\u0099\u0000\u00aa\u00aa
+                                                   bb000000 00000000  00000000 00000000 | \u00bb\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000""";
+                }
+                default -> {
                     Assertions.assertEquals(56, struct.sizeof);
                     Assertions.assertEquals(Alignment.AT_8, struct.alignment);
                     expected = """
-                               11002222 33000000  44444444 55000000 | \u0011\u0000\u0022\u0022\u0033\u0000\u0000\u0000\u0044\u0044\u0044\u0044\u0055\u0000\u0000\u0000
-                               66666666 66666666  77000000 00000000 | \u0066\u0066\u0066\u0066\u0066\u0066\u0066\u0066\u0077\u0000\u0000\u0000\u0000\u0000\u0000\u0000
-                               88888888 88888888  88000000 55555555 | \u0088\u0088\u0088\u0088\u0088\u0088\u0088\u0088\u0088\u0000\u0000\u0000\u0055\u0055\u0055\u0055
-                               9900aaaa bb000000  00000000 00000000 | \u0099\u0000\u00aa\u00aa\u00bb\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000""";
-                    break;
+                                                   11002222 33000000  44444444 55000000 | \u0011\u0000\u0022\u0022\u0033\u0000\u0000\u0000\u0044\u0044\u0044\u0044\u0055\u0000\u0000\u0000
+                                                   66666666 66666666  77000000 00000000 | \u0066\u0066\u0066\u0066\u0066\u0066\u0066\u0066\u0077\u0000\u0000\u0000\u0000\u0000\u0000\u0000
+                                                   88888888 88888888  88000000 55555555 | \u0088\u0088\u0088\u0088\u0088\u0088\u0088\u0088\u0088\u0000\u0000\u0000\u0055\u0055\u0055\u0055
+                                                   9900aaaa bb000000  00000000 00000000 | \u0099\u0000\u00aa\u00aa\u00bb\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000""";
+                }
             }
 
             Assertions.assertEquals(expected, OpaqueMemory.printMemory(struct, false));

@@ -48,15 +48,15 @@ import org.junit.jupiter.params.provider.ValueSource;
  */
 public class Callback__V___I__I_MA_Test {
 
-    final static JnhwMh__V___A setCallback__V___I__I_MA;
-    final static JnhwMh_MA___V getCallback__V___I__I_MA;
-    final static JnhwMh__V__sI_sI__A doCallback__V___I__I_MA;
+    final static JnhwMh__V___A.ExceptionErased setCallback__V___I__I_MA;
+    final static JnhwMh_MA___V.ExceptionErased getCallback__V___I__I_MA;
+    final static JnhwMh__V__sI_sI__A.ExceptionErased doCallback__V___I__I_MA;
 
     static {
         LibJnhwCommonTestLoader.touch();
-        setCallback__V___I__I_MA = JnhwMh__V___A.of(LibJnhwCommonTestLoader.SYMBOL_LOOKUP, "setCallback__V___I__I_MA", BaseDataType.uintptr_t);
-        getCallback__V___I__I_MA = JnhwMh_MA___V.of(LibJnhwCommonTestLoader.SYMBOL_LOOKUP, "getCallback__V___I__I_MA", BaseDataType.uintptr_t);
-        doCallback__V___I__I_MA = JnhwMh__V__sI_sI__A.of(LibJnhwCommonTestLoader.SYMBOL_LOOKUP, "doCallback__V___I__I_MA", BaseDataType.int32_t, BaseDataType.int32_t, BaseDataType.uintptr_t);
+        setCallback__V___I__I_MA = JnhwMh__V___A.mandatoryOf(LibJnhwCommonTestLoader.SYMBOL_LOOKUP, "setCallback__V___I__I_MA", BaseDataType.uintptr_t);
+        getCallback__V___I__I_MA = JnhwMh_MA___V.mandatoryOf(LibJnhwCommonTestLoader.SYMBOL_LOOKUP, "getCallback__V___I__I_MA", BaseDataType.uintptr_t);
+        doCallback__V___I__I_MA = JnhwMh__V__sI_sI__A.mandatoryOf(LibJnhwCommonTestLoader.SYMBOL_LOOKUP, "doCallback__V___I__I_MA", BaseDataType.int32_t, BaseDataType.int32_t, BaseDataType.uintptr_t);
     }
 
     private MemorySession ms;
@@ -203,7 +203,15 @@ public class Callback__V___I__I_MA_Test {
             refB[0] = -1;
             refC[0] = null;
 
-            JnhwMh__V__sI_sI__A.of(getCallback__V___I__I_MA().toAddressable().address(), ms, BaseDataType.int32_t, BaseDataType.int32_t, BaseDataType.intptr_t).invoke__V__sI_sI__P(~testValueInt, testValueInt, c);
+            JnhwMh__V__sI_sI__A.of(
+                    MemorySegment.ofAddress(
+                            getCallback__V___I__I_MA().toAddressable().address(), 0, ms),
+                    "testCallback",
+                    BaseDataType.int32_t,
+                    BaseDataType.int32_t,
+                    BaseDataType.intptr_t
+            ).invoke__V__sI_sI__P(~testValueInt, testValueInt, c);
+
             assertEquals(~testValueInt, refA[0]);
             assertEquals(testValueInt, refB[0]);
             assertEquals(c.toAddressable().address(), refC[0]);

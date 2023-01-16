@@ -24,6 +24,7 @@ package de.ibapl.jnhw.common.util;
 import de.ibapl.jnhw.libloader.MultiarchTupelBuilder;
 import java.lang.foreign.Linker;
 import java.util.function.Supplier;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
@@ -34,22 +35,49 @@ public enum NativeProvider {
     JAVA_FOREIGN,
     JNI;
 
+    public final static String NATIVE_PROVIDER_PROPERTY = "de.ibapl.jnhw.common.util.NativeProvider";
+
     private final static Logger LOGGER = Logger.getLogger("d.i.j.c.u.NativeProvider");
 
     public final static NativeProvider DEFAULT_PROVIDER;
 
     static {
-        //Fallback is jni
+        //fallback is
         NativeProvider provider = JNI;
-
         try {
             Linker nativeLinker = Linker.nativeLinker();
             if (nativeLinker != null) {
                 provider = JAVA_FOREIGN;
             }
         } catch (UnsupportedOperationException e) {
-            LOGGER.info("Found no java.lang.foreign.Linker for this platform: " + MultiarchTupelBuilder.getMultiarch());
+            LOGGER.log(Level.INFO, "Found no java.lang.foreign.Linker for this platform: {0}", MultiarchTupelBuilder.getMultiarch());
         }
+
+        String nativeProviderProperty = System.getProperty(NATIVE_PROVIDER_PROPERTY);
+        if (nativeProviderProperty == null) {
+            LOGGER.info("Use platform default native provider ");
+        } else {
+            switch (nativeProviderProperty) {
+                case "JAVA_FOREIGN" -> {
+                    LOGGER.info("Use JAVA_FOREIGN native provider ");
+                    if (provider != JAVA_FOREIGN) {
+                        String msg = "Cant set JAVA_FOREIGN as native pßrovider only JNI is available";
+                        LOGGER.severe(msg);
+                        throw new RuntimeException(msg);
+                    }
+                }
+                case "JNI" -> {
+                    LOGGER.info("Use JNI native provider ");
+                    provider = JNI;
+                }
+                default -> {
+                    String msg = "Unknown value \"" + nativeProviderProperty + "\" for system property: \"" + NATIVE_PROVIDER_PROPERTY + "\" values are: JAVA_FOREIGN, JNI";
+                    LOGGER.severe(msg);
+                    throw new RuntimeException(msg);
+                }
+            }
+        }
+
         DEFAULT_PROVIDER = provider;
     }
 

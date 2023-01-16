@@ -34,15 +34,15 @@ public class MinwinbaseTest {
     public void testOVERLAPPED() {
         System.out.println("test OVERLAPPED");
         switch (MultiarchTupelBuilder.getMemoryModel()) {
-            case ILP32:
+            case ILP32 -> {
                 assertEquals(32, Minwinbase.LPOVERLAPPED.Layout.sizeof);
                 assertEquals(Alignment.AT_4, Minwinbase.LPOVERLAPPED.Layout.alignment);
-                break;
-            case LLP64:
+            }
+            case LLP64 -> {
                 assertEquals(32, Minwinbase.LPOVERLAPPED.Layout.sizeof);
                 assertEquals(Alignment.AT_8, Minwinbase.LPOVERLAPPED.Layout.alignment);
-                break;
-            default:
+            }
+            default ->
                 throw new RuntimeException("Can't handle SizeOfPointer " + MultiarchTupelBuilder.getMultiarch());
         }
     }
@@ -51,15 +51,15 @@ public class MinwinbaseTest {
     public void testSECURITY_ATTRIBUTES() {
         System.out.println("test SECURITY_ATTRIBUTES");
         switch (MultiarchTupelBuilder.getMemoryModel()) {
-            case ILP32:
+            case ILP32 -> {
                 assertEquals(24, Minwinbase.SECURITY_ATTRIBUTES.Layout.sizeof);
                 assertEquals(Alignment.AT_4, Minwinbase.SECURITY_ATTRIBUTES.Layout.alignment);
-                break;
-            case LLP64:
+            }
+            case LLP64 -> {
                 assertEquals(24, Minwinbase.SECURITY_ATTRIBUTES.Layout.sizeof);
                 assertEquals(Alignment.AT_8, Minwinbase.SECURITY_ATTRIBUTES.Layout.alignment);
-                break;
-            default:
+            }
+            default ->
                 throw new RuntimeException("Can't handle SizeOfPointer " + MultiarchTupelBuilder.getMultiarch());
         }
     }

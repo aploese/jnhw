@@ -34,15 +34,15 @@ public class WinbaseTest {
     public void testCOMMTIMEOUTS() {
         System.out.println("test COMMTIMEOUTS");
         switch (MultiarchTupelBuilder.getMemoryModel()) {
-            case ILP32:
+            case ILP32 -> {
                 assertEquals(20, Winbase.COMMTIMEOUTS.Layout.sizeof);
                 assertEquals(Alignment.AT_4, Winbase.COMMTIMEOUTS.Layout.alignment);
-                break;
-            case LLP64:
+            }
+            case LLP64 -> {
                 assertEquals(20, Winbase.COMMTIMEOUTS.Layout.sizeof);
                 assertEquals(Alignment.AT_4, Winbase.COMMTIMEOUTS.Layout.alignment);
-                break;
-            default:
+            }
+            default ->
                 throw new RuntimeException("Can't handle SizeOfPointer " + MultiarchTupelBuilder.getMemoryModel());
         }
     }
@@ -51,15 +51,15 @@ public class WinbaseTest {
     public void testCOMSTAT() {
         System.out.println("test COMSTAT");
         switch (MultiarchTupelBuilder.getMemoryModel()) {
-            case ILP32:
+            case ILP32 -> {
                 assertEquals(12, Winbase.COMSTAT.Layout.sizeof);
                 assertEquals(Alignment.AT_4, Winbase.COMSTAT.Layout.alignment);
-                break;
-            case LLP64:
+            }
+            case LLP64 -> {
                 assertEquals(12, Winbase.COMSTAT.Layout.sizeof);
                 assertEquals(Alignment.AT_4, Winbase.COMSTAT.Layout.alignment);
-                break;
-            default:
+            }
+            default ->
                 throw new RuntimeException("Can't handle SizeOfPointer " + MultiarchTupelBuilder.getMemoryModel());
         }
     }
@@ -68,15 +68,15 @@ public class WinbaseTest {
     public void testDCB() {
         System.out.println("test COMMTIMEOUTS");
         switch (MultiarchTupelBuilder.getMemoryModel()) {
-            case ILP32:
+            case ILP32 -> {
                 assertEquals(28, Winbase.DCB.Layout.sizeof);
                 assertEquals(Alignment.AT_4, Winbase.DCB.Layout.alignment);
-                break;
-            case LLP64:
+            }
+            case LLP64 -> {
                 assertEquals(28, Winbase.DCB.Layout.sizeof);
                 assertEquals(Alignment.AT_4, Winbase.DCB.Layout.alignment);
-                break;
-            default:
+            }
+            default ->
                 throw new RuntimeException("Can't handle SizeOfPointer " + MultiarchTupelBuilder.getMemoryModel());
         }
     }

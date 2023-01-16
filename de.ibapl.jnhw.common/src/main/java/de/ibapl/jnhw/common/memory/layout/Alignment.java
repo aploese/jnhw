@@ -89,20 +89,20 @@ public enum Alignment {
     public final int alignof;
 
     public static Alignment fromAlignof(int alignof) {
-        switch (alignof) {
-            case 1:
-                return AT_1;
-            case 2:
-                return AT_2;
-            case 4:
-                return AT_4;
-            case 8:
-                return AT_8;
-            case 16:
-                return AT_16;
-            default:
+        return switch (alignof) {
+            case 1 ->
+                AT_1;
+            case 2 ->
+                AT_2;
+            case 4 ->
+                AT_4;
+            case 8 ->
+                AT_8;
+            case 16 ->
+                AT_16;
+            default ->
                 throw new IllegalArgumentException("Can't get alignment from alignof: " + alignof);
-        }
+        };
     }
 
     public final static Alignment __ALIGN_OF_INT;

@@ -67,33 +67,26 @@ public class App {
             }
             SignalHandler signalHandler = null;
             switch (input) {
-                case '0':
+                case '0' ->
                     signalHandler = new NoSignalHandler(SIGNAL_TO_RAISE, SignalAction.PRINT_MSG);
-                    break;
-                case '1':
+                case '1' ->
                     signalHandler = new SigactionSignalHandler(SIGNAL_TO_RAISE, SignalAction.PRINT_MSG);
-                    break;
-                case '2':
+                case '2' ->
                     signalHandler = new SigactionSignalHandler(SIGNAL_TO_RAISE, SignalAction.PRINT_MSG_AND_SYSTEM_EXIT);
-                    break;
-                case '3':
+                case '3' ->
                     signalHandler = new SigactionSignalHandler(SIGNAL_TO_RAISE, SignalAction.PRINT_MSG_AND_CALL_OLD_HANDLER);
-                    break;
-                case '4':
+                case '4' ->
                     signalHandler = new SimpleSignalHandler(SIGNAL_TO_RAISE, SignalAction.PRINT_MSG);
-                    break;
-                case '5':
+                case '5' ->
                     signalHandler = new SimpleSignalHandler(SIGNAL_TO_RAISE, SignalAction.PRINT_MSG_AND_SYSTEM_EXIT);
-                    break;
-                case '6':
+                case '6' ->
                     signalHandler = new SimpleSignalHandler(SIGNAL_TO_RAISE, SignalAction.PRINT_MSG_AND_CALL_OLD_HANDLER);
-                    break;
-                case '7':
+                case '7' ->
                     System.exit(0);
-                    break;
-                default:
+                default -> {
                     System.out.println("Wrong input for signal handler");
                     continue;
+                }
             }
             if (args.length != 3) {
                 System.in.read(); //read '\n'
@@ -112,27 +105,22 @@ public class App {
                 input = (char) System.in.read();
             }
             switch (input) {
-                case '0':
+                case '0' ->
                     signalHandler.setThreadingModel(ThreadingModel.SETUP_IN_THREAD_MAIN__SIGNAL_IN_THREAD_MAIN);
-                    break;
-                case '1':
+                case '1' ->
                     signalHandler.setThreadingModel(ThreadingModel.SETUP_IN_THREAD_MAIN__SIGNAL_IN_THREAD_1);
-                    break;
-                case '2':
+                case '2' ->
                     signalHandler.setThreadingModel(ThreadingModel.SETUP_IN_THREAD_1__SIGNAL_IN_THREAD_MAIN);
-                    break;
-                case '3':
+                case '3' ->
                     signalHandler.setThreadingModel(ThreadingModel.SETUP_IN_THREAD_1__SIGNAL_IN_THREAD_1);
-                    break;
-                case '4':
+                case '4' ->
                     signalHandler.setThreadingModel(ThreadingModel.SETUP_IN_THREAD_1__SIGNAL_IN_THREAD_2);
-                    break;
-                case '5':
+                case '5' ->
                     System.exit(0);
-                    break;
-                default:
+                default -> {
                     System.out.println("Wrong input for threading model");
                     continue;
+                }
             }
             if (args.length != 3) {
                 System.in.read(); //read '\n'
@@ -148,18 +136,16 @@ public class App {
                 input = (char) System.in.read();
             }
             switch (input) {
-                case '0':
+                case '0' ->
                     signalHandler.raiseSignal();
-                    break;
-                case '1':
+                case '1' ->
                     signalHandler.forceSignal();
-                    break;
-                case '2':
+                case '2' ->
                     System.exit(0);
-                    break;
-                default:
+                default -> {
                     System.out.println("Wrong input for threading model");
                     continue;
+                }
             }
             if (args.length != 3) {
                 System.in.read(); //read '\n'

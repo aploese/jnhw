@@ -29,7 +29,7 @@ import de.ibapl.jnhw.common.downcall.JnhwMh_sI___V;
 import de.ibapl.jnhw.common.downcall.JnhwMh_sI__sI;
 import de.ibapl.jnhw.common.exception.NativeErrorException;
 import de.ibapl.jnhw.libloader.MultiarchTupelBuilder;
-import de.ibapl.jnhw.util.posix.LibcLoader;
+import de.ibapl.jnhw.libloader.librarys.LibcLoader;
 import java.lang.foreign.MemorySegment;
 import java.lang.foreign.MemorySession;
 
@@ -108,39 +108,37 @@ public class Stdio {
      */
     static {
         switch (MultiarchTupelBuilder.getOS()) {
-            case LINUX:
+            case LINUX -> {
                 HAVE_STDIO_H = true;
                 EOF = LinuxDefines.EOF;
                 SEEK_CUR = LinuxDefines.SEEK_CUR;
                 SEEK_END = LinuxDefines.SEEK_END;
                 SEEK_SET = LinuxDefines.SEEK_SET;
-                break;
-            case DARWIN:
-            case FREE_BSD:
-            case OPEN_BSD:
+            }
+            case DARWIN, FREE_BSD, OPEN_BSD -> {
                 HAVE_STDIO_H = true;
                 EOF = BsdDefines.EOF;
                 SEEK_CUR = BsdDefines.SEEK_CUR;
                 SEEK_END = BsdDefines.SEEK_END;
                 SEEK_SET = BsdDefines.SEEK_SET;
-                break;
-            default:
+            }
+            default ->
                 throw new NoClassDefFoundError("No stdio.h defines for " + MultiarchTupelBuilder.getMultiarch());
         }
     }
 
-    private final static JnhwMh_sI___V getchar = JnhwMh_sI___V.of(
+    private final static JnhwMh_sI___V.ExceptionErased getchar = JnhwMh_sI___V.mandatoryOf(
             LibcLoader.LIB_C_SYMBOL_LOOKUP,
             "getchar",
             BaseDataType.C_int);
 
-    private final static JnhwMh_sI__sI putchar = JnhwMh_sI__sI.of(
+    private final static JnhwMh_sI__sI.ExceptionErased putchar = JnhwMh_sI__sI.mandatoryOf(
             LibcLoader.LIB_C_SYMBOL_LOOKUP,
             "putchar",
             BaseDataType.C_int,
             BaseDataType.C_int);
 
-    private final static JnhwMh_sI___A remove = JnhwMh_sI___A.of(
+    private final static JnhwMh_sI___A.ExceptionErased remove = JnhwMh_sI___A.mandatoryOf(
             LibcLoader.LIB_C_SYMBOL_LOOKUP,
             "remove",
             BaseDataType.C_int,

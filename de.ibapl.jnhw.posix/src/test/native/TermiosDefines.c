@@ -61,7 +61,7 @@ int32_t getValueOf_B0() {
 }
 
 int32_t* tryGetValueOf_B1000000(int32_t* value) {
-#if defined (__linux__)
+#if defined (__linux__) || defined(__FreeBSD__)
     *value = B1000000;
 #else
 #if !defined(B1000000)
@@ -107,7 +107,7 @@ int32_t getValueOf_B150() {
 }
 
 int32_t* tryGetValueOf_B1500000(int32_t* value) {
-#if defined (__linux__)
+#if defined(__linux__) || defined(__FreeBSD__)
     *value = B1500000;
 #else
 #if !defined(B1500000)
@@ -132,7 +132,7 @@ int32_t getValueOf_B200() {
 }
 
 int32_t* tryGetValueOf_B2000000(int32_t* value) {
-#if defined (__linux__)
+#if defined(__linux__) || defined(__FreeBSD__)
     *value = B2000000;
 #else
 #if !defined(B2000000)
@@ -153,7 +153,7 @@ int32_t getValueOf_B2400() {
 }
 
 int32_t* tryGetValueOf_B2500000(int32_t* value) {
-#if defined (__linux__) && !defined(__sparc__)
+#if (defined(__linux__) && !defined(__sparc__)) || defined(__FreeBSD__)
     *value = B2500000;
 #else
 #if !defined(B2500000)
@@ -170,7 +170,7 @@ int32_t getValueOf_B300() {
 }
 
 int32_t* tryGetValueOf_B3000000(int32_t* value) {
-#if defined (__linux__) && !defined(__sparc__)
+#if (defined(__linux__) && !defined(__sparc__)) || defined(__FreeBSD__)
     *value = B3000000;
 #else
 #if !defined(B3000000)
@@ -183,7 +183,7 @@ int32_t* tryGetValueOf_B3000000(int32_t* value) {
 }
 
 int32_t* tryGetValueOf_B3500000(int32_t* value) {
-#if defined (__linux__) && !defined(__sparc__)
+#if (defined(__linux__) && !defined(__sparc__)) || defined(__FreeBSD__)
     *value = B3500000;
 #else
 #if !defined(B3500000)
@@ -200,7 +200,7 @@ int32_t getValueOf_B38400() {
 }
 
 int32_t* tryGetValueOf_B4000000(int32_t* value) {
-#if defined (__linux__) && !defined(__sparc__)
+#if (defined(__linux__) && !defined(__sparc__)) || defined(__FreeBSD__)
     *value = B4000000;
 #else
 #if !defined(B4000000)
@@ -213,7 +213,7 @@ int32_t* tryGetValueOf_B4000000(int32_t* value) {
 }
 
 int32_t* tryGetValueOf_B460800(int32_t* value) {
-#if defined (__linux__) || defined (__FreeBSD__)
+#if defined(__linux__) || defined(__FreeBSD__)
     *value = B460800;
 #else
 #if !defined(B460800)
@@ -234,7 +234,7 @@ int32_t getValueOf_B50() {
 }
 
 int32_t* tryGetValueOf_B500000(int32_t* value) {
-#if defined (__linux__)
+#if defined(__linux__) || defined(__FreeBSD__)
     *value = B500000;
 #else
 #if !defined(B500000)

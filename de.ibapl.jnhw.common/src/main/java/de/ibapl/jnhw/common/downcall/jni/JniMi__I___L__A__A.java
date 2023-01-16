@@ -22,7 +22,7 @@
 package de.ibapl.jnhw.common.downcall.jni;
 
 import java.lang.foreign.Addressable;
-import java.lang.foreign.SymbolLookup;
+import java.lang.foreign.MemorySegment;
 
 /**
  *
@@ -32,8 +32,8 @@ public class JniMi__I___L__A__A extends JniMethodInvoker {
 
     protected final static native int invoke__I___L__A__A(long address, long arg1, long arg2, long arg3);
 
-    public JniMi__I___L__A__A(SymbolLookup symbolLookup, String name) {
-        super(symbolLookup, name);
+    public JniMi__I___L__A__A(MemorySegment methodAddress, String name) {
+        super(methodAddress, name);
     }
 
     public int invoke_sI__sL__A__A(long arg1, Addressable arg2, Addressable arg3) {

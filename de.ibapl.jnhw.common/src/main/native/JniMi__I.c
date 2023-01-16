@@ -20,6 +20,7 @@
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
  */
 #include "jnhw-common.h"
+
 #include "de_ibapl_jnhw_common_downcall_jni_JniMi__I___A.h"
 #include "de_ibapl_jnhw_common_downcall_jni_JniMi__I___A__A.h"
 #include "de_ibapl_jnhw_common_downcall_jni_JniMi__I___A__A__A.h"
@@ -28,40 +29,58 @@
 #include "de_ibapl_jnhw_common_downcall_jni_JniMi__I___A__A__I.h"
 #include "de_ibapl_jnhw_common_downcall_jni_JniMi__I___A__A__I__A__A.h"
 #include "de_ibapl_jnhw_common_downcall_jni_JniMi__I___A__A__I__I__A.h"
+#include "de_ibapl_jnhw_common_downcall_jni_JniMi__I___A__A__I.h"
 #include "de_ibapl_jnhw_common_downcall_jni_JniMi__I___A__I.h"
+#include "de_ibapl_jnhw_common_downcall_jni_JniMi__I___A__I_VARARGS_NONE.h"
+#include "de_ibapl_jnhw_common_downcall_jni_JniMi__I___A__I_VARARGS__I.h"
+#include "de_ibapl_jnhw_common_downcall_jni_JniMi__I___A__I_VARARGS__S.h"
+#include "de_ibapl_jnhw_common_downcall_jni_JniMi__I___A__I__A.h"
 #include "de_ibapl_jnhw_common_downcall_jni_JniMi__I___A__I__A__A.h"
 #include "de_ibapl_jnhw_common_downcall_jni_JniMi__I___A__I__A__A__A.h"
 #include "de_ibapl_jnhw_common_downcall_jni_JniMi__I___A__I__A__A__A__A__A__A.h"
 #include "de_ibapl_jnhw_common_downcall_jni_JniMi__I___A__I__A__I__A__I__A__A.h"
-#include "de_ibapl_jnhw_common_downcall_jni_JniMi__I___A__I__L__A.h"
 #include "de_ibapl_jnhw_common_downcall_jni_JniMi__I___A__I__I.h"
+#include "de_ibapl_jnhw_common_downcall_jni_JniMi__I___A__I__L__A.h"
 #include "de_ibapl_jnhw_common_downcall_jni_JniMi__I___A__L.h"
 #include "de_ibapl_jnhw_common_downcall_jni_JniMi__I___A__L__A__A.h"
 #include "de_ibapl_jnhw_common_downcall_jni_JniMi__I___A__L__A__A__A.h"
 #include "de_ibapl_jnhw_common_downcall_jni_JniMi__I___A__L__I.h"
+#include "de_ibapl_jnhw_common_downcall_jni_JniMi__I___A__S.h"
+
 #include "de_ibapl_jnhw_common_downcall_jni_JniMi__I___B__I.h"
+
+#include "de_ibapl_jnhw_common_downcall_jni_JniMi__I___I.h"
 #include "de_ibapl_jnhw_common_downcall_jni_JniMi__I___I__A.h"
 #include "de_ibapl_jnhw_common_downcall_jni_JniMi__I___I__A__A.h"
 #include "de_ibapl_jnhw_common_downcall_jni_JniMi__I___I__A__I.h"
+#include "de_ibapl_jnhw_common_downcall_jni_JniMi__I___I__A__I_VARARGS_NONE.h"
+#include "de_ibapl_jnhw_common_downcall_jni_JniMi__I___I__A__I_VARARGS__I.h"
+#include "de_ibapl_jnhw_common_downcall_jni_JniMi__I___I__A__I_VARARGS__S.h"
 #include "de_ibapl_jnhw_common_downcall_jni_JniMi__I___I__A__I__A.h"
 #include "de_ibapl_jnhw_common_downcall_jni_JniMi__I___I__A__I__I.h"
 #include "de_ibapl_jnhw_common_downcall_jni_JniMi__I___I__A__I__I__I.h"
 #include "de_ibapl_jnhw_common_downcall_jni_JniMi__I___I__B__I__I.h"
 #include "de_ibapl_jnhw_common_downcall_jni_JniMi__I___I__I.h"
+#include "de_ibapl_jnhw_common_downcall_jni_JniMi__I___I__I_VARARGS_NONE.h"
+#include "de_ibapl_jnhw_common_downcall_jni_JniMi__I___I__I_VARARGS__A.h"
+#include "de_ibapl_jnhw_common_downcall_jni_JniMi__I___I__I_VARARGS__I.h"
 #include "de_ibapl_jnhw_common_downcall_jni_JniMi__I___I__I__A.h"
 #include "de_ibapl_jnhw_common_downcall_jni_JniMi__I___I__I__A__A.h"
 #include "de_ibapl_jnhw_common_downcall_jni_JniMi__I___I__I__I.h"
 #include "de_ibapl_jnhw_common_downcall_jni_JniMi__I___I__I__I__I.h"
 #include "de_ibapl_jnhw_common_downcall_jni_JniMi__I___I__L.h"
-#include "de_ibapl_jnhw_common_downcall_jni_JniMi__I___I__L__A.h"
+#include "de_ibapl_jnhw_common_downcall_jni_JniMi__I___I__L_VARARGS_NONE.h"
+#include "de_ibapl_jnhw_common_downcall_jni_JniMi__I___I__L_VARARGS__A.h"
 #include "de_ibapl_jnhw_common_downcall_jni_JniMi__I___I__L__L.h"
 #include "de_ibapl_jnhw_common_downcall_jni_JniMi__I___I__L__L__I.h"
+
 #include "de_ibapl_jnhw_common_downcall_jni_JniMi__I___L.h"
 #include "de_ibapl_jnhw_common_downcall_jni_JniMi__I___L__A.h"
 #include "de_ibapl_jnhw_common_downcall_jni_JniMi__I___L__A__A.h"
 #include "de_ibapl_jnhw_common_downcall_jni_JniMi__I___L__I.h"
 #include "de_ibapl_jnhw_common_downcall_jni_JniMi__I___L__I__A.h"
 #include "de_ibapl_jnhw_common_downcall_jni_JniMi__I___L__L.h"
+
 #include "de_ibapl_jnhw_common_downcall_jni_JniMi__I___V.h"
 
 #ifdef __cplusplus
@@ -167,6 +186,36 @@ JNIEXPORT int32_t JNICALL Java_de_ibapl_jnhw_common_downcall_jni_JniMi_1_1I_1_1_
 JNIEXPORT int32_t JNICALL Java_de_ibapl_jnhw_common_downcall_jni_JniMi_1_1I_1_1_1A_1_1I_invoke_1_1I_1_1_1A_1_1I
   (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz, int64_t address, int64_t arg1, int32_t arg2) {
     return ((int32_t (*)(intptr_t, int32_t))(intptr_t)address)((intptr_t)arg1, arg2);
+}
+
+/*
+ * Class:     de_ibapl_jnhw_common_downcall_jni_JniMi__I___A__I_VARARGS_NONE
+ * Method:    invoke__I___A__I_VARARGS_NONE
+ * Signature: (JJI)I
+ */
+JNIEXPORT int32_t JNICALL Java_de_ibapl_jnhw_common_downcall_jni_JniMi_1_1I_1_1_1A_1_1I_1VARARGS_1NONE_invoke_1_1I_1_1_1A_1_1I_1VARARGS_1NONE
+  (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz, int64_t address, int64_t arg1, int32_t arg2) {
+    return ((int32_t (*)(intptr_t, int32_t, ...))(intptr_t)address)((intptr_t)arg1, arg2);
+}
+
+/*
+ * Class:     de_ibapl_jnhw_common_downcall_jni_JniMi__I___A__I_VARARGS__I
+ * Method:    invoke__I___A__I_VARARGS__I
+ * Signature: (JJII)I
+ */
+JNIEXPORT int32_t JNICALL Java_de_ibapl_jnhw_common_downcall_jni_JniMi_1_1I_1_1_1A_1_1I_1VARARGS_1_1I_invoke_1_1I_1_1_1A_1_1I_1VARARGS_1_1I
+  (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz, int64_t address, int64_t arg1, int32_t arg2, int32_t arg3) {
+    return ((int32_t (*)(intptr_t, int32_t, ...))(intptr_t)address)((intptr_t)arg1, arg2, arg3);
+}
+
+/*
+ * Class:     de_ibapl_jnhw_common_downcall_jni_JniMi__I___A__I_VARARGS__S
+ * Method:    invoke__I___A__I_VARARGS__S
+ * Signature: (JJIS)I
+ */
+JNIEXPORT jint JNICALL Java_de_ibapl_jnhw_common_downcall_jni_JniMi_1_1I_1_1_1A_1_1I_1VARARGS_1_1S_invoke_1_1I_1_1_1A_1_1I_1VARARGS_1_1S
+  (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz, int64_t address, int64_t arg1, int32_t arg2, int16_t arg3) {
+    return ((int32_t (*)(intptr_t, int32_t, ...))(intptr_t)address)((intptr_t)arg1, arg2, arg3);
 }
 
 /*
@@ -280,6 +329,17 @@ JNIEXPORT int32_t JNICALL Java_de_ibapl_jnhw_common_downcall_jni_JniMi_1_1I_1_1_
 }
 
 /*
+ * Class:     de_ibapl_jnhw_common_downcall_jni_JniMi__I___A__S
+ * Method:    invoke__I___A__S
+ * Signature: (JJS)I
+ */
+JNIEXPORT int32_t JNICALL Java_de_ibapl_jnhw_common_downcall_jni_JniMi_1_1I_1_1_1A_1_1S_invoke_1_1I_1_1_1A_1_1S
+  (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz, int64_t address, int64_t arg1, int16_t arg2) {
+    return ((int32_t (*)(intptr_t, int16_t))(intptr_t)address)((intptr_t)arg1, arg2);
+}
+
+
+/*
  * Class:     de_ibapl_jnhw_common_downcall_jni_JniMi__I___B__I
  * Method:    invoke__I___B__I
  * Signature: (JBI)I
@@ -327,6 +387,36 @@ JNIEXPORT int32_t JNICALL Java_de_ibapl_jnhw_common_downcall_jni_JniMi_1_1I_1_1_
 JNIEXPORT int32_t JNICALL Java_de_ibapl_jnhw_common_downcall_jni_JniMi_1_1I_1_1_1I_1_1A_1_1I_invoke_1_1I_1_1_1I_1_1A_1_1I
   (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz, int64_t address, int32_t arg1, int64_t arg2, int32_t arg3) {
     return ((int32_t (*)(int32_t, intptr_t, int32_t))(intptr_t)address)(arg1, (intptr_t)arg2, arg3);
+}
+
+/*
+ * Class:     de_ibapl_jnhw_common_downcall_jni_JniMi__I___I__A__I_VARARGS_NONE
+ * Method:    invoke__I___I__A__I_VARARGS_NONE
+ * Signature: (JIJI)I
+ */
+JNIEXPORT int32_t JNICALL Java_de_ibapl_jnhw_common_downcall_jni_JniMi_1_1I_1_1_1I_1_1A_1_1I_1VARARGS_1NONE_invoke_1_1I_1_1_1I_1_1A_1_1I_1VARARGS_1NONE
+  (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz, int64_t address, int32_t arg1, int64_t arg2, int32_t arg3) {
+    return ((int32_t (*)(int32_t, intptr_t, int32_t, ...))(intptr_t)address)(arg1, (intptr_t)arg2, arg3);
+}
+
+/*
+ * Class:     de_ibapl_jnhw_common_downcall_jni_JniMi__I___I__A__I_VARARGS__I
+ * Method:    invoke__I___I__A__I_VARARGS__I
+ * Signature: (JIJII)I
+ */
+JNIEXPORT int32_t JNICALL Java_de_ibapl_jnhw_common_downcall_jni_JniMi_1_1I_1_1_1I_1_1A_1_1I_1VARARGS_1_1I_invoke_1_1I_1_1_1I_1_1A_1_1I_1VARARGS_1_1I
+  (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz, int64_t address, int32_t arg1, int64_t arg2, int32_t arg3, int32_t arg4) {
+    return ((int32_t (*)(int32_t, intptr_t, int32_t, ...))(intptr_t)address)(arg1, (intptr_t)arg2, arg3, arg4);
+}
+
+/*
+ * Class:     de_ibapl_jnhw_common_downcall_jni_JniMi__I___I__A__I_VARARGS__S
+ * Method:    invoke__I___I__A__I_VARARGS__S
+ * Signature: (JIJIS)I
+ */
+JNIEXPORT int32_t JNICALL Java_de_ibapl_jnhw_common_downcall_jni_JniMi_1_1I_1_1_1I_1_1A_1_1I_1VARARGS_1_1S_invoke_1_1I_1_1_1I_1_1A_1_1I_1VARARGS_1_1S
+  (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz, int64_t address, int32_t arg1, int64_t arg2, int32_t arg3, int16_t arg4) {
+    return ((int32_t (*)(int32_t, intptr_t, int32_t, ...))(intptr_t)address)(arg1, (intptr_t)arg2, arg3, arg4);
 }
 
 /*
@@ -380,6 +470,36 @@ JNIEXPORT int32_t JNICALL Java_de_ibapl_jnhw_common_downcall_jni_JniMi_1_1I_1_1_
 }
 
 /*
+ * Class:     de_ibapl_jnhw_common_downcall_jni_JniMi__I___I__I_VARARGS_NONE
+ * Method:    invoke__I___I__I_VARARGS_NONE
+ * Signature: (JII)I
+ */
+JNIEXPORT int32_t JNICALL Java_de_ibapl_jnhw_common_downcall_jni_JniMi_1_1I_1_1_1I_1_1I_1VARARGS_1NONE_invoke_1_1I_1_1_1I_1_1I_1VARARGS_1NONE
+  (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz, int64_t address, int32_t arg1, int32_t arg2) {
+    return ((int32_t (*)(int32_t, int32_t, ...))(intptr_t)address)(arg1, arg2);
+}
+
+/*
+ * Class:     de_ibapl_jnhw_common_downcall_jni_JniMi__I___I__I_VARARGS__A
+ * Method:    invoke__I___I__I__A
+ * Signature: (JIIJ)I
+ */
+JNIEXPORT int32_t JNICALL Java_de_ibapl_jnhw_common_downcall_jni_JniMi_1_1I_1_1_1I_1_1I_1VARARGS_1_1A_invoke_1_1I_1_1_1I_1_1I_1_1A
+  (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz, int64_t address, int32_t arg1, int32_t arg2, int64_t arg3) {
+    return ((int32_t (*)(int32_t, int32_t, ...))(intptr_t)address)(arg1, arg2, (intptr_t)arg3);
+}
+
+/*
+ * Class:     de_ibapl_jnhw_common_downcall_jni_JniMi__I___I__I_VARARGS__I
+ * Method:    invoke__I___I__I_VARARGS__I
+ * Signature: (JIII)I
+ */
+JNIEXPORT int32_t JNICALL Java_de_ibapl_jnhw_common_downcall_jni_JniMi_1_1I_1_1_1I_1_1I_1VARARGS_1_1I_invoke_1_1I_1_1_1I_1_1I_1VARARGS_1_1I
+  (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz, int64_t address, int32_t arg1, int32_t arg2, int32_t arg3) {
+    return ((int32_t (*)(int32_t, int32_t, ...))(intptr_t)address)(arg1, arg2, arg3);
+}
+
+/*
  * Class:     de_ibapl_jnhw_common_downcall_jni_JniMi__I___I__I__A
  * Method:    invoke__I___I__I__A
  * Signature: (JIIJ)I
@@ -430,13 +550,23 @@ JNIEXPORT int32_t JNICALL Java_de_ibapl_jnhw_common_downcall_jni_JniMi_1_1I_1_1_
 }
 
 /*
- * Class:     de_ibapl_jnhw_common_downcall_jni_JniMi__I___I__L__A
- * Method:    invoke__I___I__L__A
+ * Class:     de_ibapl_jnhw_common_downcall_jni_JniMi__I___I__L_VARARGS_NONE
+ * Method:    invoke__I___I__I
+ * Signature: (JIJ)I
+ */
+JNIEXPORT int32_t JNICALL Java_de_ibapl_jnhw_common_downcall_jni_JniMi_1_1I_1_1_1I_1_1L_1VARARGS_1NONE_invoke_1_1I_1_1_1I_1_1I
+  (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz, int64_t address, int32_t arg1, int64_t arg2) {
+    return ((int32_t (*)(int32_t, int64_t, ...))(intptr_t)address)(arg1, arg2);
+}
+
+/*
+ * Class:     de_ibapl_jnhw_common_downcall_jni_JniMi__I___I__L_VARARGS__A
+ * Method:    invoke__I___I__L_VARARGS__A
  * Signature: (JIJJ)I
  */
-JNIEXPORT int32_t JNICALL Java_de_ibapl_jnhw_common_downcall_jni_JniMi_1_1I_1_1_1I_1_1L_1_1A_invoke_1_1I_1_1_1I_1_1L_1_1A
+JNIEXPORT int32_t JNICALL Java_de_ibapl_jnhw_common_downcall_jni_JniMi_1_1I_1_1_1I_1_1L_1VARARGS_1_1A_invoke_1_1I_1_1_1I_1_1L_1VARARGS_1_1A
   (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz, int64_t address, int32_t arg1, int64_t arg2, int64_t arg3) {
-    return ((int32_t (*)(int32_t, int64_t, intptr_t))(intptr_t)address)(arg1, arg2, (intptr_t)arg3);
+    return ((int32_t (*)(int32_t, int64_t, ...))(intptr_t)address)(arg1, arg2, (intptr_t)arg3);
 }
 
 /*

@@ -85,29 +85,30 @@ public class JsonStringBuilder {
 
     private void appendMemberName(String name) throws IOException {
         switch (state) {
-            case EMPTY:
+            case EMPTY -> {
                 if (compact) {
                     sb.append("{");
                 } else {
                     sb.append("{\n").append(INDENT_PREFIX);
                 }
                 state = State.FILLING;
-                break;
-            case FILLING:
+            }
+            case FILLING -> {
                 if (compact) {
                     sb.append(", ");
                 } else {
                     sb.append(",\n").append(INDENT_PREFIX);
                 }
-                break;
-            case CLOSED:
+            }
+            case CLOSED ->
                 throw new IllegalStateException("Builder is closed!");
-            default:
+            default ->
                 throw new RuntimeException("Unknown state: " + state);
         }
         sb.append(name).append(" : ");
     }
 
+    @Override
     public String toString() {
         if (state != State.CLOSED) {
             try {

@@ -38,7 +38,7 @@ import de.ibapl.jnhw.winapi.Winnt.HANDLE;
 @Include("processenv.h")
 public class ProcessEnv {
 
-    private final static JnhwMh_MA__uI GetStdHandle = JnhwMh_MA__uI.of(
+    private final static JnhwMh_MA__uI.ExceptionErased GetStdHandle = JnhwMh_MA__uI.mandatoryOf(
             Kernel32Loader.DLL_KERNEL32_SYMBOL_LOOKUP,
             "GetStdHandle",
             WinApiDataType.HANDLE,

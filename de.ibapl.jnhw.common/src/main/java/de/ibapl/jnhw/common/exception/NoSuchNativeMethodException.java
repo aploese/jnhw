@@ -26,7 +26,7 @@ package de.ibapl.jnhw.common.exception;
  *
  * @author aploese
  */
-public class NoSuchNativeMethodException extends Exception {
+public class NoSuchNativeMethodException extends NoSuchNativeSymbolException {
 
     private static final long serialVersionUID = 1L;
 
@@ -35,7 +35,7 @@ public class NoSuchNativeMethodException extends Exception {
     }
 
     public NoSuchNativeMethodException(String methodName) {
-        super(String.format("No such method %s", methodName));
+        super("No such native method %s", methodName);
     }
 
 }

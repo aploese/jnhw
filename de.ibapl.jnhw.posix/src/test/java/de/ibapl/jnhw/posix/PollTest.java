@@ -104,9 +104,9 @@ public class PollTest {
 
     @Test
     public void testNfds_t() {
-        switch (MultiarchTupelBuilder.getMemoryModel()) {
-            case ILP32 -> {
-                Assertions.assertEquals(4, PosixDataType.nfds_t.SIZE_OF);
+
+        switch (PosixDataType.nfds_t.SIZE_OF) {
+            case 4 -> {
                 Assertions.assertEquals(Alignment.AT_4, PosixDataType.nfds_t.ALIGN_OF);
                 Assertions.assertTrue(PosixDataType.nfds_t.UNSIGNED);
                 Poll.Nfds_t instance = Poll.Nfds_t.allocateNative(ms);
@@ -123,8 +123,7 @@ public class PollTest {
                 assertEquals("4294967295", instance.nativeToString());
                 assertEquals("0xffffffff", instance.nativeToHexString());
             }
-            case LP64 -> {
-                Assertions.assertEquals(8, PosixDataType.nfds_t.SIZE_OF);
+            case 8 -> {
                 Assertions.assertEquals(Alignment.AT_8, PosixDataType.nfds_t.ALIGN_OF);
                 Assertions.assertTrue(PosixDataType.nfds_t.UNSIGNED);
                 Poll.Nfds_t instance = Poll.Nfds_t.allocateNative(ms);

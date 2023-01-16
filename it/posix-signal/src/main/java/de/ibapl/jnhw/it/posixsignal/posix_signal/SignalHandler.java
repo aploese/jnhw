@@ -21,9 +21,12 @@
  */
 package de.ibapl.jnhw.it.posixsignal.posix_signal;
 
+import de.ibapl.jnhw.common.datatypes.BaseDataType;
+import de.ibapl.jnhw.common.downcall.JnhwMh__V__sI;
 import de.ibapl.jnhw.common.downcall.foreign.JnhwMi__V___I;
 import de.ibapl.jnhw.posix.Signal;
 import java.lang.foreign.MemoryAddress;
+import java.lang.foreign.MemorySegment;
 import java.lang.foreign.MemorySession;
 
 /**
@@ -63,15 +66,15 @@ public abstract class SignalHandler {
     void raiseSignal() {
         signalHandled = false;
         switch (threadingModel) {
-            case SETUP_IN_THREAD_MAIN__SIGNAL_IN_THREAD_MAIN:
+            case SETUP_IN_THREAD_MAIN__SIGNAL_IN_THREAD_MAIN -> {
                 doSetupHandler();
                 doRaiseSignal();
-                break;
-            case SETUP_IN_THREAD_MAIN__SIGNAL_IN_THREAD_1:
+            }
+            case SETUP_IN_THREAD_MAIN__SIGNAL_IN_THREAD_1 -> {
                 doSetupHandler();
                 new Thread(() -> doRaiseSignal()).start();
-                break;
-            case SETUP_IN_THREAD_1__SIGNAL_IN_THREAD_MAIN:
+            }
+            case SETUP_IN_THREAD_1__SIGNAL_IN_THREAD_MAIN -> {
                 new Thread(() -> {
                     doSetupHandler();
                     while (!signalHandled) {
@@ -83,14 +86,13 @@ public abstract class SignalHandler {
                     }
                 }).start();
                 doRaiseSignal();
-                break;
-            case SETUP_IN_THREAD_1__SIGNAL_IN_THREAD_1:
+            }
+            case SETUP_IN_THREAD_1__SIGNAL_IN_THREAD_1 ->
                 new Thread(() -> {
                     doSetupHandler();
                     doRaiseSignal();
                 }).start();
-                break;
-            case SETUP_IN_THREAD_1__SIGNAL_IN_THREAD_2:
+            case SETUP_IN_THREAD_1__SIGNAL_IN_THREAD_2 -> {
                 new Thread(() -> {
                     doSetupHandler();
                     while (!signalHandled) {
@@ -104,8 +106,8 @@ public abstract class SignalHandler {
                 new Thread(() -> {
                     doRaiseSignal();
                 }).start();
-                break;
-            default:
+            }
+            default ->
                 throw new RuntimeException("Cant handle threading model!");
         }
         while (!signalHandled) {
@@ -139,11 +141,14 @@ public abstract class SignalHandler {
     }
 
     private void doForceSignal() {
-        try ( MemorySession ms = MemorySession.openConfined()) {
+        try (MemorySession ms = MemorySession.openConfined()) {
             System.out.println("force Signal " + signalToRaise + " in thread: " + Thread.currentThread());
             //We will call a NULL pointer on the native side. So we will force a segmentation violation.
-            JnhwMi__V___I callNative__V___I = new JnhwMi__V___I(MemoryAddress.NULL, ms);
-            callNative__V___I.invoke__V__sI(42);
+            JnhwMh__V__sI.ExceptionErased callNative__V__sI = JnhwMh__V__sI.of(
+                    MemorySegment.ofAddress(MemoryAddress.NULL, 0, ms),
+                    "testCallback",
+                    BaseDataType.C_int);
+            callNative__V__sI.invoke__V__sI(42);
         } catch (Throwable t) {
             thrownInHandler = t;
         }

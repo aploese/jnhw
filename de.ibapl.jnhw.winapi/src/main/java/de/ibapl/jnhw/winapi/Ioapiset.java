@@ -25,7 +25,6 @@ import de.ibapl.jnhw.common.annotation.Include;
 import de.ibapl.jnhw.common.datatypes.Pointer;
 import de.ibapl.jnhw.common.downcall.JnhwMh_BL___A;
 import de.ibapl.jnhw.common.downcall.JnhwMh_BL___A__A;
-import de.ibapl.jnhw.common.downcall.JnhwMh_BL___A__A__A_sI;
 import de.ibapl.jnhw.common.downcall.JnhwMh_BL___A_uL__A_uL__A_uL__A__A;
 import de.ibapl.jnhw.common.exception.NativeErrorException;
 import de.ibapl.jnhw.common.memory.OpaqueMemory;
@@ -34,6 +33,7 @@ import de.ibapl.jnhw.util.winapi.WinApiDataType;
 import de.ibapl.jnhw.winapi.Minwinbase.LPOVERLAPPED;
 import de.ibapl.jnhw.winapi.Winnt.HANDLE;
 import java.nio.ByteBuffer;
+import de.ibapl.jnhw.common.downcall.JnhwMh_BL___A__A__A_BL;
 
 /**
  * Wrapper around the
@@ -45,20 +45,20 @@ import java.nio.ByteBuffer;
 @Include("ioapiset.h")
 public final class Ioapiset {
 
-    private final static JnhwMh_BL___A CancelIo = JnhwMh_BL___A.of(
+    private final static JnhwMh_BL___A.ExceptionErased CancelIo = JnhwMh_BL___A.mandatoryOf(
             Kernel32Loader.DLL_KERNEL32_SYMBOL_LOOKUP,
             "CancelIo",
             WinApiDataType.BOOL,
             WinApiDataType.HANDLE);
 
-    private final static JnhwMh_BL___A__A CancelIoEx = JnhwMh_BL___A__A.of(
+    private final static JnhwMh_BL___A__A.ExceptionErased CancelIoEx = JnhwMh_BL___A__A.mandatoryOf(
             Kernel32Loader.DLL_KERNEL32_SYMBOL_LOOKUP,
             "CancelIo",
             WinApiDataType.BOOL,
             WinApiDataType.HANDLE,
             WinApiDataType.LPOVERLAPPED);
 
-    private final static JnhwMh_BL___A_uL__A_uL__A_uL__A__A DeviceIoControl = JnhwMh_BL___A_uL__A_uL__A_uL__A__A.of(
+    private final static JnhwMh_BL___A_uL__A_uL__A_uL__A__A.ExceptionErased DeviceIoControl = JnhwMh_BL___A_uL__A_uL__A_uL__A__A.mandatoryOf(
             Kernel32Loader.DLL_KERNEL32_SYMBOL_LOOKUP,
             "DeviceIoControl",
             WinApiDataType.BOOL,
@@ -71,7 +71,7 @@ public final class Ioapiset {
             WinApiDataType.LPDWORD,
             WinApiDataType.LPOVERLAPPED);
 
-    private final static JnhwMh_BL___A__A__A_sI GetOverlappedResult = JnhwMh_BL___A__A__A_sI.of(
+    private final static JnhwMh_BL___A__A__A_BL.ExceptionErased GetOverlappedResult = JnhwMh_BL___A__A__A_BL.mandatoryOf(
             Kernel32Loader.DLL_KERNEL32_SYMBOL_LOOKUP,
             "GetOverlappedResult",
             WinApiDataType.BOOL,

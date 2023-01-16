@@ -68,13 +68,11 @@ public class WinregTest {
                 if (result == Winerror.ERROR_SUCCESS) {
                     System.out.print("lpValueName: " + lpValueName.getUnicodeString(lpcchValueName.uint32_t()));
                     switch (lpType.uint32_t()) {
-                        case Winnt.REG_SZ:
+                        case Winnt.REG_SZ ->
                             System.out.println(" = " + LPBYTE.getUnicodeString(lpData, true, lpccData.uint32_t()));
-                            break;
-                        case Winnt.REG_MULTI_SZ:
+                        case Winnt.REG_MULTI_SZ ->
                             System.out.println(" = " + LPBYTE.getUnicodeString(lpData, true, lpccData.uint32_t()));
-                            break;
-                        default:
+                        default ->
                             System.out.println(" ... Winnt.Reg*:" + lpType.uint32_t());
                     }
                     lpcchValueName.uint32_t(LPWSTR.getWCHAR_Length(lpValueName));

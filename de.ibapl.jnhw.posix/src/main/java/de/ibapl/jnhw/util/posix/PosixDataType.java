@@ -84,8 +84,10 @@ public interface PosixDataType {
                 default ->
                     throw new NoClassDefFoundError("can't get linux datatype of nfds_t on " + MultiarchTupelBuilder.getMultiarch());
             };
-        case DARWIN, FREE_BSD, OPEN_BSD ->
+        case DARWIN, OPEN_BSD ->
             BaseDataType.uint64_t;
+        case FREE_BSD ->
+            BaseDataType.uint32_t;
         default ->
             throw new NoClassDefFoundError("can't get OS datatype of nfds_t on " + MultiarchTupelBuilder.getMultiarch());
     };
@@ -115,7 +117,7 @@ public interface PosixDataType {
         case LINUX ->
             BaseDataType.C_unsigned_long_int;
         case FREE_BSD, OPEN_BSD ->
-            BaseDataType.struct;
+            BaseDataType.C_struct_pointer;
         default ->
             throw new NoClassDefFoundError("can't get OS datatype of pthread_t on " + MultiarchTupelBuilder.getMultiarch());
     };

@@ -25,17 +25,17 @@ import de.ibapl.jnhw.common.downcall.JnhwMh_MA__sI;
 import de.ibapl.jnhw.common.downcall.JnhwMh_MA__uI;
 import java.lang.foreign.FunctionDescriptor;
 import java.lang.foreign.MemoryAddress;
-import java.lang.foreign.SymbolLookup;
+import java.lang.foreign.MemorySegment;
 import java.lang.foreign.ValueLayout;
 
 /**
  *
  * @author aploese
  */
-public class JnhwMi_MA___I extends JnhwMethodInvoker implements JnhwMh_MA__sI, JnhwMh_MA__uI {
+public class JnhwMi_MA___I extends JnhwMethodInvoker implements JnhwMh_MA__sI.ExceptionErased, JnhwMh_MA__uI.ExceptionErased {
 
-    public JnhwMi_MA___I(SymbolLookup symbolLookup, String name) {
-        super(symbolLookup, name, FunctionDescriptor.of(ValueLayout.ADDRESS, ValueLayout.JAVA_INT));
+    public JnhwMi_MA___I(MemorySegment memoryAddress, String name) {
+        super(memoryAddress, name, FunctionDescriptor.of(ValueLayout.ADDRESS, ValueLayout.JAVA_INT));
     }
 
     @Override

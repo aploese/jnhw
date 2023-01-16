@@ -327,12 +327,10 @@ public class DefinesTest {
     @Test
     public void test__BYTE_ORDER__() throws Exception {
         switch (MultiarchTupelBuilder.getEndianess()) {
-            case BIG:
+            case BIG ->
                 assertEquals(Defines.__ORDER_BIG_ENDIAN__, Defines.__BYTE_ORDER__);
-                break;
-            case LITTLE:
+            case LITTLE ->
                 assertEquals(Defines.__ORDER_LITTLE_ENDIAN__, Defines.__BYTE_ORDER__);
-                break;
         }
     }
 

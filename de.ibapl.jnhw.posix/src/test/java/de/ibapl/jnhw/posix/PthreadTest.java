@@ -274,15 +274,18 @@ public class PthreadTest {
         Pthread.pthread_setschedparam(Pthread.pthread_self(ms), policy.int32_t(), param);
 
         param.sched_priority(Integer.MAX_VALUE);
-        if (MultiarchTupelBuilder.getOS() == OS.OPEN_BSD) {
-            Pthread.pthread_setschedparam(Pthread.pthread_self(ms), policy.int32_t(), param);
-        } else {
-            NativeErrorException nee = Assertions.assertThrows(NativeErrorException.class, () -> {
-                //TODO we must set this here oterwise error will not be EINVAL but ENOENT
-                Errno.errno(0);
+        switch (MultiarchTupelBuilder.getOS()) {
+            case FREE_BSD, OPEN_BSD -> {
                 Pthread.pthread_setschedparam(Pthread.pthread_self(ms), policy.int32_t(), param);
-            });
-            Assertions.assertEquals(Errno.EINVAL, nee.errno);
+            }
+            default -> {
+                NativeErrorException nee = Assertions.assertThrows(NativeErrorException.class, () -> {
+                    //TODO we must set this here oterwise error will not be EINVAL but ENOENT
+                    Errno.errno(0);
+                    Pthread.pthread_setschedparam(Pthread.pthread_self(ms), policy.int32_t(), param);
+                });
+                Assertions.assertEquals(Errno.EINVAL, nee.errno);
+            }
         }
 
         Assertions.assertThrows(NullPointerException.class, () -> {
@@ -299,18 +302,16 @@ public class PthreadTest {
     public void testPthread_setschedprio() throws Exception {
         System.out.println("pthread_setschedprio(");
         switch (MultiarchTupelBuilder.getOS()) {
-            case FREE_BSD:
-            case OPEN_BSD:
-            case DARWIN:
+            case FREE_BSD, OPEN_BSD, DARWIN ->
                 Assertions.assertThrows(NoSuchNativeMethodException.class, () -> {
                     Pthread.pthread_setschedprio(Pthread.pthread_self(ms), 0);
                 });
-                break;
-            default:
+            default -> {
                 Assertions.assertThrows(NullPointerException.class, () -> {
                     Pthread.pthread_setschedprio(null, 0);
                 });
                 Pthread.pthread_setschedprio(Pthread.pthread_self(ms), 0);
+            }
         }
     }
 

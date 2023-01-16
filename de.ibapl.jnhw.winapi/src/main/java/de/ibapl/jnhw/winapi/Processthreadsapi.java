@@ -41,12 +41,12 @@ import de.ibapl.jnhw.winapi.Winnt.PAPCFUNC;
 @Include("processthreadsapi.h")
 public abstract class Processthreadsapi {
 
-    private final static JnhwMh_MA___V GetCurrentThread = JnhwMh_MA___V.of(
+    private final static JnhwMh_MA___V.ExceptionErased GetCurrentThread = JnhwMh_MA___V.mandatoryOf(
             Kernel32Loader.DLL_KERNEL32_SYMBOL_LOOKUP,
             "GetCurrentThread",
             WinApiDataType.HANDLE);
 
-    private final static JnhwMh_BL___A__A_uL QueueUserAPC = JnhwMh_BL___A__A_uL.of(
+    private final static JnhwMh_BL___A__A_uL.ExceptionErased QueueUserAPC = JnhwMh_BL___A__A_uL.mandatoryOf(
             Kernel32Loader.DLL_KERNEL32_SYMBOL_LOOKUP,
             "QueueUserAPC",
             WinApiDataType.BOOL,

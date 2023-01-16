@@ -57,13 +57,13 @@ public enum Arch {
     }
 
     public String formatArchName(Endianess endianess) {
-        switch (endianess) {
-            case BIG:
-                return String.format(fmtBigEndian, archName);
-            case LITTLE:
-                return String.format(fmtLittleEndian, archName);
-            default:
+        return switch (endianess) {
+            case BIG ->
+                String.format(fmtBigEndian, archName);
+            case LITTLE ->
+                String.format(fmtLittleEndian, archName);
+            default ->
                 throw new RuntimeException("Can*t handle endiuaness: " + endianess);
-        }
+        };
     }
 }

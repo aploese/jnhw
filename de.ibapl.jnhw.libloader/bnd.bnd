@@ -1,2 +1,4 @@
 -noimportjava: true
-Export-Package: de.ibapl.jnhw.libloader
+Export-Package: 
+    de.ibapl.jnhw.libloader,\
+    de.ibapl.jnhw.libloader.librarys

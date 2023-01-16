@@ -34,6 +34,7 @@ import static de.ibapl.jnhw.libloader.MemoryModel.ILP32;
 import static de.ibapl.jnhw.libloader.MemoryModel.LP64;
 import de.ibapl.jnhw.libloader.MultiarchTupelBuilder;
 import java.lang.foreign.MemoryAddress;
+import java.lang.foreign.MemorySegment;
 import java.lang.foreign.MemorySession;
 import org.junit.jupiter.api.AfterEach;
 import static org.junit.jupiter.api.Assertions.*;
@@ -48,15 +49,15 @@ import org.junit.jupiter.params.provider.ValueSource;
  */
 public class Callback__V__MA_Test {
 
-    private final static JnhwMh__V___A setCallback__V__MA;
-    private final static JnhwMh_MA___V getCallback__V__MA;
-    private final static JnhwMh__V___A doCallback__V__MA;
+    private final static JnhwMh__V___A.ExceptionErased setCallback__V__MA;
+    private final static JnhwMh_MA___V.ExceptionErased getCallback__V__MA;
+    private final static JnhwMh__V___A.ExceptionErased doCallback__V__MA;
 
     static {
         LibJnhwCommonTestLoader.touch();
-        setCallback__V__MA = JnhwMh__V___A.of(LibJnhwCommonTestLoader.SYMBOL_LOOKUP, "setCallback__V__MA", BaseDataType.uintptr_t);
-        getCallback__V__MA = JnhwMh_MA___V.of(LibJnhwCommonTestLoader.SYMBOL_LOOKUP, "getCallback__V__MA", BaseDataType.uintptr_t);
-        doCallback__V__MA = JnhwMh__V___A.of(LibJnhwCommonTestLoader.SYMBOL_LOOKUP, "doCallback__V__MA", BaseDataType.uintptr_t);
+        setCallback__V__MA = JnhwMh__V___A.mandatoryOf(LibJnhwCommonTestLoader.SYMBOL_LOOKUP, "setCallback__V__MA", BaseDataType.uintptr_t);
+        getCallback__V__MA = JnhwMh_MA___V.mandatoryOf(LibJnhwCommonTestLoader.SYMBOL_LOOKUP, "getCallback__V__MA", BaseDataType.uintptr_t);
+        doCallback__V__MA = JnhwMh__V___A.mandatoryOf(LibJnhwCommonTestLoader.SYMBOL_LOOKUP, "doCallback__V__MA", BaseDataType.uintptr_t);
     }
 
     private class DummyCB extends Callback__V__MA {
@@ -207,7 +208,13 @@ public class Callback__V__MA_Test {
 
             //Call native from java
             ref[0] = 0;
-            JnhwMh__V___A.of(getCallback__V__MA().toAddressable(), ms, BaseDataType.uintptr_t).invoke__V___A(MemoryAddress.ofLong(testValue));
+            JnhwMh__V___A.of(
+                    MemorySegment.ofAddress(
+                            getCallback__V__MA().toAddressable().address(), 0, ms),
+                    "testCallback",
+                    BaseDataType.uintptr_t
+            ).invoke__V___A(MemoryAddress.ofLong(testValue));
+
             switch (MultiarchTupelBuilder.getMemoryModel()) {
                 case ILP32 ->
                     assertEquals(testValue & 0xffffffffL, ref[0]);
@@ -232,7 +239,13 @@ public class Callback__V__MA_Test {
 
         ref[0] = -1;
         //The logs shoud show: Unassigned callback for trampoline_0(testValue/2)
-        JnhwMh__V__sL.of(getCallback__V__MA().toAddressable().address(), ms, BaseDataType.int64_t).invoke__V__sL(testValue / 2);
+        JnhwMh__V__sL.of(
+                MemorySegment.ofAddress(
+                        getCallback__V__MA().toAddressable().address(), 0, ms),
+                "testCallback",
+                BaseDataType.int64_t
+        ).invoke__V__sL(testValue / 2);
+
         assertEquals(-1, ref[0]);
 
     }

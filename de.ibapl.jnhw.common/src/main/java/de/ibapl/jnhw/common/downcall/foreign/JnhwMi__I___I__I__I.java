@@ -21,33 +21,22 @@
  */
 package de.ibapl.jnhw.common.downcall.foreign;
 
-import de.ibapl.jnhw.common.downcall.JnhwMh_sI__sI_sI_sI;
 import de.ibapl.jnhw.common.downcall.JnhwMh_sI__sI_sL_sL;
 import de.ibapl.jnhw.common.downcall.JnhwMh_sL__sI_sL_sI;
 import de.ibapl.jnhw.common.util.ConversionsJava2Native;
 import java.lang.foreign.FunctionDescriptor;
-import java.lang.foreign.SymbolLookup;
+import java.lang.foreign.MemorySegment;
+
 import java.lang.foreign.ValueLayout;
 
 /**
  *
  * @author aploese
  */
-public class JnhwMi__I___I__I__I extends JnhwMethodInvoker implements JnhwMh_sI__sI_sI_sI, JnhwMh_sL__sI_sL_sI, JnhwMh_sI__sI_sL_sL {
+public class JnhwMi__I___I__I__I extends JnhwMethodInvoker implements JnhwMh_sL__sI_sL_sI.ExceptionErased, JnhwMh_sI__sI_sL_sL.ExceptionErased {
 
-    public JnhwMi__I___I__I__I(SymbolLookup symbolLookup, String name) {
-        super(symbolLookup, name, FunctionDescriptor.of(ValueLayout.JAVA_INT, ValueLayout.JAVA_INT, ValueLayout.JAVA_INT, ValueLayout.JAVA_INT));
-    }
-
-    @Override
-    public int invoke_sI__sI_sI_sI(int arg1, int arg2, int arg3) {
-        try {
-            return (int) methodHandle.invokeExact(arg1, arg2, arg3);
-        } catch (IllegalArgumentException | NullPointerException e) {
-            throw e;
-        } catch (Throwable t) {
-            throw createRuntimeExceptionInvoke(t);
-        }
+    public JnhwMi__I___I__I__I(MemorySegment methodAddress, String name) {
+        super(methodAddress, name, FunctionDescriptor.of(ValueLayout.JAVA_INT, ValueLayout.JAVA_INT, ValueLayout.JAVA_INT, ValueLayout.JAVA_INT));
     }
 
     @Override

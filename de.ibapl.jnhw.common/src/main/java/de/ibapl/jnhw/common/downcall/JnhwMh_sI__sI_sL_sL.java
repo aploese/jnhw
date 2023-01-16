@@ -26,9 +26,11 @@ import de.ibapl.jnhw.common.downcall.foreign.JnhwMi__I___I__I__I;
 import de.ibapl.jnhw.common.downcall.foreign.JnhwMi__I___I__L__L;
 import de.ibapl.jnhw.common.downcall.jni.JniMi__I___I__I__I;
 import de.ibapl.jnhw.common.downcall.jni.JniMi__I___I__L__L;
+import de.ibapl.jnhw.common.exception.NoSuchNativeMethodException;
 import de.ibapl.jnhw.common.util.NativeProvider;
+import java.lang.foreign.MemorySegment;
 import java.lang.foreign.SymbolLookup;
-import java.util.NoSuchElementException;
+
 
 /**
  *
@@ -37,15 +39,29 @@ import java.util.NoSuchElementException;
 @FunctionalInterface
 public interface JnhwMh_sI__sI_sL_sL extends JnhwMethodHandle {
 
-    public static JnhwMh_sI__sI_sL_sL ofOrNull(SymbolLookup symbolLookup, String name, BaseDataType result, BaseDataType arg1, BaseDataType arg2, BaseDataType arg3, BaseDataType arg4) {
-        try {
-            return of(symbolLookup, name, result, arg1, arg2, arg3);
-        } catch (NoSuchElementException elementException) {
-            return null;
-        }
+    @FunctionalInterface
+    interface ExceptionErased extends JnhwMh_sI__sI_sL_sL {
+
+        @Override
+        int invoke_sI__sI_sL_sL(int arg1, long arg2, long arg3);
     }
 
-    public static JnhwMh_sI__sI_sL_sL of(SymbolLookup symbolLookup, String name, BaseDataType result, BaseDataType arg1, BaseDataType arg2, BaseDataType arg3) {
+    static JnhwMh_sI__sI_sL_sL.ExceptionErased mandatoryOf(SymbolLookup symbolLookup, String name, BaseDataType result, BaseDataType arg1, BaseDataType arg2, BaseDataType arg3) {
+        return Util.buidExistingMethod(symbolLookup,
+                name,
+                (oms) -> of(oms, name, result, arg1, arg2, arg3));
+    }
+
+    static JnhwMh_sI__sI_sL_sL optionalOf(SymbolLookup symbolLookup, String name, BaseDataType result, BaseDataType arg1, BaseDataType arg2, BaseDataType arg3) {
+        return Util.buidOptionalMethod(symbolLookup,
+                name,
+                (oms) -> of(oms, name, result, arg1, arg2, arg3),
+                () -> (JnhwMh_sI__sI_sL_sL) (cArg1, cArg2, cArg3) -> {
+                    throw new NoSuchNativeMethodException(name);
+                });
+    }
+
+    public static JnhwMh_sI__sI_sL_sL.ExceptionErased of(MemorySegment methodAddress, String name, BaseDataType result, BaseDataType arg1, BaseDataType arg2, BaseDataType arg3) {
         return switch (result) {
             case int32_t ->
                 switch (arg1) {
@@ -55,8 +71,8 @@ public interface JnhwMh_sI__sI_sL_sL extends JnhwMethodHandle {
                                 switch (arg3) {
                                     case int32_t ->
                                         NativeProvider.getProvider(
-                                        () -> new JnhwMi__I___I__I__I(symbolLookup, name),
-                                        () -> new JniMi__I___I__I__I(symbolLookup, name));
+                                        () -> new JnhwMi__I___I__I__I(methodAddress, name),
+                                        () -> new JniMi__I___I__I__I(methodAddress, name));
                                     default ->
                                         throw new IllegalArgumentException("arg3 unexpected data type: " + name + " " + arg3);
                                 };
@@ -64,8 +80,8 @@ public interface JnhwMh_sI__sI_sL_sL extends JnhwMethodHandle {
                                 switch (arg3) {
                                     case int64_t ->
                                         NativeProvider.getProvider(
-                                        () -> new JnhwMi__I___I__L__L(symbolLookup, name),
-                                        () -> new JniMi__I___I__L__L(symbolLookup, name));
+                                        () -> new JnhwMi__I___I__L__L(methodAddress, name),
+                                        () -> new JniMi__I___I__L__L(methodAddress, name));
                                     default ->
                                         throw new IllegalArgumentException("arg3 unexpected data type: " + name + " " + arg3);
                                 };
@@ -80,6 +96,5 @@ public interface JnhwMh_sI__sI_sL_sL extends JnhwMethodHandle {
         };
     }
 
-    int invoke_sI__sI_sL_sL(int arg1, long arg2, long arg3);
-
+    int invoke_sI__sI_sL_sL(int arg1, long arg2, long arg3) throws NoSuchNativeMethodException;
 }

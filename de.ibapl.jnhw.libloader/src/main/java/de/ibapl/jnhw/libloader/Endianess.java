@@ -35,28 +35,28 @@ public enum Endianess {
      * @return
      */
     public boolean isBigEndian() {
-        switch (this) {
-            case BIG:
-                return true;
-            case LITTLE:
-                return false;
-            default:
+        return switch (this) {
+            case BIG ->
+                true;
+            case LITTLE ->
+                false;
+            default ->
                 throw new IllegalStateException("Expected only to have BIG and LITTLE but not: " + this);
-        }
+        };
     }
 
     /**
      * @return
      */
     public boolean isLittleEndian() {
-        switch (this) {
-            case BIG:
-                return false;
-            case LITTLE:
-                return true;
-            default:
+        return switch (this) {
+            case BIG ->
+                false;
+            case LITTLE ->
+                true;
+            default ->
                 throw new IllegalStateException("Expected only to have BIG and LITTLE but not: " + this);
-        }
+        };
     }
 
 }

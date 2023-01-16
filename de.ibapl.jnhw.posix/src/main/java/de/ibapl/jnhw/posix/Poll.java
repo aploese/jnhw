@@ -35,7 +35,7 @@ import de.ibapl.jnhw.common.memory.layout.Alignment;
 import de.ibapl.jnhw.common.util.JsonStringBuilder;
 import de.ibapl.jnhw.libloader.MultiarchInfo;
 import de.ibapl.jnhw.libloader.MultiarchTupelBuilder;
-import de.ibapl.jnhw.util.posix.LibcLoader;
+import de.ibapl.jnhw.libloader.librarys.LibcLoader;
 import de.ibapl.jnhw.util.posix.PosixDataType;
 import java.io.IOException;
 import java.lang.foreign.MemorySegment;
@@ -407,7 +407,7 @@ public final class Poll {
         }
     }
 
-    private final static JnhwMh_sI___A_uL_sI poll = JnhwMh_sI___A_uL_sI.of(
+    private final static JnhwMh_sI___A_uL_sI.ExceptionErased poll = JnhwMh_sI___A_uL_sI.mandatoryOf(
             LibcLoader.LIB_C_SYMBOL_LOOKUP,
             "poll",
             BaseDataType.C_int,

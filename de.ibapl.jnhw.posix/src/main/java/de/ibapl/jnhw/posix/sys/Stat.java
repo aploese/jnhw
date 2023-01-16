@@ -58,15 +58,16 @@ public class Stat {
         public final static int S_ISGID = 0002000;
         public final static int S_ISVTX = 0001000;
 
-        //TODO dummy values
-        public final static int S_IFMT = 0;
-        public final static int S_IFBLK = 0;
-        public final static int S_IFCHR = 0;
-        public final static int S_IFIFO = 0;
-        public final static int S_IFREG = 0;
-        public final static int S_IFDIR = 0;
-        public final static int S_IFLNK = 0;
-        public final static int S_IFSOCK = 0;
+        //TODO freeBSD values
+        public final static int S_IFMT = 0170000;
+        public final static int S_IFBLK = 0060000;
+        public final static int S_IFCHR = 0020000;
+        public final static int S_IFIFO = 0010000;
+        public final static int S_IFREG = 0100000;
+        public final static int S_IFDIR = 0040000;
+        public final static int S_IFLNK = 0120000;
+        public final static int S_IFSOCK = 0140000;
+        public final static int S_IFWHT = 0160000;
     }
 
     public static interface FreeBsdDefines extends BsdDefines {
@@ -289,7 +290,7 @@ public class Stat {
      */
     static {
         switch (MultiarchTupelBuilder.getOS()) {
-            case LINUX:
+            case LINUX -> {
                 HAVE_SYS_STAT_H = true;
                 S_IFMT = LinuxDefines.S_IFMT;
                 S_IFBLK = LinuxDefines.S_IFBLK;
@@ -315,11 +316,8 @@ public class Stat {
                 S_IXGRP = LinuxDefines.S_IXGRP;
                 S_IXOTH = LinuxDefines.S_IXOTH;
                 S_IXUSR = LinuxDefines.S_IXUSR;
-
-                break;
-            case DARWIN:
-            case FREE_BSD:
-            case OPEN_BSD:
+            }
+            case DARWIN, FREE_BSD, OPEN_BSD -> {
                 HAVE_SYS_STAT_H = true;
                 S_IFMT = BsdDefines.S_IFMT;
                 S_IFBLK = BsdDefines.S_IFBLK;
@@ -345,8 +343,8 @@ public class Stat {
                 S_IXGRP = BsdDefines.S_IXGRP;
                 S_IXOTH = BsdDefines.S_IXOTH;
                 S_IXUSR = BsdDefines.S_IXUSR;
-                break;
-            default:
+            }
+            default ->
                 throw new NoClassDefFoundError("No sys/stat.h defines for " + MultiarchTupelBuilder.getMultiarch());
         }
     }

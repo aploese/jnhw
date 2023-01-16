@@ -21,6 +21,8 @@
  */
 package de.ibapl.jnhw.it.posixsignal.posix_graceful_exit_sigsegv;
 
+import de.ibapl.jnhw.common.datatypes.BaseDataType;
+import de.ibapl.jnhw.common.downcall.JnhwMh__V__sI;
 import de.ibapl.jnhw.common.downcall.foreign.JnhwMi__V___I;
 import de.ibapl.jnhw.common.nativepointer.FunctionPtr__V___I;
 import de.ibapl.jnhw.common.upcall.Callback__V___I;
@@ -28,6 +30,7 @@ import de.ibapl.jnhw.libloader.MultiarchTupelBuilder;
 import de.ibapl.jnhw.libloader.OS;
 import de.ibapl.jnhw.posix.Signal;
 import java.lang.foreign.MemoryAddress;
+import java.lang.foreign.MemorySegment;
 import java.lang.foreign.MemorySession;
 
 /**
@@ -72,8 +75,11 @@ public class App {
         FunctionPtr__V___I originalHandler = Signal.signal(Signal.SIGSEGV, callback__V___I);
 
         //We will call a NULL pointer on the native side. So we will force a segmentation violation.
-        JnhwMi__V___I downcall__V___I = new JnhwMi__V___I(MemoryAddress.NULL, MemorySession.global());
-        downcall__V___I.invoke__V__sI(42);
+        JnhwMh__V__sI downcall__V__sI = JnhwMh__V__sI.of(
+                MemorySegment.ofAddress(MemoryAddress.NULL, 0, MemorySession.global()),
+                "nullPointer",
+                BaseDataType.int32_t);
+        downcall__V__sI.invoke__V__sI(42);
 
         System.err.println("We should never reach this.");
         System.err.flush();

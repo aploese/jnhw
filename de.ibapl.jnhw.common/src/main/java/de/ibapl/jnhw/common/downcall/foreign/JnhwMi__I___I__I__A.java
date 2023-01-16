@@ -22,21 +22,19 @@
 package de.ibapl.jnhw.common.downcall.foreign;
 
 import de.ibapl.jnhw.common.downcall.JnhwMh_sI__sI_sI__A;
-import de.ibapl.jnhw.common.downcall.JnhwMh_sI__sI_uL__A;
-import de.ibapl.jnhw.common.util.ConversionsJava2Native;
 import java.lang.foreign.Addressable;
 import java.lang.foreign.FunctionDescriptor;
-import java.lang.foreign.SymbolLookup;
+import java.lang.foreign.MemorySegment;
 import java.lang.foreign.ValueLayout;
 
 /**
  *
  * @author aploese
  */
-public class JnhwMi__I___I__I__A extends JnhwMethodInvoker implements JnhwMh_sI__sI_sI__A, JnhwMh_sI__sI_uL__A {
+public class JnhwMi__I___I__I__A extends JnhwMethodInvoker implements JnhwMh_sI__sI_sI__A.ExceptionErased {
 
-    public JnhwMi__I___I__I__A(SymbolLookup symbolLookup, String name) {
-        super(symbolLookup, name, FunctionDescriptor.of(ValueLayout.JAVA_INT, ValueLayout.JAVA_INT, ValueLayout.JAVA_INT, ValueLayout.ADDRESS));
+    public JnhwMi__I___I__I__A(MemorySegment methodAddress, String name) {
+        super(methodAddress, name, FunctionDescriptor.of(ValueLayout.JAVA_INT, ValueLayout.JAVA_INT, ValueLayout.JAVA_INT, ValueLayout.ADDRESS));
     }
 
     private int invoke__I___I__I__A(int arg1, int arg2, Addressable arg3) {
@@ -56,14 +54,6 @@ public class JnhwMi__I___I__I__A extends JnhwMethodInvoker implements JnhwMh_sI_
 
     public final int invoke_sI__uI_sI__A(int arg1, int arg2, Addressable arg3) {
         return invoke__I___I__I__A(arg1, arg2, arg3);
-    }
-
-    @Override
-    public final int invoke_sI__sI_uL__A(int arg1, long arg2, Addressable arg3) {
-        return invoke__I___I__I__A(
-                arg1,
-                ConversionsJava2Native.long_TO_uint32_t(arg2),
-                arg3);
     }
 
 }

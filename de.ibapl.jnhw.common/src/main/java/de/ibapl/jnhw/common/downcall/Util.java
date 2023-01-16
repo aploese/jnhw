@@ -23,14 +23,39 @@ package de.ibapl.jnhw.common.downcall;
 
 import de.ibapl.jnhw.libloader.MemoryModel;
 import de.ibapl.jnhw.libloader.MultiarchTupelBuilder;
+import java.lang.foreign.MemorySegment;
+import java.lang.foreign.SymbolLookup;
+import java.util.Optional;
+import java.util.function.Function;
+import java.util.function.Supplier;
 import java.util.logging.Logger;
 
 /**
  *
- * @author user
+ * @author aploese
  */
-class Util {
+public class Util {
 
     public final static Logger LOG = Logger.getLogger("d.i.j.c.downcall");
     public final static MemoryModel MEMORY_MODEL = MultiarchTupelBuilder.getMemoryModel();
+
+    public static <T> T buidExistingMethod(SymbolLookup symbolLookup, String name, Function<MemorySegment, T> onSuccess) {
+        final Optional<MemorySegment> oms = symbolLookup.lookup(name);
+        if (oms.isEmpty()) {
+            //TODO which ex?
+            throw new RuntimeException(name);
+        } else {
+            return onSuccess.apply(oms.get());
+        }
+    }
+
+    public static <T> T buidOptionalMethod(SymbolLookup symbolLookup, String name, Function<MemorySegment, T> onSuccess, Supplier<T> onFailure) {
+        final Optional<MemorySegment> oms = symbolLookup.lookup(name);
+        if (oms.isEmpty()) {
+            return onFailure.get();
+        } else {
+            return onSuccess.apply(oms.get());
+        }
+    }
+
 }

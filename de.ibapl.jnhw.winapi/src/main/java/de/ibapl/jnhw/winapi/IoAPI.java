@@ -45,7 +45,7 @@ import java.lang.foreign.MemoryAddress;
 @Include("IoAPI.h")
 public final class IoAPI {
 
-    private final static JnhwMh_MA___A__A_uL_uI CreateIoCompletionPort = JnhwMh_MA___A__A_uL_uI.of(
+    private final static JnhwMh_MA___A__A_uL_uI.ExceptionErased CreateIoCompletionPort = JnhwMh_MA___A__A_uL_uI.mandatoryOf(
             Kernel32Loader.DLL_KERNEL32_SYMBOL_LOOKUP,
             "CreateIoCompletionPort",
             WinApiDataType.HANDLE,
@@ -54,7 +54,7 @@ public final class IoAPI {
             WinApiDataType.ULONG_PTR,
             WinApiDataType.DWORD);
 
-    private final static JnhwMh_BL___A__A__A__A_uI GetQueuedCompletionStatus = JnhwMh_BL___A__A__A__A_uI.of(
+    private final static JnhwMh_BL___A__A__A__A_uI.ExceptionErased GetQueuedCompletionStatus = JnhwMh_BL___A__A__A__A_uI.mandatoryOf(
             Kernel32Loader.DLL_KERNEL32_SYMBOL_LOOKUP,
             "GetQueuedCompletionStatus",
             WinApiDataType.BOOL,
@@ -64,7 +64,7 @@ public final class IoAPI {
             WinApiDataType.LPOVERLAPPED,
             WinApiDataType.DWORD);
 
-    private final static JnhwMh_BL___A_uI_uL__A PostQueuedCompletionStatus = JnhwMh_BL___A_uI_uL__A.of(
+    private final static JnhwMh_BL___A_uI_uL__A.ExceptionErased PostQueuedCompletionStatus = JnhwMh_BL___A_uI_uL__A.mandatoryOf(
             Kernel32Loader.DLL_KERNEL32_SYMBOL_LOOKUP,
             "PostQueuedCompletionStatus",
             WinApiDataType.BOOL,

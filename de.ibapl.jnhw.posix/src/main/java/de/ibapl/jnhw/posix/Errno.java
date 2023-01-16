@@ -45,7 +45,6 @@ public final class Errno extends de.ibapl.jnhw.isoc.Errno {
 
     public static interface BsdDefines {
 
-        public final static int E2BIG = 1;
         public final static int EACCES = 13;
         public final static int EADDRINUSE = 48;
         public final static int EADDRNOTAVAIL = 49;
@@ -119,6 +118,7 @@ public final class Errno extends de.ibapl.jnhw.isoc.Errno {
 
     public static interface DarwinDefines extends BsdDefines {
 
+        public final static int E2BIG = 1;
         public final static int EBADMSG = 94;
         public final static int ECANCELED = 89;
         public final static int EIDRM = 90;
@@ -139,6 +139,7 @@ public final class Errno extends de.ibapl.jnhw.isoc.Errno {
 
     public static interface FreeBsdDefines extends BsdDefines {
 
+        public final static int E2BIG = 7;
         public final static int EBADMSG = 89;
         public final static int ECANCELED = 85;
         public final static int EIDRM = 82;
@@ -478,6 +479,7 @@ public final class Errno extends de.ibapl.jnhw.isoc.Errno {
 
     public static interface OpenBsdDefines extends BsdDefines {
 
+        public final static int E2BIG = 1;
         public final static int EBADMSG = 92;
         public final static int ECANCELED = 88;
         public final static int EIDRM = 89;
@@ -1550,7 +1552,6 @@ public final class Errno extends de.ibapl.jnhw.isoc.Errno {
                 EXFULL = IntDefine.toIntDefine(linuxDefines.EXFULL);
             }
             case DARWIN, FREE_BSD, OPEN_BSD -> {
-                E2BIG = BsdDefines.E2BIG;
                 EACCES = BsdDefines.EACCES;
                 EADDRINUSE = BsdDefines.EADDRINUSE;
                 EADDRNOTAVAIL = BsdDefines.EADDRNOTAVAIL;
@@ -1664,7 +1665,8 @@ public final class Errno extends de.ibapl.jnhw.isoc.Errno {
                 EXDEV = BsdDefines.EXDEV;
                 EXFULL = IntDefine.UNDEFINED;
                 switch (MultiarchTupelBuilder.getOS()) {
-                    case DARWIN:
+                    case DARWIN -> {
+                        E2BIG = DarwinDefines.E2BIG;
                         EMEDIUMTYPE = IntDefine.UNDEFINED;
                         ENOMEDIUM = IntDefine.UNDEFINED;
                         EPROTO = DarwinDefines.EPROTO;
@@ -1683,8 +1685,9 @@ public final class Errno extends de.ibapl.jnhw.isoc.Errno {
                         ENOSR = IntDefine.toIntDefine(DarwinDefines.ENOSR);
                         ENOSTR = IntDefine.toIntDefine(DarwinDefines.ENOSTR);
                         ETIME = IntDefine.toIntDefine(DarwinDefines.ETIME);
-                        break;
-                    case FREE_BSD:
+                    }
+                    case FREE_BSD -> {
+                        E2BIG = FreeBsdDefines.E2BIG;
                         EMEDIUMTYPE = IntDefine.UNDEFINED;
                         ENOMEDIUM = IntDefine.UNDEFINED;
                         EPROTO = FreeBsdDefines.EPROTO;
@@ -1703,8 +1706,9 @@ public final class Errno extends de.ibapl.jnhw.isoc.Errno {
                         ENOSR = IntDefine.UNDEFINED;
                         ENOSTR = IntDefine.UNDEFINED;
                         ETIME = IntDefine.UNDEFINED;
-                        break;
-                    case OPEN_BSD:
+                    }
+                    case OPEN_BSD -> {
+                        E2BIG = OpenBsdDefines.E2BIG;
                         EMEDIUMTYPE = IntDefine.toIntDefine(OpenBsdDefines.EMEDIUMTYPE);
                         ENOMEDIUM = IntDefine.toIntDefine(OpenBsdDefines.ENOMEDIUM);
                         EPROTO = OpenBsdDefines.EPROTO;
@@ -1723,8 +1727,8 @@ public final class Errno extends de.ibapl.jnhw.isoc.Errno {
                         ENOSR = IntDefine.UNDEFINED;
                         ENOSTR = IntDefine.UNDEFINED;
                         ETIME = IntDefine.UNDEFINED;
-                        break;
-                    default:
+                    }
+                    default ->
                         throw new NoClassDefFoundError("No errno.h BSD defines for " + MultiarchTupelBuilder.getMultiarch());
                 }
             }

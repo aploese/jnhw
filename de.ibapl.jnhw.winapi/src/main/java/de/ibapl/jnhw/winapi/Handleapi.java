@@ -39,7 +39,7 @@ import de.ibapl.jnhw.winapi.Winnt.HANDLE;
 @Include("handleapi.h")
 public abstract class Handleapi {
 
-    private final static JnhwMh_BL___A CloseHandle = JnhwMh_BL___A.of(
+    private final static JnhwMh_BL___A.ExceptionErased CloseHandle = JnhwMh_BL___A.mandatoryOf(
             Kernel32Loader.DLL_KERNEL32_SYMBOL_LOOKUP,
             "CloseHandle",
             WinApiDataType.BOOL,

@@ -23,30 +23,45 @@ package de.ibapl.jnhw.common.downcall;
 
 import de.ibapl.jnhw.common.downcall.foreign.JnhwMi__V___V;
 import de.ibapl.jnhw.common.downcall.jni.JniMi__V___V;
+import de.ibapl.jnhw.common.exception.NoSuchNativeMethodException;
 import de.ibapl.jnhw.common.util.NativeProvider;
+import java.lang.foreign.MemorySegment;
 import java.lang.foreign.SymbolLookup;
-import java.util.NoSuchElementException;
 
 /**
  *
  * @author aploese
  */
+@FunctionalInterface
 public interface JnhwMh__V___V extends JnhwMethodHandle {
 
-    public static JnhwMh__V___V ofOrNull(SymbolLookup symbolLookup, String name) {
-        try {
-            return of(symbolLookup, name);
-        } catch (NoSuchElementException elementException) {
-            return null;
-        }
+    @FunctionalInterface
+    interface ExceptionErased extends JnhwMh__V___V {
+
+        @Override
+        void invoke__V___V();
     }
 
-    public static JnhwMh__V___V of(SymbolLookup symbolLookup, String name) {
+    static JnhwMh__V___V.ExceptionErased mandatoryOf(SymbolLookup symbolLookup, String name) {
+        return Util.buidExistingMethod(symbolLookup,
+                name,
+                (oms) -> of(oms, name));
+    }
+
+    static JnhwMh__V___V optionalOf(SymbolLookup symbolLookup, String name) {
+        return Util.buidOptionalMethod(symbolLookup,
+                name,
+                (oms) -> of(oms, name),
+                () -> (JnhwMh__V___V) () -> {
+                    throw new NoSuchNativeMethodException(name);
+                });
+    }
+
+    public static JnhwMh__V___V.ExceptionErased of(MemorySegment methodAddress, String name) {
         return NativeProvider.getProvider(
-                () -> new JnhwMi__V___V(symbolLookup, name),
-                () -> new JniMi__V___V(symbolLookup, name));
+                () -> new JnhwMi__V___V(methodAddress, name),
+                () -> new JniMi__V___V(methodAddress, name));
     }
 
-    void invoke__V___V();
-
+    void invoke__V___V() throws NoSuchNativeMethodException;
 }

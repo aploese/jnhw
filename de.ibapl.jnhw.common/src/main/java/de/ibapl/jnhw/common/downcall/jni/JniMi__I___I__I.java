@@ -26,20 +26,21 @@ import de.ibapl.jnhw.common.downcall.JnhwMh_sI__sI_uL;
 import de.ibapl.jnhw.common.downcall.JnhwMh_sI__uI_sI;
 import de.ibapl.jnhw.common.downcall.JnhwMh_sI__uI_uI;
 import de.ibapl.jnhw.common.downcall.JnhwMh_uI__uI_sI;
+import de.ibapl.jnhw.common.downcall.JnhwMh_uL__uI_BL;
 import de.ibapl.jnhw.common.util.ConversionsJava2Native;
 import de.ibapl.jnhw.common.util.ConversionsNative2Java;
-import java.lang.foreign.SymbolLookup;
+import java.lang.foreign.MemorySegment;
 
 /**
  *
  * @author aploese
  */
-public class JniMi__I___I__I extends JniMethodInvoker implements JnhwMh_uI__uI_sI, JnhwMh_sI__sI_uL, JnhwMh_sI__sI_sI, JnhwMh_sI__uI_sI, JnhwMh_sI__uI_uI {
+public class JniMi__I___I__I extends JniMethodInvoker implements JnhwMh_uI__uI_sI.ExceptionErased, JnhwMh_uL__uI_BL.ExceptionErased, JnhwMh_sI__sI_uL.ExceptionErased, JnhwMh_sI__sI_sI.ExceptionErased, JnhwMh_sI__uI_sI.ExceptionErased, JnhwMh_sI__uI_uI.ExceptionErased {
 
     protected final static native int invoke__I___I__I(long address, int arg1, int arg2);
 
-    public JniMi__I___I__I(SymbolLookup symbolLookup, String name) {
-        super(symbolLookup, name);
+    public JniMi__I___I__I(MemorySegment memoryAddress, String name) {
+        super(memoryAddress, name);
     }
 
     @Override
@@ -57,7 +58,7 @@ public class JniMi__I___I__I extends JniMethodInvoker implements JnhwMh_uI__uI_s
     }
 
     @Override
-    public long invoke_uL__uI__B(int arg1, boolean arg2) {
+    public long invoke_uL__uI_BL(int arg1, boolean arg2) {
         try {
             return ConversionsNative2Java.uint32_t_TO_long(
                     invoke__I___I__I(

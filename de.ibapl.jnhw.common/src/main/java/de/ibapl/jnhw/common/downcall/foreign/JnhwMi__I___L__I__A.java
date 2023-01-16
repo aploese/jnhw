@@ -23,7 +23,7 @@ package de.ibapl.jnhw.common.downcall.foreign;
 
 import java.lang.foreign.Addressable;
 import java.lang.foreign.FunctionDescriptor;
-import java.lang.foreign.SymbolLookup;
+import java.lang.foreign.MemorySegment;
 import java.lang.foreign.ValueLayout;
 
 /**
@@ -32,8 +32,8 @@ import java.lang.foreign.ValueLayout;
  */
 public class JnhwMi__I___L__I__A extends JnhwMethodInvoker {
 
-    public JnhwMi__I___L__I__A(SymbolLookup symbolLookup, String name) {
-        super(symbolLookup, name, FunctionDescriptor.of(ValueLayout.JAVA_INT, ValueLayout.JAVA_LONG, ValueLayout.JAVA_INT, ValueLayout.ADDRESS));
+    public JnhwMi__I___L__I__A(MemorySegment methodAddress, String name) {
+        super(methodAddress, name, FunctionDescriptor.of(ValueLayout.JAVA_INT, ValueLayout.JAVA_LONG, ValueLayout.JAVA_INT, ValueLayout.ADDRESS));
     }
 
     private int invoke__I___L__I__A(long arg1, int arg2, Addressable arg3) {

@@ -57,8 +57,8 @@ import de.ibapl.jnhw.common.util.JsonStringBuilder;
 import de.ibapl.jnhw.common.util.ObjectDefine;
 import de.ibapl.jnhw.libloader.MultiarchInfo;
 import de.ibapl.jnhw.libloader.MultiarchTupelBuilder;
-import de.ibapl.jnhw.util.posix.LibcLoader;
-import de.ibapl.jnhw.util.posix.LibrtLoader;
+import de.ibapl.jnhw.libloader.librarys.LibcLoader;
+import de.ibapl.jnhw.libloader.librarys.LibrtLoader;
 import de.ibapl.jnhw.util.posix.PosixDataType;
 import de.ibapl.jnhw.util.posix.downcall.JnhwMh_sI__PthreadT_sI;
 import de.ibapl.jnhw.util.posix.memory.PosixStruct;
@@ -67,6 +67,7 @@ import java.io.IOException;
 import java.lang.foreign.MemoryAddress;
 import java.lang.foreign.MemorySegment;
 import java.lang.foreign.MemorySession;
+import java.util.Optional;
 
 /**
  * Wrapper around the {@code <signal.h>} header.
@@ -416,61 +417,62 @@ public class Signal {
          */
         static {
             switch (MultiarchTupelBuilder.getOS()) {
-                case LINUX:
+                case LINUX -> {
                     switch (MultiarchTupelBuilder.getArch()) {
-                        case AARCH64:
+                        case AARCH64 -> {
                             alignof = Alignment.AT_16;
                             sizeof = 4384;
-                            break;
-                        case ARM:
+                        }
+                        case ARM -> {
                             alignof = Alignment.AT_4;
                             sizeof = 84;
-                            break;
-                        case I386:
+                        }
+                        case I386 -> {
                             alignof = Alignment.AT_4;
                             sizeof = 88;
-                            break;
-                        case MIPS_64:
+                        }
+                        case MIPS_64 -> {
                             alignof = Alignment.AT_8;
                             sizeof = 600;
-                            break;
-                        case MIPS:
+                        }
+                        case MIPS -> {
                             alignof = Alignment.AT_8;
                             sizeof = 592;
-                            break;
-                        case POWER_PC_64:
+                        }
+                        case POWER_PC_64 -> {
                             alignof = Alignment.AT_8;
                             sizeof = 1272;
-                            break;
-                        case RISC_V_64:
+                        }
+                        case RISC_V_64 -> {
                             alignof = Alignment.AT_16;
                             sizeof = 784;
-                            break;
-                        case S390_X:
+                        }
+                        case S390_X -> {
                             alignof = Alignment.AT_8;
                             sizeof = 344;
-                            break;
-                        case X86_64:
+                        }
+                        case X86_64 -> {
                             alignof = Alignment.AT_8;
                             sizeof = 256;
-                            break;
-                        default:
+                        }
+                        default ->
                             throw new NoClassDefFoundError("No signal.h linux defines for " + MultiarchTupelBuilder.getMultiarch());
                     }
-                    break;
-                case DARWIN:
+                }
+
+                case DARWIN -> {
                     alignof = Alignment.AT_8;
                     sizeof = 8;
-                    break;
-                case FREE_BSD:
+                }
+                case FREE_BSD -> {
                     alignof = Alignment.AT_16;
                     sizeof = 800;
-                    break;
-                case OPEN_BSD:
+                }
+                case OPEN_BSD -> {
                     alignof = null;
                     sizeof = 0;
-                    break;
-                default:
+                }
+                default ->
                     throw new NoClassDefFoundError("No signal.h OS defines for " + MultiarchTupelBuilder.getMultiarch());
             }
 
@@ -541,109 +543,110 @@ public class Signal {
          */
         static {
             switch (MultiarchTupelBuilder.getOS()) {
-                case LINUX:
+                case LINUX -> {
                     switch (MultiarchTupelBuilder.getArch()) {
-                        case AARCH64:
+                        case AARCH64 -> {
                             alignof = Alignment.AT_8;
                             sizeof = 152;
                             offsetof_Sa_handler = 0;
                             offsetof_Sa_mask = 8;
                             offsetof_Sa_flags = 136;
                             offsetof_Sa_sigaction = 0;
-                            break;
-                        case MIPS_64:
+                        }
+                        case MIPS_64 -> {
                             alignof = Alignment.AT_8;
                             sizeof = 152;
                             offsetof_Sa_handler = 8;
                             offsetof_Sa_mask = 16;
                             offsetof_Sa_flags = 0;
                             offsetof_Sa_sigaction = 8;
-                            break;
-                        case POWER_PC_64:
+                        }
+                        case POWER_PC_64 -> {
                             alignof = Alignment.AT_8;
                             sizeof = 152;
                             offsetof_Sa_handler = 0;
                             offsetof_Sa_mask = 8;
                             offsetof_Sa_flags = 136;
                             offsetof_Sa_sigaction = 0;
-                            break;
-                        case RISC_V_64:
+                        }
+                        case RISC_V_64 -> {
                             alignof = Alignment.AT_8;
                             sizeof = 152;
                             offsetof_Sa_handler = 0;
                             offsetof_Sa_mask = 8;
                             offsetof_Sa_flags = 136;
                             offsetof_Sa_sigaction = 0;
-                            break;
-                        case S390_X:
+                        }
+                        case S390_X -> {
                             alignof = Alignment.AT_8;
                             sizeof = 152;
                             offsetof_Sa_handler = 0;
                             offsetof_Sa_mask = 24;
                             offsetof_Sa_flags = 12;
                             offsetof_Sa_sigaction = 0;
-                            break;
-                        case X86_64:
+                        }
+                        case X86_64 -> {
                             alignof = Alignment.AT_8;
                             sizeof = 152;
                             offsetof_Sa_handler = 0;
                             offsetof_Sa_mask = 8;
                             offsetof_Sa_flags = 136;
                             offsetof_Sa_sigaction = 0;
-                            break;
-                        case ARM:
+                        }
+                        case ARM -> {
                             alignof = Alignment.AT_4;
                             sizeof = 140;
                             offsetof_Sa_handler = 0;
                             offsetof_Sa_mask = 4;
                             offsetof_Sa_flags = 132;
                             offsetof_Sa_sigaction = 0;
-                            break;
-                        case I386:
+                        }
+                        case I386 -> {
                             alignof = Alignment.AT_4;
                             sizeof = 140;
                             offsetof_Sa_handler = 0;
                             offsetof_Sa_mask = 4;
                             offsetof_Sa_flags = 132;
                             offsetof_Sa_sigaction = 0;
-                            break;
-                        case MIPS:
+                        }
+                        case MIPS -> {
                             alignof = Alignment.AT_4;
                             sizeof = 144;
                             offsetof_Sa_handler = 4;
                             offsetof_Sa_mask = 8;
                             offsetof_Sa_flags = 0;
                             offsetof_Sa_sigaction = 4;
-                            break;
-                        default:
+                        }
+                        default ->
                             throw new NoClassDefFoundError("No signal.h linux defines for sigaction " + MultiarchTupelBuilder.getMultiarch());
                     }
-                    break;
-                case DARWIN:
+                }
+
+                case DARWIN -> {
                     alignof = Alignment.AT_8;
                     sizeof = 16;
                     offsetof_Sa_handler = 0;
                     offsetof_Sa_mask = 8;
                     offsetof_Sa_flags = 12;
                     offsetof_Sa_sigaction = 0;
-                    break;
-                case FREE_BSD:
+                }
+                case FREE_BSD -> {
                     alignof = Alignment.AT_8;
                     sizeof = 32;
                     offsetof_Sa_handler = 0;
                     offsetof_Sa_mask = 12;
                     offsetof_Sa_flags = 8;
                     offsetof_Sa_sigaction = 0;
-                    break;
-                case OPEN_BSD:
+                }
+                case OPEN_BSD -> {
                     alignof = Alignment.AT_8;
                     sizeof = 16;
                     offsetof_Sa_handler = 0;
                     offsetof_Sa_mask = 8;
                     offsetof_Sa_flags = 12;
                     offsetof_Sa_sigaction = 0;
-                    break;
-                default:
+                }
+                default ->
                     throw new NoClassDefFoundError("No signal.h OS defines for sigaction " + MultiarchTupelBuilder.getMultiarch());
             }
         }
@@ -801,39 +804,37 @@ public class Signal {
 
         static {
             switch (MultiarchTupelBuilder.getOS()) {
-                case LINUX:
+                case LINUX -> {
                     switch (MultiarchTupelBuilder.getMemoryModel()) {
-                        case ILP32:
+                        case ILP32 -> {
                             alignof = Alignment.AT_4;
                             offsetof_Sigev_notify = 8;
                             offsetof_Sigev_signo = 4;
                             offsetof_Sigev_value = 0;
                             offsetof_Sigev_notify_function = 12;
                             offsetof_Sigev_notify_attributes = 16;
-                            break;
-                        case LP64:
+                        }
+                        case LP64 -> {
                             alignof = Alignment.AT_8;
                             offsetof_Sigev_notify = 12;
                             offsetof_Sigev_signo = 8;
                             offsetof_Sigev_value = 0;
                             offsetof_Sigev_notify_function = 16;
                             offsetof_Sigev_notify_attributes = 24;
-                            break;
-                        default:
+                        }
+                        default ->
                             throw new NoClassDefFoundError("No signal.h linux defines for sigevent " + MultiarchTupelBuilder.getMultiarch());
                     }
 
                     sizeof = 64;
-                    break;
-                case DARWIN:
+                }
+                case DARWIN -> {
                     switch (MultiarchTupelBuilder.getMemoryModel()) {
-                        case ILP32:
+                        case ILP32 ->
                             alignof = Alignment.AT_4;
-                            break;
-                        case LP64:
+                        case LP64 ->
                             alignof = Alignment.AT_8;
-                            break;
-                        default:
+                        default ->
                             throw new NoClassDefFoundError("No signal.h free BSD defines for sigevent " + MultiarchTupelBuilder.getMultiarch());
                     }
                     sizeof = 32;
@@ -842,16 +843,14 @@ public class Signal {
                     offsetof_Sigev_value = 8;
                     offsetof_Sigev_notify_function = 16;
                     offsetof_Sigev_notify_attributes = 24;
-                    break;
-                case FREE_BSD:
+                }
+                case FREE_BSD -> {
                     switch (MultiarchTupelBuilder.getMemoryModel()) {
-                        case ILP32:
+                        case ILP32 ->
                             alignof = Alignment.AT_4;
-                            break;
-                        case LP64:
+                        case LP64 ->
                             alignof = Alignment.AT_8;
-                            break;
-                        default:
+                        default ->
                             throw new NoClassDefFoundError("No signal.h free BSD defines for sigevent " + MultiarchTupelBuilder.getMultiarch());
                     }
                     sizeof = 80;
@@ -860,8 +859,8 @@ public class Signal {
                     offsetof_Sigev_value = 8;
                     offsetof_Sigev_notify_function = 16;
                     offsetof_Sigev_notify_attributes = 24;
-                    break;
-                case OPEN_BSD:
+                }
+                case OPEN_BSD -> {
                     alignof = null;
                     sizeof = 0;
                     offsetof_Sigev_notify = -1;
@@ -869,8 +868,8 @@ public class Signal {
                     offsetof_Sigev_value = -1;
                     offsetof_Sigev_notify_function = -1;
                     offsetof_Sigev_notify_attributes = -1;
-                    break;
-                default:
+                }
+                default ->
                     throw new NoClassDefFoundError("No signal.h OS defines for sigevent " + MultiarchTupelBuilder.getMultiarch());
             }
         }
@@ -1031,11 +1030,10 @@ public class Signal {
         static {
 
             switch (MultiarchTupelBuilder.getOS()) {
-                case LINUX:
+                case LINUX -> {
                     sizeof = 128;
                     switch (MultiarchTupelBuilder.getArch()) {
-                        case ARM:
-                        case I386:
+                        case ARM, I386 -> {
                             alignof = Alignment.AT_4;
                             offsetof_Si_signo = 0;
                             offsetof_Si_code = 8;
@@ -1046,8 +1044,8 @@ public class Signal {
                             offsetof_Si_status = 20;
                             offsetof_Si_band = 12;
                             offsetof_Si_value = 20;
-                            break;
-                        case MIPS:
+                        }
+                        case MIPS -> {
                             alignof = Alignment.AT_4;
                             offsetof_Si_signo = 0;
                             offsetof_Si_code = 4;
@@ -1058,12 +1056,8 @@ public class Signal {
                             offsetof_Si_status = 20;
                             offsetof_Si_band = 12;
                             offsetof_Si_value = 20;
-                            break;
-                        case AARCH64:
-                        case POWER_PC_64:
-                        case RISC_V_64:
-                        case S390_X:
-                        case X86_64:
+                        }
+                        case AARCH64, POWER_PC_64, RISC_V_64, S390_X, X86_64 -> {
                             alignof = Alignment.AT_8;
                             offsetof_Si_signo = 0;
                             offsetof_Si_code = 8;
@@ -1074,8 +1068,8 @@ public class Signal {
                             offsetof_Si_status = 24;
                             offsetof_Si_band = 16;
                             offsetof_Si_value = 24;
-                            break;
-                        case MIPS_64:
+                        }
+                        case MIPS_64 -> {
                             alignof = Alignment.AT_8;
                             offsetof_Si_signo = 0;
                             offsetof_Si_code = 4;
@@ -1086,12 +1080,12 @@ public class Signal {
                             offsetof_Si_status = 24;
                             offsetof_Si_band = 16;
                             offsetof_Si_value = 24;
-                            break;
-                        default:
+                        }
+                        default ->
                             throw new NoClassDefFoundError("No signal.h linux defines for siginfo_t " + MultiarchTupelBuilder.getMultiarch());
                     }
-                    break;
-                case DARWIN:
+                }
+                case DARWIN -> {
                     sizeof = 104;
                     alignof = Alignment.AT_8;
                     offsetof_Si_signo = 0;
@@ -1103,8 +1097,8 @@ public class Signal {
                     offsetof_Si_status = 20;
                     offsetof_Si_band = 40;
                     offsetof_Si_value = 32;
-                    break;
-                case FREE_BSD:
+                }
+                case FREE_BSD -> {
                     sizeof = 80;
                     alignof = Alignment.AT_8;
                     offsetof_Si_signo = 0;
@@ -1116,8 +1110,8 @@ public class Signal {
                     offsetof_Si_status = 20;
                     offsetof_Si_band = 40;
                     offsetof_Si_value = 32;
-                    break;
-                case OPEN_BSD:
+                }
+                case OPEN_BSD -> {
                     sizeof = 136;
                     alignof = Alignment.AT_8;
                     offsetof_Si_signo = 0;
@@ -1129,8 +1123,8 @@ public class Signal {
                     offsetof_Si_status = 40;
                     offsetof_Si_band = -1;
                     offsetof_Si_value = 32;
-                    break;
-                default:
+                }
+                default ->
                     throw new NoClassDefFoundError("No signal.h OS defines for siginfo_t " + MultiarchTupelBuilder.getMultiarch());
             }
         }
@@ -1276,32 +1270,30 @@ public class Signal {
         static {
 
             switch (MultiarchTupelBuilder.getOS()) {
-                case LINUX:
+                case LINUX -> {
                     switch (MultiarchTupelBuilder.getMemoryModel()) {
-                        case ILP32:
+                        case ILP32 ->
                             alignof = Alignment.AT_4;
-                            break;
-                        case LP64:
+                        case LP64 ->
                             alignof = Alignment.AT_8;
-                            break;
-                        default:
+                        default ->
                             throw new NoClassDefFoundError("No signal.h linux defines for sigset_t " + MultiarchTupelBuilder.getMultiarch());
                     }
                     sizeof = 128;
-                    break;
-                case DARWIN:
+                }
+                case DARWIN -> {
                     alignof = Alignment.AT_4;
                     sizeof = 4;
-                    break;
-                case FREE_BSD:
+                }
+                case FREE_BSD -> {
                     alignof = Alignment.AT_4;
                     sizeof = 16;
-                    break;
-                case OPEN_BSD:
+                }
+                case OPEN_BSD -> {
                     alignof = Alignment.AT_4;
                     sizeof = 4;
-                    break;
-                default:
+                }
+                default ->
                     throw new NoClassDefFoundError("No signal.h OS defines for sigset_t " + MultiarchTupelBuilder.getMultiarch());
             }
         }
@@ -1496,15 +1488,15 @@ public class Signal {
         static {
 
             switch (MultiarchTupelBuilder.getMemoryModel()) {
-                case ILP32:
+                case ILP32 -> {
                     alignof = Alignment.AT_4;
                     sizeof = 4;
-                    break;
-                case LP64:
+                }
+                case LP64 -> {
                     alignof = Alignment.AT_8;
                     sizeof = 8;
-                    break;
-                default:
+                }
+                default ->
                     throw new NoClassDefFoundError("No signal.h defines for sigval " + MultiarchTupelBuilder.getMultiarch());
             }
         }
@@ -1608,50 +1600,51 @@ public class Signal {
 
         static {
             switch (MultiarchTupelBuilder.getOS()) {
-                case LINUX:
+                case LINUX -> {
                     switch (MultiarchTupelBuilder.getMemoryModel()) {
-                        case ILP32:
+                        case ILP32 -> {
                             alignof = Alignment.AT_4;
                             sizeof = 12;
                             offsetof_Ss_sp = 0;
                             switch (MultiarchTupelBuilder.getArch()) {
-                                case MIPS:
+                                case MIPS -> {
                                     offsetof_Ss_size = 4;
                                     offsetof_Ss_flags = 8;
-                                    break;
-                                default:
+                                }
+                                default -> {
                                     offsetof_Ss_size = 8;
                                     offsetof_Ss_flags = 4;
+                                }
                             }
-                            break;
-                        case LP64:
+                        }
+                        case LP64 -> {
                             alignof = Alignment.AT_8;
                             sizeof = 24;
                             offsetof_Ss_sp = 0;
                             switch (MultiarchTupelBuilder.getArch()) {
-                                case MIPS_64:
+                                case MIPS_64 -> {
                                     offsetof_Ss_size = 8;
                                     offsetof_Ss_flags = 16;
-                                    break;
-                                default:
+                                }
+                                default -> {
                                     offsetof_Ss_size = 16;
                                     offsetof_Ss_flags = 8;
+                                }
                             }
-                            break;
-                        default:
+                        }
+                        default ->
                             throw new NoClassDefFoundError("No signal.h linux defines for stack_t " + MultiarchTupelBuilder.getMultiarch());
                     }
-                    break;
-                case DARWIN:
-                case FREE_BSD:
-                case OPEN_BSD:
+                }
+
+                case DARWIN, FREE_BSD, OPEN_BSD -> {
                     alignof = Alignment.AT_8;
                     sizeof = 24;
                     offsetof_Ss_sp = 0;
                     offsetof_Ss_size = 8;
                     offsetof_Ss_flags = 16;
-                    break;
-                default:
+                }
+                default ->
                     throw new NoClassDefFoundError("No signal.h OS defines for stack_t " + MultiarchTupelBuilder.getMultiarch());
             }
         }
@@ -1758,109 +1751,110 @@ public class Signal {
         static {
 
             switch (MultiarchTupelBuilder.getOS()) {
-                case LINUX:
+                case LINUX -> {
                     switch (MultiarchTupelBuilder.getArch()) {
-                        case AARCH64:
+                        case AARCH64 -> {
                             alignof = Alignment.AT_16;
                             sizeof = 4560;
                             offsetof_Uc_link = 8;
                             offsetof_Uc_sigmask = 40;
                             offsetof_Uc_stack = 16;
                             offsetof_Uc_mcontext = 176;
-                            break;
-                        case ARM:
+                        }
+                        case ARM -> {
                             alignof = Alignment.AT_8;
                             sizeof = 744;
                             offsetof_Uc_link = 4;
                             offsetof_Uc_sigmask = 104;
                             offsetof_Uc_stack = 8;
                             offsetof_Uc_mcontext = 20;
-                            break;
-                        case I386:
+                        }
+                        case I386 -> {
                             alignof = Alignment.AT_4;
                             sizeof = 364;
                             offsetof_Uc_link = 4;
                             offsetof_Uc_sigmask = 108;
                             offsetof_Uc_stack = 8;
                             offsetof_Uc_mcontext = 20;
-                            break;
-                        case MIPS:
+                        }
+                        case MIPS -> {
                             alignof = Alignment.AT_8;
                             sizeof = 744;
                             offsetof_Uc_link = 4;
                             offsetof_Uc_sigmask = 616;
                             offsetof_Uc_stack = 8;
                             offsetof_Uc_mcontext = 24;
-                            break;
-                        case MIPS_64:
+                        }
+                        case MIPS_64 -> {
                             alignof = Alignment.AT_8;
                             sizeof = 768;
                             offsetof_Uc_link = 8;
                             offsetof_Uc_sigmask = 640;
                             offsetof_Uc_stack = 16;
                             offsetof_Uc_mcontext = 40;
-                            break;
-                        case POWER_PC_64:
+                        }
+                        case POWER_PC_64 -> {
                             alignof = Alignment.AT_8;
                             sizeof = 1440;
                             offsetof_Uc_link = 8;
                             offsetof_Uc_sigmask = 40;
                             offsetof_Uc_stack = 16;
                             offsetof_Uc_mcontext = 168;
-                            break;
-                        case RISC_V_64:
+                        }
+                        case RISC_V_64 -> {
                             alignof = Alignment.AT_16;
                             sizeof = 960;
                             offsetof_Uc_link = 8;
                             offsetof_Uc_sigmask = 40;
                             offsetof_Uc_stack = 16;
                             offsetof_Uc_mcontext = 176;
-                            break;
-                        case S390_X:
+                        }
+                        case S390_X -> {
                             alignof = Alignment.AT_8;
                             sizeof = 512;
                             offsetof_Uc_link = 8;
                             offsetof_Uc_sigmask = 384;
                             offsetof_Uc_stack = 16;
                             offsetof_Uc_mcontext = 40;
-                            break;
-                        case X86_64:
+                        }
+                        case X86_64 -> {
                             alignof = Alignment.AT_8;
                             sizeof = 968;
                             offsetof_Uc_link = 8;
                             offsetof_Uc_sigmask = 296;
                             offsetof_Uc_stack = 16;
                             offsetof_Uc_mcontext = 40;
-                            break;
-                        default:
+                        }
+                        default ->
                             throw new NoClassDefFoundError("No signal.h linux defines for ucontext_t " + MultiarchTupelBuilder.getMultiarch());
                     }
-                    break;
-                case DARWIN:
+                }
+
+                case DARWIN -> {
                     alignof = null;
                     sizeof = 0;
                     offsetof_Uc_link = -1;
                     offsetof_Uc_sigmask = -1;
                     offsetof_Uc_stack = -1;
                     offsetof_Uc_mcontext = -1;
-                    break;
-                case FREE_BSD:
+                }
+                case FREE_BSD -> {
                     alignof = Alignment.AT_16;
                     sizeof = 880;
                     offsetof_Uc_link = 816;
                     offsetof_Uc_sigmask = 0;
                     offsetof_Uc_stack = 824;
                     offsetof_Uc_mcontext = 16;
-                    break;
-                case OPEN_BSD:
+                }
+                case OPEN_BSD -> {
                     alignof = null;
                     sizeof = 0;
                     offsetof_Uc_link = -1;
                     offsetof_Uc_sigmask = -1;
                     offsetof_Uc_stack = -1;
                     offsetof_Uc_mcontext = -1;
-                    break;
-                default:
+                }
+                default ->
                     throw new NoClassDefFoundError("No signal.h OS defines for ucontext_t " + MultiarchTupelBuilder.getMultiarch());
             }
 
@@ -2941,40 +2935,40 @@ public class Signal {
         }
     }
 
-    private final static JnhwMh_sI__sI_sI kill = JnhwMh_sI__sI_sI.of(
+    private final static JnhwMh_sI__sI_sI.ExceptionErased kill = JnhwMh_sI__sI_sI.mandatoryOf(
             LibcLoader.LIB_C_SYMBOL_LOOKUP,
             "kill",
             BaseDataType.C_int,
             PosixDataType.pid_t,
             BaseDataType.C_int);
 
-    private final static JnhwMh_sI__sI_sI killpg = JnhwMh_sI__sI_sI.of(
+    private final static JnhwMh_sI__sI_sI.ExceptionErased killpg = JnhwMh_sI__sI_sI.mandatoryOf(
             LibcLoader.LIB_C_SYMBOL_LOOKUP,
             "killpg",
             BaseDataType.C_int,
             PosixDataType.pid_t,
             BaseDataType.C_int);
 
-    private final static JnhwMh__V___A__A psiginfo = JnhwMh__V___A__A.ofOrNull(
+    private final static JnhwMh__V___A__A psiginfo = JnhwMh__V___A__A.optionalOf(
             LibcLoader.LIB_C_SYMBOL_LOOKUP,
             "psiginfo",
             BaseDataType.C_const_struct_pointer,
             BaseDataType.C_const_char_pointer);
 
-    private final static JnhwMh__V__sI__A psignal = JnhwMh__V__sI__A.ofOrNull(
+    private final static JnhwMh__V__sI__A.ExceptionErased psignal = JnhwMh__V__sI__A.mandatoryOf(
             LibcLoader.LIB_C_SYMBOL_LOOKUP,
             "psignal",
             BaseDataType.C_int,
             BaseDataType.C_const_char_pointer);
 
-    private final static JnhwMh_sI__PthreadT_sI pthread_kill = JnhwMh_sI__PthreadT_sI.of(
+    private final static JnhwMh_sI__PthreadT_sI.ExceptionErased pthread_kill = JnhwMh_sI__PthreadT_sI.mandatoryOf(
             LibrtLoader.LIB_RT_SYMBOL_LOOKUP,
             "pthread_kill",
             BaseDataType.C_int,
             PosixDataType.pthread_t,
             BaseDataType.C_int);
 
-    private final static JnhwMh_sI__sI__A__A pthread_sigmask = JnhwMh_sI__sI__A__A.of(
+    private final static JnhwMh_sI__sI__A__A.ExceptionErased pthread_sigmask = JnhwMh_sI__sI__A__A.mandatoryOf(
             LibcLoader.LIB_C_SYMBOL_LOOKUP,
             "pthread_sigmask",
             BaseDataType.C_int,
@@ -2982,13 +2976,13 @@ public class Signal {
             BaseDataType.C_const_struct_pointer,
             BaseDataType.C_struct_pointer);
 
-    private final static JnhwMh_sI__sI raise = JnhwMh_sI__sI.of(
+    private final static JnhwMh_sI__sI.ExceptionErased raise = JnhwMh_sI__sI.mandatoryOf(
             LibcLoader.LIB_C_SYMBOL_LOOKUP,
             "raise",
             BaseDataType.C_int,
             BaseDataType.C_int);
 
-    private final static JnhwMh_sI__sI__A__A sigaction = JnhwMh_sI__sI__A__A.of(
+    private final static JnhwMh_sI__sI__A__A.ExceptionErased sigaction = JnhwMh_sI__sI__A__A.mandatoryOf(
             LibcLoader.LIB_C_SYMBOL_LOOKUP,
             "sigaction",
             BaseDataType.C_int,
@@ -2996,85 +2990,85 @@ public class Signal {
             BaseDataType.C_const_struct_pointer,
             BaseDataType.C_struct_pointer);
 
-    private final static JnhwMh_sI___A_sI sigaddset = JnhwMh_sI___A_sI.of(
+    private final static JnhwMh_sI___A_sI.ExceptionErased sigaddset = JnhwMh_sI___A_sI.mandatoryOf(
             LibcLoader.LIB_C_SYMBOL_LOOKUP,
             "sigaddset",
             BaseDataType.C_int,
             BaseDataType.C_struct_pointer,
             BaseDataType.C_int);
 
-    private final static JnhwMh_sI___A__A sigaltstack = JnhwMh_sI___A__A.of(
+    private final static JnhwMh_sI___A__A.ExceptionErased sigaltstack = JnhwMh_sI___A__A.mandatoryOf(
             LibcLoader.LIB_C_SYMBOL_LOOKUP,
             "sigaltstack",
             BaseDataType.C_int,
             BaseDataType.C_const_struct_pointer,
             BaseDataType.C_struct_pointer);
 
-    private final static JnhwMh_sI___A_sI sigdelset = JnhwMh_sI___A_sI.of(
+    private final static JnhwMh_sI___A_sI.ExceptionErased sigdelset = JnhwMh_sI___A_sI.mandatoryOf(
             LibcLoader.LIB_C_SYMBOL_LOOKUP,
             "sigdelset",
             BaseDataType.C_int,
             BaseDataType.C_struct_pointer,
             BaseDataType.C_int);
 
-    private final static JnhwMh_sI___A sigemptyset = JnhwMh_sI___A.of(
+    private final static JnhwMh_sI___A.ExceptionErased sigemptyset = JnhwMh_sI___A.mandatoryOf(
             LibcLoader.LIB_C_SYMBOL_LOOKUP,
             "sigemptyset",
             BaseDataType.C_int,
             BaseDataType.C_struct_pointer);
 
-    private final static JnhwMh_sI___A sigfillset = JnhwMh_sI___A.of(
+    private final static JnhwMh_sI___A.ExceptionErased sigfillset = JnhwMh_sI___A.mandatoryOf(
             LibcLoader.LIB_C_SYMBOL_LOOKUP,
             "sigfillset",
             BaseDataType.C_int,
             BaseDataType.C_struct_pointer);
 
-    private final static JnhwMh_sI__sI sighold = JnhwMh_sI__sI.ofOrNull(
+    private final static JnhwMh_sI__sI sighold = JnhwMh_sI__sI.optionalOf(
             LibcLoader.LIB_C_SYMBOL_LOOKUP,
             "sighold",
             BaseDataType.C_int,
             BaseDataType.C_int);
 
-    private final static JnhwMh_sI__sI sigignore = JnhwMh_sI__sI.ofOrNull(
+    private final static JnhwMh_sI__sI sigignore = JnhwMh_sI__sI.optionalOf(
             LibcLoader.LIB_C_SYMBOL_LOOKUP,
             "sigignore",
             BaseDataType.C_int,
             BaseDataType.C_int);
 
-    private final static JnhwMh_sI__sI_sI siginterrupt = JnhwMh_sI__sI_sI.of(
+    private final static JnhwMh_sI__sI_sI.ExceptionErased siginterrupt = JnhwMh_sI__sI_sI.mandatoryOf(
             LibcLoader.LIB_C_SYMBOL_LOOKUP,
             "siginterrupt",
             BaseDataType.C_int,
             BaseDataType.C_int,
             BaseDataType.C_int);
 
-    private final static JnhwMh_sI___A_sI sigismember = JnhwMh_sI___A_sI.of(
+    private final static JnhwMh_sI___A_sI.ExceptionErased sigismember = JnhwMh_sI___A_sI.mandatoryOf(
             LibcLoader.LIB_C_SYMBOL_LOOKUP,
             "sigismember",
             BaseDataType.C_int,
             BaseDataType.C_const_struct_pointer,
             BaseDataType.C_int);
 
-    private final static JnhwMh_MA__sI__A signal = JnhwMh_MA__sI__A.of(
+    private final static JnhwMh_MA__sI__A.ExceptionErased signal = JnhwMh_MA__sI__A.mandatoryOf(
             LibcLoader.LIB_C_SYMBOL_LOOKUP,
             "signal",
             BaseDataType.C_pointer,
             BaseDataType.C_int,
             BaseDataType.C_pointer);
 
-    private final static JnhwMh_sI__sI sigpause = JnhwMh_sI__sI.ofOrNull(
+    private final static JnhwMh_sI__sI.ExceptionErased sigpause = JnhwMh_sI__sI.mandatoryOf(
             LibcLoader.LIB_C_SYMBOL_LOOKUP,
             "sigpause",
             BaseDataType.C_int,
             BaseDataType.C_int);
 
-    private final static JnhwMh_sI___A sigpending = JnhwMh_sI___A.of(
+    private final static JnhwMh_sI___A.ExceptionErased sigpending = JnhwMh_sI___A.mandatoryOf(
             LibcLoader.LIB_C_SYMBOL_LOOKUP,
             "sigpending",
             BaseDataType.C_int,
             BaseDataType.C_struct_pointer);
 
-    private final static JnhwMh_sI__sI__A__A sigprocmask = JnhwMh_sI__sI__A__A.of(
+    private final static JnhwMh_sI__sI__A__A.ExceptionErased sigprocmask = JnhwMh_sI__sI__A__A.mandatoryOf(
             LibcLoader.LIB_C_SYMBOL_LOOKUP,
             "sigprocmask",
             BaseDataType.C_int,
@@ -3084,7 +3078,7 @@ public class Signal {
 
     //sigval is union of int and pointer, so pointer will do here
     //TODO splitint call with int and pointer? BIG/LITTLE ENDIAN???
-    private final static JnhwMh_sI__sI_sI__A sigqueue = JnhwMh_sI__sI_sI__A.ofOrNull(
+    private final static JnhwMh_sI__sI_sI__A sigqueue = JnhwMh_sI__sI_sI__A.optionalOf(
             LibcLoader.LIB_C_SYMBOL_LOOKUP,
             "sigqueue",
             BaseDataType.C_int,
@@ -3092,26 +3086,26 @@ public class Signal {
             BaseDataType.C_int,
             BaseDataType.C_pointer);
 
-    private final static JnhwMh_sI__sI sigrelse = JnhwMh_sI__sI.ofOrNull(
+    private final static JnhwMh_sI__sI sigrelse = JnhwMh_sI__sI.optionalOf(
             LibcLoader.LIB_C_SYMBOL_LOOKUP,
             "sigrelse",
             BaseDataType.C_int,
             BaseDataType.C_int);
 
-    private final static JnhwMh_MA__sI__A sigset = JnhwMh_MA__sI__A.ofOrNull(
+    private final static JnhwMh_MA__sI__A sigset = JnhwMh_MA__sI__A.optionalOf(
             LibcLoader.LIB_C_SYMBOL_LOOKUP,
             "sigset",
             BaseDataType.C_pointer,
             BaseDataType.C_int,
             BaseDataType.C_pointer);
 
-    private final static JnhwMh_sI___A sigsuspend = JnhwMh_sI___A.of(
+    private final static JnhwMh_sI___A.ExceptionErased sigsuspend = JnhwMh_sI___A.mandatoryOf(
             LibcLoader.LIB_C_SYMBOL_LOOKUP,
             "sigsuspend",
             BaseDataType.C_int,
             BaseDataType.C_const_struct_pointer);
 
-    private final static JnhwMh_sI___A__A__A sigtimedwait = JnhwMh_sI___A__A__A.ofOrNull(
+    private final static JnhwMh_sI___A__A__A sigtimedwait = JnhwMh_sI___A__A__A.optionalOf(
             LibcLoader.LIB_C_SYMBOL_LOOKUP,
             "sigtimedwait",
             BaseDataType.C_int,
@@ -3119,14 +3113,14 @@ public class Signal {
             BaseDataType.C_struct_pointer,
             BaseDataType.C_const_struct_pointer);
 
-    private final static JnhwMh_sI___A__A sigwait = JnhwMh_sI___A__A.of(
+    private final static JnhwMh_sI___A__A.ExceptionErased sigwait = JnhwMh_sI___A__A.mandatoryOf(
             LibcLoader.LIB_C_SYMBOL_LOOKUP,
             "sigwait",
             BaseDataType.C_int,
             BaseDataType.C_const_struct_pointer,
             BaseDataType.C_int_pointer);
 
-    private final static JnhwMh_sI___A__A sigwaitinfo = JnhwMh_sI___A__A.ofOrNull(
+    private final static JnhwMh_sI___A__A sigwaitinfo = JnhwMh_sI___A__A.optionalOf(
             LibcLoader.LIB_C_SYMBOL_LOOKUP,
             "sigwaitinfo",
             BaseDataType.C_int,
@@ -3192,12 +3186,6 @@ public class Signal {
                 throw new NativeErrorException(Errno.errno());
             }
             Errno.errno(old_errno);
-        } catch (NullPointerException npe) {
-            if (psiginfo == null) {
-                throw new NoSuchNativeMethodException("psiginfo");
-            } else {
-                throw npe;
-            }
         }
     }
 
@@ -3382,16 +3370,8 @@ public class Signal {
      * available natively.
      */
     public final static void sighold(int sig) throws NativeErrorException, NoSuchNativeMethodException {
-        try {
-            if (sighold.invoke_sI__sI(sig) != 0) {
-                throw new NativeErrorException(Errno.errno());
-            }
-        } catch (NullPointerException npe) {
-            if (sighold == null) {
-                throw new NoSuchNativeMethodException("sighold");
-            } else {
-                throw npe;
-            }
+        if (sighold.invoke_sI__sI(sig) != 0) {
+            throw new NativeErrorException(Errno.errno());
         }
     }
 
@@ -3407,16 +3387,8 @@ public class Signal {
      * available natively.
      */
     public final static void sigignore(int sig) throws NativeErrorException, NoSuchNativeMethodException {
-        try {
-            if (sigignore.invoke_sI__sI(sig) != 0) {
-                throw new NativeErrorException(Errno.errno());
-            }
-        } catch (NullPointerException npe) {
-            if (sigignore == null) {
-                throw new NoSuchNativeMethodException("sigignore");
-            } else {
-                throw npe;
-            }
+        if (sigignore.invoke_sI__sI(sig) != 0) {
+            throw new NativeErrorException(Errno.errno());
         }
     }
 
@@ -3445,16 +3417,16 @@ public class Signal {
      * indicates an error.
      */
     public final static boolean sigismember(Sigset_t set, int signo) throws NativeErrorException {
-        switch (sigismember.invoke_sI___P_sI(set, signo)) {
-            case -1:
+        return switch (sigismember.invoke_sI___P_sI(set, signo)) {
+            case -1 ->
                 throw new NativeErrorException(Errno.errno());
-            case 0:
-                return false;
-            case 1:
-                return true;
-            default:
+            case 0 ->
+                false;
+            case 1 ->
+                true;
+            default ->
                 throw new RuntimeException("Unexpected result from: sigismember(" + signo + ")");
-        }
+        };
     }
 
     /**
@@ -3614,15 +3586,8 @@ public class Signal {
      * available natively.
      */
     public final static void sigqueue(@pid_t int pid, int signo, Sigval value) throws NativeErrorException, NoSuchNativeMethodException {
-        //TODO is this right?? int and pointer???
-        try {
-            if (sigqueue.invoke_sI__sI_sI__A(pid, signo, value.sival_ptr()) != 0) {
-                throw new NativeErrorException(Errno.errno());
-            }
-        } catch (NullPointerException npe) {
-            if (sigqueue == null) {
-                throw new NoSuchNativeMethodException("sigqueue");
-            }
+        if (sigqueue.invoke_sI__sI_sI__A(pid, signo, value.sival_ptr()) != 0) {
+            throw new NativeErrorException(Errno.errno());
         }
     }
 
@@ -3638,23 +3603,14 @@ public class Signal {
      * available natively.
      */
     public final static void sigrelse(int sig) throws NativeErrorException, NoSuchNativeMethodException {
-        try {
-            if (sigrelse.invoke_sI__sI(sig) != 0) {
-                throw new NativeErrorException(Errno.errno());
-            }
-        } catch (NullPointerException npe) {
-            if (sigrelse == null) {
-                throw new NoSuchNativeMethodException("sigrelse");
-            } else {
-                throw npe;
-            }
-
+        if (sigrelse.invoke_sI__sI(sig) != 0) {
+            throw new NativeErrorException(Errno.errno());
         }
     }
 
     /**
      * <b>POSIX:</b>
-     * <a href="https://pubs.opengroup.org/onlinepubs/9699919799/functions/sigrelse.html">sighold,
+     * <a href="https://pubs.opengroup.org/onlinepubs/9699919799/functions/sigset.html">sighold,
      * sigignore, sigpause, sigrelse, sigset - signal management</a>.
      *
      *
@@ -3664,19 +3620,11 @@ public class Signal {
      * natively.
      *///TODO args missing ....
     public final static FunctionPtr__V___I sigset(int sig, FunctionPtr__V___I disp) throws NativeErrorException, NoSuchNativeMethodException {
-        try {
-            final MemoryAddress result = sigset.invoke_MA__sI__P(sig, disp != null ? disp : Pointer.NULL);
-            if (SIG_ERR.toAddressable().equals(result)) {
-                throw new NativeErrorException(Errno.errno());
-            } else {
-                return new FunctionPtr__V___I(result);
-            }
-        } catch (NullPointerException npe) {
-            if (sigset == null) {
-                throw new NoSuchNativeMethodException("sigset");
-            } else {
-                throw npe;
-            }
+        final MemoryAddress result = sigset.invoke_MA__sI__P(sig, disp != null ? disp : Pointer.NULL);
+        if (SIG_ERR.toAddressable().equals(result)) {
+            throw new NativeErrorException(Errno.errno());
+        } else {
+            return new FunctionPtr__V___I(result);
         }
     }
 
@@ -3712,19 +3660,11 @@ public class Signal {
      * available natively.
      */
     public final static int sigtimedwait(Sigset_t set, Siginfo_t info, Time.Timespec timeout) throws NativeErrorException, NoSuchNativeMethodException {
-        try {
-            final int result = sigtimedwait.invoke_sI___P__P__P(set, info != null ? info : Pointer.NULL, timeout);
-            if (result == -1) {
-                throw new NativeErrorException(Errno.errno());
-            } else {
-                return result;
-            }
-        } catch (NullPointerException npe) {
-            if (sigtimedwait == null) {
-                throw new NoSuchNativeMethodException("sigtimedwait");
-            } else {
-                throw npe;
-            }
+        final int result = sigtimedwait.invoke_sI___P__P__P(set, info != null ? info : Pointer.NULL, timeout);
+        if (result == -1) {
+            throw new NativeErrorException(Errno.errno());
+        } else {
+            return result;
         }
     }
 
@@ -3757,19 +3697,11 @@ public class Signal {
      * available natively.
      */
     public final static int sigwaitinfo(Sigset_t set, Siginfo_t info) throws NativeErrorException, NoSuchNativeMethodException {
-        try {
-            final int result = sigwaitinfo.invoke_sI___P__P(set, info != null ? info : Pointer.NULL);
-            if (result == -1) {
-                throw new NativeErrorException(Errno.errno());
-            } else {
-                return result;
-            }
-        } catch (NullPointerException npe) {
-            if (sigwaitinfo == null) {
-                throw new NoSuchNativeMethodException("sigwaitinfo");
-            } else {
-                throw npe;
-            }
+        final int result = sigwaitinfo.invoke_sI___P__P(set, info != null ? info : Pointer.NULL);
+        if (result == -1) {
+            throw new NativeErrorException(Errno.errno());
+        } else {
+            return result;
         }
     }
 }

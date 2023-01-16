@@ -22,16 +22,13 @@
 # "mips-linux-gnu"\
 # "mips64-linux-gnuabi64"\
 
-#not testable so we do not build this...
-# Fcntl.open will crash VM
-# "powerpc64le-linux-gnu"\
-
 for d in\
  "aarch64-linux-gnu"\
  "arm-linux-gnueabi"\
  "arm-linux-gnueabihf"\
  "mipsel-linux-gnu"\
  "mips64el-linux-gnuabi64"\
+ "powerpc64le-linux-gnu"\
  "riscv64-linux-gnu"\
  "s390x-linux-gnu"
 do

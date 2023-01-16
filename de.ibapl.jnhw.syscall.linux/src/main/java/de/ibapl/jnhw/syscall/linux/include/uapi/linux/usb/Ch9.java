@@ -415,39 +415,30 @@ public interface Ch9 {
          * @return
          */
         public AbstractDescriptor toDescriptor(MemorySegment memorySegment, long currentPos) {
-            AbstractDescriptor result;
-            switch (bDescriptorType()) {
-                case USB_DT_DEVICE:
-                    result = new Usb_device_descriptor(memorySegment, currentPos);
-                    break;
-                case USB_DT_CONFIG:
-                    result = new Usb_config_descriptor(memorySegment, currentPos);
-                    break;
+            AbstractDescriptor result = switch (bDescriptorType()) {
+                case USB_DT_DEVICE ->
+                    new Usb_device_descriptor(memorySegment, currentPos);
+                case USB_DT_CONFIG ->
+                    new Usb_config_descriptor(memorySegment, currentPos);
                 /*
                 case USB_DT_STRING:
                     throw new RuntimeException("Not implemented");
                  */
-                case USB_DT_INTERFACE:
-                    result = new Usb_interface_descriptor(memorySegment, currentPos);
-                    break;
-                case USB_DT_ENDPOINT:
-                    result = new Usb_endpoint_descriptor(memorySegment, currentPos, bLength());
-                    break;
-                case USB_DT_WIRE_ADAPTER:
-                    result = new Hid.Hid_descriptor(memorySegment, currentPos, bLength());
-                    break;
-                case USB_DT_SS_ENDPOINT_COMP:
-                    result = new Usb_ss_ep_comp_descriptor(memorySegment, currentPos);
-                    break;
-                case USB_DT_PIPE_USAGE:
-                    result = new Uas.Usb_pipe_usage_descriptor(memorySegment, currentPos, bLength());
-                    break;
-                case USB_DT_INTERFACE_ASSOCIATION:
-                    result = new Usb_interface_assoc_descriptor(memorySegment, currentPos);
-                    break;
-                default:
-                    result = new UsbUnknownDescriptor(memorySegment, currentPos, bLength());
-            }
+                case USB_DT_INTERFACE ->
+                    new Usb_interface_descriptor(memorySegment, currentPos);
+                case USB_DT_ENDPOINT ->
+                    new Usb_endpoint_descriptor(memorySegment, currentPos, bLength());
+                case USB_DT_WIRE_ADAPTER ->
+                    new Hid.Hid_descriptor(memorySegment, currentPos, bLength());
+                case USB_DT_SS_ENDPOINT_COMP ->
+                    new Usb_ss_ep_comp_descriptor(memorySegment, currentPos);
+                case USB_DT_PIPE_USAGE ->
+                    new Uas.Usb_pipe_usage_descriptor(memorySegment, currentPos, bLength());
+                case USB_DT_INTERFACE_ASSOCIATION ->
+                    new Usb_interface_assoc_descriptor(memorySegment, currentPos);
+                default ->
+                    new UsbUnknownDescriptor(memorySegment, currentPos, bLength());
+            };
             if (result.sizeof() != bLength()) {
                 throw new RuntimeException("bLength mismatch");
             }

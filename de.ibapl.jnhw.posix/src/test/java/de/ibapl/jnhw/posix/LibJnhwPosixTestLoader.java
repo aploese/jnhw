@@ -96,47 +96,47 @@ public final class LibJnhwPosixTestLoader {
     }
 
     public static byte invoke_sB___V(String name) {
-        return JnhwMh_sB___V.of(LIB_JNHW_POSIX_TEST_SYMBOL_LOOKUP, name, BaseDataType.int8_t).invoke_sB___V();
+        return JnhwMh_sB___V.mandatoryOf(LIB_JNHW_POSIX_TEST_SYMBOL_LOOKUP, name, BaseDataType.int8_t).invoke_sB___V();
     }
 
     public static short invoke_sS___V(String name) {
-        return JnhwMh_sS___V.of(LIB_JNHW_POSIX_TEST_SYMBOL_LOOKUP, name, BaseDataType.int16_t).invoke_sS___V();
+        return JnhwMh_sS___V.mandatoryOf(LIB_JNHW_POSIX_TEST_SYMBOL_LOOKUP, name, BaseDataType.int16_t).invoke_sS___V();
     }
 
     public static boolean invokeExact_CharToBool_V(String name) {
-        return JnhwMh_sB___V.of(LIB_JNHW_POSIX_TEST_SYMBOL_LOOKUP, name, BaseDataType.int8_t).invoke_sB___V() != 0;
+        return JnhwMh_sB___V.mandatoryOf(LIB_JNHW_POSIX_TEST_SYMBOL_LOOKUP, name, BaseDataType.int8_t).invoke_sB___V() != 0;
     }
 
     public static boolean invokeExact_CharToBool_Adr(String name, Addressable arg1) {
-        return JnhwMh_sB___A.of(LIB_JNHW_POSIX_TEST_SYMBOL_LOOKUP, name, BaseDataType.int8_t, BaseDataType.intptr_t).invoke_sB___A(arg1) != 0;
+        return JnhwMh_sB___A.mandatoryOf(LIB_JNHW_POSIX_TEST_SYMBOL_LOOKUP, name, BaseDataType.int8_t, BaseDataType.intptr_t).invoke_sB___A(arg1) != 0;
     }
 
     public static int invoke_sI___V(String name) {
-        return JnhwMh_sI___V.of(LIB_JNHW_POSIX_TEST_SYMBOL_LOOKUP, name, BaseDataType.int32_t).invoke_sI___V();
+        return JnhwMh_sI___V.mandatoryOf(LIB_JNHW_POSIX_TEST_SYMBOL_LOOKUP, name, BaseDataType.int32_t).invoke_sI___V();
     }
 
     public static int invoke_sI__sB_sI(String name, byte arg1, int arg2) {
-        return JnhwMh_sI__sB_sI.of(LIB_JNHW_POSIX_TEST_SYMBOL_LOOKUP, name, BaseDataType.int32_t, BaseDataType.int8_t, BaseDataType.int32_t).invoke_sI__sB_sI(arg1, arg2);
+        return JnhwMh_sI__sB_sI.mandatoryOf(LIB_JNHW_POSIX_TEST_SYMBOL_LOOKUP, name, BaseDataType.int32_t, BaseDataType.int8_t, BaseDataType.int32_t).invoke_sI__sB_sI(arg1, arg2);
     }
 
     public static int invoke_sI__sI_sB_sI_sI(String name, int arg1, byte arg2, int arg3, int arg4) {
-        return JnhwMh_sI__sI_sB_sI_sI.of(LIB_JNHW_POSIX_TEST_SYMBOL_LOOKUP, name, BaseDataType.int32_t, BaseDataType.int32_t, BaseDataType.int8_t, BaseDataType.int32_t, BaseDataType.int32_t).invoke_sI__sI_sB_sI_sI(arg1, arg2, arg3, arg4);
+        return JnhwMh_sI__sI_sB_sI_sI.mandatoryOf(LIB_JNHW_POSIX_TEST_SYMBOL_LOOKUP, name, BaseDataType.int32_t, BaseDataType.int32_t, BaseDataType.int8_t, BaseDataType.int32_t, BaseDataType.int32_t).invoke_sI__sI_sB_sI_sI(arg1, arg2, arg3, arg4);
     }
 
     public static MemoryAddress invoke_MA___V(String name) {
-        return JnhwMh_MA___V.of(LIB_JNHW_POSIX_TEST_SYMBOL_LOOKUP, name, BaseDataType.intptr_t).invoke_MA___V();
+        return JnhwMh_MA___V.mandatoryOf(LIB_JNHW_POSIX_TEST_SYMBOL_LOOKUP, name, BaseDataType.intptr_t).invoke_MA___V();
     }
 
     public static MemoryAddress invoke_MA___A_sI(String name, Addressable arg1, int arg2) {
-        return JnhwMh_MA___A_sI.of(LIB_JNHW_POSIX_TEST_SYMBOL_LOOKUP, name, BaseDataType.uintptr_t, BaseDataType.uintptr_t, BaseDataType.int32_t).invoke_MA___A_sI(arg1, arg2);
+        return JnhwMh_MA___A_sI.mandatoryOf(LIB_JNHW_POSIX_TEST_SYMBOL_LOOKUP, name, BaseDataType.uintptr_t, BaseDataType.uintptr_t, BaseDataType.int32_t).invoke_MA___A_sI(arg1, arg2);
     }
 
     public static long invoke_sL___V(String name) {
-        return JnhwMh_sL___V.of(LIB_JNHW_POSIX_TEST_SYMBOL_LOOKUP, name, BaseDataType.int64_t).invoke_sL___V();
+        return JnhwMh_sL___V.mandatoryOf(LIB_JNHW_POSIX_TEST_SYMBOL_LOOKUP, name, BaseDataType.int64_t).invoke_sL___V();
     }
 
     public static MemoryAddress invoke_MA___A(String name, Addressable arg1) {
-        return JnhwMh_MA___A.of(LIB_JNHW_POSIX_TEST_SYMBOL_LOOKUP, name, BaseDataType.uintptr_t, BaseDataType.uintptr_t).invoke_MA___A(arg1);
+        return JnhwMh_MA___A.mandatoryOf(LIB_JNHW_POSIX_TEST_SYMBOL_LOOKUP, name, BaseDataType.uintptr_t, BaseDataType.uintptr_t).invoke_MA___A(arg1);
     }
 
     public static Integer getClassIntegerDefine(String name) {

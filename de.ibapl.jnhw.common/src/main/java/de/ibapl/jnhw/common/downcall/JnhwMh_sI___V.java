@@ -26,9 +26,11 @@ import de.ibapl.jnhw.common.downcall.foreign.JnhwMi__I___V;
 import de.ibapl.jnhw.common.downcall.foreign.JnhwMi__S___V;
 import de.ibapl.jnhw.common.downcall.jni.JniMi__I___V;
 import de.ibapl.jnhw.common.downcall.jni.JniMi__S___V;
+import de.ibapl.jnhw.common.exception.NoSuchNativeMethodException;
 import de.ibapl.jnhw.common.util.NativeProvider;
+import java.lang.foreign.MemorySegment;
 import java.lang.foreign.SymbolLookup;
-import java.util.NoSuchElementException;
+import java.util.Optional;
 
 /**
  *
@@ -37,30 +39,44 @@ import java.util.NoSuchElementException;
 @FunctionalInterface
 public interface JnhwMh_sI___V extends JnhwMethodHandle {
 
-    public static JnhwMh_sI___V ofOrNull(SymbolLookup symbolLookup, String name, BaseDataType result) {
-        try {
-            return of(symbolLookup, name, result);
-        } catch (NoSuchElementException elementException) {
-            return null;
-        }
+    @FunctionalInterface
+    interface ExceptionErased extends JnhwMh_sI___V {
+
+        @Override
+        int invoke_sI___V();
     }
 
-    public static JnhwMh_sI___V of(SymbolLookup symbolLookup, String name, BaseDataType result) {
+    static JnhwMh_sI___V.ExceptionErased mandatoryOf(SymbolLookup symbolLookup, String name, BaseDataType result) {
+        return Util.buidExistingMethod(symbolLookup,
+                name,
+                (oms) -> of(oms, name, result));
+    }
+
+    static JnhwMh_sI___V optionalOf(SymbolLookup symbolLookup, String name, BaseDataType result) {
+        return Util.buidOptionalMethod(symbolLookup,
+                name,
+                (oms) -> of(oms, name, result),
+                () -> (JnhwMh_sI___V) () -> {
+                    throw new NoSuchNativeMethodException(name);
+                });
+    }
+
+    public static JnhwMh_sI___V.ExceptionErased of(MemorySegment methodAddress, String name, BaseDataType result) {
         return switch (result) {
             case int16_t ->
                 NativeProvider.getProvider(
-                () -> new JnhwMi__S___V(symbolLookup, name),
-                () -> new JniMi__S___V(symbolLookup, name));
+                () -> new JnhwMi__S___V(methodAddress, name),
+                () -> new JniMi__S___V(methodAddress, name));
             case int32_t ->
                 NativeProvider.getProvider(
-                () -> new JnhwMi__I___V(symbolLookup, name),
-                () -> new JniMi__I___V(symbolLookup, name));
+                () -> new JnhwMi__I___V(methodAddress, name),
+                () -> new JniMi__I___V(methodAddress, name));
             default ->
                 throw new IllegalArgumentException(
                         "result unexpected data type: " + name + " " + result);
         };
     }
 
-    int invoke_sI___V();
+    int invoke_sI___V() throws NoSuchNativeMethodException;
 
 }

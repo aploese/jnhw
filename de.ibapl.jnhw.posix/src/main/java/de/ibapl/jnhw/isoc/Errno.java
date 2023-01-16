@@ -28,7 +28,7 @@ import de.ibapl.jnhw.common.downcall.JnhwMh_MA___V;
 import de.ibapl.jnhw.common.exception.NativeErrorException;
 import de.ibapl.jnhw.libloader.MultiarchInfo;
 import de.ibapl.jnhw.libloader.MultiarchTupelBuilder;
-import de.ibapl.jnhw.util.posix.LibcLoader;
+import de.ibapl.jnhw.libloader.librarys.LibcLoader;
 import java.lang.foreign.ValueLayout;
 
 /**
@@ -44,11 +44,20 @@ import java.lang.foreign.ValueLayout;
 public abstract class Errno {
 
     /**
-     * glibc defines that in this fashion....
+     * glibc: #define errno (*__errno_location ()) FreeBSD: #define errno (*
+     * __error())
+     *
      */
-    private final static JnhwMh_MA___V __errno_location = JnhwMh_MA___V.of(
+    private final static JnhwMh_MA___V.ExceptionErased jnhw__errno_location = JnhwMh_MA___V.mandatoryOf(
             LibcLoader.LIB_C_SYMBOL_LOOKUP,
-            "__errno_location",
+            switch (MultiarchTupelBuilder.getOS()) {
+        case DARWIN, FREE_BSD, OPEN_BSD ->
+            "__error";
+        case LINUX ->
+            "__errno_location";
+        default ->
+            throw new RuntimeException("Dont know how to get errno location");
+    },
             BaseDataType.C_int_pointer);
 
     public static interface BsdDefines {
@@ -167,7 +176,7 @@ public abstract class Errno {
      *
      */
     public final static int errno() {
-        return __errno_location.invoke_MA___V().get(ValueLayout.JAVA_INT, 0);
+        return jnhw__errno_location.invoke_MA___V().get(ValueLayout.JAVA_INT, 0);
     }
 
     /**
@@ -179,7 +188,7 @@ public abstract class Errno {
      *
      */
     public final static void errno(int value) {
-        __errno_location.invoke_MA___V().set(ValueLayout.JAVA_INT, 0, value);
+        jnhw__errno_location.invoke_MA___V().set(ValueLayout.JAVA_INT, 0, value);
     }
 
     static {

@@ -21,19 +21,15 @@
  */
 package de.ibapl.jnhw.posix;
 
-import de.ibapl.jnhw.common.datatypes.BaseDataType;
-import de.ibapl.jnhw.common.downcall.JnhwMh_sI___A_sI_uI;
-import de.ibapl.jnhw.common.downcall.jni.JniMi__I___A__I__I;
 import de.ibapl.jnhw.common.exception.NativeErrorException;
+import de.ibapl.jnhw.common.exception.NoSuchNativeMethodException;
 import de.ibapl.jnhw.libloader.MultiarchTupelBuilder;
 import de.ibapl.jnhw.libloader.OS;
 import de.ibapl.jnhw.posix.sys.Stat;
+import de.ibapl.jnhw.util.posix.Defines;
 import de.ibapl.jnhw.util.posix.DefinesTest;
-import de.ibapl.jnhw.util.posix.LibcLoader;
-import de.ibapl.jnhw.util.posix.PosixDataType;
 import java.io.File;
-import java.lang.foreign.MemorySegment;
-import java.lang.foreign.MemorySession;
+import java.util.Optional;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -80,11 +76,80 @@ public class FcntlTest {
             Fcntl.open(file.getAbsolutePath(), Fcntl.O_CREAT | Fcntl.O_EXCL, Stat.S_IRWXU | Stat.S_IRWXG);
         });
         switch (MultiarchTupelBuilder.getMultiarch()) {
-            case AARCH64__LINUX__GNU, I386__LINUX__GNU, POWER_PC_64_LE__LINUX__GNU ->
+            case AARCH64__LINUX__GNU, I386__LINUX__GNU, POWER_PC_64_LE__LINUX__GNU, X86_64__FREE_BSD__BSD ->
                 Assertions.assertEquals(Errno.ENOENT, Errno.errno());
-            default ->
+            case ARM__LINUX__GNU_EABI_HF, S390_X__LINUX__GNU, X86_64__LINUX__GNU ->
                 Assertions.assertEquals(Errno.EEXIST, Errno.errno());
+            default ->
+                throw new RuntimeException("Dont know what to expect on errno: " + Errno.errno() + " platform : " + MultiarchTupelBuilder.getMultiarch());
         }
+    }
+
+    @Test
+    public void testOpen64() throws Exception {
+        File file = File.createTempFile("jnhw-posix-fcntl64-test", ".txt");
+        if (Defines._LARGEFILE64_SOURCE.isDefined()) {
+            NativeErrorException nee = Assertions.assertThrows(NativeErrorException.class, () -> {
+                Fcntl.open64(file.getAbsolutePath(), Fcntl.O_CREAT | Fcntl.O_EXCL, Stat.S_IRWXU | Stat.S_IRWXG);
+            });
+            switch (MultiarchTupelBuilder.getMultiarch()) {
+                case AARCH64__LINUX__GNU, I386__LINUX__GNU, POWER_PC_64_LE__LINUX__GNU, X86_64__FREE_BSD__BSD ->
+                    Assertions.assertEquals(Errno.ENOENT, Errno.errno());
+                case ARM__LINUX__GNU_EABI_HF, S390_X__LINUX__GNU, X86_64__LINUX__GNU ->
+                    Assertions.assertEquals(Errno.EEXIST, Errno.errno());
+                default ->
+                    throw new RuntimeException("Dont know what to expect on errno: " + Errno.errno() + " platform : " + MultiarchTupelBuilder.getMultiarch());
+            }
+        } else {
+            Assertions.assertThrows(NoSuchNativeMethodException.class, () -> {
+                Fcntl.open64(file.getAbsolutePath(), Fcntl.O_CREAT | Fcntl.O_EXCL, Stat.S_IRWXU | Stat.S_IRWXG);
+            });
+        }
+    }
+
+    Integer data = 44;
+    Optional<Integer> opt = Optional.of(data);
+
+    //Todo move this to sepetate test
+    /*
+rounds = 1_000_000_000
+    Results:
+3 took: 95ms data: 1050327040
+2 took: 30ms data: 2100654080
+1 took: 29ms data: 1050327040
+     */
+    //  @Test
+    public void testSpeedOfOptionalAccess() {
+        final int rounds = 1_000_000_000;
+        int testD = 0;
+        long start;
+
+        testD = 0;
+        start = System.currentTimeMillis();
+        for (int i = 0; i < rounds; i++) {
+            testD += data;
+        }
+        System.out.println("3 took: " + (System.currentTimeMillis() - start) + "ms data: " + testD);
+
+        testD = 0;
+        start = System.currentTimeMillis();
+        for (int i = 0; i < rounds; i++) {
+            testD += opt.orElseThrow(() -> new RuntimeException());
+            testD += data;
+        }
+        System.out.println("2 took: " + (System.currentTimeMillis() - start) + "ms data: " + testD);
+
+        testD = 0;
+        start = System.currentTimeMillis();
+        for (int i = 0; i < rounds; i++) {
+            if (data != null) {
+                testD += data;
+            } else {
+                throw new RuntimeException();
+            }
+        }
+        System.out.println("1 took: " + (System.currentTimeMillis() - start) + "ms data: " + testD);
+
     }
 
 }

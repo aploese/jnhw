@@ -37,12 +37,12 @@ import de.ibapl.jnhw.util.winapi.Kernel32Loader;
 @Include("errhandlingapi.h")
 public abstract class Errhandlingapi {
 
-    private final static JnhwMh_uI___V GetLastError = JnhwMh_uI___V.of(
+    private final static JnhwMh_uI___V.ExceptionErased GetLastError = JnhwMh_uI___V.mandatoryOf(
             Kernel32Loader.DLL_KERNEL32_SYMBOL_LOOKUP,
             "GetLastError",
             WinApiDataType.DWORD);
 
-    private final static JnhwMh__V__uI SetLastError = JnhwMh__V__uI.of(
+    private final static JnhwMh__V__uI.ExceptionErased SetLastError = JnhwMh__V__uI.mandatoryOf(
             Kernel32Loader.DLL_KERNEL32_SYMBOL_LOOKUP,
             "SetLastError",
             WinApiDataType.DWORD);

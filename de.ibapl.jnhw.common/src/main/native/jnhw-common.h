@@ -37,6 +37,11 @@ extern "C" {
         jmethodID trampolineMethodID;
     };
 
+#ifdef __WINDOWS__
+ #define jnhw_log_stderr(args...) fprintf(stderr, __VA_ARGS__)
+#else
+ #define jnhw_log_stderr(args...) fprintf(stderr, ##args)
+#endif
 
 #ifdef __cplusplus
 }

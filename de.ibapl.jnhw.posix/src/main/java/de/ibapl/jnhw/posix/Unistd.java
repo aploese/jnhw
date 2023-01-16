@@ -49,12 +49,13 @@ import de.ibapl.jnhw.common.memory.OpaqueMemory;
 import de.ibapl.jnhw.common.util.ByteBufferUtils;
 import de.ibapl.jnhw.common.util.IntDefine;
 import de.ibapl.jnhw.libloader.MultiarchTupelBuilder;
-import de.ibapl.jnhw.util.posix.LibcLoader;
+import de.ibapl.jnhw.libloader.librarys.LibcLoader;
 import de.ibapl.jnhw.util.posix.PosixDataType;
 import java.lang.foreign.MemorySegment;
 import java.lang.foreign.MemorySession;
 import java.nio.ByteBuffer;
 import java.util.Objects;
+import java.util.Optional;
 
 /**
  * Wrapper around the {@code <stdio.h>} header.
@@ -232,7 +233,7 @@ public final class Unistd {
         SEEK_END = Stdio.SEEK_END;
         SEEK_SET = Stdio.SEEK_SET;
         switch (MultiarchTupelBuilder.getOS()) {
-            case LINUX:
+            case LINUX -> {
                 HAVE_UNISTD_H = true;
                 _POSIX_VERSION = LinuxDefines._POSIX_VERSION;
                 _SC_AIO_LISTIO_MAX = LinuxDefines._SC_AIO_LISTIO_MAX;
@@ -245,10 +246,8 @@ public final class Unistd {
                 STDERR_FILENO = LinuxDefines.STDERR_FILENO;
                 STDIN_FILENO = LinuxDefines.STDIN_FILENO;
                 STDOUT_FILENO = LinuxDefines.STDOUT_FILENO;
-                break;
-            case DARWIN:
-            case FREE_BSD:
-            case OPEN_BSD:
+            }
+            case DARWIN, FREE_BSD, OPEN_BSD -> {
                 HAVE_UNISTD_H = true;
                 _SC_AIO_LISTIO_MAX = BsdDefines._SC_AIO_LISTIO_MAX;
                 _SC_AIO_MAX = BsdDefines._SC_AIO_MAX;
@@ -259,26 +258,26 @@ public final class Unistd {
                 STDIN_FILENO = BsdDefines.STDIN_FILENO;
                 STDOUT_FILENO = BsdDefines.STDOUT_FILENO;
                 switch (MultiarchTupelBuilder.getOS()) {
-                    case DARWIN:
+                    case DARWIN -> {
                         _POSIX_VERSION = DarwinDefines._POSIX_VERSION;
                         SEEK_DATA = IntDefine.toIntDefine(DarwinDefines.SEEK_DATA);
                         SEEK_HOLE = IntDefine.toIntDefine(DarwinDefines.SEEK_HOLE);
-                        break;
-                    case FREE_BSD:
+                    }
+                    case FREE_BSD -> {
                         _POSIX_VERSION = FreeBsdDefines._POSIX_VERSION;
                         SEEK_DATA = IntDefine.toIntDefine(FreeBsdDefines.SEEK_DATA);
                         SEEK_HOLE = IntDefine.toIntDefine(FreeBsdDefines.SEEK_HOLE);
-                        break;
-                    case OPEN_BSD:
+                    }
+                    case OPEN_BSD -> {
                         _POSIX_VERSION = OpenBsdDefines._POSIX_VERSION;
                         SEEK_DATA = IntDefine.UNDEFINED;
                         SEEK_HOLE = IntDefine.UNDEFINED;
-                        break;
-                    default:
+                    }
+                    default ->
                         throw new NoClassDefFoundError("No unistd.h BSD defines for " + MultiarchTupelBuilder.getMultiarch());
                 }
-                break;
-            default:
+            }
+            default ->
                 throw new NoClassDefFoundError("No unistd.h defines for " + MultiarchTupelBuilder.getMultiarch());
         }
     }
@@ -308,54 +307,54 @@ public final class Unistd {
         }
     }
 
-    private final static JnhwMh_sI__sI close = JnhwMh_sI__sI.of(
+    private final static JnhwMh_sI__sI.ExceptionErased close = JnhwMh_sI__sI.mandatoryOf(
             LibcLoader.LIB_C_SYMBOL_LOOKUP,
             "close",
             BaseDataType.C_int,
             BaseDataType.C_int);
 
-    private final static JnhwMh_sI__sI fsync = JnhwMh_sI__sI.of(
+    private final static JnhwMh_sI__sI.ExceptionErased fsync = JnhwMh_sI__sI.mandatoryOf(
             LibcLoader.LIB_C_SYMBOL_LOOKUP,
             "fsync",
             BaseDataType.C_int,
             BaseDataType.C_int);
 
-    private final static JnhwMh_uI___V getegid = JnhwMh_uI___V.of(
+    private final static JnhwMh_uI___V.ExceptionErased getegid = JnhwMh_uI___V.mandatoryOf(
             LibcLoader.LIB_C_SYMBOL_LOOKUP,
             "getegid",
             PosixDataType.gid_t);
 
-    private final static JnhwMh_uI___V geteuid = JnhwMh_uI___V.of(
+    private final static JnhwMh_uI___V.ExceptionErased geteuid = JnhwMh_uI___V.mandatoryOf(
             LibcLoader.LIB_C_SYMBOL_LOOKUP,
             "geteuid",
             PosixDataType.uid_t);
 
-    private final static JnhwMh_sI___V getpgrp = JnhwMh_sI___V.of(
+    private final static JnhwMh_sI___V.ExceptionErased getpgrp = JnhwMh_sI___V.mandatoryOf(
             LibcLoader.LIB_C_SYMBOL_LOOKUP,
             "getpgrp",
             PosixDataType.pid_t);
 
-    private final static JnhwMh_sI___V getppid = JnhwMh_sI___V.of(
+    private final static JnhwMh_sI___V.ExceptionErased getppid = JnhwMh_sI___V.mandatoryOf(
             LibcLoader.LIB_C_SYMBOL_LOOKUP,
             "getppid",
             PosixDataType.pid_t);
 
-    private final static JnhwMh_uI___V getgid = JnhwMh_uI___V.of(
+    private final static JnhwMh_uI___V.ExceptionErased getgid = JnhwMh_uI___V.mandatoryOf(
             LibcLoader.LIB_C_SYMBOL_LOOKUP,
             "getgid",
             PosixDataType.gid_t);
 
-    private final static JnhwMh_uI___V getuid = JnhwMh_uI___V.of(
+    private final static JnhwMh_uI___V.ExceptionErased getuid = JnhwMh_uI___V.mandatoryOf(
             LibcLoader.LIB_C_SYMBOL_LOOKUP,
             "getuid",
             PosixDataType.uid_t);
 
-    private final static JnhwMh_sI___V getpid = JnhwMh_sI___V.of(
+    private final static JnhwMh_sI___V.ExceptionErased getpid = JnhwMh_sI___V.mandatoryOf(
             LibcLoader.LIB_C_SYMBOL_LOOKUP,
             "getpid",
             PosixDataType.pid_t);
 
-    private final static JnhwMh_sL__sI_sL_sI lseek = JnhwMh_sL__sI_sL_sI.of(
+    private final static JnhwMh_sL__sI_sL_sI.ExceptionErased lseek = JnhwMh_sL__sI_sL_sI.mandatoryOf(
             LibcLoader.LIB_C_SYMBOL_LOOKUP,
             "lseek",
             PosixDataType.off_t,
@@ -363,7 +362,7 @@ public final class Unistd {
             PosixDataType.off_t,
             BaseDataType.C_int);
 
-    private final static JnhwMh_sL__sI_sL_sI lseek64 = JnhwMh_sL__sI_sL_sI.ofOrNull(
+    private final static JnhwMh_sL__sI_sL_sI lseek64 = JnhwMh_sL__sI_sL_sI.optionalOf(
             LibcLoader.LIB_C_SYMBOL_LOOKUP,
             "lseek64",
             PosixDataType.off64_t,
@@ -371,13 +370,13 @@ public final class Unistd {
             PosixDataType.off64_t,
             BaseDataType.C_int);
 
-    private final static JnhwMh_sI___A pipe = JnhwMh_sI___A.of(
+    private final static JnhwMh_sI___A.ExceptionErased pipe = JnhwMh_sI___A.mandatoryOf(
             LibcLoader.LIB_C_SYMBOL_LOOKUP,
             "pipe",
             BaseDataType.C_int,
             BaseDataType.C_pointer);
 
-    private final static JnhwMh_sL__sI__A_uL read = JnhwMh_sL__sI__A_uL.of(
+    private final static JnhwMh_sL__sI__A_uL.ExceptionErased read = JnhwMh_sL__sI__A_uL.mandatoryOf(
             LibcLoader.LIB_C_SYMBOL_LOOKUP,
             "read",
             PosixDataType.ssize_t,
@@ -385,51 +384,51 @@ public final class Unistd {
             BaseDataType.C_pointer,
             PosixDataType.size_t);
 
-    private final static JnhwMh_sL__sI sysconf = JnhwMh_sL__sI.of(
+    private final static JnhwMh_sL__sI.ExceptionErased sysconf = JnhwMh_sL__sI.mandatoryOf(
             LibcLoader.LIB_C_SYMBOL_LOOKUP,
             "sysconf",
             BaseDataType.C_long,
             BaseDataType.C_int);
 
-    private final static JnhwMh_sI__uI setegid = JnhwMh_sI__uI.of(
+    private final static JnhwMh_sI__uI.ExceptionErased setegid = JnhwMh_sI__uI.mandatoryOf(
             LibcLoader.LIB_C_SYMBOL_LOOKUP,
             "setegid",
             BaseDataType.C_int,
             PosixDataType.gid_t);
 
-    private final static JnhwMh_sI__uI seteuid = JnhwMh_sI__uI.of(
+    private final static JnhwMh_sI__uI.ExceptionErased seteuid = JnhwMh_sI__uI.mandatoryOf(
             LibcLoader.LIB_C_SYMBOL_LOOKUP,
             "seteuid",
             BaseDataType.C_int,
             PosixDataType.uid_t);
 
-    private final static JnhwMh_sI__uI_uI setregid = JnhwMh_sI__uI_uI.of(
+    private final static JnhwMh_sI__uI_uI.ExceptionErased setregid = JnhwMh_sI__uI_uI.mandatoryOf(
             LibcLoader.LIB_C_SYMBOL_LOOKUP,
             "setregid",
             BaseDataType.C_int,
             PosixDataType.gid_t,
             PosixDataType.gid_t);
 
-    private final static JnhwMh_sI__uI_uI setreuid = JnhwMh_sI__uI_uI.of(
+    private final static JnhwMh_sI__uI_uI.ExceptionErased setreuid = JnhwMh_sI__uI_uI.mandatoryOf(
             LibcLoader.LIB_C_SYMBOL_LOOKUP,
             "setreuid",
             BaseDataType.C_int,
             PosixDataType.uid_t,
             PosixDataType.uid_t);
 
-    private final static JnhwMh_sI__uI setgid = JnhwMh_sI__uI.of(
+    private final static JnhwMh_sI__uI.ExceptionErased setgid = JnhwMh_sI__uI.mandatoryOf(
             LibcLoader.LIB_C_SYMBOL_LOOKUP,
             "setgid",
             BaseDataType.C_int,
             PosixDataType.gid_t);
 
-    private final static JnhwMh_sI__uI setuid = JnhwMh_sI__uI.of(
+    private final static JnhwMh_sI__uI.ExceptionErased setuid = JnhwMh_sI__uI.mandatoryOf(
             LibcLoader.LIB_C_SYMBOL_LOOKUP,
             "setuid",
             BaseDataType.C_int,
             PosixDataType.uid_t);
 
-    private final static JnhwMh_sL__sI__A_uL write = JnhwMh_sL__sI__A_uL.of(
+    private final static JnhwMh_sL__sI__A_uL.ExceptionErased write = JnhwMh_sL__sI__A_uL.mandatoryOf(
             LibcLoader.LIB_C_SYMBOL_LOOKUP,
             "write",
             PosixDataType.ssize_t,
@@ -584,19 +583,11 @@ public final class Unistd {
      */
     @off64_t
     public final static long lseek64(int fildes, @off64_t long offset, int whence) throws NativeErrorException, NoSuchNativeMethodException {
-        try {
-            final long result = lseek64.invoke_sL__sI_sL_sI(fildes, offset, whence);
-            if (result == -1) {
-                throw new NativeErrorException(Errno.errno());
-            } else {
-                return result;
-            }
-        } catch (NullPointerException npe) {
-            if (lseek64 == null) {
-                throw new NoSuchNativeMethodException("lseek64");
-            } else {
-                throw npe;
-            }
+        final long result = lseek64.invoke_sL__sI_sL_sI(fildes, offset, whence);
+        if (result == -1) {
+            throw new NativeErrorException(Errno.errno());
+        } else {
+            return result;
         }
     }
 
