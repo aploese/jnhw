@@ -30,9 +30,14 @@ import de.ibapl.jnhw.util.posix.Defines;
 import de.ibapl.jnhw.util.posix.DefinesTest;
 import java.io.File;
 import java.util.Optional;
+import java.util.function.IntSupplier;
+import java.util.function.Supplier;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInfo;
 import org.junit.jupiter.api.condition.DisabledOnOs;
 
 @DisabledOnOs(org.junit.jupiter.api.condition.OS.WINDOWS)
@@ -40,19 +45,33 @@ public class FcntlTest {
 
     @BeforeAll
     public static void checkBeforeAll_HAVE_FCNTL_H() throws Exception {
+        JnhwTestLogger.logBeforeAllBeginn("checkBeforeAll_HAVE_FCNTL_H");
         if (MultiarchTupelBuilder.getOS() == OS.WINDOWS) {
             Assertions.assertFalse(Fcntl.HAVE_FCNTL_H, "not expected to have fcntl.h");
         } else {
             Assertions.assertTrue(Fcntl.HAVE_FCNTL_H, "expected to have locale.h");
         }
+        JnhwTestLogger.logBeforeAllEnd("checkBeforeAll_HAVE_FCNTL_H");
     }
 
     @BeforeAll
     public static void checkBeforeAll_FcntlDefines() throws Exception {
+        JnhwTestLogger.logBeforeAllBeginn("checkBeforeAll_FcntlDefines");
         if (MultiarchTupelBuilder.getOS() == OS.WINDOWS) {
             return;
         }
         DefinesTest.testDefines(Fcntl.class, "HAVE_FCNTL_H");
+        JnhwTestLogger.logBeforeAllEnd("checkBeforeAll_FcntlDefines");
+    }
+
+    @BeforeEach
+    public void setUp(TestInfo testInfo) throws Exception {
+        JnhwTestLogger.logBeforeEach(testInfo);
+    }
+
+    @AfterEach
+    public void tearDown(TestInfo testInfo) {
+        JnhwTestLogger.logAfterEach(testInfo);
     }
 
     @Test
@@ -76,10 +95,10 @@ public class FcntlTest {
             Fcntl.open(file.getAbsolutePath(), Fcntl.O_CREAT | Fcntl.O_EXCL, Stat.S_IRWXU | Stat.S_IRWXG);
         });
         switch (MultiarchTupelBuilder.getMultiarch()) {
-            case AARCH64__LINUX__GNU, I386__LINUX__GNU, POWER_PC_64_LE__LINUX__GNU, X86_64__FREE_BSD__BSD ->
-                Assertions.assertEquals(Errno.ENOENT, Errno.errno());
-            case ARM__LINUX__GNU_EABI_HF, S390_X__LINUX__GNU, X86_64__LINUX__GNU ->
-                Assertions.assertEquals(Errno.EEXIST, Errno.errno());
+            case AARCH64__LINUX__GNU, I386__LINUX__GNU, POWER_PC_64_LE__LINUX__GNU ->
+                Assertions.assertEquals(Errno.ENOENT, nee.errno);
+            case ARM__LINUX__GNU_EABI_HF, S390_X__LINUX__GNU, X86_64__LINUX__GNU, X86_64__FREE_BSD__BSD ->
+                Assertions.assertEquals(Errno.EEXIST, nee.errno);
             default ->
                 throw new RuntimeException("Dont know what to expect on errno: " + Errno.errno() + " platform : " + MultiarchTupelBuilder.getMultiarch());
         }
@@ -93,10 +112,10 @@ public class FcntlTest {
                 Fcntl.open64(file.getAbsolutePath(), Fcntl.O_CREAT | Fcntl.O_EXCL, Stat.S_IRWXU | Stat.S_IRWXG);
             });
             switch (MultiarchTupelBuilder.getMultiarch()) {
-                case AARCH64__LINUX__GNU, I386__LINUX__GNU, POWER_PC_64_LE__LINUX__GNU, X86_64__FREE_BSD__BSD ->
-                    Assertions.assertEquals(Errno.ENOENT, Errno.errno());
-                case ARM__LINUX__GNU_EABI_HF, S390_X__LINUX__GNU, X86_64__LINUX__GNU ->
-                    Assertions.assertEquals(Errno.EEXIST, Errno.errno());
+                case AARCH64__LINUX__GNU, POWER_PC_64_LE__LINUX__GNU, X86_64__FREE_BSD__BSD ->
+                    Assertions.assertEquals(Errno.ENOENT, nee.errno);
+                case ARM__LINUX__GNU_EABI_HF, S390_X__LINUX__GNU, X86_64__LINUX__GNU, I386__LINUX__GNU ->
+                    Assertions.assertEquals(Errno.EEXIST, nee.errno);
                 default ->
                     throw new RuntimeException("Dont know what to expect on errno: " + Errno.errno() + " platform : " + MultiarchTupelBuilder.getMultiarch());
             }
@@ -109,27 +128,36 @@ public class FcntlTest {
 
     Integer data = 44;
     Optional<Integer> opt = Optional.of(data);
+    Supplier<Integer> supplier = () -> data;
+    IntSupplier intSupplier = () -> data;
 
     //Todo move this to sepetate test
     /*
-rounds = 1_000_000_000
+rounds = 2_000_000_000
     Results:
-3 took: 95ms data: 1050327040
-2 took: 30ms data: 2100654080
-1 took: 29ms data: 1050327040
+int took: 53ms data: 2100654080
+Optional<Integer> took: 54ms data: -93659136
+Integer took: 55ms data: 2100654080
+Supplier<Integer> took: 54ms data: 2100654080
+IntSupplier took: 55ms data: 2100654080
      */
-    //  @Test
+    //@Test
     public void testSpeedOfOptionalAccess() {
-        final int rounds = 1_000_000_000;
+        final int rounds = 2_000_000_000;
         int testD = 0;
         long start;
+
+        testD = 0;
+        for (int i = 0; i < rounds; i++) {
+            testD += data;
+        }
 
         testD = 0;
         start = System.currentTimeMillis();
         for (int i = 0; i < rounds; i++) {
             testD += data;
         }
-        System.out.println("3 took: " + (System.currentTimeMillis() - start) + "ms data: " + testD);
+        System.out.println("int took: " + (System.currentTimeMillis() - start) + "ms data: " + testD);
 
         testD = 0;
         start = System.currentTimeMillis();
@@ -137,7 +165,7 @@ rounds = 1_000_000_000
             testD += opt.orElseThrow(() -> new RuntimeException());
             testD += data;
         }
-        System.out.println("2 took: " + (System.currentTimeMillis() - start) + "ms data: " + testD);
+        System.out.println("Optional<Integer> took: " + (System.currentTimeMillis() - start) + "ms data: " + testD);
 
         testD = 0;
         start = System.currentTimeMillis();
@@ -148,7 +176,21 @@ rounds = 1_000_000_000
                 throw new RuntimeException();
             }
         }
-        System.out.println("1 took: " + (System.currentTimeMillis() - start) + "ms data: " + testD);
+        System.out.println("Integer took: " + (System.currentTimeMillis() - start) + "ms data: " + testD);
+
+        testD = 0;
+        start = System.currentTimeMillis();
+        for (int i = 0; i < rounds; i++) {
+            testD += supplier.get();
+        }
+        System.out.println("Supplier<Integer> took: " + (System.currentTimeMillis() - start) + "ms data: " + testD);
+
+        testD = 0;
+        start = System.currentTimeMillis();
+        for (int i = 0; i < rounds; i++) {
+            testD += intSupplier.getAsInt();
+        }
+        System.out.println("IntSupplier took: " + (System.currentTimeMillis() - start) + "ms data: " + testD);
 
     }
 

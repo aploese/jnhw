@@ -39,6 +39,7 @@ import de.ibapl.jnhw.util.posix.upcall.Callback__V__UnionSigval;
 import java.lang.foreign.MemoryAddress;
 import java.lang.foreign.MemorySegment;
 import java.lang.foreign.MemorySession;
+import java.time.Duration;
 import java.util.function.ToIntFunction;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
@@ -47,6 +48,7 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInfo;
 import org.junit.jupiter.api.condition.DisabledOnOs;
 
 /**
@@ -56,18 +58,24 @@ import org.junit.jupiter.api.condition.DisabledOnOs;
 @DisabledOnOs(org.junit.jupiter.api.condition.OS.WINDOWS)
 public class SignalTest {
 
+    private final static long ONE_MINUTE = 60_000;
+
     @BeforeAll
     public static void checkBeforeAll_HAVE_SIGNAL_H() throws Exception {
+        JnhwTestLogger.logBeforeAllBeginn("checkBeforeAll_HAVE_SIGNAL_H");
         if (MultiarchTupelBuilder.getOS() == OS.WINDOWS) {
             Assertions.assertFalse(Signal.HAVE_SIGNAL_H, "not expected to have signal.h");
         } else {
             Assertions.assertTrue(Signal.HAVE_SIGNAL_H, "expected to have signal.h");
         }
+        JnhwTestLogger.logBeforeAllEnd("checkBeforeAll_HAVE_SIGNAL_H");
     }
 
     @BeforeAll
     public static void checkBeforeAll_SignalDefines() throws Exception {
+        JnhwTestLogger.logBeforeAllBeginn("checkBeforeAll_SignalDefines");
         if (MultiarchTupelBuilder.getOS() == OS.WINDOWS) {
+            JnhwTestLogger.logBeforeAllEnd("checkBeforeAll_SignalDefines");
             return;
         }
         DefinesTest.testDefines(Signal.class, "HAVE_SIGNAL_H", (name) -> switch (name) {
@@ -78,219 +86,163 @@ public class SignalTest {
             default ->
                 throw new RuntimeException("Can't find " + name);
         });
+        JnhwTestLogger.logBeforeAllEnd("checkBeforeAll_SignalDefines");
     }
 
     @BeforeAll
     public static void checkBeforeAll_StructMcontext_t() throws Exception {
+        JnhwTestLogger.logBeforeAllBeginn("checkBeforeAll_StructMcontext_t");
         if (MultiarchTupelBuilder.getOS() == OS.WINDOWS) {
+            JnhwTestLogger.logBeforeAllEnd("checkBeforeAll_StructMcontext_t");
             return;
         }
         Assertions.assertAll(
-                () -> {
-                    Assertions.assertEquals(LibJnhwPosixTestLoader.invoke_sI___V("Mcontext_t_sizeof"), Signal.Mcontext_t.sizeof, "sizeof");
-                },
-                () -> {
-                    Assertions.assertEquals(LibJnhwPosixTestLoader.invoke_sI___V("Mcontext_t_alignof"), Signal.Mcontext_t.alignof == null ? 0 : Signal.Mcontext_t.alignof.alignof, "alignof");
-                }
+                () -> Assertions.assertEquals(LibJnhwPosixTestLoader.invoke_sI___V("Mcontext_t_sizeof"), Signal.Mcontext_t.sizeof, "sizeof"),
+                () -> Assertions.assertEquals(LibJnhwPosixTestLoader.invoke_sI___V("Mcontext_t_alignof"), Signal.Mcontext_t.alignof == null ? 0 : Signal.Mcontext_t.alignof.alignof, "alignof")
         );
+        JnhwTestLogger.logBeforeAllEnd("checkBeforeAll_StructMcontext_t");
     }
 
     @BeforeAll
     public static void checkBeforeAll_StructSigset_t() throws Exception {
+        JnhwTestLogger.logBeforeAllBeginn("checkBeforeAll_StructSigset_t");
         if (MultiarchTupelBuilder.getOS() == OS.WINDOWS) {
+            JnhwTestLogger.logBeforeAllEnd("checkBeforeAll_StructSigset_t");
             return;
         }
         Assertions.assertAll(
-                () -> {
-                    Assertions.assertEquals(LibJnhwPosixTestLoader.invoke_sI___V("Sigset_t_sizeof"), Signal.Sigset_t.sizeof, "sizeof");
-                },
-                () -> {
-                    Assertions.assertEquals(LibJnhwPosixTestLoader.invoke_sI___V("Sigset_t_alignof"), Signal.Sigset_t.alignof.alignof, "alignof");
-                }
+                () -> Assertions.assertEquals(LibJnhwPosixTestLoader.invoke_sI___V("Sigset_t_sizeof"), Signal.Sigset_t.sizeof, "sizeof"),
+                () -> Assertions.assertEquals(LibJnhwPosixTestLoader.invoke_sI___V("Sigset_t_alignof"), Signal.Sigset_t.alignof.alignof, "alignof")
         );
+        JnhwTestLogger.logBeforeAllEnd("checkBeforeAll_StructSigset_t");
     }
 
     @BeforeAll
     public static void checkBeforeAll_UnionSigval() throws Exception {
+        JnhwTestLogger.logBeforeAllBeginn("checkBeforeAll_UnionSigval");
         if (MultiarchTupelBuilder.getOS() == OS.WINDOWS) {
+            JnhwTestLogger.logBeforeAllEnd("checkBeforeAll_UnionSigval");
             return;
         }
-        Assertions.assertAll(() -> {
-            Assertions.assertEquals(LibJnhwPosixTestLoader.invoke_sI___V("Sigval_sizeof"), Signal.Sigval.sizeof, "sizeof");
-        },
-                () -> {
-                    Assertions.assertEquals(LibJnhwPosixTestLoader.invoke_sI___V("Sigval_alignof"), Signal.Sigval.alignof.alignof, "alignof");
-                },
-                () -> {
-                    Assertions.assertEquals(LibJnhwPosixTestLoader.invoke_sI___V("Sigval_offsetof_sival_int"), Signal.Sigval.offsetof_Sival_int, "offsetof_Sival_int");
-                },
-                () -> {
-                    Assertions.assertEquals(LibJnhwPosixTestLoader.invoke_sI___V("Sigval_offsetof_sival_ptr"), Signal.Sigval.offsetof_Sival_ptr, "offsetof_Sival_ptr");
-                }
+        Assertions.assertAll(
+                () -> Assertions.assertEquals(LibJnhwPosixTestLoader.invoke_sI___V("Sigval_sizeof"), Signal.Sigval.sizeof, "sizeof"),
+                () -> Assertions.assertEquals(LibJnhwPosixTestLoader.invoke_sI___V("Sigval_alignof"), Signal.Sigval.alignof.alignof, "alignof"),
+                () -> Assertions.assertEquals(LibJnhwPosixTestLoader.invoke_sI___V("Sigval_offsetof_sival_int"), Signal.Sigval.offsetof_Sival_int, "offsetof_Sival_int"),
+                () -> Assertions.assertEquals(LibJnhwPosixTestLoader.invoke_sI___V("Sigval_offsetof_sival_ptr"), Signal.Sigval.offsetof_Sival_ptr, "offsetof_Sival_ptr")
         );
+        JnhwTestLogger.logBeforeAllEnd("checkBeforeAll_UnionSigval");
     }
 
     @BeforeAll
     public static void checkBeforeAll_StructSigevent() throws Exception {
+        JnhwTestLogger.logBeforeAllBeginn("checkBeforeAll_StructSigevent");
         if (MultiarchTupelBuilder.getOS() == OS.WINDOWS) {
+            JnhwTestLogger.logBeforeAllEnd("checkBeforeAll_StructSigevent");
             return;
         }
-        Assertions.assertAll(() -> {
-            Assertions.assertEquals(LibJnhwPosixTestLoader.invoke_sI___V("Sigevent_sizeof"), Signal.Sigevent.sizeof, "sizeof");
-        },
-                () -> {
-                    Assertions.assertEquals(LibJnhwPosixTestLoader.invoke_sI___V("Sigevent_alignof"), Signal.Sigevent.alignof == null ? 0 : Signal.Sigevent.alignof.alignof, "alignof");
-                },
-                () -> {
-                    Assertions.assertEquals(LibJnhwPosixTestLoader.invoke_sI___V("Sigevent_offsetof_sigev_notify"), Signal.Sigevent.offsetof_Sigev_notify, "offsetof_Sigev_notify");
-                },
-                () -> {
-                    Assertions.assertEquals(LibJnhwPosixTestLoader.invoke_sI___V("Sigevent_offsetof_sigev_notify_attributes"), Signal.Sigevent.offsetof_Sigev_notify_attributes, "offsetof_Sigev_notify_attributes");
-                },
-                () -> {
-                    Assertions.assertEquals(LibJnhwPosixTestLoader.invoke_sI___V("Sigevent_offsetof_sigev_notify_function"), Signal.Sigevent.offsetof_Sigev_notify_function, "offsetof_Sigev_notify_function");
-                },
-                () -> {
-                    Assertions.assertEquals(LibJnhwPosixTestLoader.invoke_sI___V("Sigevent_offsetof_sigev_signo"), Signal.Sigevent.offsetof_Sigev_signo, "offsetof_Sigev_signo");
-                },
-                () -> {
-                    Assertions.assertEquals(LibJnhwPosixTestLoader.invoke_sI___V("Sigevent_offsetof_sigev_value"), Signal.Sigevent.offsetof_Sigev_value, "offsetof_Sigev_value");
-                }
+        Assertions.assertAll(
+                () -> Assertions.assertEquals(LibJnhwPosixTestLoader.invoke_sI___V("Sigevent_sizeof"), Signal.Sigevent.sizeof, "sizeof"),
+                () -> Assertions.assertEquals(LibJnhwPosixTestLoader.invoke_sI___V("Sigevent_alignof"), Signal.Sigevent.alignof == null ? 0 : Signal.Sigevent.alignof.alignof, "alignof"),
+                () -> Assertions.assertEquals(LibJnhwPosixTestLoader.invoke_sI___V("Sigevent_offsetof_sigev_notify"), Signal.Sigevent.offsetof_Sigev_notify, "offsetof_Sigev_notify"),
+                () -> Assertions.assertEquals(LibJnhwPosixTestLoader.invoke_sI___V("Sigevent_offsetof_sigev_notify_attributes"), Signal.Sigevent.offsetof_Sigev_notify_attributes, "offsetof_Sigev_notify_attributes"),
+                () -> Assertions.assertEquals(LibJnhwPosixTestLoader.invoke_sI___V("Sigevent_offsetof_sigev_notify_function"), Signal.Sigevent.offsetof_Sigev_notify_function, "offsetof_Sigev_notify_function"),
+                () -> Assertions.assertEquals(LibJnhwPosixTestLoader.invoke_sI___V("Sigevent_offsetof_sigev_signo"), Signal.Sigevent.offsetof_Sigev_signo, "offsetof_Sigev_signo"),
+                () -> Assertions.assertEquals(LibJnhwPosixTestLoader.invoke_sI___V("Sigevent_offsetof_sigev_value"), Signal.Sigevent.offsetof_Sigev_value, "offsetof_Sigev_value")
         );
+        JnhwTestLogger.logBeforeAllEnd("checkBeforeAll_StructSigevent");
     }
 
     @BeforeAll
     public static void checkBeforeAll_StructSigaction() throws Exception {
+        JnhwTestLogger.logBeforeAllBeginn("checkBeforeAll_StructSigaction");
         if (MultiarchTupelBuilder.getOS() == OS.WINDOWS) {
+            JnhwTestLogger.logBeforeAllEnd("checkBeforeAll_StructSigaction");
             return;
         }
-        Assertions.assertAll(() -> {
-            Assertions.assertEquals(LibJnhwPosixTestLoader.invoke_sI___V("Sigaction_sizeof"), Signal.Sigaction.sizeof, "sizeof");
-        },
-                () -> {
-                    Assertions.assertEquals(LibJnhwPosixTestLoader.invoke_sI___V("Sigaction_alignof"), Signal.Sigaction.alignof.alignof, "alignof");
-                },
-                () -> {
-                    Assertions.assertEquals(LibJnhwPosixTestLoader.invoke_sI___V("Sigaction_offsetof_sa_handler"), Signal.Sigaction.offsetof_Sa_handler, "offsetof_Sa_handler");
-                },
-                () -> {
-                    Assertions.assertEquals(LibJnhwPosixTestLoader.invoke_sI___V("Sigaction_offsetof_sa_mask"), Signal.Sigaction.offsetof_Sa_mask, "offsetof_Sa_mask");
-                },
-                () -> {
-                    Assertions.assertEquals(LibJnhwPosixTestLoader.invoke_sI___V("Sigaction_offsetof_sa_flags"), Signal.Sigaction.offsetof_Sa_flags, "offsetof_Sa_flags");
-                },
-                () -> {
-                    Assertions.assertEquals(LibJnhwPosixTestLoader.invoke_sI___V("Sigaction_offsetof_sa_sigaction"), Signal.Sigaction.offsetof_Sa_sigaction, "offsetof_Sa_sigaction");
-                }
+        Assertions.assertAll(
+                () -> Assertions.assertEquals(LibJnhwPosixTestLoader.invoke_sI___V("Sigaction_sizeof"), Signal.Sigaction.sizeof, "sizeof"),
+                () -> Assertions.assertEquals(LibJnhwPosixTestLoader.invoke_sI___V("Sigaction_alignof"), Signal.Sigaction.alignof.alignof, "alignof"),
+                () -> Assertions.assertEquals(LibJnhwPosixTestLoader.invoke_sI___V("Sigaction_offsetof_sa_handler"), Signal.Sigaction.offsetof_Sa_handler, "offsetof_Sa_handler"),
+                () -> Assertions.assertEquals(LibJnhwPosixTestLoader.invoke_sI___V("Sigaction_offsetof_sa_mask"), Signal.Sigaction.offsetof_Sa_mask, "offsetof_Sa_mask"),
+                () -> Assertions.assertEquals(LibJnhwPosixTestLoader.invoke_sI___V("Sigaction_offsetof_sa_flags"), Signal.Sigaction.offsetof_Sa_flags, "offsetof_Sa_flags"),
+                () -> Assertions.assertEquals(LibJnhwPosixTestLoader.invoke_sI___V("Sigaction_offsetof_sa_sigaction"), Signal.Sigaction.offsetof_Sa_sigaction, "offsetof_Sa_sigaction")
         );
+        JnhwTestLogger.logBeforeAllEnd("checkBeforeAll_StructSigaction");
     }
 
     @BeforeAll
     public static void checkBeforeAll_StructStack_t() throws Exception {
+        JnhwTestLogger.logBeforeAllBeginn("checkBeforeAll_StructStack_t");
         if (MultiarchTupelBuilder.getOS() == OS.WINDOWS) {
+            JnhwTestLogger.logBeforeAllEnd("checkBeforeAll_StructStack_t");
             return;
         }
-        Assertions.assertAll(() -> {
-            Assertions.assertEquals(LibJnhwPosixTestLoader.invoke_sI___V("Stack_t_sizeof"), Signal.Stack_t.sizeof, "sizeof");
-        },
-                () -> {
-                    Assertions.assertEquals(LibJnhwPosixTestLoader.invoke_sI___V("Stack_t_alignof"), Signal.Stack_t.alignof.alignof, "alignof");
-                },
-                () -> {
-                    Assertions.assertEquals(LibJnhwPosixTestLoader.invoke_sI___V("Stack_t_offsetof_ss_sp"), Signal.Stack_t.offsetof_Ss_sp, "offsetof_Ss_sp");
-                },
-                () -> {
-                    Assertions.assertEquals(LibJnhwPosixTestLoader.invoke_sI___V("Stack_t_offsetof_ss_size"), Signal.Stack_t.offsetof_Ss_size, "offsetof_Ss_size");
-                },
-                () -> {
-                    Assertions.assertEquals(LibJnhwPosixTestLoader.invoke_sI___V("Stack_t_offsetof_ss_flags"), Signal.Stack_t.offsetof_Ss_flags, "offsetof_Ss_flags");
-                }
+        Assertions.assertAll(
+                () -> Assertions.assertEquals(LibJnhwPosixTestLoader.invoke_sI___V("Stack_t_sizeof"), Signal.Stack_t.sizeof, "sizeof"),
+                () -> Assertions.assertEquals(LibJnhwPosixTestLoader.invoke_sI___V("Stack_t_alignof"), Signal.Stack_t.alignof.alignof, "alignof"),
+                () -> Assertions.assertEquals(LibJnhwPosixTestLoader.invoke_sI___V("Stack_t_offsetof_ss_sp"), Signal.Stack_t.offsetof_Ss_sp, "offsetof_Ss_sp"),
+                () -> Assertions.assertEquals(LibJnhwPosixTestLoader.invoke_sI___V("Stack_t_offsetof_ss_size"), Signal.Stack_t.offsetof_Ss_size, "offsetof_Ss_size"),
+                () -> Assertions.assertEquals(LibJnhwPosixTestLoader.invoke_sI___V("Stack_t_offsetof_ss_flags"), Signal.Stack_t.offsetof_Ss_flags, "offsetof_Ss_flags")
         );
+        JnhwTestLogger.logBeforeAllEnd("checkBeforeAll_StructStack_t");
     }
 
     @BeforeAll
     public static void checkBeforeAll_StructSiginfo() throws Exception {
+        JnhwTestLogger.logBeforeAllBeginn("checkBeforeAll_StructSiginfo");
         if (MultiarchTupelBuilder.getOS() == OS.WINDOWS) {
+            JnhwTestLogger.logBeforeAllEnd("checkBeforeAll_StructSiginfo");
             return;
         }
-        Assertions.assertAll(() -> {
-            Assertions.assertEquals(LibJnhwPosixTestLoader.invoke_sI___V("Siginfo_t_sizeof"), Signal.Siginfo_t.sizeof, "sizeof");
-        },
-                () -> {
-                    Assertions.assertEquals(LibJnhwPosixTestLoader.invoke_sI___V("Siginfo_t_alignof"), Signal.Siginfo_t.alignof.alignof, "alignof");
-                },
-                () -> {
-                    Assertions.assertEquals(LibJnhwPosixTestLoader.invoke_sI___V("Siginfo_t_offsetof_si_signo"), Signal.Siginfo_t.offsetof_Si_signo, "offsetof_Si_signo");
-                },
-                () -> {
-                    Assertions.assertEquals(LibJnhwPosixTestLoader.invoke_sI___V("Siginfo_t_offsetof_si_code"), Signal.Siginfo_t.offsetof_Si_code, "offsetof_Si_code");
-                },
-                () -> {
-                    Assertions.assertEquals(LibJnhwPosixTestLoader.invoke_sI___V("Siginfo_t_offsetof_si_errno"), Signal.Siginfo_t.offsetof_Si_errno, "offsetof_Si_errno");
-                },
-                () -> {
-                    Assertions.assertEquals(LibJnhwPosixTestLoader.invoke_sI___V("Siginfo_t_offsetof_si_pid"), Signal.Siginfo_t.offsetof_Si_pid, "offsetof_Si_pid");
-                },
-                () -> {
-                    Assertions.assertEquals(LibJnhwPosixTestLoader.invoke_sI___V("Siginfo_t_offsetof_si_uid"), Signal.Siginfo_t.offsetof_Si_uid, "offsetof_Si_uid");
-                },
-                () -> {
-                    Assertions.assertEquals(LibJnhwPosixTestLoader.invoke_sI___V("Siginfo_t_offsetof_si_addr"), Signal.Siginfo_t.offsetof_Si_addr, "offsetof_Si_addr");
-                },
-                () -> {
-                    Assertions.assertEquals(LibJnhwPosixTestLoader.invoke_sI___V("Siginfo_t_offsetof_si_status"), Signal.Siginfo_t.offsetof_Si_status, "offsetof_Si_status");
-                },
-                () -> {
-                    Assertions.assertEquals(LibJnhwPosixTestLoader.invoke_sI___V("Siginfo_t_offsetof_si_band"), Signal.Siginfo_t.offsetof_Si_band, "offsetof_Si_band");
-                },
-                () -> {
-                    Assertions.assertEquals(LibJnhwPosixTestLoader.invoke_sI___V("Siginfo_t_offsetof_si_value"), Signal.Siginfo_t.offsetof_Si_value, "offsetof_Si_value");
-                }
+        Assertions.assertAll(
+                () -> Assertions.assertEquals(LibJnhwPosixTestLoader.invoke_sI___V("Siginfo_t_sizeof"), Signal.Siginfo_t.sizeof, "sizeof"),
+                () -> Assertions.assertEquals(LibJnhwPosixTestLoader.invoke_sI___V("Siginfo_t_alignof"), Signal.Siginfo_t.alignof.alignof, "alignof"),
+                () -> Assertions.assertEquals(LibJnhwPosixTestLoader.invoke_sI___V("Siginfo_t_offsetof_si_signo"), Signal.Siginfo_t.offsetof_Si_signo, "offsetof_Si_signo"),
+                () -> Assertions.assertEquals(LibJnhwPosixTestLoader.invoke_sI___V("Siginfo_t_offsetof_si_code"), Signal.Siginfo_t.offsetof_Si_code, "offsetof_Si_code"),
+                () -> Assertions.assertEquals(LibJnhwPosixTestLoader.invoke_sI___V("Siginfo_t_offsetof_si_errno"), Signal.Siginfo_t.offsetof_Si_errno, "offsetof_Si_errno"),
+                () -> Assertions.assertEquals(LibJnhwPosixTestLoader.invoke_sI___V("Siginfo_t_offsetof_si_pid"), Signal.Siginfo_t.offsetof_Si_pid, "offsetof_Si_pid"),
+                () -> Assertions.assertEquals(LibJnhwPosixTestLoader.invoke_sI___V("Siginfo_t_offsetof_si_uid"), Signal.Siginfo_t.offsetof_Si_uid, "offsetof_Si_uid"),
+                () -> Assertions.assertEquals(LibJnhwPosixTestLoader.invoke_sI___V("Siginfo_t_offsetof_si_addr"), Signal.Siginfo_t.offsetof_Si_addr, "offsetof_Si_addr"),
+                () -> Assertions.assertEquals(LibJnhwPosixTestLoader.invoke_sI___V("Siginfo_t_offsetof_si_status"), Signal.Siginfo_t.offsetof_Si_status, "offsetof_Si_status"),
+                () -> Assertions.assertEquals(LibJnhwPosixTestLoader.invoke_sI___V("Siginfo_t_offsetof_si_band"), Signal.Siginfo_t.offsetof_Si_band, "offsetof_Si_band"),
+                () -> Assertions.assertEquals(LibJnhwPosixTestLoader.invoke_sI___V("Siginfo_t_offsetof_si_value"), Signal.Siginfo_t.offsetof_Si_value, "offsetof_Si_value")
         );
+        JnhwTestLogger.logBeforeAllEnd("checkBeforeAll_StructSiginfo");
     }
 
     @BeforeAll
     public static void checkBeforeAll_StructUcontext_t() throws Exception {
+        JnhwTestLogger.logBeforeAllBeginn("checkBeforeAll_StructUcontext_t");
         if (MultiarchTupelBuilder.getOS() == OS.WINDOWS) {
+            JnhwTestLogger.logBeforeAllEnd("checkBeforeAll_StructUcontext_t");
             return;
         }
-        Assertions.assertAll(() -> {
-            Assertions.assertEquals(LibJnhwPosixTestLoader.invoke_sI___V("Ucontext_t_sizeof"), Signal.Ucontext_t.sizeof, "sizeof");
-        },
-                () -> {
-                    Assertions.assertEquals(LibJnhwPosixTestLoader.invoke_sI___V("Ucontext_t_alignof"), Signal.Ucontext_t.alignof == null ? 0 : Signal.Ucontext_t.alignof.alignof, "alignof");
-                },
-                () -> {
-                    Assertions.assertEquals(LibJnhwPosixTestLoader.invoke_sI___V("Ucontext_t_offsetof_uc_link"), Signal.Ucontext_t.offsetof_Uc_link, "offsetof_Uc_link");
-                },
-                () -> {
-                    Assertions.assertEquals(LibJnhwPosixTestLoader.invoke_sI___V("Ucontext_t_offsetof_uc_sigmask"), Signal.Ucontext_t.offsetof_Uc_sigmask, "offsetof_Uc_sigmask");
-                },
-                () -> {
-                    Assertions.assertEquals(LibJnhwPosixTestLoader.invoke_sI___V("Ucontext_t_offsetof_uc_stack"), Signal.Ucontext_t.offsetof_Uc_stack, "offsetof_Uc_stack");
-                },
-                () -> {
-                    Assertions.assertEquals(LibJnhwPosixTestLoader.invoke_sI___V("Ucontext_t_offsetof_uc_mcontext"), Signal.Ucontext_t.offsetof_Uc_mcontext, "offsetof_Uc_mcontext");
-                }
+        Assertions.assertAll(
+                () -> Assertions.assertEquals(LibJnhwPosixTestLoader.invoke_sI___V("Ucontext_t_sizeof"), Signal.Ucontext_t.sizeof, "sizeof"),
+                () -> Assertions.assertEquals(LibJnhwPosixTestLoader.invoke_sI___V("Ucontext_t_alignof"), Signal.Ucontext_t.alignof == null ? 0 : Signal.Ucontext_t.alignof.alignof, "alignof"),
+                () -> Assertions.assertEquals(LibJnhwPosixTestLoader.invoke_sI___V("Ucontext_t_offsetof_uc_link"), Signal.Ucontext_t.offsetof_Uc_link, "offsetof_Uc_link"),
+                () -> Assertions.assertEquals(LibJnhwPosixTestLoader.invoke_sI___V("Ucontext_t_offsetof_uc_sigmask"), Signal.Ucontext_t.offsetof_Uc_sigmask, "offsetof_Uc_sigmask"),
+                () -> Assertions.assertEquals(LibJnhwPosixTestLoader.invoke_sI___V("Ucontext_t_offsetof_uc_stack"), Signal.Ucontext_t.offsetof_Uc_stack, "offsetof_Uc_stack"),
+                () -> Assertions.assertEquals(LibJnhwPosixTestLoader.invoke_sI___V("Ucontext_t_offsetof_uc_mcontext"), Signal.Ucontext_t.offsetof_Uc_mcontext, "offsetof_Uc_mcontext")
         );
+        JnhwTestLogger.logBeforeAllEnd("checkBeforeAll_StructUcontext_t");
     }
 
     private MemorySession ms;
 
+    public SignalTest() {
+    }
+
     @BeforeEach
-    public void setUp() {
+    public void setUp(TestInfo testInfo) throws Exception {
+        JnhwTestLogger.logBeforeEach(testInfo);
         ms = MemorySession.openShared();
     }
 
     @AfterEach
-    public void tearDown() {
+    public void tearDown(TestInfo testInfo) throws Exception {
         ms.close();
-    }
-
-    // just for vm in qemu...
-    private final static long ONE_MINUTE = 60_000;
-
-    public SignalTest() {
+        JnhwTestLogger.logAfterEach(testInfo);
     }
 
     /**
@@ -298,8 +250,6 @@ public class SignalTest {
      */
     @Test
     public void testKill() throws Exception {
-        System.out.println("kill");
-
         final int sig = Signal.SIGCHLD; //TODO SIGQUIT blows anything away .... WHY??? pthread_kill
 
         final Integer[] sigRef = new Integer[1];
@@ -311,7 +261,7 @@ public class SignalTest {
             @Override
             protected void callback(int sig) {
                 synchronized (sigRef) {
-                    System.out.println("pthread_t of signalhadler: " + Pthread.pthread_self(ms) + " Java thread ID: " + Thread.currentThread().threadId());
+                    JnhwTestLogger.logTest("pthread_t of signalhandler: " + Pthread.pthread_self(ms) + " Java thread ID: " + Thread.currentThread().threadId());
                     sigRef[0] = sig;
                     sigRef.notifyAll();
                 }
@@ -323,7 +273,7 @@ public class SignalTest {
         final Signal.Sigaction oact = Signal.Sigaction.allocateNative(ms);
         Signal.sigaction(sig, act, oact);
         try {
-            System.out.println("pthread_t of testKill: " + Pthread.pthread_self(ms) + " Java thread ID: " + Thread.currentThread().threadId());
+            JnhwTestLogger.logTest("pthread_t of testKill: " + Pthread.pthread_self(ms) + " Java thread ID: " + Thread.currentThread().threadId());
             Signal.kill(Unistd.getpid(), sig);
             synchronized (sigRef) {
                 if (sigRef[0] == null) {
@@ -341,7 +291,6 @@ public class SignalTest {
      */
     @Test
     public void testKillpg() throws Exception {
-        System.out.println("killpg");
         final int sig = Signal.SIGCHLD;
 
         final Integer[] sigRef = new Integer[1];
@@ -380,13 +329,12 @@ public class SignalTest {
      */
     @Test
     public void testPsiginfo() throws Exception {
-        System.out.println("psiginfo");
         Signal.Siginfo_t pinfo = Signal.Siginfo_t.allocateNative(ms);
         switch (MultiarchTupelBuilder.getOS()) {
             case DARWIN, FREE_BSD, OPEN_BSD ->
                 Assertions.assertThrows(NoSuchNativeMethodException.class, () -> Signal.psiginfo(pinfo, "JNHW Test for Signal.psiginfo"));
             default -> {
-                System.err.print("psiginfo MSG >>>");
+                JnhwTestLogger.logTest("psiginfo MSG >>>");
                 try {
                     Signal.psiginfo(pinfo, "JNHW Test for Signal.psiginfo");
                 } catch (NativeErrorException nee) {
@@ -395,9 +343,7 @@ public class SignalTest {
                         throw nee;
                     }
                 }
-                System.err.println("<<< psiginfo MSG");
-                System.err.flush();
-                System.out.flush();
+                JnhwTestLogger.logTest("<<< psiginfo MSG");
                 Signal.psiginfo(pinfo, null);
                 Assertions.assertThrows(NullPointerException.class, () -> {
                     Signal.psiginfo(null, "JNHW Test for Signal.psiginfo");
@@ -413,8 +359,7 @@ public class SignalTest {
     //TODO Does work, no output...
     @Test
     public void testPsignal() throws Exception {
-        System.out.println("psignal");
-        System.err.print("psignal MSG >>>");
+        JnhwTestLogger.logTest("psignal MSG >>>");
         try {
             Signal.psignal(Signal.SIGUSR1, "Send SIGUSR1 to std err");
         } catch (NativeErrorException nee) {
@@ -426,9 +371,7 @@ public class SignalTest {
                 Signal.psignal(Signal.SIGUSR1, "Send SIGUSR1 to std err again");
             }
         }
-        System.err.println("<<< psignal MSG");
-        System.err.flush();
-        System.out.flush();
+        JnhwTestLogger.logTest("<<< psignal MSG");
         Signal.psignal(Signal.SIGUSR1, null);
         //TODO mark as not executing as expected but do not fail??
     }
@@ -438,8 +381,7 @@ public class SignalTest {
      */
     @Test
     public void testPthread_kill() throws Exception {
-        System.out.println("pthread_kill");
-        System.out.println("pthread_t of testPthread_kill: " + Pthread.pthread_self(ms) + " Java thread ID: " + Thread.currentThread().threadId());
+        JnhwTestLogger.logTest("pthread_t of testPthread_kill: " + Pthread.pthread_self(ms) + " Java thread ID: " + Thread.currentThread().threadId());
 
         final int sig = Signal.SIGCHLD; //TODO SIGQUIT blows anything away .... WHY??? pthread_kill
 
@@ -453,7 +395,7 @@ public class SignalTest {
             @Override
             protected void callback(int sig) {
                 sigRef[0] = sig;
-                System.out.println("pthread_t of signalhadler: " + Pthread.pthread_self(ms) + " Java thread ID: " + Thread.currentThread().threadId() + " signal: " + sig);
+                JnhwTestLogger.logTest("pthread_t of signalhadler: " + Pthread.pthread_self(ms) + " Java thread ID: " + Thread.currentThread().threadId() + " signal: " + sig);
             }
         };
         act.sa_handler(sa_handler);
@@ -463,7 +405,7 @@ public class SignalTest {
         try {
             Thread t = new Thread(() -> {
                 try {
-                    System.out.println("pthread_t of thread: " + Pthread.pthread_self(ms) + " Java thread ID: " + Thread.currentThread().threadId());
+                    JnhwTestLogger.logTest("pthread_t of thread: " + Pthread.pthread_self(ms) + " Java thread ID: " + Thread.currentThread().threadId());
                     Signal.pthread_kill(Pthread.pthread_self(ms), sig);
                 } catch (NativeErrorException nee) {
                     error[0] = nee;
@@ -483,8 +425,6 @@ public class SignalTest {
      */
     @Test
     public void testPthread_sigmask() throws Exception {
-        System.out.println("pthread_sigmask");
-
         Signal.pthread_sigmask(0, null, null);
 
         final Signal.Sigset_t oset = Signal.Sigset_t.allocateNative(ms);
@@ -492,7 +432,7 @@ public class SignalTest {
         Signal.pthread_sigmask(0, null, oset);
         try {
             //make sure SIGUSR1 is in signak mask; we want to set it
-            System.err.println("current sigprocmask: " + oset);
+            JnhwTestLogger.logTest("current sigprocmask: " + oset);
             Assertions.assertFalse(Signal.sigismember(oset, Signal.SIGUSR1));
             Signal.Sigset_t set = Signal.Sigset_t.allocateNative(ms);
             Signal.sigemptyset(set);
@@ -502,7 +442,7 @@ public class SignalTest {
             final Signal.Sigset_t changedSet = Signal.Sigset_t.allocateNative(ms);
             Signal.sigemptyset(changedSet);
             Signal.pthread_sigmask(0, null, changedSet);
-            System.err.println("current sigprocmask: " + changedSet.toString());
+            JnhwTestLogger.logTest("current sigprocmask: " + changedSet.toString());
             Assertions.assertTrue(Signal.sigismember(changedSet, Signal.SIGUSR1));
         } finally {
             //restore old mask
@@ -515,7 +455,6 @@ public class SignalTest {
      */
     @Test
     public void testRaise() throws Exception {
-        System.out.println("raise");
         final int sig = Signal.SIGCHLD;
 
         final Integer[] sigRef = new Integer[1];
@@ -546,7 +485,6 @@ public class SignalTest {
      */
     @Test
     public void testSigaction() throws Exception {
-        System.out.println("sigaction");
         final int SIG = Signal.SIGCHLD;
 
         final Signal.Sigaction<OpaqueMemory> act = Signal.Sigaction.allocateNative(ms);
@@ -556,6 +494,7 @@ public class SignalTest {
         Callback__V___I sa_handler = new Callback__V___I() {
             @Override
             protected void callback(int sig) {
+                throw new AssertionError("Never expected to be called");
             }
         };
         act.sa_handler(sa_handler);
@@ -586,7 +525,6 @@ public class SignalTest {
      */
     @Test
     public void testSigaltstack() throws Exception {
-        System.out.println("sigaltstack");
         final MemoryHeap ss_sp = MemoryHeap.wrap(MemorySegment.allocateNative(Signal.MINSIGSTKSZ, ms));
         Signal.Stack_t ss = Signal.Stack_t.allocateNativeAndInit(ms, Signal.SS_DISABLE, ss_sp);
         Signal.Stack_t oss = Signal.Stack_t.allocateNative(ms);
@@ -618,7 +556,6 @@ public class SignalTest {
      */
     @Test
     public void testSigset_t() throws Exception {
-        System.out.println("Sigset_t");
         Signal.Sigset_t set = Signal.Sigset_t.allocateNative(ms);
 
         Signal.sigemptyset(set);
@@ -641,7 +578,6 @@ public class SignalTest {
      */
     @Test
     public void testSighold_sigrelse() throws Exception {
-        System.out.println("sighold");
         final int sig = Signal.SIGCHLD;
         if (MultiarchTupelBuilder.getOS() == OS.OPEN_BSD) {
             Assertions.assertThrows(NoSuchNativeMethodException.class, () -> Signal.sighold(sig));
@@ -652,7 +588,7 @@ public class SignalTest {
             Signal.sigemptyset(mask);
             Signal.sigprocmask(0, null, mask);
             Assertions.assertTrue(Signal.sigismember(mask, sig), "Signal is not in mask");
-            System.out.println("sigrelse");
+            JnhwTestLogger.logTest("sigrelse");
             Signal.sigrelse(sig);
             Signal.sigprocmask(0, null, mask);
             Assertions.assertFalse(Signal.sigismember(mask, sig), "Signal is still in mask");
@@ -664,7 +600,6 @@ public class SignalTest {
      */
     @Test
     public void testSigignore() throws Exception {
-        System.out.println("sigignore");
         final int sig = Signal.SIGCHLD;
         final var old = Signal.signal(sig, null);
         try {
@@ -684,7 +619,6 @@ public class SignalTest {
      */
     @Test
     public void testSiginterrupt() throws Exception {
-        System.out.println("siginterrupt");
         int sig = Signal.SIGCHLD;
         Signal.Sigaction oact = Signal.Sigaction.allocateNative(ms);
         Signal.sigaction(sig, null, oact);
@@ -700,21 +634,19 @@ public class SignalTest {
      */
     @Test
     public void testSignal() throws Exception {
-        System.out.println("signal");
-
         final int SIG = Signal.SIGCHLD;
         final var funcIgnore = Signal.SIG_IGN;
         final var savedOld = Signal.signal(SIG, funcIgnore);
         if (Signal.SIG_DFL.equals(savedOld)) {
-            System.out.println("Old signal handler of SIG is SIG_DFL!");
+            JnhwTestLogger.logTest("Old signal handler of SIG is SIG_DFL!");
         } else if (Signal.SIG_ERR.equals(savedOld)) {
-            System.out.println("Old signal handler of SIG is SIG_ERR!");
+            JnhwTestLogger.logTest("Old signal handler of SIG is SIG_ERR!");
         } else if (Signal.SIG_HOLD.equals(savedOld)) {
-            System.out.println("Old signal handler of SIG is SIG_HOLD!");
+            JnhwTestLogger.logTest("Old signal handler of SIG is SIG_HOLD!");
         } else if (Signal.SIG_IGN.equals(savedOld)) {
-            System.out.println("Old signal handler of SIG is SIG_IGN!");
+            JnhwTestLogger.logTest("Old signal handler of SIG is SIG_IGN!");
         } else {
-            System.out.println("Old signal handler of SIG is " + savedOld);
+            JnhwTestLogger.logTest("Old signal handler of SIG is " + savedOld);
         }
 
         Signal.raise(SIG);
@@ -724,7 +656,7 @@ public class SignalTest {
             @Override
             protected void callback(int sig) {
                 raisedSignal[0] = sig;
-                System.out.println("Got signal: " + sig);
+                JnhwTestLogger.logTest("Got signal: " + sig);
             }
         };
 
@@ -767,7 +699,6 @@ public class SignalTest {
     @Test
     @Disabled // it does not return from sigpause - what is wrong...
     public void testSigpause() throws Exception {
-        System.out.println("sigpause");
         final int SIG = Signal.SIGUSR2;
 
         final Object[] resultRef = new Object[1];
@@ -781,14 +712,9 @@ public class SignalTest {
                         resultRef[0] = Boolean.TRUE;
                         resultRef.notify();
                     }
-                } catch (NoSuchNativeMethodException nsnme) {
+                } catch (Throwable t) {
                     synchronized (resultRef) {
-                        resultRef[0] = nsnme;
-                        resultRef.notify();
-                    }
-                } catch (NativeErrorException nee) {
-                    synchronized (resultRef) {
-                        resultRef[0] = nee;
+                        resultRef[0] = t;
                         resultRef.notify();
                     }
                 }
@@ -802,7 +728,7 @@ public class SignalTest {
             }
         }
         Assertions.assertNotNull(resultRef[0]);
-        Assertions.assertEquals(Boolean.class, resultRef[0].getClass(), "value was: " + resultRef[0]);
+        Assertions.assertTrue(resultRef[0] instanceof Boolean, "value was: " + resultRef[0]);
         Assertions.assertEquals(Boolean.TRUE, resultRef[0]);
     }
 
@@ -811,8 +737,7 @@ public class SignalTest {
      */
     @Test
     public void testSigpending() throws Exception {
-        System.out.println("sigpending");
-        NullPointerException nee = Assertions.assertThrows(NullPointerException.class, () -> {
+        Assertions.assertThrows(NullPointerException.class, () -> {
             Signal.sigpending(null);
         });
 
@@ -831,8 +756,6 @@ public class SignalTest {
      */
     @Test
     public void testSigprocmask() throws Exception {
-        System.out.println("sigprocmask");
-
         Signal.sigprocmask(0, null, null);
 
         final Signal.Sigset_t oset = Signal.Sigset_t.allocateNative(ms);
@@ -840,7 +763,7 @@ public class SignalTest {
         Signal.sigprocmask(0, null, oset);
         try {
             //make sure SIGUSR1 is in signak mask; we want to set it
-            System.err.println("current sigprocmask: " + oset);
+            JnhwTestLogger.logTest("current sigprocmask: " + oset);
             Assertions.assertFalse(Signal.sigismember(oset, Signal.SIGUSR1));
             Signal.Sigset_t set = Signal.Sigset_t.allocateNative(ms);
             Signal.sigemptyset(set);
@@ -850,7 +773,7 @@ public class SignalTest {
             final Signal.Sigset_t changedSet = Signal.Sigset_t.allocateNative(ms);
             Signal.sigemptyset(changedSet);
             Signal.sigprocmask(0, null, changedSet);
-            System.err.println("current sigprocmask: " + changedSet.toString());
+            JnhwTestLogger.logTest("current sigprocmask: " + changedSet.toString());
             Assertions.assertTrue(Signal.sigismember(changedSet, Signal.SIGUSR1));
         } finally {
             //restore old mask
@@ -863,14 +786,12 @@ public class SignalTest {
      */
     @Test
     public void testSigqueue() throws Throwable {
-        System.out.println("sigqueue");
         final int SIG = Signal.SIGUSR2;
         switch (MultiarchTupelBuilder.getOS()) {
             case DARWIN, OPEN_BSD ->
                 Assertions.assertThrows(NoSuchNativeMethodException.class, () -> Signal.sigqueue(Unistd.getpid(), SIG, Signal.Sigval.allocateNative(ms)));
             default -> {
                 final Signal.Sigaction act = Signal.Sigaction.allocateNative(ms);
-                OpaqueMemory.clear(act);
                 act.sa_flags(Signal.SA_SIGINFO);
                 Signal.sigemptyset(act.sa_mask);
 
@@ -895,6 +816,9 @@ public class SignalTest {
                         } catch (Throwable t) {
                             throwableRef[0] = t;
                         }
+                        synchronized (valueRef) {
+                            valueRef.notify();
+                        }
                     }
 
                 };
@@ -911,28 +835,38 @@ public class SignalTest {
 
                 Signal.sigqueue(Unistd.getpid(), SIG, sigval);
 
-                Thread.sleep(100);
-                System.out.println("de.ibapl.jnhw.posix.SignalTest.testSigqueue() siginfo_tRef.value: " + siginfo_tRef[0].nativeToString());
+                synchronized (valueRef) {
+                    if (valueRef[0] == null) {
+                        valueRef.wait(ONE_MINUTE);
+                    }
+                    if (valueRef[0] == null) {
+                        Assertions.fail("The callback was not called");
+                    }
+                }
+
+                JnhwTestLogger.logTest("de.ibapl.jnhw.posix.SignalTest.testSigqueue() siginfo_tRef.value: " + siginfo_tRef[0].nativeToString());
                 try {
                     if (throwableRef[0] != null) {
                         throw throwableRef[0];
                     }
                     Assertions.assertNotNull(valueRef[0]);
 
-                    Assertions.assertAll(() -> {
-                        Assertions.assertEquals(SIG, valueRef[0], "value");
-                    },
-                            () -> {
-                                Assertions.assertEquals(0, siginfo_tRef[0].si_errno(), "siginfo_tRef.value.si_errno()");
-                            },
-                            () -> {
-                                Assertions.assertEquals(SIG, siginfo_tRef[0].si_signo(), "siginfo_tRef.value.si_signo()");
-                            },
-                            () -> {
-                                Assertions.assertEquals(data, siginfo_tRef[0].si_value.sival_ptr((baseAddress, scope, parent) -> {
-                                    return new MemoryHeap(baseAddress, scope, data.sizeof());
-                                }, ms), "siginfo_tRef.value.si_value.sival_ptr()");
-                            });
+                    switch (MultiarchTupelBuilder.getOS()) {
+                        case FREE_BSD -> {
+                            //TODO Why is this error here???
+                            Assertions.assertEquals(Errno.ENOEXEC, siginfo_tRef[0].si_errno(), "siginfo_tRef.value.si_errno() errno: " + Errno.getErrnoSymbol(siginfo_tRef[0].si_errno()));
+                            Assertions.fail("TODO Known Error: siginfo_tRef[0].si_errno() == ENOEXEC ??? ");
+                        }
+                        default ->
+                            Assertions.assertEquals(0, siginfo_tRef[0].si_errno(), "siginfo_tRef.value.si_errno() errno: " + Errno.getErrnoSymbol(siginfo_tRef[0].si_errno()));
+                    }
+                    Assertions.assertAll(
+                            () -> Assertions.assertEquals(SIG, valueRef[0].intValue(), "value"),
+                            () -> Assertions.assertEquals(SIG, siginfo_tRef[0].si_signo(), "siginfo_tRef.value.si_signo()"),
+                            () -> Assertions.assertEquals(data, siginfo_tRef[0].si_value.sival_ptr((baseAddress, scope, parent) -> {
+                                return new MemoryHeap(baseAddress, scope, data.sizeof());
+                            }, ms), "siginfo_tRef.value.si_value.sival_ptr()")
+                    );
                 } finally {
                     Signal.sigaction(SIG, oact, null);
                 }
@@ -945,7 +879,6 @@ public class SignalTest {
      */
     @Test
     public void testSigset() throws Exception {
-        System.out.println("sigset");
         if (MultiarchTupelBuilder.getOS() == OS.OPEN_BSD) {
             Assertions.assertThrows(NoSuchNativeMethodException.class, () -> Signal.sigset(Signal.SIGABRT, null));
         } else {
@@ -961,13 +894,13 @@ public class SignalTest {
      */
     @Test
     public void testSigsuspend() throws Exception {
-        System.out.println("sigsuspend");
         final int SIG = Signal.SIGALRM;
+        final Integer[] sigRef = new Integer[]{null};
 
         final Callback__V___I funcHandler = new Callback__V___I() {
             @Override
             protected void callback(int sig) {
-                System.out.println("Got signal: " + sig);
+                sigRef[0] = sig;
             }
         };
         final var oldHandler = Signal.signal(SIG, funcHandler);
@@ -987,6 +920,8 @@ public class SignalTest {
 
             Signal.raise(SIG);
             Signal.sigsuspend(sigmask);
+            Assertions.assertTrue(sigRef[0] instanceof Integer);
+            Assertions.assertEquals(SIG, sigRef[0].intValue());
             Assertions.assertTrue(true, "Return from sigsuspend as expected");
         } finally {
             Signal.signal(SIG, oldHandler);
@@ -999,7 +934,6 @@ public class SignalTest {
      */
     @Test
     public void testSigtimedwait() throws Exception {
-        System.out.println("sigtimedwait");
         switch (MultiarchTupelBuilder.getOS()) {
             case DARWIN, OPEN_BSD -> {
                 final Signal.Sigset_t set = Signal.Sigset_t.allocateNative(ms);
@@ -1040,19 +974,19 @@ public class SignalTest {
                         Signal.raise(SIG);
                         signal = Signal.sigtimedwait(set, null, timeout);
                     } catch (NoSuchNativeMethodException nsnme) {
-                        System.err.println("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX");
-                        System.err.println("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX");
-                        System.err.println("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX");
-                        System.err.println("XXX");
-                        System.err.println("XXX  de.ibapl.jnhw.posix.SignalTest.testSigtimedwait() " + nsnme);
-                        System.err.println("XXX  The test suite will crash competely after this - Fix this testcase");
-                        System.err.println("XXX");
-                        System.err.println("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX");
-                        System.err.println("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX");
-                        System.err.println("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX");
-                        System.err.flush();
+                        //the system is in a bad state so we print a message and exit.
+                        JnhwTestLogger.logTest("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX");
+                        JnhwTestLogger.logTest("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX");
+                        JnhwTestLogger.logTest("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX");
+                        JnhwTestLogger.logTest("XXX");
+                        JnhwTestLogger.logTest("XXX  de.ibapl.jnhw.posix.SignalTest.testSigtimedwait() " + nsnme);
+                        JnhwTestLogger.logTest("XXX  The test suite will crash competely after this - Fix this testcase");
+                        JnhwTestLogger.logTest("XXX");
+                        JnhwTestLogger.logTest("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX");
+                        JnhwTestLogger.logTest("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX");
+                        JnhwTestLogger.logTest("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX");
+                        JnhwTestLogger.logTest("");
                         Thread.sleep(1000);
-                        System.err.flush();
                         //Do the exit here - so wee actually see the message above - otherwise the message will not be visible.
                         System.exit(23);
                     }
@@ -1076,7 +1010,6 @@ public class SignalTest {
      */
     @Test
     public void testSigwait() throws Exception {
-        System.out.println("sigwait");
         final int SIG = Signal.SIGALRM;
 
         Signal.signal(SIG, Signal.SIG_DFL);
@@ -1115,8 +1048,6 @@ public class SignalTest {
      */
     @Test
     public void testSigwaitinfo() throws Exception {
-        System.out.println("sigwaitinfo");
-
         switch (MultiarchTupelBuilder.getOS()) {
             case DARWIN, OPEN_BSD -> {
                 final Signal.Sigset_t set = Signal.Sigset_t.allocateNative(ms);
@@ -1154,19 +1085,18 @@ public class SignalTest {
 
                         assertEquals(SIG, signal);
                     } catch (NoSuchNativeMethodException nsnme) {
-                        System.err.println("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX");
-                        System.err.println("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX");
-                        System.err.println("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX");
-                        System.err.println("XXX");
-                        System.err.println("XXX  de.ibapl.jnhw.posix.SignalTest.testSigwaitinfo() " + nsnme);
-                        System.err.println("XXX  The test suite will crash competely after this - Fix this testcase");
-                        System.err.println("XXX");
-                        System.err.println("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX");
-                        System.err.println("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX");
-                        System.err.println("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX");
-                        System.err.flush();
+                        //the system is in a bad state so we print a message and exit.
+                        JnhwTestLogger.logTest("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX");
+                        JnhwTestLogger.logTest("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX");
+                        JnhwTestLogger.logTest("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX");
+                        JnhwTestLogger.logTest("XXX");
+                        JnhwTestLogger.logTest("XXX  de.ibapl.jnhw.posix.SignalTest.testSigwaitinfo() " + nsnme);
+                        JnhwTestLogger.logTest("XXX  The test suite will crash competely after this - Fix this testcase");
+                        JnhwTestLogger.logTest("XXX");
+                        JnhwTestLogger.logTest("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX");
+                        JnhwTestLogger.logTest("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX");
+                        JnhwTestLogger.logTest("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX");
                         Thread.sleep(1000);
-                        System.err.flush();
                         //Do the exit here - so wee actually see the message above - otherwise the message will not be visible.
                         System.exit(23);
                     }
@@ -1247,7 +1177,7 @@ public class SignalTest {
             Callback__V__UnionSigval<OpaqueMemory> sigev_notify_function_dummy = new Callback__V__UnionSigval(MemoryAddress.ofLong(44)) {
                 @Override
                 protected void callback(MemoryAddress sival_ptr, int sival_int) {
-                    throw new UnsupportedOperationException("Not supported yet.");
+                    throw new AssertionError("Never expected to be called");
                 }
             };
             sigevent.sigev_notify_function(sigev_notify_function_dummy);
@@ -1323,7 +1253,7 @@ public class SignalTest {
         Callback__V___I sa_handler = new Callback__V___I(MemoryAddress.ofLong(33)) {
             @Override
             protected void callback(int value) {
-                throw new UnsupportedOperationException("Not supported yet.");
+                throw new AssertionError("Never expected to be called");
             }
         };
         sigaction.sa_handler(sa_handler);
@@ -1333,7 +1263,7 @@ public class SignalTest {
         Callback__V___I_MA_MA<Signal.Siginfo_t, OpaqueMemory> sa_sigaction = new Callback__V___I_MA_MA<>(MemoryAddress.ofLong(44)) {
             @Override
             protected void callback(int value, MemoryAddress a, MemoryAddress b) {
-                throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+                throw new AssertionError("Never expected to be called");
             }
         };
         sigaction.sa_sigaction(sa_sigaction);

@@ -25,6 +25,7 @@ import de.ibapl.jnhw.common.datatypes.BaseDataType;
 import de.ibapl.jnhw.common.memory.layout.Alignment;
 import de.ibapl.jnhw.libloader.MultiarchTupelBuilder;
 import de.ibapl.jnhw.libloader.OS;
+import de.ibapl.jnhw.posix.JnhwTestLogger;
 import de.ibapl.jnhw.util.posix.DefinesTest;
 import de.ibapl.jnhw.util.posix.PosixDataType;
 import java.lang.foreign.MemorySession;
@@ -34,6 +35,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInfo;
 import org.junit.jupiter.api.condition.DisabledOnOs;
 
 /**
@@ -45,31 +47,38 @@ public class TypesTest {
 
     @BeforeAll
     public static void checkBeforeAll_HAVE_SYS_TYPES_H() throws Exception {
+        JnhwTestLogger.logBeforeAllBeginn("checkBeforeAll_HAVE_SYS_TYPES_H");
         if (MultiarchTupelBuilder.getOS() == OS.WINDOWS) {
             Assertions.assertFalse(Types.HAVE_SYS_TYPES_H, "not expected to have sys/types.h");
         } else {
             Assertions.assertTrue(Types.HAVE_SYS_TYPES_H, "expected to have sys/types.h");
         }
+        JnhwTestLogger.logBeforeAllEnd("checkBeforeAll_HAVE_SYS_TYPES_H");
     }
 
     @BeforeAll
     public static void checkBeforeAll_StdioDefines() throws Exception {
+        JnhwTestLogger.logBeforeAllBeginn("checkBeforeAll_StdioDefines");
         if (MultiarchTupelBuilder.getOS() == OS.WINDOWS) {
+            JnhwTestLogger.logBeforeAllEnd("checkBeforeAll_StdioDefines");
             return;
         }
         DefinesTest.testDefines(Types.class, "HAVE_SYS_TYPES_H");
+        JnhwTestLogger.logBeforeAllEnd("checkBeforeAll_StdioDefines");
     }
 
     private MemorySession ms;
 
     @BeforeEach
-    public void setUp() {
+    public void setUp(TestInfo testInfo) throws Exception {
+        JnhwTestLogger.logBeforeEach(testInfo);
         ms = MemorySession.openConfined();
     }
 
     @AfterEach
-    public void tearDown() {
+    public void tearDown(TestInfo testInfo) {
         ms.close();
+        JnhwTestLogger.logAfterEach(testInfo);
     }
 
     @Test

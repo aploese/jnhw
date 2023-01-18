@@ -23,10 +23,14 @@ package de.ibapl.jnhw.posix.sys;
 
 import de.ibapl.jnhw.libloader.MultiarchTupelBuilder;
 import de.ibapl.jnhw.libloader.OS;
+import de.ibapl.jnhw.posix.JnhwTestLogger;
 import de.ibapl.jnhw.util.posix.DefinesTest;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInfo;
 import org.junit.jupiter.api.condition.DisabledOnOs;
 
 /**
@@ -38,11 +42,23 @@ public class StatTest {
 
     @BeforeAll
     public static void checkBeforeAll_HAVE_SYS_STAT_H() throws Exception {
+        JnhwTestLogger.logBeforeAllBeginn("checkBeforeAll_HAVE_SYS_STAT_H");
         if (MultiarchTupelBuilder.getOS() == OS.WINDOWS) {
             Assertions.assertFalse(Stat.HAVE_SYS_STAT_H, "not expected to have sys/stat.h");
         } else {
             Assertions.assertTrue(Stat.HAVE_SYS_STAT_H, "expected to have sys/stat.h");
         }
+        JnhwTestLogger.logBeforeAllEnd("checkBeforeAll_HAVE_SYS_STAT_H");
+    }
+
+    @BeforeEach
+    public void setUp(TestInfo testInfo) throws Exception {
+        JnhwTestLogger.logBeforeEach(testInfo);
+    }
+
+    @AfterEach
+    public void tearDown(TestInfo testInfo) {
+        JnhwTestLogger.logAfterEach(testInfo);
     }
 
     @Test

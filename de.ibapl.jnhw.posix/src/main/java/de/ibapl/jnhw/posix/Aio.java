@@ -822,10 +822,11 @@ public class Aio {
      * - retrieve errors status for an asynchronous I/O operation</a>.
      *
      * @param aiocb prefers to an asynchronous I/O control block.
+     *
      * @return If the asynchronous I/O operation has completed successfully,
-     * then false is returned. If the asynchronous operation as not yet
-     * completed, then true is returned. Otherwise NativeErrorException is
-     * thrown.
+     * then 0 is returned. If the asynchronous operation as not yet completed,
+     * then Errno.EINPROGRESS is returned. On -1 an NativeErrorException is
+     * thrown. Any other values returned are not POSIX conform, but do happen.
      *
      * @throws NativeErrorException if the return value of the native function
      * indicates an error.
@@ -834,10 +835,10 @@ public class Aio {
      */
     public final static int aio_error(Aiocb aiocb) throws NativeErrorException, NoSuchNativeMethodException {
         final int result = aio_error.invoke_sI___P(aiocb);
-        if (result == 0) {
-            return result;
-        } else {
+        if (result == -1) {
             throw new NativeErrorException(Errno.errno());
+        } else {
+            return result;
         }
     }
 

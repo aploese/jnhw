@@ -33,6 +33,7 @@ import de.ibapl.jnhw.common.util.ConversionsJava2Native;
 import static de.ibapl.jnhw.libloader.MemoryModel.ILP32;
 import static de.ibapl.jnhw.libloader.MemoryModel.LP64;
 import de.ibapl.jnhw.libloader.MultiarchTupelBuilder;
+import de.ibapl.jnhw.posix.JnhwTestLogger;
 import de.ibapl.jnhw.posix.LibJnhwPosixTestLoader;
 import de.ibapl.jnhw.util.posix.nativepointer.FunctionPtr__V__UnionSigval;
 import de.ibapl.jnhw.util.posix.upcall.CallbackFactory__V__UnionSigval;
@@ -44,6 +45,7 @@ import org.junit.jupiter.api.AfterEach;
 import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInfo;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 
@@ -78,21 +80,19 @@ public class Callback__V__UnionSigval_Test {
     private MemorySession ms;
 
     @BeforeEach
-    public void setUpBefore() throws Exception {
-        System.gc();
+    public void setUp(TestInfo testInfo) throws Exception {
+        JnhwTestLogger.logBeforeEach(testInfo);
+        System.gc(); //TODO removint this will fail the tests ...?
         ms = MemorySession.openConfined();
-    }
-
-    @BeforeEach
-    public void beforeEach() throws Exception {
         assertEquals(CallbackFactory__V__UnionSigval.MAX_CALL_BACKS, CallbackFactory__V__UnionSigval.callbacksAvailable());
     }
 
     @AfterEach
-    public void cleanupAfterEach() throws Exception {
+    public void cleanupAfterEach(TestInfo testInfo) throws Exception {
         ms.close();
         System.gc();
         assertEquals(CallbackFactory__V__UnionSigval.MAX_CALL_BACKS, CallbackFactory__V__UnionSigval.callbacksAvailable());
+        JnhwTestLogger.logAfterEach(testInfo);
     }
 
     private static FunctionPtr__V__MA getCallback__V__UnionSigval() {
@@ -133,7 +133,6 @@ public class Callback__V__UnionSigval_Test {
      */
     @Test
     public void testMAX_CALL_BACKS() {
-        System.out.println("MAX_CALL_BACKS");
         int maxCB = CallbackFactory__V__UnionSigval.MAX_CALL_BACKS;
         assertEquals(16, maxCB);
         Callback__V__UnionSigval[] cbs = new Callback__V__UnionSigval[maxCB];
@@ -184,7 +183,6 @@ public class Callback__V__UnionSigval_Test {
         0x0000000004030201L,
         0x00000000F4030201L})
     public void testCallAndRelease_A(final long testValue) {
-        System.out.printf("Callback__V__UnionSigval_Test.testCallAndRelease_A 0x%016x %1$d \n", testValue).flush();
         final long[] addressValueRef = new long[1];
         final int[] intValueRef = new int[1];
 
@@ -310,7 +308,6 @@ public class Callback__V__UnionSigval_Test {
         0x04030201,
         0xf4030201})
     public void testCallAndRelease_I(final int testValue) {
-        System.out.printf("Callback__V__UnionSigval_Test.testCallAndRelease_I 0x%08x %1$d \n", testValue).flush();
         final long[] addressValueRef = new long[1];
         final int[] intValueRef = new int[1];
         final Callback__V__UnionSigval NULL_PTR = new Callback__V__UnionSigval((t) -> MemoryAddress.NULL) {

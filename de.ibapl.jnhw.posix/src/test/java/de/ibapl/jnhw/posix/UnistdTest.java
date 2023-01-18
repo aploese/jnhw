@@ -45,6 +45,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInfo;
 import org.junit.jupiter.api.condition.DisabledOnOs;
 
 @DisabledOnOs(org.junit.jupiter.api.condition.OS.WINDOWS)
@@ -63,8 +64,10 @@ public class UnistdTest {
 
     @BeforeAll
     public static void setUpBeforeClass() throws Exception {
+        JnhwTestLogger.logBeforeAllBeginn("setUpBeforeClass");
         f = File.createTempFile("jnhw-test", "");
         f.delete();
+        JnhwTestLogger.logBeforeAllEnd("setUpBeforeClass");
     }
 
     @AfterAll
@@ -107,35 +110,42 @@ public class UnistdTest {
     }
 
     @BeforeEach
-    public void setUp() throws Exception {
+    public void setUp(TestInfo testInfo) throws Exception {
+        JnhwTestLogger.logBeforeEach(testInfo);
         fd = -1;
         ms = MemorySession.openConfined();
     }
 
     @AfterEach
-    public void tearDown() throws Exception {
+    public void tearDown(TestInfo testInfo) throws Exception {
         f.delete();
         if (fd != -1) {
             Unistd.close(fd);
         }
         ms.close();
+        JnhwTestLogger.logAfterEach(testInfo);
     }
 
     @BeforeAll
     public static void checkBeforeAll_HAVE_UNISTD_H() throws Exception {
+        JnhwTestLogger.logBeforeAllBeginn("checkBeforeAll_HAVE_UNISTD_H");
         if (MultiarchTupelBuilder.getOS() == OS.WINDOWS) {
             Assertions.assertFalse(Unistd.HAVE_UNISTD_H, "not expected to have unistd.h");
         } else {
             Assertions.assertTrue(Unistd.HAVE_UNISTD_H, "expected to have unistd.h");
         }
+        JnhwTestLogger.logBeforeAllEnd("checkBeforeAll_HAVE_UNISTD_H");
     }
 
     @BeforeAll
     public static void checkBeforeAll_UnistdDefines() throws Exception {
+        JnhwTestLogger.logBeforeAllBeginn("checkBeforeAll_UnistdDefines");
         if (MultiarchTupelBuilder.getOS() == OS.WINDOWS) {
+            JnhwTestLogger.logBeforeAllEnd("checkBeforeAll_UnistdDefines");
             return;
         }
         DefinesTest.testDefines(Unistd.class, "HAVE_UNISTD_H");
+        JnhwTestLogger.logBeforeAllEnd("checkBeforeAll_UnistdDefines");
     }
 
     @Test
@@ -234,7 +244,7 @@ public class UnistdTest {
         Unistd.setregid(gid, egid);
         Assertions.assertEquals(gid, Unistd.getgid());
         Assertions.assertEquals(egid, Unistd.getegid());
-        System.out.println("real gid: " + gid + " effective gid: " + egid);
+        JnhwTestLogger.logTest("real gid: " + gid + " effective gid: " + egid);
     }
 
     @Test
@@ -250,25 +260,25 @@ public class UnistdTest {
         Unistd.setreuid(uid, euid);
         Assertions.assertEquals(uid, Unistd.getuid());
         Assertions.assertEquals(euid, Unistd.geteuid());
-        System.out.println("real uid: " + uid + " effective uid: " + euid);
+        JnhwTestLogger.logTest("real uid: " + uid + " effective uid: " + euid);
     }
 
     @Test
     public void testGetpid() throws Exception {
         int pid = Unistd.getpid();
-        System.out.println("pid: " + pid);
+        JnhwTestLogger.logTest("pid: " + pid);
     }
 
     @Test
     public void testGetppid() throws Exception {
         int ppid = Unistd.getppid();
-        System.out.println("ppid: " + ppid);
+        JnhwTestLogger.logTest("ppid: " + ppid);
     }
 
     @Test
     public void testGetpgrp() throws Exception {
         int pgrp = Unistd.getpgrp();
-        System.out.println("pgrp: " + pgrp);
+        JnhwTestLogger.logTest("pgrp: " + pgrp);
     }
 
     @Test
@@ -569,14 +579,14 @@ public class UnistdTest {
      */
     @Test
     public void testSysconf() throws Exception {
-        System.out.println("sysconf(_SC_AIO_LISTIO_MAX) = " + Unistd.sysconf(Unistd._SC_AIO_LISTIO_MAX));
-        System.out.println("sysconf(_SC_AIO_MAX) = " + Unistd.sysconf(Unistd._SC_AIO_MAX));
-        System.out.println("sysconf(_SC_AIO_PRIO_DELTA_MAX) = " + Unistd.sysconf(Unistd._SC_AIO_PRIO_DELTA_MAX));
+        JnhwTestLogger.logTest("sysconf(_SC_AIO_LISTIO_MAX) = " + Unistd.sysconf(Unistd._SC_AIO_LISTIO_MAX));
+        JnhwTestLogger.logTest("sysconf(_SC_AIO_MAX) = " + Unistd.sysconf(Unistd._SC_AIO_MAX));
+        JnhwTestLogger.logTest("sysconf(_SC_AIO_PRIO_DELTA_MAX) = " + Unistd.sysconf(Unistd._SC_AIO_PRIO_DELTA_MAX));
         if (Unistd._SC_MINSIGSTKSZ.isDefined()) {
-            System.out.println("sysconf(_SC_MINSIGSTKSZ) = " + Unistd.sysconf(Unistd._SC_MINSIGSTKSZ.get()));
+            JnhwTestLogger.logTest("sysconf(_SC_MINSIGSTKSZ) = " + Unistd.sysconf(Unistd._SC_MINSIGSTKSZ.get()));
         }
         if (Unistd._SC_SIGSTKSZ.isDefined()) {
-            System.out.println("sysconf(_SC_SIGSTKSZ) = " + Unistd.sysconf(Unistd._SC_SIGSTKSZ.get()));
+            JnhwTestLogger.logTest("sysconf(_SC_SIGSTKSZ) = " + Unistd.sysconf(Unistd._SC_SIGSTKSZ.get()));
         }
     }
 

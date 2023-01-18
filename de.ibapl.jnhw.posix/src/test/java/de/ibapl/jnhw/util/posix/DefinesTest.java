@@ -26,11 +26,15 @@ import de.ibapl.jnhw.common.util.IntDefine;
 import de.ibapl.jnhw.common.util.ObjectDefine;
 import de.ibapl.jnhw.libloader.MultiarchTupelBuilder;
 import de.ibapl.jnhw.libloader.OS;
+import de.ibapl.jnhw.posix.JnhwTestLogger;
 import de.ibapl.jnhw.posix.LibJnhwPosixTestLoader;
 import java.lang.reflect.Field;
 import java.util.stream.Stream;
+import org.junit.jupiter.api.AfterEach;
 import static org.junit.jupiter.api.Assertions.*;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInfo;
 import org.junit.jupiter.api.function.Executable;
 
 /**
@@ -136,32 +140,42 @@ public class DefinesTest {
     }
 
     public static void printDefines(Class clazz) throws Exception {
-        System.out.println(clazz.getName() + " Defines: >>>");
+        JnhwTestLogger.logTest(clazz.getName() + " Defines: >>>");
         for (Field f : clazz.getFields()) {
             if (f.getAnnotation(Define.class) != null) {
                 Class type = f.getType();
                 if (Long.class.equals(type) || long.class.equals(type)) {
-                    System.out.println(String.format("\t%-30s = 0x%2$016x | %2$d", f.getName(), f.getLong(clazz)));
+                    JnhwTestLogger.logTest("\t%-30s = 0x%2$016x | %2$d", f.getName(), f.getLong(clazz));
                 } else if (Integer.class.equals(type) || int.class.equals(type)) {
-                    System.out.println(String.format("\t%-30s = 0x%2$08x | %2$d", f.getName(), f.getInt(clazz)));
+                    JnhwTestLogger.logTest("\t%-30s = 0x%2$08x | %2$d", f.getName(), f.getInt(clazz));
                 } else if (Short.class.equals(type) || short.class.equals(type)) {
-                    System.out.println(String.format("\t%-30s = 0x%2$04x | %2$d", f.getName(), f.getShort(clazz)));
+                    JnhwTestLogger.logTest("\t%-30s = 0x%2$04x | %2$d", f.getName(), f.getShort(clazz));
                 } else if (Byte.class.equals(type) || byte.class.equals(type)) {
-                    System.out.println(String.format("\t%-30s = 0x%2$02x | %2$d", f.getName(), f.getByte(clazz)));
+                    JnhwTestLogger.logTest("\t%-30s = 0x%2$02x | %2$d", f.getName(), f.getByte(clazz));
                 } else if (IntDefine.class.equals(type)) {
                     IntDefine def = (IntDefine) f.get(clazz);
                     assertNotNull(def, clazz.getName() + "#" + f.getName());
                     if (def.isDefined()) {
-                        System.out.println(String.format("\t%-30s = 0x%2$08x | %2$d", f.getName(), def.get()));
+                        JnhwTestLogger.logTest("\t%-30s = 0x%2$08x | %2$d", f.getName(), def.get());
                     } else {
-                        System.out.println(String.format("\t%-30s ... is not defined", f.getName()));
+                        JnhwTestLogger.logTest("\t%-30s ... is not defined", f.getName());
                     }
                 } else {
-                    System.out.println(String.format("\t%-30s = \"%s\"", f.getName(), f.get(clazz)));
+                    JnhwTestLogger.logTest("\t%-30s = \"%s\"", f.getName(), f.get(clazz));
                 }
             }
         }
-        System.out.println("<<< " + clazz.getName() + " Defines");
+        JnhwTestLogger.logTest("<<< " + clazz.getName() + " Defines");
+    }
+
+    @BeforeEach
+    public void setUp(TestInfo testInfo) throws Exception {
+        JnhwTestLogger.logBeforeEach(testInfo);
+    }
+
+    @AfterEach
+    public void tearDown(TestInfo testInfo) {
+        JnhwTestLogger.logAfterEach(testInfo);
     }
 
     @Test

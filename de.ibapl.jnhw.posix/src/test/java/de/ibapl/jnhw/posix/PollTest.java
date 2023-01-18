@@ -33,6 +33,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInfo;
 import org.junit.jupiter.api.condition.DisabledOnOs;
 
 @DisabledOnOs(org.junit.jupiter.api.condition.OS.WINDOWS)
@@ -40,54 +41,54 @@ public class PollTest {
 
     @BeforeAll
     public static void checkBeforeAll_HAVE_POLL_H() throws Exception {
+        JnhwTestLogger.logBeforeAllBeginn("checkBeforeAll_HAVE_POLL_H");
         if (MultiarchTupelBuilder.getOS() == OS.WINDOWS) {
             Assertions.assertFalse(Poll.HAVE_POLL_H, "not expected to have poll.h");
         } else {
             Assertions.assertTrue(Poll.HAVE_POLL_H, "expected to have poll.h");
         }
+        JnhwTestLogger.logBeforeAllEnd("checkBeforeAll_HAVE_POLL_H");
     }
 
     @BeforeAll
     public static void checkBeforeAll_PollDefines() throws Exception {
+        JnhwTestLogger.logBeforeAllBeginn("checkBeforeAll_PollDefines");
         if (MultiarchTupelBuilder.getOS() == OS.WINDOWS) {
+            JnhwTestLogger.logBeforeAllEnd("checkBeforeAll_PollDefines");
             return;
         }
         DefinesTest.testDefines(Poll.class, "HAVE_POLL_H");
+        JnhwTestLogger.logBeforeAllEnd("checkBeforeAll_PollDefines");
     }
 
     @BeforeAll
     public static void checkBeforeAll_StructPollFd() throws Exception {
+        JnhwTestLogger.logBeforeAllBeginn("checkBeforeAll_StructPollFd");
         if (MultiarchTupelBuilder.getOS() == OS.WINDOWS) {
+            JnhwTestLogger.logBeforeAllEnd("checkBeforeAll_StructPollFd");
             return;
         }
-        Assertions.assertAll(() -> {
-            Assertions.assertEquals(LibJnhwPosixTestLoader.invoke_sI___V("PollFd_sizeof"), Poll.PollFd.sizeof, "sizeof");
-        },
-                () -> {
-                    Assertions.assertEquals(LibJnhwPosixTestLoader.invoke_sI___V("PollFd_alignof"), Poll.PollFd.alignof.alignof, "alignof");
-                },
-                () -> {
-                    Assertions.assertEquals(LibJnhwPosixTestLoader.invoke_sI___V("PollFd_offsetof_fd"), Poll.PollFd.offsetof_Fd, "offsetof_Fd");
-                },
-                () -> {
-                    Assertions.assertEquals(LibJnhwPosixTestLoader.invoke_sI___V("PollFd_offsetof_events"), Poll.PollFd.offsetof_Events, "offsetof_Events");
-                },
-                () -> {
-                    Assertions.assertEquals(LibJnhwPosixTestLoader.invoke_sI___V("PollFd_offsetof_revents"), Poll.PollFd.offsetof_Revents, "offsetof_Revents");
-                }
+        Assertions.assertAll(
+                () -> Assertions.assertEquals(LibJnhwPosixTestLoader.invoke_sI___V("PollFd_sizeof"), Poll.PollFd.sizeof, "sizeof"),
+                () -> Assertions.assertEquals(LibJnhwPosixTestLoader.invoke_sI___V("PollFd_alignof"), Poll.PollFd.alignof.alignof, "alignof"),
+                () -> Assertions.assertEquals(LibJnhwPosixTestLoader.invoke_sI___V("PollFd_offsetof_fd"), Poll.PollFd.offsetof_Fd, "offsetof_Fd"),
+                () -> Assertions.assertEquals(LibJnhwPosixTestLoader.invoke_sI___V("PollFd_offsetof_events"), Poll.PollFd.offsetof_Events, "offsetof_Events"),
+                () -> Assertions.assertEquals(LibJnhwPosixTestLoader.invoke_sI___V("PollFd_offsetof_revents"), Poll.PollFd.offsetof_Revents, "offsetof_Revents")
         );
+        JnhwTestLogger.logBeforeAllEnd("checkBeforeAll_StructPollFd");
     }
-
     private MemorySession ms;
 
     @BeforeEach
-    public void setUp() {
+    public void setUp(TestInfo testInfo) throws Exception {
+        JnhwTestLogger.logBeforeEach(testInfo);
         ms = MemorySession.openConfined();
     }
 
     @AfterEach
-    public void tearDown() {
+    public void tearDown(TestInfo testInfo) {
         ms.close();
+        JnhwTestLogger.logAfterEach(testInfo);
     }
 
     @Test

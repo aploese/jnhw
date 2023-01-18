@@ -153,3 +153,11 @@ int sizeOf_long_double() {
 int get__BIGGEST_ALIGNMENT__() {
     return __BIGGEST_ALIGNMENT__;
 }
+
+uintptr_t JnhwUintptrT__MA___V_0x0000000080000000L() {
+    return (uintptr_t)0x0000000080000000L;
+}
+
+intptr_t JnhwIntptrT__MA___V_0x0000000080000000L() {
+    return (intptr_t)0x0000000080000000L;
+}

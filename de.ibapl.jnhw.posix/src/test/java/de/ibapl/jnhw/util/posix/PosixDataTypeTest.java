@@ -22,9 +22,13 @@
 package de.ibapl.jnhw.util.posix;
 
 import de.ibapl.jnhw.common.datatypes.BaseDataType;
+import de.ibapl.jnhw.posix.JnhwTestLogger;
 import de.ibapl.jnhw.posix.LibJnhwPosixTestLoader;
+import org.junit.jupiter.api.AfterEach;
 import static org.junit.jupiter.api.Assertions.*;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInfo;
 import org.junit.jupiter.api.condition.DisabledOnOs;
 
 /**
@@ -34,6 +38,16 @@ import org.junit.jupiter.api.condition.DisabledOnOs;
  */
 @DisabledOnOs(org.junit.jupiter.api.condition.OS.WINDOWS)
 public class PosixDataTypeTest {
+
+    @BeforeEach
+    public void setUp(TestInfo testInfo) throws Exception {
+        JnhwTestLogger.logBeforeEach(testInfo);
+    }
+
+    @AfterEach
+    public void tearDown(TestInfo testInfo) {
+        JnhwTestLogger.logAfterEach(testInfo);
+    }
 
     @Test
     public void testCc_t() {

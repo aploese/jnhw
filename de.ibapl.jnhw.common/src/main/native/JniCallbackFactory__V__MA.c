@@ -30,21 +30,31 @@ extern "C" {
 
 #define MAX_CALL_BACKS 16
 
+#ifdef __LP64__ 
+ #define MSG_UNASSIGNED "From C code: unassigned Callback__V__MA %d @0x%08lx no upcall handle!\n"
+ #define MSG_ATTACH_THREAD_FAILED "From C code: Callback__V__MA %d @0x%08lx can't attach to thread!\n"
+ #define MSG_NO_UPCALL "From C code: Callback__V__MA %d @0x%08lx can't get env!\n"
+#else 
+ #define MSG_UNASSIGNED "From C code: unassigned Callback__V__MA %d @0x%04x no upcall handle!\n"
+ #define MSG_ATTACH_THREAD_FAILED "From C code: Callback__V__MA %d @0x%04x can't attach to thread!\n"
+ #define MSG_NO_UPCALL "From C code: Callback__V__MA %d @0x%04x can't get env!\n"
+#endif 
+
 #define TRAMPOLINE(index) \
     static struct cb_refs callback_refs_ ## index; \
     void _jnhw_trampoline__V__MA__ ## index (void* value) {\
         struct  cb_refs callback_refs = callback_refs_ ## index; \
         if ((callback_refs.callbackClassRef == NULL) || (callback_refs.trampolineMethodID == 0)) { \
-            jnhw_log_stderr("unassigned Callback__V__MA %d @0x%08lx no upcall handle", index, (uint64_t)(uintptr_t)&_jnhw_trampoline__V__MA__ ## index); \
+            jnhw_log_stderr(MSG_UNASSIGNED, index, (uintptr_t)&_jnhw_trampoline__V__MA__ ## index); \
             return; \
         } \
         JNIEnv *env;\
         if ((*common_jvm)->AttachCurrentThread(common_jvm, (void**) &env, NULL)) {\
-            jnhw_log_stderr("Callback__V__MA %d @0x%08lx can't attach to thread", index, (uint64_t)(uintptr_t)&_jnhw_trampoline__V__MA__ ## index); \
+            jnhw_log_stderr(MSG_ATTACH_THREAD_FAILED, index, (uintptr_t)&_jnhw_trampoline__V__MA__ ## index); \
             return;\
         } else {\
             if (*env == NULL) {\
-            jnhw_log_stderr("Callback__V__MA %d @0x%08lx can't get env", index, (uint64_t)(uintptr_t)&_jnhw_trampoline__V__MA__ ## index); \
+            jnhw_log_stderr(MSG_NO_UPCALL, index, (uintptr_t)&_jnhw_trampoline__V__MA__ ## index); \
                 return;\
             }\
             (*env)->CallStaticVoidMethod(env, callback_refs.callbackClassRef, callback_refs.trampolineMethodID, (int64_t)(uintptr_t)value);\

@@ -36,6 +36,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInfo;
 import org.junit.jupiter.api.condition.DisabledOnOs;
 
 @DisabledOnOs(org.junit.jupiter.api.condition.OS.WINDOWS)
@@ -43,24 +44,31 @@ public class TermiosTest {
 
     @BeforeAll
     public static void checkBeforeAll_HAVE_TERMIOS_H() throws Exception {
+        JnhwTestLogger.logBeforeAllBeginn("checkBeforeAll_HAVE_TERMIOS_H");
         if (MultiarchTupelBuilder.getOS() == OS.WINDOWS) {
             assertFalse(Termios.HAVE_TERMIOS_H, "not expected to have termios.h");
         } else {
             assertTrue(Termios.HAVE_TERMIOS_H, "expected to have termios.h");
         }
+        JnhwTestLogger.logBeforeAllEnd("checkBeforeAll_HAVE_TERMIOS_H");
     }
 
     @BeforeAll
     public static void checkBeforeAll_TermiosDefines() throws Exception {
+        JnhwTestLogger.logBeforeAllBeginn("checkBeforeAll_TermiosDefines");
         if (MultiarchTupelBuilder.getOS() == OS.WINDOWS) {
+            JnhwTestLogger.logBeforeAllEnd("checkBeforeAll_TermiosDefines");
             return;
         }
         DefinesTest.testDefines(Termios.class, "HAVE_TERMIOS_H");
+        JnhwTestLogger.logBeforeAllEnd("checkBeforeAll_TermiosDefines");
     }
 
     @BeforeAll
     public static void checkBeforeAll_StructTermios() throws Exception {
+        JnhwTestLogger.logBeforeAllBeginn("checkBeforeAll_StructTermios");
         if (MultiarchTupelBuilder.getOS() == OS.WINDOWS) {
+            JnhwTestLogger.logBeforeAllEnd("checkBeforeAll_StructTermios");
             return;
         }
         Assertions.assertAll(
@@ -75,18 +83,21 @@ public class TermiosTest {
                 () -> Assertions.assertEquals(LibJnhwPosixTestLoader.invoke_sI___V("StructTermios_offsetof_c_ispeed"), Termios.StructTermios.offsetof_C_ispeed, "offsetof_C_ispeed"),
                 () -> Assertions.assertEquals(LibJnhwPosixTestLoader.invoke_sI___V("StructTermios_offsetof_c_ospeed"), Termios.StructTermios.offsetof_C_ospeed, "offsetof_C_ospeed")
         );
+        JnhwTestLogger.logBeforeAllEnd("checkBeforeAll_StructTermios");
     }
 
     private MemorySession ms;
 
     @BeforeEach
-    public void setUp() throws Exception {
+    public void setUp(TestInfo testInfo) throws Exception {
+        JnhwTestLogger.logBeforeEach(testInfo);
         ms = MemorySession.openConfined();
     }
 
     @AfterEach
-    public void tearDown() throws Exception {
+    public void tearDown(TestInfo testInfo) throws Exception {
         ms.close();
+        JnhwTestLogger.logAfterEach(testInfo);
     }
 
     @Test

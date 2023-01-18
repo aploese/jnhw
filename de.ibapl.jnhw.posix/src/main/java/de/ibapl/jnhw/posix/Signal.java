@@ -3523,24 +3523,16 @@ public class Signal {
      * @throws NoSuchNativeMethodException if the method sigpause is not
      * available natively.
      */
-    public final static void sigpause(int sig) throws NativeErrorException, NoSuchNativeMethodException {
-        try {
-            final int result = sigpause.invoke_sI__sI(sig);
-            if (result == -1) {
-                if (Errno.errno() == Errno.EINTR) {
-                    //no-op, just return
-                } else {
-                    throw new NativeErrorException(Errno.errno());
-                }
+    public final static void sigpause(int sig) throws NativeErrorException {
+        final int result = sigpause.invoke_sI__sI(sig);
+        if (result == -1) {
+            if (Errno.errno() == Errno.EINTR) {
+                //no-op, just return
             } else {
-                throw new RuntimeException("Result of sigpause not excpected: " + result);
+                throw new NativeErrorException(Errno.errno());
             }
-        } catch (NullPointerException npe) {
-            if (sigpause == null) {
-                throw new NoSuchNativeMethodException("sigpause");
-            } else {
-                throw npe;
-            }
+        } else {
+            throw new RuntimeException("Result of sigpause not excpected: " + result);
         }
     }
 

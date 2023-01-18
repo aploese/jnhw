@@ -37,6 +37,7 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInfo;
 import org.junit.jupiter.api.condition.DisabledOnOs;
 
 /**
@@ -48,61 +49,66 @@ public class PthreadTest {
 
     @BeforeAll
     public static void checkBeforeAll_HAVE_PTHREAD_H() throws Exception {
+        JnhwTestLogger.logBeforeAllBeginn("checkBeforeAll_HAVE_PTHREAD_H");
         if (MultiarchTupelBuilder.getOS() == OS.WINDOWS) {
             Assertions.assertFalse(Pthread.HAVE_PTHREAD_H, "not expected to have pthread.h");
         } else {
             Assertions.assertTrue(Pthread.HAVE_PTHREAD_H, "expected to have pthread.h");
         }
+        JnhwTestLogger.logBeforeAllEnd("checkBeforeAll_HAVE_PTHREAD_H");
     }
 
     @BeforeAll
     public static void checkBeforeAll_PthreadDefines() throws Exception {
+        JnhwTestLogger.logBeforeAllBeginn("checkBeforeAll_PthreadDefines");
         if (MultiarchTupelBuilder.getOS() == OS.WINDOWS) {
+            JnhwTestLogger.logBeforeAllEnd("checkBeforeAll_PthreadDefines");
             return;
         }
         DefinesTest.testDefines(Pthread.class, "HAVE_PTHREAD_H");
+        JnhwTestLogger.logBeforeAllEnd("checkBeforeAll_PthreadDefines");
     }
 
     @BeforeAll
     public static void checkBeforeAll_NativePthread_attr_t() throws Exception {
+        JnhwTestLogger.logBeforeAllBeginn("checkBeforeAll_NativePthread_attr_t");
         if (MultiarchTupelBuilder.getOS() == OS.WINDOWS) {
+            JnhwTestLogger.logBeforeAllEnd("checkBeforeAll_NativePthread_attr_t");
             return;
         }
         Assertions.assertAll(
-                () -> {
-                    Assertions.assertEquals(LibJnhwPosixTestLoader.invoke_sI___V("Pthread_attr_t_sizeof"), Pthread.Pthread_attr_t.sizeof, "sizeof");
-                },
-                () -> {
-                    Assertions.assertEquals(LibJnhwPosixTestLoader.invoke_sI___V("Pthread_attr_t_alignof"), Pthread.Pthread_attr_t.alignof.alignof, "alignof");
-                }
+                () -> Assertions.assertEquals(LibJnhwPosixTestLoader.invoke_sI___V("Pthread_attr_t_sizeof"), Pthread.Pthread_attr_t.sizeof, "sizeof"),
+                () -> Assertions.assertEquals(LibJnhwPosixTestLoader.invoke_sI___V("Pthread_attr_t_alignof"), Pthread.Pthread_attr_t.alignof.alignof, "alignof")
         );
+        JnhwTestLogger.logBeforeAllEnd("checkBeforeAll_NativePthread_attr_t");
     }
 
     @BeforeAll
     public static void checkBeforeAll_NativePthread_t() throws Exception {
+        JnhwTestLogger.logBeforeAllBeginn("checkBeforeAll_NativePthread_t");
         if (MultiarchTupelBuilder.getOS() == OS.WINDOWS) {
+            JnhwTestLogger.logBeforeAllEnd("checkBeforeAll_NativePthread_t");
             return;
         }
         Assertions.assertAll(
-                () -> {
-                    Assertions.assertEquals(LibJnhwPosixTestLoader.invoke_sI___V("Pthread_t_sizeof"), Pthread.Pthread_t.sizeof, "sizeof");
-                },
-                () -> {
-                    Assertions.assertEquals(LibJnhwPosixTestLoader.invoke_sI___V("Pthread_t_alignof"), Pthread.Pthread_t.alignof.alignof, "alignof");
-                }
+                () -> Assertions.assertEquals(LibJnhwPosixTestLoader.invoke_sI___V("Pthread_t_sizeof"), Pthread.Pthread_t.sizeof, "sizeof"),
+                () -> Assertions.assertEquals(LibJnhwPosixTestLoader.invoke_sI___V("Pthread_t_alignof"), Pthread.Pthread_t.alignof.alignof, "alignof")
         );
+        JnhwTestLogger.logBeforeAllEnd("checkBeforeAll_NativePthread_t");
     }
 
     private MemorySession ms;
 
     @BeforeEach
-    public void setUp() {
+    public void setUp(TestInfo testInfo) throws Exception {
+        JnhwTestLogger.logBeforeEach(testInfo);
         ms = MemorySession.openConfined();
     }
 
     @AfterEach
-    public void tearDown() {
+    public void tearDown(TestInfo testInfo) {
         ms.close();
+        JnhwTestLogger.logAfterEach(testInfo);
     }
 
     /**
@@ -110,10 +116,9 @@ public class PthreadTest {
      */
     @Test
     public void testPthread_self() {
-        System.out.println("pthread_self");
         Pthread.Pthread_t result = Pthread.pthread_self(ms);
         Assertions.assertNotNull(result);
-        System.out.println("PTHREAD ID: " + result);
+        JnhwTestLogger.logTest("PTHREAD ID: " + result);
     }
 
     /**
@@ -121,7 +126,6 @@ public class PthreadTest {
      */
     @Test
     public void testPthread_equal() throws Exception {
-        System.out.println("pthread_equal");
         Assertions.assertThrows(NullPointerException.class, () -> {
             Pthread.pthread_equal(null, Pthread.pthread_self(ms));
         });
@@ -163,7 +167,6 @@ public class PthreadTest {
      */
     @Test
     public void testPthread_getcpuclockid() throws Exception {
-        System.out.println("pthread_getcpuclockid");
         Types.Clockid_t clock_id = Types.Clockid_t.allocateNative(ms);
         if (MultiarchTupelBuilder.getOS() == OS.DARWIN) {
             Assertions.assertThrows(NoSuchNativeMethodException.class, () -> {
@@ -203,7 +206,7 @@ public class PthreadTest {
         Sched.Sched_param param = Sched.Sched_param.allocateNative(ms);
         param.sched_priority(0); //TODO Any other will give a EINVAL ????
         try {
-            System.out.println("pthread_attr_setschedparam ");
+            JnhwTestLogger.logTest("pthread_attr_setschedparam ");
             Assertions.assertThrows(NullPointerException.class, () -> {
                 Pthread.pthread_attr_setschedparam(null, param);
             });
@@ -212,7 +215,7 @@ public class PthreadTest {
             });
             Pthread.pthread_attr_setschedparam(attr, param);
 
-            System.out.println("pthread_attr_getschedparam");
+            JnhwTestLogger.logTest("pthread_attr_getschedparam");
             Sched.Sched_param param1 = Sched.Sched_param.allocateNative(ms);
             Assertions.assertThrows(NullPointerException.class, () -> {
                 Pthread.pthread_attr_getschedparam(null, param1);
@@ -233,14 +236,14 @@ public class PthreadTest {
         Pthread.pthread_attr_init(attr);
         Int32_t inheritsched = Int32_t.allocateNative(ms);
         try {
-            System.out.println("pthread_attr_getinheritsched");
+            JnhwTestLogger.logTest("pthread_attr_getinheritsched");
             Assertions.assertThrows(NullPointerException.class, () -> {
                 Pthread.pthread_attr_getinheritsched(null, inheritsched);
             });
             Pthread.pthread_attr_getinheritsched(attr, inheritsched);
             Assertions.assertEquals(Pthread.PTHREAD_INHERIT_SCHED, inheritsched.int32_t());
 
-            System.out.println("pthread_attr_setinheritsched");
+            JnhwTestLogger.logTest("pthread_attr_setinheritsched");
 
             Assertions.assertThrows(NullPointerException.class, () -> {
                 Pthread.pthread_attr_setinheritsched(null, 0);
@@ -257,7 +260,7 @@ public class PthreadTest {
         Sched.Sched_param param = Sched.Sched_param.allocateNative(ms);
         Int32_t policy = Int32_t.allocateNative(ms);
 
-        System.out.println("pthread_getschedparam");
+        JnhwTestLogger.logTest("pthread_getschedparam");
 
         Assertions.assertThrows(NullPointerException.class, () -> {
             Pthread.pthread_getschedparam(Pthread.pthread_self(ms), policy, null);
@@ -269,7 +272,7 @@ public class PthreadTest {
         Pthread.pthread_getschedparam(Pthread.pthread_self(ms), policy, param);
         Assertions.assertEquals(Sched.SCHED_OTHER, policy.int32_t());
 
-        System.out.println("pthread_setschedparam");
+        JnhwTestLogger.logTest("pthread_setschedparam");
 
         Pthread.pthread_setschedparam(Pthread.pthread_self(ms), policy.int32_t(), param);
 
@@ -300,7 +303,7 @@ public class PthreadTest {
 
     @Test
     public void testPthread_setschedprio() throws Exception {
-        System.out.println("pthread_setschedprio(");
+        JnhwTestLogger.logTest("pthread_setschedprio(");
         switch (MultiarchTupelBuilder.getOS()) {
             case FREE_BSD, OPEN_BSD, DARWIN ->
                 Assertions.assertThrows(NoSuchNativeMethodException.class, () -> {
@@ -319,7 +322,6 @@ public class PthreadTest {
     @Disabled //It looks, that running this test will screw up the system internally - later tests will hang.
     //TODO What is going on?
     public void testPthread_t_Cancel() throws Exception {
-        System.out.println("Start testPthread_t_Cancel");
         Pthread.Pthread_t me = Pthread.pthread_self(ms);
         Int32_t oldstate = Int32_t.allocateNative(ms);
         Int32_t oldtype = Int32_t.allocateNative(ms);
@@ -345,7 +347,7 @@ public class PthreadTest {
                     objectRef.notifyAll();
                 }
                 while (intRef[0]-- > 0) {
-                    System.err.println("LOOPING in testPthread_t_Cancel()");
+                    JnhwTestLogger.logTest("LOOPING in testPthread_t_Cancel()");
                     Thread.sleep(200);
                 }
             } catch (InterruptedException ex) {
@@ -353,7 +355,7 @@ public class PthreadTest {
             } catch (NativeErrorException ex) {
                 Logger.getLogger(PthreadTest.class.getName()).log(Level.SEVERE, null, ex);
             }
-            System.err.println("LOOPING STOPPED WITHOUT CANCEL!");
+            JnhwTestLogger.logTest("LOOPING STOPPED WITHOUT CANCEL!");
         });
         t2.start();
 
@@ -370,7 +372,5 @@ public class PthreadTest {
         final int value = intRef[0];
         Thread.sleep(1000);
         Assertions.assertEquals(value, intRef[0]);
-
-        System.out.println("testPthread_t_Cancel - finished");
     }
 }

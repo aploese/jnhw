@@ -23,6 +23,7 @@ package de.ibapl.jnhw.linux.sys;
 
 import de.ibapl.jnhw.libloader.MultiarchTupelBuilder;
 import de.ibapl.jnhw.libloader.OS;
+import de.ibapl.jnhw.posix.JnhwTestLogger;
 import de.ibapl.jnhw.posix.Unistd;
 import de.ibapl.jnhw.util.posix.DefinesTest;
 import java.lang.foreign.MemorySession;
@@ -31,6 +32,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInfo;
 import org.junit.jupiter.api.condition.EnabledOnOs;
 
 @EnabledOnOs(org.junit.jupiter.api.condition.OS.LINUX)
@@ -38,31 +40,38 @@ public class EventfdTest {
 
     @BeforeAll
     public static void checkBeforeAll_HAVE_SYS_EVENTFD_H() throws Exception {
+        JnhwTestLogger.logBeforeAllBeginn("checkBeforeAll_HAVE_SYS_EVENTFD_H");
         if (MultiarchTupelBuilder.getOS() == OS.LINUX) {
             Assertions.assertTrue(Eventfd.HAVE_SYS_EVENTFD_H, "expected to have sys/eventfd.h");
         } else {
             Assertions.assertFalse(Eventfd.HAVE_SYS_EVENTFD_H, "not expected to have sys/eventfd.h");
         }
+        JnhwTestLogger.logBeforeAllEnd("checkBeforeAll_HAVE_SYS_EVENTFD_H");
     }
 
     @BeforeAll
     public static void checkBeforeAll_EventFdDefines() throws Exception {
+        JnhwTestLogger.logBeforeAllBeginn("checkBeforeAll_EventFdDefines");
         if (MultiarchTupelBuilder.getOS() == OS.WINDOWS) {
+            JnhwTestLogger.logBeforeAllEnd("checkBeforeAll_EventFdDefines");
             return;
         }
         DefinesTest.testDefines(Eventfd.class, "HAVE_SYS_EVENTFD_H");
+        JnhwTestLogger.logBeforeAllEnd("checkBeforeAll_EventFdDefines");
     }
 
     private MemorySession ms;
 
     @BeforeEach
-    public void setUp() throws Exception {
+    public void setUp(TestInfo testInfo) throws Exception {
+        JnhwTestLogger.logBeforeEach(testInfo);
         ms = MemorySession.openConfined();
     }
 
     @AfterEach
-    public void tearDown() throws Exception {
+    public void tearDown(TestInfo testInfo) {
         ms.close();
+        JnhwTestLogger.logBeforeEach(testInfo);
     }
 
     @Test

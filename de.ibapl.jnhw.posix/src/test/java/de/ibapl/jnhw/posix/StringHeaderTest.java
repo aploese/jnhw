@@ -25,10 +25,13 @@ import de.ibapl.jnhw.common.exception.NoSuchNativeMethodException;
 import de.ibapl.jnhw.libloader.MultiarchTupelBuilder;
 import de.ibapl.jnhw.libloader.OS;
 import de.ibapl.jnhw.util.posix.DefinesTest;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInfo;
 import org.junit.jupiter.api.condition.DisabledOnOs;
 
 /**
@@ -40,19 +43,34 @@ public class StringHeaderTest {
 
     @BeforeAll
     public static void checkBeforeAll_HAVE_STRING_H() throws Exception {
+        JnhwTestLogger.logBeforeAllBeginn("checkBeforeAll_HAVE_STRING_H");
         if (MultiarchTupelBuilder.getOS() == OS.WINDOWS) {
             Assertions.assertFalse(StringHeader.HAVE_STRING_H, "not expected to have string.h");
         } else {
             Assertions.assertTrue(StringHeader.HAVE_STRING_H, "expected to have string.h");
         }
+        JnhwTestLogger.logBeforeAllEnd("checkBeforeAll_HAVE_STRING_H");
     }
 
     @BeforeAll
     public static void checkBeforeAll_StdioDefines() throws Exception {
+        JnhwTestLogger.logBeforeAllBeginn("checkBeforeAll_StdioDefines");
         if (MultiarchTupelBuilder.getOS() == OS.WINDOWS) {
+            JnhwTestLogger.logBeforeAllEnd("checkBeforeAll_StdioDefines");
             return;
         }
         DefinesTest.testDefines(StringHeader.class, "HAVE_STRING_H");
+        JnhwTestLogger.logBeforeAllEnd("checkBeforeAll_StdioDefines");
+    }
+
+    @BeforeEach
+    public void setUp(TestInfo testInfo) throws Exception {
+        JnhwTestLogger.logBeforeEach(testInfo);
+    }
+
+    @AfterEach
+    public void tearDown(TestInfo testInfo) {
+        JnhwTestLogger.logAfterEach(testInfo);
     }
 
     /**
@@ -60,8 +78,6 @@ public class StringHeaderTest {
      */
     @Test
     public void testStrerror() throws Exception {
-        System.out.println("strerror");
-
         //Fallback to "C" locale so that the test can succeed on any machine
         final Locale.Locale_t locale = Locale.newlocale(Locale.LC_ALL_MASK, "C", Locale.Locale_t.LOCALE_T_0);
         final Locale.Locale_t oldLocale = Locale.uselocale(locale);
@@ -94,7 +110,6 @@ public class StringHeaderTest {
      */
     @Test
     public void testStrerror_l() throws Exception {
-        System.out.println("strerror_l");
         switch (MultiarchTupelBuilder.getOS()) {
             case DARWIN ->
                 assertThrows(NoSuchNativeMethodException.class, () -> {
@@ -116,8 +131,6 @@ public class StringHeaderTest {
      */
     @Test
     public void testStrsignal() throws Exception {
-        System.out.println("strsignal");
-
         //Fallback to "C" locale so that the test can succeed on any machine
         final Locale.Locale_t locale = Locale.newlocale(Locale.LC_ALL_MASK, "C", Locale.Locale_t.LOCALE_T_0);
         final Locale.Locale_t oldLocale = Locale.uselocale(locale);

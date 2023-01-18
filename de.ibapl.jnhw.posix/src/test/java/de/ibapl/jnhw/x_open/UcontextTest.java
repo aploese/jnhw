@@ -25,6 +25,7 @@ import de.ibapl.jnhw.common.exception.NoSuchNativeMethodException;
 import de.ibapl.jnhw.common.exception.NoSuchNativeTypeException;
 import de.ibapl.jnhw.libloader.MultiarchTupelBuilder;
 import de.ibapl.jnhw.libloader.OS;
+import de.ibapl.jnhw.posix.JnhwTestLogger;
 import de.ibapl.jnhw.posix.Signal;
 import de.ibapl.jnhw.util.posix.DefinesTest;
 import java.lang.foreign.MemorySession;
@@ -34,6 +35,7 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInfo;
 import org.junit.jupiter.api.condition.DisabledOnOs;
 
 /**
@@ -45,22 +47,27 @@ public class UcontextTest {
 
     @BeforeAll
     public static void checkBeforeAll_UcontextDefines() throws Exception {
+        JnhwTestLogger.logBeforeAllBeginn("checkBeforeAll_UcontextDefines");
         if (MultiarchTupelBuilder.getOS() == OS.WINDOWS) {
+            JnhwTestLogger.logBeforeAllEnd("checkBeforeAll_UcontextDefines");
             return;
         }
         DefinesTest.testDefines(Ucontext.class, "HAVE_UCONTEXT_H");
+        JnhwTestLogger.logBeforeAllEnd("checkBeforeAll_UcontextDefines");
     }
 
     private MemorySession ms;
 
     @BeforeEach
-    public void setUp() {
+    public void setUp(TestInfo testInfo) throws Exception {
+        JnhwTestLogger.logBeforeEach(testInfo);
         ms = MemorySession.openConfined();
     }
 
     @AfterEach
-    public void tearDown() {
+    public void tearDown(TestInfo testInfo) {
         ms.close();
+        JnhwTestLogger.logAfterEach(testInfo);
     }
 
     /**
@@ -77,7 +84,7 @@ public class UcontextTest {
                 Ucontext.getcontext(ucp);
                 StringBuilder sb = new StringBuilder();
                 ucp.nativeToString(sb, "", " ");
-                System.out.println("ucontext:" + sb.toString());
+                JnhwTestLogger.logTest("ucontext:" + sb.toString());
             }
         }
     }
@@ -99,12 +106,9 @@ public class UcontextTest {
                 count = 0;
                 Ucontext.getcontext(ucp);
                 count++;
-                System.out.println("IN testGetcontext");
                 if (count < 10) {
-                    System.out.println("will loop");
                     Ucontext.setcontext(ucp);
                 } else {
-                    System.out.println("stop loop");
                 }
                 assertEquals(10, count);
             }
@@ -122,7 +126,6 @@ public class UcontextTest {
                 assertThrows(NoSuchNativeMethodException.class, () -> Ucontext.swapcontext(null, null));
             default -> {
                 fail("The test will crash the jvm - so stop here!");
-                System.out.println("swapcontext");
                 Signal.Ucontext_t oucp = null;
                 Signal.Ucontext_t ucp = null;
                 int expResult = 0;
