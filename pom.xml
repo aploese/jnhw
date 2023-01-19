@@ -313,6 +313,7 @@
                             </includes>
                             <excludes>
 
+                                <exclude>jni-includes/**/*.h</exclude>
                                 <exclude>de.ibapl.jnhw.common/config.h</exclude>
                                 <exclude>de.ibapl.jnhw.common/.ccls-cache/**</exclude>
                                 <exclude>de.ibapl.jnhw.common/src/main/native/include/*.h</exclude>
