@@ -276,13 +276,24 @@ public class Pthread {
         };
     }
 
+    private final static SymbolLookup getRtLib() {
+        return switch (MultiarchTupelBuilder.getOS()) {
+            case DARWIN ->
+                LibcLoader.LIB_C_SYMBOL_LOOKUP;
+            case FREE_BSD, LINUX ->
+                LibrtLoader.LIB_RT_SYMBOL_LOOKUP;
+            default ->
+                throw new AssertionError("Cant figure out in which lib pthread_getschedparam is!");
+        };
+    }
+
     private final static JnhwMh_PthreadT___V.ExceptionErased pthread_self = JnhwMh_PthreadT___V.mandatoryOf(
             LibcLoader.LIB_C_SYMBOL_LOOKUP,
             "pthread_self",
             PosixDataType.pthread_t);
 
     private final static JnhwMh_sI__PthreadT.ExceptionErased pthread_cancel = JnhwMh_sI__PthreadT.mandatoryOf(
-            LibrtLoader.LIB_RT_SYMBOL_LOOKUP,
+            getRtLib(),
             "pthread_cancel",
             BaseDataType.C_int,
             PosixDataType.pthread_t);
@@ -295,7 +306,7 @@ public class Pthread {
             PosixDataType.pthread_t);
 
     private final static JnhwMh_sI__PthreadT__A pthread_getcpuclockid = JnhwMh_sI__PthreadT__A.optionalOf(
-            LibrtLoader.LIB_RT_SYMBOL_LOOKUP,
+            getRtLib(),
             "pthread_getcpuclockid",
             BaseDataType.C_int,
             PosixDataType.pthread_t,
@@ -324,7 +335,7 @@ public class Pthread {
             BaseDataType.C_int_pointer);
 
     private final static JnhwMh__V___V.ExceptionErased pthread_testcancel = JnhwMh__V___V.mandatoryOf(
-            LibrtLoader.LIB_RT_SYMBOL_LOOKUP,
+            getRtLib(),
             "pthread_testcancel");
 
     private final static JnhwMh_sI__PthreadT__sI__A.ExceptionErased pthread_setschedparam = JnhwMh_sI__PthreadT__sI__A.mandatoryOf(
@@ -362,7 +373,7 @@ public class Pthread {
             BaseDataType.C_int_pointer);
 
     private final static JnhwMh_sI__PthreadT_sI pthread_setschedprio = JnhwMh_sI__PthreadT_sI.optionalOf(
-            LibrtLoader.LIB_RT_SYMBOL_LOOKUP,
+            getRtLib(),
             "pthread_setschedprio",
             BaseDataType.C_int,
             PosixDataType.pthread_t,

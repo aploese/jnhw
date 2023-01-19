@@ -40,7 +40,7 @@ public class LibPthreadLoader {
     static {
         LIB_PTHREAD_SYMBOL_LOOKUP = switch (MultiarchTupelBuilder.getOS()) {
             case LINUX -> //TODO Quick and dirty ... Symbol
-                throw new AssertionError("Linux has no libpthread!");
+                throw new AssertionError("Linux has no lib pthread! its in libc");
             case DARWIN -> //TODO Quick and dirty ... Symbol
                 SymbolLookup.libraryLookup("libpthread.dylib", LIB_PTHREAD_MEMORY_SESSION);
             case FREE_BSD -> //TODO Quick and dirty ... Symbol

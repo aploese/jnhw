@@ -41,7 +41,7 @@ public class LibrtLoader {
             case LINUX -> //TODO Quick and dirty ... Symbol
                 SymbolLookup.libraryLookup("librt.so.1", LIB_RT_MEMORY_SESSION);
             case DARWIN -> //TODO Quick and dirty ... Symbol
-                SymbolLookup.libraryLookup("librt.dylib", LIB_RT_MEMORY_SESSION);
+                throw new AssertionError("Darwin has no lib rt! its in libc");
             case FREE_BSD -> //TODO Quick and dirty ... Symbol
                 SymbolLookup.libraryLookup("librt.so.1", LIB_RT_MEMORY_SESSION);
             default ->

@@ -106,7 +106,9 @@ public final class Fcntl {
         public final static int O_DIRECTORY = 1048576;
         public final static int O_DSYNC = 4194304;
         public final static int O_EXCL = 2048;
+        public final static int O_EXEC = 262144;
         public final static int O_NOCTTY = 131072;
+        public final static int O_SEARCH = 262144;
 
     }
 
@@ -790,11 +792,11 @@ public final class Fcntl {
                         O_CLOEXEC = DarwinDefines.O_CLOEXEC;
                         O_DIRECTORY = DarwinDefines.O_DIRECTORY;
                         O_DSYNC = DarwinDefines.O_DSYNC;
-                        O_EXEC = IntDefine.UNDEFINED;
+                        O_EXEC = IntDefine.toIntDefine(DarwinDefines.O_EXEC);
                         O_EXCL = DarwinDefines.O_EXCL;
                         O_NOCTTY = DarwinDefines.O_NOCTTY;
                         O_RSYNC = IntDefine.UNDEFINED;
-                        O_SEARCH = IntDefine.UNDEFINED;
+                        O_SEARCH = IntDefine.toIntDefine(DarwinDefines.O_SEARCH);
                         O_TTY_INIT = IntDefine.UNDEFINED;
                         POSIX_FADV_DONTNEED = IntDefine.UNDEFINED;
                         POSIX_FADV_NOREUSE = IntDefine.UNDEFINED;
