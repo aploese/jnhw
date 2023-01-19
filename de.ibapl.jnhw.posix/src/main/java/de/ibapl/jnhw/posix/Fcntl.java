@@ -990,7 +990,7 @@ public final class Fcntl {
             PosixDataType.off_t,
             BaseDataType.C_int);
 
-    private final static JnhwMh_sI__sI_sL_sL.ExceptionErased posix_fallocate = JnhwMh_sI__sI_sL_sL.mandatoryOf(
+    private final static JnhwMh_sI__sI_sL_sL posix_fallocate = JnhwMh_sI__sI_sL_sL.optionalOf(
             LibcLoader.LIB_C_SYMBOL_LOOKUP,
             "posix_fallocate",
             BaseDataType.C_int,

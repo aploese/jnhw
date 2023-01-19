@@ -84,9 +84,9 @@ public interface PosixDataType {
                 default ->
                     throw new NoClassDefFoundError("can't get linux datatype of nfds_t on " + MultiarchTupelBuilder.getMultiarch());
             };
-        case DARWIN, OPEN_BSD ->
+        case OPEN_BSD ->
             BaseDataType.uint64_t;
-        case FREE_BSD ->
+        case DARWIN, FREE_BSD ->
             BaseDataType.uint32_t;
         default ->
             throw new NoClassDefFoundError("can't get OS datatype of nfds_t on " + MultiarchTupelBuilder.getMultiarch());

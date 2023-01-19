@@ -118,7 +118,7 @@ public final class Errno extends de.ibapl.jnhw.isoc.Errno {
 
     public static interface DarwinDefines extends BsdDefines {
 
-        public final static int E2BIG = 1;
+        public final static int E2BIG = 7;
         public final static int EBADMSG = 94;
         public final static int ECANCELED = 89;
         public final static int EIDRM = 90;
