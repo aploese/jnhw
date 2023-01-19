@@ -45,7 +45,6 @@ import de.ibapl.jnhw.common.downcall.JnhwMh_sI__sI__A;
 import de.ibapl.jnhw.common.downcall.JnhwMh_sI__sI__A__A;
 import de.ibapl.jnhw.common.downcall.JnhwMh_sI__sI_sI__A__A;
 import de.ibapl.jnhw.common.downcall.JnhwMh_sL___A;
-import de.ibapl.jnhw.common.downcall.JnhwMh_sL___V;
 import de.ibapl.jnhw.common.exception.NativeErrorException;
 import de.ibapl.jnhw.common.exception.NativeException;
 import de.ibapl.jnhw.common.exception.NoSuchNativeMethodException;
@@ -70,6 +69,7 @@ import java.io.IOException;
 import java.lang.foreign.MemoryAddress;
 import java.lang.foreign.MemorySegment;
 import java.lang.foreign.MemorySession;
+import java.lang.foreign.SymbolLookup;
 import java.lang.foreign.ValueLayout;
 import java.util.Objects;
 import java.util.Optional;
@@ -836,6 +836,17 @@ public class Time {
         }
     }
 
+    private final static SymbolLookup getRtLib() {
+        return switch (MultiarchTupelBuilder.getOS()) {
+            case DARWIN ->
+                LibcLoader.LIB_C_SYMBOL_LOOKUP;
+            case FREE_BSD, LINUX ->
+                LibrtLoader.LIB_RT_SYMBOL_LOOKUP;
+            default ->
+                throw new AssertionError("Cant figure out in which lib pthread_getschedparam is!");
+        };
+    }
+
     private final static JnhwMh_MA___A.ExceptionErased asctime = JnhwMh_MA___A.mandatoryOf(
             LibcLoader.LIB_C_SYMBOL_LOOKUP,
             "asctime",
@@ -990,7 +1001,7 @@ public class Time {
             BaseDataType.C_pointer);
 
     private final static JnhwMh_sI__sI__A__A timer_create = JnhwMh_sI__sI__A__A.optionalOf(
-            LibrtLoader.LIB_RT_SYMBOL_LOOKUP,
+            getRtLib(),
             "timer_create",
             BaseDataType.C_int,
             PosixDataType.clockid_t,
@@ -998,26 +1009,26 @@ public class Time {
             BaseDataType.C_pointer);
 
     private final static JnhwMh_sI___A timer_delete = JnhwMh_sI___A.optionalOf(
-            LibrtLoader.LIB_RT_SYMBOL_LOOKUP,
+            getRtLib(),
             "timer_delete",
             BaseDataType.C_int,
             PosixDataType.timer_t);
 
     private final static JnhwMh_sI___A timer_getoverrun = JnhwMh_sI___A.optionalOf(
-            LibrtLoader.LIB_RT_SYMBOL_LOOKUP,
+            getRtLib(),
             "timer_getoverrun",
             BaseDataType.C_int,
             PosixDataType.timer_t);
 
     private final static JnhwMh_sI___A__A timer_gettime = JnhwMh_sI___A__A.optionalOf(
-            LibrtLoader.LIB_RT_SYMBOL_LOOKUP,
+            getRtLib(),
             "timer_gettime",
             BaseDataType.C_int,
             PosixDataType.timer_t,
             BaseDataType.C_struct_pointer);
 
     private final static JnhwMh_sI___A_sI__A__A timer_settime = JnhwMh_sI___A_sI__A__A.optionalOf(
-            LibrtLoader.LIB_RT_SYMBOL_LOOKUP,
+            getRtLib(),
             "timer_settime",
             BaseDataType.C_int,
             PosixDataType.timer_t,

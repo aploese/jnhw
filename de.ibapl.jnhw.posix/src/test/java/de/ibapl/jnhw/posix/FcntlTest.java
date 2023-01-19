@@ -23,6 +23,7 @@ package de.ibapl.jnhw.posix;
 
 import de.ibapl.jnhw.common.exception.NativeErrorException;
 import de.ibapl.jnhw.common.exception.NoSuchNativeMethodException;
+import static de.ibapl.jnhw.libloader.MultiarchInfo.X86_64__FREE_BSD__BSD;
 import de.ibapl.jnhw.libloader.MultiarchTupelBuilder;
 import de.ibapl.jnhw.libloader.OS;
 import de.ibapl.jnhw.posix.sys.Stat;
@@ -97,7 +98,7 @@ public class FcntlTest {
         switch (MultiarchTupelBuilder.getMultiarch()) {
             case AARCH64__LINUX__GNU, I386__LINUX__GNU, POWER_PC_64_LE__LINUX__GNU ->
                 Assertions.assertEquals(Errno.ENOENT, nee.errno);
-            case ARM__LINUX__GNU_EABI_HF, S390_X__LINUX__GNU, X86_64__LINUX__GNU, X86_64__FREE_BSD__BSD ->
+            case ARM__LINUX__GNU_EABI_HF, S390_X__LINUX__GNU, X86_64__LINUX__GNU, X86_64__DARWIN__BSD, X86_64__FREE_BSD__BSD ->
                 Assertions.assertEquals(Errno.EEXIST, nee.errno);
             default ->
                 throw new RuntimeException("Dont know what to expect on errno: " + Errno.errno() + " platform : " + MultiarchTupelBuilder.getMultiarch());
@@ -112,7 +113,7 @@ public class FcntlTest {
                 Fcntl.open64(file.getAbsolutePath(), Fcntl.O_CREAT | Fcntl.O_EXCL, Stat.S_IRWXU | Stat.S_IRWXG);
             });
             switch (MultiarchTupelBuilder.getMultiarch()) {
-                case AARCH64__LINUX__GNU, POWER_PC_64_LE__LINUX__GNU, X86_64__FREE_BSD__BSD ->
+                case AARCH64__LINUX__GNU, POWER_PC_64_LE__LINUX__GNU ->
                     Assertions.assertEquals(Errno.ENOENT, nee.errno);
                 case ARM__LINUX__GNU_EABI_HF, S390_X__LINUX__GNU, X86_64__LINUX__GNU, I386__LINUX__GNU ->
                     Assertions.assertEquals(Errno.EEXIST, nee.errno);
