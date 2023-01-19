@@ -27,10 +27,6 @@ package de.ibapl.jnhw.common.util;
  */
 public abstract class ObjectDefine<T> {
 
-    public static ObjectDefine toObjectDefine(Object value) {
-        return new ObjectDefined(value);
-    }
-
     public final static ObjectDefine UNDEFINED = new ObjectDefine() {
 
         @Override
@@ -44,6 +40,14 @@ public abstract class ObjectDefine<T> {
         }
 
     };
+
+    public static <T> ObjectDefine<T> toObjectDefine(T value) {
+        return new ObjectDefined<>(value);
+    }
+
+    public abstract boolean isDefined();
+
+    public abstract T get();
 
     final static class ObjectDefined<T> extends ObjectDefine<T> {
 
@@ -64,9 +68,5 @@ public abstract class ObjectDefine<T> {
         }
 
     }
-
-    public abstract boolean isDefined();
-
-    public abstract T get();
 
 }

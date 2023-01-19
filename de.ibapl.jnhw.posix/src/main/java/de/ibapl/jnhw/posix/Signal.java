@@ -2716,8 +2716,8 @@ public class Signal {
                 SS_DISABLE = linuxDefines.SS_DISABLE;
                 SS_ONSTACK = linuxDefines.SS_ONSTACK;
 
-                TRAP_BRKPT = linuxDefines.TRAP_BRKPT;
-                TRAP_TRACE = linuxDefines.TRAP_TRACE;
+                TRAP_BRKPT = IntDefine.toIntDefine(linuxDefines.TRAP_BRKPT);
+                TRAP_TRACE = IntDefine.toIntDefine(linuxDefines.TRAP_TRACE);
 
                 SA_NOCLDWAIT = linuxDefines.SA_NOCLDWAIT;
                 SA_SIGINFO = linuxDefines.SA_SIGINFO;
@@ -2790,8 +2790,8 @@ public class Signal {
                 SS_DISABLE = BsdDefines.SS_DISABLE;
                 SS_ONSTACK = BsdDefines.SS_ONSTACK;
 
-                TRAP_BRKPT = BsdDefines.TRAP_BRKPT;
-                TRAP_TRACE = BsdDefines.TRAP_TRACE;
+                TRAP_BRKPT = IntDefine.toIntDefine(BsdDefines.TRAP_BRKPT);
+                TRAP_TRACE = IntDefine.toIntDefine(BsdDefines.TRAP_TRACE);
 
                 SA_NOCLDWAIT = BsdDefines.SA_NOCLDWAIT;
                 SA_SIGINFO = BsdDefines.SA_SIGINFO;

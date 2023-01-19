@@ -43,7 +43,8 @@ public class Util {
         final Optional<MemorySegment> oms = symbolLookup.lookup(name);
         if (oms.isEmpty()) {
             //TODO which ex?
-            throw new RuntimeException(name);
+            throw new RuntimeException("Method: \"" + name +
+            "\ not found!");
         } else {
             return onSuccess.apply(oms.get());
         }
