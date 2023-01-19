@@ -250,7 +250,7 @@ uint64_t JNHW__clockid_t__AS_Uint64_t() {
     return (uint64_t) (uint32_t) TEST_PATTERN;
 #else
     return (uint64_t) (clockid_t) TEST_PATTERN;
-#end
+#endif
 }
 
 int8_t JNHW__mode_t__isUnsigned() {
