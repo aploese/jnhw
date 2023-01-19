@@ -937,7 +937,7 @@ public class Aio {
 
     /**
      * <b>POSIX:</b>
-     * <a href="https://pubs.opengroup.org/onlinepubs/9699919799/functions/aio_suspend.html">aio_write
+     * <a href="https://pubs.opengroup.org/onlinepubs/9699919799/functions/aio_write.html">aio_write
      * - asynchronous write to a file</a>.
      *
      * @param aiocb refers to an asynchronous I/O control block

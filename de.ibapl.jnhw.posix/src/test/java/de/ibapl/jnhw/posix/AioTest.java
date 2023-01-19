@@ -219,14 +219,11 @@ public class AioTest {
                 aiocb.aio_sigevent.sigev_notify(Signal.SIGEV_NONE.get());
                 aiocb.aio_fildes(-1);
 
-                NativeErrorException nee = assertThrows(NativeErrorException.class, () -> {
-                    Aio.aio_cancel(aiocb);
-                });
+                NativeErrorException nee = assertThrows(NativeErrorException.class,
+                        () -> Aio.aio_cancel(aiocb));
                 assertEquals(Errno.EBADF, nee.errno);
 
-                nee = assertThrows(NativeErrorException.class, () -> {
-                    Aio.aio_cancel(-1);
-                });
+                nee = assertThrows(NativeErrorException.class, () -> Aio.aio_cancel(-1));
                 assertEquals(Errno.EBADF, nee.errno);
             }
         }
@@ -243,9 +240,7 @@ public class AioTest {
                 aiocb.aio_sigevent.sigev_notify(Signal.SIGEV_NONE.get());
                 aiocb.aio_fildes(-1);
                 NativeErrorException nee = assertThrows(NativeErrorException.class,
-                        () -> {
-                            Aio.aio_error(aiocb);
-                        });
+                        () -> Aio.aio_error(aiocb));
                 assertEquals(Errno.EINVAL, nee.errno);
             }
             case FREE_BSD -> {
@@ -266,9 +261,7 @@ public class AioTest {
                 assertEquals(0, Aio.aio_error(aiocb));
             }
         }
-        assertThrows(NullPointerException.class, () -> {
-            Aio.aio_error(null);
-        });
+        assertThrows(NullPointerException.class, () -> Aio.aio_error(null));
     }
 
     /**
@@ -298,16 +291,13 @@ public class AioTest {
                 aiocb.aio_sigevent.sigev_notify(Signal.SIGEV_NONE.get());
                 aiocb.aio_fildes(-1);
 
-                NativeErrorException nee = assertThrows(NativeErrorException.class, () -> {
-                    Aio.aio_fsync(Fcntl.O_SYNC, aiocb);
-                });
+                NativeErrorException nee = assertThrows(NativeErrorException.class,
+                        () -> Aio.aio_fsync(Fcntl.O_SYNC, aiocb));
 
                 assertEquals(Errno.EBADF, nee.errno, "errno != EBADF");
             }
         }
-        assertThrows(NullPointerException.class, () -> {
-            Aio.aio_fsync(0, null);
-        });
+        assertThrows(NullPointerException.class, () -> Aio.aio_fsync(0, null));
     }
 
     /**
@@ -428,9 +418,7 @@ public class AioTest {
                     assertArrayEquals(HELLO_WORLD.getBytes(), result);
 
                     assertThrows(NullPointerException.class,
-                            () -> {
-                                Aio.aio_read(null);
-                            });
+                            () -> Aio.aio_read(null));
                 } finally {
                     cb.release();
                 }
@@ -496,9 +484,7 @@ public class AioTest {
                 assertArrayEquals(HELLO_WORLD.getBytes(), result);
 
                 assertThrows(NullPointerException.class,
-                        () -> {
-                            Aio.aio_read(null);
-                        });
+                        () -> Aio.aio_read(null));
             }
 
         }
@@ -658,10 +644,7 @@ public class AioTest {
                 switch (MultiarchTupelBuilder.getOS()) {
                     case DARWIN -> {
                         NativeErrorException nee = assertThrows(NativeErrorException.class,
-                                () -> {
-                                    Aio.aio_error(aiocb);
-                                }
-                        );
+                                () -> Aio.aio_error(aiocb));
                         assertEquals(Errno.EINVAL, nee.errno);
                     }
                     case FREE_BSD -> {
@@ -700,10 +683,7 @@ public class AioTest {
 
                 long expResult = 0L;
                 NativeErrorException nee = assertThrows(NativeErrorException.class,
-                        () -> {
-                            Aio.aio_return(aiocb);
-                        }
-                );
+                        () -> Aio.aio_return(aiocb));
                 assertEquals(Errno.EINVAL, nee.errno);
             }
             case FREE_BSD -> {
@@ -712,10 +692,7 @@ public class AioTest {
                 aiocb.aio_fildes(-1);
 
                 NativeErrorException nee = assertThrows(NativeErrorException.class,
-                        () -> {
-                            Aio.aio_return(aiocb);
-                        }
-                );
+                        () -> Aio.aio_return(aiocb));
                 assertEquals(Errno.EINVAL, nee.errno);
             }
             case OPEN_BSD ->
@@ -749,10 +726,7 @@ public class AioTest {
                 timeout.tv_sec(1);
 
                 NativeErrorException nee = assertThrows(NativeErrorException.class,
-                        () -> {
-                            Aio.aio_suspend(aiocbs, timeout);
-                        }
-                );
+                        () -> Aio.aio_suspend(aiocbs, timeout));
                 assertEquals(Errno.EINVAL, nee.errno);
             }
             case OPEN_BSD -> {
@@ -783,15 +757,9 @@ public class AioTest {
         timeout.tv_sec(1);
 
         assertThrows(NullPointerException.class,
-                () -> {
-                    Aio.aio_suspend(
-                            null, timeout);
-                });
+                () -> Aio.aio_suspend(null, timeout));
         assertThrows(NullPointerException.class,
-                () -> {
-                    Aio.aio_suspend(aiocbs,
-                            null);
-                });
+                () -> Aio.aio_suspend(aiocbs, null));
     }
 
     /**
@@ -861,10 +829,7 @@ public class AioTest {
                     switch (MultiarchTupelBuilder.getOS()) {
                         case DARWIN -> {
                             NativeErrorException nee = assertThrows(NativeErrorException.class,
-                                    () -> {
-                                        Aio.aio_write(aiocb);
-                                    }
-                            );
+                                    () -> Aio.aio_write(aiocb));
                             assertEquals(Errno.EAGAIN, nee.errno);
                             //Stop the test here for darwin it cant handle aio with threaded callbacks
                             return;
@@ -894,10 +859,7 @@ public class AioTest {
                     String result = br.readLine() + '\n';
                     assertEquals(HELLO_WORLD, result);
                     assertThrows(NullPointerException.class,
-                            () -> {
-                                Aio.aio_write(
-                                        null);
-                            });
+                            () -> Aio.aio_write(null));
                 } finally {
                     cb.release();
                 }
@@ -975,9 +937,17 @@ public class AioTest {
                 list.set(0, aiocb);
 
                 assertTimeoutPreemptively(Duration.ofSeconds(1), () -> {
-                    NativeErrorException nee = assertThrows(NativeErrorException.class,
-                            () -> Aio.lio_listio(Aio.LIO_WAIT.get(), list));
-                    assertEquals(Errno.EIO, nee.errno, Errno.getErrnoSymbol(nee.errno));
+                    if (MultiarchTupelBuilder.getOS() == OS.DARWIN) {
+                        //TODO qeued, but invalid file descriptor...
+                        Aio.lio_listio(Aio.LIO_WAIT.get(), list);
+                        NativeErrorException nee = assertThrows(NativeErrorException.class,
+                                () -> Aio.aio_error(aiocb));
+                        assertEquals(Errno.EINVAL, nee.errno);
+                    } else {
+                        NativeErrorException nee = assertThrows(NativeErrorException.class,
+                                () -> Aio.lio_listio(Aio.LIO_WAIT.get(), list));
+                        assertEquals(Errno.EIO, nee.errno, Errno.getErrnoSymbol(nee.errno));
+                    }
                 });
 
                 assertThrows(NullPointerException.class,
