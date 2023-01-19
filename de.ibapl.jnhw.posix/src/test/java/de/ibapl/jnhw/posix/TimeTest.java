@@ -1126,7 +1126,7 @@ public class TimeTest {
         if (MultiarchTupelBuilder.getOS() == OS.DARWIN) {
             Assertions.assertThrows(NoSuchNativeTypeException.class,
                     () -> {
-                        Time.PtrTimer_t.allocateNative(ms);
+                        Time.Timer_t.tryAllocateNative(ms);
                     }
             );
         } else {

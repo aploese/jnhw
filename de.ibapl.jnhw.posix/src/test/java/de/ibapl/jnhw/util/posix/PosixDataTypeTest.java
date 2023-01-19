@@ -81,11 +81,12 @@ public class PosixDataTypeTest {
 
     @Test
     public void testClockid_t() {
-        assertTrue(LibJnhwPosixTestLoader.invokeExact_CharToBool_V("JNHW__clockid_t__isSigned"));
         if (LibJnhwPosixTestLoader.invokeExact_CharToBool_V("JNHW__clockid_t__IS__int32_t")) {
+            assertTrue(LibJnhwPosixTestLoader.invokeExact_CharToBool_V("JNHW__clockid_t__isSigned"));
             assertEquals(PosixDataType.clockid_t, BaseDataType.int32_t);
             assertEquals(0xFFFFFFFF80008080L, LibJnhwPosixTestLoader.invoke_sL___V("JNHW__clockid_t__AS_Uint64_t"));
         } else if (LibJnhwPosixTestLoader.invokeExact_CharToBool_V("JNHW__clockid_t__IS__uint32_t")) {
+            assertFalse(LibJnhwPosixTestLoader.invokeExact_CharToBool_V("JNHW__clockid_t__isSigned"));
             assertEquals(PosixDataType.clockid_t, BaseDataType.uint32_t);
             assertEquals(0x0000000080008080L, LibJnhwPosixTestLoader.invoke_sL___V("JNHW__clockid_t__AS_Uint64_t"));
         } else {
