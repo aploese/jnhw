@@ -32,6 +32,7 @@ import de.ibapl.jnhw.common.memory.OpaqueMemory;
 import de.ibapl.jnhw.libloader.MultiarchInfo;
 import de.ibapl.jnhw.libloader.MultiarchTupelBuilder;
 import de.ibapl.jnhw.libloader.OS;
+import de.ibapl.jnhw.libloader.librarys.LibcLoader;
 import de.ibapl.jnhw.libloader.librarys.LibrtLoader;
 import de.ibapl.jnhw.posix.sys.Types;
 import de.ibapl.jnhw.util.posix.DefinesTest;
@@ -960,11 +961,11 @@ public class TimeTest {
             }
             case DARWIN -> {
                 // preconditions not met can only test this this way.
-                Assertions.assertTrue(LibrtLoader.LIB_RT_SYMBOL_LOOKUP.lookup("timer_create").isEmpty(), "timer_create is available");
-                Assertions.assertTrue(LibrtLoader.LIB_RT_SYMBOL_LOOKUP.lookup("timer_gettime").isEmpty(), "timer_gettime is available");
-                Assertions.assertTrue(LibrtLoader.LIB_RT_SYMBOL_LOOKUP.lookup("timer_settime").isEmpty(), "timer_settime is available");
-                Assertions.assertTrue(LibrtLoader.LIB_RT_SYMBOL_LOOKUP.lookup("timer_getoverrun").isEmpty(), "timer_getoverrun is available");
-                Assertions.assertTrue(LibrtLoader.LIB_RT_SYMBOL_LOOKUP.lookup("timer_delete").isEmpty(), "timer_delete is available");
+                Assertions.assertTrue(LibcLoader.LIB_C_SYMBOL_LOOKUP.lookup("timer_create").isEmpty(), "timer_create is available");
+                Assertions.assertTrue(LibcLoader.LIB_C_SYMBOL_LOOKUP.lookup("timer_gettime").isEmpty(), "timer_gettime is available");
+                Assertions.assertTrue(LibcLoader.LIB_C_SYMBOL_LOOKUP.lookup("timer_settime").isEmpty(), "timer_settime is available");
+                Assertions.assertTrue(LibcLoader.LIB_C_SYMBOL_LOOKUP.lookup("timer_getoverrun").isEmpty(), "timer_getoverrun is available");
+                Assertions.assertTrue(LibcLoader.LIB_C_SYMBOL_LOOKUP.lookup("timer_delete").isEmpty(), "timer_delete is available");
 
                 // precondition for tests not available
                 Assertions
