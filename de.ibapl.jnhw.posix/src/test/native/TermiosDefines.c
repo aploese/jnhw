@@ -65,7 +65,7 @@ int32_t* tryGetValueOf_B1000000(int32_t* value) {
     *value = B1000000;
 #else
 #if !defined(B1000000)
-valuie = NULL;
+value = NULL;
 #else
 #error "B1000000 defined"
 #endif
