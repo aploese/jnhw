@@ -39,6 +39,7 @@ import java.lang.foreign.MemoryAddress;
 import java.lang.foreign.MemorySession;
 import java.nio.ByteBuffer;
 import java.time.Duration;
+import java.time.temporal.TemporalUnit;
 import org.junit.jupiter.api.AfterEach;
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
@@ -950,10 +951,7 @@ public class AioTest {
                 String result = br.readLine() + '\n';
                 assertEquals(HELLO_WORLD, result);
                 assertThrows(NullPointerException.class,
-                        () -> {
-                            Aio.aio_write(
-                                    null);
-                        });
+                        () -> Aio.aio_write(null));
             }
         }
     }
@@ -976,48 +974,24 @@ public class AioTest {
                 aiocb.aio_fildes(-1);
                 list.set(0, aiocb);
 
-                if (MultiarchTupelBuilder.getOS() == OS.DARWIN) {
-                    final boolean[] lock = new boolean[]{false};
-                    new Thread(() -> {
-                        try {
-                            Aio.lio_listio(Aio.LIO_WAIT.get(), list);
-                        } catch (Throwable t) {
-                            fail(t);
-                        }
-                        synchronized (lock) {
-                            lock[0] = true;
-                            lock.notifyAll();
-                        }
-                    }).start();
-                    synchronized (lock) {
-                        lock.wait(1000);
-                    }
-                    assertFalse(lock[0]);
-
-                } else {
+                assertTimeoutPreemptively(Duration.ofSeconds(1), () -> {
                     NativeErrorException nee = assertThrows(NativeErrorException.class,
-                            () -> {
-                                Aio.lio_listio(Aio.LIO_WAIT.get(), list);
-                            });
+                            () -> Aio.lio_listio(Aio.LIO_WAIT.get(), list));
                     assertEquals(Errno.EIO, nee.errno, Errno.getErrnoSymbol(nee.errno));
+                });
 
-                }
                 assertThrows(NullPointerException.class,
-                        () -> {
-                            Aio.lio_listio(Aio.LIO_WAIT.get(), null);
-                        });
+                        () -> Aio.lio_listio(Aio.LIO_WAIT.get(), null));
 
                 if (MultiarchTupelBuilder.getOS() == OS.FREE_BSD) {
                     NativeErrorException nee = assertThrows(NativeErrorException.class,
-                            () -> {
-                                Aio.lio_listio(Aio.LIO_NOWAIT.get(), list);
-                            });
+                            () -> Aio.lio_listio(Aio.LIO_NOWAIT.get(), list));
                     assertEquals(Errno.EIO, nee.errno, Errno.getErrnoSymbol(nee.errno));
                 } else {
                     //Darwin ignores Aio.LIO_NOWAIT so we enforce a timeout here
-                    assertTimeoutPreemptively(Duration.ofSeconds(1), () -> {
-                        Aio.lio_listio(Aio.LIO_NOWAIT.get(), list);
-                    });
+                    assertTimeoutPreemptively(Duration.ofSeconds(1),
+                            () -> Aio.lio_listio(Aio.LIO_NOWAIT.get(), list)
+                    );
                 }
             }
         }
