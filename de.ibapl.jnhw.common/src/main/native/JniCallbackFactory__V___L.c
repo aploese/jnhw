@@ -161,7 +161,7 @@ TRAMPOLINE(15)
                 TRAMPOLINE_RELEASE_CASE(13)
                 TRAMPOLINE_RELEASE_CASE(14)
                 TRAMPOLINE_RELEASE_CASE(15)
-            default:
+            default:;
         }
         return 0;
     }
