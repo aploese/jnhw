@@ -64,6 +64,7 @@ import de.ibapl.jnhw.posix.sys.Types.Clockid_t;
 import de.ibapl.jnhw.libloader.librarys.LibcLoader;
 import de.ibapl.jnhw.libloader.librarys.LibrtLoader;
 import de.ibapl.jnhw.util.posix.PosixDataType;
+import de.ibapl.jnhw.util.posix.downcall.JnhwMh_clock_t___V;
 import de.ibapl.jnhw.util.posix.memory.PosixStruct;
 import java.io.IOException;
 import java.lang.foreign.MemoryAddress;
@@ -848,7 +849,7 @@ public class Time {
             BaseDataType.C_const_struct_pointer,
             BaseDataType.C_char_pointer);
 
-    private final static JnhwMh_sL___V.ExceptionErased clock = JnhwMh_sL___V.mandatoryOf(
+    private final static JnhwMh_clock_t___V.ExceptionErased clock = JnhwMh_clock_t___V.mandatoryOf(
             LibcLoader.LIB_C_SYMBOL_LOOKUP,
             "clock",
             PosixDataType.clock_t);
@@ -1078,7 +1079,7 @@ public class Time {
      */
     @clock_t
     public final static long clock() {
-        return clock.invoke_sL___V();
+        return clock.invoke_clock_t___V();
     }
 
     /**

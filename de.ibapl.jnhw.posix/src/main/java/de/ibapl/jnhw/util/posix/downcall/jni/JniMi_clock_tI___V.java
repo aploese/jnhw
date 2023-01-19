@@ -19,40 +19,25 @@
  * Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
  */
-package de.ibapl.jnhw.common.downcall.foreign;
+package de.ibapl.jnhw.util.posix.downcall.jni;
 
-import de.ibapl.jnhw.common.downcall.JnhwMh_sL___V;
-import java.lang.foreign.FunctionDescriptor;
+import de.ibapl.jnhw.common.downcall.jni.JniMi__I___V;
+import de.ibapl.jnhw.util.posix.downcall.JnhwMh_clock_t___V;
 import java.lang.foreign.MemorySegment;
-
-import java.lang.foreign.ValueLayout;
 
 /**
  *
  * @author aploese
  */
-public class JnhwMi__L___V extends JnhwMethodInvoker implements JnhwMh_sL___V.ExceptionErased {
+public class JniMi_clock_tI___V extends JniMi__I___V implements JnhwMh_clock_t___V.ExceptionErased {
 
-    public JnhwMi__L___V(MemorySegment methodAdress, String name) {
-        super(methodAdress, name, FunctionDescriptor.of(ValueLayout.JAVA_LONG));
-    }
-
-    protected long invoke__L___V() {
-        try {
-            return (long) methodHandle.invokeExact();
-        } catch (IllegalArgumentException | NullPointerException e) {
-            throw e;
-        } catch (Throwable t) {
-            throw createRuntimeExceptionInvoke(t);
-        }
+    public JniMi_clock_tI___V(MemorySegment methodAddress, String name) {
+        super(methodAddress, name);
     }
 
     @Override
-    public final long invoke_sL___V() {
-        return invoke__L___V();
+    public long invoke_clock_t___V() {
+        return invoke__I___V(ns.address().toRawLongValue());
     }
 
-    public final long invoke_uL___V() {
-        return invoke__L___V();
-    }
 }
