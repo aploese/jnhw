@@ -250,8 +250,8 @@ public class Time {
     @timer_t
     public static final class Timer_t extends OpaqueMemory {
 
-        public final static Alignment alignof = PosixDataType.timer_t.ALIGN_OF;
-        public final static int sizeof = PosixDataType.timer_t.SIZE_OF;
+        public final static Alignment alignof = PosixDataType.timer_t != null ? PosixDataType.timer_t.ALIGN_OF : null;
+        public final static int sizeof = PosixDataType.timer_t != null ? PosixDataType.timer_t.SIZE_OF : 0;
 
         public final static Timer_t tryAllocateNative(MemorySession ms) throws NoSuchNativeTypeException {
             if (alignof == null) {
