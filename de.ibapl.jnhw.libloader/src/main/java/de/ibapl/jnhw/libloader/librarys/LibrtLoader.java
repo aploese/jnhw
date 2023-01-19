@@ -36,9 +36,18 @@ public class LibrtLoader {
     private final static MemorySession LIB_RT_MEMORY_SESSION = MemorySession.openShared();
 
     static {
+        LIB_RT_SYMBOL_LOOKUP = switch (MultiarchTupelBuilder.getOS()) {
+            case LINUX -> //TODO Quick and dirty ... Symbol
+                SymbolLookup.libraryLookup("librt.so.1", LIB_RT_MEMORY_SESSION);
+            case DARWIN -> //TODO Quick and dirty ... Symbol
+                SymbolLookup.libraryLookup("librt.dylib", LIB_RT_MEMORY_SESSION);
+            case FREE_BSD -> //TODO Quick and dirty ... Symbol
+                SymbolLookup.libraryLookup("librt.so.1", LIB_RT_MEMORY_SESSION);
+            default ->
+                throw new AssertionError("No idea where to find the librt");
+        };
         //TODO Quick and dirty ...
 //        LIB_RT_SYMBOL_LOOKUP = SymbolLookup.libraryLookup(Path.of("/lib/x86_64-linux-gnu/librt.so.1"), MemorySession.global());
-        LIB_RT_SYMBOL_LOOKUP = SymbolLookup.libraryLookup("librt.so.1", LIB_RT_MEMORY_SESSION);
 //TODO  does not work anymore       LIB_RT_SYMBOL_LOOKUP = SymbolLookup.libraryLookup("rt", MemorySession.global());
     }
 

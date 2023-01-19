@@ -38,9 +38,11 @@ public class LibcLoader {
 
     static {
         LIB_C_SYMBOL_LOOKUP = switch (MultiarchTupelBuilder.getOS()) {
-            case LINUX -> //TODO Quick and dirty ... Symboll
+            case LINUX -> //TODO Quick and dirty ... Symbol
                 SymbolLookup.libraryLookup("libc.so.6", LIB_C_MEMORY_SESSION);
-            case FREE_BSD -> //TODO Quick and dirty ... Symboll
+            case DARWIN -> //TODO Quick and dirty ... Symbol
+                SymbolLookup.libraryLookup("libc.dylib", LIB_C_MEMORY_SESSION);
+            case FREE_BSD -> //TODO Quick and dirty ... Symbol
                 SymbolLookup.libraryLookup("libc.so.7", LIB_C_MEMORY_SESSION);
             default ->
                 throw new AssertionError("No idea where to find the libc");
