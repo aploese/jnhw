@@ -941,7 +941,7 @@ public class AioTest {
                     assertEquals(Errno.EINPROGRESS, Aio.aio_error(aiocb));
                 }
                 NativeErrorException nee = assertThrows(NativeErrorException.class,
-                        () -> assertEquals(Aio.AIO_CANCELED.get(), Aio.aio_cancel(aiocb)));
+                        () -> assertEquals(Aio.AIO_ALLDONE.get(), Aio.aio_cancel(aiocb)));
                 assertEquals(Errno.EBADF, nee.errno);
             }
         }
