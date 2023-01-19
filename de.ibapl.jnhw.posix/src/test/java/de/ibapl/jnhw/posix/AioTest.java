@@ -933,8 +933,9 @@ public class AioTest {
 
                 if (MultiarchTupelBuilder.getOS() == OS.DARWIN) {
                     //TODO qeued, but invalid file descriptor...
-                    Aio.aio_read(aiocb);
-                    assertEquals(Errno.EINVAL, Aio.aio_error(aiocb));
+                    NativeErrorException nee = assertThrows(NativeErrorException.class,
+                            () -> Aio.aio_read(aiocb));
+                    assertEquals(Errno.EAGAIN, nee.errno);
                 } else {
                     Aio.aio_read(aiocb);
                     assertEquals(Errno.EINPROGRESS, Aio.aio_error(aiocb));
@@ -980,15 +981,21 @@ public class AioTest {
                 assertThrows(NullPointerException.class,
                         () -> Aio.lio_listio(Aio.LIO_WAIT.get(), null));
 
-                if (MultiarchTupelBuilder.getOS() == OS.FREE_BSD) {
-                    NativeErrorException nee = assertThrows(NativeErrorException.class,
-                            () -> Aio.lio_listio(Aio.LIO_NOWAIT.get(), list));
-                    assertEquals(Errno.EIO, nee.errno, Errno.getErrnoSymbol(nee.errno));
-                } else {
-                    //Darwin ignores Aio.LIO_NOWAIT so we enforce a timeout here
-                    assertTimeoutPreemptively(Duration.ofSeconds(1),
-                            () -> Aio.lio_listio(Aio.LIO_NOWAIT.get(), list)
-                    );
+                switch (MultiarchTupelBuilder.getOS()) {
+                    case FREE_BSD -> {
+                        NativeErrorException nee = assertThrows(NativeErrorException.class,
+                                () -> Aio.lio_listio(Aio.LIO_NOWAIT.get(), list));
+                        assertEquals(Errno.EIO, nee.errno, Errno.getErrnoSymbol(nee.errno));
+                    }
+                    case DARWIN -> {
+                        NativeErrorException nee = assertThrows(NativeErrorException.class,
+                                () -> Aio.lio_listio(Aio.LIO_NOWAIT.get(), list));
+                        assertEquals(Errno.EAGAIN, nee.errno, Errno.getErrnoSymbol(nee.errno));
+                    }
+                    case LINUX ->
+                        Aio.lio_listio(Aio.LIO_NOWAIT.get(), list);
+                    default ->
+                        fail("Cant handle OS" + MultiarchTupelBuilder.getOS());
                 }
             }
         }
