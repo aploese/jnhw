@@ -159,12 +159,12 @@ int32_t getValueOf_O_EXCL() {
 }
 
 int32_t* tryGetValueOf_O_EXEC(int32_t* value) {
-#if defined (__linux__) || defined(__APPLE__) || defined(__OpenBSD__)
-#if !defined(O_EXEC)
+#if defined (__linux__) || defined(__OpenBSD__)
+# if !defined(O_EXEC)
     value = NULL;
-#else
-#error "O_EXEC defined"
-#endif
+# else
+#  error "O_EXEC defined"
+# endif
 #else
     *value = O_EXEC;
 #endif
@@ -230,12 +230,12 @@ int32_t* tryGetValueOf_O_RSYNC(int32_t* value) {
 }
 
 int32_t* tryGetValueOf_O_SEARCH(int32_t* value) {
-#if defined (__linux__) || defined(__APPLE__) || defined(__OpenBSD__)
-#if !defined(O_SEARCH)
+#if defined (__linux__) || defined(__OpenBSD__)
+# if !defined(O_SEARCH)
     value = NULL;
-#else
-#error "O_SEARCH defined"
-#endif
+# else
+#  error "O_SEARCH defined"
+# endif
 #else
     *value = O_SEARCH;
 #endif
