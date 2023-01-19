@@ -21,6 +21,7 @@
  */
 package de.ibapl.jnhw.libloader.librarys;
 
+import de.ibapl.jnhw.libloader.MultiarchTupelBuilder;
 import java.lang.foreign.MemorySegment;
 import java.lang.foreign.MemorySession;
 import java.lang.foreign.SymbolLookup;
