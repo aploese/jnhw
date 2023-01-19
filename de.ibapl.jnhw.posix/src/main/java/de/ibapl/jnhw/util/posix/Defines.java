@@ -379,7 +379,7 @@ public class Defines {
         // __TIMESIZE = IntDefine.UNDEFINED; // glibc > 2.31? IntDefine.toIntDefine(mi.getSizeOfPointer().sizeInBit);
         //Linux
         __TIMESIZE = switch (os) {
-            case FREE_BSD ->
+            case DARWIN, FREE_BSD ->
                 IntDefine.UNDEFINED;
             case LINUX ->
                 switch (MultiarchTupelBuilder.getMemoryModel()) {
