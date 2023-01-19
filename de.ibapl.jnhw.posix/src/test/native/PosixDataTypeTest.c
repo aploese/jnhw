@@ -27,8 +27,6 @@
 #include <termios.h>
 #include <poll.h>
 
-#
-
 int8_t JNHW__cc_t__IS__uint8_t() {
 #ifdef _JNHW__cc_t__IS__uint8_t
     return 1;
@@ -238,7 +236,7 @@ uint64_t JNHW__clock_t__AS_Uint64_t() {
 int8_t JNHW__clockid_t__isSigned() {
 #ifdef __APPLE__
 //TODO clockid_t is an enum
-    return 0 > (uint32_t) - 1;
+    return 0 > (int32_t) - 1;
 #else
     return 0 > (clockid_t) - 1;
 #endif
@@ -247,7 +245,7 @@ int8_t JNHW__clockid_t__isSigned() {
 uint64_t JNHW__clockid_t__AS_Uint64_t() {
 #ifdef __APPLE__
 //TODO clockid_t is an enum
-    return (uint64_t) (uint32_t) TEST_PATTERN;
+    return (uint64_t) (int32_t) TEST_PATTERN;
 #else
     return (uint64_t) (clockid_t) TEST_PATTERN;
 #endif
