@@ -42,6 +42,7 @@ import de.ibapl.jnhw.common.memory.layout.Alignment;
 import de.ibapl.jnhw.common.util.IntDefine;
 import de.ibapl.jnhw.common.util.JsonStringBuilder;
 import de.ibapl.jnhw.libloader.MultiarchTupelBuilder;
+import de.ibapl.jnhw.libloader.librarys.LibcLoader;
 import de.ibapl.jnhw.posix.Signal.Sigevent;
 import de.ibapl.jnhw.posix.Time.Timespec;
 import de.ibapl.jnhw.libloader.librarys.LibrtLoader;
@@ -51,8 +52,8 @@ import java.io.IOException;
 import java.lang.foreign.MemoryAddress;
 import java.lang.foreign.MemorySegment;
 import java.lang.foreign.MemorySession;
+import java.lang.foreign.SymbolLookup;
 import java.nio.ByteBuffer;
-import java.util.Optional;
 
 /**
  * Wrapper around the {@code <aio.h>} header.
@@ -705,40 +706,51 @@ public class Aio {
         }
     }
 
+    private final static SymbolLookup getRtLib() {
+        return switch (MultiarchTupelBuilder.getOS()) {
+            case DARWIN ->
+                LibcLoader.LIB_C_SYMBOL_LOOKUP;
+            case FREE_BSD, LINUX ->
+                LibrtLoader.LIB_RT_SYMBOL_LOOKUP;
+            default ->
+                throw new AssertionError("Cant figure out in which lib pthread_getschedparam is!");
+        };
+    }
+
     private final static JnhwMh_sI__sI__A aio_cancel = JnhwMh_sI__sI__A.optionalOf(
-            LibrtLoader.LIB_RT_SYMBOL_LOOKUP,
+            getRtLib(),
             "aio_cancel",
             BaseDataType.C_int,
             BaseDataType.C_int,
             BaseDataType.C_struct_pointer);
 
     private final static JnhwMh_sI___A aio_error = JnhwMh_sI___A.optionalOf(
-            LibrtLoader.LIB_RT_SYMBOL_LOOKUP,
+            getRtLib(),
             "aio_error",
             BaseDataType.C_int,
             BaseDataType.C_const_struct_pointer);
 
     private final static JnhwMh_sI__sI__A aio_fsync = JnhwMh_sI__sI__A.optionalOf(
-            LibrtLoader.LIB_RT_SYMBOL_LOOKUP,
+            getRtLib(),
             "aio_fsync",
             BaseDataType.C_int,
             BaseDataType.C_int,
             BaseDataType.C_struct_pointer);
 
     private final static JnhwMh_sI___A aio_read = JnhwMh_sI___A.optionalOf(
-            LibrtLoader.LIB_RT_SYMBOL_LOOKUP,
+            getRtLib(),
             "aio_read",
             BaseDataType.C_int,
             BaseDataType.C_struct_pointer);
 
     private final static JnhwMh_sL___A aio_return = JnhwMh_sL___A.optionalOf(
-            LibrtLoader.LIB_RT_SYMBOL_LOOKUP,
+            getRtLib(),
             "aio_return",
             PosixDataType.ssize_t,
             BaseDataType.C_struct_pointer);
 
     private final static JnhwMh_sI___A_sI__A aio_suspend = JnhwMh_sI___A_sI__A.optionalOf(
-            LibrtLoader.LIB_RT_SYMBOL_LOOKUP,
+            getRtLib(),
             "aio_suspend",
             BaseDataType.C_int,
             BaseDataType.C_const_struct_array,
@@ -746,13 +758,13 @@ public class Aio {
             BaseDataType.C_struct_pointer);
 
     private final static JnhwMh_sI___A aio_write = JnhwMh_sI___A.optionalOf(
-            LibrtLoader.LIB_RT_SYMBOL_LOOKUP,
+            getRtLib(),
             "aio_write",
             BaseDataType.C_int,
             BaseDataType.C_struct_pointer);
 
     private final static JnhwMh_sI__sI__A_sI__A lio_listio = JnhwMh_sI__sI__A_sI__A.optionalOf(
-            LibrtLoader.LIB_RT_SYMBOL_LOOKUP,
+            getRtLib(),
             "lio_listio",
             BaseDataType.C_int,
             BaseDataType.C_int,

@@ -106,9 +106,9 @@ public final class Fcntl {
         public final static int O_DIRECTORY = 1048576;
         public final static int O_DSYNC = 4194304;
         public final static int O_EXCL = 2048;
-        public final static int O_EXEC = 262144;
+        public final static int O_EXEC = 1073741824;
         public final static int O_NOCTTY = 131072;
-        public final static int O_SEARCH = 262144;
+        public final static int O_SEARCH = 1074790400;
 
     }
 

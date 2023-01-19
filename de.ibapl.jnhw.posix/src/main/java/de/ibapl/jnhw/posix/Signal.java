@@ -67,7 +67,7 @@ import java.io.IOException;
 import java.lang.foreign.MemoryAddress;
 import java.lang.foreign.MemorySegment;
 import java.lang.foreign.MemorySession;
-import java.util.Optional;
+import java.lang.foreign.SymbolLookup;
 
 /**
  * Wrapper around the {@code <signal.h>} header.
@@ -2935,6 +2935,17 @@ public class Signal {
         }
     }
 
+    private final static SymbolLookup getRtLib() {
+        return switch (MultiarchTupelBuilder.getOS()) {
+            case DARWIN ->
+                LibcLoader.LIB_C_SYMBOL_LOOKUP;
+            case FREE_BSD, LINUX ->
+                LibrtLoader.LIB_RT_SYMBOL_LOOKUP;
+            default ->
+                throw new AssertionError("Cant figure out in which lib pthread_getschedparam is!");
+        };
+    }
+
     private final static JnhwMh_sI__sI_sI.ExceptionErased kill = JnhwMh_sI__sI_sI.mandatoryOf(
             LibcLoader.LIB_C_SYMBOL_LOOKUP,
             "kill",
@@ -2962,7 +2973,7 @@ public class Signal {
             BaseDataType.C_const_char_pointer);
 
     private final static JnhwMh_sI__PthreadT_sI.ExceptionErased pthread_kill = JnhwMh_sI__PthreadT_sI.mandatoryOf(
-            LibrtLoader.LIB_RT_SYMBOL_LOOKUP,
+            getRtLib(),
             "pthread_kill",
             BaseDataType.C_int,
             PosixDataType.pthread_t,
