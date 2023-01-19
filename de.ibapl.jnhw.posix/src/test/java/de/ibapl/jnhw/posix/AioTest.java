@@ -922,6 +922,34 @@ public class AioTest {
      * Test of lio_listio method, of class Aio.
      */
     @Test
+    public void testread_filedescriptor() throws Exception {
+        switch (MultiarchTupelBuilder.getOS()) {
+            case OPEN_BSD -> // preconditions not met can only test this this way.
+                assertTrue(LibrtLoader.LIB_RT_SYMBOL_LOOKUP.lookup("lio_listio").isEmpty(), "lio_listio is available");
+            default -> {
+                Aio.Aiocb aiocb = Aio.Aiocb.tryAllocateNative(sharedSession);
+                aiocb.aio_sigevent.sigev_notify(Signal.SIGEV_NONE.get());
+                aiocb.aio_fildes(-1);
+
+                if (MultiarchTupelBuilder.getOS() == OS.DARWIN) {
+                    //TODO qeued, but invalid file descriptor...
+                    Aio.aio_read(aiocb);
+                    assertEquals(Errno.EINVAL, Aio.aio_error(aiocb));
+                } else {
+                    Aio.aio_read(aiocb);
+                    assertEquals(Errno.EINPROGRESS, Aio.aio_error(aiocb));
+                }
+                NativeErrorException nee = assertThrows(NativeErrorException.class,
+                        () -> assertEquals(Aio.AIO_CANCELED, Aio.aio_cancel(aiocb)));
+                assertEquals(Errno.EBADF, nee.errno);
+            }
+        }
+    }
+
+    /**
+     * Test of lio_listio method, of class Aio.
+     */
+    @Test
     public void testLio_listio() throws Exception {
         switch (MultiarchTupelBuilder.getOS()) {
             case OPEN_BSD -> // preconditions not met can only test this this way.
@@ -940,11 +968,12 @@ public class AioTest {
                     if (MultiarchTupelBuilder.getOS() == OS.DARWIN) {
                         //TODO qeued, but invalid file descriptor...
                         Aio.lio_listio(Aio.LIO_WAIT.get(), list);
-                        assertEquals(0, Aio.aio_error(aiocb));
+                        assertEquals(Errno.EINVAL, Aio.aio_error(aiocb));
                     } else {
                         NativeErrorException nee = assertThrows(NativeErrorException.class,
                                 () -> Aio.lio_listio(Aio.LIO_WAIT.get(), list));
                         assertEquals(Errno.EIO, nee.errno, Errno.getErrnoSymbol(nee.errno));
+                        assertEquals(Errno.EBADF, Aio.aio_error(aiocb));
                     }
                 });
 

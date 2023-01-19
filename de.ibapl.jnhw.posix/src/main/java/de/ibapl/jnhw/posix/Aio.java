@@ -838,7 +838,7 @@ public class Aio {
      * @return If the asynchronous I/O operation has completed successfully,
      * then 0 is returned. If the asynchronous operation as not yet completed,
      * then Errno.EINPROGRESS is returned. On -1 an NativeErrorException is
-     * thrown. Any other values returned are not POSIX conform, but do happen.
+     * thrown. Any other values returnes or errno set are OS dependant.
      *
      * @throws NativeErrorException if the return value of the native function
      * indicates an error.
