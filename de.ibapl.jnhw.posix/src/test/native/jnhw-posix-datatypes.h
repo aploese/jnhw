@@ -108,6 +108,7 @@
 #  define _JNHW__clockid_t__IS__uint32_t 1
 #  define _JNHW__speed_t__IS__uint64_t 1
 #  define _JNHW__tcflag_t__IS__uint64_t 1
+#  define _JNHW__timer_t__IS__not_defined 1
 # else//if defined(__APPLE__)
 #  define _JNHW__clockid_t__IS__int32_t 1
 #  define _JNHW__speed_t__IS__uint32_t 1
@@ -144,7 +145,7 @@
 # define _JNHW__tcflag_t__IS__uint32_t 1
 # define _JNHW__timer_t__IS__int32_t 1
 # define _JNHW__cc_t__IS__uint8_t 1
-# define _JNHW__pthread_t__IS__undeclared 1
+# define _JNHW__pthread_t__IS__not_defined 1
 
 //JNHW_ASSERT_DATA_TYPES(off64_t, int64_t)
 //JNHW_ASSERT_DATA_TYPES(useconds_t, int32_t)
@@ -241,12 +242,12 @@
 #endif
 
 #if defined(_JNHW__pthread_t__IS__uint64_t)
-# define JNHW_ASSERT__pthread_t__IS__uint64_t__OR__uint32_t__OR__undeclared JNHW_ASSERT_DATA_TYPES(pthread_t, uint64_t)
+# define JNHW_ASSERT__pthread_t__IS__uint64_t__OR__uint32_t__OR__not_defined JNHW_ASSERT_DATA_TYPES(pthread_t, uint64_t)
 #elif defined(_JNHW__pthread_t__IS__uint32_t)
-# define JNHW_ASSERT__pthread_t__IS__uint64_t__OR__uint32_t__OR__undeclared JNHW_ASSERT_DATA_TYPES(pthread_t, uint32_t)
-#elif defined(_JNHW__pthread_t__IS__undeclared)
+# define JNHW_ASSERT__pthread_t__IS__uint64_t__OR__uint32_t__OR__not_defined JNHW_ASSERT_DATA_TYPES(pthread_t, uint32_t)
+#elif defined(_JNHW__pthread_t__IS__not_defined)
 //Test for undeclaredness ??
-# define JNHW_ASSERT__pthread_t__IS__uint64_t__OR__uint32_t__OR__undeclared JNHW_ASSERT_DATA_TYPES(uint32_t, uint32_t)
+# define JNHW_ASSERT__pthread_t__IS__uint64_t__OR__uint32_t__OR__not_defined JNHW_ASSERT_DATA_TYPES(uint32_t, uint32_t)
 #else
 # error pthread_t
 #endif
@@ -270,11 +271,13 @@
 #endif
 
 #if defined(_JNHW__timer_t__IS__intptr_t)
-# define JNHW_ASSERT__timer_t__IS__intptr_t__OR__int32_t JNHW_ASSERT_DATA_TYPES(timer_t, intptr_t)
+# define JNHW_ASSERT__timer_t__IS__intptr_t__OR__int32_t__OR__not_defined JNHW_ASSERT_DATA_TYPES(timer_t, intptr_t)
 #elif defined(_JNHW__timer_t__IS__int32_t)
-# define JNHW_ASSERT__timer_t__IS__intptr_t__OR__int32_t JNHW_ASSERT_DATA_TYPES(timer_t, int32_t)
+# define JNHW_ASSERT__timer_t__IS__intptr_t__OR__int32_t__OR__not_defined JNHW_ASSERT_DATA_TYPES(timer_t, int32_t)
 #elif defined(_JNHW__timer_t__IS__int64_t)
-# define JNHW_ASSERT__timer_t__IS__intptr_t__OR__int32_t JNHW_ASSERT_DATA_TYPES(timer_t, int64_t)
+# define JNHW_ASSERT__timer_t__IS__intptr_t__OR__int32_t__OR__not_defined JNHW_ASSERT_DATA_TYPES(timer_t, int64_t)
+#elif defined(_JNHW__timer_t__IS__not_defined)
+# define JNHW_ASSERT__timer_t__IS__intptr_t__OR__int32_t__OR__not_defined !defined(timer_t)
 #else
 # error timer_t
 #endif
@@ -298,10 +301,10 @@ JNHW_ASSERT__uid_t__IS__uint32_t
 JNHW_ASSERT__off_t__IS__int64_t__OR__int32_t
 JNHW_ASSERT__ssize_t__IS__int64_t__OR__int32_t
 JNHW_ASSERT__size_t__IS__uint64_t__OR__uint32_t
-JNHW_ASSERT__pthread_t__IS__uint64_t__OR__uint32_t__OR__undeclared
+JNHW_ASSERT__pthread_t__IS__uint64_t__OR__uint32_t__OR__not_defined
 JNHW_ASSERT__clock_t__IS__int64_t__OR__int32_t
 JNHW_ASSERT__time_t__IS__int64_t__OR__int32_t
-JNHW_ASSERT__timer_t__IS__intptr_t__OR__int32_t
+JNHW_ASSERT__timer_t__IS__intptr_t__OR__int32_t__OR__not_defined
 
 #include <poll.h>
 JNHW_ASSERT__nfds_t__IS__uint64_t__OR__uint32_t
