@@ -105,6 +105,7 @@
 # define _JNHW__uid_t__IS__uint32_t 1
  
 # if defined(__APPLE__)
+//TODO clockid_t is an enum ... how to test?..
 #  define _JNHW__clockid_t__IS__uint32_t 1
 #  define _JNHW__speed_t__IS__uint64_t 1
 #  define _JNHW__tcflag_t__IS__uint64_t 1
