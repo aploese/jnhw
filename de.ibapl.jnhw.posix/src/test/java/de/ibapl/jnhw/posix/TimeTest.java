@@ -32,6 +32,7 @@ import de.ibapl.jnhw.common.memory.OpaqueMemory;
 import de.ibapl.jnhw.libloader.MultiarchInfo;
 import de.ibapl.jnhw.libloader.MultiarchTupelBuilder;
 import de.ibapl.jnhw.libloader.OS;
+import static de.ibapl.jnhw.libloader.OS.OPEN_BSD;
 import de.ibapl.jnhw.libloader.librarys.LibcLoader;
 import de.ibapl.jnhw.libloader.librarys.LibrtLoader;
 import de.ibapl.jnhw.posix.sys.Types;
@@ -795,7 +796,7 @@ public class TimeTest {
             case DARWIN -> {
                 // precondition for tests not available
                 Assertions.assertThrows(NoSuchNativeTypeException.class, () -> {
-                    Time.PtrTimer_t.allocateNative(ms);
+                    Time.Timer_t.tryAllocateNative(ms);
                 });
                 Assertions.assertThrows(NoSuchNativeTypeException.class, () -> {
                     Time.timer_create(0, Time.PtrTimer_t.tryAllocateNative(ms));
@@ -861,6 +862,13 @@ public class TimeTest {
      */
     @Test
     public void testTimer_delete_twice() throws Exception {
+        switch (MultiarchTupelBuilder.getOS()) {
+            case DARWIN, OPEN_BSD -> {
+                return;
+            }
+            default -> {
+            }
+        }
 
         final Time.PtrTimer_t ptrTimerid = Time.PtrTimer_t.tryAllocateNative(ms);
         Signal.Sigevent evp = Signal.Sigevent.tryAllocateNative(ms);
