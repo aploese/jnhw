@@ -932,17 +932,17 @@ public class AioTest {
                 aiocb.aio_fildes(-1);
 
                 if (MultiarchTupelBuilder.getOS() == OS.DARWIN) {
-                    //TODO qeued, but invalid file descriptor...
                     NativeErrorException nee = assertThrows(NativeErrorException.class,
                             () -> Aio.aio_read(aiocb));
                     assertEquals(Errno.EAGAIN, nee.errno);
+                    assertEquals(Aio.AIO_ALLDONE.get(), Aio.aio_cancel(aiocb));
                 } else {
                     Aio.aio_read(aiocb);
                     assertEquals(Errno.EINPROGRESS, Aio.aio_error(aiocb));
+                    NativeErrorException nee = assertThrows(NativeErrorException.class,
+                            () -> assertEquals(-1, Aio.aio_cancel(aiocb)));
+                    assertEquals(Errno.EBADF, nee.errno);
                 }
-                NativeErrorException nee = assertThrows(NativeErrorException.class,
-                        () -> assertEquals(Aio.AIO_ALLDONE.get(), Aio.aio_cancel(aiocb)));
-                assertEquals(Errno.EBADF, nee.errno);
             }
         }
     }
