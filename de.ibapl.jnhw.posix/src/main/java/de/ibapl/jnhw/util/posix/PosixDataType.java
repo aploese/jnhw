@@ -116,7 +116,7 @@ public interface PosixDataType {
     public final static BaseDataType pthread_t = switch (MultiarchTupelBuilder.getOS()) {
         case LINUX ->
             BaseDataType.C_unsigned_long_int;
-        case FREE_BSD, OPEN_BSD ->
+        case DARWIN, FREE_BSD, OPEN_BSD ->
             BaseDataType.C_struct_pointer;
         default ->
             throw new NoClassDefFoundError("can't get OS datatype of pthread_t on " + MultiarchTupelBuilder.getMultiarch());
@@ -125,7 +125,7 @@ public interface PosixDataType {
     public final static BaseDataType pthread_attr_t = switch (MultiarchTupelBuilder.getOS()) {
         case LINUX ->
             BaseDataType.struct;
-        case FREE_BSD, OPEN_BSD ->
+        case DARWIN, FREE_BSD, OPEN_BSD ->
             BaseDataType.C_struct_pointer;
         default ->
             throw new NoClassDefFoundError("can't get OS datatype of pthread_attr_t on " + MultiarchTupelBuilder.getMultiarch());
