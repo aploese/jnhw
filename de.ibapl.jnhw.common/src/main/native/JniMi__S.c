@@ -30,8 +30,8 @@ extern "C" {
  * Method:    invoke__S___V
  * Signature: (J)S
  */
-JNIEXPORT int16_t JNICALL Java_de_ibapl_jnhw_common_downcall_jni_JniMi_1_1S_1_1_1V_invoke_1_1S_1_1_1V
-  (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz, int64_t address) {
+JNIEXPORT jshort JNICALL Java_de_ibapl_jnhw_common_downcall_jni_JniMi_1_1S_1_1_1V_invoke_1_1S_1_1_1V
+  (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz, jlong address) {
     return ((int16_t (*)())(intptr_t)address)();
 }
 

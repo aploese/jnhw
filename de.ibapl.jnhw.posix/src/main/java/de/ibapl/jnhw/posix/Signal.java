@@ -2301,7 +2301,7 @@ public class Signal {
     public final static FunctionPtr__V___I SIG_ERR;
 
     /**
-     * <b>POSIX:</b> Request that signal be held.
+     * <b>POSIX.XSI:</b> Request that signal be held.
      *
      */
     @Define()
@@ -2599,18 +2599,18 @@ public class Signal {
     public final static int SS_ONSTACK;
 
     /**
-     * <b>POSIX:</b>{@link SIGTRAP} Process breakpoint.
+     * <b>POSIX.XSI:</b>{@link SIGTRAP} Process breakpoint.
      *
      */
     @Define()
-    public final static int TRAP_BRKPT;
+    public final static IntDefine TRAP_BRKPT;
 
     /**
-     * <b>POSIX:</b>{@link SIGTRAP} Process trace trap.
+     * <b>POSIX.XSI:</b>{@link SIGTRAP} Process trace trap.
      *
      */
     @Define()
-    public final static int TRAP_TRACE;
+    public final static IntDefine TRAP_TRACE;
 
     /**
      * @implNote The actual value for the define fields are injected by

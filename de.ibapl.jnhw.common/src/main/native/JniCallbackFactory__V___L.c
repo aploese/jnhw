@@ -30,10 +30,14 @@ extern "C" {
 
 #define MAX_CALL_BACKS 16
 
-#ifdef __LP64__ 
+#if defined(__LP64__)
  #define MSG_UNASSIGNED "From C code: unassigned Callback__V___L %d @0x%08lx no upcall handle!\n"
  #define MSG_ATTACH_THREAD_FAILED "From C code: Callback__V___L %d @0x%08lx can't attach to thread!\n"
  #define MSG_NO_UPCALL "From C code: Callback__V___L %d @0x%08lx can't get env!\n"
+#elif defined(__WIN64__)
+ #define MSG_UNASSIGNED "From C code: unassigned Callback__V___L %d @0x%08Lx no upcall handle!\n"
+ #define MSG_ATTACH_THREAD_FAILED "From C code: Callback__V___L %d @0x%08Lx can't attach to thread!\n"
+ #define MSG_NO_UPCALL "From C code: Callback__V___L %d @0x%08Lx can't get env!\n"
 #else 
  #define MSG_UNASSIGNED "From C code: unassigned Callback__V___L %d @0x%04x no upcall handle!\n"
  #define MSG_ATTACH_THREAD_FAILED "From C code: Callback__V___L %d @0x%04x can't attach to thread!\n"

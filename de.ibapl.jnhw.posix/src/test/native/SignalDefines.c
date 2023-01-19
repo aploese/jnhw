@@ -21,7 +21,7 @@
  */
 #include "jnhw-posix.h"
 
-    //We need the POSIX version ...
+//We need the POSIX version ...
 #if !defined(HAVE_SIGNAL_H) || !defined(_POSIX_VERSION)
 
 int32_t getValueOf_HAVE_SIGNAL_H() {
@@ -119,12 +119,14 @@ int32_t getValueOf_BUS_OBJERR() {
     return BUS_OBJERR;
 }
 
-int32_t getValueOf_TRAP_BRKPT() {
-    return TRAP_BRKPT;
+int32_t* tryGetValueOf_TRAP_BRKPT(int32_t* value) {
+    *value = TRAP_BRKPT;
+    return value;
 }
 
-int32_t getValueOf_TRAP_TRACE() {
-    return TRAP_TRACE;
+int32_t* tryGetValueOf_TRAP_TRACE(int32_t* value) {
+    *value = TRAP_TRACE;
+    return value;
 }
 
 int32_t getValueOf_CLD_EXITED() {

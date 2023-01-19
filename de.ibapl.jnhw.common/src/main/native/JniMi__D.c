@@ -33,7 +33,7 @@ extern "C" {
  * Signature: (JII)D
  */
 JNIEXPORT double JNICALL Java_de_ibapl_jnhw_common_downcall_jni_JniMi_1_1D_1_1_1I_1_1I_invoke_1_1D_1_1_1I_1_1I
-  (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz, int64_t address, int32_t arg1, int32_t arg2) {
+  (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz, jlong address, jint arg1, jint arg2) {
     return ((double (*)(int32_t, int32_t))(intptr_t)address)(arg1, arg2);
 }
 
@@ -43,7 +43,7 @@ JNIEXPORT double JNICALL Java_de_ibapl_jnhw_common_downcall_jni_JniMi_1_1D_1_1_1
  * Signature: (JJJ)D
  */
 JNIEXPORT double JNICALL Java_de_ibapl_jnhw_common_downcall_jni_JniMi_1_1D_1_1_1L_1_1L_invoke_1_1D_1_1_1L_1_1L
-  (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz, int64_t address, int64_t arg1, int64_t arg2) {
+  (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz, jlong address, jlong arg1, jlong arg2) {
     return ((double (*)(int64_t, int64_t))(intptr_t)address)(arg1, arg2);
 }
 

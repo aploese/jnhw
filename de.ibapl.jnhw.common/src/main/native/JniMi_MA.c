@@ -40,8 +40,8 @@ extern "C" {
  * Method:    invoke_MA___A
  * Signature: (JJ)J
  */
-JNIEXPORT int64_t JNICALL Java_de_ibapl_jnhw_common_downcall_jni_JniMi_1MA_1_1_1A_invoke_1MA_1_1_1A
-  (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz, int64_t address, int64_t arg1) {
+JNIEXPORT jlong JNICALL Java_de_ibapl_jnhw_common_downcall_jni_JniMi_1MA_1_1_1A_invoke_1MA_1_1_1A
+  (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz, jlong address, jlong arg1) {
     return (int64_t)((uintptr_t (*)(intptr_t))(intptr_t)address)((intptr_t) arg1);
 }
 
@@ -50,8 +50,8 @@ JNIEXPORT int64_t JNICALL Java_de_ibapl_jnhw_common_downcall_jni_JniMi_1MA_1_1_1
  * Method:    invoke_MA___A__A
  * Signature: (JJJ)J
  */
-JNIEXPORT int64_t JNICALL Java_de_ibapl_jnhw_common_downcall_jni_JniMi_1MA_1_1_1A_1_1A_invoke_1MA_1_1_1A_1_1A
-  (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz, int64_t address, int64_t arg1, int64_t arg2) {
+JNIEXPORT jlong JNICALL Java_de_ibapl_jnhw_common_downcall_jni_JniMi_1MA_1_1_1A_1_1A_invoke_1MA_1_1_1A_1_1A
+  (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz, jlong address, jlong arg1, jlong arg2) {
     return (int64_t)((uintptr_t (*)(intptr_t, intptr_t))(intptr_t)address)((intptr_t) arg1, (intptr_t) arg2);
 }
 
@@ -60,8 +60,8 @@ JNIEXPORT int64_t JNICALL Java_de_ibapl_jnhw_common_downcall_jni_JniMi_1MA_1_1_1
  * Method:    invoke_MA___A__A__A
  * Signature: (JJJJ)J
  */
-JNIEXPORT int64_t JNICALL Java_de_ibapl_jnhw_common_downcall_jni_JniMi_1MA_1_1_1A_1_1A_1_1A_invoke_1MA_1_1_1A_1_1A_1_1A
-  (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz, int64_t address, int64_t arg1, int64_t arg2, int64_t arg3) {
+JNIEXPORT jlong JNICALL Java_de_ibapl_jnhw_common_downcall_jni_JniMi_1MA_1_1_1A_1_1A_1_1A_invoke_1MA_1_1_1A_1_1A_1_1A
+  (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz, jlong address, jlong arg1, jlong arg2, jlong arg3) {
     return (int64_t)((uintptr_t (*)(intptr_t, intptr_t, intptr_t))(intptr_t)address)((intptr_t) arg1, (intptr_t) arg2, (intptr_t) arg3);
 }
 
@@ -70,8 +70,8 @@ JNIEXPORT int64_t JNICALL Java_de_ibapl_jnhw_common_downcall_jni_JniMi_1MA_1_1_1
  * Method:    invoke_MA___A__A__L__I
  * Signature: (JJJJI)J
  */
-JNIEXPORT int64_t JNICALL Java_de_ibapl_jnhw_common_downcall_jni_JniMi_1MA_1_1_1A_1_1A_1_1L_1_1I_invoke_1MA_1_1_1A_1_1A_1_1L_1_1I
-  (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz, int64_t address, int64_t arg1, int64_t arg2, int64_t arg3, int32_t arg4) {
+JNIEXPORT jlong JNICALL Java_de_ibapl_jnhw_common_downcall_jni_JniMi_1MA_1_1_1A_1_1A_1_1L_1_1I_invoke_1MA_1_1_1A_1_1A_1_1L_1_1I
+  (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz, jlong address, jlong arg1, jlong arg2, jlong arg3, jint arg4) {
     return (int64_t)((uintptr_t (*)(intptr_t, intptr_t, int64_t, int32_t))(intptr_t)address)((intptr_t) arg1, (intptr_t) arg2, arg3, arg4);
 }
 
@@ -80,8 +80,8 @@ JNIEXPORT int64_t JNICALL Java_de_ibapl_jnhw_common_downcall_jni_JniMi_1MA_1_1_1
  * Method:    invoke_MA___A__I
  * Signature: (JJI)J
  */
-JNIEXPORT int64_t JNICALL Java_de_ibapl_jnhw_common_downcall_jni_JniMi_1MA_1_1_1A_1_1I_invoke_1MA_1_1_1A_1_1I
-  (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz, int64_t address, int64_t arg1, int32_t arg2) {
+JNIEXPORT jlong JNICALL Java_de_ibapl_jnhw_common_downcall_jni_JniMi_1MA_1_1_1A_1_1I_invoke_1MA_1_1_1A_1_1I
+  (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz, jlong address, jlong arg1, jint arg2) {
     return (int64_t)((uintptr_t (*)(intptr_t, int32_t))(intptr_t)address)((intptr_t) arg1, arg2);
 }
 
@@ -90,8 +90,8 @@ JNIEXPORT int64_t JNICALL Java_de_ibapl_jnhw_common_downcall_jni_JniMi_1MA_1_1_1
  * Method:    invoke__L___A__I__I__A
  * Signature: (JJIIJ)J
  */
-JNIEXPORT int64_t JNICALL Java_de_ibapl_jnhw_common_downcall_jni_JniMi_1MA_1_1_1A_1_1I_1_1I_1_1A_invoke_1_1L_1_1_1A_1_1I_1_1I_1_1A
-  (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz, int64_t address, int64_t arg1, int32_t arg2, int32_t arg3, int64_t arg4) {
+JNIEXPORT jlong JNICALL Java_de_ibapl_jnhw_common_downcall_jni_JniMi_1MA_1_1_1A_1_1I_1_1I_1_1A_invoke_1_1L_1_1_1A_1_1I_1_1I_1_1A
+  (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz, jlong address, jlong arg1, jint arg2, jint arg3, jlong arg4) {
     return (int64_t)((uintptr_t (*)(intptr_t, int32_t, int32_t, intptr_t))(intptr_t)address)((intptr_t) arg1, arg2, arg3, (intptr_t)arg4);
 }
 
@@ -100,8 +100,8 @@ JNIEXPORT int64_t JNICALL Java_de_ibapl_jnhw_common_downcall_jni_JniMi_1MA_1_1_1
  * Method:    invoke_MA___A__I__I__A__I__I__A
  * Signature: (JJIIJIIJ)J
  */
-JNIEXPORT int64_t JNICALL Java_de_ibapl_jnhw_common_downcall_jni_JniMi_1MA_1_1_1A_1_1I_1_1I_1_1A_1_1I_1_1I_1_1A_invoke_1MA_1_1_1A_1_1I_1_1I_1_1A_1_1I_1_1I_1_1A
-  (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz, int64_t address, int64_t arg1, int32_t arg2, int32_t arg3, int64_t arg4, int32_t arg5, int32_t arg6, int64_t arg7) {
+JNIEXPORT jlong JNICALL Java_de_ibapl_jnhw_common_downcall_jni_JniMi_1MA_1_1_1A_1_1I_1_1I_1_1A_1_1I_1_1I_1_1A_invoke_1MA_1_1_1A_1_1I_1_1I_1_1A_1_1I_1_1I_1_1A
+  (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz, jlong address, jlong arg1, jint arg2, jint arg3, jlong arg4, jint arg5, jint arg6, jlong arg7) {
     return (int64_t)((uintptr_t (*)(intptr_t, int32_t, int32_t, intptr_t, int32_t, int32_t, intptr_t))(intptr_t)address)((intptr_t) arg1, arg2, arg3, (intptr_t)arg4, arg5, arg6, (intptr_t)arg7);
 }
 
@@ -110,8 +110,8 @@ JNIEXPORT int64_t JNICALL Java_de_ibapl_jnhw_common_downcall_jni_JniMi_1MA_1_1_1
  * Method:    invoke_MA___I
  * Signature: (JI)J
  */
-JNIEXPORT int64_t JNICALL Java_de_ibapl_jnhw_common_downcall_jni_JniMi_1MA_1_1_1I_invoke_1MA_1_1_1I
-  (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz, int64_t address, int32_t arg1) {
+JNIEXPORT jlong JNICALL Java_de_ibapl_jnhw_common_downcall_jni_JniMi_1MA_1_1_1I_invoke_1MA_1_1_1I
+  (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz, jlong address, jint arg1) {
     return (int64_t)((uintptr_t (*)(int32_t))(intptr_t)address)(arg1);
 }
 
@@ -120,8 +120,8 @@ JNIEXPORT int64_t JNICALL Java_de_ibapl_jnhw_common_downcall_jni_JniMi_1MA_1_1_1
  * Method:    invoke_MA___I__A
  * Signature: (JIJ)J
  */
-JNIEXPORT int64_t JNICALL Java_de_ibapl_jnhw_common_downcall_jni_JniMi_1MA_1_1_1I_1_1A_invoke_1MA_1_1_1I_1_1A
-  (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz, int64_t address, int32_t arg1, int64_t arg2) {
+JNIEXPORT jlong JNICALL Java_de_ibapl_jnhw_common_downcall_jni_JniMi_1MA_1_1_1I_1_1A_invoke_1MA_1_1_1I_1_1A
+  (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz, jlong address, jint arg1, jlong arg2) {
     return (int64_t)((uintptr_t (*)(int32_t, intptr_t))(intptr_t)address)(arg1, (intptr_t)arg2);
 }
 
@@ -130,8 +130,8 @@ JNIEXPORT int64_t JNICALL Java_de_ibapl_jnhw_common_downcall_jni_JniMi_1MA_1_1_1
  * Method:    invoke_MA___I__A__A
  * Signature: (JIJJ)J
  */
-JNIEXPORT int64_t JNICALL Java_de_ibapl_jnhw_common_downcall_jni_JniMi_1MA_1_1_1I_1_1A_1_1A_invoke_1MA_1_1_1I_1_1A_1_1A
-  (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz, int64_t address, int32_t arg1, int64_t arg2, int64_t arg3) {
+JNIEXPORT jlong JNICALL Java_de_ibapl_jnhw_common_downcall_jni_JniMi_1MA_1_1_1I_1_1A_1_1A_invoke_1MA_1_1_1I_1_1A_1_1A
+  (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz, jlong address, jint arg1, jlong arg2, jlong arg3) {
     return (int64_t)((uintptr_t (*)(int32_t, intptr_t, intptr_t))(intptr_t)address)(arg1, (intptr_t)arg2, (intptr_t)arg3);
 }
 
@@ -140,8 +140,8 @@ JNIEXPORT int64_t JNICALL Java_de_ibapl_jnhw_common_downcall_jni_JniMi_1MA_1_1_1
  * Method:    invoke_MA___V
  * Signature: (J)J
  */
-JNIEXPORT int64_t JNICALL Java_de_ibapl_jnhw_common_downcall_jni_JniMi_1MA_1_1_1V_invoke_1MA_1_1_1V
-  (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz, int64_t address) {
+JNIEXPORT jlong JNICALL Java_de_ibapl_jnhw_common_downcall_jni_JniMi_1MA_1_1_1V_invoke_1MA_1_1_1V
+  (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz, jlong address) {
     return (int64_t)((uintptr_t (*)())(intptr_t)address)();
 }
 

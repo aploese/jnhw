@@ -22,6 +22,9 @@
 #include <stddef.h>
 #include <signal.h>
 
+//We need the POSIX version ...
+#if defined(HAVE_SIGNAL_H) && defined(_POSIX_VERSION)
+
 typedef void (*callback__V__UnionSigval)(union sigval);
 static callback__V__UnionSigval ptrCallback__V__UnionSigval = NULL;
 
@@ -46,3 +49,5 @@ void doCallback__V__UnionSigval_I(int sival_int) {
     value.sival_int = sival_int;
     ptrCallback__V__UnionSigval(value);
 }
+
+#endif
