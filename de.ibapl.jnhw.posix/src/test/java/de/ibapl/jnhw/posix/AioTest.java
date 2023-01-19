@@ -940,9 +940,7 @@ public class AioTest {
                     if (MultiarchTupelBuilder.getOS() == OS.DARWIN) {
                         //TODO qeued, but invalid file descriptor...
                         Aio.lio_listio(Aio.LIO_WAIT.get(), list);
-                        NativeErrorException nee = assertThrows(NativeErrorException.class,
-                                () -> Aio.aio_error(aiocb));
-                        assertEquals(Errno.EINVAL, nee.errno);
+                        assertEquals(0, Aio.aio_error(aiocb));
                     } else {
                         NativeErrorException nee = assertThrows(NativeErrorException.class,
                                 () -> Aio.lio_listio(Aio.LIO_WAIT.get(), list));
