@@ -57,6 +57,7 @@ public interface PosixDataType {
             throw new NoClassDefFoundError("can't get datatype of clock_t on " + MultiarchTupelBuilder.getMultiarch());
     };
 
+    //Apple Darwin datatype is enum.
     public final static BaseDataType clockid_t = BaseDataType.int32_t;
     public final static BaseDataType clockid_t_ptr = BaseDataType.C_pointer;
     public final static BaseDataType gid_t = BaseDataType.uint32_t;

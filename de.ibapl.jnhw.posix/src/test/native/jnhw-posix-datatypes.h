@@ -106,7 +106,7 @@
  
 # if defined(__APPLE__)
 //TODO clockid_t is an enum ... how to test?..
-#  define _JNHW__clockid_t__IS__uint32_t 1
+#  define _JNHW__clockid_t__IS__int32_t 1
 #  define _JNHW__speed_t__IS__uint64_t 1
 #  define _JNHW__tcflag_t__IS__uint64_t 1
 #  define _JNHW__timer_t__IS__not_defined 1
@@ -183,9 +183,7 @@
 #endif
 
 #if defined(_JNHW__clockid_t__IS__int32_t)
-# define JNHW_ASSERT__clockid_t__IS__int32_t__OR__uint32_t JNHW_ASSERT_DATA_TYPES(clockid_t, int32_t)
-#elif defined(_JNHW__clockid_t__IS__uint32_t)
-# define JNHW_ASSERT__clockid_t__IS__int32_t__OR__uint32_t JNHW_ASSERT_DATA_TYPES(clockid_t, uint32_t)
+# define JNHW_ASSERT__clockid_t__IS__int32_t JNHW_ASSERT_DATA_TYPES(clockid_t, int32_t)
 #else
 # error clockid_t
 #endif

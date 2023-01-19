@@ -69,14 +69,6 @@ int8_t JNHW__clockid_t__IS__int32_t() {
 #endif
 }
 
-int8_t JNHW__clockid_t__IS__uint32_t() {
-#ifdef _JNHW__clockid_t__IS__uint32_t
-    return 1;
-#else
-    return 0;
-#endif
-}
-
 int8_t JNHW__off_t__IS__int64_t() {
 #ifdef _JNHW__off_t__IS__int64_t
     return 1;
