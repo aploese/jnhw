@@ -27,7 +27,7 @@ import de.ibapl.jnhw.common.memory.OpaqueMemory;
 import de.ibapl.jnhw.common.memory.Struct;
 import de.ibapl.jnhw.libloader.MultiarchTupelBuilder;
 import de.ibapl.jnhw.libloader.OS;
-import de.ibapl.jnhw.libloader.librarys.LibrtLoader;
+import de.ibapl.jnhw.libloader.libraries.LibrtLoader;
 import de.ibapl.jnhw.util.posix.DefinesTest;
 import de.ibapl.jnhw.util.posix.upcall.CallbackFactory__V__UnionSigval;
 import de.ibapl.jnhw.util.posix.upcall.Callback__V__UnionSigval;
@@ -221,10 +221,10 @@ public class AioTest {
 
                 NativeErrorException nee = assertThrows(NativeErrorException.class,
                         () -> Aio.aio_cancel(aiocb));
-                assertEquals(Errno.EBADF, nee.errno);
+                ErrnoTest.assertErrnoEquals(Errno.EBADF, nee.errno);
 
                 nee = assertThrows(NativeErrorException.class, () -> Aio.aio_cancel(-1));
-                assertEquals(Errno.EBADF, nee.errno);
+                ErrnoTest.assertErrnoEquals(Errno.EBADF, nee.errno);
             }
         }
     }
@@ -241,13 +241,13 @@ public class AioTest {
                 aiocb.aio_fildes(-1);
                 NativeErrorException nee = assertThrows(NativeErrorException.class,
                         () -> Aio.aio_error(aiocb));
-                assertEquals(Errno.EINVAL, nee.errno);
+                ErrnoTest.assertErrnoEquals(Errno.EINVAL, nee.errno);
             }
             case FREE_BSD -> {
                 Aio.Aiocb aiocb = Aio.Aiocb.tryAllocateNative(sharedSession);
                 aiocb.aio_sigevent.sigev_notify(Signal.SIGEV_NONE.get());
                 aiocb.aio_fildes(-1);
-                assertEquals(Errno.EINVAL, Aio.aio_error(aiocb));
+                ErrnoTest.assertErrnoEquals(Errno.EINVAL, Aio.aio_error(aiocb));
             }
             case OPEN_BSD -> {
                 // preconditions not met can only test this this way.
@@ -258,7 +258,7 @@ public class AioTest {
                 Aio.Aiocb aiocb = Aio.Aiocb.tryAllocateNative(sharedSession);
                 aiocb.aio_sigevent.sigev_notify(Signal.SIGEV_NONE.get());
                 aiocb.aio_fildes(-1);
-                assertEquals(0, Aio.aio_error(aiocb));
+                ErrnoTest.assertErrnoEquals(0, Aio.aio_error(aiocb));
             }
         }
         assertThrows(NullPointerException.class, () -> Aio.aio_error(null));
@@ -279,7 +279,7 @@ public class AioTest {
                     Aio.aio_fsync(Fcntl.O_SYNC, aiocb);
                 });
 
-                assertEquals(Errno.EWOULDBLOCK, nee.errno);
+                ErrnoTest.assertErrnoEquals(Errno.EWOULDBLOCK, nee.errno);
             }
             case OPEN_BSD -> {
                 // preconditions not met can only test this this way.
@@ -294,7 +294,7 @@ public class AioTest {
                 NativeErrorException nee = assertThrows(NativeErrorException.class,
                         () -> Aio.aio_fsync(Fcntl.O_SYNC, aiocb));
 
-                assertEquals(Errno.EBADF, nee.errno, "errno != EBADF");
+                ErrnoTest.assertErrnoEquals(Errno.EBADF, nee.errno);
             }
         }
         assertThrows(NullPointerException.class, () -> Aio.aio_fsync(0, null));
@@ -379,7 +379,7 @@ public class AioTest {
                             NativeErrorException nee = assertThrows(NativeErrorException.class, () -> {
                                 Aio.aio_read(aiocb);
                             });
-                            assertEquals(Errno.EAGAIN, nee.errno);
+                            ErrnoTest.assertErrnoEquals(Errno.EAGAIN, nee.errno);
                             //Stop the test here for darwin it cant handle aio with threaded callbacks
                             return;
                         }
@@ -405,7 +405,7 @@ public class AioTest {
 
                     Unistd.close(aiocb.aio_fildes());
                     if (MultiarchTupelBuilder.getOS() == OS.FREE_BSD) {
-                        assertEquals(Errno.EINVAL, Aio.aio_error(aiocb));
+                        ErrnoTest.assertErrnoEquals(Errno.EINVAL, Aio.aio_error(aiocb));
                     } else {
                         assertEquals(0, Aio.aio_error(aiocb));
                     }
@@ -464,7 +464,7 @@ public class AioTest {
 
                 Aio.aio_read(aiocb);
 
-                assertTimeoutPreemptively(Duration.ofSeconds(10), () -> {
+                assertTimeoutPreemptively(Duration.ofSeconds(1), () -> {
                     while (Errno.EINPROGRESS == Aio.aio_error(aiocb)) {
                         Thread.sleep(10);
                     }
@@ -554,36 +554,37 @@ public class AioTest {
                     //No read or write executed....
                     switch (MultiarchTupelBuilder.getOS()) {
                         case DARWIN -> {
-                            NativeErrorException nee = assertThrows(NativeErrorException.class, () -> {
-                                Aio.aio_error(aiocb);
-                            });
-                            assertEquals(Errno.EINVAL, nee.errno);
-                            nee = assertThrows(NativeErrorException.class, () -> {
-                                Aio.aio_read(aiocb);
-                            });
-                            assertEquals(Errno.EAGAIN, nee.errno);
+                            NativeErrorException nee = assertThrows(NativeErrorException.class,
+                                    () -> Aio.aio_error(aiocb));
+                            ErrnoTest.assertErrnoEquals(Errno.EINVAL, nee.errno);
+                            nee = assertThrows(NativeErrorException.class,
+                                    () -> Aio.aio_read(aiocb));
+                            ErrnoTest.assertErrnoEquals(Errno.EAGAIN, nee.errno);
                             //Stop the test here for darwin it cant handle aio with threaded callbacks
                             return;
                         }
-                        case FREE_BSD -> {
-                            assertEquals(Errno.EINVAL, Aio.aio_error(aiocb));
-                            fail("TODO I dont knwo what to expect");
-                            return;
-                        }
-                        default -> {
-                            assertEquals(0, Aio.aio_error(aiocb));
-                            Aio.aio_read(aiocb);
-                        }
+                        case FREE_BSD ->
+                            ErrnoTest.assertErrnoEquals(Errno.EINVAL, Aio.aio_error(aiocb));
+                        default ->
+                            ErrnoTest.assertErrnoEquals(0, Aio.aio_error(aiocb));
                     }
+
+                    Aio.aio_read(aiocb);
 
                     switch (MultiarchTupelBuilder.getOS()) {
                         case FREE_BSD ->
-                            assertEquals(Errno.EINVAL, Aio.aio_error(aiocb));
-                        case LINUX ->
-                            assertEquals(Errno.EINPROGRESS, Aio.aio_error(aiocb));
+                            ErrnoTest.assertErrnoEquals(0, Aio.aio_error(aiocb));
+                        case LINUX -> {
+                            assertTimeoutPreemptively(Duration.ofSeconds(1), () -> {
+                                while (Errno.EINPROGRESS == Aio.aio_error(aiocb)) {
+                                    Thread.sleep(10);
+                                }
+                            });
+                            ErrnoTest.assertErrnoEquals(0, Aio.aio_error(aiocb));
+                        }
                         default ->
                             //catch any new OS here ....
-                            assertEquals(-1, Aio.aio_error(aiocb));
+                            ErrnoTest.assertErrnoEquals(-1, Aio.aio_error(aiocb));
                     }
 
                     synchronized (intRef) {
@@ -601,8 +602,15 @@ public class AioTest {
                         assertEquals(SIVAL_INT, intRef[0]);
                     }
 
-                    assertEquals(0, Aio.aio_error(aiocb));
-                    assertEquals(0, Aio.aio_return(aiocb));
+                    if (MultiarchTupelBuilder.getOS() == OS.FREE_BSD) {
+                        ErrnoTest.assertErrnoEquals(Errno.EINVAL, Aio.aio_error(aiocb));
+                        NativeErrorException nee = assertThrows(NativeErrorException.class,
+                                () -> Aio.aio_return(aiocb));
+                        ErrnoTest.assertErrnoEquals(Errno.EINVAL, nee.errno);
+                    } else {
+                        ErrnoTest.assertErrnoEquals(0, Aio.aio_error(aiocb));
+                        assertEquals(0, Aio.aio_return(aiocb));
+                    }
                     assertEquals(0, aioBuffer.position());
 
                     Unistd.close(aiocb.aio_fildes());
@@ -645,18 +653,18 @@ public class AioTest {
                     case DARWIN -> {
                         NativeErrorException nee = assertThrows(NativeErrorException.class,
                                 () -> Aio.aio_error(aiocb));
-                        assertEquals(Errno.EINVAL, nee.errno);
+                        ErrnoTest.assertErrnoEquals(Errno.EINVAL, nee.errno);
                     }
                     case FREE_BSD -> {
-                        assertEquals(Errno.EINVAL, Aio.aio_error(aiocb));
+                        ErrnoTest.assertErrnoEquals(Errno.EINVAL, Aio.aio_error(aiocb));
                     }
                     default -> {
-                        assertEquals(0, Aio.aio_error(aiocb));
+                        ErrnoTest.assertErrnoEquals(0, Aio.aio_error(aiocb));
                     }
                 }
                 Aio.aio_read(aiocb);
 
-                assertTimeoutPreemptively(Duration.ofSeconds(10), () -> {
+                assertTimeoutPreemptively(Duration.ofSeconds(1), () -> {
                     while (Errno.EINPROGRESS == Aio.aio_error(aiocb)) {
                         Thread.sleep(10);
                     }
@@ -684,7 +692,7 @@ public class AioTest {
                 long expResult = 0L;
                 NativeErrorException nee = assertThrows(NativeErrorException.class,
                         () -> Aio.aio_return(aiocb));
-                assertEquals(Errno.EINVAL, nee.errno);
+                ErrnoTest.assertErrnoEquals(Errno.EINVAL, nee.errno);
             }
             case FREE_BSD -> {
                 final Aio.Aiocb aiocb = Aio.Aiocb.tryAllocateNative(sharedSession);
@@ -693,7 +701,7 @@ public class AioTest {
 
                 NativeErrorException nee = assertThrows(NativeErrorException.class,
                         () -> Aio.aio_return(aiocb));
-                assertEquals(Errno.EINVAL, nee.errno);
+                ErrnoTest.assertErrnoEquals(Errno.EINVAL, nee.errno);
             }
             case OPEN_BSD ->
                 // preconditions not met can only test this this way.
@@ -727,7 +735,7 @@ public class AioTest {
 
                 NativeErrorException nee = assertThrows(NativeErrorException.class,
                         () -> Aio.aio_suspend(aiocbs, timeout));
-                assertEquals(Errno.EINVAL, nee.errno);
+                ErrnoTest.assertErrnoEquals(Errno.EINVAL, nee.errno);
             }
             case OPEN_BSD -> {
                 // preconditions not met can only test this this way.
@@ -830,7 +838,7 @@ public class AioTest {
                         case DARWIN -> {
                             NativeErrorException nee = assertThrows(NativeErrorException.class,
                                     () -> Aio.aio_write(aiocb));
-                            assertEquals(Errno.EAGAIN, nee.errno);
+                            ErrnoTest.assertErrnoEquals(Errno.EAGAIN, nee.errno);
                             //Stop the test here for darwin it cant handle aio with threaded callbacks
                             return;
                         }
@@ -899,7 +907,7 @@ public class AioTest {
 
                 Aio.aio_write(aiocb);
 
-                assertTimeoutPreemptively(Duration.ofSeconds(10), () -> {
+                assertTimeoutPreemptively(Duration.ofSeconds(1), () -> {
                     while (Errno.EINPROGRESS == Aio.aio_error(aiocb)) {
                         Thread.sleep(10);
                     }
@@ -931,17 +939,36 @@ public class AioTest {
                 aiocb.aio_sigevent.sigev_notify(Signal.SIGEV_NONE.get());
                 aiocb.aio_fildes(-1);
 
-                if (MultiarchTupelBuilder.getOS() == OS.DARWIN) {
-                    NativeErrorException nee = assertThrows(NativeErrorException.class,
-                            () -> Aio.aio_read(aiocb));
-                    assertEquals(Errno.EAGAIN, nee.errno);
-                    assertEquals(Aio.AIO_ALLDONE.get(), Aio.aio_cancel(aiocb));
-                } else {
-                    Aio.aio_read(aiocb);
-                    assertEquals(Errno.EINPROGRESS, Aio.aio_error(aiocb));
-                    NativeErrorException nee = assertThrows(NativeErrorException.class,
-                            () -> assertEquals(-1, Aio.aio_cancel(aiocb)));
-                    assertEquals(Errno.EBADF, nee.errno);
+                switch (MultiarchTupelBuilder.getOS()) {
+                    case DARWIN -> {
+                        NativeErrorException nee = assertThrows(NativeErrorException.class,
+                                () -> Aio.aio_read(aiocb));
+                        ErrnoTest.assertErrnoEquals(Errno.EAGAIN, nee.errno);
+                        assertEquals(Aio.AIO_ALLDONE.get(), Aio.aio_cancel(aiocb));
+                    }
+                    case FREE_BSD -> {
+                        NativeErrorException nee = assertThrows(NativeErrorException.class,
+                                () -> Aio.aio_read(aiocb));
+                        ErrnoTest.assertErrnoEquals(Errno.EBADF, nee.errno);
+                        nee = assertThrows(NativeErrorException.class,
+                                () -> Aio.aio_cancel(aiocb));
+                        ErrnoTest.assertErrnoEquals(Errno.EBADF, nee.errno);
+                    }
+                    case LINUX -> {
+                        Aio.aio_read(aiocb);
+
+                        assertTimeoutPreemptively(Duration.ofSeconds(1), () -> {
+                            while (Errno.EINPROGRESS == Aio.aio_error(aiocb)) {
+                                Thread.sleep(10);
+                            }
+                        });
+                        ErrnoTest.assertErrnoEquals(Errno.EBADF, Aio.aio_error(aiocb));
+                        NativeErrorException nee = assertThrows(NativeErrorException.class,
+                                () -> Aio.aio_cancel(aiocb));
+                        ErrnoTest.assertErrnoEquals(Errno.EBADF, nee.errno);
+                    }
+                    default ->
+                        fail("Cant handle OS" + MultiarchTupelBuilder.getOS());
                 }
             }
         }
@@ -969,12 +996,13 @@ public class AioTest {
                     if (MultiarchTupelBuilder.getOS() == OS.DARWIN) {
                         //TODO qeued, but invalid file descriptor...
                         Aio.lio_listio(Aio.LIO_WAIT.get(), list);
-                        assertEquals(Errno.EINVAL, Aio.aio_error(aiocb));
+                        ErrnoTest.assertErrnoEquals(Errno.EINVAL, Aio.aio_error(aiocb));
+
                     } else {
                         NativeErrorException nee = assertThrows(NativeErrorException.class,
                                 () -> Aio.lio_listio(Aio.LIO_WAIT.get(), list));
-                        assertEquals(Errno.EIO, nee.errno, Errno.getErrnoSymbol(nee.errno));
-                        assertEquals(Errno.EBADF, Aio.aio_error(aiocb));
+                        ErrnoTest.assertErrnoEquals(Errno.EIO, nee.errno);
+                        ErrnoTest.assertErrnoEquals(Errno.EBADF, Aio.aio_error(aiocb));
                     }
                 });
 
@@ -985,12 +1013,13 @@ public class AioTest {
                     case FREE_BSD -> {
                         NativeErrorException nee = assertThrows(NativeErrorException.class,
                                 () -> Aio.lio_listio(Aio.LIO_NOWAIT.get(), list));
-                        assertEquals(Errno.EIO, nee.errno, Errno.getErrnoSymbol(nee.errno));
+                        ErrnoTest.assertErrnoEquals(Errno.EIO, nee.errno);
+
                     }
                     case DARWIN -> {
                         NativeErrorException nee = assertThrows(NativeErrorException.class,
                                 () -> Aio.lio_listio(Aio.LIO_NOWAIT.get(), list));
-                        assertEquals(Errno.EAGAIN, nee.errno, Errno.getErrnoSymbol(nee.errno));
+                        ErrnoTest.assertErrnoEquals(Errno.EAGAIN, nee.errno);
                     }
                     case LINUX ->
                         Aio.lio_listio(Aio.LIO_NOWAIT.get(), list);
@@ -1036,11 +1065,12 @@ public class AioTest {
                 list.set(0, aiocb);
 
                 Aio.lio_listio(Aio.LIO_NOWAIT.get(), list);
-                assertTimeoutPreemptively(Duration.ofSeconds(10), () -> {
-                    while (Errno.EINPROGRESS == Aio.aio_error(aiocb)) {
-                        Thread.sleep(10);
-                    }
-                });
+                assertTimeoutPreemptively(Duration.ofSeconds(1),
+                        () -> {
+                            while (Errno.EINPROGRESS == Aio.aio_error(aiocb)) {
+                                Thread.sleep(10);
+                            }
+                        });
 
                 aioBuffer.position(aioBuffer.position() + (int) Aio.aio_return(aiocb));
 

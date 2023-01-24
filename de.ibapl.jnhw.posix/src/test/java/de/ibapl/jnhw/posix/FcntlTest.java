@@ -23,7 +23,7 @@ package de.ibapl.jnhw.posix;
 
 import de.ibapl.jnhw.common.exception.NativeErrorException;
 import de.ibapl.jnhw.common.exception.NoSuchNativeMethodException;
-import static de.ibapl.jnhw.libloader.MultiarchInfo.X86_64__FREE_BSD__BSD;
+import static de.ibapl.jnhw.libloader.Arch.AARCH64;
 import de.ibapl.jnhw.libloader.MultiarchTupelBuilder;
 import de.ibapl.jnhw.libloader.OS;
 import de.ibapl.jnhw.posix.sys.Stat;
@@ -95,13 +95,28 @@ public class FcntlTest {
         NativeErrorException nee = Assertions.assertThrows(NativeErrorException.class, () -> {
             Fcntl.open(file.getAbsolutePath(), Fcntl.O_CREAT | Fcntl.O_EXCL, Stat.S_IRWXU | Stat.S_IRWXG);
         });
-        switch (MultiarchTupelBuilder.getMultiarch()) {
-            case AARCH64__LINUX__GNU, I386__LINUX__GNU, POWER_PC_64_LE__LINUX__GNU ->
-                Assertions.assertEquals(Errno.ENOENT, nee.errno);
-            case ARM__LINUX__GNU_EABI_HF, S390_X__LINUX__GNU, X86_64__LINUX__GNU, X86_64__DARWIN__BSD, X86_64__FREE_BSD__BSD ->
-                Assertions.assertEquals(Errno.EEXIST, nee.errno);
+        switch (MultiarchTupelBuilder.getOS()) {
+            case DARWIN, FREE_BSD ->
+                ErrnoTest.assertErrnoEquals(Errno.EEXIST, nee.errno);
+            case LINUX -> {
+                switch (MultiarchTupelBuilder.getArch()) {
+                    case AARCH64, I386, S390_X ->
+                        ErrnoTest.assertErrnoEquals(Errno.ENOENT, nee.errno);
+                    case ARM, MIPS, MIPS_64, RISC_V_64, X86_64 ->
+                        ErrnoTest.assertErrnoEquals(Errno.EEXIST, nee.errno);
+                    case POWER_PC_64 -> {
+                        if (Errno.ENOENT == nee.errno) {
+                            ErrnoTest.assertErrnoEquals(Errno.ENOENT, nee.errno);
+                        } else {
+                            ErrnoTest.assertErrnoEquals(Errno.EEXIST, nee.errno);
+                        }
+                    }
+                    default ->
+                        throw new RuntimeException("Dont know what to expect on errno: " + Errno.getErrnoSymbol(Errno.errno()) + " linux arch : " + MultiarchTupelBuilder.getMultiarch());
+                }
+            }
             default ->
-                throw new RuntimeException("Dont know what to expect on errno: " + Errno.errno() + " platform : " + MultiarchTupelBuilder.getMultiarch());
+                throw new RuntimeException("Dont know what to expect on errno: " + Errno.getErrnoSymbol(Errno.errno()) + " os : " + MultiarchTupelBuilder.getOS());
         }
     }
 
@@ -112,13 +127,13 @@ public class FcntlTest {
             NativeErrorException nee = Assertions.assertThrows(NativeErrorException.class, () -> {
                 Fcntl.open64(file.getAbsolutePath(), Fcntl.O_CREAT | Fcntl.O_EXCL, Stat.S_IRWXU | Stat.S_IRWXG);
             });
-            switch (MultiarchTupelBuilder.getMultiarch()) {
-                case AARCH64__LINUX__GNU, POWER_PC_64_LE__LINUX__GNU ->
-                    Assertions.assertEquals(Errno.ENOENT, nee.errno);
-                case ARM__LINUX__GNU_EABI_HF, S390_X__LINUX__GNU, X86_64__LINUX__GNU, I386__LINUX__GNU ->
-                    Assertions.assertEquals(Errno.EEXIST, nee.errno);
+            switch (MultiarchTupelBuilder.getOS()) {
+                case DARWIN, FREE_BSD ->
+                    ErrnoTest.assertErrnoEquals(Errno.EEXIST, nee.errno);
+                case LINUX ->
+                    ErrnoTest.assertErrnoEquals(Errno.EEXIST, nee.errno);
                 default ->
-                    throw new RuntimeException("Dont know what to expect on errno: " + Errno.errno() + " platform : " + MultiarchTupelBuilder.getMultiarch());
+                    throw new RuntimeException("Dont know what to expect on errno: " + Errno.getErrnoSymbol(Errno.errno()) + " os : " + MultiarchTupelBuilder.getOS());
             }
         } else {
             Assertions.assertThrows(NoSuchNativeMethodException.class, () -> {

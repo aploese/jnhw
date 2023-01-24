@@ -24,6 +24,8 @@ module de.ibapl.jnhw.winapi {
 
     requires transitive de.ibapl.jnhw.common;
 
+    exports de.ibapl.jnhw.annotation.winapi.basetsd;
     exports de.ibapl.jnhw.winapi;
     exports de.ibapl.jnhw.util.winapi;
+    exports de.ibapl.jnhw.util.winapi.memory;
 }

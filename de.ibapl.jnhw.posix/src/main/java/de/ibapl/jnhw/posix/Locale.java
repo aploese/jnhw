@@ -36,7 +36,7 @@ import de.ibapl.jnhw.common.memory.layout.Alignment;
 import de.ibapl.jnhw.common.util.JsonStringBuilder;
 import de.ibapl.jnhw.libloader.MultiarchInfo;
 import de.ibapl.jnhw.libloader.MultiarchTupelBuilder;
-import de.ibapl.jnhw.libloader.librarys.LibcLoader;
+import de.ibapl.jnhw.libloader.libraries.LibcLoader;
 import de.ibapl.jnhw.util.posix.PosixDataType;
 import de.ibapl.jnhw.util.posix.memory.PosixStruct;
 import java.io.IOException;

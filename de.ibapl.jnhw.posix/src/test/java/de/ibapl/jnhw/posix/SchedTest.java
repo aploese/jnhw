@@ -241,7 +241,7 @@ public class SchedTest {
                             () -> {
                                 Sched.sched_setscheduler(Unistd.getpid(), Sched.SCHED_OTHER, param);
                             });
-                    assertEquals(Errno.EPERM, nee.errno, Errno.getErrnoSymbol(nee.errno));
+                    ErrnoTest.assertErrnoEquals(Errno.EPERM, nee.errno);
                 } else {
                     int result = Sched.sched_setscheduler(Unistd.getpid(), Sched.SCHED_OTHER, param);
                     Assertions.assertEquals(Sched.SCHED_OTHER, result);

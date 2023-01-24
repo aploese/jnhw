@@ -36,7 +36,7 @@ import static de.ibapl.jnhw.common.memory.Uint64_t.DATA_TYPE;
 import de.ibapl.jnhw.isoc.Errno;
 import de.ibapl.jnhw.libloader.MultiarchTupelBuilder;
 import de.ibapl.jnhw.util.linux.LinuxDataType;
-import de.ibapl.jnhw.libloader.librarys.LibcLoader;
+import de.ibapl.jnhw.libloader.libraries.LibcLoader;
 import java.lang.foreign.MemorySegment;
 import java.lang.foreign.MemorySession;
 

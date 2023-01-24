@@ -1,5 +1,6 @@
 -noimportjava: true
 Export-Package: \
+    de.ibapl.jnhw.syscall.linux,\
     de.ibapl.jnhw.syscall.linux.annotation,\
     de.ibapl.jnhw.syscall.linux.drivers.usb.serial,\
     de.ibapl.jnhw.syscall.linux.include.linux,\

@@ -42,7 +42,18 @@ public enum Abi {
     /**
      * The GNU 64 bit ABI
      */
-    GNU_ABI_64("gnuabi64"),
+    GNU_ABI_64("gnuabi64") {
+
+        @Override
+        public String getAbiShortName(MemoryModel memoryModel) {
+            return switch (memoryModel) {
+                case LP64 ->
+                    "gnu";
+                default ->
+                    super.getAbiShortName(memoryModel);
+            };
+        }
+    },
     /**
      * The BSD ABI
      */
@@ -65,6 +76,10 @@ public enum Abi {
 
     @Override
     public String toString() {
+        return abiName;
+    }
+
+    public String getAbiShortName(MemoryModel memoryModel) {
         return abiName;
     }
 

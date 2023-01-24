@@ -66,7 +66,7 @@ public enum MultiarchInfo {
     private final Abi abi;
 
     public String getTupelName() {
-        return String.format("%s-%s-%s", arch.formatArchName(endianess), os.osName, abi.abiName);
+        return String.format("%s-%s-%s", arch.formatArchName(endianess), os.osName, abi.getAbiShortName(memoryModel));
     }
 
     public MemoryModel getMemoryModel() {

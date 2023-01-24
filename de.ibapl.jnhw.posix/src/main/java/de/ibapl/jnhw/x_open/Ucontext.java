@@ -30,7 +30,7 @@ import de.ibapl.jnhw.common.exception.NoSuchNativeMethodException;
 import de.ibapl.jnhw.libloader.MultiarchTupelBuilder;
 import de.ibapl.jnhw.posix.Errno;
 import de.ibapl.jnhw.posix.Signal;
-import de.ibapl.jnhw.libloader.librarys.LibcLoader;
+import de.ibapl.jnhw.libloader.libraries.LibcLoader;
 import java.util.Optional;
 
 /**

@@ -29,7 +29,7 @@ import de.ibapl.jnhw.common.downcall.JnhwMh_sI___V;
 import de.ibapl.jnhw.common.downcall.JnhwMh_sI__sI;
 import de.ibapl.jnhw.common.exception.NativeErrorException;
 import de.ibapl.jnhw.libloader.MultiarchTupelBuilder;
-import de.ibapl.jnhw.libloader.librarys.LibcLoader;
+import de.ibapl.jnhw.libloader.libraries.LibcLoader;
 import java.lang.foreign.MemorySegment;
 import java.lang.foreign.MemorySession;
 

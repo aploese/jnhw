@@ -19,7 +19,7 @@
  * Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
  */
-package de.ibapl.jnhw.libloader.librarys;
+package de.ibapl.jnhw.libloader.libraries;
 
 import de.ibapl.jnhw.libloader.MultiarchTupelBuilder;
 import java.lang.foreign.MemorySegment;
@@ -31,25 +31,29 @@ import java.util.Optional;
  *
  * @author aploese
  */
-public class LibcLoader {
+public class LibrtLoader {
 
-    public final static SymbolLookup LIB_C_SYMBOL_LOOKUP;
-    private final static MemorySession LIB_C_MEMORY_SESSION = MemorySession.openShared();
+    public final static SymbolLookup LIB_RT_SYMBOL_LOOKUP;
+    private final static MemorySession LIB_RT_MEMORY_SESSION = MemorySession.openShared();
 
     static {
-        LIB_C_SYMBOL_LOOKUP = switch (MultiarchTupelBuilder.getOS()) {
+        LIB_RT_SYMBOL_LOOKUP = switch (MultiarchTupelBuilder.getOS()) {
             case LINUX -> //TODO Quick and dirty ... Symbol
-                SymbolLookup.libraryLookup("libc.so.6", LIB_C_MEMORY_SESSION);
+                SymbolLookup.libraryLookup("librt.so.1", LIB_RT_MEMORY_SESSION);
             case DARWIN -> //TODO Quick and dirty ... Symbol
-                SymbolLookup.libraryLookup("libc.dylib", LIB_C_MEMORY_SESSION);
+                throw new AssertionError("Darwin has no lib rt! its in libc");
             case FREE_BSD -> //TODO Quick and dirty ... Symbol
-                SymbolLookup.libraryLookup("libc.so.7", LIB_C_MEMORY_SESSION);
+                SymbolLookup.libraryLookup("librt.so.1", LIB_RT_MEMORY_SESSION);
             default ->
-                throw new AssertionError("No idea where to find the libc");
+                throw new AssertionError("No idea where to find the librt");
         };
+        //TODO Quick and dirty ...
+//        LIB_RT_SYMBOL_LOOKUP = SymbolLookup.libraryLookup(Path.of("/lib/x86_64-linux-gnu/librt.so.1"), MemorySession.global());
+//TODO  does not work anymore       LIB_RT_SYMBOL_LOOKUP = SymbolLookup.libraryLookup("rt", MemorySession.global());
     }
 
     public static Optional<MemorySegment> lookup(String name) {
-        return LIB_C_SYMBOL_LOOKUP.lookup(name);
+        return LIB_RT_SYMBOL_LOOKUP.lookup(name);
     }
+
 }

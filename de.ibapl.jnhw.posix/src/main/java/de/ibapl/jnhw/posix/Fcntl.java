@@ -38,7 +38,7 @@ import de.ibapl.jnhw.common.util.IntDefine;
 import de.ibapl.jnhw.libloader.MultiarchInfo;
 import de.ibapl.jnhw.libloader.MultiarchTupelBuilder;
 import de.ibapl.jnhw.posix.sys.Stat;
-import de.ibapl.jnhw.libloader.librarys.LibcLoader;
+import de.ibapl.jnhw.libloader.libraries.LibcLoader;
 import de.ibapl.jnhw.util.posix.PosixDataType;
 import java.lang.foreign.MemorySegment;
 import java.lang.foreign.MemorySession;
@@ -261,7 +261,7 @@ public final class Fcntl {
             switch (multiarchInfo.getArch()) {
                 case ARM ->
                     O_LARGEFILE = 0400000;
-                case AARCH64, MIPS_64, POWER_PC_64, S390_X, X86_64 ->
+                case AARCH64, MIPS_64, POWER_PC_64, RISC_V_64, S390_X, X86_64 ->
                     O_LARGEFILE = 0;
                 case I386 ->
                     O_LARGEFILE = 0100000;

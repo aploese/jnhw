@@ -49,7 +49,7 @@ import de.ibapl.jnhw.common.memory.OpaqueMemory;
 import de.ibapl.jnhw.common.util.ByteBufferUtils;
 import de.ibapl.jnhw.common.util.IntDefine;
 import de.ibapl.jnhw.libloader.MultiarchTupelBuilder;
-import de.ibapl.jnhw.libloader.librarys.LibcLoader;
+import de.ibapl.jnhw.libloader.libraries.LibcLoader;
 import de.ibapl.jnhw.util.posix.PosixDataType;
 import java.lang.foreign.MemorySegment;
 import java.lang.foreign.MemorySession;

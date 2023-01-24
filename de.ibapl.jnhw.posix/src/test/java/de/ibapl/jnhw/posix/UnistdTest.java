@@ -291,7 +291,7 @@ public class UnistdTest {
             NativeErrorException nee = Assertions.assertThrows(NativeErrorException.class, () -> {
                 Unistd.lseek(-1, 1L + Integer.MAX_VALUE, Unistd.SEEK_SET);
             });
-            Assertions.assertEquals(Errno.EBADF, nee.errno, "-1 is not a valid FD so EBADF is expected");
+            ErrnoTest.assertErrnoEquals(Errno.EBADF, nee.errno);
         }
     }
 

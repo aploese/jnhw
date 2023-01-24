@@ -1,4 +1,6 @@
 -noimportjava: true
 Export-Package: \
-	de.ibapl.jnhw.winapi,\
-	de.ibapl.jnhw.util.winapi
+	de.ibapl.jnhw.annotation.winapi.basetsd,\
+        de.ibapl.jnhw.winapi,\
+	de.ibapl.jnhw.util.winapi,\
+        de.ibapl.jnhw.util.winapi.memory

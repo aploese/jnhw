@@ -28,5 +28,5 @@ module de.ibapl.jnhw.libloader {
     requires java.logging;
 
     exports de.ibapl.jnhw.libloader;
-    exports de.ibapl.jnhw.libloader.librarys;
+    exports de.ibapl.jnhw.libloader.libraries;
 }

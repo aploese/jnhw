@@ -289,9 +289,9 @@ public class PthreadTest {
                 });
                 if (MultiarchTupelBuilder.getOS() == OS.DARWIN) {
                     //TODO ?why?
-                    Assertions.assertEquals(0, nee.errno);
+                    ErrnoTest.assertErrnoEquals(0, nee.errno);
                 } else {
-                    Assertions.assertEquals(Errno.EINVAL, nee.errno);
+                    ErrnoTest.assertErrnoEquals(Errno.EINVAL, nee.errno);
                 }
             }
         }

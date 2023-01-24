@@ -854,7 +854,7 @@ public class SignalTest {
                     switch (MultiarchTupelBuilder.getOS()) {
                         case FREE_BSD -> {
                             //TODO Why is this error here???
-                            Assertions.assertEquals(Errno.ENOEXEC, siginfo_tRef[0].si_errno(), "siginfo_tRef.value.si_errno() errno: " + Errno.getErrnoSymbol(siginfo_tRef[0].si_errno()));
+                            ErrnoTest.assertErrnoEquals(Errno.ENOEXEC, siginfo_tRef[0].si_errno());
                             Assertions.fail("TODO Known Error: siginfo_tRef[0].si_errno() == ENOEXEC ??? ");
                         }
                         default ->

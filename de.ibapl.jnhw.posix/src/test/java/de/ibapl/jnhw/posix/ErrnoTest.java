@@ -34,6 +34,14 @@ import org.junit.jupiter.api.condition.DisabledOnOs;
 @DisabledOnOs(org.junit.jupiter.api.condition.OS.WINDOWS)
 public class ErrnoTest {
 
+    public static void assertErrnoEquals(int expected, int actual) {
+        if (actual != expected) {
+            Assertions.assertEquals(Errno.getErrnoSymbol(expected), Errno.getErrnoSymbol(actual));
+        } else {
+            Assertions.assertTrue(true);// Just a marker that we did test something
+        }
+    }
+
     @BeforeEach
     public void setUp(TestInfo testInfo) throws Exception {
         JnhwTestLogger.logBeforeEach(testInfo);

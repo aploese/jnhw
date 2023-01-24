@@ -33,8 +33,8 @@ import de.ibapl.jnhw.libloader.MultiarchInfo;
 import de.ibapl.jnhw.libloader.MultiarchTupelBuilder;
 import de.ibapl.jnhw.libloader.OS;
 import static de.ibapl.jnhw.libloader.OS.OPEN_BSD;
-import de.ibapl.jnhw.libloader.librarys.LibcLoader;
-import de.ibapl.jnhw.libloader.librarys.LibrtLoader;
+import de.ibapl.jnhw.libloader.libraries.LibcLoader;
+import de.ibapl.jnhw.libloader.libraries.LibrtLoader;
 import de.ibapl.jnhw.posix.sys.Types;
 import de.ibapl.jnhw.util.posix.DefinesTest;
 import de.ibapl.jnhw.util.posix.upcall.CallbackFactory__V__UnionSigval;
@@ -381,7 +381,7 @@ public class TimeTest {
         NativeErrorException nee = Assertions.assertThrows(NativeErrorException.class, () -> {
             Time.clock_settime(Time.CLOCK_REALTIME, timespec);
         });
-        assertEquals(Errno.EPERM, nee.errno, "EPERM expected but got " + Errno.getErrnoSymbol(nee.errno));
+        ErrnoTest.assertErrnoEquals(Errno.EPERM, nee.errno);
 
         Assertions.assertThrows(NullPointerException.class, () -> {
             Time.clock_settime(Time.CLOCK_REALTIME, null);
@@ -851,7 +851,7 @@ public class TimeTest {
             //linux can cope with that
             NativeErrorException nee = Assertions.assertThrows(NativeErrorException.class,
                     () -> Time.timer_delete(ptrTimerid.get(ms)));
-            assertEquals(Errno.EINVAL, nee.errno);
+            ErrnoTest.assertErrnoEquals(Errno.EINVAL, nee.errno);
         }
 
         Assertions.assertThrows(NullPointerException.class, () -> Time.timer_delete(null));
@@ -887,7 +887,7 @@ public class TimeTest {
                     Time.timer_delete(ptrTimerid.get(ms));
                     Time.timer_delete(ptrTimerid.get(ms));
                 });
-        assertEquals(Errno.EINVAL, nee.errno);
+        ErrnoTest.assertErrnoEquals(Errno.EINVAL, nee.errno);
     }
 
     /**

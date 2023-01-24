@@ -23,6 +23,7 @@ module de.ibapl.jnhw.syscall.linux {
 
     requires de.ibapl.jnhw.posix;
 
+    exports de.ibapl.jnhw.syscall.linux;
     exports de.ibapl.jnhw.syscall.linux.annotation;
     exports de.ibapl.jnhw.syscall.linux.drivers.usb.serial;
     exports de.ibapl.jnhw.syscall.linux.include.linux;

@@ -32,7 +32,7 @@ import de.ibapl.jnhw.common.util.IntDefine;
 import de.ibapl.jnhw.libloader.MultiarchInfo;
 import de.ibapl.jnhw.libloader.MultiarchTupelBuilder;
 import de.ibapl.jnhw.posix.Errno;
-import de.ibapl.jnhw.libloader.librarys.LibcLoader;
+import de.ibapl.jnhw.libloader.libraries.LibcLoader;
 
 /**
  * Wrapper around the {@code  <sys/ioctl.h>} header. execute
@@ -135,7 +135,7 @@ public final class Ioctl {
 
         public LinuxDefines(MultiarchInfo mi) {
             switch (mi.getArch()) {
-                case POWER_PC_64, MIPS -> {
+                case POWER_PC_64, MIPS, MIPS_64 -> {
                     _IOC_SIZEBITS = 13;
                     _IOC_DIRBITS = 3;
                     _IOC_NONE = 1;

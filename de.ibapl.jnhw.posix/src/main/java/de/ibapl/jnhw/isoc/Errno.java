@@ -28,7 +28,7 @@ import de.ibapl.jnhw.common.downcall.JnhwMh_MA___V;
 import de.ibapl.jnhw.common.exception.NativeErrorException;
 import de.ibapl.jnhw.libloader.MultiarchInfo;
 import de.ibapl.jnhw.libloader.MultiarchTupelBuilder;
-import de.ibapl.jnhw.libloader.librarys.LibcLoader;
+import de.ibapl.jnhw.libloader.libraries.LibcLoader;
 import java.lang.foreign.ValueLayout;
 
 /**
