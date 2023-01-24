@@ -219,7 +219,7 @@ public class Callback__V__MA_Test {
             switch (MultiarchTupelBuilder.getMemoryModel()) {
                 case ILP32 ->
                     assertEquals(testValue & 0xffffffffL, ref[0]);
-                case LP64 ->
+                case LLP64, LP64 ->
                     assertEquals(testValue, ref[0]);
                 default ->
                     throw new AssertionError("Can`t handle memory model: " + MultiarchTupelBuilder.getMemoryModel());

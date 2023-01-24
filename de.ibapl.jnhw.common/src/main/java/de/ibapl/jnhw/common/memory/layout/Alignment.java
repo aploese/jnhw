@@ -163,7 +163,7 @@ public enum Alignment {
                 __ALIGN_OF_STRUCT_FLOAT = Alignment.AT_4;
                 __ALIGN_OF_DOUBLE = Alignment.AT_8;
                 __ALIGN_OF_STRUCT_DOUBLE = switch (MultiarchTupelBuilder.getMultiarch()) {
-                    case MIPS_EL__LINUX__GNU, ARM__LINUX__GNU_EABI_HF, X86_64__WINDOWS__PE32_PLUS ->
+                    case MIPS_EL__LINUX__GNU, ARM__LINUX__GNU_EABI_HF ->
                         Alignment.AT_8;
                     default ->
                         Alignment.AT_4;
@@ -306,7 +306,7 @@ public enum Alignment {
                 __ALIGN_OF_FLOAT = Alignment.AT_4;
                 __ALIGN_OF_STRUCT_FLOAT = Alignment.AT_4;
                 __ALIGN_OF_DOUBLE = Alignment.AT_8;
-                __ALIGN_OF_STRUCT_DOUBLE = Alignment.AT_4;
+                __ALIGN_OF_STRUCT_DOUBLE = Alignment.AT_8;
                 __ALIGN_OF_LONG_DOUBLE = Alignment.AT_16;
                 __ALIGN_OF_STRUCT_LONG_DOUBLE = Alignment.AT_16;
                 __ALIGN_OF_INT8_T = Alignment.AT_1;
