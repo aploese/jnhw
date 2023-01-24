@@ -31,6 +31,7 @@ import de.ibapl.jnhw.common.test.LibJnhwCommonTestLoader;
 import de.ibapl.jnhw.common.upcall.CallbackFactory__V__MA;
 import de.ibapl.jnhw.common.upcall.Callback__V__MA;
 import static de.ibapl.jnhw.libloader.MemoryModel.ILP32;
+import static de.ibapl.jnhw.libloader.MemoryModel.LLP64;
 import static de.ibapl.jnhw.libloader.MemoryModel.LP64;
 import de.ibapl.jnhw.libloader.MultiarchTupelBuilder;
 import java.lang.foreign.MemoryAddress;
@@ -200,7 +201,7 @@ public class Callback__V__MA_Test {
             switch (MultiarchTupelBuilder.getMemoryModel()) {
                 case ILP32 ->
                     assertEquals(testValue & 0xffffffffL, ref[0]);
-                case LP64 ->
+                case LLP64, LP64 ->
                     assertEquals(testValue, ref[0]);
                 default ->
                     throw new AssertionError("Can`t handle memory model: " + MultiarchTupelBuilder.getMemoryModel());

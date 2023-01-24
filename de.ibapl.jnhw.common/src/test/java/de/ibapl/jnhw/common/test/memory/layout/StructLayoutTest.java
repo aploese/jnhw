@@ -140,77 +140,77 @@ public class StructLayoutTest {
 
     @Test
     public void testStruct_EMPTY() {
-        Assertions.assertEquals(1, alignOf_struct_EMPTY(), "alignment ");
+        Assertions.assertEquals(1, alignOf_struct_EMPTY(), "alignment in struct ");
         Assertions.assertEquals(0, sizeOf_struct_EMPTY(), "size ");
     }
 
     @Test
     public void testStruct_Int8_t() {
-        Assertions.assertEquals(alignOf_struct_int8_t(), BaseDataType.int8_t.ALIGN_IN_STRUCT.alignof, "alignment ");
+        Assertions.assertEquals(alignOf_struct_int8_t(), BaseDataType.int8_t.ALIGN_IN_STRUCT.alignof, "alignment in struct ");
         Assertions.assertEquals(sizeOf_struct_int8_t(), BaseDataType.int8_t.SIZE_OF, "size ");
     }
 
     @Test
     public void testStruct_Int16_t() {
-        Assertions.assertEquals(alignOf_struct_int16_t(), BaseDataType.int16_t.ALIGN_IN_STRUCT.alignof, "alignment ");
+        Assertions.assertEquals(alignOf_struct_int16_t(), BaseDataType.int16_t.ALIGN_IN_STRUCT.alignof, "alignment in struct ");
         Assertions.assertEquals(sizeOf_struct_int16_t(), BaseDataType.int16_t.SIZE_OF, "size ");
     }
 
     @Test
     public void testStruct_Int32_t() {
-        Assertions.assertEquals(alignOf_struct_int32_t(), BaseDataType.int32_t.ALIGN_IN_STRUCT.alignof, "alignment ");
+        Assertions.assertEquals(alignOf_struct_int32_t(), BaseDataType.int32_t.ALIGN_IN_STRUCT.alignof, "alignment in struct ");
         Assertions.assertEquals(sizeOf_struct_int32_t(), BaseDataType.int32_t.SIZE_OF, "size ");
     }
 
     @Test
     public void testStruct_Int64_t() {
-        Assertions.assertEquals(alignOf_struct_int64_t(), BaseDataType.int64_t.ALIGN_IN_STRUCT.alignof, "alignment ");
+        Assertions.assertEquals(alignOf_struct_int64_t(), BaseDataType.int64_t.ALIGN_IN_STRUCT.alignof, "alignment in struct ");
         Assertions.assertEquals(sizeOf_struct_int64_t(), BaseDataType.int64_t.SIZE_OF, "size ");
     }
 
     @Test
     public void testStruct_int() {
-        Assertions.assertEquals(alignOf_struct_int(), BaseDataType.C_int.ALIGN_IN_STRUCT.alignof, "alignment ");
+        Assertions.assertEquals(alignOf_struct_int(), BaseDataType.C_int.ALIGN_IN_STRUCT.alignof, "alignment in struct ");
         Assertions.assertEquals(sizeOf_struct_int(), BaseDataType.C_int.SIZE_OF, "size ");
     }
 
     @Test
     public void testStruct_long() {
-        Assertions.assertEquals(alignOf_struct_long(), BaseDataType.C_long.ALIGN_IN_STRUCT.alignof, "alignment ");
+        Assertions.assertEquals(alignOf_struct_long(), BaseDataType.C_long.ALIGN_IN_STRUCT.alignof, "alignment in struct ");
         Assertions.assertEquals(sizeOf_struct_long(), BaseDataType.C_long.SIZE_OF, "size ");
     }
 
     @Test
     public void testStruct_long_long() {
-        Assertions.assertEquals(alignOf_struct_long_long(), BaseDataType.C_long_long.ALIGN_IN_STRUCT.alignof, "alignment ");
+        Assertions.assertEquals(alignOf_struct_long_long(), BaseDataType.C_long_long.ALIGN_IN_STRUCT.alignof, "alignment in struct ");
         Assertions.assertEquals(sizeOf_struct_long_long(), BaseDataType.C_long_long.SIZE_OF, "size ");
     }
 
     @Test
     public void testStruct_intptr_t() {
-        Assertions.assertEquals(alignOf_struct_intptr_t(), BaseDataType.intptr_t.ALIGN_IN_STRUCT.alignof, "alignment ");
+        Assertions.assertEquals(alignOf_struct_intptr_t(), BaseDataType.intptr_t.ALIGN_IN_STRUCT.alignof, "alignment in struct ");
         Assertions.assertEquals(sizeOf_struct_intptr_t(), BaseDataType.intptr_t.SIZE_OF, "size ");
 
         //The same for (void*)
-        Assertions.assertEquals(alignOf_struct_pointer(), BaseDataType.intptr_t.ALIGN_IN_STRUCT.alignof, "alignment ");
+        Assertions.assertEquals(alignOf_struct_pointer(), BaseDataType.intptr_t.ALIGN_IN_STRUCT.alignof, "alignment in struct ");
         Assertions.assertEquals(sizeOf_struct_pointer(), BaseDataType.intptr_t.SIZE_OF, "size ");
     }
 
     @Test
     public void testStruct_float() {
-        Assertions.assertEquals(alignOf_struct_float(), BaseDataType._float.ALIGN_IN_STRUCT.alignof, "alignment ");
+        Assertions.assertEquals(alignOf_struct_float(), BaseDataType._float.ALIGN_IN_STRUCT.alignof, "alignment in struct ");
         Assertions.assertEquals(sizeOf_struct_float(), BaseDataType._float.SIZE_OF, "size ");
     }
 
     @Test
     public void testStruct_double() {
-        Assertions.assertEquals(alignOf_struct_double(), BaseDataType._double.ALIGN_IN_STRUCT.alignof, "alignment ");
+        Assertions.assertEquals(alignOf_struct_double(), BaseDataType._double.ALIGN_IN_STRUCT.alignof, "alignment in struct in struct ");
         Assertions.assertEquals(sizeOf_struct_double(), BaseDataType._double.SIZE_OF, "size ");
     }
 
     @Test
     public void testStruct_long_double() {
-        Assertions.assertEquals(alignOf_struct_long_double(), BaseDataType._long_double.ALIGN_IN_STRUCT.alignof, "alignment ");
+        Assertions.assertEquals(alignOf_struct_long_double(), BaseDataType._long_double.ALIGN_IN_STRUCT.alignof, "alignment in struct ");
         Assertions.assertEquals(sizeOf_struct_long_double(), BaseDataType._long_double.SIZE_OF, "size ");
     }
 
