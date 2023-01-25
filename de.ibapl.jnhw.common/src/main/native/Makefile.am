@@ -19,6 +19,7 @@ libjnhw_common_la_SOURCES = \
  JniMi__S.c\
  JniMi__V.c\
  JniCallbackFactory__V__MA.c\
+ JniCallbackFactory__V__Union_I_MA.c\
  JniCallbackFactory__V___I.c\
  JniCallbackFactory__V___I_MA_MA.c\
  JniCallbackFactory__V___I__I_MA.c\

@@ -29,6 +29,8 @@ import de.ibapl.jnhw.common.downcall.JnhwMh_sI__sI_uL_VARARGS__A;
 import de.ibapl.jnhw.common.exception.NativeErrorException;
 import de.ibapl.jnhw.common.memory.Int32_t;
 import de.ibapl.jnhw.common.util.IntDefine;
+import static de.ibapl.jnhw.libloader.Arch.MIPS;
+import static de.ibapl.jnhw.libloader.Arch.MIPS_64;
 import de.ibapl.jnhw.libloader.MultiarchInfo;
 import de.ibapl.jnhw.libloader.MultiarchTupelBuilder;
 import de.ibapl.jnhw.posix.Errno;
@@ -135,7 +137,7 @@ public final class Ioctl {
 
         public LinuxDefines(MultiarchInfo mi) {
             switch (mi.getArch()) {
-                case POWER_PC_64, MIPS, MIPS_64 -> {
+                case MIPS, MIPS_64, POWER_PC, POWER_PC_64 -> {
                     _IOC_SIZEBITS = 13;
                     _IOC_DIRBITS = 3;
                     _IOC_NONE = 1;
@@ -162,7 +164,7 @@ public final class Ioctl {
                     FIONREAD = 18047;
                     TIOCOUTQ = 29810;
                 }
-                case POWER_PC_64 -> {
+                case POWER_PC, POWER_PC_64 -> {
                     FIONREAD = 1074030207;
                     TIOCOUTQ = 1074033779;
                 }

@@ -21,6 +21,7 @@
  */
 package de.ibapl.jnhw.common.test.memory;
 
+import de.ibapl.jnhw.common.annotation.Bug_JDK_8300201;
 import de.ibapl.jnhw.libloader.MultiarchTupelBuilder;
 import de.ibapl.jnhw.libloader.SizeInBit;
 import java.lang.foreign.MemoryAddress;
@@ -42,6 +43,7 @@ import org.junit.jupiter.api.BeforeAll;
  *
  * @author aploese
  */
+@Bug_JDK_8300201
 public class Bug_JDK_8300201_Test {
 
     public Bug_JDK_8300201_Test() {

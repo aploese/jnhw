@@ -464,7 +464,7 @@ public final class Errno extends de.ibapl.jnhw.isoc.Errno {
                 }
             }
             switch (multiarchInfo.getArch()) {
-                case POWER_PC_64 -> {
+                case POWER_PC, POWER_PC_64 -> {
                     EDEADLOCK = 58;
                 }
                 case MIPS, MIPS_64 -> {

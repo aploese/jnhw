@@ -104,5 +104,7 @@ public enum MemoryModel {
     public final SizeInBit sizeOf_long;
     public final SizeInBit sizeOf_long_long;
     public final SizeInBit sizeOf_pointer;
+    public final SizeInBit sizeOf_float = SizeInBit._32_BIT;
+    public final SizeInBit sizeOf_double = SizeInBit._64_BIT;
 
 }

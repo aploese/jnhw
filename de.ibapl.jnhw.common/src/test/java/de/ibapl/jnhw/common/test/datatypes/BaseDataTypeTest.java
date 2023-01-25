@@ -138,7 +138,7 @@ public class BaseDataTypeTest {
             case ILP32 -> {
                 assertFalse(_LP32());
                 switch (MultiarchTupelBuilder.getMultiarch()) {
-                    case MIPS_EL__LINUX__GNU, ARM__LINUX__GNU_EABI_HF ->
+                    case MIPS_EL__LINUX__GNU, ARM__LINUX__GNU_EABI_HF, POWER_PC__LINUX__GNU ->
                         //TODO bug ?? GCC does not define this !?
                         assertFalse(_ILP32());
                     default ->

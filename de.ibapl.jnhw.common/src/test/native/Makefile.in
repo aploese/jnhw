@@ -145,6 +145,7 @@ libtests_la_LIBADD =
 am_libtests_la_OBJECTS = Callback__V__MA_Test.lo \
 	Callback__V___I_Test.lo Callback__V___I_MA_MA_Test.lo \
 	Callback__V___I__I_MA_Test.lo Callback__V___L_Test.lo \
+	Callback__V__Union_I_MA_Test.lo \
 	SizeAndAlignmentOfBaseDataTypes.lo \
 	StructLayoutFactoryImplTest.lo Struct__s_i8_i16.lo \
 	Struct__s_i8_i32.lo Struct__s_i8_i64.lo TestStructures.lo
@@ -165,6 +166,7 @@ DEFAULT_INCLUDES = -I.@am__isrc@ -I$(top_builddir)
 depcomp = $(SHELL) $(top_srcdir)/../depcomp
 am__maybe_remake_depfiles = depfiles
 am__depfiles_remade = ./$(DEPDIR)/Callback__V__MA_Test.Plo \
+	./$(DEPDIR)/Callback__V__Union_I_MA_Test.Plo \
 	./$(DEPDIR)/Callback__V___I_MA_MA_Test.Plo \
 	./$(DEPDIR)/Callback__V___I_Test.Plo \
 	./$(DEPDIR)/Callback__V___I__I_MA_Test.Plo \
@@ -371,6 +373,7 @@ libtests_la_SOURCES = \
  Callback__V___I_MA_MA_Test.c \
  Callback__V___I__I_MA_Test.c \
  Callback__V___L_Test.c \
+ Callback__V__Union_I_MA_Test.c \
  SizeAndAlignmentOfBaseDataTypes.c \
  StructLayoutFactoryImplTest.c \
  Struct__s_i8_i16.c \
@@ -471,6 +474,7 @@ distclean-compile:
 	-rm -f *.tab.c
 
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/Callback__V__MA_Test.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/Callback__V__Union_I_MA_Test.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/Callback__V___I_MA_MA_Test.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/Callback__V___I_Test.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/Callback__V___I__I_MA_Test.Plo@am__quote@ # am--include-marker
@@ -642,6 +646,7 @@ clean-am: clean-generic clean-libLTLIBRARIES clean-libtool \
 
 distclean: distclean-am
 		-rm -f ./$(DEPDIR)/Callback__V__MA_Test.Plo
+	-rm -f ./$(DEPDIR)/Callback__V__Union_I_MA_Test.Plo
 	-rm -f ./$(DEPDIR)/Callback__V___I_MA_MA_Test.Plo
 	-rm -f ./$(DEPDIR)/Callback__V___I_Test.Plo
 	-rm -f ./$(DEPDIR)/Callback__V___I__I_MA_Test.Plo
@@ -699,6 +704,7 @@ installcheck-am:
 
 maintainer-clean: maintainer-clean-am
 		-rm -f ./$(DEPDIR)/Callback__V__MA_Test.Plo
+	-rm -f ./$(DEPDIR)/Callback__V__Union_I_MA_Test.Plo
 	-rm -f ./$(DEPDIR)/Callback__V___I_MA_MA_Test.Plo
 	-rm -f ./$(DEPDIR)/Callback__V___I_Test.Plo
 	-rm -f ./$(DEPDIR)/Callback__V___I__I_MA_Test.Plo

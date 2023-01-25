@@ -55,6 +55,7 @@ import de.ibapl.jnhw.common.upcall.Callback__V___I_MA_MA;
 import de.ibapl.jnhw.common.util.IntDefine;
 import de.ibapl.jnhw.common.util.JsonStringBuilder;
 import de.ibapl.jnhw.common.util.ObjectDefine;
+import de.ibapl.jnhw.libloader.MemoryModel;
 import de.ibapl.jnhw.libloader.MultiarchInfo;
 import de.ibapl.jnhw.libloader.MultiarchTupelBuilder;
 import de.ibapl.jnhw.libloader.libraries.LibcLoader;
@@ -439,6 +440,10 @@ public class Signal {
                             alignof = Alignment.AT_8;
                             sizeof = 592;
                         }
+                        case POWER_PC -> {
+                            alignof = Alignment.AT_16;
+                            sizeof = 992;
+                        }
                         case POWER_PC_64 -> {
                             alignof = Alignment.AT_8;
                             sizeof = 1272;
@@ -544,85 +549,59 @@ public class Signal {
         static {
             switch (MultiarchTupelBuilder.getOS()) {
                 case LINUX -> {
-                    switch (MultiarchTupelBuilder.getArch()) {
-                        case AARCH64 -> {
+                    switch (MultiarchTupelBuilder.getMemoryModel()) {
+                        case LP64 -> {
                             alignof = Alignment.AT_8;
                             sizeof = 152;
-                            offsetof_Sa_handler = 0;
-                            offsetof_Sa_mask = 8;
-                            offsetof_Sa_flags = 136;
-                            offsetof_Sa_sigaction = 0;
+                            switch (MultiarchTupelBuilder.getArch()) {
+                                case MIPS_64 -> {
+                                    offsetof_Sa_handler = 8;
+                                    offsetof_Sa_mask = 16;
+                                    offsetof_Sa_flags = 0;
+                                    offsetof_Sa_sigaction = 8;
+                                }
+                                case S390_X -> {
+                                    offsetof_Sa_handler = 0;
+                                    offsetof_Sa_mask = 24;
+                                    offsetof_Sa_flags = 12;
+                                    offsetof_Sa_sigaction = 0;
+                                }
+                                default -> {
+                                    offsetof_Sa_handler = 0;
+                                    offsetof_Sa_mask = 8;
+                                    offsetof_Sa_flags = 136;
+                                    offsetof_Sa_sigaction = 0;
+                                }
+                            }
                         }
-                        case MIPS_64 -> {
-                            alignof = Alignment.AT_8;
-                            sizeof = 152;
-                            offsetof_Sa_handler = 8;
-                            offsetof_Sa_mask = 16;
-                            offsetof_Sa_flags = 0;
-                            offsetof_Sa_sigaction = 8;
-                        }
-                        case POWER_PC_64 -> {
-                            alignof = Alignment.AT_8;
-                            sizeof = 152;
-                            offsetof_Sa_handler = 0;
-                            offsetof_Sa_mask = 8;
-                            offsetof_Sa_flags = 136;
-                            offsetof_Sa_sigaction = 0;
-                        }
-                        case RISC_V_64 -> {
-                            alignof = Alignment.AT_8;
-                            sizeof = 152;
-                            offsetof_Sa_handler = 0;
-                            offsetof_Sa_mask = 8;
-                            offsetof_Sa_flags = 136;
-                            offsetof_Sa_sigaction = 0;
-                        }
-                        case S390_X -> {
-                            alignof = Alignment.AT_8;
-                            sizeof = 152;
-                            offsetof_Sa_handler = 0;
-                            offsetof_Sa_mask = 24;
-                            offsetof_Sa_flags = 12;
-                            offsetof_Sa_sigaction = 0;
-                        }
-                        case X86_64 -> {
-                            alignof = Alignment.AT_8;
-                            sizeof = 152;
-                            offsetof_Sa_handler = 0;
-                            offsetof_Sa_mask = 8;
-                            offsetof_Sa_flags = 136;
-                            offsetof_Sa_sigaction = 0;
-                        }
-                        case ARM -> {
+                        case ILP32 -> {
                             alignof = Alignment.AT_4;
-                            sizeof = 140;
-                            offsetof_Sa_handler = 0;
-                            offsetof_Sa_mask = 4;
-                            offsetof_Sa_flags = 132;
-                            offsetof_Sa_sigaction = 0;
-                        }
-                        case I386 -> {
-                            alignof = Alignment.AT_4;
-                            sizeof = 140;
-                            offsetof_Sa_handler = 0;
-                            offsetof_Sa_mask = 4;
-                            offsetof_Sa_flags = 132;
-                            offsetof_Sa_sigaction = 0;
-                        }
-                        case MIPS -> {
-                            alignof = Alignment.AT_4;
-                            sizeof = 144;
-                            offsetof_Sa_handler = 4;
-                            offsetof_Sa_mask = 8;
-                            offsetof_Sa_flags = 0;
-                            offsetof_Sa_sigaction = 4;
+                            sizeof = switch (MultiarchTupelBuilder.getArch()) {
+                                case MIPS ->
+                                    144;
+                                default ->
+                                    140;
+                            };
+                            switch (MultiarchTupelBuilder.getArch()) {
+                                case MIPS -> {
+                                    offsetof_Sa_handler = 4;
+                                    offsetof_Sa_mask = 8;
+                                    offsetof_Sa_flags = 0;
+                                    offsetof_Sa_sigaction = 4;
+                                }
+                                default -> {
+                                    offsetof_Sa_handler = 0;
+                                    offsetof_Sa_mask = 4;
+                                    offsetof_Sa_flags = 132;
+                                    offsetof_Sa_sigaction = 0;
+                                }
+                            }
                         }
                         default ->
-                            throw new NoClassDefFoundError("No signal.h linux defines for sigaction " + MultiarchTupelBuilder.getMultiarch());
+                            throw new NoClassDefFoundError("Unsupported memorymodel for sigaction " + MultiarchTupelBuilder.getMultiarch());
                     }
                 }
-
-                case DARWIN -> {
+                case DARWIN, OPEN_BSD -> {
                     alignof = Alignment.AT_8;
                     sizeof = 16;
                     offsetof_Sa_handler = 0;
@@ -636,14 +615,6 @@ public class Signal {
                     offsetof_Sa_handler = 0;
                     offsetof_Sa_mask = 12;
                     offsetof_Sa_flags = 8;
-                    offsetof_Sa_sigaction = 0;
-                }
-                case OPEN_BSD -> {
-                    alignof = Alignment.AT_8;
-                    sizeof = 16;
-                    offsetof_Sa_handler = 0;
-                    offsetof_Sa_mask = 8;
-                    offsetof_Sa_flags = 12;
                     offsetof_Sa_sigaction = 0;
                 }
                 default ->
@@ -1032,12 +1003,20 @@ public class Signal {
             switch (MultiarchTupelBuilder.getOS()) {
                 case LINUX -> {
                     sizeof = 128;
-                    switch (MultiarchTupelBuilder.getArch()) {
-                        case ARM, I386 -> {
+                    switch (MultiarchTupelBuilder.getMemoryModel()) {
+                        case ILP32 -> {
                             alignof = Alignment.AT_4;
                             offsetof_Si_signo = 0;
-                            offsetof_Si_code = 8;
-                            offsetof_Si_errno = 4;
+                            switch (MultiarchTupelBuilder.getArch()) {
+                                case MIPS -> {
+                                    offsetof_Si_code = 4;
+                                    offsetof_Si_errno = 8;
+                                }
+                                default -> {
+                                    offsetof_Si_code = 8;
+                                    offsetof_Si_errno = 4;
+                                }
+                            }
                             offsetof_Si_pid = 12;
                             offsetof_Si_uid = 16;
                             offsetof_Si_addr = 12;
@@ -1045,35 +1024,19 @@ public class Signal {
                             offsetof_Si_band = 12;
                             offsetof_Si_value = 20;
                         }
-                        case MIPS -> {
-                            alignof = Alignment.AT_4;
-                            offsetof_Si_signo = 0;
-                            offsetof_Si_code = 4;
-                            offsetof_Si_errno = 8;
-                            offsetof_Si_pid = 12;
-                            offsetof_Si_uid = 16;
-                            offsetof_Si_addr = 12;
-                            offsetof_Si_status = 20;
-                            offsetof_Si_band = 12;
-                            offsetof_Si_value = 20;
-                        }
-                        case AARCH64, POWER_PC_64, RISC_V_64, S390_X, X86_64 -> {
+                        case LP64 -> {
                             alignof = Alignment.AT_8;
                             offsetof_Si_signo = 0;
-                            offsetof_Si_code = 8;
-                            offsetof_Si_errno = 4;
-                            offsetof_Si_pid = 16;
-                            offsetof_Si_uid = 20;
-                            offsetof_Si_addr = 16;
-                            offsetof_Si_status = 24;
-                            offsetof_Si_band = 16;
-                            offsetof_Si_value = 24;
-                        }
-                        case MIPS_64 -> {
-                            alignof = Alignment.AT_8;
-                            offsetof_Si_signo = 0;
-                            offsetof_Si_code = 4;
-                            offsetof_Si_errno = 8;
+                            switch (MultiarchTupelBuilder.getArch()) {
+                                case MIPS_64 -> {
+                                    offsetof_Si_code = 4;
+                                    offsetof_Si_errno = 8;
+                                }
+                                default -> {
+                                    offsetof_Si_code = 8;
+                                    offsetof_Si_errno = 4;
+                                }
+                            }
                             offsetof_Si_pid = 16;
                             offsetof_Si_uid = 20;
                             offsetof_Si_addr = 16;
@@ -1793,6 +1756,14 @@ public class Signal {
                             offsetof_Uc_stack = 16;
                             offsetof_Uc_mcontext = 40;
                         }
+                        case POWER_PC -> {
+                            alignof = Alignment.AT_4;
+                            sizeof = 1184;
+                            offsetof_Uc_link = 4;
+                            offsetof_Uc_sigmask = 52;
+                            offsetof_Uc_stack = 8;
+                            offsetof_Uc_mcontext = 48;
+                        }
                         case POWER_PC_64 -> {
                             alignof = Alignment.AT_8;
                             sizeof = 1440;
@@ -1829,7 +1800,6 @@ public class Signal {
                             throw new NoClassDefFoundError("No signal.h linux defines for ucontext_t " + MultiarchTupelBuilder.getMultiarch());
                     }
                 }
-
                 case DARWIN -> {
                     alignof = null;
                     sizeof = 0;

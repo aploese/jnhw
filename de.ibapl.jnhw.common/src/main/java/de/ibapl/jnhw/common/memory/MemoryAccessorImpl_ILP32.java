@@ -21,6 +21,7 @@
  */
 package de.ibapl.jnhw.common.memory;
 
+import de.ibapl.jnhw.common.annotation.Bug_JDK_8300201;
 import java.lang.foreign.MemoryAddress;
 import java.lang.foreign.MemorySegment;
 import java.lang.foreign.ValueLayout;
@@ -112,14 +113,14 @@ public final class MemoryAccessorImpl_ILP32 extends AbstractMemoryAccessorImpl {
         mem.set(LAYOUT__UNSIGNED_LONG, offset + LONG_SIZE * index, (int) value);
     }
 
-    //TODO BUG on arm
     @Override
+    @Bug_JDK_8300201
     public MemoryAddress uintptr_t_AtIndex(MemorySegment mem, long index) {
         return MemoryAddress.ofLong(0xffffffffL & mem.getAtIndex(LAYOUT_UINTPTR_T, index));
     }
 
-    //TODO BUG on arm
     @Override
+    @Bug_JDK_8300201
     public MemoryAddress uintptr_t(MemorySegment mem, long offset) {
         return MemoryAddress.ofLong(0xffffffffL & mem.get(LAYOUT_UINTPTR_T, offset));
     }

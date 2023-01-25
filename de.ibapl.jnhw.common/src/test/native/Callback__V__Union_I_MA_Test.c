@@ -19,37 +19,34 @@
  * Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
  */
-#include "jnhw-posix.h"
-
 #include <stddef.h>
-#include <signal.h>
 
-//We need the POSIX version ...
-#if defined(HAVE_SIGNAL_H) && defined(_POSIX_VERSION)
+union Union_I_MA {
+ void* value_ptr;
+ int value_int;
+};
 
-typedef void (*callback__V__UnionSigval)(union sigval);
-static callback__V__UnionSigval ptrCallback__V__UnionSigval = NULL;
+typedef void (*callback__V__Union_I_MA)(union Union_I_MA);
+static callback__V__Union_I_MA ptrCallback__V__Union_I_MA = NULL;
 
-void setCallback__V__UnionSigval(callback__V__UnionSigval ptrCallback) {
-    ptrCallback__V__UnionSigval = ptrCallback;
+void setCallback__V__Union_I_MA(callback__V__Union_I_MA ptrCallback) {
+    ptrCallback__V__Union_I_MA = ptrCallback;
 }
 
-callback__V__UnionSigval getCallback__V__UnionSigval() {
-    return ptrCallback__V__UnionSigval;
+callback__V__Union_I_MA getCallback__V__Union_I_MA() {
+    return ptrCallback__V__Union_I_MA;
 }
 
-void doCallback__V__UnionSigval_A(void* sival_ptr) {
-    union sigval value;
-    value.sival_int = 0;
-    value.sival_ptr = sival_ptr;
-    ptrCallback__V__UnionSigval(value);
+void doCallback__V__Union_I_MAA(void* value_ptr) {
+    union Union_I_MA value;
+    value.value_int = 0;
+    value.value_ptr = value_ptr;
+    ptrCallback__V__Union_I_MA(value);
 }
 
-void doCallback__V__UnionSigval_I(int sival_int) {
-    union sigval value;
-    value.sival_ptr = NULL;
-    value.sival_int = sival_int;
-    ptrCallback__V__UnionSigval(value);
+void doCallback__V__Union_I_MAI(int value_int) {
+    union Union_I_MA value;
+    value.value_ptr = NULL;
+    value.value_int = value_int;
+    ptrCallback__V__Union_I_MA(value);
 }
-
-#endif

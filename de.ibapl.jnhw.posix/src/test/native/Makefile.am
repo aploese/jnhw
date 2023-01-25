@@ -17,7 +17,6 @@ libtests.la
 libtests_la_SOURCES = \
  AioDefines.c \
  AioStructures.c \
- Callback__V__UnionSigval_Test.c\
  Defines.c \
  EventFdDefines.c \
  FcntlDefines.c \

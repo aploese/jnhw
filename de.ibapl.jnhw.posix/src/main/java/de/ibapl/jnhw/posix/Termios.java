@@ -380,7 +380,7 @@ public final class Termios {
                     VEOL = 17;
                     VMIN = 4;
                 }
-                case POWER_PC_64 -> {
+                case POWER_PC, POWER_PC_64 -> {
                     IEXTEN = 1024;
                     TOSTOP = 4194304;
                     VEOL = 6;
@@ -394,7 +394,7 @@ public final class Termios {
                 }
             }
             switch (multiarchInfo.getArch()) {
-                case POWER_PC_64 -> {
+                case POWER_PC, POWER_PC_64 -> {
                     B1000000 = 23;
                     B115200 = 17;
                     B1152000 = 24;

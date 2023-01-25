@@ -104,7 +104,7 @@ public class FcntlTest {
                         ErrnoTest.assertErrnoEquals(Errno.ENOENT, nee.errno);
                     case ARM, MIPS, MIPS_64, RISC_V_64, X86_64 ->
                         ErrnoTest.assertErrnoEquals(Errno.EEXIST, nee.errno);
-                    case POWER_PC_64 -> {
+                    case POWER_PC, POWER_PC_64 -> {
                         if (Errno.ENOENT == nee.errno) {
                             ErrnoTest.assertErrnoEquals(Errno.ENOENT, nee.errno);
                         } else {

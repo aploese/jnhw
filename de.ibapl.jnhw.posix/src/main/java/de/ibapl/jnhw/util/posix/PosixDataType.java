@@ -39,10 +39,10 @@ public interface PosixDataType {
 
     public final static BaseDataType clock_t = switch (MultiarchTupelBuilder.getOS()) {
         case LINUX ->
-            switch (MultiarchTupelBuilder.getArch()) {
-                case AARCH64, MIPS_64, POWER_PC_64, RISC_V_64, S390_X, X86_64 ->
+            switch (MultiarchTupelBuilder.getMemoryModel()) {
+                case LP64 ->
                     BaseDataType.int64_t;
-                case ARM, I386, MIPS ->
+                case ILP32 ->
                     BaseDataType.int32_t;
                 default ->
                     throw new NoClassDefFoundError("can't get datatype of clock_t on " + MultiarchTupelBuilder.getMultiarch());
@@ -77,10 +77,10 @@ public interface PosixDataType {
 
     public final static BaseDataType nfds_t = switch (MultiarchTupelBuilder.getOS()) {
         case LINUX ->
-            switch (MultiarchTupelBuilder.getArch()) {
-                case AARCH64, MIPS_64, POWER_PC_64, RISC_V_64, S390_X, X86_64 ->
+            switch (MultiarchTupelBuilder.getMemoryModel()) {
+                case LP64 ->
                     BaseDataType.uint64_t;
-                case ARM, I386, MIPS ->
+                case ILP32 ->
                     BaseDataType.uint32_t;
                 default ->
                     throw new NoClassDefFoundError("can't get linux datatype of nfds_t on " + MultiarchTupelBuilder.getMultiarch());
@@ -95,10 +95,10 @@ public interface PosixDataType {
 
     public final static BaseDataType off_t = switch (MultiarchTupelBuilder.getOS()) {
         case LINUX ->
-            switch (MultiarchTupelBuilder.getArch()) {
-                case AARCH64, MIPS_64, POWER_PC_64, RISC_V_64, S390_X, X86_64 ->
+            switch (MultiarchTupelBuilder.getMemoryModel()) {
+                case LP64 ->
                     BaseDataType.int64_t;
-                case ARM, I386, MIPS ->
+                case ILP32 ->
                     BaseDataType.int32_t;
                 default ->
                     throw new NoClassDefFoundError("can't get linux datatype of off_t on " + MultiarchTupelBuilder.getMultiarch());
@@ -135,10 +135,10 @@ public interface PosixDataType {
 
     public final static BaseDataType size_t = switch (MultiarchTupelBuilder.getOS()) {
         case LINUX ->
-            switch (MultiarchTupelBuilder.getArch()) {
-                case AARCH64, MIPS_64, POWER_PC_64, RISC_V_64, S390_X, X86_64 ->
+            switch (MultiarchTupelBuilder.getMemoryModel()) {
+                case LP64 ->
                     BaseDataType.uint64_t;
-                case ARM, I386, MIPS ->
+                case ILP32 ->
                     BaseDataType.uint32_t;
                 default ->
                     throw new NoClassDefFoundError("can't get linux datatype of size_t on " + MultiarchTupelBuilder.getMultiarch());
@@ -160,10 +160,10 @@ public interface PosixDataType {
 
     public final static BaseDataType ssize_t = switch (MultiarchTupelBuilder.getOS()) {
         case LINUX ->
-            switch (MultiarchTupelBuilder.getArch()) {
-                case AARCH64, MIPS_64, POWER_PC_64, RISC_V_64, S390_X, X86_64 ->
+            switch (MultiarchTupelBuilder.getMemoryModel()) {
+                case LP64 ->
                     BaseDataType.int64_t;
-                case ARM, I386, MIPS ->
+                case ILP32 ->
                     BaseDataType.int32_t;
                 default ->
                     throw new NoClassDefFoundError("can't get linux datatype of ssize_t on " + MultiarchTupelBuilder.getMultiarch());
@@ -185,10 +185,10 @@ public interface PosixDataType {
 
     public final static BaseDataType time_t = switch (MultiarchTupelBuilder.getOS()) {
         case LINUX ->
-            switch (MultiarchTupelBuilder.getArch()) {
-                case AARCH64, MIPS_64, POWER_PC_64, RISC_V_64, S390_X, X86_64 ->
+            switch (MultiarchTupelBuilder.getMemoryModel()) {
+                case LP64 ->
                     BaseDataType.int64_t;
-                case ARM, I386, MIPS ->
+                case ILP32 ->
                     BaseDataType.int32_t;
                 default ->
                     throw new NoClassDefFoundError("can't get linux datatype of time_t on " + MultiarchTupelBuilder.getMultiarch());

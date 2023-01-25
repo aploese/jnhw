@@ -141,9 +141,8 @@ am__v_lt_ = $(am__v_lt_@AM_DEFAULT_V@)
 am__v_lt_0 = --silent
 am__v_lt_1 = 
 libtests_la_LIBADD =
-am_libtests_la_OBJECTS = AioDefines.lo AioStructures.lo \
-	Callback__V__UnionSigval_Test.lo Defines.lo EventFdDefines.lo \
-	FcntlDefines.lo IoctlDefines.lo IoctlTest.lo \
+am_libtests_la_OBJECTS = AioDefines.lo AioStructures.lo Defines.lo \
+	EventFdDefines.lo FcntlDefines.lo IoctlDefines.lo IoctlTest.lo \
 	Isoc_ErrnoDefines.lo LocaleDefines.lo LocaleStructures.lo \
 	LocaleTest.lo PollDefines.lo PollStructures.lo \
 	PosixDataTypeTest.lo Posix_ErrnoDefines.lo PthreadDefines.lo \
@@ -169,11 +168,10 @@ DEFAULT_INCLUDES = -I.@am__isrc@ -I$(top_builddir)
 depcomp = $(SHELL) $(top_srcdir)/../depcomp
 am__maybe_remake_depfiles = depfiles
 am__depfiles_remade = ./$(DEPDIR)/AioDefines.Plo \
-	./$(DEPDIR)/AioStructures.Plo \
-	./$(DEPDIR)/Callback__V__UnionSigval_Test.Plo \
-	./$(DEPDIR)/Defines.Plo ./$(DEPDIR)/EventFdDefines.Plo \
-	./$(DEPDIR)/FcntlDefines.Plo ./$(DEPDIR)/IoctlDefines.Plo \
-	./$(DEPDIR)/IoctlTest.Plo ./$(DEPDIR)/Isoc_ErrnoDefines.Plo \
+	./$(DEPDIR)/AioStructures.Plo ./$(DEPDIR)/Defines.Plo \
+	./$(DEPDIR)/EventFdDefines.Plo ./$(DEPDIR)/FcntlDefines.Plo \
+	./$(DEPDIR)/IoctlDefines.Plo ./$(DEPDIR)/IoctlTest.Plo \
+	./$(DEPDIR)/Isoc_ErrnoDefines.Plo \
 	./$(DEPDIR)/LocaleDefines.Plo ./$(DEPDIR)/LocaleStructures.Plo \
 	./$(DEPDIR)/LocaleTest.Plo ./$(DEPDIR)/PollDefines.Plo \
 	./$(DEPDIR)/PollStructures.Plo \
@@ -385,7 +383,6 @@ libtests.la
 libtests_la_SOURCES = \
  AioDefines.c \
  AioStructures.c \
- Callback__V__UnionSigval_Test.c\
  Defines.c \
  EventFdDefines.c \
  FcntlDefines.c \
@@ -510,7 +507,6 @@ distclean-compile:
 
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/AioDefines.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/AioStructures.Plo@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/Callback__V__UnionSigval_Test.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/Defines.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/EventFdDefines.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/FcntlDefines.Plo@am__quote@ # am--include-marker
@@ -702,7 +698,6 @@ clean-am: clean-generic clean-libLTLIBRARIES clean-libtool \
 distclean: distclean-am
 		-rm -f ./$(DEPDIR)/AioDefines.Plo
 	-rm -f ./$(DEPDIR)/AioStructures.Plo
-	-rm -f ./$(DEPDIR)/Callback__V__UnionSigval_Test.Plo
 	-rm -f ./$(DEPDIR)/Defines.Plo
 	-rm -f ./$(DEPDIR)/EventFdDefines.Plo
 	-rm -f ./$(DEPDIR)/FcntlDefines.Plo
@@ -780,7 +775,6 @@ installcheck-am:
 maintainer-clean: maintainer-clean-am
 		-rm -f ./$(DEPDIR)/AioDefines.Plo
 	-rm -f ./$(DEPDIR)/AioStructures.Plo
-	-rm -f ./$(DEPDIR)/Callback__V__UnionSigval_Test.Plo
 	-rm -f ./$(DEPDIR)/Defines.Plo
 	-rm -f ./$(DEPDIR)/EventFdDefines.Plo
 	-rm -f ./$(DEPDIR)/FcntlDefines.Plo

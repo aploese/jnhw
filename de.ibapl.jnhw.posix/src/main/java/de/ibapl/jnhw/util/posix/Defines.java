@@ -24,6 +24,7 @@ package de.ibapl.jnhw.util.posix;
 import de.ibapl.jnhw.common.annotation.Define;
 import de.ibapl.jnhw.common.datatypes.BaseDataType;
 import de.ibapl.jnhw.common.util.IntDefine;
+import de.ibapl.jnhw.common.memory.layout.Alignment;
 import de.ibapl.jnhw.libloader.Arch;
 import de.ibapl.jnhw.libloader.Endianess;
 import de.ibapl.jnhw.libloader.MemoryModel;
@@ -67,7 +68,7 @@ public class Defines {
      * @return
      */
     @Define
-    public final static int __BIGGEST_ALIGNMENT__;
+    public final static int __BIGGEST_ALIGNMENT__ = Alignment.__BIGGEST_ALIGNMENT__.alignof;
 
     @Define
     public final static int __BYTE_ORDER__;
@@ -249,6 +250,7 @@ public class Defines {
         final Arch arch = MultiarchTupelBuilder.getArch();
         final OS os = MultiarchTupelBuilder.getOS();
         final Endianess e = MultiarchTupelBuilder.getEndianess();
+        final MemoryModel mm = MultiarchTupelBuilder.getMemoryModel();
 
         __aarch64__ = arch == Arch.AARCH64 ? IntDefine.toIntDefine(1) : IntDefine.UNDEFINED;
         __alpha__ = IntDefine.UNDEFINED;
@@ -268,7 +270,7 @@ public class Defines {
         __mips64 = arch == Arch.MIPS_64 ? IntDefine.toIntDefine(1) : IntDefine.UNDEFINED;
         __MIPSEB__ = ((arch == Arch.MIPS) || (arch == Arch.MIPS_64)) && e == Endianess.BIG ? IntDefine.toIntDefine(1) : IntDefine.UNDEFINED;
         __MIPSEL__ = ((arch == Arch.MIPS) || (arch == Arch.MIPS_64)) && e == Endianess.LITTLE ? IntDefine.toIntDefine(1) : IntDefine.UNDEFINED;
-        __powerpc__ = arch == Arch.POWER_PC_64 ? IntDefine.toIntDefine(1) : IntDefine.UNDEFINED;
+        __powerpc__ = ((arch == Arch.POWER_PC) || (arch == Arch.POWER_PC_64)) ? IntDefine.toIntDefine(1) : IntDefine.UNDEFINED;
         __powerpc64__ = arch == Arch.POWER_PC_64 ? IntDefine.toIntDefine(1) : IntDefine.UNDEFINED;
         __riscv = arch == Arch.RISC_V_64 ? IntDefine.toIntDefine(1) : IntDefine.UNDEFINED;
         __SH4__ = IntDefine.UNDEFINED;
@@ -317,17 +319,6 @@ public class Defines {
                 throw new NoClassDefFoundError("No default value for _POSIX_C_SOURCE,_XOPEN_SOURCE and _XOPEN_SOURCE_EXTENDED " + MultiarchTupelBuilder.getMultiarch());
         }
 
-        switch (arch) {
-            case AARCH64, I386, MIPS_64, X86_64, POWER_PC_64, RISC_V_64 ->
-                __BIGGEST_ALIGNMENT__ = 16;
-            case S390_X ->
-                __BIGGEST_ALIGNMENT__ = 8;
-            case ARM, MIPS ->
-                __BIGGEST_ALIGNMENT__ = 8;
-            default ->
-                throw new NoClassDefFoundError("No default value for __BIGGEST_ALIGNMENT__ " + MultiarchTupelBuilder.getMultiarch());
-        }
-
         switch (os) {
             case LINUX -> {
                 __GLIBC_MINOR__ = IntDefine.toIntDefine(36);
@@ -350,11 +341,11 @@ public class Defines {
 
         __ILP32__ = switch (MultiarchTupelBuilder.getMemoryModel()) {
             case ILP32 ->
-                switch (MultiarchTupelBuilder.getMultiarch()) {
-                    case MIPS_EL__LINUX__GNU, ARM__LINUX__GNU_EABI_HF ->
-                        IntDefine.UNDEFINED;
-                    default ->
+                switch (MultiarchTupelBuilder.getArch()) {
+                    case I386 ->
                         IntDefine.toIntDefine(1);
+                    default ->
+                        IntDefine.UNDEFINED;
                 };
             default ->
                 IntDefine.UNDEFINED;
@@ -401,7 +392,5 @@ public class Defines {
             default ->
                 IntDefine.toIntDefine(MultiarchTupelBuilder.getMemoryModel().sizeOf_pointer.sizeInBit);
         };
-
     }
-
 }

@@ -19,14 +19,29 @@
  * Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
  */
-package de.ibapl.jnhw.util.posix.upcall;
+package de.ibapl.jnhw.common.nativepointer;
 
-import de.ibapl.jnhw.common.upcall.CallbackFactory__V__Union_I_MA;
+import de.ibapl.jnhw.common.memory.NativeFunctionPointer;
+import de.ibapl.jnhw.common.memory.OpaqueMemory;
+import java.lang.foreign.MemoryAddress;
+import java.util.function.Function;
 
 /**
  *
  * @author aploese
  */
-public abstract class CallbackFactory__V__UnionSigval extends CallbackFactory__V__Union_I_MA {
+public class FunctionPtr__V__Union_I_MA<A extends OpaqueMemory> extends NativeFunctionPointer {
+
+    public static FunctionPtr__V__Union_I_MA wrap(MemoryAddress srcm) {
+        return new FunctionPtr__V__Union_I_MA(srcm);
+    }
+
+    protected <T extends FunctionPtr__V__Union_I_MA<A>> FunctionPtr__V__Union_I_MA(Function<T, MemoryAddress> producer) {
+        super(producer);
+    }
+
+    public FunctionPtr__V__Union_I_MA(MemoryAddress src) {
+        super(src);
+    }
 
 }

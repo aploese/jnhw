@@ -135,7 +135,7 @@ public class Pthread {
                 switch (MultiarchTupelBuilder.getArch()) {
                     case AARCH64 ->
                         64;
-                    case ARM, I386, MIPS ->
+                    case ARM, I386, MIPS, POWER_PC ->
                         36;
                     case MIPS_64, POWER_PC_64, RISC_V_64, S390_X, X86_64 ->
                         56;

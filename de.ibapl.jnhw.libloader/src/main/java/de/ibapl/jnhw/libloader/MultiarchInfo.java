@@ -39,6 +39,7 @@ public enum MultiarchInfo {
     MIPS__LINUX__GNU(MemoryModel.ILP32, Endianess.BIG, Arch.MIPS, OS.LINUX, Abi.GNU),
     MIPS_64_EL__LINUX__GNU_ABI_64(MemoryModel.LP64, Endianess.LITTLE, Arch.MIPS_64, OS.LINUX, Abi.GNU_ABI_64),
     MIPS_64__LINUX__GNU_ABI_64(MemoryModel.LP64, Endianess.BIG, Arch.MIPS_64, OS.LINUX, Abi.GNU_ABI_64),
+    POWER_PC__LINUX__GNU(MemoryModel.ILP32, Endianess.BIG, Arch.POWER_PC, OS.LINUX, Abi.GNU),
     POWER_PC_64__LINUX__GNU(MemoryModel.LP64, Endianess.BIG, Arch.POWER_PC_64, OS.LINUX, Abi.GNU),
     POWER_PC_64_LE__LINUX__GNU(MemoryModel.LP64, Endianess.LITTLE, Arch.POWER_PC_64, OS.LINUX, Abi.GNU),
     RISC_V_64__LINUX__GNU(MemoryModel.LP64, Endianess.LITTLE, Arch.RISC_V_64, OS.LINUX, Abi.GNU),

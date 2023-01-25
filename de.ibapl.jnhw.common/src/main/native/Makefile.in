@@ -139,7 +139,9 @@ LTLIBRARIES = $(lib_LTLIBRARIES)
 libjnhw_common_la_LIBADD =
 am_libjnhw_common_la_OBJECTS = jnhw-common.lo JniMi_MA.lo JniMi__B.lo \
 	JniMi__D.lo JniMi__I.lo JniMi__L.lo JniMi__S.lo JniMi__V.lo \
-	JniCallbackFactory__V__MA.lo JniCallbackFactory__V___I.lo \
+	JniCallbackFactory__V__MA.lo \
+	JniCallbackFactory__V__Union_I_MA.lo \
+	JniCallbackFactory__V___I.lo \
 	JniCallbackFactory__V___I_MA_MA.lo \
 	JniCallbackFactory__V___I__I_MA.lo \
 	JniCallbackFactory__V___L.lo
@@ -164,6 +166,7 @@ DEFAULT_INCLUDES = -I.@am__isrc@ -I$(top_builddir)
 depcomp = $(SHELL) $(top_srcdir)/../depcomp
 am__maybe_remake_depfiles = depfiles
 am__depfiles_remade = ./$(DEPDIR)/JniCallbackFactory__V__MA.Plo \
+	./$(DEPDIR)/JniCallbackFactory__V__Union_I_MA.Plo \
 	./$(DEPDIR)/JniCallbackFactory__V___I.Plo \
 	./$(DEPDIR)/JniCallbackFactory__V___I_MA_MA.Plo \
 	./$(DEPDIR)/JniCallbackFactory__V___I__I_MA.Plo \
@@ -371,6 +374,7 @@ libjnhw_common_la_SOURCES = \
  JniMi__S.c\
  JniMi__V.c\
  JniCallbackFactory__V__MA.c\
+ JniCallbackFactory__V__Union_I_MA.c\
  JniCallbackFactory__V___I.c\
  JniCallbackFactory__V___I_MA_MA.c\
  JniCallbackFactory__V___I__I_MA.c\
@@ -455,6 +459,7 @@ distclean-compile:
 	-rm -f *.tab.c
 
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/JniCallbackFactory__V__MA.Plo@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/JniCallbackFactory__V__Union_I_MA.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/JniCallbackFactory__V___I.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/JniCallbackFactory__V___I_MA_MA.Plo@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/JniCallbackFactory__V___I__I_MA.Plo@am__quote@ # am--include-marker
@@ -648,6 +653,7 @@ clean-am: clean-generic clean-libLTLIBRARIES clean-libtool \
 
 distclean: distclean-am
 		-rm -f ./$(DEPDIR)/JniCallbackFactory__V__MA.Plo
+	-rm -f ./$(DEPDIR)/JniCallbackFactory__V__Union_I_MA.Plo
 	-rm -f ./$(DEPDIR)/JniCallbackFactory__V___I.Plo
 	-rm -f ./$(DEPDIR)/JniCallbackFactory__V___I_MA_MA.Plo
 	-rm -f ./$(DEPDIR)/JniCallbackFactory__V___I__I_MA.Plo
@@ -706,6 +712,7 @@ installcheck-am:
 
 maintainer-clean: maintainer-clean-am
 		-rm -f ./$(DEPDIR)/JniCallbackFactory__V__MA.Plo
+	-rm -f ./$(DEPDIR)/JniCallbackFactory__V__Union_I_MA.Plo
 	-rm -f ./$(DEPDIR)/JniCallbackFactory__V___I.Plo
 	-rm -f ./$(DEPDIR)/JniCallbackFactory__V___I_MA_MA.Plo
 	-rm -f ./$(DEPDIR)/JniCallbackFactory__V___I__I_MA.Plo

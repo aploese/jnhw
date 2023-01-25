@@ -19,14 +19,14 @@
  * Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
  */
-package de.ibapl.jnhw.util.posix.upcall;
-
-import de.ibapl.jnhw.common.upcall.CallbackFactory__V__Union_I_MA;
+package de.ibapl.jnhw.common.annotation;
 
 /**
  *
- * @author aploese
+ * @author aploese Marker as long as Bug
+ * <a href="https://bugs.java.com/bugdatabase/view_bug.do?bug_id=JDK-8300201">JDK-8300201</a>
+ * persists.
  */
-public abstract class CallbackFactory__V__UnionSigval extends CallbackFactory__V__Union_I_MA {
+public @interface Bug_JDK_8300201 {
 
 }

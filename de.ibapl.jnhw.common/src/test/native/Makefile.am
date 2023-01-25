@@ -17,6 +17,7 @@ libtests_la_SOURCES = \
  Callback__V___I_MA_MA_Test.c \
  Callback__V___I__I_MA_Test.c \
  Callback__V___L_Test.c \
+ Callback__V__Union_I_MA_Test.c \
  SizeAndAlignmentOfBaseDataTypes.c \
  StructLayoutFactoryImplTest.c \
  Struct__s_i8_i16.c \

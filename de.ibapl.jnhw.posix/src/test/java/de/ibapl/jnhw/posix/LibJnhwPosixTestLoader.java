@@ -39,8 +39,11 @@ import de.ibapl.jnhw.libloader.LoadState;
 import de.ibapl.jnhw.libloader.NativeLibResolver;
 import java.lang.foreign.Addressable;
 import java.lang.foreign.MemoryAddress;
+import java.lang.foreign.MemorySegment;
 import java.lang.foreign.MemorySession;
 import java.lang.foreign.SymbolLookup;
+import java.util.NoSuchElementException;
+import java.util.Optional;
 import java.util.logging.Logger;
 
 /**
@@ -56,15 +59,15 @@ public final class LibJnhwPosixTestLoader {
     public final static int LIB_JNHW_POSIX_TEST_VERSION = 4;
     private final static Object loadLock = new Object();
     private static LoadState state = LoadState.INIT;
-    public static SymbolLookup LIB_JNHW_POSIX_TEST_SYMBOL_LOOKUP = null;
-    private final static MemorySession LIB_JNHW_POSIX_TEST_MEMORY_SESSION = MemorySession.openShared();
+    public static SymbolLookup SYMBOL_LOOKUP = null;
+    public final static MemorySession MEMORY_SESSION = MemorySession.openShared();
 
     static {
         LibJnhwPosixTestLoader.touch();
     }
 
     protected static void doLoadTestLib(String absoluteLibName) {
-        LIB_JNHW_POSIX_TEST_SYMBOL_LOOKUP = SymbolLookup.libraryLookup(absoluteLibName, LIB_JNHW_POSIX_TEST_MEMORY_SESSION);
+        SYMBOL_LOOKUP = SymbolLookup.libraryLookup(absoluteLibName, MEMORY_SESSION);
     }
 
     public static LoadResult getLoadResult() {
@@ -96,47 +99,47 @@ public final class LibJnhwPosixTestLoader {
     }
 
     public static byte invoke_sB___V(String name) {
-        return JnhwMh_sB___V.mandatoryOf(LIB_JNHW_POSIX_TEST_SYMBOL_LOOKUP, name, BaseDataType.int8_t).invoke_sB___V();
+        return JnhwMh_sB___V.mandatoryOf(SYMBOL_LOOKUP, name, BaseDataType.int8_t).invoke_sB___V();
     }
 
     public static short invoke_sS___V(String name) {
-        return JnhwMh_sS___V.mandatoryOf(LIB_JNHW_POSIX_TEST_SYMBOL_LOOKUP, name, BaseDataType.int16_t).invoke_sS___V();
+        return JnhwMh_sS___V.mandatoryOf(SYMBOL_LOOKUP, name, BaseDataType.int16_t).invoke_sS___V();
     }
 
     public static boolean invokeExact_CharToBool_V(String name) {
-        return JnhwMh_sB___V.mandatoryOf(LIB_JNHW_POSIX_TEST_SYMBOL_LOOKUP, name, BaseDataType.int8_t).invoke_sB___V() != 0;
+        return JnhwMh_sB___V.mandatoryOf(SYMBOL_LOOKUP, name, BaseDataType.int8_t).invoke_sB___V() != 0;
     }
 
     public static boolean invokeExact_CharToBool_Adr(String name, Addressable arg1) {
-        return JnhwMh_sB___A.mandatoryOf(LIB_JNHW_POSIX_TEST_SYMBOL_LOOKUP, name, BaseDataType.int8_t, BaseDataType.intptr_t).invoke_sB___A(arg1) != 0;
+        return JnhwMh_sB___A.mandatoryOf(SYMBOL_LOOKUP, name, BaseDataType.int8_t, BaseDataType.intptr_t).invoke_sB___A(arg1) != 0;
     }
 
     public static int invoke_sI___V(String name) {
-        return JnhwMh_sI___V.mandatoryOf(LIB_JNHW_POSIX_TEST_SYMBOL_LOOKUP, name, BaseDataType.int32_t).invoke_sI___V();
+        return JnhwMh_sI___V.mandatoryOf(SYMBOL_LOOKUP, name, BaseDataType.int32_t).invoke_sI___V();
     }
 
     public static int invoke_sI__sB_sI(String name, byte arg1, int arg2) {
-        return JnhwMh_sI__sB_sI.mandatoryOf(LIB_JNHW_POSIX_TEST_SYMBOL_LOOKUP, name, BaseDataType.int32_t, BaseDataType.int8_t, BaseDataType.int32_t).invoke_sI__sB_sI(arg1, arg2);
+        return JnhwMh_sI__sB_sI.mandatoryOf(SYMBOL_LOOKUP, name, BaseDataType.int32_t, BaseDataType.int8_t, BaseDataType.int32_t).invoke_sI__sB_sI(arg1, arg2);
     }
 
     public static int invoke_sI__sI_sB_sI_sI(String name, int arg1, byte arg2, int arg3, int arg4) {
-        return JnhwMh_sI__sI_sB_sI_sI.mandatoryOf(LIB_JNHW_POSIX_TEST_SYMBOL_LOOKUP, name, BaseDataType.int32_t, BaseDataType.int32_t, BaseDataType.int8_t, BaseDataType.int32_t, BaseDataType.int32_t).invoke_sI__sI_sB_sI_sI(arg1, arg2, arg3, arg4);
+        return JnhwMh_sI__sI_sB_sI_sI.mandatoryOf(SYMBOL_LOOKUP, name, BaseDataType.int32_t, BaseDataType.int32_t, BaseDataType.int8_t, BaseDataType.int32_t, BaseDataType.int32_t).invoke_sI__sI_sB_sI_sI(arg1, arg2, arg3, arg4);
     }
 
     public static MemoryAddress invoke_MA___V(String name) {
-        return JnhwMh_MA___V.mandatoryOf(LIB_JNHW_POSIX_TEST_SYMBOL_LOOKUP, name, BaseDataType.intptr_t).invoke_MA___V();
+        return JnhwMh_MA___V.mandatoryOf(SYMBOL_LOOKUP, name, BaseDataType.intptr_t).invoke_MA___V();
     }
 
     public static MemoryAddress invoke_MA___A_sI(String name, Addressable arg1, int arg2) {
-        return JnhwMh_MA___A_sI.mandatoryOf(LIB_JNHW_POSIX_TEST_SYMBOL_LOOKUP, name, BaseDataType.uintptr_t, BaseDataType.uintptr_t, BaseDataType.int32_t).invoke_MA___A_sI(arg1, arg2);
+        return JnhwMh_MA___A_sI.mandatoryOf(SYMBOL_LOOKUP, name, BaseDataType.uintptr_t, BaseDataType.uintptr_t, BaseDataType.int32_t).invoke_MA___A_sI(arg1, arg2);
     }
 
     public static long invoke_sL___V(String name) {
-        return JnhwMh_sL___V.mandatoryOf(LIB_JNHW_POSIX_TEST_SYMBOL_LOOKUP, name, BaseDataType.int64_t).invoke_sL___V();
+        return JnhwMh_sL___V.mandatoryOf(SYMBOL_LOOKUP, name, BaseDataType.int64_t).invoke_sL___V();
     }
 
     public static MemoryAddress invoke_MA___A(String name, Addressable arg1) {
-        return JnhwMh_MA___A.mandatoryOf(LIB_JNHW_POSIX_TEST_SYMBOL_LOOKUP, name, BaseDataType.uintptr_t, BaseDataType.uintptr_t).invoke_MA___A(arg1);
+        return JnhwMh_MA___A.mandatoryOf(SYMBOL_LOOKUP, name, BaseDataType.uintptr_t, BaseDataType.uintptr_t).invoke_MA___A(arg1);
     }
 
     public static Integer getClassIntegerDefine(String name) {
@@ -169,6 +172,10 @@ public final class LibJnhwPosixTestLoader {
 
     public static MemoryAddress getAdrDefine(String name) {
         return invoke_MA___V("getValueOf_" + name);
+    }
+
+    public static MemoryAddress lookup(String name) {
+        return SYMBOL_LOOKUP.lookup(name).orElseThrow(() -> new NoSuchElementException("lookup for: \"" + name + "\" in: \"" + LIB_JNHW_POSIX_TEST_LOAD_RESULT.libFileName + "\" failed")).address();
     }
 
     private LibJnhwPosixTestLoader() {

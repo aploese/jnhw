@@ -255,6 +255,18 @@ public final class MultiarchTupelBuilder {
                             "Can't handle sun.arch.abi of mips64el linux\n" + listSystemProperties());
                 }
             }
+            case "ppc" -> {
+                if (SizeInBit._32_BIT != sun_arch_data_modelAsWordsize()) {
+                    throw new UnsupportedOperationException(
+                            "Can't handle sun.arch.data.model of ppc linux\n" + listSystemProperties());
+                } else if (Endianess.BIG != sun_cpu_endianAsEndianess()) {
+                    throw new UnsupportedOperationException(
+                            "Can't handle sun.cpu.endian of ppc linux\n" + listSystemProperties());
+                } else {
+                    result.add(MultiarchInfo.POWER_PC__LINUX__GNU);
+                    return result;
+                }
+            }
             case "ppc64le" -> {
                 if (SizeInBit._64_BIT != sun_arch_data_modelAsWordsize()) {
                     throw new UnsupportedOperationException(

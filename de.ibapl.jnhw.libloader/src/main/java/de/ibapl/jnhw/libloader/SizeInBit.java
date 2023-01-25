@@ -27,7 +27,7 @@ package de.ibapl.jnhw.libloader;
  * @author aploese
  */
 public enum SizeInBit {
-    _8_BIT(8), _16_BIT(16), _32_BIT(32), _64_BIT(64), _128_BIT(128);
+    _8_BIT(8), _16_BIT(16), _32_BIT(32), _64_BIT(64), _96_BIT(96), _128_BIT(128);
     public final int sizeInBit;
     public final int sizeInByte;
 
@@ -35,5 +35,12 @@ public enum SizeInBit {
         this.sizeInBit = sizeInBit;
         this.sizeInByte = sizeInBit / 8;
     }
+
+    public final static SizeInBit of_1_Byte = SizeInBit._8_BIT;
+    public final static SizeInBit of_2_Byte = SizeInBit._16_BIT;
+    public final static SizeInBit of_4_Byte = SizeInBit._32_BIT;
+    public final static SizeInBit of_8_Byte = SizeInBit._64_BIT;
+    public final static SizeInBit of_12_Byte = SizeInBit._96_BIT;
+    public final static SizeInBit of_16_Byte = SizeInBit._128_BIT;
 
 }

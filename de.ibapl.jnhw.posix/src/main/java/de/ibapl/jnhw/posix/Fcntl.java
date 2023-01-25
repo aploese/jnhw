@@ -247,7 +247,7 @@ public final class Fcntl {
                     O_DIRECTORY = 0200000;
                     O_NOFOLLOW = 0400000;
                 }
-                case POWER_PC_64 -> {
+                case POWER_PC, POWER_PC_64 -> {
                     O_DIRECTORY = 040000;
                     O_NOFOLLOW = 0100000;
                 }
@@ -267,6 +267,8 @@ public final class Fcntl {
                     O_LARGEFILE = 0100000;
                 case MIPS ->
                     O_LARGEFILE = 020000;
+                case POWER_PC ->
+                    O_LARGEFILE = 0200000;
                 default ->
                     throw new RuntimeException("No O_LARGEFILE for: " + multiarchInfo);
             }

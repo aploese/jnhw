@@ -19,7 +19,7 @@
  * Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
  */
-package de.ibapl.jnhw.util.posix;
+package de.ibapl.jnhw.common.test.upcall;
 
 import de.ibapl.jnhw.common.datatypes.BaseDataType;
 import de.ibapl.jnhw.common.downcall.JnhwMh_MA___V;
@@ -29,15 +29,14 @@ import de.ibapl.jnhw.common.downcall.JnhwMh__V__sL;
 import de.ibapl.jnhw.common.memory.NativeFunctionPointer;
 import de.ibapl.jnhw.common.memory.OpaqueMemory;
 import de.ibapl.jnhw.common.nativepointer.FunctionPtr__V__MA;
+import de.ibapl.jnhw.common.nativepointer.FunctionPtr__V__Union_I_MA;
+import de.ibapl.jnhw.common.test.LibJnhwCommonTestLoader;
+import de.ibapl.jnhw.common.upcall.CallbackFactory__V__Union_I_MA;
+import de.ibapl.jnhw.common.upcall.Callback__V__Union_I_MA;
 import de.ibapl.jnhw.common.util.ConversionsJava2Native;
 import static de.ibapl.jnhw.libloader.MemoryModel.ILP32;
 import static de.ibapl.jnhw.libloader.MemoryModel.LP64;
 import de.ibapl.jnhw.libloader.MultiarchTupelBuilder;
-import de.ibapl.jnhw.posix.JnhwTestLogger;
-import de.ibapl.jnhw.posix.LibJnhwPosixTestLoader;
-import de.ibapl.jnhw.util.posix.nativepointer.FunctionPtr__V__UnionSigval;
-import de.ibapl.jnhw.util.posix.upcall.CallbackFactory__V__UnionSigval;
-import de.ibapl.jnhw.util.posix.upcall.Callback__V__UnionSigval;
 import java.lang.foreign.MemoryAddress;
 import java.lang.foreign.MemorySegment;
 import java.lang.foreign.MemorySession;
@@ -54,26 +53,25 @@ import org.junit.jupiter.params.provider.ValueSource;
  *
  * @author aploese
  */
-@DisabledOnOs(org.junit.jupiter.api.condition.OS.WINDOWS)
-public class Callback__V__UnionSigval_Test {
+public class Callback__V__Union_I_MA_Test {
 
-    private final static JnhwMh__V___A.ExceptionErased setCallback__V__UnionSigval;
-    private final static JnhwMh_MA___V.ExceptionErased getCallback__V__UnionSigval;
-    private final static JnhwMh__V___A.ExceptionErased doCallback__V__UnionSigval_A;
-    private final static JnhwMh__V__sI.ExceptionErased doCallback__V__UnionSigval_I;
+    private final static JnhwMh__V___A.ExceptionErased setCallback__V__Union_I_MA;
+    private final static JnhwMh_MA___V.ExceptionErased getCallback__V__Union_I_MA;
+    private final static JnhwMh__V___A.ExceptionErased doCallback__V__Union_I_MAA;
+    private final static JnhwMh__V__sI.ExceptionErased doCallback__V__Union_I_MAI;
 
     static {
-        LibJnhwPosixTestLoader.touch();
-        setCallback__V__UnionSigval = JnhwMh__V___A.mandatoryOf(LibJnhwPosixTestLoader.LIB_JNHW_POSIX_TEST_SYMBOL_LOOKUP, "setCallback__V__UnionSigval", BaseDataType.uintptr_t);
-        getCallback__V__UnionSigval = JnhwMh_MA___V.mandatoryOf(LibJnhwPosixTestLoader.LIB_JNHW_POSIX_TEST_SYMBOL_LOOKUP, "getCallback__V__UnionSigval", BaseDataType.uintptr_t);
-        doCallback__V__UnionSigval_A = JnhwMh__V___A.mandatoryOf(LibJnhwPosixTestLoader.LIB_JNHW_POSIX_TEST_SYMBOL_LOOKUP, "doCallback__V__UnionSigval_A", BaseDataType.uintptr_t);
-        doCallback__V__UnionSigval_I = JnhwMh__V__sI.mandatoryOf(LibJnhwPosixTestLoader.LIB_JNHW_POSIX_TEST_SYMBOL_LOOKUP, "doCallback__V__UnionSigval_I", BaseDataType.int32_t);
+        LibJnhwCommonTestLoader.touch();
+        setCallback__V__Union_I_MA = JnhwMh__V___A.mandatoryOf(LibJnhwCommonTestLoader.SYMBOL_LOOKUP, "setCallback__V__Union_I_MA", BaseDataType.uintptr_t);
+        getCallback__V__Union_I_MA = JnhwMh_MA___V.mandatoryOf(LibJnhwCommonTestLoader.SYMBOL_LOOKUP, "getCallback__V__Union_I_MA", BaseDataType.uintptr_t);
+        doCallback__V__Union_I_MAA = JnhwMh__V___A.mandatoryOf(LibJnhwCommonTestLoader.SYMBOL_LOOKUP, "doCallback__V__Union_I_MAA", BaseDataType.uintptr_t);
+        doCallback__V__Union_I_MAI = JnhwMh__V__sI.mandatoryOf(LibJnhwCommonTestLoader.SYMBOL_LOOKUP, "doCallback__V__Union_I_MAI", BaseDataType.int32_t);
     }
 
-    private class DummyCB extends Callback__V__UnionSigval<OpaqueMemory> {
+    private class DummyCB extends Callback__V__Union_I_MA<OpaqueMemory> {
 
         @Override
-        protected void callback(MemoryAddress sival_ptr, int sival_int) {
+        protected void callback(MemoryAddress value_ptr, int value_int) {
             throw new UnsupportedOperationException("Not supported yet.");
         }
 
@@ -83,47 +81,45 @@ public class Callback__V__UnionSigval_Test {
 
     @BeforeEach
     public void setUp(TestInfo testInfo) throws Exception {
-        JnhwTestLogger.logBeforeEach(testInfo);
         System.gc(); //TODO removint this will fail the tests ...?
         ms = MemorySession.openConfined();
-        assertEquals(CallbackFactory__V__UnionSigval.MAX_CALL_BACKS, CallbackFactory__V__UnionSigval.callbacksAvailable());
+        assertEquals(CallbackFactory__V__Union_I_MA.MAX_CALL_BACKS, CallbackFactory__V__Union_I_MA.callbacksAvailable());
     }
 
     @AfterEach
     public void cleanupAfterEach(TestInfo testInfo) throws Exception {
         ms.close();
         System.gc();
-        assertEquals(CallbackFactory__V__UnionSigval.MAX_CALL_BACKS, CallbackFactory__V__UnionSigval.callbacksAvailable());
-        JnhwTestLogger.logAfterEach(testInfo);
+        assertEquals(CallbackFactory__V__Union_I_MA.MAX_CALL_BACKS, CallbackFactory__V__Union_I_MA.callbacksAvailable());
     }
 
-    private static FunctionPtr__V__MA getCallback__V__UnionSigval() {
+    private static FunctionPtr__V__Union_I_MA getCallback__V__Union_I_MA() {
         try {
-            return FunctionPtr__V__MA.wrap(getCallback__V__UnionSigval.invoke_MA___V());
+            return FunctionPtr__V__Union_I_MA.wrap(getCallback__V__Union_I_MA.invoke_MA___V());
         } catch (Throwable t) {
             throw new RuntimeException(t);
         }
     }
 
-    private static void setCallback__V__UnionSigval(FunctionPtr__V__UnionSigval callback) {
+    private static void setCallback__V__Union_I_MA(FunctionPtr__V__Union_I_MA callback) {
         try {
-            setCallback__V__UnionSigval.invoke__V___P(callback);
+            setCallback__V__Union_I_MA.invoke__V___P(callback);
         } catch (Throwable t) {
             throw new RuntimeException(t);
         }
     }
 
-    private static void doCallback__V__MA(MemoryAddress value) {
+    private static void doCallback__V__Union_I_MAA(MemoryAddress value) {
         try {
-            doCallback__V__UnionSigval_A.invoke__V___A(value);
+            doCallback__V__Union_I_MAA.invoke__V___A(value);
         } catch (Throwable t) {
             throw new RuntimeException(t);
         }
     }
 
-    private void doCallback__V___I(int value) {
+    private void doCallback__V__Union_I_MAI(int value) {
         try {
-            doCallback__V__UnionSigval_I.invoke__V__sI(value);
+            doCallback__V__Union_I_MAI.invoke__V__sI(value);
         } catch (Throwable t) {
             throw new RuntimeException(t);
         }
@@ -135,12 +131,12 @@ public class Callback__V__UnionSigval_Test {
      */
     @Test
     public void testMAX_CALL_BACKS() {
-        int maxCB = CallbackFactory__V__UnionSigval.MAX_CALL_BACKS;
+        int maxCB = CallbackFactory__V__Union_I_MA.MAX_CALL_BACKS;
         assertEquals(16, maxCB);
-        Callback__V__UnionSigval[] cbs = new Callback__V__UnionSigval[maxCB];
+        Callback__V__Union_I_MA[] cbs = new Callback__V__Union_I_MA[maxCB];
         for (int i = 0; i < cbs.length; i++) {
             cbs[i] = new DummyCB();
-            assertEquals(maxCB - (i + 1), CallbackFactory__V__UnionSigval.callbacksAvailable());
+            assertEquals(maxCB - (i + 1), CallbackFactory__V__Union_I_MA.callbacksAvailable());
         }
 
         RuntimeException re = assertThrows(RuntimeException.class, () -> {
@@ -148,18 +144,18 @@ public class Callback__V__UnionSigval_Test {
         });
         assertEquals("No more Callbacks available! max: 16 reached", re.getMessage());
 
-        for (Callback__V__UnionSigval cb : cbs) {
+        for (Callback__V__Union_I_MA cb : cbs) {
             cb.release();
         }
 
-        assertEquals(maxCB, CallbackFactory__V__UnionSigval.callbacksAvailable());
+        assertEquals(maxCB, CallbackFactory__V__Union_I_MA.callbacksAvailable());
     }
 
     @Test
     public void testNativeFunctionPointer() {
-        final Callback__V__UnionSigval testPtr = new Callback__V__UnionSigval((t) -> MemoryAddress.ofLong(121)) {
+        final Callback__V__Union_I_MA testPtr = new Callback__V__Union_I_MA((t) -> MemoryAddress.ofLong(121)) {
             @Override
-            protected void callback(MemoryAddress sival_ptr, int sival_int) {
+            protected void callback(MemoryAddress value_ptr, int value_int) {
                 throw new UnsupportedOperationException("Not supported yet.");
             }
 
@@ -168,8 +164,8 @@ public class Callback__V__UnionSigval_Test {
                 throw new UnsupportedOperationException("This was not aquired - so there is nothing to be released");
             }
         };
-        setCallback__V__UnionSigval(testPtr);
-        assertEquals(getCallback__V__UnionSigval(), testPtr);
+        setCallback__V__Union_I_MA(testPtr);
+        assertEquals(getCallback__V__Union_I_MA(), testPtr);
 
         //Its not aquired ... so do not release
         //testPtr.release();
@@ -188,7 +184,7 @@ public class Callback__V__UnionSigval_Test {
         final long[] addressValueRef = new long[1];
         final int[] intValueRef = new int[1];
 
-        final Callback__V__UnionSigval NULL_PTR = new Callback__V__UnionSigval((t) -> MemoryAddress.NULL) {
+        final Callback__V__Union_I_MA NULL_PTR = new Callback__V__Union_I_MA((t) -> MemoryAddress.NULL) {
             @Override
             protected void callback(MemoryAddress sival_ptr, int sival_int) {
                 throw new UnsupportedOperationException("Not supported yet.");
@@ -200,7 +196,7 @@ public class Callback__V__UnionSigval_Test {
             }
         };
         final Thread t = Thread.currentThread();
-        Callback__V__UnionSigval callback = new Callback__V__UnionSigval() {
+        Callback__V__Union_I_MA callback = new Callback__V__Union_I_MA() {
 
             @Override
             protected void callback(MemoryAddress sival_ptr, int sival_int) {
@@ -212,27 +208,29 @@ public class Callback__V__UnionSigval_Test {
         final NativeFunctionPointer nativeCallbackPointer = NativeFunctionPointer.wrap(callback.toAddressable().address());
         try {
 
-            setCallback__V__UnionSigval(callback);
-            assertEquals(getCallback__V__UnionSigval(), callback);
-            assertSame(Callback__V__UnionSigval.find(getCallback__V__UnionSigval()), callback);
-            doCallback__V__MA(MemoryAddress.ofLong(testValue));
+            setCallback__V__Union_I_MA(callback);
+            assertEquals(getCallback__V__Union_I_MA(), callback);
+            assertSame(Callback__V__Union_I_MA.find(getCallback__V__Union_I_MA()), callback);
+            doCallback__V__Union_I_MAA(MemoryAddress.ofLong(testValue));
 
             switch (MultiarchTupelBuilder.getMemoryModel()) {
-                case ILP32 -> {
-                    assertEquals(testValue & 0xffffffffL, addressValueRef[0]);
-                    assertEquals((int) testValue, intValueRef[0]);
-                }
-                case LP64 -> {
-                    assertEquals(testValue, addressValueRef[0]);
-                    switch (MultiarchTupelBuilder.getEndianess()) {
-                        case BIG ->
-                            assertEquals((int) (testValue >>> 32), intValueRef[0]);
-                        case LITTLE ->
-                            assertEquals((int) testValue, intValueRef[0]);
-                        default ->
-                            throw new AssertionError("Can`t handle endianess: " + MultiarchTupelBuilder.getEndianess());
-                    }
-                }
+                case ILP32 ->
+                    assertAll(
+                            () -> assertEquals(testValue & 0xffffffffL, addressValueRef[0], "sival_ptr"),
+                            () -> assertEquals((int) testValue, intValueRef[0], "sival_int"));
+                case LP64 ->
+                    assertAll(
+                            () -> assertEquals(testValue, addressValueRef[0], "sival_ptr"),
+                            () -> {
+                                switch (MultiarchTupelBuilder.getEndianess()) {
+                                    case BIG ->
+                                        assertEquals((int) (testValue >>> 32), intValueRef[0], "sival_int");
+                                    case LITTLE ->
+                                        assertEquals((int) testValue, intValueRef[0], "sival_int");
+                                    default ->
+                                        throw new AssertionError("Can`t handle endianess: " + MultiarchTupelBuilder.getEndianess());
+                                }
+                            });
                 default ->
                     throw new AssertionError("Can`t handle memory model: " + MultiarchTupelBuilder.getMemoryModel());
             }
@@ -242,7 +240,7 @@ public class Callback__V__UnionSigval_Test {
             intValueRef[0] = 0;
             JnhwMh__V___A.of(
                     MemorySegment.ofAddress(
-                            getCallback__V__UnionSigval().toAddressable().address(),
+                            getCallback__V__Union_I_MA().toAddressable().address(),
                             0,
                             ms),
                     "testCalllback",
@@ -250,21 +248,23 @@ public class Callback__V__UnionSigval_Test {
             ).invoke__V___A(MemoryAddress.ofLong(testValue));
 
             switch (MultiarchTupelBuilder.getMemoryModel()) {
-                case ILP32 -> {
-                    assertEquals(testValue & 0xffffffffL, addressValueRef[0]);
-                    assertEquals((int) testValue, intValueRef[0]);
-                }
-                case LP64 -> {
-                    assertEquals(testValue, addressValueRef[0]);
-                    switch (MultiarchTupelBuilder.getEndianess()) {
-                        case BIG ->
-                            assertEquals((int) (testValue >>> 32), intValueRef[0]);
-                        case LITTLE ->
-                            assertEquals((int) testValue, intValueRef[0]);
-                        default ->
-                            throw new AssertionError("Can`t handle endianess: " + MultiarchTupelBuilder.getEndianess());
-                    }
-                }
+                case ILP32 ->
+                    assertAll(
+                            () -> assertEquals(testValue & 0xffffffffL, addressValueRef[0], "sival_ptr"),
+                            () -> assertEquals((int) testValue, intValueRef[0], "sival_int"));
+                case LP64 ->
+                    assertAll(
+                            () -> assertEquals(testValue, addressValueRef[0], "sival_ptr"),
+                            () -> {
+                                switch (MultiarchTupelBuilder.getEndianess()) {
+                                    case BIG ->
+                                        assertEquals((int) (testValue >>> 32), intValueRef[0], "sival_int");
+                                    case LITTLE ->
+                                        assertEquals((int) testValue, intValueRef[0], "sival_int");
+                                    default ->
+                                        throw new AssertionError("Can`t handle endianess: " + MultiarchTupelBuilder.getEndianess());
+                                }
+                            });
                 default ->
                     throw new AssertionError("Can`t handle memory model: " + MultiarchTupelBuilder.getMemoryModel());
             }
@@ -273,14 +273,14 @@ public class Callback__V__UnionSigval_Test {
             callback.release();
         }
 
-        assertEquals(CallbackFactory__V__UnionSigval.MAX_CALL_BACKS, CallbackFactory__V__UnionSigval.callbacksAvailable());
+        assertEquals(CallbackFactory__V__Union_I_MA.MAX_CALL_BACKS, CallbackFactory__V__Union_I_MA.callbacksAvailable());
         //it is still callable, but its is only logged...
-        assertEquals(getCallback__V__UnionSigval(), nativeCallbackPointer);
+        assertEquals(getCallback__V__Union_I_MA(), nativeCallbackPointer);
 
         //Just check that the reference is gone...
         addressValueRef[0] = -1;
         intValueRef[0] = -1;
-        doCallback__V__MA(MemoryAddress.ofLong(testValue / 2));
+        doCallback__V__Union_I_MAA(MemoryAddress.ofLong(testValue / 2));
         assertEquals(-1, addressValueRef[0]);
         assertEquals(-1, intValueRef[0]);
 
@@ -290,7 +290,7 @@ public class Callback__V__UnionSigval_Test {
 //The logs should show: Unassigned callback for trampoline_0(testValue/2)
         JnhwMh__V__sL.of(
                 MemorySegment.ofAddress(
-                        getCallback__V__UnionSigval().toAddressable().address(),
+                        getCallback__V__Union_I_MA().toAddressable().address(),
                         0,
                         ms),
                 "testCallback",
@@ -312,9 +312,9 @@ public class Callback__V__UnionSigval_Test {
     public void testCallAndRelease_I(final int testValue) {
         final long[] addressValueRef = new long[1];
         final int[] intValueRef = new int[1];
-        final Callback__V__UnionSigval NULL_PTR = new Callback__V__UnionSigval((t) -> MemoryAddress.NULL) {
+        final Callback__V__Union_I_MA NULL_PTR = new Callback__V__Union_I_MA((t) -> MemoryAddress.NULL) {
             @Override
-            protected void callback(MemoryAddress sival_ptr, int sival_int) {
+            protected void callback(MemoryAddress value_ptr, int value_int) {
                 throw new UnsupportedOperationException("Not supported yet.");
             }
 
@@ -324,33 +324,35 @@ public class Callback__V__UnionSigval_Test {
             }
         };
         final Thread t = Thread.currentThread();
-        Callback__V__UnionSigval callback = new Callback__V__UnionSigval() {
+        Callback__V__Union_I_MA callback = new Callback__V__Union_I_MA() {
 
             @Override
-            protected void callback(MemoryAddress sival_ptr, int sival_int) {
-                addressValueRef[0] = sival_ptr.toRawLongValue();
-                intValueRef[0] = sival_int;
+            protected void callback(MemoryAddress value_ptr, int value_int) {
+                addressValueRef[0] = value_ptr.toRawLongValue();
+                intValueRef[0] = value_int;
             }
 
         };
         final NativeFunctionPointer nativeCallbackPointer = NativeFunctionPointer.wrap(callback.toAddressable().address());
         try {
 
-            setCallback__V__UnionSigval(callback);
+            setCallback__V__Union_I_MA(callback);
 
-            assertEquals(getCallback__V__UnionSigval(), callback);
-            assertSame(Callback__V__UnionSigval.find(getCallback__V__UnionSigval()), callback);
-            doCallback__V___I(testValue);
-            assertEquals(testValue, intValueRef[0]);
-            switch (MultiarchTupelBuilder.getEndianess()) {
-                case BIG ->
-                    assertEquals(testValue, (int) (addressValueRef[0] >>> 32));
-                case LITTLE ->
-                    assertEquals(0xffffffffL & testValue, addressValueRef[0]);
-                default ->
-                    throw new AssertionError("Can`t handle endianess: " + MultiarchTupelBuilder.getEndianess());
-            }
-
+            assertEquals(getCallback__V__Union_I_MA(), callback);
+            assertSame(Callback__V__Union_I_MA.find(getCallback__V__Union_I_MA()), callback);
+            doCallback__V__Union_I_MAI(testValue);
+            assertAll(
+                    () -> assertEquals(testValue, intValueRef[0], "sival_int"),
+                    () -> {
+                        switch (MultiarchTupelBuilder.getEndianess()) {
+                            case BIG ->
+                                assertEquals(testValue, (int) (addressValueRef[0] >>> 32), "sival_ptr");
+                            case LITTLE ->
+                                assertEquals(0xffffffffL & testValue, addressValueRef[0], "sival_ptr");
+                            default ->
+                                throw new AssertionError("Can`t handle endianess: " + MultiarchTupelBuilder.getEndianess());
+                        }
+                    });
             //Call native from java
             intValueRef[0] = 0;
             addressValueRef[0] = 0;
@@ -358,7 +360,7 @@ public class Callback__V__UnionSigval_Test {
                 case ILP32 ->
                     JnhwMh__V__sI.of(
                             MemorySegment.ofAddress(
-                                    getCallback__V__UnionSigval().toAddressable().address(),
+                                    getCallback__V__Union_I_MA().toAddressable().address(),
                                     0,
                                     ms),
                             "testCallback",
@@ -367,7 +369,7 @@ public class Callback__V__UnionSigval_Test {
                 case LP64 ->
                     JnhwMh__V__sL.of(
                             MemorySegment.ofAddress(
-                                    getCallback__V__UnionSigval().toAddressable().address(),
+                                    getCallback__V__Union_I_MA().toAddressable().address(),
                                     0,
                                     ms),
                             "testCallback",
@@ -384,35 +386,38 @@ public class Callback__V__UnionSigval_Test {
                 default ->
                     throw new AssertionError("Can`t handle memory model: " + MultiarchTupelBuilder.getMemoryModel());
             }
-            assertEquals(testValue, intValueRef[0]);
-            switch (MultiarchTupelBuilder.getMemoryModel()) {
-                case ILP32 ->
-                    assertEquals(0xffffffffL & testValue, addressValueRef[0]);
-                case LP64 -> {
-                    switch (MultiarchTupelBuilder.getEndianess()) {
-                        case BIG ->
-                            assertEquals(0xffffffffL & testValue, addressValueRef[0] >>> 32);
-                        case LITTLE ->
-                            assertEquals(0xffffffffL & testValue, addressValueRef[0]);
-                        default ->
-                            throw new AssertionError("Can`t handle endianess: " + MultiarchTupelBuilder.getEndianess());
-                    }
-                }
-                default ->
-                    throw new AssertionError("Can`t handle memory model: " + MultiarchTupelBuilder.getMemoryModel());
-            }
+            assertAll(
+                    () -> assertEquals(testValue, intValueRef[0], "sival_int"),
+                    () -> {
+                        switch (MultiarchTupelBuilder.getMemoryModel()) {
+                            case ILP32 ->
+                                assertEquals(0xffffffffL & testValue, addressValueRef[0], "sival_ptr");
+                            case LP64 -> {
+                                switch (MultiarchTupelBuilder.getEndianess()) {
+                                    case BIG ->
+                                        assertEquals(0xffffffffL & testValue, addressValueRef[0] >>> 32, "sival_ptr");
+                                    case LITTLE ->
+                                        assertEquals(0xffffffffL & testValue, addressValueRef[0], "sival_ptr");
+                                    default ->
+                                        throw new AssertionError("Can`t handle endianess: " + MultiarchTupelBuilder.getEndianess());
+                                }
+                            }
+                            default ->
+                                throw new AssertionError("Can`t handle memory model: " + MultiarchTupelBuilder.getMemoryModel());
+                        }
+                    });
         } finally {
             callback.release();
         }
 
-        assertEquals(CallbackFactory__V__UnionSigval.MAX_CALL_BACKS, CallbackFactory__V__UnionSigval.callbacksAvailable());
+        assertEquals(CallbackFactory__V__Union_I_MA.MAX_CALL_BACKS, CallbackFactory__V__Union_I_MA.callbacksAvailable());
         //it is still callable, but its is only logged...
-        assertEquals(getCallback__V__UnionSigval(), nativeCallbackPointer);
+        assertEquals(getCallback__V__Union_I_MA(), nativeCallbackPointer);
 
         //Just check that the reference is gone...
         intValueRef[0] = -1;
         addressValueRef[0] = -1;
-        doCallback__V___I(testValue / 2);
+        doCallback__V__Union_I_MAI(testValue / 2);
         assertEquals(-1, addressValueRef[0]);
         assertEquals(-1, intValueRef[0]);
 
@@ -421,7 +426,7 @@ public class Callback__V__UnionSigval_Test {
         //The logs shoud show: Unassigned callback for trampoline_o(testValue/2)
         JnhwMh__V__sI.of(
                 MemorySegment.ofAddress(
-                        getCallback__V__UnionSigval().toAddressable().address(),
+                        getCallback__V__Union_I_MA().toAddressable().address(),
                         0,
                         ms),
                 "testCallback",
