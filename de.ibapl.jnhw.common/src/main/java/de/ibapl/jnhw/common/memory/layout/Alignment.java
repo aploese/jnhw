@@ -197,7 +197,12 @@ public enum Alignment {
                 }
             }
             case LP64 -> {
-                __BIGGEST_ALIGNMENT__ = AT_16;
+                __BIGGEST_ALIGNMENT__ = switch (MultiarchTupelBuilder.getArch()) {
+                    case S390_X ->
+                        AT_8;
+                    default ->
+                        AT_16;
+                };
                 __ALIGN_OF_LONG = AT_8;
                 __ALIGN_OF_STRUCT_LONG = AT_8;
                 __ALIGN_OF_INT64_T = AT_8;
