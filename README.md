@@ -46,20 +46,21 @@ If an native error occured and the called function flags an error condition to t
 
 | Test Platform         | VM version | Hotspot VM         | Zero VM            |
 | :-------------------- | :--------- | :----------------: | :----------------: |
-| aarch64-linux-gnu     | 19.0.1     |  |  |
-| arm-linux-gnueabi     | 19.0.1     | success 2023-01-26 | success 2023-01-26 |
-| arm-linux-gnueabihf   | 19.0.1     |  |  |
-| i386-linux-gnu        | 19.0.1     |  |  |
-| mipsel-linux-gnu      | 19.0.1     | n.a.  2023-01-26   | success 2023-01-26 |
+| aarch64-linux-gnu     | 19.0.1     | success 2023-01-26 | n.a.    2023-01-26 |
+| arm-linux-gnueabihf   | 19.0.1     | success 2023-01-26 | success 2023-01-26 |
+| i386-linux-gnu        | 19.0.1     | success 2023-01-26 | success 2023-01-26 |
+| mipsel-linux-gnu      | 19.0.1     | n.a.    2023-01-26 | success 2023-01-26 |
 | mips64el-linux-gnu    | 19.0.1     |  |  |
-| powerpc-linux-gnu     | 19.0.1     | n.a. 2023-01-26    | crashed 2023-01-26 |
-| powerpc64le-linux-gnu | 19.0.1     |  |  |
-| riscv64-linux-gnu     | 19.0.1     |  |  |
-| s390x-linux-gnu       | 19.0.1     |  |  |
+| powerpc-linux-gnu     | 19.0.1     | n.a.    2023-01-26 | crashed 2023-01-26 |
+| powerpc64le-linux-gnu | 19.0.1     | success 2023-01-26 | success 2023-01-26 |
+| riscv64-linux-gnu     | 19.0.1     | success 2023-01-26 | success 2023-01-26 |
+| s390x-linux-gnu       | 19.0.1     | success 2023-01-26 | success 2023-01-26 |
 | x86_64-linux-gnu      | 19.0.1     | success 2023-01-26 | crashed 2023-01-26 |
-| x86_64-freebsd-bsd    | 19.0.1     |  |  |
+| x86_64-freebsd-bsd    | 19.0.1     | success 2023-01-26 | n.a.    2023-01-26 |
 | x86_64-darwin-bsd     | 19.0.1     |  |  |
 | x86_64-windows-pe32+  | 19.0.1     |  |  |
+
+n.a. ... the VM not available.
 
 # Demos
 ## Hello World
