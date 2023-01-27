@@ -59,7 +59,7 @@ If an native error occured and the called function flags an error condition to t
 | x86_64-freebsd-bsd    | 19.0.1     | success         2023-01-27 | n.a.         2023-01-26 | success 2023-01-27 | n.a.    2023-01-26 |
 | x86_64-openbsd-bsd    | 19.0.1     | n.a.            2023-01-27 | n.a.         2023-01-27 | n.a.    2023-01-27 | n.a.    2023-01-27 |
 | x86_64-linux-gnu      | 19.0.1     | success         2023-01-26 | crashed      2023-01-26 | success 2023-01-26 | success 2023-01-26 |
-| x86_64-windows-pe32+  | 19.0.1     |                            |                         |                    |                    |
+| x86_64-windows-pe32+  | 19.0.1     | success         2023-01-26 | n.a.         2023-01-27 | success 2023-01-27 | n.a.    2023-01-27 |
 
 n.a. ... the VM and/or feature are  not available.
 
