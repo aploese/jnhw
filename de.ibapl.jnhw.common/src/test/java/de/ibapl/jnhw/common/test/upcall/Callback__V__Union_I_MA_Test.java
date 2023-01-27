@@ -28,7 +28,6 @@ import de.ibapl.jnhw.common.downcall.JnhwMh__V__sI;
 import de.ibapl.jnhw.common.downcall.JnhwMh__V__sL;
 import de.ibapl.jnhw.common.memory.NativeFunctionPointer;
 import de.ibapl.jnhw.common.memory.OpaqueMemory;
-import de.ibapl.jnhw.common.nativepointer.FunctionPtr__V__MA;
 import de.ibapl.jnhw.common.nativepointer.FunctionPtr__V__Union_I_MA;
 import de.ibapl.jnhw.common.test.LibJnhwCommonTestLoader;
 import de.ibapl.jnhw.common.upcall.CallbackFactory__V__Union_I_MA;
@@ -45,7 +44,6 @@ import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInfo;
-import org.junit.jupiter.api.condition.DisabledOnOs;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 
@@ -218,7 +216,7 @@ public class Callback__V__Union_I_MA_Test {
                     assertAll(
                             () -> assertEquals(testValue & 0xffffffffL, addressValueRef[0], "sival_ptr"),
                             () -> assertEquals((int) testValue, intValueRef[0], "sival_int"));
-                case LP64 ->
+                case LLP64, LP64 ->
                     assertAll(
                             () -> assertEquals(testValue, addressValueRef[0], "sival_ptr"),
                             () -> {
@@ -252,7 +250,7 @@ public class Callback__V__Union_I_MA_Test {
                     assertAll(
                             () -> assertEquals(testValue & 0xffffffffL, addressValueRef[0], "sival_ptr"),
                             () -> assertEquals((int) testValue, intValueRef[0], "sival_int"));
-                case LP64 ->
+                case LLP64, LP64 ->
                     assertAll(
                             () -> assertEquals(testValue, addressValueRef[0], "sival_ptr"),
                             () -> {
@@ -366,7 +364,7 @@ public class Callback__V__Union_I_MA_Test {
                             "testCallback",
                             BaseDataType.int32_t
                     ).invoke__V__sI(testValue);
-                case LP64 ->
+                case LLP64, LP64 ->
                     JnhwMh__V__sL.of(
                             MemorySegment.ofAddress(
                                     getCallback__V__Union_I_MA().toAddressable().address(),
@@ -392,7 +390,7 @@ public class Callback__V__Union_I_MA_Test {
                         switch (MultiarchTupelBuilder.getMemoryModel()) {
                             case ILP32 ->
                                 assertEquals(0xffffffffL & testValue, addressValueRef[0], "sival_ptr");
-                            case LP64 -> {
+                            case LLP64, LP64 -> {
                                 switch (MultiarchTupelBuilder.getEndianess()) {
                                     case BIG ->
                                         assertEquals(0xffffffffL & testValue, addressValueRef[0] >>> 32, "sival_ptr");
