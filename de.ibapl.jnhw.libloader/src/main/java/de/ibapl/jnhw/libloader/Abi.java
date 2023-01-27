@@ -28,6 +28,14 @@ package de.ibapl.jnhw.libloader;
  */
 public enum Abi {
     /**
+     * The BSD ABI
+     */
+    BSD("bsd"),
+    /**
+     * The BSD ABI
+     */
+    DARWIN("darwin"),
+    /**
      * The GNU ABI
      */
     GNU("gnu"),
@@ -54,13 +62,6 @@ public enum Abi {
             };
         }
     },
-    /**
-     * The BSD ABI
-     */
-    BSD("bsd"),
-    /**
-     * Windows ABI on x86_64 (64 bit)
-     */
     PE32_PLUS("pe32+"),
     /**
      * Windows ABI on x86 or i386 (32 bit)

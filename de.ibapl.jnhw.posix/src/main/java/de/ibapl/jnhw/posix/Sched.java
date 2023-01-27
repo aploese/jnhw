@@ -105,7 +105,7 @@ public class Sched {
 
         static {
             sizeof = switch (MultiarchTupelBuilder.getOS()) {
-                case DARWIN ->
+                case APPLE ->
                     8;
                 default ->
                     4;
@@ -301,7 +301,7 @@ public class Sched {
                 SCHED_RR = LinuxDefines.SCHED_RR;
                 SCHED_SPORADIC = IntDefine.UNDEFINED;
             }
-            case DARWIN -> {
+            case APPLE -> {
                 HAVE_SCHED_H = true;
                 SCHED_FIFO = DarwinDefines.SCHED_FIFO;
                 SCHED_OTHER = DarwinDefines.SCHED_OTHER;

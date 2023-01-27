@@ -189,6 +189,8 @@ public class DefinesTest {
     @Test
     public void test_LARGEFILE64_SOURCE() throws Exception {
         switch (MultiarchTupelBuilder.getOS()) {
+            case APPLE, FREE_BSD, OPEN_BSD, WINDOWS ->
+                assertFalse(Defines._LARGEFILE64_SOURCE.isDefined());
             case LINUX -> {
                 switch (Defines.__SIZEOF_LONG__) {
                     case 4 ->
@@ -199,9 +201,6 @@ public class DefinesTest {
                         fail("no case for this size of long:" + Defines.__SIZEOF_LONG__);
                 }
             }
-
-            case FREE_BSD, OPEN_BSD, DARWIN, WINDOWS ->
-                assertFalse(Defines._LARGEFILE64_SOURCE.isDefined());
             default ->
                 fail("No testcase for OS: " + MultiarchTupelBuilder.getOS());
         }
@@ -213,6 +212,8 @@ public class DefinesTest {
     @Test
     public void test_LARGEFILE_SOURCE() throws Exception {
         switch (MultiarchTupelBuilder.getOS()) {
+            case APPLE, FREE_BSD, OPEN_BSD, WINDOWS ->
+                assertFalse(Defines._LARGEFILE_SOURCE.isDefined());
             case LINUX -> {
                 switch (Defines.__SIZEOF_LONG__) {
                     case 4 ->
@@ -223,9 +224,6 @@ public class DefinesTest {
                         fail("no case for this size of long:" + Defines.__SIZEOF_LONG__);
                 }
             }
-
-            case FREE_BSD, OPEN_BSD, DARWIN, WINDOWS ->
-                assertFalse(Defines._LARGEFILE_SOURCE.isDefined());
             default ->
                 fail("No testcase for OS: " + MultiarchTupelBuilder.getOS());
         }
@@ -245,7 +243,7 @@ public class DefinesTest {
     @Test
     public void test_POSIX_C_SOURCE() throws Exception {
         switch (MultiarchTupelBuilder.getOS()) {
-            case LINUX, FREE_BSD, OPEN_BSD, DARWIN ->
+            case APPLE, LINUX, FREE_BSD, OPEN_BSD ->
                 assertEquals(200809, Defines._POSIX_C_SOURCE.get());
             case WINDOWS ->
                 assertFalse(Defines._POSIX_C_SOURCE.isDefined());
@@ -260,7 +258,7 @@ public class DefinesTest {
     @Test
     public void test_XOPEN_SOURCE() throws Exception {
         switch (MultiarchTupelBuilder.getOS()) {
-            case LINUX, FREE_BSD, OPEN_BSD, DARWIN ->
+            case APPLE, LINUX, FREE_BSD, OPEN_BSD ->
                 assertEquals(700, Defines._XOPEN_SOURCE.get());
             case WINDOWS ->
                 assertFalse(Defines._XOPEN_SOURCE.isDefined());
@@ -275,7 +273,7 @@ public class DefinesTest {
     @Test
     public void test_XOPEN_SOURCE_EXTENDED() throws Exception {
         switch (MultiarchTupelBuilder.getOS()) {
-            case LINUX, FREE_BSD, OPEN_BSD, DARWIN ->
+            case APPLE, LINUX, FREE_BSD, OPEN_BSD ->
                 assertEquals(1, Defines._XOPEN_SOURCE_EXTENDED.get());
             case WINDOWS ->
                 assertFalse(Defines._XOPEN_SOURCE_EXTENDED.isDefined());
@@ -289,7 +287,7 @@ public class DefinesTest {
      */
     @Test
     public void test__APPLE__() {
-        assertEquals(MultiarchTupelBuilder.getOS() == OS.DARWIN, Defines.__APPLE__.isDefined());
+        assertEquals(MultiarchTupelBuilder.getOS() == OS.APPLE, Defines.__APPLE__.isDefined());
     }
 
     /**

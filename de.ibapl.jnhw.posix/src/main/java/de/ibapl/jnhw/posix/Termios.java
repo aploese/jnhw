@@ -634,7 +634,7 @@ public final class Termios {
 
                     }
                 }
-                case DARWIN -> {
+                case APPLE -> {
                     alignof = Alignment.AT_8;
                     sizeof = 72;
                     offsetof_C_iflag = 0;
@@ -2362,7 +2362,7 @@ public final class Termios {
                 IEXTEN = linuxDefines.IEXTEN;
                 VMIN = linuxDefines.VMIN;
             }
-            case DARWIN, FREE_BSD, OPEN_BSD -> {
+            case APPLE, FREE_BSD, OPEN_BSD -> {
                 HAVE_TERMIOS_H = true;
                 B0 = BsdDefines.B0;
                 B110 = BsdDefines.B110;
@@ -2460,7 +2460,7 @@ public final class Termios {
                 _HAVE_STRUCT_TERMIOS_C_ISPEED = IntDefine.UNDEFINED;
                 _HAVE_STRUCT_TERMIOS_C_OSPEED = IntDefine.UNDEFINED;
                 switch (MultiarchTupelBuilder.getOS()) {
-                    case DARWIN -> {
+                    case APPLE -> {
                         BS0 = IntDefine.toIntDefine(DarwinDefines.BS0);
                         BS1 = IntDefine.toIntDefine(DarwinDefines.BS1);
                         BSDLY = IntDefine.toIntDefine(DarwinDefines.BSDLY);

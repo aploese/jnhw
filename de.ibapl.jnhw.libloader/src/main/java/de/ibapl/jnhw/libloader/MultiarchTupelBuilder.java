@@ -351,6 +351,21 @@ public final class MultiarchTupelBuilder {
                             "Can't handle sun.arch.abi of amd64 FreeBSD\n" + listSystemProperties());
                 }
             }
+            case "aarch64" -> {
+                if (SizeInBit._64_BIT != sun_arch_data_modelAsWordsize()) {
+                    throw new UnsupportedOperationException(
+                            "Can't handle sun.arch.data.model of aarch64 FreeBSD\n" + listSystemProperties());
+                } else if (Endianess.LITTLE != sun_cpu_endianAsEndianess()) {
+                    throw new UnsupportedOperationException(
+                            "Can't handle sun.cpu.endian of aarch64 FreeBSD\n" + listSystemProperties());
+                } else if (sun_arch_abi == null || sun_arch_abi.isEmpty()) {
+                    result.add(MultiarchInfo.AARCH64__FREE_BSD__BSD);
+                    return result;
+                } else {
+                    throw new UnsupportedOperationException(
+                            "Can't handle sun.arch.abi of aarch64 OpenBSD\n" + listSystemProperties());
+                }
+            }
             default ->
                 throw new UnsupportedOperationException("Can't handle os.arch of amd64 FreeBSD\n" + listSystemProperties());
         }
@@ -408,11 +423,26 @@ public final class MultiarchTupelBuilder {
                     throw new UnsupportedOperationException(
                             "Can't handle sun.cpu.endian of x86_64 Mac OS X\n" + listSystemProperties());
                 } else if (sun_arch_abi == null || sun_arch_abi.isEmpty()) {
-                    result.add(MultiarchInfo.X86_64__DARWIN__BSD);
+                    result.add(MultiarchInfo.X86_64__APPLE_DARWIN);
                     return result;
                 } else {
                     throw new UnsupportedOperationException(
                             "Can't handle sun.arch.abi of x86_64 Mac OS X\n" + listSystemProperties());
+                }
+            }
+            case "aarch64" -> {
+                if (SizeInBit._64_BIT != sun_arch_data_modelAsWordsize()) {
+                    throw new UnsupportedOperationException(
+                            "Can't handle sun.arch.data.model of aarch64 Mac OS X\n" + listSystemProperties());
+                } else if (Endianess.LITTLE != sun_cpu_endianAsEndianess()) {
+                    throw new UnsupportedOperationException(
+                            "Can't handle sun.cpu.endian of aarch64 Mac OS X\n" + listSystemProperties());
+                } else if (sun_arch_abi == null || sun_arch_abi.isEmpty()) {
+                    result.add(MultiarchInfo.AARCH64__APPLE_DARWIN);
+                    return result;
+                } else {
+                    throw new UnsupportedOperationException(
+                            "Can't handle sun.arch.abi of aarch64 Mac OS X\n" + listSystemProperties());
                 }
             }
             default ->

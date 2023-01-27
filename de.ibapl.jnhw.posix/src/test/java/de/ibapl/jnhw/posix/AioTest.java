@@ -200,7 +200,7 @@ public class AioTest {
     @Test
     public void testAio_cancel() throws Exception {
         switch (MultiarchTupelBuilder.getOS()) {
-            case DARWIN -> {
+            case APPLE -> {
                 Aio.Aiocb aiocb = Aio.Aiocb.tryAllocateNative(sharedSession);
                 aiocb.aio_sigevent.sigev_notify(Signal.SIGEV_NONE.get());
                 aiocb.aio_fildes(-1);
@@ -235,7 +235,7 @@ public class AioTest {
     @Test
     public void testAio_error() throws Exception {
         switch (MultiarchTupelBuilder.getOS()) {
-            case DARWIN -> {
+            case APPLE -> {
                 Aio.Aiocb aiocb = Aio.Aiocb.tryAllocateNative(sharedSession);
                 aiocb.aio_sigevent.sigev_notify(Signal.SIGEV_NONE.get());
                 aiocb.aio_fildes(-1);
@@ -270,7 +270,7 @@ public class AioTest {
     @Test
     public void testAio_fsync() throws Exception {
         switch (MultiarchTupelBuilder.getOS()) {
-            case DARWIN -> {
+            case APPLE -> {
                 Aio.Aiocb aiocb = Aio.Aiocb.tryAllocateNative(sharedSession);
                 aiocb.aio_sigevent.sigev_notify(Signal.SIGEV_NONE.get());
                 aiocb.aio_fildes(-1);
@@ -375,10 +375,9 @@ public class AioTest {
                     aiocb.aio_sigevent.sigev_notify_function(cb);
 
                     switch (MultiarchTupelBuilder.getOS()) {
-                        case DARWIN -> {
-                            NativeErrorException nee = assertThrows(NativeErrorException.class, () -> {
-                                Aio.aio_read(aiocb);
-                            });
+                        case APPLE -> {
+                            NativeErrorException nee = assertThrows(NativeErrorException.class,
+                                    () -> Aio.aio_read(aiocb));
                             ErrnoTest.assertErrnoEquals(Errno.EAGAIN, nee.errno);
                             //Stop the test here for darwin it cant handle aio with threaded callbacks
                             return;
@@ -553,7 +552,7 @@ public class AioTest {
 
                     //No read or write executed....
                     switch (MultiarchTupelBuilder.getOS()) {
-                        case DARWIN -> {
+                        case APPLE -> {
                             NativeErrorException nee = assertThrows(NativeErrorException.class,
                                     () -> Aio.aio_error(aiocb));
                             ErrnoTest.assertErrnoEquals(Errno.EINVAL, nee.errno);
@@ -650,17 +649,15 @@ public class AioTest {
 
                 //No read or write executed....
                 switch (MultiarchTupelBuilder.getOS()) {
-                    case DARWIN -> {
+                    case APPLE -> {
                         NativeErrorException nee = assertThrows(NativeErrorException.class,
                                 () -> Aio.aio_error(aiocb));
                         ErrnoTest.assertErrnoEquals(Errno.EINVAL, nee.errno);
                     }
-                    case FREE_BSD -> {
+                    case FREE_BSD ->
                         ErrnoTest.assertErrnoEquals(Errno.EINVAL, Aio.aio_error(aiocb));
-                    }
-                    default -> {
+                    default ->
                         ErrnoTest.assertErrnoEquals(0, Aio.aio_error(aiocb));
-                    }
                 }
                 Aio.aio_read(aiocb);
 
@@ -684,7 +681,7 @@ public class AioTest {
     @Test
     public void testAio_return() throws Exception {
         switch (MultiarchTupelBuilder.getOS()) {
-            case DARWIN -> {
+            case APPLE -> {
                 final Aio.Aiocb aiocb = Aio.Aiocb.tryAllocateNative(sharedSession);
                 aiocb.aio_sigevent.sigev_notify(Signal.SIGEV_NONE.get());
                 aiocb.aio_fildes(-1);
@@ -724,7 +721,7 @@ public class AioTest {
     @Test
     public void testAio_suspend() throws Exception {
         switch (MultiarchTupelBuilder.getOS()) {
-            case DARWIN -> {
+            case APPLE -> {
                 Aio.Aiocbs aiocbs = Aio.Aiocbs.tryAllocateNative(sharedSession, 1);
                 Aio.Aiocb aiocb = Aio.Aiocb.tryAllocateNative(sharedSession);
                 aiocb.aio_sigevent.sigev_notify(Signal.SIGEV_NONE.get());
@@ -835,7 +832,7 @@ public class AioTest {
                     aiocb.aio_sigevent.sigev_notify_function(cb);
 
                     switch (MultiarchTupelBuilder.getOS()) {
-                        case DARWIN -> {
+                        case APPLE -> {
                             NativeErrorException nee = assertThrows(NativeErrorException.class,
                                     () -> Aio.aio_write(aiocb));
                             ErrnoTest.assertErrnoEquals(Errno.EAGAIN, nee.errno);
@@ -940,7 +937,7 @@ public class AioTest {
                 aiocb.aio_fildes(-1);
 
                 switch (MultiarchTupelBuilder.getOS()) {
-                    case DARWIN -> {
+                    case APPLE -> {
                         NativeErrorException nee = assertThrows(NativeErrorException.class,
                                 () -> Aio.aio_read(aiocb));
                         ErrnoTest.assertErrnoEquals(Errno.EAGAIN, nee.errno);
@@ -993,7 +990,7 @@ public class AioTest {
                 list.set(0, aiocb);
 
                 assertTimeoutPreemptively(Duration.ofSeconds(1), () -> {
-                    if (MultiarchTupelBuilder.getOS() == OS.DARWIN) {
+                    if (MultiarchTupelBuilder.getOS() == OS.APPLE) {
                         //TODO qeued, but invalid file descriptor...
                         Aio.lio_listio(Aio.LIO_WAIT.get(), list);
                         ErrnoTest.assertErrnoEquals(Errno.EINVAL, Aio.aio_error(aiocb));
@@ -1016,7 +1013,7 @@ public class AioTest {
                         ErrnoTest.assertErrnoEquals(Errno.EIO, nee.errno);
 
                     }
-                    case DARWIN -> {
+                    case APPLE -> {
                         NativeErrorException nee = assertThrows(NativeErrorException.class,
                                 () -> Aio.lio_listio(Aio.LIO_NOWAIT.get(), list));
                         ErrnoTest.assertErrnoEquals(Errno.EAGAIN, nee.errno);

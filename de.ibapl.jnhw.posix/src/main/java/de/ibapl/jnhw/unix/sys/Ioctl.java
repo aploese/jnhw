@@ -523,7 +523,7 @@ public final class Ioctl {
                 TIOCOUTQ = linuxDefines.TIOCOUTQ;
                 TIOCSSOFTCAR = IntDefine.toIntDefine(linuxDefines.TIOCSSOFTCAR);
             }
-            case DARWIN, FREE_BSD, OPEN_BSD -> {
+            case APPLE, FREE_BSD, OPEN_BSD -> {
                 HAVE_SYS_IOCTL_H = true;
 
                 TIOCCBRK = BsdDefines.TIOCCBRK;
@@ -578,7 +578,7 @@ public final class Ioctl {
 
                 IOCSIZE_MASK = IntDefine.UNDEFINED;
                 switch (MultiarchTupelBuilder.getOS()) {
-                    case DARWIN, FREE_BSD ->
+                    case APPLE, FREE_BSD ->
                         IOCPARM_MAX = IntDefine.toIntDefine(FreeBsdDefines.IOCPARM_MAX);
                     case OPEN_BSD ->
                         IOCPARM_MAX = IntDefine.toIntDefine(OpenBsdDefines.IOCPARM_MAX);
@@ -614,7 +614,7 @@ public final class Ioctl {
      */
     public final static int _IO(char type, int nr) {
         return switch (MultiarchTupelBuilder.getOS()) {
-            case DARWIN, FREE_BSD, OPEN_BSD ->
+            case APPLE, FREE_BSD, OPEN_BSD ->
                 // _IO(g,n) _IOC(IOC_VOID, (g), (n), 0)
                 _IOC(IOC_VOID.get(), type, nr, 0);
             case LINUX ->
@@ -626,7 +626,7 @@ public final class Ioctl {
 
     public final static int _IOC(int dir, char type, int nr, int size) {
         return switch (MultiarchTupelBuilder.getOS()) {
-            case DARWIN, FREE_BSD, OPEN_BSD ->
+            case APPLE, FREE_BSD, OPEN_BSD ->
                 // _IOC(inout,group,num,len) ((unsigned long) ((inout) | (((len) & IOCPARM_MASK) << 16) | ((group) << 8) | (num)))
                 // TODO result unsigned long ???
                 dir | ((size & IOCPARM_MASK.get()) << 16) | (type << 8) | nr;
@@ -687,7 +687,7 @@ public final class Ioctl {
      */
     public final static int _IOR(char type, int nr, int size) {
         return switch (MultiarchTupelBuilder.getOS()) {
-            case DARWIN, FREE_BSD, OPEN_BSD ->
+            case APPLE, FREE_BSD, OPEN_BSD ->
                 _IOC(IOC_OUT, type, nr, size);
             case LINUX ->
                 _IOC(_IOC_READ.get(), type, nr, size);
@@ -706,7 +706,7 @@ public final class Ioctl {
      */
     public final static int _IOW(char type, int nr, int size) {
         return switch (MultiarchTupelBuilder.getOS()) {
-            case DARWIN, FREE_BSD, OPEN_BSD ->
+            case APPLE, FREE_BSD, OPEN_BSD ->
                 _IOC(IOC_IN, type, nr, size);
             case LINUX ->
                 _IOC(_IOC_WRITE.get(), type, nr, size);
@@ -725,7 +725,7 @@ public final class Ioctl {
      */
     public final static int _IOWR(char type, int nr, int size) {
         return switch (MultiarchTupelBuilder.getOS()) {
-            case DARWIN, FREE_BSD, OPEN_BSD ->
+            case APPLE, FREE_BSD, OPEN_BSD ->
                 _IOC(IOC_INOUT, type, nr, size);
             case LINUX ->
                 _IOC(_IOC_READ.get() | _IOC_WRITE.get(), type, nr, size);
@@ -736,7 +736,7 @@ public final class Ioctl {
 
     public final static int IOCBASECMD(int x) throws NoSuchMethodException {
         return switch (MultiarchTupelBuilder.getOS()) {
-            case DARWIN, FREE_BSD, OPEN_BSD ->
+            case APPLE, FREE_BSD, OPEN_BSD ->
                 (x & ~(IOCPARM_MASK.get() << 16));
             default ->
                 throw new NoSuchMethodException("No IOCBASECMD in ioctl.h OS defines for " + MultiarchTupelBuilder.getMultiarch());
@@ -745,7 +745,7 @@ public final class Ioctl {
 
     public final static int IOCGROUP(int x) throws NoSuchMethodException {
         return switch (MultiarchTupelBuilder.getOS()) {
-            case DARWIN, FREE_BSD, OPEN_BSD ->
+            case APPLE, FREE_BSD, OPEN_BSD ->
                 ((x >> 8) & 0xff);
             default ->
                 throw new NoSuchMethodException("No IOCGROUP in ioctl.h OS defines for " + MultiarchTupelBuilder.getMultiarch());
@@ -754,7 +754,7 @@ public final class Ioctl {
 
     public final static int IOCPARM_LEN(int x) throws NoSuchMethodException {
         return switch (MultiarchTupelBuilder.getOS()) {
-            case DARWIN, FREE_BSD, OPEN_BSD ->
+            case APPLE, FREE_BSD, OPEN_BSD ->
                 ((x >> 16) & IOCPARM_MASK.get());
             default ->
                 throw new NoSuchMethodException("No IOCPARM_LEN in ioctl.h OS defines for " + MultiarchTupelBuilder.getMultiarch());

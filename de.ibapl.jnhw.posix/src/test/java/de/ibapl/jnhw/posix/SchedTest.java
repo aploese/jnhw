@@ -105,12 +105,12 @@ public class SchedTest {
     public void testSched_get_priority_max() throws Exception {
         int result = Sched.sched_get_priority_max(Sched.SCHED_OTHER);
         switch (MultiarchTupelBuilder.getOS()) {
+            case APPLE ->
+                Assertions.assertEquals(47, result);
             case FREE_BSD ->
                 Assertions.assertEquals(103, result);
             case OPEN_BSD ->
                 Assertions.assertEquals(31, result);
-            case DARWIN ->
-                Assertions.assertEquals(47, result);
             default ->
                 Assertions.assertEquals(0, result, "I dont know wthat to expect so assume 0 for Sched.sched_get_priority_max(Sched.SCHED_OTHER())");
         }
@@ -123,7 +123,7 @@ public class SchedTest {
     public void testSched_get_priority_min() throws Exception {
         int result = Sched.sched_get_priority_min(Sched.SCHED_OTHER);
         switch (MultiarchTupelBuilder.getOS()) {
-            case DARWIN ->
+            case APPLE ->
                 Assertions.assertEquals(15, result);
             default ->
                 Assertions.assertEquals(0, result);
@@ -136,10 +136,9 @@ public class SchedTest {
     @Test
     public void testSched_getscheduler() throws Exception {
         switch (MultiarchTupelBuilder.getOS()) {
-            case OPEN_BSD, DARWIN ->
-                Assertions.assertThrows(NoSuchNativeMethodException.class, () -> {
-                    Sched.sched_getscheduler(Unistd.getpid());
-                });
+            case APPLE, OPEN_BSD ->
+                Assertions.assertThrows(NoSuchNativeMethodException.class,
+                        () -> Sched.sched_getscheduler(Unistd.getpid()));
             default -> {
                 int result = Sched.sched_getscheduler(Unistd.getpid());
                 Assertions.assertEquals(Sched.SCHED_OTHER, result);
@@ -153,7 +152,7 @@ public class SchedTest {
     @Test
     public void testSched_rr_get_interval() throws Exception {
         switch (MultiarchTupelBuilder.getOS()) {
-            case OPEN_BSD, DARWIN ->
+            case APPLE, OPEN_BSD ->
                 Assertions.assertThrows(NoSuchNativeMethodException.class, () -> {
                     Sched.sched_rr_get_interval(Unistd.getpid(), Time.Timespec.allocateNative(ms));
                 });
@@ -188,25 +187,17 @@ public class SchedTest {
     @Test
     public void testSched_setgetparam() throws Exception {
         switch (MultiarchTupelBuilder.getOS()) {
-            case OPEN_BSD, DARWIN -> {
+            case APPLE, OPEN_BSD -> {
                 Assertions.assertThrows(NoSuchNativeMethodException.class,
-                        () -> {
-                            Sched.sched_setparam(Unistd.getpid(), Sched.Sched_param.allocateNative(ms));
-                        });
+                        () -> Sched.sched_setparam(Unistd.getpid(), Sched.Sched_param.allocateNative(ms)));
                 Assertions.assertThrows(NoSuchNativeMethodException.class,
-                        () -> {
-                            Sched.sched_getparam(Unistd.getpid(), Sched.Sched_param.allocateNative(ms));
-                        });
+                        () -> Sched.sched_getparam(Unistd.getpid(), Sched.Sched_param.allocateNative(ms)));
             }
             default -> {
                 Assertions.assertThrows(NullPointerException.class,
-                        () -> {
-                            Sched.sched_setparam(Unistd.getpid(), null);
-                        });
+                        () -> Sched.sched_setparam(Unistd.getpid(), null));
                 Assertions.assertThrows(NullPointerException.class,
-                        () -> {
-                            Sched.sched_getparam(Unistd.getpid(), null);
-                        });
+                        () -> Sched.sched_getparam(Unistd.getpid(), null));
                 Sched.Sched_param param = Sched.Sched_param.allocateNative(ms);
                 param.sched_priority(0);
                 Sched.Sched_param param1 = Sched.Sched_param.allocateNative(ms);
@@ -224,23 +215,17 @@ public class SchedTest {
     @Test
     public void testSched_setscheduler() throws Exception {
         switch (MultiarchTupelBuilder.getOS()) {
-            case OPEN_BSD, DARWIN ->
+            case APPLE, OPEN_BSD ->
                 Assertions.assertThrows(NoSuchNativeMethodException.class,
-                        () -> {
-                            Sched.sched_setscheduler(Unistd.getpid(), Sched.SCHED_OTHER, Sched.Sched_param.allocateNative(ms));
-                        });
+                        () -> Sched.sched_setscheduler(Unistd.getpid(), Sched.SCHED_OTHER, Sched.Sched_param.allocateNative(ms)));
             default -> {
                 Assertions.assertThrows(NullPointerException.class,
-                        () -> {
-                            Sched.sched_setscheduler(Unistd.getpid(), Sched.SCHED_OTHER, null);
-                        });
+                        () -> Sched.sched_setscheduler(Unistd.getpid(), Sched.SCHED_OTHER, null));
                 Sched.Sched_param param = Sched.Sched_param.allocateNative(ms);
                 if (MultiarchTupelBuilder.getOS() == OS.FREE_BSD) {
                     //Any idea why this is so?
                     NativeErrorException nee = Assertions.assertThrows(NativeErrorException.class,
-                            () -> {
-                                Sched.sched_setscheduler(Unistd.getpid(), Sched.SCHED_OTHER, param);
-                            });
+                            () -> Sched.sched_setscheduler(Unistd.getpid(), Sched.SCHED_OTHER, param));
                     ErrnoTest.assertErrnoEquals(Errno.EPERM, nee.errno);
                 } else {
                     int result = Sched.sched_setscheduler(Unistd.getpid(), Sched.SCHED_OTHER, param);

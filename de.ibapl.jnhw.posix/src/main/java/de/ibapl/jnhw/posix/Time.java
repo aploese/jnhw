@@ -127,7 +127,7 @@ public class Time {
         static {
 
             switch (MultiarchTupelBuilder.getOS()) {
-                case DARWIN -> {
+                case APPLE -> {
                     offsetof_It_interval = -1;
                     offsetof_It_value = -1;
                     alignof = null;
@@ -802,11 +802,11 @@ public class Time {
                 CLOCK_THREAD_CPUTIME_ID = LinuxDefines.CLOCK_THREAD_CPUTIME_ID;
                 TIMER_ABSTIME = IntDefine.toIntDefine(LinuxDefines.TIMER_ABSTIME);
             }
-            case DARWIN, FREE_BSD, OPEN_BSD -> {
+            case APPLE, FREE_BSD, OPEN_BSD -> {
                 HAVE_TIME_H = true;
                 CLOCK_REALTIME = BsdDefines.CLOCK_REALTIME;
                 switch (MultiarchTupelBuilder.getOS()) {
-                    case DARWIN -> {
+                    case APPLE -> {
                         CLOCKS_PER_SEC = DarwinDefines.CLOCKS_PER_SEC;
                         CLOCK_MONOTONIC = DarwinDefines.CLOCK_MONOTONIC;
                         CLOCK_PROCESS_CPUTIME_ID = DarwinDefines.CLOCK_PROCESS_CPUTIME_ID;
@@ -838,7 +838,7 @@ public class Time {
 
     private final static SymbolLookup getRtLib() {
         return switch (MultiarchTupelBuilder.getOS()) {
-            case DARWIN ->
+            case APPLE ->
                 LibcLoader.LIB_C_SYMBOL_LOOKUP;
             case FREE_BSD, LINUX ->
                 LibrtLoader.LIB_RT_SYMBOL_LOOKUP;

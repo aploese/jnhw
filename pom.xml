@@ -17,6 +17,8 @@
         <compile.target>19</compile.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <commandLineArg.ChooseVM/>
+        <nativeProvider.propertyName>de.ibapl.jnhw.common.util.NativeProvider</nativeProvider.propertyName>
+        <commandLineArg.NativeProvider/>
     </properties>
 
     <developers>
@@ -115,6 +117,18 @@
             </build>
         </profile>
         <profile>
+            <id>NativeProvider_JAVA_FOREIGN</id>
+            <properties>
+                <commandLineArg.NativeProvider>-D${nativeProvider.propertyName}="JAVA_FOREIGN"</commandLineArg.NativeProvider>
+            </properties>
+        </profile>
+        <profile>
+            <id>NativeProvider_JNI</id>
+            <properties>
+                <commandLineArg.NativeProvider>-D${nativeProvider.propertyName}="JNI"</commandLineArg.NativeProvider>
+            </properties>
+        </profile>
+        <profile>
             <id>DefaultVM</id>
             <properties>
                 <commandLineArg.ChooseVM/>
@@ -157,8 +171,8 @@
                     <version>3.0.0-M7</version>
                          <configuration>
                         <forkedProcessExitTimeoutInSeconds>1200</forkedProcessExitTimeoutInSeconds>
-                        <forkedProcessTimeoutInSeconds>1200</forkedProcessTimeoutInSeconds>
-                        <argLine>${commandLineArg.ChooseVM} --enable-preview --enable-native-access=ALL-UNNAMED</argLine>
+                        <forkedProcessTimeoutInSeconds>600</forkedProcessTimeoutInSeconds>
+                        <argLine>${commandLineArg.ChooseVM} ${commandLineArg.NativeProvider} --enable-preview --enable-native-access=ALL-UNNAMED</argLine>
                     </configuration>
                 </plugin>
                 <plugin>
@@ -166,7 +180,7 @@
                     <artifactId>exec-maven-plugin</artifactId>
                     <version>3.0.0</version>
                     <configuration>
-                        <arguments>${commandLineArg.ChooseVM} --enable-preview --enable-native-access=de.ibapl.jnhw.libloader,de.ibapl.jnhw.common,de.ibapl.jnhw.posix,de.ibapl.jnhw.winapi,ALL-UNNAMED</arguments>                    
+                        <arguments>${commandLineArg.ChooseVM} ${commandLineArg.NativeProvider} --enable-preview --enable-native-access=de.ibapl.jnhw.libloader,de.ibapl.jnhw.common,de.ibapl.jnhw.posix,de.ibapl.jnhw.winapi,ALL-UNNAMED</arguments>                    
                     </configuration>
                 </plugin>
                 <plugin>

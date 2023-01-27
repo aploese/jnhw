@@ -104,25 +104,20 @@ public class TermiosTest {
     public void structTermios_c_ispeed() throws Exception {
         Termios.StructTermios structTermios = Termios.StructTermios.allocateNative(ms);
         switch (MultiarchTupelBuilder.getOS()) {
+            case APPLE, FREE_BSD -> {
+                //Do the test
+            }
             case LINUX -> {
                 if (!Termios._HAVE_STRUCT_TERMIOS_C_ISPEED.isDefined() | Termios._HAVE_STRUCT_TERMIOS_C_ISPEED.isEqualsTo(0)) {
-                    Assertions.assertThrows(NoSuchNativeTypeMemberException.class, () -> {
-                        structTermios.c_ispeed();
-                    });
+                    Assertions.assertThrows(NoSuchNativeTypeMemberException.class,
+                            () -> structTermios.c_ispeed());
                     return;
                 }
             }
-            case FREE_BSD -> {
-                //Do the test
-            }
             case OPEN_BSD -> {
-                Assertions.assertThrows(NoSuchNativeTypeMemberException.class, () -> {
-                    structTermios.c_ispeed();
-                });
+                Assertions.assertThrows(NoSuchNativeTypeMemberException.class,
+                        () -> structTermios.c_ispeed());
                 return;
-            }
-            case DARWIN -> {
-                //Do the test
             }
             default ->
                 throw new RuntimeException("Add test wether struct termios has c_ispeed or not!");
@@ -139,25 +134,20 @@ public class TermiosTest {
     public void structTermios_c_ospeed() throws Exception {
         Termios.StructTermios structTermios = Termios.StructTermios.allocateNative(ms);
         switch (MultiarchTupelBuilder.getOS()) {
+            case APPLE, FREE_BSD -> {
+                //Do the test
+            }
             case LINUX -> {
                 if (!Termios._HAVE_STRUCT_TERMIOS_C_OSPEED.isDefined() | Termios._HAVE_STRUCT_TERMIOS_C_OSPEED.isEqualsTo(0)) {
-                    Assertions.assertThrows(NoSuchNativeTypeMemberException.class, () -> {
-                        structTermios.c_ospeed();
-                    });
+                    Assertions.assertThrows(NoSuchNativeTypeMemberException.class,
+                            () -> structTermios.c_ospeed());
                     return;
                 }
             }
-            case FREE_BSD -> {
-                //Do the test
-            }
             case OPEN_BSD -> {
-                Assertions.assertThrows(NoSuchNativeTypeMemberException.class, () -> {
-                    structTermios.c_ospeed();
-                });
+                Assertions.assertThrows(NoSuchNativeTypeMemberException.class,
+                        () -> structTermios.c_ospeed());
                 return;
-            }
-            case DARWIN -> {
-                //Do the test
             }
             default ->
                 throw new RuntimeException("Add test wether struct termios has c_ospeed or not!");

@@ -1551,7 +1551,7 @@ public final class Errno extends de.ibapl.jnhw.isoc.Errno {
                 EUSERS = linuxDefines.EUSERS;
                 EXFULL = IntDefine.toIntDefine(linuxDefines.EXFULL);
             }
-            case DARWIN, FREE_BSD, OPEN_BSD -> {
+            case APPLE, FREE_BSD, OPEN_BSD -> {
                 EACCES = BsdDefines.EACCES;
                 EADDRINUSE = BsdDefines.EADDRINUSE;
                 EADDRNOTAVAIL = BsdDefines.EADDRNOTAVAIL;
@@ -1665,7 +1665,7 @@ public final class Errno extends de.ibapl.jnhw.isoc.Errno {
                 EXDEV = BsdDefines.EXDEV;
                 EXFULL = IntDefine.UNDEFINED;
                 switch (MultiarchTupelBuilder.getOS()) {
-                    case DARWIN -> {
+                    case APPLE -> {
                         E2BIG = DarwinDefines.E2BIG;
                         EMEDIUMTYPE = IntDefine.UNDEFINED;
                         ENOMEDIUM = IntDefine.UNDEFINED;

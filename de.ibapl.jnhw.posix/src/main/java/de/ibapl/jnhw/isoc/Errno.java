@@ -51,7 +51,7 @@ public abstract class Errno {
     private final static JnhwMh_MA___V.ExceptionErased jnhw__errno_location = JnhwMh_MA___V.mandatoryOf(
             LibcLoader.LIB_C_SYMBOL_LOOKUP,
             switch (MultiarchTupelBuilder.getOS()) {
-        case DARWIN, FREE_BSD, OPEN_BSD ->
+        case APPLE, FREE_BSD, OPEN_BSD ->
             "__error";
         case LINUX ->
             "__errno_location";
@@ -138,7 +138,7 @@ public abstract class Errno {
                 ERANGE = linuxDefines.ERANGE;
                 EILSEQ = linuxDefines.EILSEQ;
             }
-            case DARWIN -> {
+            case APPLE -> {
                 HAVE_ERRNO_H = true;
                 EDOM = DarwinDefines.EDOM;
                 EILSEQ = DarwinDefines.EILSEQ;

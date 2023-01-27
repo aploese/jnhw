@@ -38,11 +38,11 @@ public class LibrtLoader {
 
     static {
         LIB_RT_SYMBOL_LOOKUP = switch (MultiarchTupelBuilder.getOS()) {
-            case LINUX -> //TODO Quick and dirty ... Symbol
-                SymbolLookup.libraryLookup("librt.so.1", LIB_RT_MEMORY_SESSION);
-            case DARWIN -> //TODO Quick and dirty ... Symbol
+            case APPLE -> //TODO Quick and dirty ... Symbol
                 throw new AssertionError("Darwin has no lib rt! its in libc");
             case FREE_BSD -> //TODO Quick and dirty ... Symbol
+                SymbolLookup.libraryLookup("librt.so.1", LIB_RT_MEMORY_SESSION);
+            case LINUX -> //TODO Quick and dirty ... Symbol
                 SymbolLookup.libraryLookup("librt.so.1", LIB_RT_MEMORY_SESSION);
             default ->
                 throw new AssertionError("No idea where to find the librt");

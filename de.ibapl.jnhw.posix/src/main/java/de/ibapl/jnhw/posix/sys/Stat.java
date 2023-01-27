@@ -317,7 +317,7 @@ public class Stat {
                 S_IXOTH = LinuxDefines.S_IXOTH;
                 S_IXUSR = LinuxDefines.S_IXUSR;
             }
-            case DARWIN, FREE_BSD, OPEN_BSD -> {
+            case APPLE, FREE_BSD, OPEN_BSD -> {
                 HAVE_SYS_STAT_H = true;
                 S_IFMT = BsdDefines.S_IFMT;
                 S_IFBLK = BsdDefines.S_IFBLK;

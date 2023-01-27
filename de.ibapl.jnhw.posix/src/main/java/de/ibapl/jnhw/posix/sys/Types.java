@@ -281,7 +281,7 @@ public class Types {
      */
     static {
         switch (MultiarchTupelBuilder.getOS()) {
-            case DARWIN, FREE_BSD, LINUX, OPEN_BSD ->
+            case APPLE, FREE_BSD, LINUX, OPEN_BSD ->
                 HAVE_SYS_TYPES_H = true;
             case WINDOWS ->
                 HAVE_SYS_TYPES_H = false;

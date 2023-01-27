@@ -114,7 +114,7 @@ public class Aio {
                             throw new NoClassDefFoundError("No aio.h defines for " + MultiarchTupelBuilder.getMultiarch());
                     }
                 }
-                case DARWIN -> {
+                case APPLE -> {
                     offsetof_Aio_fildes = 0;
                     offsetof_Aio_offset = 8;
                     offsetof_Aio_buf = 16;
@@ -668,7 +668,7 @@ public class Aio {
                 LIO_WAIT = IntDefine.toIntDefine(LinuxDefines.LIO_WAIT);
                 LIO_WRITE = IntDefine.toIntDefine(LinuxDefines.LIO_WRITE);
             }
-            case DARWIN -> {
+            case APPLE -> {
                 HAVE_AIO_H = true;
                 AIO_ALLDONE = IntDefine.toIntDefine(DarwinDefines.AIO_ALLDONE);
                 AIO_CANCELED = IntDefine.toIntDefine(DarwinDefines.AIO_CANCELED);
@@ -708,7 +708,7 @@ public class Aio {
 
     private final static SymbolLookup getRtLib() {
         return switch (MultiarchTupelBuilder.getOS()) {
-            case DARWIN ->
+            case APPLE ->
                 LibcLoader.LIB_C_SYMBOL_LOOKUP;
             case FREE_BSD, LINUX ->
                 LibrtLoader.LIB_RT_SYMBOL_LOOKUP;

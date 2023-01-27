@@ -76,7 +76,7 @@ public class UcontextTest {
     @Test
     public void testGetcontext() throws Exception {
         switch (MultiarchTupelBuilder.getOS()) {
-            case OPEN_BSD, DARWIN ->
+            case APPLE, OPEN_BSD ->
                 assertThrows(NoSuchNativeTypeException.class, () -> Ucontext.getcontext(Signal.Ucontext_t.tryAllocateNative(ms)));
             default -> {
                 assertThrows(NullPointerException.class, () -> Ucontext.getcontext(null));
@@ -98,7 +98,7 @@ public class UcontextTest {
     @Disabled
     public void testSetcontext() throws Exception {
         switch (MultiarchTupelBuilder.getOS()) {
-            case OPEN_BSD, DARWIN ->
+            case APPLE, OPEN_BSD ->
                 assertThrows(NoSuchNativeMethodException.class, () -> Ucontext.setcontext(null));
             default -> {
                 assertThrows(NullPointerException.class, () -> Ucontext.setcontext(null));
@@ -122,7 +122,7 @@ public class UcontextTest {
     @Disabled
     public void testSwapcontext() throws Exception {
         switch (MultiarchTupelBuilder.getOS()) {
-            case OPEN_BSD, DARWIN ->
+            case APPLE, OPEN_BSD ->
                 assertThrows(NoSuchNativeMethodException.class, () -> Ucontext.swapcontext(null, null));
             default -> {
                 fail("The test will crash the jvm - so stop here!");

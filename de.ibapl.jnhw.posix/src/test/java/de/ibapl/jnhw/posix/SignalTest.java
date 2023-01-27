@@ -329,8 +329,9 @@ public class SignalTest {
     public void testPsiginfo() throws Exception {
         Signal.Siginfo_t pinfo = Signal.Siginfo_t.allocateNative(ms);
         switch (MultiarchTupelBuilder.getOS()) {
-            case DARWIN, FREE_BSD, OPEN_BSD ->
-                Assertions.assertThrows(NoSuchNativeMethodException.class, () -> Signal.psiginfo(pinfo, "JNHW Test for Signal.psiginfo"));
+            case APPLE, FREE_BSD, OPEN_BSD ->
+                Assertions.assertThrows(NoSuchNativeMethodException.class,
+                        () -> Signal.psiginfo(pinfo, "JNHW Test for Signal.psiginfo"));
             default -> {
                 JnhwTestLogger.logTest("psiginfo MSG >>>");
                 try {
@@ -786,8 +787,9 @@ public class SignalTest {
     public void testSigqueue() throws Throwable {
         final int SIG = Signal.SIGUSR2;
         switch (MultiarchTupelBuilder.getOS()) {
-            case DARWIN, OPEN_BSD ->
-                Assertions.assertThrows(NoSuchNativeMethodException.class, () -> Signal.sigqueue(Unistd.getpid(), SIG, Signal.Sigval.allocateNative(ms)));
+            case APPLE, OPEN_BSD ->
+                Assertions.assertThrows(NoSuchNativeMethodException.class,
+                        () -> Signal.sigqueue(Unistd.getpid(), SIG, Signal.Sigval.allocateNative(ms)));
             default -> {
                 final Signal.Sigaction act = Signal.Sigaction.allocateNative(ms);
                 act.sa_flags(Signal.SA_SIGINFO);
@@ -933,16 +935,15 @@ public class SignalTest {
     @Test
     public void testSigtimedwait() throws Exception {
         switch (MultiarchTupelBuilder.getOS()) {
-            case DARWIN, OPEN_BSD -> {
+            case APPLE, OPEN_BSD -> {
                 final Signal.Sigset_t set = Signal.Sigset_t.allocateNative(ms);
                 Signal.sigemptyset(set);
                 Signal.sigaddset(set, Signal.SIGALRM);
                 final Signal.Siginfo_t info = Signal.Siginfo_t.allocateNative(ms);
                 final Time.Timespec timeout = Time.Timespec.allocateNative(ms);
 
-                Assertions.assertThrows(NoSuchNativeMethodException.class, () -> {
-                    Signal.sigtimedwait(set, info, timeout);
-                });
+                Assertions.assertThrows(NoSuchNativeMethodException.class,
+                        () -> Signal.sigtimedwait(set, info, timeout));
             }
             default -> {
                 final int SIG = Signal.SIGALRM;
@@ -1047,14 +1048,13 @@ public class SignalTest {
     @Test
     public void testSigwaitinfo() throws Exception {
         switch (MultiarchTupelBuilder.getOS()) {
-            case DARWIN, OPEN_BSD -> {
+            case APPLE, OPEN_BSD -> {
                 final Signal.Sigset_t set = Signal.Sigset_t.allocateNative(ms);
                 Signal.sigemptyset(set);
                 Signal.sigaddset(set, Signal.SIGALRM);
                 final Signal.Siginfo_t info = Signal.Siginfo_t.allocateNative(ms);
-                Assertions.assertThrows(NoSuchNativeMethodException.class, () -> {
-                    Signal.sigwaitinfo(set, info);
-                });
+                Assertions.assertThrows(NoSuchNativeMethodException.class,
+                        () -> Signal.sigwaitinfo(set, info));
             }
             default -> {
                 final int SIG = Signal.SIGALRM;
@@ -1210,7 +1210,7 @@ public class SignalTest {
     @Test
     public void testStructUcontext_t() throws Exception {
         switch (MultiarchTupelBuilder.getOS()) {
-            case DARWIN, OPEN_BSD ->
+            case APPLE, OPEN_BSD ->
                 Assertions.assertThrows(NoSuchNativeTypeException.class,
                         () -> Signal.Ucontext_t.tryAllocateNative(ms));
             default -> {

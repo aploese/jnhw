@@ -193,7 +193,7 @@ public class Locale {
                             throw new NoClassDefFoundError("No locale.h linux defines for " + MultiarchTupelBuilder.getMultiarch());
                     }
                 }
-                case DARWIN, FREE_BSD -> {
+                case APPLE, FREE_BSD -> {
                     alignof = Alignment.AT_8;
                     sizeof = 96;
                     offsetof_Currency_symbol = 32;
@@ -795,7 +795,7 @@ public class Locale {
                 LC_TIME = linuxDefines.LC_TIME;
                 LC_TIME_MASK = linuxDefines.LC_TIME_MASK;
             }
-            case DARWIN, FREE_BSD, OPEN_BSD -> {
+            case APPLE, FREE_BSD, OPEN_BSD -> {
                 HAVE_LOCALE_H = true;
                 LC_ALL = BsdDefines.LC_ALL;
                 LC_COLLATE = BsdDefines.LC_COLLATE;
@@ -806,7 +806,7 @@ public class Locale {
                 LC_NUMERIC = BsdDefines.LC_NUMERIC;
                 LC_TIME = BsdDefines.LC_TIME;
                 switch (MultiarchTupelBuilder.getOS()) {
-                    case DARWIN -> {
+                    case APPLE -> {
                         LC_ALL_MASK = DarwinDefines.LC_ALL_MASK;
                         LC_COLLATE_MASK = DarwinDefines.LC_COLLATE_MASK;
                         LC_CTYPE_MASK = DarwinDefines.LC_CTYPE_MASK;

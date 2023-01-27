@@ -281,7 +281,7 @@ public class Defines {
         __sparc__ = arch == Arch.SPARC_64 ? IntDefine.toIntDefine(1) : IntDefine.UNDEFINED;
         __x86_64__ = arch == Arch.X86_64 ? IntDefine.toIntDefine(1) : IntDefine.UNDEFINED;
 
-        __APPLE__ = os == OS.DARWIN ? IntDefine.toIntDefine(1) : IntDefine.UNDEFINED;
+        __APPLE__ = os == OS.APPLE ? IntDefine.toIntDefine(1) : IntDefine.UNDEFINED;
         _BSD_SOURCE = os == OS.OPEN_BSD ? IntDefine.toIntDefine(1) : IntDefine.UNDEFINED;
         __FreeBSD__ = os == OS.FREE_BSD ? IntDefine.toIntDefine(13) : IntDefine.UNDEFINED;
         __linux__ = os == OS.LINUX ? IntDefine.toIntDefine(1) : IntDefine.UNDEFINED;
@@ -289,7 +289,7 @@ public class Defines {
 
         _FILE_OFFSET_BITS = IntDefine.UNDEFINED;
         switch (os) {
-            case DARWIN, FREE_BSD, OPEN_BSD -> {
+            case APPLE, FREE_BSD, OPEN_BSD -> {
                 _LARGEFILE64_SOURCE = IntDefine.UNDEFINED;
                 _LARGEFILE_SOURCE = IntDefine.UNDEFINED;
             }
@@ -305,7 +305,7 @@ public class Defines {
                 throw new NoClassDefFoundError("No default value for _LARGEFILE64_SOURCE and _LARGEFILE_SOURCE " + MultiarchTupelBuilder.getMultiarch());
         }
         switch (os) {
-            case DARWIN, FREE_BSD, OPEN_BSD, LINUX -> {
+            case APPLE, FREE_BSD, OPEN_BSD, LINUX -> {
                 _POSIX_C_SOURCE = IntDefine.toIntDefine(200809);
                 _XOPEN_SOURCE = IntDefine.toIntDefine(700);
                 _XOPEN_SOURCE_EXTENDED = IntDefine.toIntDefine(1);
@@ -325,7 +325,7 @@ public class Defines {
                 __GLIBC__ = IntDefine.toIntDefine(2);
                 __GNU_LIBRARY__ = IntDefine.toIntDefine(6);
             }
-            case DARWIN, FREE_BSD, OPEN_BSD -> {
+            case APPLE, FREE_BSD, OPEN_BSD -> {
                 __GLIBC_MINOR__ = IntDefine.UNDEFINED;
                 __GLIBC__ = IntDefine.UNDEFINED;
                 __GNU_LIBRARY__ = IntDefine.UNDEFINED;
@@ -370,7 +370,7 @@ public class Defines {
         // __TIMESIZE = IntDefine.UNDEFINED; // glibc > 2.31? IntDefine.toIntDefine(mi.getSizeOfPointer().sizeInBit);
         //Linux
         __TIMESIZE = switch (os) {
-            case DARWIN, FREE_BSD ->
+            case APPLE, FREE_BSD ->
                 IntDefine.UNDEFINED;
             case LINUX ->
                 switch (MultiarchTupelBuilder.getMemoryModel()) {

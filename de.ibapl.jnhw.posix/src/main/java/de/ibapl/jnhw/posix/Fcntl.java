@@ -750,7 +750,7 @@ public final class Fcntl {
                 O_DIRECTORY = linuxDefines.O_DIRECTORY;
                 O_NOFOLLOW = linuxDefines.O_NOFOLLOW;
             }
-            case DARWIN, FREE_BSD, OPEN_BSD -> {
+            case APPLE, FREE_BSD, OPEN_BSD -> {
                 HAVE_FCNTL_H = true;
 
                 FD_CLOEXEC = BsdDefines.FD_CLOEXEC;
@@ -781,7 +781,7 @@ public final class Fcntl {
                 O_NONBLOCK = BsdDefines.O_NONBLOCK;
                 O_SYNC = BsdDefines.O_SYNC;
                 switch (MultiarchTupelBuilder.getOS()) {
-                    case DARWIN -> {
+                    case APPLE -> {
                         AT_EACCESS = DarwinDefines.AT_EACCESS;
                         AT_FDCWD = DarwinDefines.AT_FDCWD;
                         AT_REMOVEDIR = DarwinDefines.AT_REMOVEDIR;

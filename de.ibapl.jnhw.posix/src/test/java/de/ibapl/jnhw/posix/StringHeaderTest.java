@@ -84,13 +84,13 @@ public class StringHeaderTest {
         try {
             assertEquals("Invalid argument", StringHeader.strerror(Errno.EINVAL));
             switch (MultiarchTupelBuilder.getOS()) {
-                case FREE_BSD -> {
-                    assertEquals("No error: 0", StringHeader.strerror(0));
+                case APPLE, OPEN_BSD -> {
+                    assertEquals("Undefined error: 0", StringHeader.strerror(0));
                     assertEquals("Unknown error: 2147483647", StringHeader.strerror(Integer.MAX_VALUE));
                     assertEquals("Unknown error: -1", StringHeader.strerror(-1));
                 }
-                case OPEN_BSD, DARWIN -> {
-                    assertEquals("Undefined error: 0", StringHeader.strerror(0));
+                case FREE_BSD -> {
+                    assertEquals("No error: 0", StringHeader.strerror(0));
                     assertEquals("Unknown error: 2147483647", StringHeader.strerror(Integer.MAX_VALUE));
                     assertEquals("Unknown error: -1", StringHeader.strerror(-1));
                 }
@@ -111,14 +111,12 @@ public class StringHeaderTest {
     @Test
     public void testStrerror_l() throws Exception {
         switch (MultiarchTupelBuilder.getOS()) {
-            case DARWIN ->
-                assertThrows(NoSuchNativeMethodException.class, () -> {
-                    StringHeader.strerror_l(Errno.EAGAIN, Locale.Locale_t.LOCALE_T_0);
-                });
+            case APPLE ->
+                assertThrows(NoSuchNativeMethodException.class,
+                        () -> StringHeader.strerror_l(Errno.EAGAIN, Locale.Locale_t.LOCALE_T_0));
             default -> {
-                assertThrows(NullPointerException.class, () -> {
-                    StringHeader.strerror_l(Errno.EAGAIN, null);
-                });
+                assertThrows(NullPointerException.class,
+                        () -> StringHeader.strerror_l(Errno.EAGAIN, null));
                 //Use "C" locale so that the test can succeed on any machine
                 final Locale.Locale_t locale = Locale.newlocale(Locale.LC_ALL_MASK, "C", Locale.Locale_t.LOCALE_T_0);
                 assertEquals("Resource temporarily unavailable", StringHeader.strerror_l(Errno.EAGAIN, locale));
@@ -136,6 +134,12 @@ public class StringHeaderTest {
         final Locale.Locale_t oldLocale = Locale.uselocale(locale);
         try {
             switch (MultiarchTupelBuilder.getOS()) {
+                case APPLE -> {
+                    assertEquals("Segmentation fault: 11", StringHeader.strsignal(Signal.SIGSEGV));
+                    assertEquals("Unknown signal: 2147483647", StringHeader.strsignal(Integer.MAX_VALUE));
+                    assertEquals("Unknown signal: 0", StringHeader.strsignal(0));
+                    assertEquals("Unknown signal: -1", StringHeader.strsignal(-1));
+                }
                 case FREE_BSD -> {
                     assertEquals("Segmentation fault", StringHeader.strsignal(Signal.SIGSEGV));
                     assertEquals("Unknown signal: 2147483647", StringHeader.strsignal(Integer.MAX_VALUE));
@@ -147,12 +151,6 @@ public class StringHeaderTest {
                     assertEquals("Unknown signal: 2147483647", StringHeader.strsignal(Integer.MAX_VALUE));
                     assertEquals("Signal 0", StringHeader.strsignal(0));
                     assertEquals("Unknown signal: 4294967295", StringHeader.strsignal(-1));
-                }
-                case DARWIN -> {
-                    assertEquals("Segmentation fault: 11", StringHeader.strsignal(Signal.SIGSEGV));
-                    assertEquals("Unknown signal: 2147483647", StringHeader.strsignal(Integer.MAX_VALUE));
-                    assertEquals("Unknown signal: 0", StringHeader.strsignal(0));
-                    assertEquals("Unknown signal: -1", StringHeader.strsignal(-1));
                 }
                 default -> {
                     assertEquals("Segmentation fault", StringHeader.strsignal(Signal.SIGSEGV));

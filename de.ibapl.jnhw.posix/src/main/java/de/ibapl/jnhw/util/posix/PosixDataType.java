@@ -47,7 +47,7 @@ public interface PosixDataType {
                 default ->
                     throw new NoClassDefFoundError("can't get datatype of clock_t on " + MultiarchTupelBuilder.getMultiarch());
             };
-        case DARWIN ->
+        case APPLE ->
             BaseDataType.uint64_t;
         case FREE_BSD ->
             BaseDataType.int32_t;
@@ -67,7 +67,7 @@ public interface PosixDataType {
     public final static BaseDataType mode_t = switch (MultiarchTupelBuilder.getOS()) {
         case LINUX ->
             BaseDataType.uint32_t;
-        case DARWIN, FREE_BSD ->
+        case APPLE, FREE_BSD ->
             BaseDataType.uint16_t;
         case OPEN_BSD ->
             BaseDataType.uint32_t;
@@ -87,7 +87,7 @@ public interface PosixDataType {
             };
         case OPEN_BSD ->
             BaseDataType.uint64_t;
-        case DARWIN, FREE_BSD ->
+        case APPLE, FREE_BSD ->
             BaseDataType.uint32_t;
         default ->
             throw new NoClassDefFoundError("can't get OS datatype of nfds_t on " + MultiarchTupelBuilder.getMultiarch());
@@ -103,7 +103,7 @@ public interface PosixDataType {
                 default ->
                     throw new NoClassDefFoundError("can't get linux datatype of off_t on " + MultiarchTupelBuilder.getMultiarch());
             };
-        case DARWIN, FREE_BSD, OPEN_BSD ->
+        case APPLE, FREE_BSD, OPEN_BSD ->
             BaseDataType.int64_t;
         default ->
             throw new NoClassDefFoundError("can't get OS datatype of off_t on " + MultiarchTupelBuilder.getMultiarch());
@@ -117,7 +117,7 @@ public interface PosixDataType {
     public final static BaseDataType pthread_t = switch (MultiarchTupelBuilder.getOS()) {
         case LINUX ->
             BaseDataType.C_unsigned_long_int;
-        case DARWIN, FREE_BSD, OPEN_BSD ->
+        case APPLE, FREE_BSD, OPEN_BSD ->
             BaseDataType.C_struct_pointer;
         default ->
             throw new NoClassDefFoundError("can't get OS datatype of pthread_t on " + MultiarchTupelBuilder.getMultiarch());
@@ -126,7 +126,7 @@ public interface PosixDataType {
     public final static BaseDataType pthread_attr_t = switch (MultiarchTupelBuilder.getOS()) {
         case LINUX ->
             BaseDataType.struct;
-        case DARWIN, FREE_BSD, OPEN_BSD ->
+        case APPLE, FREE_BSD, OPEN_BSD ->
             BaseDataType.C_struct_pointer;
         default ->
             throw new NoClassDefFoundError("can't get OS datatype of pthread_attr_t on " + MultiarchTupelBuilder.getMultiarch());
@@ -143,14 +143,14 @@ public interface PosixDataType {
                 default ->
                     throw new NoClassDefFoundError("can't get linux datatype of size_t on " + MultiarchTupelBuilder.getMultiarch());
             };
-        case DARWIN, FREE_BSD, OPEN_BSD ->
+        case APPLE, FREE_BSD, OPEN_BSD ->
             BaseDataType.uint64_t;
         default ->
             throw new NoClassDefFoundError("can't get OS datatype of size_t on " + MultiarchTupelBuilder.getMultiarch());
     };
 
     public final static BaseDataType speed_t = switch (MultiarchTupelBuilder.getOS()) {
-        case DARWIN ->
+        case APPLE ->
             BaseDataType.uint64_t;
         case FREE_BSD, LINUX, OPEN_BSD ->
             BaseDataType.uint32_t;
@@ -168,14 +168,14 @@ public interface PosixDataType {
                 default ->
                     throw new NoClassDefFoundError("can't get linux datatype of ssize_t on " + MultiarchTupelBuilder.getMultiarch());
             };
-        case DARWIN, FREE_BSD, OPEN_BSD ->
+        case APPLE, FREE_BSD, OPEN_BSD ->
             BaseDataType.int64_t;
         default ->
             throw new NoClassDefFoundError("can't get OS datatype of ssize_t on " + MultiarchTupelBuilder.getMultiarch());
     };
 
     public final static BaseDataType tcflag_t = switch (MultiarchTupelBuilder.getOS()) {
-        case DARWIN ->
+        case APPLE ->
             BaseDataType.uint64_t;
         case FREE_BSD, LINUX, OPEN_BSD ->
             BaseDataType.uint32_t;
@@ -193,14 +193,14 @@ public interface PosixDataType {
                 default ->
                     throw new NoClassDefFoundError("can't get linux datatype of time_t on " + MultiarchTupelBuilder.getMultiarch());
             };
-        case DARWIN, FREE_BSD, OPEN_BSD ->
+        case APPLE, FREE_BSD, OPEN_BSD ->
             BaseDataType.int64_t;
         default ->
             throw new NoClassDefFoundError("can't get OS datatype of time_t on " + MultiarchTupelBuilder.getMultiarch());
     };
 
     public final static BaseDataType timer_t = switch (MultiarchTupelBuilder.getOS()) {
-        case DARWIN ->
+        case APPLE ->
             null;
         case LINUX, FREE_BSD ->
             BaseDataType.C_pointer;

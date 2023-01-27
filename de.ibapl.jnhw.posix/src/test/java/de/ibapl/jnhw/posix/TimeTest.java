@@ -261,14 +261,15 @@ public class TimeTest {
     @Test
     public void testClock_getcpuclockid() throws Exception {
         Types.Clockid_t clock_id = Types.Clockid_t.allocateNative(ms);
-        if (MultiarchTupelBuilder.getOS() == OS.DARWIN) {
-            Assertions.assertThrows(NoSuchNativeMethodException.class, () -> {
-                Time.clock_getcpuclockid(0, clock_id);
-            });
-        } else {
-            int pid = 0;
-            Time.clock_getcpuclockid(pid, clock_id);
-            Assertions.assertNotEquals(0, clock_id.getAsSignedLong());
+        switch (MultiarchTupelBuilder.getOS()) {
+            case APPLE ->
+                Assertions.assertThrows(NoSuchNativeMethodException.class,
+                        () -> Time.clock_getcpuclockid(0, clock_id));
+            default -> {
+                int pid = 0;
+                Time.clock_getcpuclockid(pid, clock_id);
+                Assertions.assertNotEquals(0, clock_id.getAsSignedLong());
+            }
         }
     }
 
@@ -282,12 +283,12 @@ public class TimeTest {
 
         assertEquals(0, timespec.tv_sec());
         switch (MultiarchTupelBuilder.getOS()) {
-            case LINUX ->
-                assertEquals(1, timespec.tv_nsec());
-            case DARWIN ->
+            case APPLE ->
                 assertEquals(1000, timespec.tv_nsec());
             case FREE_BSD ->
                 assertEquals(2, timespec.tv_nsec());
+            case LINUX ->
+                assertEquals(1, timespec.tv_nsec());
             case OPEN_BSD -> {
                 switch (MultiarchTupelBuilder.getArch()) {
                     case AARCH64 -> //TODO virt env needs to be fixed??
@@ -328,7 +329,7 @@ public class TimeTest {
     @Test
     public void testClock_nanosleep() throws Exception {
         switch (MultiarchTupelBuilder.getOS()) {
-            case DARWIN, OPEN_BSD ->
+            case APPLE, OPEN_BSD ->
                 Assertions.assertThrows(NoSuchNativeMethodException.class, () -> {
                     Time.clock_nanosleep(0, 0, Time.Timespec.allocateNative(ms));
                 });
@@ -784,26 +785,21 @@ public class TimeTest {
     @Test
     public void testTimer_create_delete() throws Exception {
         switch (MultiarchTupelBuilder.getOS()) {
-            case OPEN_BSD -> {
-                Assertions.assertThrows(NoSuchNativeMethodException.class, () -> {
-                    Time.timer_create(0, Time.PtrTimer_t.tryAllocateNative(ms));
-                });
-                Assertions.assertThrows(NoSuchNativeMethodException.class, () -> {
-                    Time.timer_delete(Time.Timer_t.tryAllocateNative(ms));
-                });
+            case APPLE -> {
+                // precondition for tests not available
+                Assertions.assertThrows(NoSuchNativeTypeException.class,
+                        () -> Time.Timer_t.tryAllocateNative(ms));
+                Assertions.assertThrows(NoSuchNativeTypeException.class,
+                        () -> Time.timer_create(0, Time.PtrTimer_t.tryAllocateNative(ms)));
+                Assertions.assertThrows(NoSuchNativeTypeException.class,
+                        () -> Time.timer_delete(Time.Timer_t.tryAllocateNative(ms)));
                 return;
             }
-            case DARWIN -> {
-                // precondition for tests not available
-                Assertions.assertThrows(NoSuchNativeTypeException.class, () -> {
-                    Time.Timer_t.tryAllocateNative(ms);
-                });
-                Assertions.assertThrows(NoSuchNativeTypeException.class, () -> {
-                    Time.timer_create(0, Time.PtrTimer_t.tryAllocateNative(ms));
-                });
-                Assertions.assertThrows(NoSuchNativeTypeException.class, () -> {
-                    Time.timer_delete(Time.Timer_t.tryAllocateNative(ms));
-                });
+            case OPEN_BSD -> {
+                Assertions.assertThrows(NoSuchNativeMethodException.class,
+                        () -> Time.timer_create(0, Time.PtrTimer_t.tryAllocateNative(ms)));
+                Assertions.assertThrows(NoSuchNativeMethodException.class,
+                        () -> Time.timer_delete(Time.Timer_t.tryAllocateNative(ms)));
                 return;
             }
         }
@@ -863,7 +859,7 @@ public class TimeTest {
     @Test
     public void testTimer_delete_twice() throws Exception {
         switch (MultiarchTupelBuilder.getOS()) {
-            case DARWIN, OPEN_BSD -> {
+            case APPLE, OPEN_BSD -> {
                 return;
             }
             default -> {
@@ -896,27 +892,17 @@ public class TimeTest {
     @Test
     public void testTimer_SIGEV_NONE() throws Exception {
         switch (MultiarchTupelBuilder.getOS()) {
-            case OPEN_BSD -> {// precondition for tests not available
-                Assertions.assertThrows(NoSuchNativeTypeException.class,
-                        () -> {
-                            Signal.Sigevent.tryAllocateNative(ms);
-                        }
-                );
-
-            }
-            case DARWIN -> {
+            case APPLE -> {
                 // precondition for tests not available
                 Assertions.assertThrows(NoSuchNativeTypeException.class,
-                        () -> {
-                            Time.PtrTimer_t.tryAllocateNative(ms);
-                        }
-                );
+                        () -> Time.PtrTimer_t.tryAllocateNative(ms));
                 Assertions
                         .assertThrows(NoSuchNativeTypeException.class,
-                                () -> {
-                                    Time.Itimerspec.tryAllocateNative(ms);
-                                }
-                        );
+                                () -> Time.Itimerspec.tryAllocateNative(ms));
+            }
+            case OPEN_BSD -> {// precondition for tests not available
+                Assertions.assertThrows(NoSuchNativeTypeException.class,
+                        () -> Signal.Sigevent.tryAllocateNative(ms));
             }
             default -> {
                 Time.PtrTimer_t ptrTimerid = Time.PtrTimer_t.tryAllocateNative(ms);
@@ -951,6 +937,18 @@ public class TimeTest {
     @Test
     public void testTimer() throws Throwable {
         switch (MultiarchTupelBuilder.getOS()) {
+            case APPLE -> {
+                // preconditions not met can only test this this way.
+                Assertions.assertTrue(LibcLoader.LIB_C_SYMBOL_LOOKUP.lookup("timer_create").isEmpty(), "timer_create is available");
+                Assertions.assertTrue(LibcLoader.LIB_C_SYMBOL_LOOKUP.lookup("timer_gettime").isEmpty(), "timer_gettime is available");
+                Assertions.assertTrue(LibcLoader.LIB_C_SYMBOL_LOOKUP.lookup("timer_settime").isEmpty(), "timer_settime is available");
+                Assertions.assertTrue(LibcLoader.LIB_C_SYMBOL_LOOKUP.lookup("timer_getoverrun").isEmpty(), "timer_getoverrun is available");
+                Assertions.assertTrue(LibcLoader.LIB_C_SYMBOL_LOOKUP.lookup("timer_delete").isEmpty(), "timer_delete is available");
+
+                // precondition for tests not available
+                Assertions.assertThrows(NoSuchNativeTypeException.class,
+                        () -> Time.Timer_t.tryAllocateNative(ms));
+            }
             case OPEN_BSD -> {
                 // preconditions not met can only test this this way.
                 Assertions.assertTrue(LibrtLoader.LIB_RT_SYMBOL_LOOKUP.lookup("timer_create").isEmpty(), "timer_create is available");
@@ -960,28 +958,8 @@ public class TimeTest {
                 Assertions.assertTrue(LibrtLoader.LIB_RT_SYMBOL_LOOKUP.lookup("timer_delete").isEmpty(), "timer_delete is available");
 
                 // precondition for tests not available
-                Assertions
-                        .assertThrows(NoSuchNativeTypeException.class,
-                                () -> {
-                                    Signal.Sigevent.tryAllocateNative(ms);
-                                }
-                        );
-            }
-            case DARWIN -> {
-                // preconditions not met can only test this this way.
-                Assertions.assertTrue(LibcLoader.LIB_C_SYMBOL_LOOKUP.lookup("timer_create").isEmpty(), "timer_create is available");
-                Assertions.assertTrue(LibcLoader.LIB_C_SYMBOL_LOOKUP.lookup("timer_gettime").isEmpty(), "timer_gettime is available");
-                Assertions.assertTrue(LibcLoader.LIB_C_SYMBOL_LOOKUP.lookup("timer_settime").isEmpty(), "timer_settime is available");
-                Assertions.assertTrue(LibcLoader.LIB_C_SYMBOL_LOOKUP.lookup("timer_getoverrun").isEmpty(), "timer_getoverrun is available");
-                Assertions.assertTrue(LibcLoader.LIB_C_SYMBOL_LOOKUP.lookup("timer_delete").isEmpty(), "timer_delete is available");
-
-                // precondition for tests not available
-                Assertions
-                        .assertThrows(NoSuchNativeTypeException.class,
-                                () -> {
-                                    Time.Timer_t.tryAllocateNative(ms);
-                                }
-                        );
+                Assertions.assertThrows(NoSuchNativeTypeException.class,
+                        () -> Signal.Sigevent.tryAllocateNative(ms));
             }
             default -> {
                 final int SIVAL_INT = 0x87654321;
@@ -1123,12 +1101,9 @@ public class TimeTest {
 
     @Test
     public void testTimer_t() throws Exception {
-        if (MultiarchTupelBuilder.getOS() == OS.DARWIN) {
+        if (MultiarchTupelBuilder.getOS() == OS.APPLE) {
             Assertions.assertThrows(NoSuchNativeTypeException.class,
-                    () -> {
-                        Time.Timer_t.tryAllocateNative(ms);
-                    }
-            );
+                    () -> Time.Timer_t.tryAllocateNative(ms));
         } else {
             Time.Timer_t timer_t = Time.Timer_t.tryAllocateNative(ms);
             switch (Time.Timer_t.sizeof) {
@@ -1144,12 +1119,9 @@ public class TimeTest {
 
     @Test
     public void testItimerspec() throws Exception {
-        if (MultiarchTupelBuilder.getOS() == OS.DARWIN) {
+        if (MultiarchTupelBuilder.getOS() == OS.APPLE) {
             Assertions.assertThrows(NoSuchNativeTypeException.class,
-                    () -> {
-                        Time.Itimerspec.tryAllocateNative(ms);
-                    }
-            );
+                    () -> Time.Itimerspec.tryAllocateNative(ms));
         } else {
             Time.Itimerspec itimerspec = Time.Itimerspec.tryAllocateNative(ms);
             Assertions.assertEquals("{it_value : {tv_sec : 0, tv_nsec : 0}, it_interval : {tv_sec : 0, tv_nsec : 0}}", itimerspec.nativeToString());

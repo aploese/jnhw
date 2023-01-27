@@ -247,7 +247,7 @@ public final class Unistd {
                 STDIN_FILENO = LinuxDefines.STDIN_FILENO;
                 STDOUT_FILENO = LinuxDefines.STDOUT_FILENO;
             }
-            case DARWIN, FREE_BSD, OPEN_BSD -> {
+            case APPLE, FREE_BSD, OPEN_BSD -> {
                 HAVE_UNISTD_H = true;
                 _SC_AIO_LISTIO_MAX = BsdDefines._SC_AIO_LISTIO_MAX;
                 _SC_AIO_MAX = BsdDefines._SC_AIO_MAX;
@@ -258,7 +258,7 @@ public final class Unistd {
                 STDIN_FILENO = BsdDefines.STDIN_FILENO;
                 STDOUT_FILENO = BsdDefines.STDOUT_FILENO;
                 switch (MultiarchTupelBuilder.getOS()) {
-                    case DARWIN -> {
+                    case APPLE -> {
                         _POSIX_VERSION = DarwinDefines._POSIX_VERSION;
                         SEEK_DATA = IntDefine.toIntDefine(DarwinDefines.SEEK_DATA);
                         SEEK_HOLE = IntDefine.toIntDefine(DarwinDefines.SEEK_HOLE);

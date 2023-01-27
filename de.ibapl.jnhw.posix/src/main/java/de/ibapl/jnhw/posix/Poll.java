@@ -389,7 +389,7 @@ public final class Poll {
                 POLLWRBAND = linuxDefines.POLLWRBAND;
                 POLLWRNORM = linuxDefines.POLLWRNORM;
             }
-            case DARWIN, FREE_BSD, OPEN_BSD -> {
+            case APPLE, FREE_BSD, OPEN_BSD -> {
                 HAVE_POLL_H = true;
                 POLLERR = BsdDefines.POLLERR;
                 POLLHUP = BsdDefines.POLLHUP;

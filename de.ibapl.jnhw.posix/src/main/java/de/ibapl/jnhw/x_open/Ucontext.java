@@ -43,7 +43,7 @@ import java.util.Optional;
 public class Ucontext {
 
     public final static boolean HAVE_UCONTEXT_H = switch (MultiarchTupelBuilder.getOS()) {
-        case DARWIN, OPEN_BSD ->
+        case APPLE, OPEN_BSD ->
             false;
         case FREE_BSD, LINUX ->
             true;

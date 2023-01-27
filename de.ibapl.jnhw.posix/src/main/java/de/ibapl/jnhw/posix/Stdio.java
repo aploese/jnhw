@@ -115,7 +115,7 @@ public class Stdio {
                 SEEK_END = LinuxDefines.SEEK_END;
                 SEEK_SET = LinuxDefines.SEEK_SET;
             }
-            case DARWIN, FREE_BSD, OPEN_BSD -> {
+            case APPLE, FREE_BSD, OPEN_BSD -> {
                 HAVE_STDIO_H = true;
                 EOF = BsdDefines.EOF;
                 SEEK_CUR = BsdDefines.SEEK_CUR;

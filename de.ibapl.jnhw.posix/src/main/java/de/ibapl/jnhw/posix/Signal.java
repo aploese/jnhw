@@ -465,7 +465,7 @@ public class Signal {
                     }
                 }
 
-                case DARWIN -> {
+                case APPLE -> {
                     alignof = Alignment.AT_8;
                     sizeof = 8;
                 }
@@ -601,7 +601,7 @@ public class Signal {
                             throw new NoClassDefFoundError("Unsupported memorymodel for sigaction " + MultiarchTupelBuilder.getMultiarch());
                     }
                 }
-                case DARWIN, OPEN_BSD -> {
+                case APPLE, OPEN_BSD -> {
                     alignof = Alignment.AT_8;
                     sizeof = 16;
                     offsetof_Sa_handler = 0;
@@ -799,7 +799,7 @@ public class Signal {
 
                     sizeof = 64;
                 }
-                case DARWIN -> {
+                case APPLE -> {
                     switch (MultiarchTupelBuilder.getMemoryModel()) {
                         case ILP32 ->
                             alignof = Alignment.AT_4;
@@ -1048,7 +1048,7 @@ public class Signal {
                             throw new NoClassDefFoundError("No signal.h linux defines for siginfo_t " + MultiarchTupelBuilder.getMultiarch());
                     }
                 }
-                case DARWIN -> {
+                case APPLE -> {
                     sizeof = 104;
                     alignof = Alignment.AT_8;
                     offsetof_Si_signo = 0;
@@ -1244,7 +1244,7 @@ public class Signal {
                     }
                     sizeof = 128;
                 }
-                case DARWIN -> {
+                case APPLE -> {
                     alignof = Alignment.AT_4;
                     sizeof = 4;
                 }
@@ -1600,7 +1600,7 @@ public class Signal {
                     }
                 }
 
-                case DARWIN, FREE_BSD, OPEN_BSD -> {
+                case APPLE, FREE_BSD, OPEN_BSD -> {
                     alignof = Alignment.AT_8;
                     sizeof = 24;
                     offsetof_Ss_sp = 0;
@@ -1800,7 +1800,7 @@ public class Signal {
                             throw new NoClassDefFoundError("No signal.h linux defines for ucontext_t " + MultiarchTupelBuilder.getMultiarch());
                     }
                 }
-                case DARWIN -> {
+                case APPLE -> {
                     alignof = null;
                     sizeof = 0;
                     offsetof_Uc_link = -1;
@@ -2717,7 +2717,7 @@ public class Signal {
                 SI_MESGQ = IntDefine.toIntDefine(linuxDefines.SI_MESGQ);
                 SI_TIMER = linuxDefines.SI_TIMER;
             }
-            case DARWIN, FREE_BSD, OPEN_BSD -> {
+            case APPLE, FREE_BSD, OPEN_BSD -> {
                 HAVE_SIGNAL_H = true;
 
                 BUS_ADRALN = BsdDefines.BUS_ADRALN;
@@ -2788,7 +2788,7 @@ public class Signal {
                 SIG_UNBLOCK = BsdDefines.SIG_UNBLOCK;
 
                 switch (MultiarchTupelBuilder.getOS()) {
-                    case DARWIN -> {
+                    case APPLE -> {
                         FPE_INTDIV = DarwinDefines.FPE_INTDIV;
                         FPE_INTOVF = DarwinDefines.FPE_INTOVF;
                         MINSIGSTKSZ = DarwinDefines.MINSIGSTKSZ;
@@ -2907,7 +2907,7 @@ public class Signal {
 
     private final static SymbolLookup getRtLib() {
         return switch (MultiarchTupelBuilder.getOS()) {
-            case DARWIN ->
+            case APPLE ->
                 LibcLoader.LIB_C_SYMBOL_LOOKUP;
             case FREE_BSD, LINUX ->
                 LibrtLoader.LIB_RT_SYMBOL_LOOKUP;

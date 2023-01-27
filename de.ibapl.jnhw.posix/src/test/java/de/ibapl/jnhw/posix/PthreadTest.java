@@ -168,18 +168,17 @@ public class PthreadTest {
     @Test
     public void testPthread_getcpuclockid() throws Exception {
         Types.Clockid_t clock_id = Types.Clockid_t.allocateNative(ms);
-        if (MultiarchTupelBuilder.getOS() == OS.DARWIN) {
-            Assertions.assertThrows(NoSuchNativeMethodException.class, () -> {
-                Pthread.pthread_getcpuclockid(Pthread.pthread_self(ms), clock_id);
-            });
-        } else {
-            Assertions.assertThrows(NullPointerException.class, () -> {
-                Pthread.pthread_getcpuclockid(null, clock_id);
-            });
-
+        switch (MultiarchTupelBuilder.getOS()) {
+            case APPLE ->
+                Assertions.assertThrows(NoSuchNativeMethodException.class,
+                        () -> Pthread.pthread_getcpuclockid(Pthread.pthread_self(ms), clock_id));
+            default -> {
+                Assertions.assertThrows(NullPointerException.class,
+                        () -> Pthread.pthread_getcpuclockid(null, clock_id));
 //This will crash with SIGSEV
 //            Pthread.pthread_getcpuclockid(Pthread.Pthread_t.ofAddress(MemoryAddress.ofLong(1024), scope), clock_id);
-            Pthread.pthread_getcpuclockid(Pthread.pthread_self(ms), clock_id);
+                Pthread.pthread_getcpuclockid(Pthread.pthread_self(ms), clock_id);
+            }
         }
     }
 
@@ -278,20 +277,20 @@ public class PthreadTest {
 
         param.sched_priority(Integer.MAX_VALUE);
         switch (MultiarchTupelBuilder.getOS()) {
-            case FREE_BSD, OPEN_BSD -> {
+            case FREE_BSD, OPEN_BSD ->
                 Pthread.pthread_setschedparam(Pthread.pthread_self(ms), policy.int32_t(), param);
-            }
             default -> {
                 NativeErrorException nee = Assertions.assertThrows(NativeErrorException.class, () -> {
                     //TODO we must set this here oterwise error will not be EINVAL but ENOENT
                     Errno.errno(0);
                     Pthread.pthread_setschedparam(Pthread.pthread_self(ms), policy.int32_t(), param);
                 });
-                if (MultiarchTupelBuilder.getOS() == OS.DARWIN) {
-                    //TODO ?why?
-                    ErrnoTest.assertErrnoEquals(0, nee.errno);
-                } else {
-                    ErrnoTest.assertErrnoEquals(Errno.EINVAL, nee.errno);
+                switch (MultiarchTupelBuilder.getOS()) {
+                    case APPLE ->
+                        //TODO ?why?
+                        ErrnoTest.assertErrnoEquals(0, nee.errno);
+                    default ->
+                        ErrnoTest.assertErrnoEquals(Errno.EINVAL, nee.errno);
                 }
             }
         }
@@ -310,10 +309,9 @@ public class PthreadTest {
     public void testPthread_setschedprio() throws Exception {
         JnhwTestLogger.logTest("pthread_setschedprio(");
         switch (MultiarchTupelBuilder.getOS()) {
-            case FREE_BSD, OPEN_BSD, DARWIN ->
-                Assertions.assertThrows(NoSuchNativeMethodException.class, () -> {
-                    Pthread.pthread_setschedprio(Pthread.pthread_self(ms), 0);
-                });
+            case APPLE, FREE_BSD, OPEN_BSD ->
+                Assertions.assertThrows(NoSuchNativeMethodException.class,
+                        () -> Pthread.pthread_setschedprio(Pthread.pthread_self(ms), 0));
             default -> {
                 Assertions.assertThrows(NullPointerException.class, () -> {
                     Pthread.pthread_setschedprio(null, 0);

@@ -242,7 +242,7 @@ public final class NativeLibResolver {
                     new Object[]{libName, classPathLibURL.toString()});
             // On MacOS we can't load the lib directly, we must fix first the internal id and
             // lib path ... only copy to tmp and fix the path solves this
-            if (getOS() != OS.DARWIN) {
+            if (getOS() != OS.APPLE) {
                 try {
                     consumer.accept(classPathLibName);
                     LOG.log(Level.INFO, "\"{0}\" loaded via System.load(\"{1}\")",
@@ -260,7 +260,7 @@ public final class NativeLibResolver {
                 File tmpLib = copyToNativeLibDir(classPathLibURL, formattedLibName);
                 classPathLibName = tmpLib.getAbsolutePath();
 
-                if (getOS() == OS.DARWIN) {
+                if (getOS() == OS.APPLE) {
                     URL classPathLibHelperURL = consumer.getClass().getResource(libResourceName + ".sh");
                     if (classPathLibHelperURL != null) {
                         String helperName = formattedLibName + ".sh";
@@ -296,12 +296,12 @@ public final class NativeLibResolver {
 
     private static File copyToNativeLibDir(URL sourceURL, final String targetName) throws IOException {
         // If nothing helps, do it the hard way: unpack to temp and load that.
-        try ( InputStream is = sourceURL.openStream()) {
+        try (InputStream is = sourceURL.openStream()) {
             File result = new File(NATIVE_TEMP_DIR, targetName);
             LOG.log(Level.INFO, "Try temp copy\nfrom:\t{0}\nto:\t{1}",
                     new Object[]{sourceURL.getFile(), result.getAbsolutePath()});
 
-            try ( FileOutputStream fos = new FileOutputStream(result)) {
+            try (FileOutputStream fos = new FileOutputStream(result)) {
                 byte[] buff = new byte[1024];
                 int i;
                 while ((i = is.read(buff)) > 0) {

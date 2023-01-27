@@ -96,7 +96,7 @@ public class FcntlTest {
             Fcntl.open(file.getAbsolutePath(), Fcntl.O_CREAT | Fcntl.O_EXCL, Stat.S_IRWXU | Stat.S_IRWXG);
         });
         switch (MultiarchTupelBuilder.getOS()) {
-            case DARWIN, FREE_BSD ->
+            case APPLE, FREE_BSD ->
                 ErrnoTest.assertErrnoEquals(Errno.EEXIST, nee.errno);
             case LINUX -> {
                 switch (MultiarchTupelBuilder.getArch()) {
@@ -128,7 +128,7 @@ public class FcntlTest {
                 Fcntl.open64(file.getAbsolutePath(), Fcntl.O_CREAT | Fcntl.O_EXCL, Stat.S_IRWXU | Stat.S_IRWXG);
             });
             switch (MultiarchTupelBuilder.getOS()) {
-                case DARWIN, FREE_BSD ->
+                case APPLE, FREE_BSD ->
                     ErrnoTest.assertErrnoEquals(Errno.EEXIST, nee.errno);
                 case LINUX ->
                     ErrnoTest.assertErrnoEquals(Errno.EEXIST, nee.errno);

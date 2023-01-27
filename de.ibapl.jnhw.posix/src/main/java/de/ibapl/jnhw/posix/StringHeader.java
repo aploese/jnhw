@@ -56,7 +56,7 @@ public class StringHeader {
      */
     static {
         switch (MultiarchTupelBuilder.getOS()) {
-            case DARWIN, FREE_BSD, OPEN_BSD, LINUX ->
+            case APPLE, FREE_BSD, OPEN_BSD, LINUX ->
                 HAVE_STRING_H = true;
             case WINDOWS ->
                 HAVE_STRING_H = false;

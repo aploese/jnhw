@@ -15,34 +15,40 @@ AC_DEFUN([JW_MULTIARCHTUPEL],
     ;;
     darwin*)
 	case "$host_cpu" in
-	x86_64)
-        	JNHW_MULTIARCH_TUPEL="x86_64-darwin-bsd"
+	i686)
+        	JNHW_MULTIARCH_TUPEL="i386-apple-darwin"
+	;;
+	arm*)
+		JNHW_MULTIARCH_TUPEL="arm-apple-darwin"
 	;;
 	*)
-        	fail not supported
+        	JNHW_MULTIARCH_TUPEL="\$(host_cpu)-apple-darwin"
 	;;
 	esac
     ;;
     freebsd*)
 	case "$host_cpu" in
-	x86_64)
-        	JNHW_MULTIARCH_TUPEL="x86_64-freebsd-bsd"
+	i686)
+        	JNHW_MULTIARCH_TUPEL="i386-freebsd-bsd"
+	;;
+	arm*)
+		JNHW_MULTIARCH_TUPEL="arm-freebsd-bsd"
 	;;
 	*)
-        	fail not supported
+        	JNHW_MULTIARCH_TUPEL="\$(host_cpu)-freebsd-bsd"
 	;;
 	esac
     ;;
     openbsd*)
 	case "$host_cpu" in
-	x86_64)
-        	JNHW_MULTIARCH_TUPEL="x86_64-openbsd-bsd"
+	i686)
+        	JNHW_MULTIARCH_TUPEL="i386-openbsd-bsd"
 	;;
-	aarch64)
-        	JNHW_MULTIARCH_TUPEL="aarch64-openbsd-bsd"
+	arm*)
+		JNHW_MULTIARCH_TUPEL="arm-openbsd-bsd"
 	;;
 	*)
-        	fail not supported
+        	JNHW_MULTIARCH_TUPEL="\$(host_cpu)-openbsd-bsd"
 	;;
 	esac
     ;;

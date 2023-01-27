@@ -29,12 +29,14 @@ package de.ibapl.jnhw.libloader;
  */
 public enum MultiarchInfo {
 
-    X86_64__LINUX__GNU(MemoryModel.LP64, Endianess.LITTLE, Arch.X86_64, OS.LINUX, Abi.GNU),
-    I386__LINUX__GNU(MemoryModel.ILP32, Endianess.LITTLE, Arch.I386, OS.LINUX, Abi.GNU),
-    ARM__LINUX__GNU_EABI_HF(MemoryModel.ILP32, Endianess.LITTLE, Arch.ARM, OS.LINUX, Abi.GNU_EABI_HF),
-    ARM__LINUX__GNU_EABI(MemoryModel.ILP32, Endianess.LITTLE, Arch.ARM, OS.LINUX, Abi.GNU_EABI),
+    AARCH64__APPLE_DARWIN(MemoryModel.LP64, Endianess.LITTLE, Arch.X86_64, OS.APPLE, Abi.DARWIN),
+    AARCH64__FREE_BSD__BSD(MemoryModel.LP64, Endianess.LITTLE, Arch.AARCH64, OS.FREE_BSD, Abi.BSD),
     AARCH64__LINUX__GNU(MemoryModel.LP64, Endianess.LITTLE, Arch.AARCH64, OS.LINUX, Abi.GNU),
     AARCH64__OPEN_BSD__BSD(MemoryModel.LP64, Endianess.LITTLE, Arch.AARCH64, OS.OPEN_BSD, Abi.BSD),
+    ARM__LINUX__GNU_EABI_HF(MemoryModel.ILP32, Endianess.LITTLE, Arch.ARM, OS.LINUX, Abi.GNU_EABI_HF),
+    ARM__LINUX__GNU_EABI(MemoryModel.ILP32, Endianess.LITTLE, Arch.ARM, OS.LINUX, Abi.GNU_EABI),
+    I386__LINUX__GNU(MemoryModel.ILP32, Endianess.LITTLE, Arch.I386, OS.LINUX, Abi.GNU),
+    I386__WINDOWS__PE32(MemoryModel.ILP32, Endianess.LITTLE, Arch.I386, OS.WINDOWS, Abi.PE32),
     MIPS_EL__LINUX__GNU(MemoryModel.ILP32, Endianess.LITTLE, Arch.MIPS, OS.LINUX, Abi.GNU),
     MIPS__LINUX__GNU(MemoryModel.ILP32, Endianess.BIG, Arch.MIPS, OS.LINUX, Abi.GNU),
     MIPS_64_EL__LINUX__GNU_ABI_64(MemoryModel.LP64, Endianess.LITTLE, Arch.MIPS_64, OS.LINUX, Abi.GNU_ABI_64),
@@ -45,12 +47,12 @@ public enum MultiarchInfo {
     RISC_V_64__LINUX__GNU(MemoryModel.LP64, Endianess.LITTLE, Arch.RISC_V_64, OS.LINUX, Abi.GNU),
     S390_X__LINUX__GNU(MemoryModel.LP64, Endianess.BIG, Arch.S390_X, OS.LINUX, Abi.GNU),
     SPARC_64__LINUX__GNU(MemoryModel.LP64, Endianess.BIG, Arch.SPARC_64, OS.LINUX, Abi.GNU),
-    X86_64__WINDOWS__PE32_PLUS(MemoryModel.LLP64, Endianess.LITTLE, Arch.X86_64, OS.WINDOWS, Abi.PE32_PLUS),
     X86__WINDOWS__PE32(MemoryModel.ILP32, Endianess.LITTLE, Arch.X86, OS.WINDOWS, Abi.PE32),
-    I386__WINDOWS__PE32(MemoryModel.ILP32, Endianess.LITTLE, Arch.I386, OS.WINDOWS, Abi.PE32),
+    X86_64__APPLE_DARWIN(MemoryModel.LP64, Endianess.LITTLE, Arch.X86_64, OS.APPLE, Abi.DARWIN),
     X86_64__FREE_BSD__BSD(MemoryModel.LP64, Endianess.LITTLE, Arch.X86_64, OS.FREE_BSD, Abi.BSD),
+    X86_64__LINUX__GNU(MemoryModel.LP64, Endianess.LITTLE, Arch.X86_64, OS.LINUX, Abi.GNU),
     X86_64__OPEN_BSD__BSD(MemoryModel.LP64, Endianess.LITTLE, Arch.X86_64, OS.OPEN_BSD, Abi.BSD),
-    X86_64__DARWIN__BSD(MemoryModel.LP64, Endianess.LITTLE, Arch.X86_64, OS.DARWIN, Abi.BSD);
+    X86_64__WINDOWS__PE32_PLUS(MemoryModel.LLP64, Endianess.LITTLE, Arch.X86_64, OS.WINDOWS, Abi.PE32_PLUS);
 
     private MultiarchInfo(MemoryModel memoryModel, Endianess endianess, Arch arch, OS os, Abi abi) {
         this.arch = arch;

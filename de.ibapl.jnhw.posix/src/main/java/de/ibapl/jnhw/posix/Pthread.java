@@ -131,6 +131,10 @@ public class Pthread {
         };
 
         public final static int sizeof = switch (MultiarchTupelBuilder.getOS()) {
+            case APPLE ->
+                64;
+            case FREE_BSD, OPEN_BSD ->
+                8;
             case LINUX ->
                 switch (MultiarchTupelBuilder.getArch()) {
                     case AARCH64 ->
@@ -142,10 +146,6 @@ public class Pthread {
                     default ->
                         throw new NoClassDefFoundError("No pthread.h linux defines for Pthread_attr_t " + MultiarchTupelBuilder.getMultiarch());
                 };
-            case DARWIN ->
-                64;
-            case FREE_BSD, OPEN_BSD ->
-                8;
             default ->
                 throw new NoClassDefFoundError("No pthread.h OS defines for Pthread_attr_t " + MultiarchTupelBuilder.getMultiarch());
         };
@@ -267,7 +267,7 @@ public class Pthread {
 
     private final static SymbolLookup getPthreadLib() {
         return switch (MultiarchTupelBuilder.getOS()) {
-            case DARWIN, FREE_BSD, OPEN_BSD ->
+            case APPLE, FREE_BSD, OPEN_BSD ->
                 LibPthreadLoader.LIB_PTHREAD_SYMBOL_LOOKUP;
             case LINUX ->
                 LibcLoader.LIB_C_SYMBOL_LOOKUP;
@@ -278,7 +278,7 @@ public class Pthread {
 
     private final static SymbolLookup getRtLib() {
         return switch (MultiarchTupelBuilder.getOS()) {
-            case DARWIN ->
+            case APPLE ->
                 LibcLoader.LIB_C_SYMBOL_LOOKUP;
             case FREE_BSD, LINUX ->
                 LibrtLoader.LIB_RT_SYMBOL_LOOKUP;
@@ -447,16 +447,7 @@ public class Pthread {
      */
     static {
         switch (MultiarchTupelBuilder.getOS()) {
-            case LINUX -> {
-                HAVE_PTHREAD_H = true;
-                PTHREAD_CANCEL_ASYNCHRONOUS = LinuxDefines.PTHREAD_CANCEL_ASYNCHRONOUS;
-                PTHREAD_CANCEL_DEFERRED = LinuxDefines.PTHREAD_CANCEL_DEFERRED;
-                PTHREAD_CANCEL_DISABLE = LinuxDefines.PTHREAD_CANCEL_DISABLE;
-                PTHREAD_CANCEL_ENABLE = LinuxDefines.PTHREAD_CANCEL_ENABLE;
-                PTHREAD_EXPLICIT_SCHED = LinuxDefines.PTHREAD_EXPLICIT_SCHED;
-                PTHREAD_INHERIT_SCHED = LinuxDefines.PTHREAD_INHERIT_SCHED;
-            }
-            case DARWIN -> {
+            case APPLE -> {
                 HAVE_PTHREAD_H = true;
                 PTHREAD_CANCEL_ASYNCHRONOUS = DarwinDefines.PTHREAD_CANCEL_ASYNCHRONOUS;
                 PTHREAD_CANCEL_DEFERRED = DarwinDefines.PTHREAD_CANCEL_DEFERRED;
@@ -473,6 +464,15 @@ public class Pthread {
                 PTHREAD_CANCEL_ENABLE = FreeBsd_OpenBsd_Defines.PTHREAD_CANCEL_ENABLE;
                 PTHREAD_EXPLICIT_SCHED = FreeBsd_OpenBsd_Defines.PTHREAD_EXPLICIT_SCHED;
                 PTHREAD_INHERIT_SCHED = FreeBsd_OpenBsd_Defines.PTHREAD_INHERIT_SCHED;
+            }
+            case LINUX -> {
+                HAVE_PTHREAD_H = true;
+                PTHREAD_CANCEL_ASYNCHRONOUS = LinuxDefines.PTHREAD_CANCEL_ASYNCHRONOUS;
+                PTHREAD_CANCEL_DEFERRED = LinuxDefines.PTHREAD_CANCEL_DEFERRED;
+                PTHREAD_CANCEL_DISABLE = LinuxDefines.PTHREAD_CANCEL_DISABLE;
+                PTHREAD_CANCEL_ENABLE = LinuxDefines.PTHREAD_CANCEL_ENABLE;
+                PTHREAD_EXPLICIT_SCHED = LinuxDefines.PTHREAD_EXPLICIT_SCHED;
+                PTHREAD_INHERIT_SCHED = LinuxDefines.PTHREAD_INHERIT_SCHED;
             }
             default ->
                 throw new NoClassDefFoundError("No pthread.h OS defines for " + MultiarchTupelBuilder.getMultiarch());
