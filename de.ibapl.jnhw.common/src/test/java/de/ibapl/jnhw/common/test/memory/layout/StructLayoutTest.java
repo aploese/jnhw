@@ -23,16 +23,42 @@ package de.ibapl.jnhw.common.test.memory.layout;
 
 import de.ibapl.jnhw.common.datatypes.BaseDataType;
 import de.ibapl.jnhw.common.memory.layout.Alignment;
+import de.ibapl.jnhw.common.test.JnhwTestLogger;
 import de.ibapl.jnhw.common.test.LibJnhwCommonTestLoader;
 import de.ibapl.jnhw.libloader.MultiarchTupelBuilder;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInfo;
 
 /**
  *
  * @author aploese
  */
 public class StructLayoutTest {
+
+    @BeforeAll
+    public static void setUpBeforeClass(TestInfo testTnfo) throws Exception {
+        JnhwTestLogger.logBeforeAll(testTnfo);
+    }
+
+    @AfterAll
+    public static void tearDownAfterClass(TestInfo testTnfo) throws Exception {
+        JnhwTestLogger.logAfterAll(testTnfo);
+    }
+
+    @BeforeEach
+    public void setUpBeforeEach(TestInfo testTnfo) throws Exception {
+        JnhwTestLogger.logBeforeEach(testTnfo);
+    }
+
+    @AfterEach
+    public void tearDownAfterEach(TestInfo testTnfo) throws Exception {
+        JnhwTestLogger.logAfterEach(testTnfo);
+    }
 
     private int alignOf_struct_EMPTY() {
         return LibJnhwCommonTestLoader.invokeExact_Int_V("alignOf_struct_EMPTY");

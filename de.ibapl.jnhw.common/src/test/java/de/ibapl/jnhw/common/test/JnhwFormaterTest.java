@@ -24,8 +24,13 @@ package de.ibapl.jnhw.common.test;
 import de.ibapl.jnhw.common.util.JnhwFormater;
 import de.ibapl.jnhw.libloader.MultiarchTupelBuilder;
 import java.lang.foreign.MemoryAddress;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.AfterEach;
 import static org.junit.jupiter.api.Assertions.*;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInfo;
 
 /**
  *
@@ -33,7 +38,27 @@ import org.junit.jupiter.api.Test;
  */
 public class JnhwFormaterTest {
 
+    @BeforeAll
+    public static void setUpBeforeClass(TestInfo testTnfo) throws Exception {
+        JnhwTestLogger.logBeforeAll(testTnfo);
+    }
+
+    @AfterAll
+    public static void tearDownAfterClass(TestInfo testTnfo) throws Exception {
+        JnhwTestLogger.logAfterAll(testTnfo);
+    }
+
     public JnhwFormaterTest() {
+    }
+
+    @BeforeEach
+    public void setUpBeforeEach(TestInfo testTnfo) throws Exception {
+        JnhwTestLogger.logBeforeEach(testTnfo);
+    }
+
+    @AfterEach
+    public void tearDownAfterEach(TestInfo testTnfo) throws Exception {
+        JnhwTestLogger.logAfterEach(testTnfo);
     }
 
     @Test

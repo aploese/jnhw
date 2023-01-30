@@ -25,6 +25,7 @@ import de.ibapl.jnhw.libloader.MultiarchTupelBuilder;
 import de.ibapl.jnhw.libloader.OS;
 import de.ibapl.jnhw.util.posix.DefinesTest;
 import java.io.File;
+import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import static org.junit.jupiter.api.Assertions.*;
@@ -43,24 +44,21 @@ public class StdioTest {
 
     @BeforeAll
     public static void checkBeforeAll_HAVE_STDIO_H() throws Exception {
-        JnhwTestLogger.logBeforeAllBeginn("checkBeforeAll_HAVE_STDIO_H");
-        if (MultiarchTupelBuilder.getOS() == OS.WINDOWS) {
-            Assertions.assertFalse(Stdio.HAVE_STDIO_H, "not expected to have stdio.h");
-        } else {
-            Assertions.assertTrue(Stdio.HAVE_STDIO_H, "expected to have stdio.h");
-        }
+        JnhwTestLogger.logBeforeAllBegin("checkBeforeAll_HAVE_STDIO_H");
+        Assertions.assertTrue(Stdio.HAVE_STDIO_H, "expected to have stdio.h");
         JnhwTestLogger.logBeforeAllEnd("checkBeforeAll_HAVE_STDIO_H");
     }
 
     @BeforeAll
     public static void checkBeforeAll_StdioDefines() throws Exception {
-        JnhwTestLogger.logBeforeAllBeginn("checkBeforeAll_StdioDefines");
-        if (MultiarchTupelBuilder.getOS() == OS.WINDOWS) {
-            JnhwTestLogger.logBeforeAllEnd("checkBeforeAll_StdioDefines");
-            return;
-        }
+        JnhwTestLogger.logBeforeAllBegin("checkBeforeAll_StdioDefines");
         DefinesTest.testDefines(Stdio.class, "HAVE_STDIO_H");
         JnhwTestLogger.logBeforeAllEnd("checkBeforeAll_StdioDefines");
+    }
+
+    @AfterAll
+    public static void tearDownAfterClass(TestInfo testTnfo) throws Exception {
+        JnhwTestLogger.logAfterAll(testTnfo);
     }
 
     @BeforeEach

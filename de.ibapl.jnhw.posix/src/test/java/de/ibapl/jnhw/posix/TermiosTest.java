@@ -30,6 +30,7 @@ import static de.ibapl.jnhw.posix.Termios.CRTSCTS;
 import static de.ibapl.jnhw.posix.Termios.CS8;
 import de.ibapl.jnhw.util.posix.DefinesTest;
 import java.lang.foreign.MemorySession;
+import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import static org.junit.jupiter.api.Assertions.*;
@@ -44,33 +45,21 @@ public class TermiosTest {
 
     @BeforeAll
     public static void checkBeforeAll_HAVE_TERMIOS_H() throws Exception {
-        JnhwTestLogger.logBeforeAllBeginn("checkBeforeAll_HAVE_TERMIOS_H");
-        if (MultiarchTupelBuilder.getOS() == OS.WINDOWS) {
-            assertFalse(Termios.HAVE_TERMIOS_H, "not expected to have termios.h");
-        } else {
-            assertTrue(Termios.HAVE_TERMIOS_H, "expected to have termios.h");
-        }
+        JnhwTestLogger.logBeforeAllBegin("checkBeforeAll_HAVE_TERMIOS_H");
+        assertTrue(Termios.HAVE_TERMIOS_H, "expected to have termios.h");
         JnhwTestLogger.logBeforeAllEnd("checkBeforeAll_HAVE_TERMIOS_H");
     }
 
     @BeforeAll
     public static void checkBeforeAll_TermiosDefines() throws Exception {
-        JnhwTestLogger.logBeforeAllBeginn("checkBeforeAll_TermiosDefines");
-        if (MultiarchTupelBuilder.getOS() == OS.WINDOWS) {
-            JnhwTestLogger.logBeforeAllEnd("checkBeforeAll_TermiosDefines");
-            return;
-        }
+        JnhwTestLogger.logBeforeAllBegin("checkBeforeAll_TermiosDefines");
         DefinesTest.testDefines(Termios.class, "HAVE_TERMIOS_H");
         JnhwTestLogger.logBeforeAllEnd("checkBeforeAll_TermiosDefines");
     }
 
     @BeforeAll
     public static void checkBeforeAll_StructTermios() throws Exception {
-        JnhwTestLogger.logBeforeAllBeginn("checkBeforeAll_StructTermios");
-        if (MultiarchTupelBuilder.getOS() == OS.WINDOWS) {
-            JnhwTestLogger.logBeforeAllEnd("checkBeforeAll_StructTermios");
-            return;
-        }
+        JnhwTestLogger.logBeforeAllBegin("checkBeforeAll_StructTermios");
         Assertions.assertAll(
                 () -> Assertions.assertEquals(LibJnhwPosixTestLoader.invoke_sI___V("StructTermios_sizeof"), Termios.StructTermios.sizeof, "sizeof"),
                 () -> Assertions.assertEquals(LibJnhwPosixTestLoader.invoke_sI___V("StructTermios_alignof"), Termios.StructTermios.alignof.alignof, "alignof"),
@@ -84,6 +73,11 @@ public class TermiosTest {
                 () -> Assertions.assertEquals(LibJnhwPosixTestLoader.invoke_sI___V("StructTermios_offsetof_c_ospeed"), Termios.StructTermios.offsetof_C_ospeed, "offsetof_C_ospeed")
         );
         JnhwTestLogger.logBeforeAllEnd("checkBeforeAll_StructTermios");
+    }
+
+    @AfterAll
+    public static void tearDownAfterClass(TestInfo testTnfo) throws Exception {
+        JnhwTestLogger.logAfterAll(testTnfo);
     }
 
     private MemorySession ms;

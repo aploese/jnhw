@@ -26,15 +26,20 @@ import de.ibapl.jnhw.common.memory.MemoryHeap;
 import de.ibapl.jnhw.common.memory.OpaqueMemory;
 import de.ibapl.jnhw.common.memory.PointerArray;
 import de.ibapl.jnhw.common.memory.layout.Alignment;
+import de.ibapl.jnhw.common.test.JnhwTestLogger;
 import de.ibapl.jnhw.common.test.LibJnhwCommonTestLoader;
 import de.ibapl.jnhw.libloader.MultiarchTupelBuilder;
 import java.lang.foreign.MemoryAddress;
 import java.lang.foreign.MemorySegment;
 import java.lang.foreign.MemorySession;
 import java.lang.foreign.ValueLayout;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInfo;
 
 /**
  *
@@ -43,11 +48,26 @@ import org.junit.jupiter.api.Test;
 public class PointerArrayTest {
 
     @BeforeAll
-    public static void setUpBeforeClass() throws Exception {
-        LibJnhwCommonTestLoader.touch();
+    public static void setUpBeforeClass(TestInfo testTnfo) throws Exception {
+        JnhwTestLogger.logBeforeAll(testTnfo);
+    }
+
+    @AfterAll
+    public static void tearDownAfterClass(TestInfo testTnfo) throws Exception {
+        JnhwTestLogger.logAfterAll(testTnfo);
     }
 
     public PointerArrayTest() {
+    }
+
+    @BeforeEach
+    public void setUpBeforeEach(TestInfo testTnfo) throws Exception {
+        JnhwTestLogger.logBeforeEach(testTnfo);
+    }
+
+    @AfterEach
+    public void tearDownAfterEach(TestInfo testTnfo) throws Exception {
+        JnhwTestLogger.logAfterEach(testTnfo);
     }
 
     /**
@@ -83,7 +103,6 @@ public class PointerArrayTest {
     @Test
     @SuppressWarnings("unchecked")
     public void testSetAndGet() {
-        System.out.println("de.ibapl.jnhw.common.test.memory.PointerArrayTest.testSetAndGet()");
         try (MemorySession ms = MemorySession.openConfined()) {
             final OpaqueMemory element1 = MemoryHeap.wrap(MemorySegment.allocateNative(8, ms));
             OpaqueMemory.setByte(element1, 0, (byte) 1);
@@ -133,7 +152,6 @@ public class PointerArrayTest {
     @SuppressWarnings("unchecked")
     public void testNativeToString() {
         try (MemorySession ms = MemorySession.openConfined()) {
-            System.out.println("toString");
             PointerArray<OpaqueMemory> instance = new PointerArray<>(MemorySegment.allocateNative(6 * BaseDataType.uintptr_t.SIZE_OF, ms), 0, 6);
             OpaqueMemory element1 = MemoryHeap.wrap(MemorySegment.allocateNative(1, ms));
             instance.set(1, element1);

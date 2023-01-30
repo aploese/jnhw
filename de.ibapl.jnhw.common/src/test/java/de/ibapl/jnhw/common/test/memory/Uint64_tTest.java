@@ -24,10 +24,16 @@ package de.ibapl.jnhw.common.test.memory;
 import de.ibapl.jnhw.common.datatypes.BaseDataType;
 import de.ibapl.jnhw.common.memory.Uint64_t;
 import de.ibapl.jnhw.common.memory.layout.Alignment;
+import de.ibapl.jnhw.common.test.JnhwTestLogger;
 import java.lang.foreign.MemorySegment;
 import java.lang.foreign.MemorySession;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.AfterEach;
 import static org.junit.jupiter.api.Assertions.*;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInfo;
 
 /**
  *
@@ -35,7 +41,27 @@ import org.junit.jupiter.api.Test;
  */
 public class Uint64_tTest {
 
+    @BeforeAll
+    public static void setUpBeforeClass(TestInfo testTnfo) throws Exception {
+        JnhwTestLogger.logBeforeAll(testTnfo);
+    }
+
+    @AfterAll
+    public static void tearDownAfterClass(TestInfo testTnfo) throws Exception {
+        JnhwTestLogger.logAfterAll(testTnfo);
+    }
+
     public Uint64_tTest() {
+    }
+
+    @BeforeEach
+    public void setUpBeforeEach(TestInfo testTnfo) throws Exception {
+        JnhwTestLogger.logBeforeEach(testTnfo);
+    }
+
+    @AfterEach
+    public void tearDownAfterEach(TestInfo testTnfo) throws Exception {
+        JnhwTestLogger.logAfterEach(testTnfo);
     }
 
     /**
@@ -59,7 +85,7 @@ public class Uint64_tTest {
      */
     @Test
     public void testRawUint64_t() {
-        try ( MemorySession ms = MemorySession.openConfined()) {
+        try (MemorySession ms = MemorySession.openConfined()) {
             Uint64_t instance = Uint64_t.allocateNative(ms);
             long expResult = 0x08070605040302010L;
             instance.uint64_t(expResult);
@@ -69,7 +95,7 @@ public class Uint64_tTest {
 
     @Test
     public void testNativeToString() {
-        try ( MemorySession ms = MemorySession.openConfined()) {
+        try (MemorySession ms = MemorySession.openConfined()) {
             Uint64_t instance = new Uint64_t(MemorySegment.allocateNative(BaseDataType.uint64_t.SIZE_OF, ms), 0);
             instance.uint64_t(-2);
             assertEquals(Long.toUnsignedString(-2), instance.nativeToString());

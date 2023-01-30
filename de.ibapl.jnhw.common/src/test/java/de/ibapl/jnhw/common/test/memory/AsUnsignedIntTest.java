@@ -23,10 +23,16 @@ package de.ibapl.jnhw.common.test.memory;
 
 import de.ibapl.jnhw.common.datatypes.BaseDataType;
 import de.ibapl.jnhw.common.memory.AsUnsignedInt;
+import de.ibapl.jnhw.common.test.JnhwTestLogger;
 import java.lang.foreign.MemorySegment;
 import java.lang.foreign.MemorySession;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.AfterEach;
 import static org.junit.jupiter.api.Assertions.*;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInfo;
 
 /**
  *
@@ -34,9 +40,29 @@ import org.junit.jupiter.api.Test;
  */
 public class AsUnsignedIntTest {
 
+    @BeforeAll
+    public static void setUpBeforeClass(TestInfo testTnfo) throws Exception {
+        JnhwTestLogger.logBeforeAll(testTnfo);
+    }
+
+    @AfterAll
+    public static void tearDownAfterClass(TestInfo testTnfo) throws Exception {
+        JnhwTestLogger.logAfterAll(testTnfo);
+    }
+
+    @BeforeEach
+    public void setUpBeforeEach(TestInfo testTnfo) throws Exception {
+        JnhwTestLogger.logBeforeEach(testTnfo);
+    }
+
+    @AfterEach
+    public void tearDownAfterEach(TestInfo testTnfo) throws Exception {
+        JnhwTestLogger.logAfterEach(testTnfo);
+    }
+
     @Test
     public void testNative() {
-        try ( MemorySession ms = MemorySession.openConfined()) {
+        try (MemorySession ms = MemorySession.openConfined()) {
             AsUnsignedInt instance = AsUnsignedInt.allocateNative(BaseDataType.uint16_t, ms);
             instance.setFromUnsignedInt(33);
             assertEquals(33, instance.getAsUnsignedInt());

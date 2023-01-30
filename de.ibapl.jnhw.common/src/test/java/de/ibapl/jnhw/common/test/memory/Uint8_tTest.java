@@ -24,10 +24,16 @@ package de.ibapl.jnhw.common.test.memory;
 import de.ibapl.jnhw.common.datatypes.BaseDataType;
 import de.ibapl.jnhw.common.memory.Uint8_t;
 import de.ibapl.jnhw.common.memory.layout.Alignment;
+import de.ibapl.jnhw.common.test.JnhwTestLogger;
 import java.lang.foreign.MemorySegment;
 import java.lang.foreign.MemorySession;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.AfterEach;
 import static org.junit.jupiter.api.Assertions.*;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInfo;
 
 /**
  *
@@ -35,7 +41,27 @@ import org.junit.jupiter.api.Test;
  */
 public class Uint8_tTest {
 
+    @BeforeAll
+    public static void setUpBeforeClass(TestInfo testTnfo) throws Exception {
+        JnhwTestLogger.logBeforeAll(testTnfo);
+    }
+
+    @AfterAll
+    public static void tearDownAfterClass(TestInfo testTnfo) throws Exception {
+        JnhwTestLogger.logAfterAll(testTnfo);
+    }
+
     public Uint8_tTest() {
+    }
+
+    @BeforeEach
+    public void setUpBeforeEach(TestInfo testTnfo) throws Exception {
+        JnhwTestLogger.logBeforeEach(testTnfo);
+    }
+
+    @AfterEach
+    public void tearDownAfterEach(TestInfo testTnfo) throws Exception {
+        JnhwTestLogger.logAfterEach(testTnfo);
     }
 
     /**
@@ -59,7 +85,7 @@ public class Uint8_tTest {
      */
     @Test
     public void testRawUint8_t() {
-        try ( MemorySession ms = MemorySession.openConfined()) {
+        try (MemorySession ms = MemorySession.openConfined()) {
             Uint8_t instance = Uint8_t.allocateNative(ms);
             byte expResult = 0x10;
             instance.uint8_t(expResult);
@@ -72,7 +98,7 @@ public class Uint8_tTest {
 
     @Test
     public void testNativeToString() {
-        try ( MemorySession ms = MemorySession.openConfined()) {
+        try (MemorySession ms = MemorySession.openConfined()) {
             Uint8_t instance = new Uint8_t(MemorySegment.allocateNative(BaseDataType.uint8_t.SIZE_OF, ms), 0);
             instance.uint8_t((byte) -2);
             assertEquals(String.valueOf(0x00FF & -2), instance.nativeToString());

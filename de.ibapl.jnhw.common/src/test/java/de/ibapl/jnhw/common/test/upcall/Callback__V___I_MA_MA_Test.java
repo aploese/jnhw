@@ -29,16 +29,20 @@ import de.ibapl.jnhw.common.memory.MemoryHeap;
 import de.ibapl.jnhw.common.memory.NativeFunctionPointer;
 import de.ibapl.jnhw.common.memory.OpaqueMemory;
 import de.ibapl.jnhw.common.nativepointer.FunctionPtr__V___I_MA_MA;
+import de.ibapl.jnhw.common.test.JnhwTestLogger;
 import de.ibapl.jnhw.common.test.LibJnhwCommonTestLoader;
 import de.ibapl.jnhw.common.upcall.CallbackFactory__V___I_MA_MA;
 import de.ibapl.jnhw.common.upcall.Callback__V___I_MA_MA;
 import java.lang.foreign.MemoryAddress;
 import java.lang.foreign.MemorySegment;
 import java.lang.foreign.MemorySession;
+import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
 import static org.junit.jupiter.api.Assertions.*;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInfo;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 
@@ -59,45 +63,14 @@ public class Callback__V___I_MA_MA_Test {
         doCallback__V___I_MA_MA = JnhwMh__V__sI__A__A.mandatoryOf(LibJnhwCommonTestLoader.SYMBOL_LOOKUP, "doCallback__V___I_MA_MA", BaseDataType.int32_t, BaseDataType.uintptr_t, BaseDataType.uintptr_t);
     }
 
-    private MemorySession ms;
-
-    static class B extends MemoryHeap {
-
-        public final static int SIZE_OF = 2;
-
-        public B(MemoryAddress nativeAddress, MemorySession ms) {
-            super(MemorySegment.ofAddress(nativeAddress, SIZE_OF, ms), 0, SIZE_OF);
-        }
-
-        public B(MemorySession ms) {
-            super(MemorySegment.allocateNative(SIZE_OF, ms), 0, SIZE_OF);
-        }
-
+    @BeforeAll
+    public static void setUpBeforeClass(TestInfo testTnfo) throws Exception {
+        JnhwTestLogger.logBeforeAll(testTnfo);
     }
 
-    static class C extends MemoryHeap {
-
-        public final static int SIZE_OF = 4;
-
-        public C(MemoryAddress nativeAddress, MemorySession ms) {
-            super(MemorySegment.ofAddress(nativeAddress, SIZE_OF, ms), 0, SIZE_OF);
-        }
-
-        public C(MemorySession ms) {
-            super(MemorySegment.allocateNative(SIZE_OF, ms), 0, SIZE_OF);
-        }
-
-    }
-
-    @BeforeEach
-    public void setUpBefore() throws Exception {
-        System.gc();
-        ms = MemorySession.openConfined();
-    }
-
-    @AfterEach
-    public void cleanupAfterEach() throws Exception {
-        ms.close();
+    @AfterAll
+    public static void tearDownAfterClass(TestInfo testTnfo) throws Exception {
+        JnhwTestLogger.logAfterAll(testTnfo);
     }
 
     private static FunctionPtr__V___I_MA_MA getCallback__V___I_MA_MA() {
@@ -124,22 +97,27 @@ public class Callback__V___I_MA_MA_Test {
         }
     }
 
-    private class DummyCB32 extends Callback__V___I_MA_MA<OpaqueMemory, OpaqueMemory> {
+    private MemorySession ms;
 
-        @Override
-        protected void callback(int value, MemoryAddress a, MemoryAddress b) {
-            throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-        }
-
+    @BeforeEach
+    public void setUpBeforeEach(TestInfo testTnfo) throws Exception {
+        JnhwTestLogger.logBeforeEach(testTnfo);
     }
 
-    private class DummyCB64 extends Callback__V___I_MA_MA<OpaqueMemory, OpaqueMemory> {
+    @AfterEach
+    public void tearDownAfterEach(TestInfo testTnfo) throws Exception {
+        JnhwTestLogger.logAfterEach(testTnfo);
+    }
 
-        @Override
-        protected void callback(int value, MemoryAddress a, MemoryAddress b) {
-            throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-        }
+    @BeforeEach
+    public void setUpBefore() throws Exception {
+        System.gc();
+        ms = MemorySession.openConfined();
+    }
 
+    @AfterEach
+    public void cleanupAfterEach() throws Exception {
+        ms.close();
     }
 
     /**
@@ -149,7 +127,6 @@ public class Callback__V___I_MA_MA_Test {
     @Test
     @SuppressWarnings("UnusedAssignment")
     public void testMAX_CALL_BACKS() {
-        System.out.println("MAX_CALL_BACKS");
         int maxCB = CallbackFactory__V___I_MA_MA.MAX_CALL_BACKS;
         assertEquals(16, maxCB);
         Callback__V___I_MA_MA<?, ?>[] cbs = new Callback__V___I_MA_MA[maxCB];
@@ -197,7 +174,7 @@ public class Callback__V___I_MA_MA_Test {
         0x04030201,
         0xf4030201})
     public void testCallAndRelease(final int testValueA) {
-        System.out.printf("Callback__V__I_MA_MA_Test.testCallAndRelease 0x%08x %1$d \n", testValueA);
+        JnhwTestLogger.logTest("Callback__V__I_MA_MA_Test.testCallAndRelease 0x%08x %1$d \n", testValueA);
         final int[] refA = new int[1];
         final MemoryAddress[] refB = new MemoryAddress[1];
         final MemoryAddress[] refC = new MemoryAddress[1];
@@ -258,6 +235,52 @@ public class Callback__V___I_MA_MA_Test {
         refA[0] = -1;
         doCallback__V___I_MA_MA(testValueA / 2, b, c);
         assertEquals(-1, refA[0]);
+    }
+
+    static class B extends MemoryHeap {
+
+        public final static int SIZE_OF = 2;
+
+        public B(MemoryAddress nativeAddress, MemorySession ms) {
+            super(MemorySegment.ofAddress(nativeAddress, SIZE_OF, ms), 0, SIZE_OF);
+        }
+
+        public B(MemorySession ms) {
+            super(MemorySegment.allocateNative(SIZE_OF, ms), 0, SIZE_OF);
+        }
+
+    }
+
+    static class C extends MemoryHeap {
+
+        public final static int SIZE_OF = 4;
+
+        public C(MemoryAddress nativeAddress, MemorySession ms) {
+            super(MemorySegment.ofAddress(nativeAddress, SIZE_OF, ms), 0, SIZE_OF);
+        }
+
+        public C(MemorySession ms) {
+            super(MemorySegment.allocateNative(SIZE_OF, ms), 0, SIZE_OF);
+        }
+
+    }
+
+    private class DummyCB32 extends Callback__V___I_MA_MA<OpaqueMemory, OpaqueMemory> {
+
+        @Override
+        protected void callback(int value, MemoryAddress a, MemoryAddress b) {
+            throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        }
+
+    }
+
+    private class DummyCB64 extends Callback__V___I_MA_MA<OpaqueMemory, OpaqueMemory> {
+
+        @Override
+        protected void callback(int value, MemoryAddress a, MemoryAddress b) {
+            throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        }
+
     }
 
 }

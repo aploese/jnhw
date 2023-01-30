@@ -29,6 +29,7 @@ import de.ibapl.jnhw.posix.JnhwTestLogger;
 import de.ibapl.jnhw.util.posix.DefinesTest;
 import de.ibapl.jnhw.util.posix.PosixDataType;
 import java.lang.foreign.MemorySession;
+import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import static org.junit.jupiter.api.Assertions.*;
@@ -47,26 +48,22 @@ public class TypesTest {
 
     @BeforeAll
     public static void checkBeforeAll_HAVE_SYS_TYPES_H() throws Exception {
-        JnhwTestLogger.logBeforeAllBeginn("checkBeforeAll_HAVE_SYS_TYPES_H");
-        if (MultiarchTupelBuilder.getOS() == OS.WINDOWS) {
-            Assertions.assertFalse(Types.HAVE_SYS_TYPES_H, "not expected to have sys/types.h");
-        } else {
-            Assertions.assertTrue(Types.HAVE_SYS_TYPES_H, "expected to have sys/types.h");
-        }
+        JnhwTestLogger.logBeforeAllBegin("checkBeforeAll_HAVE_SYS_TYPES_H");
+        Assertions.assertTrue(Types.HAVE_SYS_TYPES_H, "expected to have sys/types.h");
         JnhwTestLogger.logBeforeAllEnd("checkBeforeAll_HAVE_SYS_TYPES_H");
     }
 
     @BeforeAll
     public static void checkBeforeAll_StdioDefines() throws Exception {
-        JnhwTestLogger.logBeforeAllBeginn("checkBeforeAll_StdioDefines");
-        if (MultiarchTupelBuilder.getOS() == OS.WINDOWS) {
-            JnhwTestLogger.logBeforeAllEnd("checkBeforeAll_StdioDefines");
-            return;
-        }
+        JnhwTestLogger.logBeforeAllBegin("checkBeforeAll_StdioDefines");
         DefinesTest.testDefines(Types.class, "HAVE_SYS_TYPES_H");
         JnhwTestLogger.logBeforeAllEnd("checkBeforeAll_StdioDefines");
     }
 
+    @AfterAll
+    public static void tearDownAfterClass(TestInfo testTnfo) throws Exception {
+        JnhwTestLogger.logAfterAll(testTnfo);
+    }
     private MemorySession ms;
 
     @BeforeEach

@@ -28,16 +28,20 @@ import de.ibapl.jnhw.common.downcall.JnhwMh__V___A;
 import de.ibapl.jnhw.common.downcall.JnhwMh__V__sI;
 import de.ibapl.jnhw.common.memory.NativeFunctionPointer;
 import de.ibapl.jnhw.common.nativepointer.FunctionPtr__V___I;
+import de.ibapl.jnhw.common.test.JnhwTestLogger;
 import de.ibapl.jnhw.common.test.LibJnhwCommonTestLoader;
 import de.ibapl.jnhw.common.upcall.CallbackFactory__V___I;
 import de.ibapl.jnhw.common.upcall.Callback__V___I;
 import java.lang.foreign.MemoryAddress;
 import java.lang.foreign.MemorySegment;
 import java.lang.foreign.MemorySession;
+import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
 import static org.junit.jupiter.api.Assertions.*;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInfo;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 
@@ -58,26 +62,14 @@ public class Callback__V___I_Test {
         doCallback__V___I = JnhwMh__V__BL_sI.mandatoryOf(LibJnhwCommonTestLoader.SYMBOL_LOOKUP, "doCallback__V___I", BaseDataType.C_char, BaseDataType.int32_t);
     }
 
-    private class DummyCB extends Callback__V___I {
-
-        @Override
-        protected void callback(int value) {
-            throw new UnsupportedOperationException("Not supported yet.");
-        }
-
+    @BeforeAll
+    public static void setUpBeforeClass(TestInfo testTnfo) throws Exception {
+        JnhwTestLogger.logBeforeAll(testTnfo);
     }
 
-    private MemorySession ms;
-
-    @BeforeEach
-    public void setUpBefore() throws Exception {
-        System.gc();
-        ms = MemorySession.openConfined();
-    }
-
-    @AfterEach
-    public void cleanupAfterEach() throws Exception {
-        ms.close();
+    @AfterAll
+    public static void tearDownAfterClass(TestInfo testTnfo) throws Exception {
+        JnhwTestLogger.logAfterAll(testTnfo);
     }
 
     private static FunctionPtr__V___I getCallback__V___I() {
@@ -103,6 +95,28 @@ public class Callback__V___I_Test {
             throw new RuntimeException(t);
         }
     }
+    private MemorySession ms;
+
+    @BeforeEach
+    public void setUpBeforeEach(TestInfo testTnfo) throws Exception {
+        JnhwTestLogger.logBeforeEach(testTnfo);
+    }
+
+    @AfterEach
+    public void tearDownAfterEach(TestInfo testTnfo) throws Exception {
+        JnhwTestLogger.logAfterEach(testTnfo);
+    }
+
+    @BeforeEach
+    public void setUpBefore() throws Exception {
+        System.gc();
+        ms = MemorySession.openConfined();
+    }
+
+    @AfterEach
+    public void cleanupAfterEach() throws Exception {
+        ms.close();
+    }
 
     /**
      * Test of MAX_INT_CONSUMER_CALLBACKS method, of class
@@ -110,7 +124,6 @@ public class Callback__V___I_Test {
      */
     @Test
     public void testMAX_CALL_BACKS() {
-        System.out.println("MAX_CALL_BACKS");
         int maxCB = CallbackFactory__V___I.MAX_CALL_BACKS;
         assertEquals(16, maxCB);
         Callback__V___I[] cbs = new Callback__V___I[maxCB];
@@ -159,7 +172,7 @@ public class Callback__V___I_Test {
         0x04030201,
         0xf4030201})
     public void testCallAndRelease(final int testValue) {
-        System.out.printf("Callback__V__L_Test.testCallAndRelease 0x%08x %1$d \n", testValue);
+        JnhwTestLogger.logTest("Callback__V__L_Test.testCallAndRelease 0x%08x %1$d \n", testValue);
         final int[] ref = new int[1];
         final Callback__V___I NULL_PTR = new Callback__V___I((t) -> MemoryAddress.NULL) {
             @Override
@@ -229,6 +242,15 @@ public class Callback__V___I_Test {
         ).invoke__V__sI(testValue / 2);
 
         assertEquals(-1, ref[0]);
+
+    }
+
+    private class DummyCB extends Callback__V___I {
+
+        @Override
+        protected void callback(int value) {
+            throw new UnsupportedOperationException("Not supported yet.");
+        }
 
     }
 

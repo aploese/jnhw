@@ -40,6 +40,10 @@ public enum Abi {
      */
     GNU("gnu"),
     /**
+     * The GNU 64 bit ABI
+     */
+    GNU_ABI_64("gnuabi64"),
+    /**
      * GNU EABI Hard Floatingpoint
      */
     GNU_EABI_HF("gnueabihf"),
@@ -48,26 +52,14 @@ public enum Abi {
      */
     GNU_EABI("gnueabi"),
     /**
-     * The GNU 64 bit ABI
-     */
-    GNU_ABI_64("gnuabi64") {
-
-        @Override
-        public String getAbiShortName(MemoryModel memoryModel) {
-            return switch (memoryModel) {
-                case LP64 ->
-                    "gnu";
-                default ->
-                    super.getAbiShortName(memoryModel);
-            };
-        }
-    },
-    PE32_PLUS("pe32+"),
-    /**
      * Windows ABI on x86 or i386 (32 bit)
      *
      */
-    PE32("pe32");
+    PE32("pe32"),
+    /**
+     * Windows ABI on x86_64 (64 bit)
+     */
+    PE32_PLUS("pe32+");
 
     public final String abiName;
 

@@ -25,6 +25,7 @@ import de.ibapl.jnhw.common.exception.NoSuchNativeMethodException;
 import de.ibapl.jnhw.libloader.MultiarchTupelBuilder;
 import de.ibapl.jnhw.libloader.OS;
 import de.ibapl.jnhw.util.posix.DefinesTest;
+import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import static org.junit.jupiter.api.Assertions.*;
@@ -43,24 +44,21 @@ public class StringHeaderTest {
 
     @BeforeAll
     public static void checkBeforeAll_HAVE_STRING_H() throws Exception {
-        JnhwTestLogger.logBeforeAllBeginn("checkBeforeAll_HAVE_STRING_H");
-        if (MultiarchTupelBuilder.getOS() == OS.WINDOWS) {
-            Assertions.assertFalse(StringHeader.HAVE_STRING_H, "not expected to have string.h");
-        } else {
-            Assertions.assertTrue(StringHeader.HAVE_STRING_H, "expected to have string.h");
-        }
+        JnhwTestLogger.logBeforeAllBegin("checkBeforeAll_HAVE_STRING_H");
+        Assertions.assertTrue(StringHeader.HAVE_STRING_H, "expected to have string.h");
         JnhwTestLogger.logBeforeAllEnd("checkBeforeAll_HAVE_STRING_H");
     }
 
     @BeforeAll
     public static void checkBeforeAll_StdioDefines() throws Exception {
-        JnhwTestLogger.logBeforeAllBeginn("checkBeforeAll_StdioDefines");
-        if (MultiarchTupelBuilder.getOS() == OS.WINDOWS) {
-            JnhwTestLogger.logBeforeAllEnd("checkBeforeAll_StdioDefines");
-            return;
-        }
+        JnhwTestLogger.logBeforeAllBegin("checkBeforeAll_StdioDefines");
         DefinesTest.testDefines(StringHeader.class, "HAVE_STRING_H");
         JnhwTestLogger.logBeforeAllEnd("checkBeforeAll_StdioDefines");
+    }
+
+    @AfterAll
+    public static void tearDownAfterClass(TestInfo testTnfo) throws Exception {
+        JnhwTestLogger.logAfterAll(testTnfo);
     }
 
     @BeforeEach

@@ -22,8 +22,14 @@
 package de.ibapl.jnhw.common.test.memory.layout;
 
 import de.ibapl.jnhw.common.memory.layout.*;
+import de.ibapl.jnhw.common.test.JnhwTestLogger;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.TestInfo;
 
 /**
  *
@@ -31,7 +37,59 @@ import static org.junit.jupiter.api.Assertions.*;
  */
 public class StructLayoutFactoryImplTest {
 
+    @BeforeAll
+    public static void setUpBeforeClass(TestInfo testTnfo) throws Exception {
+        JnhwTestLogger.logBeforeAll(testTnfo);
+    }
+
+    @AfterAll
+    public static void tearDownAfterClass(TestInfo testTnfo) throws Exception {
+        JnhwTestLogger.logAfterAll(testTnfo);
+    }
+
     public StructLayoutFactoryImplTest() {
+    }
+
+    @BeforeEach
+    public void setUpBeforeEach(TestInfo testTnfo) throws Exception {
+        JnhwTestLogger.logBeforeEach(testTnfo);
+    }
+
+    @AfterEach
+    public void tearDownAfterEach(TestInfo testTnfo) throws Exception {
+        JnhwTestLogger.logAfterEach(testTnfo);
+    }
+
+    @Test
+    public void testCalcNextOffset() {
+    }
+
+    @Test
+    public void testS1() {
+        assertEquals(4, S1.sizeof);
+        assertEquals(2, S1.f1);
+        assertEquals(Alignment.AT_2, S1.alignment);
+    }
+
+    @Test
+    public void testS1_fields_reversed() {
+        assertEquals(4, S1_fields_reversed.sizeof);
+        assertEquals(2, S1_fields_reversed.f1);
+        assertEquals(Alignment.AT_2, S1_fields_reversed.alignment);
+    }
+
+    @Test
+    public void testS2() {
+        assertEquals(6, S2.sizeof);
+        assertEquals(2, S2.f1);
+        assertEquals(Alignment.AT_2, S2.alignment);
+    }
+
+    @Test
+    public void testS3() {
+        assertEquals(5, S3.sizeof);
+        assertEquals(1, S3.f1);
+        assertEquals(Alignment.AT_1, S3.alignment);
     }
 
     public static class S1 extends StructLayout {
@@ -104,37 +162,5 @@ public class StructLayoutFactoryImplTest {
             alignment = slf.getAlignment();
         }
 
-    }
-
-    @Test
-    public void testCalcNextOffset() {
-    }
-
-    @Test
-    public void testS1() {
-        assertEquals(4, S1.sizeof);
-        assertEquals(2, S1.f1);
-        assertEquals(Alignment.AT_2, S1.alignment);
-    }
-
-    @Test
-    public void testS1_fields_reversed() {
-        assertEquals(4, S1_fields_reversed.sizeof);
-        assertEquals(2, S1_fields_reversed.f1);
-        assertEquals(Alignment.AT_2, S1_fields_reversed.alignment);
-    }
-
-    @Test
-    public void testS2() {
-        assertEquals(6, S2.sizeof);
-        assertEquals(2, S2.f1);
-        assertEquals(Alignment.AT_2, S2.alignment);
-    }
-
-    @Test
-    public void testS3() {
-        assertEquals(5, S3.sizeof);
-        assertEquals(1, S3.f1);
-        assertEquals(Alignment.AT_1, S3.alignment);
     }
 }

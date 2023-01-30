@@ -39,11 +39,9 @@ import de.ibapl.jnhw.libloader.LoadState;
 import de.ibapl.jnhw.libloader.NativeLibResolver;
 import java.lang.foreign.Addressable;
 import java.lang.foreign.MemoryAddress;
-import java.lang.foreign.MemorySegment;
 import java.lang.foreign.MemorySession;
 import java.lang.foreign.SymbolLookup;
 import java.util.NoSuchElementException;
-import java.util.Optional;
 import java.util.logging.Logger;
 
 /**

@@ -25,10 +25,16 @@ import de.ibapl.jnhw.common.datatypes.BaseDataType;
 import de.ibapl.jnhw.common.memory.Int32_t;
 import de.ibapl.jnhw.common.memory.Int64_t;
 import de.ibapl.jnhw.common.memory.Signed_Long;
+import de.ibapl.jnhw.common.test.JnhwTestLogger;
 import java.lang.foreign.MemorySegment;
 import java.lang.foreign.MemorySession;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.AfterEach;
 import static org.junit.jupiter.api.Assertions.*;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInfo;
 
 /**
  *
@@ -36,9 +42,29 @@ import org.junit.jupiter.api.Test;
  */
 public class Signed_LongTest {
 
+    @BeforeAll
+    public static void setUpBeforeClass(TestInfo testTnfo) throws Exception {
+        JnhwTestLogger.logBeforeAll(testTnfo);
+    }
+
+    @AfterAll
+    public static void tearDownAfterClass(TestInfo testTnfo) throws Exception {
+        JnhwTestLogger.logAfterAll(testTnfo);
+    }
+
+    @BeforeEach
+    public void setUpBeforeEach(TestInfo testTnfo) throws Exception {
+        JnhwTestLogger.logBeforeEach(testTnfo);
+    }
+
+    @AfterEach
+    public void tearDownAfterEach(TestInfo testTnfo) throws Exception {
+        JnhwTestLogger.logAfterEach(testTnfo);
+    }
+
     @Test
     public void testNative() {
-        try ( MemorySession ms = MemorySession.openConfined()) {
+        try (MemorySession ms = MemorySession.openConfined()) {
             Signed_Long instance = Signed_Long.allocateNative(ms);
             long input64 = 0x8070605040302010L;
             if (BaseDataType.C_long.SIZE_OF == 8) {
@@ -62,7 +88,7 @@ public class Signed_LongTest {
 
     @Test
     public void testNativeToString() {
-        try ( MemorySession ms = MemorySession.openConfined()) {
+        try (MemorySession ms = MemorySession.openConfined()) {
             Signed_Long instance = new Signed_Long(MemorySegment.allocateNative(Signed_Long.DATA_TYPE.SIZE_OF, ms), 0);
             if (BaseDataType.C_long.SIZE_OF == 8) {
                 Int64_t int64_t = Int64_t.map(instance, 0);

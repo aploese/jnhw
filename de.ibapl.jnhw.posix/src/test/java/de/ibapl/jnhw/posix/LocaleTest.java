@@ -27,6 +27,7 @@ import de.ibapl.jnhw.libloader.OS;
 import de.ibapl.jnhw.util.posix.Defines;
 import de.ibapl.jnhw.util.posix.DefinesTest;
 import java.lang.foreign.MemorySession;
+import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import static org.junit.jupiter.api.Assertions.fail;
@@ -45,22 +46,14 @@ public class LocaleTest {
 
     @BeforeAll
     public static void checkBeforeAll_HAVE_LOCALE_H() throws Exception {
-        JnhwTestLogger.logBeforeAllBeginn("checkBeforeAll_HAVE_LOCALE_H");
-        if (MultiarchTupelBuilder.getOS() == OS.WINDOWS) {
-            Assertions.assertFalse(Locale.HAVE_LOCALE_H, "not expected to have locale.h");
-        } else {
-            Assertions.assertTrue(Locale.HAVE_LOCALE_H, "expected to have locale.h");
-        }
+        JnhwTestLogger.logBeforeAllBegin("checkBeforeAll_HAVE_LOCALE_H");
+        Assertions.assertTrue(Locale.HAVE_LOCALE_H, "expected to have locale.h");
         JnhwTestLogger.logBeforeAllEnd("checkBeforeAll_HAVE_LOCALE_H");
     }
 
     @BeforeAll
     public static void checkBeforeAll_LocaleDefines() throws Exception {
-        JnhwTestLogger.logBeforeAllBeginn("checkBeforeAll_LocaleDefines");
-        if (MultiarchTupelBuilder.getOS() == OS.WINDOWS) {
-            JnhwTestLogger.logBeforeAllEnd("checkBeforeAll_LocaleDefines");
-            return;
-        }
+        JnhwTestLogger.logBeforeAllBegin("checkBeforeAll_LocaleDefines");
         DefinesTest.testDefines(Locale.class, "HAVE_LOCALE_H", (name) -> {
             return switch (name) {
                 case "LC_GLOBAL_LOCALE" ->
@@ -74,11 +67,7 @@ public class LocaleTest {
 
     @BeforeAll
     public static void checkBeforeAll_lconv_t() throws Exception {
-        JnhwTestLogger.logBeforeAllBeginn("checkBeforeAll_lconv_t");
-        if (MultiarchTupelBuilder.getOS() == OS.WINDOWS) {
-            JnhwTestLogger.logBeforeAllEnd("checkBeforeAll_lconv_t");
-            return;
-        }
+        JnhwTestLogger.logBeforeAllBegin("checkBeforeAll_lconv_t");
         Assertions.assertAll(
                 () -> Assertions.assertEquals(LibJnhwPosixTestLoader.invoke_sI___V("lconv_t_sizeof"), Locale.Lconv.sizeof, "sizeof"),
                 () -> Assertions.assertEquals(LibJnhwPosixTestLoader.invoke_sI___V("lconv_t_alignof"), Locale.Lconv.alignof.alignof, "alignof"),
@@ -108,6 +97,11 @@ public class LocaleTest {
                 () -> Assertions.assertEquals(LibJnhwPosixTestLoader.invoke_sI___V("lconv_t_offsetof_thousands_sep"), Locale.Lconv.offsetof_Thousands_sep, "offsetof_Thousands_sep")
         );
         JnhwTestLogger.logBeforeAllEnd("checkBeforeAll_lconv_t");
+    }
+
+    @AfterAll
+    public static void tearDownAfterClass(TestInfo testTnfo) throws Exception {
+        JnhwTestLogger.logAfterAll(testTnfo);
     }
 
     private MemorySession ms;

@@ -27,6 +27,7 @@ import de.ibapl.jnhw.posix.JnhwTestLogger;
 import de.ibapl.jnhw.posix.Unistd;
 import de.ibapl.jnhw.util.posix.DefinesTest;
 import java.lang.foreign.MemorySession;
+import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
@@ -40,24 +41,21 @@ public class EventfdTest {
 
     @BeforeAll
     public static void checkBeforeAll_HAVE_SYS_EVENTFD_H() throws Exception {
-        JnhwTestLogger.logBeforeAllBeginn("checkBeforeAll_HAVE_SYS_EVENTFD_H");
-        if (MultiarchTupelBuilder.getOS() == OS.LINUX) {
-            Assertions.assertTrue(Eventfd.HAVE_SYS_EVENTFD_H, "expected to have sys/eventfd.h");
-        } else {
-            Assertions.assertFalse(Eventfd.HAVE_SYS_EVENTFD_H, "not expected to have sys/eventfd.h");
-        }
+        JnhwTestLogger.logBeforeAllBegin("checkBeforeAll_HAVE_SYS_EVENTFD_H");
+        Assertions.assertTrue(Eventfd.HAVE_SYS_EVENTFD_H, "expected to have sys/eventfd.h");
         JnhwTestLogger.logBeforeAllEnd("checkBeforeAll_HAVE_SYS_EVENTFD_H");
     }
 
     @BeforeAll
     public static void checkBeforeAll_EventFdDefines() throws Exception {
-        JnhwTestLogger.logBeforeAllBeginn("checkBeforeAll_EventFdDefines");
-        if (MultiarchTupelBuilder.getOS() == OS.WINDOWS) {
-            JnhwTestLogger.logBeforeAllEnd("checkBeforeAll_EventFdDefines");
-            return;
-        }
+        JnhwTestLogger.logBeforeAllBegin("checkBeforeAll_EventFdDefines");
         DefinesTest.testDefines(Eventfd.class, "HAVE_SYS_EVENTFD_H");
         JnhwTestLogger.logBeforeAllEnd("checkBeforeAll_EventFdDefines");
+    }
+
+    @AfterAll
+    public static void tearDownAfterClass(TestInfo testTnfo) throws Exception {
+        JnhwTestLogger.logAfterAll(testTnfo);
     }
 
     private MemorySession ms;

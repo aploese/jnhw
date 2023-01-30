@@ -33,6 +33,7 @@ import java.io.File;
 import java.util.Optional;
 import java.util.function.IntSupplier;
 import java.util.function.Supplier;
+import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
@@ -46,24 +47,27 @@ public class FcntlTest {
 
     @BeforeAll
     public static void checkBeforeAll_HAVE_FCNTL_H() throws Exception {
-        JnhwTestLogger.logBeforeAllBeginn("checkBeforeAll_HAVE_FCNTL_H");
-        if (MultiarchTupelBuilder.getOS() == OS.WINDOWS) {
-            Assertions.assertFalse(Fcntl.HAVE_FCNTL_H, "not expected to have fcntl.h");
-        } else {
-            Assertions.assertTrue(Fcntl.HAVE_FCNTL_H, "expected to have locale.h");
-        }
+        JnhwTestLogger.logBeforeAllBegin("checkBeforeAll_HAVE_FCNTL_H");
+        Assertions.assertTrue(Fcntl.HAVE_FCNTL_H, "expected to have locale.h");
         JnhwTestLogger.logBeforeAllEnd("checkBeforeAll_HAVE_FCNTL_H");
     }
 
     @BeforeAll
     public static void checkBeforeAll_FcntlDefines() throws Exception {
-        JnhwTestLogger.logBeforeAllBeginn("checkBeforeAll_FcntlDefines");
-        if (MultiarchTupelBuilder.getOS() == OS.WINDOWS) {
-            return;
-        }
+        JnhwTestLogger.logBeforeAllBegin("checkBeforeAll_FcntlDefines");
         DefinesTest.testDefines(Fcntl.class, "HAVE_FCNTL_H");
         JnhwTestLogger.logBeforeAllEnd("checkBeforeAll_FcntlDefines");
     }
+
+    @AfterAll
+    public static void tearDownAfterClass(TestInfo testTnfo) throws Exception {
+        JnhwTestLogger.logAfterAll(testTnfo);
+    }
+
+    private Integer data = 44;
+    private Optional<Integer> opt = Optional.of(data);
+    private Supplier<Integer> supplier = () -> data;
+    private IntSupplier intSupplier = () -> data;
 
     @BeforeEach
     public void setUp(TestInfo testInfo) throws Exception {
@@ -141,11 +145,6 @@ public class FcntlTest {
             });
         }
     }
-
-    Integer data = 44;
-    Optional<Integer> opt = Optional.of(data);
-    Supplier<Integer> supplier = () -> data;
-    IntSupplier intSupplier = () -> data;
 
     //Todo move this to sepetate test
     /*

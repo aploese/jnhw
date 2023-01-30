@@ -64,14 +64,15 @@ public class UnistdTest {
 
     @BeforeAll
     public static void setUpBeforeClass() throws Exception {
-        JnhwTestLogger.logBeforeAllBeginn("setUpBeforeClass");
+        JnhwTestLogger.logBeforeAllBegin("setUpBeforeClass");
         f = File.createTempFile("jnhw-test", "");
         f.delete();
         JnhwTestLogger.logBeforeAllEnd("setUpBeforeClass");
     }
 
     @AfterAll
-    public static void tearDownAfterClass() throws Exception {
+    public static void tearDownAfterClass(TestInfo testTnfo) throws Exception {
+        JnhwTestLogger.logAfterAll(testTnfo);
     }
 
     private MemorySession ms;
@@ -128,22 +129,14 @@ public class UnistdTest {
 
     @BeforeAll
     public static void checkBeforeAll_HAVE_UNISTD_H() throws Exception {
-        JnhwTestLogger.logBeforeAllBeginn("checkBeforeAll_HAVE_UNISTD_H");
-        if (MultiarchTupelBuilder.getOS() == OS.WINDOWS) {
-            Assertions.assertFalse(Unistd.HAVE_UNISTD_H, "not expected to have unistd.h");
-        } else {
-            Assertions.assertTrue(Unistd.HAVE_UNISTD_H, "expected to have unistd.h");
-        }
+        JnhwTestLogger.logBeforeAllBegin("checkBeforeAll_HAVE_UNISTD_H");
+        Assertions.assertTrue(Unistd.HAVE_UNISTD_H, "expected to have unistd.h");
         JnhwTestLogger.logBeforeAllEnd("checkBeforeAll_HAVE_UNISTD_H");
     }
 
     @BeforeAll
     public static void checkBeforeAll_UnistdDefines() throws Exception {
-        JnhwTestLogger.logBeforeAllBeginn("checkBeforeAll_UnistdDefines");
-        if (MultiarchTupelBuilder.getOS() == OS.WINDOWS) {
-            JnhwTestLogger.logBeforeAllEnd("checkBeforeAll_UnistdDefines");
-            return;
-        }
+        JnhwTestLogger.logBeforeAllBegin("checkBeforeAll_UnistdDefines");
         DefinesTest.testDefines(Unistd.class, "HAVE_UNISTD_H");
         JnhwTestLogger.logBeforeAllEnd("checkBeforeAll_UnistdDefines");
     }

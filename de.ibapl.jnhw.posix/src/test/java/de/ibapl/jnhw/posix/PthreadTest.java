@@ -31,6 +31,7 @@ import de.ibapl.jnhw.util.posix.DefinesTest;
 import java.lang.foreign.MemorySession;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
@@ -49,33 +50,21 @@ public class PthreadTest {
 
     @BeforeAll
     public static void checkBeforeAll_HAVE_PTHREAD_H() throws Exception {
-        JnhwTestLogger.logBeforeAllBeginn("checkBeforeAll_HAVE_PTHREAD_H");
-        if (MultiarchTupelBuilder.getOS() == OS.WINDOWS) {
-            Assertions.assertFalse(Pthread.HAVE_PTHREAD_H, "not expected to have pthread.h");
-        } else {
-            Assertions.assertTrue(Pthread.HAVE_PTHREAD_H, "expected to have pthread.h");
-        }
+        JnhwTestLogger.logBeforeAllBegin("checkBeforeAll_HAVE_PTHREAD_H");
+        Assertions.assertTrue(Pthread.HAVE_PTHREAD_H, "expected to have pthread.h");
         JnhwTestLogger.logBeforeAllEnd("checkBeforeAll_HAVE_PTHREAD_H");
     }
 
     @BeforeAll
     public static void checkBeforeAll_PthreadDefines() throws Exception {
-        JnhwTestLogger.logBeforeAllBeginn("checkBeforeAll_PthreadDefines");
-        if (MultiarchTupelBuilder.getOS() == OS.WINDOWS) {
-            JnhwTestLogger.logBeforeAllEnd("checkBeforeAll_PthreadDefines");
-            return;
-        }
+        JnhwTestLogger.logBeforeAllBegin("checkBeforeAll_PthreadDefines");
         DefinesTest.testDefines(Pthread.class, "HAVE_PTHREAD_H");
         JnhwTestLogger.logBeforeAllEnd("checkBeforeAll_PthreadDefines");
     }
 
     @BeforeAll
     public static void checkBeforeAll_NativePthread_attr_t() throws Exception {
-        JnhwTestLogger.logBeforeAllBeginn("checkBeforeAll_NativePthread_attr_t");
-        if (MultiarchTupelBuilder.getOS() == OS.WINDOWS) {
-            JnhwTestLogger.logBeforeAllEnd("checkBeforeAll_NativePthread_attr_t");
-            return;
-        }
+        JnhwTestLogger.logBeforeAllBegin("checkBeforeAll_NativePthread_attr_t");
         Assertions.assertAll(
                 () -> Assertions.assertEquals(LibJnhwPosixTestLoader.invoke_sI___V("Pthread_attr_t_sizeof"), Pthread.Pthread_attr_t.sizeof, "sizeof"),
                 () -> Assertions.assertEquals(LibJnhwPosixTestLoader.invoke_sI___V("Pthread_attr_t_alignof"), Pthread.Pthread_attr_t.alignof.alignof, "alignof")
@@ -85,16 +74,17 @@ public class PthreadTest {
 
     @BeforeAll
     public static void checkBeforeAll_NativePthread_t() throws Exception {
-        JnhwTestLogger.logBeforeAllBeginn("checkBeforeAll_NativePthread_t");
-        if (MultiarchTupelBuilder.getOS() == OS.WINDOWS) {
-            JnhwTestLogger.logBeforeAllEnd("checkBeforeAll_NativePthread_t");
-            return;
-        }
+        JnhwTestLogger.logBeforeAllBegin("checkBeforeAll_NativePthread_t");
         Assertions.assertAll(
                 () -> Assertions.assertEquals(LibJnhwPosixTestLoader.invoke_sI___V("Pthread_t_sizeof"), Pthread.Pthread_t.sizeof, "sizeof"),
                 () -> Assertions.assertEquals(LibJnhwPosixTestLoader.invoke_sI___V("Pthread_t_alignof"), Pthread.Pthread_t.alignof.alignof, "alignof")
         );
         JnhwTestLogger.logBeforeAllEnd("checkBeforeAll_NativePthread_t");
+    }
+
+    @AfterAll
+    public static void tearDownAfterClass(TestInfo testTnfo) throws Exception {
+        JnhwTestLogger.logAfterAll(testTnfo);
     }
 
     private MemorySession ms;

@@ -29,6 +29,7 @@ import de.ibapl.jnhw.posix.JnhwTestLogger;
 import de.ibapl.jnhw.posix.Signal;
 import de.ibapl.jnhw.util.posix.DefinesTest;
 import java.lang.foreign.MemorySession;
+import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
 import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.BeforeAll;
@@ -47,13 +48,14 @@ public class UcontextTest {
 
     @BeforeAll
     public static void checkBeforeAll_UcontextDefines() throws Exception {
-        JnhwTestLogger.logBeforeAllBeginn("checkBeforeAll_UcontextDefines");
-        if (MultiarchTupelBuilder.getOS() == OS.WINDOWS) {
-            JnhwTestLogger.logBeforeAllEnd("checkBeforeAll_UcontextDefines");
-            return;
-        }
+        JnhwTestLogger.logBeforeAllBegin("checkBeforeAll_UcontextDefines");
         DefinesTest.testDefines(Ucontext.class, "HAVE_UCONTEXT_H");
         JnhwTestLogger.logBeforeAllEnd("checkBeforeAll_UcontextDefines");
+    }
+
+    @AfterAll
+    public static void tearDownAfterClass(TestInfo testTnfo) throws Exception {
+        JnhwTestLogger.logAfterAll(testTnfo);
     }
 
     private MemorySession ms;

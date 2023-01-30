@@ -25,6 +25,7 @@ import de.ibapl.jnhw.libloader.MultiarchTupelBuilder;
 import de.ibapl.jnhw.libloader.OS;
 import de.ibapl.jnhw.posix.JnhwTestLogger;
 import de.ibapl.jnhw.util.posix.DefinesTest;
+import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -34,6 +35,11 @@ import org.junit.jupiter.api.condition.DisabledOnOs;
 
 @DisabledOnOs(org.junit.jupiter.api.condition.OS.WINDOWS)
 public class ErrnoTest {
+
+    @AfterAll
+    public static void tearDownAfterClass(TestInfo testTnfo) throws Exception {
+        JnhwTestLogger.logAfterAll(testTnfo);
+    }
 
     @BeforeEach
     public void setUp(TestInfo testInfo) throws Exception {
@@ -47,18 +53,11 @@ public class ErrnoTest {
 
     @Test
     public void test_HAVE_ERRNO_H() throws Exception {
-        if (MultiarchTupelBuilder.getOS() == OS.WINDOWS) {
-            Assertions.assertFalse(Errno.HAVE_ERRNO_H, "not expected to have errno.h");
-        } else {
-            Assertions.assertTrue(Errno.HAVE_ERRNO_H, "expected to have errno.h");
-        }
+        Assertions.assertTrue(Errno.HAVE_ERRNO_H, "expected to have errno.h");
     }
 
     @Test
     public void test_ErrnoDefines() throws Exception {
-        if (MultiarchTupelBuilder.getOS() == OS.WINDOWS) {
-            return;
-        }
         DefinesTest.testDefines(Errno.class, "HAVE_ERRNO_H");
     }
 

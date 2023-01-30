@@ -26,10 +26,16 @@ import de.ibapl.jnhw.common.memory.AsUnsignedLong;
 import de.ibapl.jnhw.common.memory.Uint32_t;
 import de.ibapl.jnhw.common.memory.Uint64_t;
 import de.ibapl.jnhw.common.memory.Unsigned_Long;
+import de.ibapl.jnhw.common.test.JnhwTestLogger;
 import java.lang.foreign.MemorySegment;
 import java.lang.foreign.MemorySession;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.AfterEach;
 import static org.junit.jupiter.api.Assertions.*;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInfo;
 
 /**
  *
@@ -37,9 +43,29 @@ import org.junit.jupiter.api.Test;
  */
 public class Unsigned_LongTest {
 
+    @BeforeAll
+    public static void setUpBeforeClass(TestInfo testTnfo) throws Exception {
+        JnhwTestLogger.logBeforeAll(testTnfo);
+    }
+
+    @AfterAll
+    public static void tearDownAfterClass(TestInfo testTnfo) throws Exception {
+        JnhwTestLogger.logAfterAll(testTnfo);
+    }
+
+    @BeforeEach
+    public void setUpBeforeEach(TestInfo testTnfo) throws Exception {
+        JnhwTestLogger.logBeforeEach(testTnfo);
+    }
+
+    @AfterEach
+    public void tearDownAfterEach(TestInfo testTnfo) throws Exception {
+        JnhwTestLogger.logAfterEach(testTnfo);
+    }
+
     @Test
     public void testNative() {
-        try ( MemorySession ms = MemorySession.openConfined()) {
+        try (MemorySession ms = MemorySession.openConfined()) {
             Unsigned_Long instance = Unsigned_Long.allocateNative(ms);
             final long input = 0x8070605040302010L;
             if (BaseDataType.C_unsigned_long.SIZE_OF == 8) {
@@ -66,7 +92,7 @@ public class Unsigned_LongTest {
 
     @Test
     public void testNativeToString() {
-        try ( MemorySession ms = MemorySession.openConfined()) {
+        try (MemorySession ms = MemorySession.openConfined()) {
             Unsigned_Long instance = new Unsigned_Long(MemorySegment.allocateNative(BaseDataType.C_unsigned_long.SIZE_OF, ms), 0);
             if (BaseDataType.C_unsigned_long.SIZE_OF == 8) {
                 Uint64_t uint64_t = Uint64_t.map(instance, 0);
@@ -84,7 +110,7 @@ public class Unsigned_LongTest {
 
     @Test
     public void testNative_1() {
-        try ( MemorySession ms = MemorySession.openConfined()) {
+        try (MemorySession ms = MemorySession.openConfined()) {
             AsUnsignedLong instance = new AsUnsignedLong(BaseDataType.uint32_t, MemorySegment.allocateNative(BaseDataType.uint32_t.SIZE_OF, ms), 0);
             instance.setFromUnsignedLong(33);
             assertEquals(33, instance.getAsUnsignedLong());

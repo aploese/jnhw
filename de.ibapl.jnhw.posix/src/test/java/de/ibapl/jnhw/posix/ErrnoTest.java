@@ -24,6 +24,7 @@ package de.ibapl.jnhw.posix;
 import de.ibapl.jnhw.libloader.MultiarchTupelBuilder;
 import de.ibapl.jnhw.libloader.OS;
 import de.ibapl.jnhw.util.posix.DefinesTest;
+import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -42,6 +43,11 @@ public class ErrnoTest {
         }
     }
 
+    @AfterAll
+    public static void tearDownAfterClass(TestInfo testTnfo) throws Exception {
+        JnhwTestLogger.logAfterAll(testTnfo);
+    }
+
     @BeforeEach
     public void setUp(TestInfo testInfo) throws Exception {
         JnhwTestLogger.logBeforeEach(testInfo);
@@ -54,9 +60,6 @@ public class ErrnoTest {
 
     @Test
     public void test_ErrnoDefines() throws Exception {
-        if (MultiarchTupelBuilder.getOS() == OS.WINDOWS) {
-            return;
-        }
         DefinesTest.testDefines(Errno.class, "HAVE_ERRNO_H");
     }
 

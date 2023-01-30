@@ -43,12 +43,14 @@ import java.lang.foreign.MemoryAddress;
 import java.lang.foreign.MemorySegment;
 import java.lang.foreign.MemorySession;
 import java.time.DayOfWeek;
+import java.time.Duration;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatterBuilder;
+import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
@@ -77,23 +79,14 @@ public class TimeTest {
 
     @BeforeAll
     public static void checkBeforeAll_HAVE_TIME_H() throws Exception {
-        JnhwTestLogger.logBeforeAllBeginn("checkBeforeAll_HAVE_TIME_H");
-        switch (MultiarchTupelBuilder.getOS()) {
-            case WINDOWS ->
-                Assertions.assertFalse(Time.HAVE_TIME_H, "expected not to have time.h");
-            default ->
-                Assertions.assertTrue(Time.HAVE_TIME_H, "expected to have time.h");
-        }
+        JnhwTestLogger.logBeforeAllBegin("checkBeforeAll_HAVE_TIME_H");
+        Assertions.assertTrue(Time.HAVE_TIME_H, "expected to have time.h");
         JnhwTestLogger.logBeforeAllEnd("checkBeforeAll_HAVE_TIME_H");
     }
 
     @BeforeAll
     public static void checkBeforeAll_TimeDefines() throws Exception {
-        JnhwTestLogger.logBeforeAllBeginn("checkBeforeAll_TimeDefines");
-        if (MultiarchTupelBuilder.getOS() == OS.WINDOWS) {
-            JnhwTestLogger.logBeforeAllEnd("checkBeforeAll_TimeDefines");
-            return;
-        }
+        JnhwTestLogger.logBeforeAllBegin("checkBeforeAll_TimeDefines");
         try {
             int i = Time.CLOCKS_PER_SEC;
         } catch (Throwable t) {
@@ -106,11 +99,7 @@ public class TimeTest {
 
     @BeforeAll
     public static void checkBeforeAll_StructItimespec() throws Exception {
-        JnhwTestLogger.logBeforeAllBeginn("checkBeforeAll_StructItimespec");
-        if (MultiarchTupelBuilder.getOS() == OS.WINDOWS) {
-            JnhwTestLogger.logBeforeAllEnd("checkBeforeAll_StructItimespec");
-            return;
-        }
+        JnhwTestLogger.logBeforeAllBegin("checkBeforeAll_StructItimespec");
         Assertions.assertAll(
                 () -> Assertions.assertEquals(LibJnhwPosixTestLoader.invoke_sI___V("Itimerspec_sizeof"), Time.Itimerspec.sizeof, "sizeof"),
                 () -> Assertions.assertEquals(LibJnhwPosixTestLoader.invoke_sI___V("Itimerspec_alignof"), Time.Itimerspec.alignof == null ? 0 : Time.Itimerspec.alignof.alignof, "alignof"),
@@ -122,11 +111,7 @@ public class TimeTest {
 
     @BeforeAll
     public static void checkBeforeAll_StructTimespec() throws Exception {
-        JnhwTestLogger.logBeforeAllBeginn("checkBeforeAll_StructTimespec");
-        if (MultiarchTupelBuilder.getOS() == OS.WINDOWS) {
-            JnhwTestLogger.logBeforeAllEnd("checkBeforeAll_StructTimespec");
-            return;
-        }
+        JnhwTestLogger.logBeforeAllBegin("checkBeforeAll_StructTimespec");
         Assertions.assertAll(
                 () -> Assertions.assertEquals(LibJnhwPosixTestLoader.invoke_sI___V("Timespec_sizeof"), Time.Timespec.sizeof, "sizeof"),
                 () -> Assertions.assertEquals(LibJnhwPosixTestLoader.invoke_sI___V("Timespec_alignof"), Time.Timespec.alignof.alignof, "alignof"),
@@ -138,11 +123,7 @@ public class TimeTest {
 
     @BeforeAll
     public static void checkBeforeAll_StructTm() throws Exception {
-        JnhwTestLogger.logBeforeAllBeginn("checkBeforeAll_StructTm");
-        if (MultiarchTupelBuilder.getOS() == OS.WINDOWS) {
-            JnhwTestLogger.logBeforeAllEnd("checkBeforeAll_StructTm");
-            return;
-        }
+        JnhwTestLogger.logBeforeAllBegin("checkBeforeAll_StructTm");
         Assertions.assertAll(
                 () -> Assertions.assertEquals(LibJnhwPosixTestLoader.invoke_sI___V("Tm_sizeof"), Time.Tm.sizeof, "sizeof"),
                 () -> Assertions.assertEquals(LibJnhwPosixTestLoader.invoke_sI___V("Tm_alignof"), Time.Tm.alignof.alignof, "alignof"),
@@ -161,16 +142,17 @@ public class TimeTest {
 
     @BeforeAll
     public static void checkBeforeAll_Timer_t() throws Exception {
-        JnhwTestLogger.logBeforeAllBeginn("checkBeforeAll_Timer_t");
-        if (MultiarchTupelBuilder.getOS() == OS.WINDOWS) {
-            JnhwTestLogger.logBeforeAllEnd("checkBeforeAll_Timer_t");
-            return;
-        }
+        JnhwTestLogger.logBeforeAllBegin("checkBeforeAll_Timer_t");
         Assertions.assertAll(
                 () -> Assertions.assertEquals(LibJnhwPosixTestLoader.invoke_sI___V("Timer_t_sizeof"), Time.Timer_t.sizeof, "sizeof"),
                 () -> Assertions.assertEquals(LibJnhwPosixTestLoader.invoke_sI___V("Timer_t_alignof"), Time.Timer_t.alignof == null ? 0 : Time.Timer_t.alignof.alignof, "alignof")
         );
         JnhwTestLogger.logBeforeAllEnd("checkBeforeAll_Timer_t");
+    }
+
+    @AfterAll
+    public static void tearDownAfterClass(TestInfo testTnfo) throws Exception {
+        JnhwTestLogger.logAfterAll(testTnfo);
     }
 
     private MemorySession ms;
@@ -339,35 +321,46 @@ public class TimeTest {
                 Time.Timespec rqtp = Time.Timespec.allocateNative(ms);
                 Time.Timespec rmtp = Time.Timespec.allocateNative(ms);
 
-                switch (MultiarchTupelBuilder.getMultiarch()) {
-                    case AARCH64__LINUX__GNU, S390_X__LINUX__GNU -> {
-                        rqtp.tv_nsec(30_000_000L); //30ms
-                    }
-                    default -> {
-                        rqtp.tv_nsec(10_000_000L); //10ms
-                    }
-                }
+                final long sleepTime = switch (MultiarchTupelBuilder.getMultiarch()) {
+                    case AARCH64__LINUX__GNU, S390_X__LINUX__GNU ->
+                        30_000_000L; //30ms
+                    default ->
+                        10_000_000L; //10ms
+                };
+
+                rqtp.tv_nsec(sleepTime);
+
                 long start = System.nanoTime();
                 Time.clock_nanosleep(clock_id, flags, rqtp, rmtp);
                 long end = System.nanoTime();
-
-                switch (MultiarchTupelBuilder.getMultiarch()) {
-                    case AARCH64__LINUX__GNU, S390_X__LINUX__GNU -> {
-                        Assertions.assertTrue(end - start < 40_000_000, "max 35ms but was " + (end - start) + "ns");
-                        Assertions.assertTrue(end - start > 29_000_000, "min 29ms");
-                    }
-                    default -> {
-                        Assertions.assertTrue(end - start < 13_000_000, "max 13ms but was " + (end - start) + "ns");
-                        Assertions.assertTrue(end - start > 9_000_000, "min 9ms");
-                    }
+                long testDuration = end - start;
+                //allow 30%
+                final long sleepTimeMax = (sleepTime * 130) / 100;
+                if (testDuration < sleepTimeMax) {
+                    Assertions.assertTrue(testDuration < sleepTimeMax,
+                            String.format("expected max %dms but was %d", (sleepTimeMax / 1_000_000), (testDuration / 1_000_000)));
+                } else {
+                    //test if we are in a slow i.e. qemu emulated environment if Thread sleep fails we are...
+                    start = System.nanoTime();
+                    Thread.sleep(Duration.ofNanos(sleepTime));
+                    end = System.nanoTime();
+                    //print in the errro message the original test duration. allow +10%
+                    Assertions.assertTrue(testDuration <= (((end - start) * 110) / 100),
+                            String.format("On slow HW expected value was: %dms Thread.sleep(Duration.ofNanos(sleepTime)) took: %dms but Time.clock_nanosleep took: %d", (sleepTime / 1_000_000), ((end - start) / 1_000_000), (testDuration / 1_000_000)));
                 }
+                final long sleepTimeMin = sleepTime;
+                //never to expect to be faster ...
+                Assertions.assertTrue(testDuration >= sleepTimeMin,
+                        String.format("expected min %dms but was %d", (sleepTimeMin / 1_000_000), (testDuration / 1_000_000)));
+
                 rqtp.tv_nsec(0);
                 Time.clock_nanosleep(clock_id, flags, rqtp, rmtp);
 
                 Time.clock_nanosleep(clock_id, flags, rqtp);
                 Assertions.assertThrows(NullPointerException.class, () -> {
                     Time.clock_nanosleep(clock_id, flags, null, null);
-                });
+                }
+                );
             }
         }
     }
@@ -379,14 +372,19 @@ public class TimeTest {
     public void testClock_settime() throws Exception {
         Time.Timespec timespec = Time.Timespec.allocateNative(ms);
         //We should not have the priveleges to set the CLOCK_REALTIME ... so a NativeErrorException with EPERM as errno should be thrown.
-        NativeErrorException nee = Assertions.assertThrows(NativeErrorException.class, () -> {
-            Time.clock_settime(Time.CLOCK_REALTIME, timespec);
-        });
+        NativeErrorException nee = Assertions.assertThrows(NativeErrorException.class,
+                () -> {
+                    Time.clock_settime(Time.CLOCK_REALTIME, timespec);
+                }
+        );
         ErrnoTest.assertErrnoEquals(Errno.EPERM, nee.errno);
 
-        Assertions.assertThrows(NullPointerException.class, () -> {
-            Time.clock_settime(Time.CLOCK_REALTIME, null);
-        });
+        Assertions
+                .assertThrows(NullPointerException.class,
+                        () -> {
+                            Time.clock_settime(Time.CLOCK_REALTIME,
+                                    null);
+                        });
     }
 
     private String getCtimeFormated(long clock) {
@@ -425,13 +423,18 @@ public class TimeTest {
         OpaqueMemory.copy(buf, 0, raw, 0, raw.length);
         assertArrayEquals((getCtimeFormated(clock.getAsSignedLong()) + "\0").getBytes(), raw);
 
-        Assertions.assertThrows(NullPointerException.class, () -> {
-            Time.ctime_r(clock, null);
-        });
+        Assertions
+                .assertThrows(NullPointerException.class,
+                        () -> {
+                            Time.ctime_r(clock,
+                                    null);
+                        });
         //Test that there at least 26 bytes available in the buffer.
-        Assertions.assertThrows(IllegalArgumentException.class, () -> {
-            Time.ctime_r(clock, MemoryHeap.wrap(MemorySegment.allocateNative(25, ms)));
-        });
+        Assertions
+                .assertThrows(IllegalArgumentException.class,
+                        () -> {
+                            Time.ctime_r(clock, MemoryHeap.wrap(MemorySegment.allocateNative(25, ms)));
+                        });
     }
 
     /**
@@ -440,9 +443,11 @@ public class TimeTest {
     @Test
     public void testDaylight() throws Exception {
         if (MultiarchTupelBuilder.getOS() == OS.FREE_BSD) {
-            Assertions.assertThrows(NoSuchNativeSymbolException.class, () -> {
-                Time.daylight();
-            });
+            Assertions.assertThrows(NoSuchNativeSymbolException.class,
+                    () -> {
+                        Time.daylight();
+                    }
+            );
         } else {
             final int oldDaylight = Time.daylight();
             assertEquals(oldDaylight, Time.daylight());
@@ -466,9 +471,11 @@ public class TimeTest {
     public void testGetdate_err() throws Exception {
         switch (MultiarchTupelBuilder.getOS()) {
             case FREE_BSD, OPEN_BSD -> {
-                Assertions.assertThrows(NoSuchNativeSymbolException.class, () -> {
-                    Time.getdate_err();
-                });
+                Assertions.assertThrows(NoSuchNativeSymbolException.class,
+                        () -> {
+                            Time.getdate_err();
+                        }
+                );
             }
             default -> {
                 // TODDO convert with getdate succesfully before ???
@@ -483,16 +490,22 @@ public class TimeTest {
     @Test
     public void testGetdate() throws Exception {
         String string = "Tue Dec  3 15:20:44 2019\n";
+
         switch (MultiarchTupelBuilder.getOS()) {
             case FREE_BSD, OPEN_BSD -> {
-                Assertions.assertThrows(NoSuchNativeMethodException.class, () -> {
-                    Time.Tm result = Time.getdate(string);
-                });
+                Assertions.assertThrows(NoSuchNativeMethodException.class,
+                        () -> {
+                            Time.Tm result = Time.getdate(string);
+                        }
+                );
+
             }
             default -> {
-                NativeException nee = Assertions.assertThrows(NativeException.class, () -> {
-                    Time.Tm result = Time.getdate(string);
-                });
+                NativeException nee = Assertions.assertThrows(NativeException.class,
+                        () -> {
+                            Time.Tm result = Time.getdate(string);
+                        }
+                );
                 assertEquals(1, Time.getdate_err(), "getdate_err no DATEMSK expected");
             }
         }
@@ -522,9 +535,12 @@ public class TimeTest {
         Time.gmtime_r(timer, tm);
         assertTm(instant, tm, ZoneOffset.UTC);
 
-        Assertions.assertThrows(NullPointerException.class, () -> {
-            Time.gmtime_r(timer, null);
-        });
+        Assertions
+                .assertThrows(NullPointerException.class,
+                        () -> {
+                            Time.gmtime_r(timer,
+                                    null);
+                        });
 
     }
 
@@ -580,9 +596,12 @@ public class TimeTest {
 
         assertTm(instant, tm, ZoneId.systemDefault());
 
-        Assertions.assertThrows(NullPointerException.class, () -> {
-            Time.localtime_r(timer, null);
-        });
+        Assertions
+                .assertThrows(NullPointerException.class,
+                        () -> {
+                            Time.localtime_r(timer,
+                                    null);
+                        });
     }
 
     /**
@@ -596,9 +615,12 @@ public class TimeTest {
         long result = Time.mktime(tm);
         assertEquals(timer.getAsSignedLong(), result);//may fail too if Time.localtime is broken
 
-        Assertions.assertThrows(NullPointerException.class, () -> {
-            Time.mktime(null);
-        });
+        Assertions
+                .assertThrows(NullPointerException.class,
+                        () -> {
+                            Time.mktime(
+                                    null);
+                        });
     }
 
     /**
@@ -658,9 +680,12 @@ public class TimeTest {
 
         Time.nanosleep(rqtp);
 
-        Assertions.assertThrows(NullPointerException.class, () -> {
-            Time.nanosleep(null, null);
-        });
+        Assertions
+                .assertThrows(NullPointerException.class,
+                        () -> {
+                            Time.nanosleep(
+                                    null, null);
+                        });
 
     }
 
@@ -681,15 +706,24 @@ public class TimeTest {
         String result = Time.strftime(maxsize, format, timeptr);
         assertEquals("2020-02-19 16:03:47", result);
 
-        Assertions.assertThrows(NullPointerException.class, () -> {
-            Time.strftime(maxsize, null, timeptr);
-        });
-        Assertions.assertThrows(NullPointerException.class, () -> {
-            Time.strftime(maxsize, format, null);
-        });
-        Assertions.assertThrows(IllegalArgumentException.class, () -> {
-            Time.strftime(-1, format, timeptr);
-        });
+        Assertions
+                .assertThrows(NullPointerException.class,
+                        () -> {
+                            Time.strftime(maxsize,
+                                    null, timeptr);
+                        });
+        Assertions
+                .assertThrows(NullPointerException.class,
+                        () -> {
+                            Time.strftime(maxsize, format,
+                                    null);
+                        });
+        Assertions
+                .assertThrows(IllegalArgumentException.class,
+                        () -> {
+                            Time.strftime(
+                                    -1, format, timeptr);
+                        });
     }
 
     /**
@@ -712,18 +746,30 @@ public class TimeTest {
             String result = Time.strftime_l(maxsize, format, timeptr, locale);
             assertEquals("2020-02-19 16:03:47", result);
 
-            Assertions.assertThrows(IllegalArgumentException.class, () -> {
-                Time.strftime_l(-1, format, timeptr, locale);
-            });
-            Assertions.assertThrows(NullPointerException.class, () -> {
-                Time.strftime_l(maxsize, null, timeptr, locale);
-            });
-            Assertions.assertThrows(NullPointerException.class, () -> {
-                Time.strftime_l(maxsize, format, null, locale);
-            });
-            Assertions.assertThrows(NullPointerException.class, () -> {
-                Time.strftime_l(maxsize, format, timeptr, null);
-            });
+            Assertions
+                    .assertThrows(IllegalArgumentException.class,
+                            () -> {
+                                Time.strftime_l(
+                                        -1, format, timeptr, locale);
+                            });
+            Assertions
+                    .assertThrows(NullPointerException.class,
+                            () -> {
+                                Time.strftime_l(maxsize,
+                                        null, timeptr, locale);
+                            });
+            Assertions
+                    .assertThrows(NullPointerException.class,
+                            () -> {
+                                Time.strftime_l(maxsize, format,
+                                        null, locale);
+                            });
+            Assertions
+                    .assertThrows(NullPointerException.class,
+                            () -> {
+                                Time.strftime_l(maxsize, format, timeptr,
+                                        null);
+                            });
         } finally {
             Locale.freelocale(locale);
         }
@@ -757,15 +803,24 @@ public class TimeTest {
 
         assertEquals(expResult, result, "Expected offset to String \"\\nJNHW\" in buf");
 
-        Assertions.assertThrows(NullPointerException.class, () -> {
-            Time.strptime(null, format, tm);
-        });
-        Assertions.assertThrows(NullPointerException.class, () -> {
-            Time.strptime(buf, null, tm);
-        });
-        Assertions.assertThrows(NullPointerException.class, () -> {
-            Time.strptime(buf, format, null);
-        });
+        Assertions
+                .assertThrows(NullPointerException.class,
+                        () -> {
+                            Time.strptime(
+                                    null, format, tm);
+                        });
+        Assertions
+                .assertThrows(NullPointerException.class,
+                        () -> {
+                            Time.strptime(buf,
+                                    null, tm);
+                        });
+        Assertions
+                .assertThrows(NullPointerException.class,
+                        () -> {
+                            Time.strptime(buf, format,
+                                    null);
+                        });
 
     }
 
@@ -789,17 +844,21 @@ public class TimeTest {
                 // precondition for tests not available
                 Assertions.assertThrows(NoSuchNativeTypeException.class,
                         () -> Time.Timer_t.tryAllocateNative(ms));
-                Assertions.assertThrows(NoSuchNativeTypeException.class,
-                        () -> Time.timer_create(0, Time.PtrTimer_t.tryAllocateNative(ms)));
-                Assertions.assertThrows(NoSuchNativeTypeException.class,
-                        () -> Time.timer_delete(Time.Timer_t.tryAllocateNative(ms)));
+                Assertions
+                        .assertThrows(NoSuchNativeTypeException.class,
+                                () -> Time.timer_create(0, Time.PtrTimer_t.tryAllocateNative(ms)));
+                Assertions
+                        .assertThrows(NoSuchNativeTypeException.class,
+                                () -> Time.timer_delete(Time.Timer_t.tryAllocateNative(ms)));
                 return;
+
             }
             case OPEN_BSD -> {
                 Assertions.assertThrows(NoSuchNativeMethodException.class,
                         () -> Time.timer_create(0, Time.PtrTimer_t.tryAllocateNative(ms)));
-                Assertions.assertThrows(NoSuchNativeMethodException.class,
-                        () -> Time.timer_delete(Time.Timer_t.tryAllocateNative(ms)));
+                Assertions
+                        .assertThrows(NoSuchNativeMethodException.class,
+                                () -> Time.timer_delete(Time.Timer_t.tryAllocateNative(ms)));
                 return;
             }
         }
@@ -815,9 +874,12 @@ public class TimeTest {
 
         OpaqueMemory.clear(ptrTimerid);
 
-        Assertions.assertThrows(NullPointerException.class, () -> {
-            Time.timer_create(Time.CLOCK_MONOTONIC, null, null);
-        });
+        Assertions
+                .assertThrows(NullPointerException.class,
+                        () -> {
+                            Time.timer_create(Time.CLOCK_MONOTONIC,
+                                    null, null);
+                        });
 
         Signal.Sigevent evp = Signal.Sigevent.tryAllocateNative(ms);
         //Setup for signal delivery
@@ -838,6 +900,7 @@ public class TimeTest {
             JnhwTestLogger.logTest("timerid: " + timerid);
         } finally {
             Time.timer_delete(timerid);
+
         }
 
         if (MultiarchTupelBuilder.getOS() == OS.FREE_BSD) {
@@ -848,9 +911,11 @@ public class TimeTest {
             NativeErrorException nee = Assertions.assertThrows(NativeErrorException.class,
                     () -> Time.timer_delete(ptrTimerid.get(ms)));
             ErrnoTest.assertErrnoEquals(Errno.EINVAL, nee.errno);
+
         }
 
-        Assertions.assertThrows(NullPointerException.class, () -> Time.timer_delete(null));
+        Assertions.assertThrows(NullPointerException.class,
+                () -> Time.timer_delete(null));
     }
 
     /**
@@ -899,6 +964,7 @@ public class TimeTest {
                 Assertions
                         .assertThrows(NoSuchNativeTypeException.class,
                                 () -> Time.Itimerspec.tryAllocateNative(ms));
+
             }
             case OPEN_BSD -> {// precondition for tests not available
                 Assertions.assertThrows(NoSuchNativeTypeException.class,
@@ -946,8 +1012,9 @@ public class TimeTest {
                 Assertions.assertTrue(LibcLoader.LIB_C_SYMBOL_LOOKUP.lookup("timer_delete").isEmpty(), "timer_delete is available");
 
                 // precondition for tests not available
-                Assertions.assertThrows(NoSuchNativeTypeException.class,
-                        () -> Time.Timer_t.tryAllocateNative(ms));
+                Assertions
+                        .assertThrows(NoSuchNativeTypeException.class,
+                                () -> Time.Timer_t.tryAllocateNative(ms));
             }
             case OPEN_BSD -> {
                 // preconditions not met can only test this this way.
@@ -958,8 +1025,9 @@ public class TimeTest {
                 Assertions.assertTrue(LibrtLoader.LIB_RT_SYMBOL_LOOKUP.lookup("timer_delete").isEmpty(), "timer_delete is available");
 
                 // precondition for tests not available
-                Assertions.assertThrows(NoSuchNativeTypeException.class,
-                        () -> Signal.Sigevent.tryAllocateNative(ms));
+                Assertions
+                        .assertThrows(NoSuchNativeTypeException.class,
+                                () -> Signal.Sigevent.tryAllocateNative(ms));
             }
             default -> {
                 final int SIVAL_INT = 0x87654321;

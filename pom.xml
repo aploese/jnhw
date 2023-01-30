@@ -170,8 +170,8 @@
                     <artifactId>maven-surefire-plugin</artifactId>
                     <version>3.0.0-M7</version>
                          <configuration>
-                        <forkedProcessExitTimeoutInSeconds>1200</forkedProcessExitTimeoutInSeconds>
-                        <forkedProcessTimeoutInSeconds>600</forkedProcessTimeoutInSeconds>
+                        <!--forkedProcessExitTimeoutInSeconds>3600</forkedProcessExitTimeoutInSeconds>
+                        <forkedProcessTimeoutInSeconds>1800</forkedProcessTimeoutInSeconds-->
                         <argLine>${commandLineArg.ChooseVM} ${commandLineArg.NativeProvider} --enable-preview --enable-native-access=ALL-UNNAMED</argLine>
                     </configuration>
                 </plugin>

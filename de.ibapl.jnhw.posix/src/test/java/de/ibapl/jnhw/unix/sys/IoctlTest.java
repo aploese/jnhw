@@ -30,6 +30,7 @@ import de.ibapl.jnhw.posix.LibJnhwPosixTestLoader;
 import de.ibapl.jnhw.util.posix.DefinesTest;
 import java.lang.foreign.MemoryAddress;
 import java.lang.foreign.MemorySession;
+import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
@@ -47,24 +48,21 @@ public class IoctlTest {
 
     @BeforeAll
     public static void checkBeforeAll_HAVE_SYS_IOCTL_H() throws Exception {
-        JnhwTestLogger.logBeforeAllBeginn("checkBeforeAll_HAVE_SYS_IOCTL_H");
-        if (MultiarchTupelBuilder.getOS() == OS.WINDOWS) {
-            Assertions.assertFalse(Ioctl.HAVE_SYS_IOCTL_H, "not expected to have sys/ioctl.h");
-        } else {
-            Assertions.assertTrue(Ioctl.HAVE_SYS_IOCTL_H, "expected to have sys/ioctl.h");
-        }
+        JnhwTestLogger.logBeforeAllBegin("checkBeforeAll_HAVE_SYS_IOCTL_H");
+        Assertions.assertTrue(Ioctl.HAVE_SYS_IOCTL_H, "expected to have sys/ioctl.h");
         JnhwTestLogger.logBeforeAllEnd("checkBeforeAll_HAVE_SYS_IOCTL_H");
     }
 
     @BeforeAll
     public static void checkBeforeAll_IoctlDefines() throws Exception {
-        JnhwTestLogger.logBeforeAllBeginn("checkBeforeAll_IoctlDefines");
-        if (MultiarchTupelBuilder.getOS() == OS.WINDOWS) {
-            JnhwTestLogger.logBeforeAllEnd("checkBeforeAll_IoctlDefines");
-            return;
-        }
+        JnhwTestLogger.logBeforeAllBegin("checkBeforeAll_IoctlDefines");
         DefinesTest.testDefines(Ioctl.class, "HAVE_SYS_IOCTL_H");
         JnhwTestLogger.logBeforeAllEnd("checkBeforeAll_IoctlDefines");
+    }
+
+    @AfterAll
+    public static void tearDownAfterClass(TestInfo testTnfo) throws Exception {
+        JnhwTestLogger.logAfterAll(testTnfo);
     }
 
     private MemorySession ms;

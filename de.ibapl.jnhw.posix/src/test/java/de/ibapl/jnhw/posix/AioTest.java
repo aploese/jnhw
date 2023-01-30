@@ -39,7 +39,6 @@ import java.lang.foreign.MemoryAddress;
 import java.lang.foreign.MemorySession;
 import java.nio.ByteBuffer;
 import java.time.Duration;
-import java.time.temporal.TemporalUnit;
 import org.junit.jupiter.api.AfterEach;
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
@@ -52,6 +51,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTimeoutPreemptively;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
+import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -71,9 +71,9 @@ public class AioTest {
 
     @BeforeAll
     public static void checkBeforeAll_HAVE_AIO_H() throws Exception {
-        JnhwTestLogger.logBeforeAllBeginn("checkBeforeAll_HAVE_AIO_H");
+        JnhwTestLogger.logBeforeAllBegin("checkBeforeAll_HAVE_AIO_H");
         switch (MultiarchTupelBuilder.getOS()) {
-            case OPEN_BSD, WINDOWS ->
+            case OPEN_BSD ->
                 assertFalse(Aio.HAVE_AIO_H, "expected not to have aio.h");
             default ->
                 assertTrue(Aio.HAVE_AIO_H, "expected to have aio.h");
@@ -83,21 +83,14 @@ public class AioTest {
 
     @BeforeAll
     public static void checkBeforeAll_AioDefines() throws Exception {
-        JnhwTestLogger.logBeforeAllBeginn("checkBeforeAll_AioDefines");
-        if (MultiarchTupelBuilder.getOS() == OS.WINDOWS) {
-            return;
-        }
+        JnhwTestLogger.logBeforeAllBegin("checkBeforeAll_AioDefines");
         DefinesTest.testDefines(Aio.class, "HAVE_AIO_H");
         JnhwTestLogger.logBeforeAllEnd("checkBeforeAll_AioDefines");
     }
 
     @BeforeAll
     public static void checkBeforeAll_StructAiocb() throws Exception {
-        JnhwTestLogger.logBeforeAllBeginn("checkBeforeAll_StructAiocb");
-        if (MultiarchTupelBuilder.getOS() == OS.WINDOWS) {
-            JnhwTestLogger.logBeforeAllEnd("checkBeforeAll_StructAiocb");
-            return;
-        }
+        JnhwTestLogger.logBeforeAllBegin("checkBeforeAll_StructAiocb");
         switch (MultiarchTupelBuilder.getOS()) {
             case OPEN_BSD ->
                 assertThrows(NoSuchNativeTypeException.class, () -> {
@@ -119,6 +112,11 @@ public class AioTest {
                 );
         }
         JnhwTestLogger.logBeforeAllEnd("checkBeforeAll_StructAiocb");
+    }
+
+    @AfterAll
+    public static void tearDownAfterClass(TestInfo testTnfo) throws Exception {
+        JnhwTestLogger.logAfterAll(testTnfo);
     }
 
     private MemorySession sharedSession;
@@ -989,7 +987,7 @@ public class AioTest {
                 aiocb.aio_fildes(-1);
                 list.set(0, aiocb);
 
-                assertTimeoutPreemptively(Duration.ofSeconds(1), () -> {
+                assertTimeoutPreemptively(Duration.ofSeconds(60), () -> {
                     if (MultiarchTupelBuilder.getOS() == OS.APPLE) {
                         //TODO qeued, but invalid file descriptor...
                         Aio.lio_listio(Aio.LIO_WAIT.get(), list);

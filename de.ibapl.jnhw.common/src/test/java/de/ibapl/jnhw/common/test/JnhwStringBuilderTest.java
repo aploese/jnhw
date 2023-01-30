@@ -31,8 +31,13 @@ import java.io.IOException;
 import java.lang.foreign.MemoryAddress;
 import java.lang.foreign.MemorySegment;
 import java.lang.foreign.MemorySession;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.AfterEach;
 import static org.junit.jupiter.api.Assertions.*;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInfo;
 
 /**
  *
@@ -40,55 +45,27 @@ import org.junit.jupiter.api.Test;
  */
 public class JnhwStringBuilderTest {
 
-    public class StructTest extends Struct {
-
-        public StructTest(MemorySegment memorySegment) {
-            super(memorySegment, 0, memorySegment.byteSize());
-        }
-
-        @Override
-        public void nativeToString(Appendable sb, String indentOffset, String indent) throws IOException {
-            JsonStringBuilder jsb = new JsonStringBuilder(sb, indentOffset, indent);
-            jsb.appendMember("memory", "\"", (sbu) -> OpaqueMemory.printMemory(sbu, this, false), "\"");
-            jsb.close();
-        }
+    @BeforeAll
+    public static void setUpBeforeClass(TestInfo testTnfo) throws Exception {
+        JnhwTestLogger.logBeforeAll(testTnfo);
     }
 
-    public static class MemoryArrayTestElement extends Struct {
-
-        final Int8_t i0;
-        final Int8_t i1;
-
-        public MemoryArrayTestElement(MemorySegment memorySegment, long offset, byte i0, byte i1) {
-            super(memorySegment, offset, 2);
-            this.i0 = Int8_t.map(this, 0);
-            this.i0.int8_t(i0);
-            this.i1 = Int8_t.map(this, 1);
-            this.i1.int8_t(i1);
-        }
-
-        @Override
-        public void nativeToString(Appendable sb, String indentOffset, String indent) throws IOException {
-            JsonStringBuilder jsb = new JsonStringBuilder(sb, indentOffset, indent);
-            jsb.appendHexByteMember("i0", i0.int8_t());
-            jsb.appendHexByteMember("i1", i1.int8_t());
-            jsb.close();
-        }
-    }
-
-    public static class MemoryArrayTest extends MemoryArray<MemoryArrayTestElement> {
-
-        public MemoryArrayTest(MemorySegment memorySegment, long offset) {
-            super(memorySegment, offset, new MemoryArrayTestElement[3], MemoryArrayTest::createAtOffset, 3);
-        }
-
-        private static MemoryArrayTestElement createAtOffset(MemorySegment memorySegment, long elementOffset, int index) {
-            return new MemoryArrayTestElement(memorySegment, elementOffset, (byte) 0, (byte) index);
-        }
-
+    @AfterAll
+    public static void tearDownAfterClass(TestInfo testTnfo) throws Exception {
+        JnhwTestLogger.logAfterAll(testTnfo);
     }
 
     public JnhwStringBuilderTest() {
+    }
+
+    @BeforeEach
+    public void setUpBeforeEach(TestInfo testTnfo) throws Exception {
+        JnhwTestLogger.logBeforeEach(testTnfo);
+    }
+
+    @AfterEach
+    public void tearDownAfterEach(TestInfo testTnfo) throws Exception {
+        JnhwTestLogger.logAfterEach(testTnfo);
     }
 
     @Test
@@ -192,6 +169,54 @@ public class JnhwStringBuilderTest {
                 assertEquals("{_address : 0x0000002a}", jsb.toString());
             default ->
                 throw new RuntimeException();
+        }
+    }
+
+    public static class MemoryArrayTestElement extends Struct {
+
+        final Int8_t i0;
+        final Int8_t i1;
+
+        public MemoryArrayTestElement(MemorySegment memorySegment, long offset, byte i0, byte i1) {
+            super(memorySegment, offset, 2);
+            this.i0 = Int8_t.map(this, 0);
+            this.i0.int8_t(i0);
+            this.i1 = Int8_t.map(this, 1);
+            this.i1.int8_t(i1);
+        }
+
+        @Override
+        public void nativeToString(Appendable sb, String indentOffset, String indent) throws IOException {
+            JsonStringBuilder jsb = new JsonStringBuilder(sb, indentOffset, indent);
+            jsb.appendHexByteMember("i0", i0.int8_t());
+            jsb.appendHexByteMember("i1", i1.int8_t());
+            jsb.close();
+        }
+    }
+
+    public static class MemoryArrayTest extends MemoryArray<MemoryArrayTestElement> {
+
+        public MemoryArrayTest(MemorySegment memorySegment, long offset) {
+            super(memorySegment, offset, new MemoryArrayTestElement[3], MemoryArrayTest::createAtOffset, 3);
+        }
+
+        private static MemoryArrayTestElement createAtOffset(MemorySegment memorySegment, long elementOffset, int index) {
+            return new MemoryArrayTestElement(memorySegment, elementOffset, (byte) 0, (byte) index);
+        }
+
+    }
+
+    public class StructTest extends Struct {
+
+        public StructTest(MemorySegment memorySegment) {
+            super(memorySegment, 0, memorySegment.byteSize());
+        }
+
+        @Override
+        public void nativeToString(Appendable sb, String indentOffset, String indent) throws IOException {
+            JsonStringBuilder jsb = new JsonStringBuilder(sb, indentOffset, indent);
+            jsb.appendMember("memory", "\"", (sbu) -> OpaqueMemory.printMemory(sbu, this, false), "\"");
+            jsb.close();
         }
     }
 }

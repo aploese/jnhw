@@ -28,9 +28,9 @@ import de.ibapl.jnhw.libloader.MultiarchTupelBuilder;
 import de.ibapl.jnhw.libloader.OS;
 import de.ibapl.jnhw.util.posix.DefinesTest;
 import java.lang.foreign.MemorySession;
+import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
-import static org.junit.jupiter.api.Assertions.assertEquals;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -46,33 +46,21 @@ public class SchedTest {
 
     @BeforeAll
     public static void checkBeforeAll_HAVE_SCHED_H() throws Exception {
-        JnhwTestLogger.logBeforeAllBeginn("checkBeforeAll_HAVE_SCHED_H");
-        if (MultiarchTupelBuilder.getOS() == OS.WINDOWS) {
-            Assertions.assertFalse(Sched.HAVE_SCHED_H, "not expected to have sched.h");
-        } else {
-            Assertions.assertTrue(Sched.HAVE_SCHED_H, "expected to have sched.h");
-        }
+        JnhwTestLogger.logBeforeAllBegin("checkBeforeAll_HAVE_SCHED_H");
+        Assertions.assertTrue(Sched.HAVE_SCHED_H, "expected to have sched.h");
         JnhwTestLogger.logBeforeAllEnd("checkBeforeAll_HAVE_SCHED_H");
     }
 
     @BeforeAll
     public static void checkBeforeAll_SchedDefines() throws Exception {
-        JnhwTestLogger.logBeforeAllBeginn("checkBeforeAll_SchedDefines");
-        if (MultiarchTupelBuilder.getOS() == OS.WINDOWS) {
-            JnhwTestLogger.logBeforeAllEnd("checkBeforeAll_SchedDefines");
-            return;
-        }
+        JnhwTestLogger.logBeforeAllBegin("checkBeforeAll_SchedDefines");
         DefinesTest.testDefines(Sched.class, "HAVE_SCHED_H");
         JnhwTestLogger.logBeforeAllEnd("checkBeforeAll_SchedDefines");
     }
 
     @BeforeAll
     public static void checkBeforeAll_NativeSched_param() throws Exception {
-        JnhwTestLogger.logBeforeAllBeginn("checkBeforeAll_NativeSched_param");
-        if (MultiarchTupelBuilder.getOS() == OS.WINDOWS) {
-            JnhwTestLogger.logBeforeAllEnd("checkBeforeAll_NativeSched_param");
-            return;
-        }
+        JnhwTestLogger.logBeforeAllBegin("checkBeforeAll_NativeSched_param");
         Assertions.assertAll(
                 () -> Assertions.assertEquals(LibJnhwPosixTestLoader.invoke_sI___V("Sched_param_sizeof"), Sched.Sched_param.sizeof, "sizeof"),
                 () -> Assertions.assertEquals(LibJnhwPosixTestLoader.invoke_sI___V("Sched_param_alignof"), Sched.Sched_param.alignof.alignof, "alignof"),
@@ -84,6 +72,12 @@ public class SchedTest {
         );
         JnhwTestLogger.logBeforeAllEnd("checkBeforeAll_NativeSched_param");
     }
+
+    @AfterAll
+    public static void tearDownAfterClass(TestInfo testTnfo) throws Exception {
+        JnhwTestLogger.logAfterAll(testTnfo);
+    }
+
     private MemorySession ms;
 
     @BeforeEach

@@ -29,6 +29,7 @@ import de.ibapl.jnhw.common.downcall.JnhwMh__V__sL;
 import de.ibapl.jnhw.common.memory.NativeFunctionPointer;
 import de.ibapl.jnhw.common.memory.OpaqueMemory;
 import de.ibapl.jnhw.common.nativepointer.FunctionPtr__V__Union_I_MA;
+import de.ibapl.jnhw.common.test.JnhwTestLogger;
 import de.ibapl.jnhw.common.test.LibJnhwCommonTestLoader;
 import de.ibapl.jnhw.common.upcall.CallbackFactory__V__Union_I_MA;
 import de.ibapl.jnhw.common.upcall.Callback__V__Union_I_MA;
@@ -39,8 +40,10 @@ import de.ibapl.jnhw.libloader.MultiarchTupelBuilder;
 import java.lang.foreign.MemoryAddress;
 import java.lang.foreign.MemorySegment;
 import java.lang.foreign.MemorySession;
+import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
 import static org.junit.jupiter.api.Assertions.*;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInfo;
@@ -66,29 +69,14 @@ public class Callback__V__Union_I_MA_Test {
         doCallback__V__Union_I_MAI = JnhwMh__V__sI.mandatoryOf(LibJnhwCommonTestLoader.SYMBOL_LOOKUP, "doCallback__V__Union_I_MAI", BaseDataType.int32_t);
     }
 
-    private class DummyCB extends Callback__V__Union_I_MA<OpaqueMemory> {
-
-        @Override
-        protected void callback(MemoryAddress value_ptr, int value_int) {
-            throw new UnsupportedOperationException("Not supported yet.");
-        }
-
+    @BeforeAll
+    public static void setUpBeforeClass(TestInfo testTnfo) throws Exception {
+        JnhwTestLogger.logBeforeAll(testTnfo);
     }
 
-    private MemorySession ms;
-
-    @BeforeEach
-    public void setUp(TestInfo testInfo) throws Exception {
-        System.gc(); //TODO removint this will fail the tests ...?
-        ms = MemorySession.openConfined();
-        assertEquals(CallbackFactory__V__Union_I_MA.MAX_CALL_BACKS, CallbackFactory__V__Union_I_MA.callbacksAvailable());
-    }
-
-    @AfterEach
-    public void cleanupAfterEach(TestInfo testInfo) throws Exception {
-        ms.close();
-        System.gc();
-        assertEquals(CallbackFactory__V__Union_I_MA.MAX_CALL_BACKS, CallbackFactory__V__Union_I_MA.callbacksAvailable());
+    @AfterAll
+    public static void tearDownAfterClass(TestInfo testTnfo) throws Exception {
+        JnhwTestLogger.logAfterAll(testTnfo);
     }
 
     private static FunctionPtr__V__Union_I_MA getCallback__V__Union_I_MA() {
@@ -113,6 +101,31 @@ public class Callback__V__Union_I_MA_Test {
         } catch (Throwable t) {
             throw new RuntimeException(t);
         }
+    }
+    private MemorySession ms;
+
+    @BeforeEach
+    public void setUpBeforeEach(TestInfo testTnfo) throws Exception {
+        JnhwTestLogger.logBeforeEach(testTnfo);
+    }
+
+    @AfterEach
+    public void tearDownAfterEach(TestInfo testTnfo) throws Exception {
+        JnhwTestLogger.logAfterEach(testTnfo);
+    }
+
+    @BeforeEach
+    public void setUp(TestInfo testInfo) throws Exception {
+        System.gc(); //TODO removint this will fail the tests ...?
+        ms = MemorySession.openConfined();
+        assertEquals(CallbackFactory__V__Union_I_MA.MAX_CALL_BACKS, CallbackFactory__V__Union_I_MA.callbacksAvailable());
+    }
+
+    @AfterEach
+    public void cleanupAfterEach(TestInfo testInfo) throws Exception {
+        ms.close();
+        System.gc();
+        assertEquals(CallbackFactory__V__Union_I_MA.MAX_CALL_BACKS, CallbackFactory__V__Union_I_MA.callbacksAvailable());
     }
 
     private void doCallback__V__Union_I_MAI(int value) {
@@ -432,6 +445,15 @@ public class Callback__V__Union_I_MA_Test {
         ).invoke__V__sI(testValue / 2);
         assertEquals(-1, addressValueRef[0]);
         assertEquals(-1, intValueRef[0]);
+
+    }
+
+    private class DummyCB extends Callback__V__Union_I_MA<OpaqueMemory> {
+
+        @Override
+        protected void callback(MemoryAddress value_ptr, int value_int) {
+            throw new UnsupportedOperationException("Not supported yet.");
+        }
 
     }
 

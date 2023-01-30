@@ -32,8 +32,13 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.Assertions;
 import de.ibapl.jnhw.common.datatypes.BaseDataType;
 import de.ibapl.jnhw.common.downcall.JnhwMh_MA___V;
+import de.ibapl.jnhw.common.test.JnhwTestLogger;
 import de.ibapl.jnhw.common.test.LibJnhwCommonTestLoader;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.TestInfo;
 
 /**
  *
@@ -46,15 +51,27 @@ import org.junit.jupiter.api.BeforeAll;
 @Bug_JDK_8300201
 public class Bug_JDK_8300201_Test {
 
-    public Bug_JDK_8300201_Test() {
-    }
-
     final static long TEST_VALUE = 0x0000000080000000L;
     final static MemoryAddress BUGGY_VALUE = MemoryAddress.ofLong(0xffffffff00000000L | TEST_VALUE);
 
     @BeforeAll
-    public static void setUpBeforeClass() throws Exception {
-        LibJnhwCommonTestLoader.touch();
+    public static void setUpBeforeClass(TestInfo testTnfo) throws Exception {
+        JnhwTestLogger.logBeforeAll(testTnfo);
+    }
+
+    @AfterAll
+    public static void tearDownAfterClass(TestInfo testTnfo) throws Exception {
+        JnhwTestLogger.logAfterAll(testTnfo);
+    }
+
+    @BeforeEach
+    public void setUpBeforeEach(TestInfo testTnfo) throws Exception {
+        JnhwTestLogger.logBeforeEach(testTnfo);
+    }
+
+    @AfterEach
+    public void tearDownAfterEach(TestInfo testTnfo) throws Exception {
+        JnhwTestLogger.logAfterEach(testTnfo);
     }
 
     @Test

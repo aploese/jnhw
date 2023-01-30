@@ -39,6 +39,7 @@ import de.ibapl.jnhw.util.posix.upcall.Callback__V__UnionSigval;
 import java.lang.foreign.MemoryAddress;
 import java.lang.foreign.MemorySegment;
 import java.lang.foreign.MemorySession;
+import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -60,22 +61,14 @@ public class SignalTest {
 
     @BeforeAll
     public static void checkBeforeAll_HAVE_SIGNAL_H() throws Exception {
-        JnhwTestLogger.logBeforeAllBeginn("checkBeforeAll_HAVE_SIGNAL_H");
-        if (MultiarchTupelBuilder.getOS() == OS.WINDOWS) {
-            Assertions.assertFalse(Signal.HAVE_SIGNAL_H, "not expected to have signal.h");
-        } else {
-            Assertions.assertTrue(Signal.HAVE_SIGNAL_H, "expected to have signal.h");
-        }
+        JnhwTestLogger.logBeforeAllBegin("checkBeforeAll_HAVE_SIGNAL_H");
+        Assertions.assertTrue(Signal.HAVE_SIGNAL_H, "expected to have signal.h");
         JnhwTestLogger.logBeforeAllEnd("checkBeforeAll_HAVE_SIGNAL_H");
     }
 
     @BeforeAll
     public static void checkBeforeAll_SignalDefines() throws Exception {
-        JnhwTestLogger.logBeforeAllBeginn("checkBeforeAll_SignalDefines");
-        if (MultiarchTupelBuilder.getOS() == OS.WINDOWS) {
-            JnhwTestLogger.logBeforeAllEnd("checkBeforeAll_SignalDefines");
-            return;
-        }
+        JnhwTestLogger.logBeforeAllBegin("checkBeforeAll_SignalDefines");
         DefinesTest.testDefines(Signal.class, "HAVE_SIGNAL_H", (name) -> switch (name) {
             case "SIG_DFL", "SIG_ERR", "SIG_IGN" ->
                 new FunctionPtr__V___I(LibJnhwPosixTestLoader.getAdrDefine(name));
@@ -89,11 +82,7 @@ public class SignalTest {
 
     @BeforeAll
     public static void checkBeforeAll_StructMcontext_t() throws Exception {
-        JnhwTestLogger.logBeforeAllBeginn("checkBeforeAll_StructMcontext_t");
-        if (MultiarchTupelBuilder.getOS() == OS.WINDOWS) {
-            JnhwTestLogger.logBeforeAllEnd("checkBeforeAll_StructMcontext_t");
-            return;
-        }
+        JnhwTestLogger.logBeforeAllBegin("checkBeforeAll_StructMcontext_t");
         Assertions.assertAll(
                 () -> Assertions.assertEquals(LibJnhwPosixTestLoader.invoke_sI___V("Mcontext_t_sizeof"), Signal.Mcontext_t.sizeof, "sizeof"),
                 () -> Assertions.assertEquals(LibJnhwPosixTestLoader.invoke_sI___V("Mcontext_t_alignof"), Signal.Mcontext_t.alignof == null ? 0 : Signal.Mcontext_t.alignof.alignof, "alignof")
@@ -103,11 +92,7 @@ public class SignalTest {
 
     @BeforeAll
     public static void checkBeforeAll_StructSigset_t() throws Exception {
-        JnhwTestLogger.logBeforeAllBeginn("checkBeforeAll_StructSigset_t");
-        if (MultiarchTupelBuilder.getOS() == OS.WINDOWS) {
-            JnhwTestLogger.logBeforeAllEnd("checkBeforeAll_StructSigset_t");
-            return;
-        }
+        JnhwTestLogger.logBeforeAllBegin("checkBeforeAll_StructSigset_t");
         Assertions.assertAll(
                 () -> Assertions.assertEquals(LibJnhwPosixTestLoader.invoke_sI___V("Sigset_t_sizeof"), Signal.Sigset_t.sizeof, "sizeof"),
                 () -> Assertions.assertEquals(LibJnhwPosixTestLoader.invoke_sI___V("Sigset_t_alignof"), Signal.Sigset_t.alignof.alignof, "alignof")
@@ -117,11 +102,7 @@ public class SignalTest {
 
     @BeforeAll
     public static void checkBeforeAll_UnionSigval() throws Exception {
-        JnhwTestLogger.logBeforeAllBeginn("checkBeforeAll_UnionSigval");
-        if (MultiarchTupelBuilder.getOS() == OS.WINDOWS) {
-            JnhwTestLogger.logBeforeAllEnd("checkBeforeAll_UnionSigval");
-            return;
-        }
+        JnhwTestLogger.logBeforeAllBegin("checkBeforeAll_UnionSigval");
         Assertions.assertAll(
                 () -> Assertions.assertEquals(LibJnhwPosixTestLoader.invoke_sI___V("Sigval_sizeof"), Signal.Sigval.sizeof, "sizeof"),
                 () -> Assertions.assertEquals(LibJnhwPosixTestLoader.invoke_sI___V("Sigval_alignof"), Signal.Sigval.alignof.alignof, "alignof"),
@@ -133,11 +114,7 @@ public class SignalTest {
 
     @BeforeAll
     public static void checkBeforeAll_StructSigevent() throws Exception {
-        JnhwTestLogger.logBeforeAllBeginn("checkBeforeAll_StructSigevent");
-        if (MultiarchTupelBuilder.getOS() == OS.WINDOWS) {
-            JnhwTestLogger.logBeforeAllEnd("checkBeforeAll_StructSigevent");
-            return;
-        }
+        JnhwTestLogger.logBeforeAllBegin("checkBeforeAll_StructSigevent");
         Assertions.assertAll(
                 () -> Assertions.assertEquals(LibJnhwPosixTestLoader.invoke_sI___V("Sigevent_sizeof"), Signal.Sigevent.sizeof, "sizeof"),
                 () -> Assertions.assertEquals(LibJnhwPosixTestLoader.invoke_sI___V("Sigevent_alignof"), Signal.Sigevent.alignof == null ? 0 : Signal.Sigevent.alignof.alignof, "alignof"),
@@ -152,11 +129,7 @@ public class SignalTest {
 
     @BeforeAll
     public static void checkBeforeAll_StructSigaction() throws Exception {
-        JnhwTestLogger.logBeforeAllBeginn("checkBeforeAll_StructSigaction");
-        if (MultiarchTupelBuilder.getOS() == OS.WINDOWS) {
-            JnhwTestLogger.logBeforeAllEnd("checkBeforeAll_StructSigaction");
-            return;
-        }
+        JnhwTestLogger.logBeforeAllBegin("checkBeforeAll_StructSigaction");
         Assertions.assertAll(
                 () -> Assertions.assertEquals(LibJnhwPosixTestLoader.invoke_sI___V("Sigaction_sizeof"), Signal.Sigaction.sizeof, "sizeof"),
                 () -> Assertions.assertEquals(LibJnhwPosixTestLoader.invoke_sI___V("Sigaction_alignof"), Signal.Sigaction.alignof.alignof, "alignof"),
@@ -170,11 +143,7 @@ public class SignalTest {
 
     @BeforeAll
     public static void checkBeforeAll_StructStack_t() throws Exception {
-        JnhwTestLogger.logBeforeAllBeginn("checkBeforeAll_StructStack_t");
-        if (MultiarchTupelBuilder.getOS() == OS.WINDOWS) {
-            JnhwTestLogger.logBeforeAllEnd("checkBeforeAll_StructStack_t");
-            return;
-        }
+        JnhwTestLogger.logBeforeAllBegin("checkBeforeAll_StructStack_t");
         Assertions.assertAll(
                 () -> Assertions.assertEquals(LibJnhwPosixTestLoader.invoke_sI___V("Stack_t_sizeof"), Signal.Stack_t.sizeof, "sizeof"),
                 () -> Assertions.assertEquals(LibJnhwPosixTestLoader.invoke_sI___V("Stack_t_alignof"), Signal.Stack_t.alignof.alignof, "alignof"),
@@ -187,11 +156,7 @@ public class SignalTest {
 
     @BeforeAll
     public static void checkBeforeAll_StructSiginfo() throws Exception {
-        JnhwTestLogger.logBeforeAllBeginn("checkBeforeAll_StructSiginfo");
-        if (MultiarchTupelBuilder.getOS() == OS.WINDOWS) {
-            JnhwTestLogger.logBeforeAllEnd("checkBeforeAll_StructSiginfo");
-            return;
-        }
+        JnhwTestLogger.logBeforeAllBegin("checkBeforeAll_StructSiginfo");
         Assertions.assertAll(
                 () -> Assertions.assertEquals(LibJnhwPosixTestLoader.invoke_sI___V("Siginfo_t_sizeof"), Signal.Siginfo_t.sizeof, "sizeof"),
                 () -> Assertions.assertEquals(LibJnhwPosixTestLoader.invoke_sI___V("Siginfo_t_alignof"), Signal.Siginfo_t.alignof.alignof, "alignof"),
@@ -210,11 +175,7 @@ public class SignalTest {
 
     @BeforeAll
     public static void checkBeforeAll_StructUcontext_t() throws Exception {
-        JnhwTestLogger.logBeforeAllBeginn("checkBeforeAll_StructUcontext_t");
-        if (MultiarchTupelBuilder.getOS() == OS.WINDOWS) {
-            JnhwTestLogger.logBeforeAllEnd("checkBeforeAll_StructUcontext_t");
-            return;
-        }
+        JnhwTestLogger.logBeforeAllBegin("checkBeforeAll_StructUcontext_t");
         Assertions.assertAll(
                 () -> Assertions.assertEquals(LibJnhwPosixTestLoader.invoke_sI___V("Ucontext_t_sizeof"), Signal.Ucontext_t.sizeof, "sizeof"),
                 () -> Assertions.assertEquals(LibJnhwPosixTestLoader.invoke_sI___V("Ucontext_t_alignof"), Signal.Ucontext_t.alignof == null ? 0 : Signal.Ucontext_t.alignof.alignof, "alignof"),
@@ -224,6 +185,11 @@ public class SignalTest {
                 () -> Assertions.assertEquals(LibJnhwPosixTestLoader.invoke_sI___V("Ucontext_t_offsetof_uc_mcontext"), Signal.Ucontext_t.offsetof_Uc_mcontext, "offsetof_Uc_mcontext")
         );
         JnhwTestLogger.logBeforeAllEnd("checkBeforeAll_StructUcontext_t");
+    }
+
+    @AfterAll
+    public static void tearDownAfterClass(TestInfo testTnfo) throws Exception {
+        JnhwTestLogger.logAfterAll(testTnfo);
     }
 
     private MemorySession ms;
