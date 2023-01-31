@@ -21,19 +21,20 @@
  */
 package de.ibapl.jnhw.common.nativepointer;
 
+import de.ibapl.jnhw.common.datatypes.Pointer;
 import de.ibapl.jnhw.common.memory.NativeFunctionPointer;
-import de.ibapl.jnhw.common.memory.OpaqueMemory;
 import java.lang.foreign.MemoryAddress;
 import java.util.function.Function;
 
 /**
  *
  * @author aploese
+ * @param <A>
  */
-public class FunctionPtr__V__MA<A extends OpaqueMemory> extends NativeFunctionPointer {
+public class FunctionPtr__V__MA<A extends Pointer> extends NativeFunctionPointer {
 
-    public static FunctionPtr__V__MA wrap(MemoryAddress srcm) {
-        return new FunctionPtr__V__MA(srcm);
+    public static FunctionPtr__V__MA<?> wrap(MemoryAddress srcm) {
+        return new FunctionPtr__V__MA<>(srcm);
     }
 
     protected <T extends FunctionPtr__V__MA<A>> FunctionPtr__V__MA(Function<T, MemoryAddress> producer) {

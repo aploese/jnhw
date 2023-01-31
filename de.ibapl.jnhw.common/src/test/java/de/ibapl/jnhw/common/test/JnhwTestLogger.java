@@ -31,7 +31,7 @@ public class JnhwTestLogger {
 
     //set this to true to see lot of output
     //it may be useful to see which test crashed the VM ...
-    final static boolean PRINT_LOG = true;
+    final static boolean PRINT_LOG = false;
     final static int WAIT_TIME = 0;
 
     private static void flushAndWait() {

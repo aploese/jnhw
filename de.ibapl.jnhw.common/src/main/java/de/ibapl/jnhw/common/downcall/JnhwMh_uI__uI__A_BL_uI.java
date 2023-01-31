@@ -42,7 +42,7 @@ public interface JnhwMh_uI__uI__A_BL_uI extends JnhwMethodHandle {
     interface ExceptionErased extends JnhwMh_uI__uI__A_BL_uI {
 
         @Override
-        default long invoke_uL__uI__P_BL_uI(int arg1, Pointer<?> arg2, boolean arg3, int arg4) {
+        default long invoke_uL__uI__P_BL_uI(int arg1, Pointer arg2, boolean arg3, int arg4) {
             return invoke_uL__uI__A_BL_uI(arg1, arg2.toAddressable(), arg3, arg4);
         }
 
@@ -96,7 +96,7 @@ public interface JnhwMh_uI__uI__A_BL_uI extends JnhwMethodHandle {
         };
     }
 
-    default long invoke_uL__uI__P_BL_uI(int arg1, Pointer<?> arg2, boolean arg3, int arg4) throws Exception {
+    default long invoke_uL__uI__P_BL_uI(int arg1, Pointer arg2, boolean arg3, int arg4) throws Exception {
         return invoke_uL__uI__A_BL_uI(arg1, arg2.toAddressable(), arg3, arg4);
     }
 

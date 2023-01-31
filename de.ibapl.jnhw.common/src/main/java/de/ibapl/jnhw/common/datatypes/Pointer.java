@@ -28,9 +28,8 @@ import java.lang.foreign.MemoryAddress;
 /**
  *
  * @author aploese
- * @param <T>
  */
-public interface Pointer<T> {
+public interface Pointer {
 
     /**
      * The NULL pointer.
@@ -65,7 +64,7 @@ public interface Pointer<T> {
      * @param op
      * @return
      */
-    public static boolean isSameAddress(MemoryAddress address, Pointer op) {
+    static boolean isSameAddress(MemoryAddress address, Pointer op) {
         if (address == null) {
             return op == null ? true : op.toAddressable().address() == MemoryAddress.NULL;
         } else {
@@ -77,16 +76,12 @@ public interface Pointer<T> {
         }
     }
 
-    public static boolean isSameAddress(Pointer ptr1, Pointer ptr2) {
+    static boolean isSameAddress(Pointer ptr1, Pointer ptr2) {
         return (ptr1 == ptr2) || (ptr1 != null && ptr1.toAddressable().address().equals(ptr2.toAddressable().address()));
     }
 
-    public boolean is_NULL();
+    boolean is_NULL();
 
-    public boolean is_Not_NULL();
-
-    default public T to() {
-        return (T) this;
-    }
+    boolean is_Not_NULL();
 
 }

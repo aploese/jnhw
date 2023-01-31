@@ -44,7 +44,7 @@ public interface JnhwMh_sI__sI__A_sI_VARARGS_NONE extends JnhwMethodHandle {
     interface ExceptionErased extends JnhwMh_sI__sI__A_sI_VARARGS_NONE {
 
         @Override
-        default int invoke_sI__sI__P_sI(int arg1, Pointer<?> arg2, int arg3) {
+        default int invoke_sI__sI__P_sI(int arg1, Pointer arg2, int arg3) {
             return invoke_sI__sI__A_sI(arg1, arg2.toAddressable(), arg3);
         }
 
@@ -94,7 +94,7 @@ public interface JnhwMh_sI__sI__A_sI_VARARGS_NONE extends JnhwMethodHandle {
         };
     }
 
-    default int invoke_sI__sI__P_sI(int arg1, Pointer<?> arg2, int arg3) throws NoSuchNativeMethodException {
+    default int invoke_sI__sI__P_sI(int arg1, Pointer arg2, int arg3) throws NoSuchNativeMethodException {
         return invoke_sI__sI__A_sI(arg1, arg2.toAddressable(), arg3);
     }
 

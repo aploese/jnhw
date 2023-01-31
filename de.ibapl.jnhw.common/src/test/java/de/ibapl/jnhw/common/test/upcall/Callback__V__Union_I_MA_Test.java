@@ -448,7 +448,7 @@ public class Callback__V__Union_I_MA_Test {
 
     }
 
-    private class DummyCB extends Callback__V__Union_I_MA<OpaqueMemory> {
+    private class DummyCB extends Callback__V__Union_I_MA {
 
         @Override
         protected void callback(MemoryAddress value_ptr, int value_int) {

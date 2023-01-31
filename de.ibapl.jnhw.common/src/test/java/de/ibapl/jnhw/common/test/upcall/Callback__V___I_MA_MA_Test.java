@@ -22,6 +22,7 @@
 package de.ibapl.jnhw.common.test.upcall;
 
 import de.ibapl.jnhw.common.datatypes.BaseDataType;
+import de.ibapl.jnhw.common.datatypes.Pointer;
 import de.ibapl.jnhw.common.downcall.JnhwMh_MA___V;
 import de.ibapl.jnhw.common.downcall.JnhwMh__V___A;
 import de.ibapl.jnhw.common.downcall.JnhwMh__V__sI__A__A;
@@ -151,7 +152,7 @@ public class Callback__V___I_MA_MA_Test {
     @Test
     public void testNativeFunctionPointer() {
         @SuppressWarnings("unchecked")
-        final Callback__V___I_MA_MA<B, C> testPtr = new Callback__V___I_MA_MA((t) -> MemoryAddress.ofLong(121)) {
+        final Callback__V___I_MA_MA testPtr = new Callback__V___I_MA_MA((t) -> MemoryAddress.ofLong(121)) {
             @Override
             protected void callback(int value, MemoryAddress a, MemoryAddress b) {
                 throw new UnsupportedOperationException("Not supported yet.");
@@ -180,7 +181,7 @@ public class Callback__V___I_MA_MA_Test {
         final MemoryAddress[] refC = new MemoryAddress[1];
         B b = new B(ms);
         C c = new C(ms);
-        Callback__V___I_MA_MA<B, C> callback = new Callback__V___I_MA_MA<B, C>() {
+        Callback__V___I_MA_MA callback = new Callback__V___I_MA_MA() {
 
             @Override
             protected void callback(int value, MemoryAddress a, MemoryAddress b) {
@@ -265,7 +266,7 @@ public class Callback__V___I_MA_MA_Test {
 
     }
 
-    private class DummyCB32 extends Callback__V___I_MA_MA<OpaqueMemory, OpaqueMemory> {
+    private class DummyCB32 extends Callback__V___I_MA_MA {
 
         @Override
         protected void callback(int value, MemoryAddress a, MemoryAddress b) {
@@ -274,7 +275,7 @@ public class Callback__V___I_MA_MA_Test {
 
     }
 
-    private class DummyCB64 extends Callback__V___I_MA_MA<OpaqueMemory, OpaqueMemory> {
+    private class DummyCB64 extends Callback__V___I_MA_MA {
 
         @Override
         protected void callback(int value, MemoryAddress a, MemoryAddress b) {

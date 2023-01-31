@@ -49,6 +49,7 @@ import de.ibapl.jnhw.util.posix.downcall.JnhwMh_sI__PthreadT__A;
 import de.ibapl.jnhw.util.posix.downcall.JnhwMh_sI__PthreadT__A__A;
 import de.ibapl.jnhw.util.posix.downcall.JnhwMh_sI__PthreadT__sI__A;
 import de.ibapl.jnhw.util.posix.downcall.JnhwMh_sI__PthreadT_sI;
+import de.ibapl.jnhw.util.posix.memory.PosixStruct;
 import java.io.IOException;
 import java.lang.foreign.MemoryAddress;
 import java.lang.foreign.MemorySegment;
@@ -66,226 +67,6 @@ import java.lang.foreign.SymbolLookup;
  */
 @Include("#include <pthread.h>")
 public class Pthread {
-
-    public static interface BsdDefines {
-
-    }
-
-    public static interface DarwinDefines extends BsdDefines {
-
-        public final static int PTHREAD_CANCEL_ASYNCHRONOUS = 0;
-        public final static int PTHREAD_CANCEL_DEFERRED = 2;
-        public final static int PTHREAD_CANCEL_DISABLE = 0;
-        public final static int PTHREAD_CANCEL_ENABLE = 1;
-        public final static int PTHREAD_EXPLICIT_SCHED = 2;
-        public final static int PTHREAD_INHERIT_SCHED = 1;
-
-    }
-
-    public static interface FreeBsd_OpenBsd_Defines extends BsdDefines {
-
-        public final static int PTHREAD_CANCEL_ASYNCHRONOUS = 2;
-        public final static int PTHREAD_CANCEL_DEFERRED = 0;
-        public final static int PTHREAD_CANCEL_DISABLE = 1;
-        public final static int PTHREAD_CANCEL_ENABLE = 0;
-        public final static int PTHREAD_EXPLICIT_SCHED = 0;
-        public final static int PTHREAD_INHERIT_SCHED = 4;
-
-    }
-
-    public static interface FreeBsdDefines extends FreeBsd_OpenBsd_Defines {
-
-    }
-
-    public static interface LinuxDefines {
-
-        public final static int PTHREAD_CANCEL_ASYNCHRONOUS = 1;
-        public final static int PTHREAD_CANCEL_DEFERRED = 0;
-        public final static int PTHREAD_CANCEL_DISABLE = 1;
-        public final static int PTHREAD_CANCEL_ENABLE = 0;
-        public final static int PTHREAD_EXPLICIT_SCHED = 1;
-        public final static int PTHREAD_INHERIT_SCHED = 0;
-
-    }
-
-    public static interface OpenBsdDefines extends FreeBsd_OpenBsd_Defines {
-
-    }
-
-    /**
-     * <b>POSIX:</b> <a href="https://pubs.opengroup.org/onlinepubs/9699919799/basedefs/pthread.h.html">{@code typedef
-     * pthread_attr_t}</a>.
-     *
-     * @author aploese
-     */
-    @pthread_attr_t
-    public final static class Pthread_attr_t extends Struct {
-
-        public final static Alignment alignof = switch (MultiarchTupelBuilder.getMemoryModel()) {
-            case ILP32 ->
-                Alignment.AT_4;
-            case LP64 ->
-                Alignment.AT_8;
-            default ->
-                throw new NoClassDefFoundError("No pthread.h defines for Pthread_attr_t" + MultiarchTupelBuilder.getMultiarch());
-        };
-
-        public final static int sizeof = switch (MultiarchTupelBuilder.getOS()) {
-            case APPLE ->
-                64;
-            case FREE_BSD, OPEN_BSD ->
-                8;
-            case LINUX ->
-                switch (MultiarchTupelBuilder.getArch()) {
-                    case AARCH64 ->
-                        64;
-                    case ARM, I386, MIPS, POWER_PC ->
-                        36;
-                    case MIPS_64, POWER_PC_64, RISC_V_64, S390_X, X86_64 ->
-                        56;
-                    default ->
-                        throw new NoClassDefFoundError("No pthread.h linux defines for Pthread_attr_t " + MultiarchTupelBuilder.getMultiarch());
-                };
-            default ->
-                throw new NoClassDefFoundError("No pthread.h OS defines for Pthread_attr_t " + MultiarchTupelBuilder.getMultiarch());
-        };
-
-        public final static Pthread_attr_t allocateNative(MemorySession ms) {
-            return new Pthread_attr_t(MemorySegment.allocateNative(sizeof, ms), 0);
-        }
-
-        public final static Pthread_attr_t ofAddress(MemoryAddress address, MemorySession ms) {
-            return new Pthread_attr_t(MemorySegment.ofAddress(address, sizeof, ms), 0);
-        }
-
-        public Pthread_attr_t(MemorySegment memorySegment, long offset) {
-            super(memorySegment, offset, Pthread_attr_t.sizeof);
-        }
-
-        public Pthread_attr_t(MemoryAddress baseAddress, MemorySession ms) {
-            super(baseAddress, ms, Pthread_attr_t.sizeof);
-        }
-
-    }
-
-    /**
-     * <b>POSIX:</b> <a href="https://pubs.opengroup.org/onlinepubs/9699919799/basedefs/pthread.h.html">{@code typedef
-     * pthread_t}</a>.
-     *
-     * @author aploese
-     */
-    public static final class Pthread_t extends OpaqueMemory {
-
-        public final static Alignment alignof = PosixDataType.pthread_t.ALIGN_OF;
-        public final static int sizeof = PosixDataType.pthread_t.SIZE_OF;
-
-        public final static Pthread_t allocateNative(MemorySession ms) {
-            return new Pthread_t(MemorySegment.allocateNative(sizeof, ms), 0);
-        }
-
-        public final static Pthread_t ofAddress(MemoryAddress address, MemorySession ms) {
-            return new Pthread_t(MemorySegment.ofAddress(address, sizeof, ms), 0);
-        }
-
-        public static Pthread_t wrap(long value, MemorySession ms) {
-            Pthread_t result = Pthread_t.allocateNative(ms);
-            result.asUint64_t(value);
-            return result;
-        }
-
-        public static Pthread_t wrap(int value, MemorySession ms) {
-            Pthread_t result = Pthread_t.allocateNative(ms);
-            result.asUint32_t(value);
-            return result;
-        }
-
-        public Pthread_t(MemorySegment memorySegment, long offset) {
-            super(memorySegment, offset, Pthread_t.sizeof);
-        }
-
-        public Pthread_t(MemoryAddress baseAddress, MemorySession ms) {
-            super(baseAddress, ms, Pthread_t.sizeof);
-        }
-
-        public int asUint32_t() {
-            if (PosixDataType.pthread_t == BaseDataType.uint32_t) {
-                return MEM_ACCESS.uint32_t(memorySegment, 0);
-            } else {
-                throw new IllegalStateException("pthread_t is not uint32_t but: " + PosixDataType.pthread_t);
-            }
-        }
-
-        public long asUint64_t() {
-            if (PosixDataType.pthread_t == BaseDataType.uint64_t) {
-                return MEM_ACCESS.uint64_t(memorySegment, 0);
-            } else {
-                throw new IllegalStateException("pthread_t is not uint64_t but: " + PosixDataType.pthread_t);
-            }
-        }
-
-        public void asUint32_t(int value) {
-            if (PosixDataType.pthread_t == BaseDataType.uint32_t) {
-                MEM_ACCESS.uint32_t(memorySegment, 0, value);
-            } else {
-                throw new IllegalStateException("pthread_t is not uint32_t but: " + PosixDataType.pthread_t);
-            }
-        }
-
-        public void asUint64_t(long value) {
-            if (PosixDataType.pthread_t == BaseDataType.uint64_t) {
-                MEM_ACCESS.uint64_t(memorySegment, 0, value);
-            } else {
-                throw new IllegalStateException("pthread_t is not uint64_t but: " + PosixDataType.pthread_t);
-            }
-        }
-
-        @Override
-        public String nativeToString() {
-            return switch (PosixDataType.pthread_t) {
-                case uint32_t ->
-                    MEM_ACCESS.uint32_t_nativeToString(memorySegment, 0);
-                case uint64_t ->
-                    MEM_ACCESS.uint64_t_nativeToString(memorySegment, 0);
-                case intptr_t ->
-                    MEM_ACCESS.intptr_t_nativeToString(memorySegment, 0);
-                default ->
-                    throw new AssertionError("Cant handle native datatype of pthread_t: " + PosixDataType.pthread_t);
-            };
-        }
-
-        @Override
-        public void nativeToString(Appendable sb, String indentPrefix, String indent) throws IOException {
-            sb.append(nativeToString());
-        }
-
-        @Override
-        public BaseDataType getBaseDataType() {
-            return PosixDataType.pthread_t;
-        }
-
-    }
-
-    private final static SymbolLookup getPthreadLib() {
-        return switch (MultiarchTupelBuilder.getOS()) {
-            case APPLE, FREE_BSD, OPEN_BSD ->
-                LibPthreadLoader.LIB_PTHREAD_SYMBOL_LOOKUP;
-            case LINUX ->
-                LibcLoader.LIB_C_SYMBOL_LOOKUP;
-            default ->
-                throw new AssertionError("Cant figure out in which lib pthread_getschedparam is!");
-        };
-    }
-
-    private final static SymbolLookup getRtLib() {
-        return switch (MultiarchTupelBuilder.getOS()) {
-            case APPLE ->
-                LibcLoader.LIB_C_SYMBOL_LOOKUP;
-            case FREE_BSD, LINUX ->
-                LibrtLoader.LIB_RT_SYMBOL_LOOKUP;
-            default ->
-                throw new AssertionError("Cant figure out in which lib pthread_getschedparam is!");
-        };
-    }
 
     private final static JnhwMh_PthreadT___V.ExceptionErased pthread_self = JnhwMh_PthreadT___V.mandatoryOf(
             LibcLoader.LIB_C_SYMBOL_LOOKUP,
@@ -479,11 +260,36 @@ public class Pthread {
         }
     }
 
+    private static SymbolLookup getPthreadLib() {
+        return switch (MultiarchTupelBuilder.getOS()) {
+            case APPLE, FREE_BSD, OPEN_BSD ->
+                LibPthreadLoader.LIB_PTHREAD_SYMBOL_LOOKUP;
+            case LINUX ->
+                LibcLoader.LIB_C_SYMBOL_LOOKUP;
+            default ->
+                throw new AssertionError("Cant figure out in which lib pthread_getschedparam is!");
+        };
+    }
+
+    private static SymbolLookup getRtLib() {
+        return switch (MultiarchTupelBuilder.getOS()) {
+            case APPLE ->
+                LibcLoader.LIB_C_SYMBOL_LOOKUP;
+            case FREE_BSD, LINUX ->
+                LibrtLoader.LIB_RT_SYMBOL_LOOKUP;
+            default ->
+                throw new AssertionError("Cant figure out in which lib pthread_getschedparam is!");
+        };
+    }
+
     /**
      * <b>POSIX:</b>
      * <a href="https://pubs.opengroup.org/onlinepubs/9699919799/functions/pthread_attr_destroy.html">pthread_attr_destroy,
      * pthread_attr_init - destroy and initialize the thread attributes
      * object</a>.
+     *
+     * @param attr
+     * @throws de.ibapl.jnhw.common.exception.NativeErrorException
      */
     public final static void pthread_attr_destroy(Pthread_attr_t attr) throws NativeErrorException {
         if (pthread_attr_destroy.invoke_sI___P(attr) != 0) {
@@ -515,6 +321,8 @@ public class Pthread {
      * <a href="https://pubs.opengroup.org/onlinepubs/9699919799/functions/pthread_attr_getschedparam.html">pthread_attr_getschedparam,
      * pthread_attr_setschedparam - get and set the schedparam attribute</a>.
      *
+     * @param attr
+     * @param param
      * @throws NativeErrorException if the return value of the native function
      * indicates an error.
      */
@@ -529,6 +337,9 @@ public class Pthread {
      * <a href="https://pubs.opengroup.org/onlinepubs/9699919799/functions/pthread_attr_destroy.html">pthread_attr_destroy,
      * pthread_attr_init - destroy and initialize the thread attributes
      * object</a>.
+     *
+     * @param attr
+     * @throws de.ibapl.jnhw.common.exception.NativeErrorException
      */
     public final static void pthread_attr_init(Pthread_attr_t attr) throws NativeErrorException {
         if (pthread_attr_init.invoke_sI___P(attr) != 0) {
@@ -542,6 +353,8 @@ public class Pthread {
      * pthread_attr_setinheritsched - get and set the inheritsched attribute
      * (REALTIME THREADS)</a>.
      *
+     * @param attr
+     * @param inheritsched
      * @throws NativeErrorException if the return value of the native function
      * indicates an error.
      */
@@ -556,6 +369,8 @@ public class Pthread {
      * <a href="https://pubs.opengroup.org/onlinepubs/9699919799/functions/pthread_attr_setschedparam.html">pthread_attr_getschedparam,
      * pthread_attr_setschedparam - get and set the schedparam attribute</a>.
      *
+     * @param attr
+     * @param param
      * @throws NativeErrorException if the return value of the native function
      * indicates an error.
      */
@@ -585,6 +400,10 @@ public class Pthread {
      * <b>POSIX:</b>
      * <a href="https://pubs.opengroup.org/onlinepubs/9699919799/functions/pthread_equal.html">pthread_equal
      * - pthread_equal - compare thread IDs</a>.
+     *
+     * @param t1
+     * @param t2
+     * @return
      */
     public final static boolean pthread_equal(Pthread_t t1, Pthread_t t2) {
         return pthread_equal.invoke_sI__PthreadT_PthreadT(t1, t2) != 0;
@@ -597,6 +416,7 @@ public class Pthread {
      *
      * @param thread_id in
      * @param clock_id out
+     * @throws de.ibapl.jnhw.common.exception.NativeErrorException
      * @throws NoSuchNativeMethodException if the method pthread_getcpuclockid
      * is not available natively.
      */
@@ -613,7 +433,9 @@ public class Pthread {
      * (REALTIME THREADS)</a>.
      *
      *
+     * @param thread
      * @param policy
+     * @param param
      *
      * @throws NativeErrorException if the return value of the native function
      * indicates an error.
@@ -674,6 +496,9 @@ public class Pthread {
      * pthread_setschedparam - dynamic thread scheduling parameters access
      * (REALTIME THREADS)</a>.
      *
+     * @param thread
+     * @param policy
+     * @param param
      * @throws NativeErrorException if the return value of the native function
      * indicates an error.
      */
@@ -688,6 +513,8 @@ public class Pthread {
      * <a href="https://pubs.opengroup.org/onlinepubs/9699919799/functions/pthread_setschedprio.html">pthread_setschedprio
      * - dynamic thread scheduling parameters access (REALTIME THREADS)</a>.
      *
+     * @param thread
+     * @param prio
      * @throws NativeErrorException if the return value of the native function
      * indicates an error.
      * @throws NoSuchNativeMethodException if the method pthread_setschedprio is
@@ -711,6 +538,204 @@ public class Pthread {
      */
     final static void pthread_testcancel() throws NativeErrorException {
         pthread_testcancel.invoke__V___V();
+    }
+
+    public static interface BsdDefines {
+
+    }
+
+    public static interface DarwinDefines extends BsdDefines {
+
+        public final static int PTHREAD_CANCEL_ASYNCHRONOUS = 0;
+        public final static int PTHREAD_CANCEL_DEFERRED = 2;
+        public final static int PTHREAD_CANCEL_DISABLE = 0;
+        public final static int PTHREAD_CANCEL_ENABLE = 1;
+        public final static int PTHREAD_EXPLICIT_SCHED = 2;
+        public final static int PTHREAD_INHERIT_SCHED = 1;
+
+    }
+
+    public static interface FreeBsd_OpenBsd_Defines extends BsdDefines {
+
+        public final static int PTHREAD_CANCEL_ASYNCHRONOUS = 2;
+        public final static int PTHREAD_CANCEL_DEFERRED = 0;
+        public final static int PTHREAD_CANCEL_DISABLE = 1;
+        public final static int PTHREAD_CANCEL_ENABLE = 0;
+        public final static int PTHREAD_EXPLICIT_SCHED = 0;
+        public final static int PTHREAD_INHERIT_SCHED = 4;
+
+    }
+
+    public static interface FreeBsdDefines extends FreeBsd_OpenBsd_Defines {
+
+    }
+
+    public static interface LinuxDefines {
+
+        public final static int PTHREAD_CANCEL_ASYNCHRONOUS = 1;
+        public final static int PTHREAD_CANCEL_DEFERRED = 0;
+        public final static int PTHREAD_CANCEL_DISABLE = 1;
+        public final static int PTHREAD_CANCEL_ENABLE = 0;
+        public final static int PTHREAD_EXPLICIT_SCHED = 1;
+        public final static int PTHREAD_INHERIT_SCHED = 0;
+
+    }
+
+    public static interface OpenBsdDefines extends FreeBsd_OpenBsd_Defines {
+
+    }
+
+    /**
+     * <b>POSIX:</b> <a href="https://pubs.opengroup.org/onlinepubs/9699919799/basedefs/pthread.h.html">{@code typedef
+     * pthread_attr_t}</a>.
+     *
+     * @author aploese
+     */
+    @pthread_attr_t
+    public final static class Pthread_attr_t extends PosixStruct {
+
+        public final static Alignment alignof = switch (MultiarchTupelBuilder.getMemoryModel()) {
+            case ILP32 ->
+                Alignment.AT_4;
+            case LP64 ->
+                Alignment.AT_8;
+            default ->
+                throw new NoClassDefFoundError("No pthread.h defines for Pthread_attr_t" + MultiarchTupelBuilder.getMultiarch());
+        };
+
+        public final static int sizeof = switch (MultiarchTupelBuilder.getOS()) {
+            case APPLE ->
+                64;
+            case FREE_BSD, OPEN_BSD ->
+                8;
+            case LINUX ->
+                switch (MultiarchTupelBuilder.getArch()) {
+                    case AARCH64 ->
+                        64;
+                    case ARM, I386, MIPS, POWER_PC ->
+                        36;
+                    case MIPS_64, POWER_PC_64, RISC_V_64, S390_X, X86_64 ->
+                        56;
+                    default ->
+                        throw new NoClassDefFoundError("No pthread.h linux defines for Pthread_attr_t " + MultiarchTupelBuilder.getMultiarch());
+                };
+            default ->
+                throw new NoClassDefFoundError("No pthread.h OS defines for Pthread_attr_t " + MultiarchTupelBuilder.getMultiarch());
+        };
+
+        public final static Pthread_attr_t allocateNative(MemorySession ms) {
+            return new Pthread_attr_t(MemorySegment.allocateNative(sizeof, ms), 0);
+        }
+
+        public final static Pthread_attr_t ofAddress(MemoryAddress address, MemorySession ms) {
+            return new Pthread_attr_t(MemorySegment.ofAddress(address, sizeof, ms), 0);
+        }
+
+        public Pthread_attr_t(MemorySegment memorySegment, long offset) {
+            super(memorySegment, offset, Pthread_attr_t.sizeof);
+        }
+
+        public Pthread_attr_t(MemoryAddress baseAddress, MemorySession ms) {
+            super(baseAddress, ms, Pthread_attr_t.sizeof);
+        }
+
+    }
+
+    /**
+     * <b>POSIX:</b> <a href="https://pubs.opengroup.org/onlinepubs/9699919799/basedefs/pthread.h.html">{@code typedef
+     * pthread_t}</a>.
+     *
+     * @author aploese
+     */
+    public static final class Pthread_t extends OpaqueMemory {
+
+        public final static Alignment alignof = PosixDataType.pthread_t.ALIGN_OF;
+        public final static int sizeof = PosixDataType.pthread_t.SIZE_OF;
+
+        public final static Pthread_t allocateNative(MemorySession ms) {
+            return new Pthread_t(MemorySegment.allocateNative(sizeof, ms), 0);
+        }
+
+        public final static Pthread_t ofAddress(MemoryAddress address, MemorySession ms) {
+            return new Pthread_t(MemorySegment.ofAddress(address, sizeof, ms), 0);
+        }
+
+        public static Pthread_t wrap(long value, MemorySession ms) {
+            Pthread_t result = Pthread_t.allocateNative(ms);
+            result.asUint64_t(value);
+            return result;
+        }
+
+        public static Pthread_t wrap(int value, MemorySession ms) {
+            Pthread_t result = Pthread_t.allocateNative(ms);
+            result.asUint32_t(value);
+            return result;
+        }
+
+        public Pthread_t(MemorySegment memorySegment, long offset) {
+            super(memorySegment, offset, Pthread_t.sizeof);
+        }
+
+        public Pthread_t(MemoryAddress baseAddress, MemorySession ms) {
+            super(baseAddress, ms, Pthread_t.sizeof);
+        }
+
+        public int asUint32_t() {
+            if (PosixDataType.pthread_t == BaseDataType.uint32_t) {
+                return MEM_ACCESS.uint32_t(memorySegment, 0);
+            } else {
+                throw new IllegalStateException("pthread_t is not uint32_t but: " + PosixDataType.pthread_t);
+            }
+        }
+
+        public long asUint64_t() {
+            if (PosixDataType.pthread_t == BaseDataType.uint64_t) {
+                return MEM_ACCESS.uint64_t(memorySegment, 0);
+            } else {
+                throw new IllegalStateException("pthread_t is not uint64_t but: " + PosixDataType.pthread_t);
+            }
+        }
+
+        public void asUint32_t(int value) {
+            if (PosixDataType.pthread_t == BaseDataType.uint32_t) {
+                MEM_ACCESS.uint32_t(memorySegment, 0, value);
+            } else {
+                throw new IllegalStateException("pthread_t is not uint32_t but: " + PosixDataType.pthread_t);
+            }
+        }
+
+        public void asUint64_t(long value) {
+            if (PosixDataType.pthread_t == BaseDataType.uint64_t) {
+                MEM_ACCESS.uint64_t(memorySegment, 0, value);
+            } else {
+                throw new IllegalStateException("pthread_t is not uint64_t but: " + PosixDataType.pthread_t);
+            }
+        }
+
+        @Override
+        public String nativeToString() {
+            return switch (PosixDataType.pthread_t) {
+                case uint32_t ->
+                    MEM_ACCESS.uint32_t_nativeToString(memorySegment, 0);
+                case uint64_t ->
+                    MEM_ACCESS.uint64_t_nativeToString(memorySegment, 0);
+                case intptr_t ->
+                    MEM_ACCESS.intptr_t_nativeToString(memorySegment, 0);
+                default ->
+                    throw new AssertionError("Cant handle native datatype of pthread_t: " + PosixDataType.pthread_t);
+            };
+        }
+
+        @Override
+        public void nativeToString(Appendable sb, String indentPrefix, String indent) throws IOException {
+            sb.append(nativeToString());
+        }
+
+        @Override
+        public BaseDataType getBaseDataType() {
+            return PosixDataType.pthread_t;
+        }
+
     }
 
 }

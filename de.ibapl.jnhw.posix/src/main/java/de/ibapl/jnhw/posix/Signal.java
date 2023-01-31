@@ -64,6 +64,7 @@ import de.ibapl.jnhw.util.posix.PosixDataType;
 import de.ibapl.jnhw.util.posix.downcall.JnhwMh_sI__PthreadT_sI;
 import de.ibapl.jnhw.util.posix.memory.PosixStruct;
 import de.ibapl.jnhw.util.posix.upcall.Callback__V__UnionSigval;
+import de.ibapl.jnhw.x_open.Ucontext;
 import java.io.IOException;
 import java.lang.foreign.MemoryAddress;
 import java.lang.foreign.MemorySegment;
@@ -532,9 +533,9 @@ public class Signal {
      * <b>POSIX:</b> <a href="https://pubs.opengroup.org/onlinepubs/9699919799/basedefs/signal.h.html">{@code structure
      * sigaction}</a>.
      *
-     * @param <T>
+     * @param <A>
      */
-    public final static class Sigaction<T extends OpaqueMemory> extends Struct {
+    public final static class Sigaction<A extends Pointer> extends PosixStruct {
 
         public final static Alignment alignof;
         public final static long offsetof_Sa_flags;
@@ -720,11 +721,11 @@ public class Signal {
          *
          * @return the native value of sa_sigaction.
          */
-        public final FunctionPtr__V___I_MA_MA sa_sigaction() {
+        public final FunctionPtr__V___I_MA_MA<?, ?> sa_sigaction() {
             return new FunctionPtr__V___I_MA_MA(MEM_ACCESS.uintptr_t(memorySegment, Sigaction.offsetof_Sa_sigaction));
         }
 
-        public <T extends OpaqueMemory> void sa_sigaction(FunctionPtr__V___I_MA_MA<Siginfo_t, T> sa_sigaction) {
+        public <T extends FunctionPtr__V___I_MA_MA<Siginfo_t, A>> void sa_sigaction(T sa_sigaction) {
             cachedHandlerOrAction = sa_sigaction;
             MEM_ACCESS.uintptr_t(memorySegment, Sigaction.offsetof_Sa_sigaction, sa_sigaction);
         }
@@ -732,19 +733,20 @@ public class Signal {
         /**
          * Pointer to a signal-catching function
          * <b>POSIX:</b> <a href="https://pubs.opengroup.org/onlinepubs/9699919799/basedefs/signal.h.html">{@code structure
-         * sigaction}</a>.
+         * sigaction}</a>.TODO doc
          *
-         * TODO doc
          *
+         * @param <T>
+         * @param <A>
          * @return the native value of sa_sigaction if the cached value match
          * otherwise an exception is thrown.
          */
         @SuppressWarnings("unchecked")
-        public Callback__V___I_MA_MA<Siginfo_t, T> sa_sigactionAsCallback_I_Mem_Mem_V() {
+        public <T extends Callback__V___I_MA_MA<Siginfo_t, A>, A extends Pointer> T sa_sigactionAsCallback_I_Mem_Mem_V() {
             final NativeFunctionPointer sa_sigaction = sa_sigaction();
             if (cachedHandlerOrAction instanceof Callback__V___I_MA_MA) {
                 if (Pointer.isSameAddress(sa_sigaction, cachedHandlerOrAction)) {
-                    return (Callback__V___I_MA_MA) cachedHandlerOrAction;
+                    return (T) cachedHandlerOrAction;
                 } else {
                     throw new RuntimeException("TODO not the same address");
                 }
@@ -757,13 +759,13 @@ public class Signal {
 
     /**
      * <b>POSIX:</b> <a href="https://pubs.opengroup.org/onlinepubs/9699919799/basedefs/signal.h.html">{@code structure
-     * sigevent}</a>.
+     * sigevent}</a>.TODO this should be opaque base class with a generic class
+     * and a JavaCallback class ???
      *
-     * TODO this should be opaque base class with a generic class and a
-     * JavaCallback class ???
      *
+     * @param <D>
      */
-    public static final class Sigevent<T extends OpaqueMemory> extends Struct {
+    public static final class Sigevent<D extends Pointer> extends PosixStruct {
 
         public final static Alignment alignof;
         public final static long offsetof_Sigev_notify;
@@ -858,14 +860,14 @@ public class Signal {
             }
         }
 
-        public static <T extends OpaqueMemory> Sigevent<T> tryAllocateNative(MemorySession ms) throws NoSuchNativeTypeException {
+        public static <T extends Pointer> Sigevent<T> tryAllocateNative(MemorySession ms) throws NoSuchNativeTypeException {
             if (alignof == null) {
                 throw new NoSuchNativeTypeException("Sigevent");
             }
             return new Sigevent(MemorySegment.allocateNative(sizeof, ms), 0);
         }
 
-        public static <T extends OpaqueMemory> Sigevent<T> tryOfAddress(MemoryAddress baseAddress, MemorySession ms) throws NoSuchNativeTypeException {
+        public static <T extends Pointer> Sigevent<T> tryOfAddress(MemoryAddress baseAddress, MemorySession ms) throws NoSuchNativeTypeException {
             return new Sigevent<>(MemorySegment.ofAddress(baseAddress, Sigevent.sizeof, ms), 0);
         }
 
@@ -878,7 +880,7 @@ public class Signal {
          * sigevents}</a>.
          *
          */
-        public final Sigval<T> sigev_value;
+        public final Sigval<D> sigev_value;
 
         public Sigevent(MemorySegment memorySegment, long offset) throws NoSuchNativeTypeException {
             super(memorySegment, offset, Sigevent.sizeof);
@@ -919,7 +921,7 @@ public class Signal {
             return MEM_ACCESS.uintptr_t(memorySegment, Sigevent.offsetof_Sigev_notify_attributes);
         }
 
-        public final Pthread.Pthread_attr_t sigev_notify_attributes(OpaqueMemoryProducer<Pthread.Pthread_attr_t, Sigevent> producer, MemorySession ms) {
+        public final Pthread.Pthread_attr_t sigev_notify_attributes(OpaqueMemoryProducer<Pthread.Pthread_attr_t, Sigevent<D>> producer, MemorySession ms) {
             final MemoryAddress sigev_notify_attributesAddress = sigev_notify_attributes();
             if (sigev_notify_attributes != null) {
                 if (!OpaqueMemory.isSameAddress(sigev_notify_attributesAddress, sigev_notify_attributes)) {
@@ -943,12 +945,12 @@ public class Signal {
             return new NativeFunctionPointer(MEM_ACCESS.uintptr_t(memorySegment, Sigevent.offsetof_Sigev_notify_function));
         }
 
-        public final void sigev_notify_function(Callback__V__UnionSigval<T> sigev_notify_function) {
+        public final <T extends Callback__V__UnionSigval<A>, A extends Pointer> void sigev_notify_function(T sigev_notify_function) {
             this.sigev_notify_function = sigev_notify_function;
             MEM_ACCESS.uintptr_t(memorySegment, Sigevent.offsetof_Sigev_notify_function, sigev_notify_function);
         }
 
-        public final Callback__V__UnionSigval sigev_notify_functionAsCallback__V_Struct_Sigval() {
+        public final Callback__V__UnionSigval<?> sigev_notify_functionAsCallback__V_Struct_Sigval() {
             if (sigev_notify_function instanceof Callback__V__UnionSigval result) {
                 if (Pointer.isSameAddress(sigev_notify_function(), result)) {
                     return result;
@@ -981,7 +983,7 @@ public class Signal {
      * siginfo_t}</a>.
      *
      */
-    public final static class Siginfo_t<T extends OpaqueMemory> extends PosixStruct {
+    public final static class Siginfo_t extends PosixStruct {
 
         public final static Alignment alignof;
         public final static long offsetof_Si_addr;
@@ -1098,14 +1100,14 @@ public class Signal {
          * siginfo_t}</a>.
          *
          */
-        public final Sigval<T> si_value;
+        public final Sigval<?> si_value;
 
-        public static <T extends OpaqueMemory> Siginfo_t<T> allocateNative(MemorySession ms) {
-            return new Siginfo_t<T>(MemorySegment.allocateNative(sizeof, ms), 0);
+        public static Siginfo_t allocateNative(MemorySession ms) {
+            return new Siginfo_t(MemorySegment.allocateNative(sizeof, ms), 0);
         }
 
-        public static <T extends OpaqueMemory> Siginfo_t<T> ofAddress(MemoryAddress address, MemorySession ms) {
-            return new Siginfo_t<>(MemorySegment.ofAddress(address, Siginfo_t.sizeof, ms), 0);
+        public static Siginfo_t ofAddress(MemoryAddress address, MemorySession ms) {
+            return new Siginfo_t(MemorySegment.ofAddress(address, Siginfo_t.sizeof, ms), 0);
         }
 
         public Siginfo_t(MemorySegment memorySegment, long offset) {
@@ -1441,7 +1443,7 @@ public class Signal {
      * sigval}</a>.
      *
      */
-    public static final class Sigval<T extends OpaqueMemory> extends Struct {
+    public static final class Sigval<D extends Pointer> extends PosixStruct {
 
         public final static Alignment alignof;
         public final static long offsetof_Sival_int = 0;
@@ -1464,15 +1466,15 @@ public class Signal {
             }
         }
 
-        public static <T extends OpaqueMemory> Sigval<T> allocateNative(MemorySession ms) {
-            return new Sigval(MemorySegment.allocateNative(sizeof, ms), 0);
+        public static <T extends Pointer> Sigval<T> allocateNative(MemorySession ms) {
+            return new Sigval<>(MemorySegment.allocateNative(sizeof, ms), 0);
         }
 
-        public static <T extends OpaqueMemory> Sigval<T> ofAddress(MemoryAddress baseAddress, MemorySession ms) {
+        public static <T extends Pointer> Sigval<T> ofAddress(MemoryAddress baseAddress, MemorySession ms) {
             return new Sigval<>(MemorySegment.ofAddress(baseAddress, Sigval.sizeof, ms), 0);
         }
 
-        private T sival_ptr;
+        private D sival_ptr;
 
         public Sigval(MemorySegment memorySegment, long offset) {
             super(memorySegment, offset, Sigval.sizeof);
@@ -1508,7 +1510,7 @@ public class Signal {
             MEM_ACCESS.int32_t(memorySegment, Sigval.offsetof_Sival_int, sival_int);
         }
 
-        private MemoryAddress sival_ptr() {
+        public MemoryAddress sival_ptr() {
             return MEM_ACCESS.uintptr_t(memorySegment, offsetof_Sival_ptr);
         }
 
@@ -1519,18 +1521,21 @@ public class Signal {
          *
          * @return the native value of sival_ptr.
          */
-        public T sival_ptr(OpaqueMemoryProducer<T, Sigval<T>> producer, MemorySession ms) {
+        //TODO method Optional getCachedSival_Ptr() ?
+        @Deprecated
+        public <T extends OpaqueMemory> T sival_ptrAsOpaqueMemory(OpaqueMemoryProducer<T, Sigval<D>> producer, MemorySession ms) {
             final MemoryAddress baseAddress = sival_ptr();
-            if (sival_ptr != null) {
-                if (!OpaqueMemory.isSameAddress(baseAddress, sival_ptr)) {
-                    sival_ptr = producer.produce(baseAddress, ms, this);
+            if (sival_ptr instanceof OpaqueMemory sival_ptr_Om) {
+                if (!OpaqueMemory.isSameAddress(baseAddress, sival_ptr_Om)) {
+                    sival_ptr_Om = producer.produce(baseAddress, ms, this);
                 }
-                return sival_ptr;
+                sival_ptr = (D) sival_ptr_Om;
+                return (T) sival_ptr_Om;
             } else {
                 if (!MemoryAddress.NULL.equals(baseAddress)) {
-                    sival_ptr = producer.produce(baseAddress, ms, this);
+                    sival_ptr = (D) producer.produce(baseAddress, ms, this);
                 }
-                return sival_ptr;
+                return (T) sival_ptr;
             }
         }
 
@@ -1541,7 +1546,7 @@ public class Signal {
          *
          * @param sival_ptr the value of sival_ptr to be set natively.
          */
-        public final void sival_ptr(T sival_ptr) {
+        public final void sival_ptr(D sival_ptr) {
             this.sival_ptr = sival_ptr;
             MEM_ACCESS.uintptr_t(memorySegment, Sigval.offsetof_Sival_ptr, sival_ptr.toAddressable());
         }
@@ -1552,8 +1557,9 @@ public class Signal {
      * <b>POSIX:</b> <a href="https://pubs.opengroup.org/onlinepubs/9699919799/basedefs/signal.h.html">{@code structure
      * stack_t}</a>.
      *
+     * @param <A>
      */
-    public final static class Stack_t<T extends OpaqueMemory> extends PosixStruct {
+    public final static class Stack_t<A extends OpaqueMemory> extends PosixStruct {
 
         public final static Alignment alignof;
         public final static long offsetof_Ss_flags;
@@ -1624,7 +1630,7 @@ public class Signal {
          * @return
          */
         public static <T extends OpaqueMemory> Stack_t<T> allocateNativeAndInit(MemorySession ms, int ss_flags, T ss_sp) {
-            final Stack_t<T> result = allocateNative(ms);
+            final Stack_t<T> result = (Stack_t<T>) allocateNative(ms);
             result.ss_flags(ss_flags);
             result.ss_sp(ss_sp);
             result.ss_size(ss_sp.sizeof());
@@ -1638,7 +1644,7 @@ public class Signal {
         @Override
         public void nativeToString(Appendable sb, String indentPrefix, String indent) throws IOException {
             JsonStringBuilder jsb = new JsonStringBuilder(sb, indentPrefix, indent);
-            jsb.appendAddressMember("ss_sp", ss_sp0());
+            jsb.appendAddressMember("ss_sp", ss_sp());
             jsb.appendLongMember("ss_size", ss_size());
             jsb.appendHexIntMember("ss_flags", ss_flags());
             jsb.close();
@@ -1683,15 +1689,15 @@ public class Signal {
          * @return the native value of ss_sp.
          */
         //TODO this is a Pointer
-        public final T ss_sp(OpaqueMemoryProducer<T, Stack_t<T>> producer, MemorySession ms) {
-            return producer.produce(ss_sp0(), ms, this);
+        public final <T extends OpaqueMemory> T ss_sp(OpaqueMemoryProducer<T, Stack_t<A>> producer, MemorySession ms) {
+            return producer.produce(ss_sp(), ms, this);
         }
 
-        private void ss_sp(T ss_sp) {
+        private <T extends OpaqueMemory> void ss_sp(T ss_sp) {
             MEM_ACCESS.uintptr_t(memorySegment, Stack_t.offsetof_Ss_sp, OpaqueMemory.getMemorySegment(ss_sp));
         }
 
-        private MemoryAddress ss_sp0() {
+        public MemoryAddress ss_sp() {
             return MEM_ACCESS.uintptr_t(memorySegment, Stack_t.offsetof_Ss_sp);
         }
 
@@ -1702,7 +1708,7 @@ public class Signal {
      * ucontext_t}</a>.
      *
      */
-    public final static class Ucontext_t extends Struct {
+    public final static class Ucontext_t extends PosixStruct {
 
         public final static Alignment alignof;
         public final static long offsetof_Uc_link;

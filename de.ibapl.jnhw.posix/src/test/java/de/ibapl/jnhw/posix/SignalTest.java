@@ -452,7 +452,7 @@ public class SignalTest {
     public void testSigaction() throws Exception {
         final int SIG = Signal.SIGCHLD;
 
-        final Signal.Sigaction<OpaqueMemory> act = Signal.Sigaction.allocateNative(ms);
+        final Signal.Sigaction<?> act = Signal.Sigaction.allocateNative(ms);
         act.sa_flags(Signal.SA_RESTART);
         Signal.sigemptyset(act.sa_mask);
 
@@ -464,7 +464,7 @@ public class SignalTest {
         };
         act.sa_handler(sa_handler);
 
-        final Signal.Sigaction<OpaqueMemory> oact = Signal.Sigaction.allocateNative(ms);
+        final Signal.Sigaction<?> oact = Signal.Sigaction.allocateNative(ms);
         Signal.sigaction(SIG, null, oact);
         try {
             Signal.sigaction(SIG, act, oact);
@@ -475,7 +475,7 @@ public class SignalTest {
                 Assertions.assertEquals(Signal.SIG_DFL, oact.sa_handler());
             }
 
-            final Signal.Sigaction<OpaqueMemory> actOut = Signal.Sigaction.allocateNative(ms);
+            final Signal.Sigaction<?> actOut = Signal.Sigaction.allocateNative(ms);
             Signal.sigaction(SIG, oact, actOut);
 
             Assertions.assertEquals(act.sa_handler(), actOut.sa_handler());
@@ -829,9 +829,7 @@ public class SignalTest {
                     Assertions.assertAll(
                             () -> Assertions.assertEquals(SIG, valueRef[0].intValue(), "value"),
                             () -> Assertions.assertEquals(SIG, siginfo_tRef[0].si_signo(), "siginfo_tRef.value.si_signo()"),
-                            () -> Assertions.assertEquals(data, siginfo_tRef[0].si_value.sival_ptr((baseAddress, scope, parent) -> {
-                                return new MemoryHeap(baseAddress, scope, data.sizeof());
-                            }, ms), "siginfo_tRef.value.si_value.sival_ptr()")
+                            () -> Assertions.assertEquals(data.toAddressable().address(), siginfo_tRef[0].si_value.sival_ptr(), "siginfo_tRef.value.si_value.sival_ptr()")
                     );
                 } finally {
                     Signal.sigaction(SIG, oact, null);
@@ -1099,15 +1097,13 @@ public class SignalTest {
         sigval.sival_int(0x0223344);
         assertEquals(0x0223344, sigval.sival_int());
         sigval.sival_ptr(mem);
-        assertEquals(mem, sigval.sival_ptr((baseAddress, scope, parent) -> {
-            return new MemoryHeap(baseAddress, scope, mem.sizeof());
-        }, ms));
+        assertEquals(mem.toAddressable().address(), sigval.sival_ptr());
         Assertions.assertNotEquals(22, sigval.sival_int()); //Its is a union, so it must now be different
     }
 
     @Test
     public void testStructSiginfo_t() throws Exception {
-        Signal.Siginfo_t<OpaqueMemory> siginfo_t = Signal.Siginfo_t.allocateNative(ms);
+        Signal.Siginfo_t siginfo_t = Signal.Siginfo_t.allocateNative(ms);
         Assertions.assertNotNull(siginfo_t.si_addr());
         if (MultiarchTupelBuilder.getOS() == OS.OPEN_BSD) {
             Assertions.assertThrows(NoSuchNativeTypeMemberException.class, () -> siginfo_t.si_band());

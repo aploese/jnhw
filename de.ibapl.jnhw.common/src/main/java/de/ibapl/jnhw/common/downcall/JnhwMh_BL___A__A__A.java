@@ -42,7 +42,7 @@ public interface JnhwMh_BL___A__A__A extends JnhwMethodHandle {
     interface ExceptionErased extends JnhwMh_BL___A__A__A {
 
         @Override
-        default boolean invoke_BL___P__P__P(Pointer<?> arg1, Pointer<?> arg2, Pointer<?> arg3) {
+        default boolean invoke_BL___P__P__P(Pointer arg1, Pointer arg2, Pointer arg3) {
             return invoke_BL___A__A__A(arg1.toAddressable(), arg2.toAddressable(), arg3.toAddressable());
         }
 
@@ -91,7 +91,7 @@ public interface JnhwMh_BL___A__A__A extends JnhwMethodHandle {
         };
     }
 
-    default boolean invoke_BL___P__P__P(Pointer<?> arg1, Pointer<?> arg2, Pointer<?> arg3) throws NoSuchNativeMethodException {
+    default boolean invoke_BL___P__P__P(Pointer arg1, Pointer arg2, Pointer arg3) throws NoSuchNativeMethodException {
         return invoke_BL___A__A__A(arg1.toAddressable(), arg2.toAddressable(), arg3.toAddressable());
     }
 

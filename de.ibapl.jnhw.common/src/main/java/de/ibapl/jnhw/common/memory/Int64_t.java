@@ -40,12 +40,12 @@ public class Int64_t extends NativeIntNumber<Long> {
         return new Int64_t(MemorySegment.allocateNative(DATA_TYPE.SIZE_OF, ms), 0);
     }
 
-    public Int64_t(MemorySegment memorySegment, long offset) {
-        super(memorySegment, offset, DATA_TYPE.SIZE_OF);
-    }
-
     public static Int64_t map(OpaqueMemory mem, long offset) {
         return new Int64_t(mem.memorySegment, offset);
+    }
+
+    public Int64_t(MemorySegment memorySegment, long offset) {
+        super(memorySegment, offset, DATA_TYPE.SIZE_OF);
     }
 
     @int64_t

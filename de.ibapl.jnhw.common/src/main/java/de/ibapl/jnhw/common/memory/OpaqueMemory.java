@@ -38,34 +38,14 @@ import java.util.logging.Logger;
 
 /**
  *
- * The base class for any chunk (i.e. pointer to or structs) of native memory.
+ * The base class for any chunk (i.e.pointer to or structs) of native memory.
  * The run method in MemoryCleaner will clean up the allocated memory after
  * finalizing this instance - if this instance owns the memory.
  *
  * @author aploese
+ * @param <T>
  */
-public abstract class OpaqueMemory<T> implements Native, Pointer<T> {
-
-    public static MemorySegment sliceMemorySegment(OpaqueMemory mem, long offset, long newSize) {
-        return mem.memorySegment.asSlice(offset, newSize);
-    }
-
-    @FunctionalInterface
-    public static interface OpaqueMemoryProducer<T extends OpaqueMemory, P extends OpaqueMemory> {
-
-        /**
-         *
-         * @param address the address to use.
-         * @param parent the parent of the result with given address.
-         * @return a cached or new OpaqueMemory.
-         */
-        T produce(MemoryAddress address, MemorySession ms, P parent);
-
-    }
-
-    public final long sizeof() {
-        return memorySegment.byteSize();
-    }
+public abstract class OpaqueMemory implements Native, Pointer {
 
     protected final static Logger LOG = Logger.getLogger("de.ibapl.libjnhw-common");
 
@@ -74,9 +54,14 @@ public abstract class OpaqueMemory<T> implements Native, Pointer<T> {
      */
     protected final static MemoryAccessor MEM_ACCESS = MemoryAccessor.getMemoryAccessor(ByteOrder.nativeOrder());
 
+    public static MemorySegment sliceMemorySegment(OpaqueMemory mem, long offset, long newSize) {
+        return mem.memorySegment.asSlice(offset, newSize);
+    }
+
     /**
      * Get the offset of member to direct parent.
      *
+     * @param parent
      * @param member the direct member of parent.
      * @return the offset om menber in its parent.
      */
@@ -89,11 +74,6 @@ public abstract class OpaqueMemory<T> implements Native, Pointer<T> {
         } else {
             throw new IndexOutOfBoundsException("member end outside of parent");
         }
-    }
-
-    @Override
-    public Addressable toAddressable() {
-        return memorySegment;
     }
 
     /**
@@ -116,55 +96,20 @@ public abstract class OpaqueMemory<T> implements Native, Pointer<T> {
         return structAlignment.doAlignment(baseAddress + startOffset) - baseAddress;
     }
 
-    protected final MemorySegment memorySegment;
-
     /**
      * test if adresses are the same. If either nativeAddress or om is null and
      * the other has a address of 0 it is considered as the same address.
      *
-     * @param address
+     * @param address must not be null instead use MemoryAddress.NULL.
      * @param om
      * @return
      */
     public static boolean isSameAddress(MemoryAddress address, OpaqueMemory om) {
-        if (address == null) {
-            return om == null ? true : om.memorySegment.address() == MemoryAddress.NULL;
+        if (om == null) {
+            return address == MemoryAddress.NULL;
         } else {
-            if (om == null) {
-                return address.equals(MemoryAddress.NULL);
-            } else {
-                return Objects.equals(address, om.memorySegment.address());
-            }
+            return Objects.equals(address, om.memorySegment.address());
         }
-    }
-
-    /**
-     *
-     * if we will fit exact in the provided memorySegment just take it otherwise
-     * take a new slice out of the proovided memorySegment.
-     *
-     * @param memorySegment the memory to use
-     * @param offset
-     * @param sizeInBytes
-     */
-    public OpaqueMemory(MemorySegment memorySegment, long offset, long sizeInBytes) {
-        if ((offset == 0) && (sizeInBytes == memorySegment.byteSize())) {
-            this.memorySegment = memorySegment;
-        } else {
-            this.memorySegment = memorySegment.asSlice(offset, sizeInBytes);
-        }
-    }
-
-    public OpaqueMemory(OpaqueMemory mem, long offset, long sizeInBytes) {
-        if ((offset == 0) && (sizeInBytes == mem.memorySegment.byteSize())) {
-            this.memorySegment = mem.memorySegment;
-        } else {
-            this.memorySegment = mem.memorySegment.asSlice(offset, sizeInBytes);
-        }
-    }
-
-    public OpaqueMemory(MemoryAddress baseAddress, MemorySession ms, long sizeInBytes) {
-        memorySegment = MemorySegment.ofAddress(baseAddress, sizeInBytes, ms);
     }
 
     @Deprecated //Use OpaqueMemory.sliceMemorySegment(mem, destOff, nbyte)
@@ -220,6 +165,108 @@ public abstract class OpaqueMemory<T> implements Native, Pointer<T> {
 
     public final static MemorySegment getMemorySegment(OpaqueMemory mem) {
         return mem.memorySegment;
+    }
+
+    public final static String printMemory(final OpaqueMemory mem, final boolean printAddress) {
+        StringBuilder sb = new StringBuilder();
+        try {
+            printMemory(sb, mem, printAddress);
+        } catch (IOException ioe) {
+            throw new RuntimeException(ioe);
+        }
+        return sb.toString();
+    }
+
+    public static void printMemory(Appendable sb, final OpaqueMemory mem, final boolean printAddress) throws IOException {
+        final StringBuilder ascii = new StringBuilder();
+        final long SIZE_IN_BYTES = mem.sizeof();
+        final long BASE_ADDRESS = mem.memorySegment.address().toRawLongValue();
+        final int BLOCK_SIZE = 16;
+        final int BLOCK_REMINDER = (int) (SIZE_IN_BYTES % BLOCK_SIZE);
+        final long BLOCK_COUNT = SIZE_IN_BYTES / BLOCK_SIZE + (BLOCK_REMINDER == 0 ? 0 : 1);
+        byte[] block = new byte[BLOCK_SIZE];
+        for (long i = 0; i < BLOCK_COUNT; i++) {
+            if (i == BLOCK_COUNT - 1) {
+                Arrays.fill(block, (byte) 0);
+                copy(mem, i * BLOCK_SIZE, block, 0, BLOCK_REMINDER == 0 ? BLOCK_SIZE : BLOCK_REMINDER);
+            } else {
+                copy(mem, i * BLOCK_SIZE, block, 0, BLOCK_SIZE);
+            }
+            if (printAddress) {
+                sb.append(JnhwFormater.formatAddress(MemoryAddress.ofLong(BASE_ADDRESS + BLOCK_SIZE * i))).append(": ");
+            }
+            for (int j = 0; j < BLOCK_SIZE; j++) {
+                ascii.append((char) (block[j] & 0x00ff));
+                switch (j) {
+                    case 4, 12 -> {
+                        if (j < SIZE_IN_BYTES) {
+                            sb.append(String.format(" %02x", block[j]));
+                        } else {
+                            sb.append("   ");
+                        }
+                    }
+                    case 8 -> {
+                        if (j < SIZE_IN_BYTES) {
+                            sb.append(String.format("  %02x", block[j]));
+                        } else {
+                            sb.append("    ");
+                        }
+                    }
+                    default -> {
+                        if (j < SIZE_IN_BYTES) {
+                            sb.append(String.format("%02x", block[j]));
+                        } else {
+                            sb.append("  ");
+                        }
+                    }
+                }
+            }
+            sb.append(" | ");
+            sb.append(ascii);
+            if (i != BLOCK_COUNT - 1) {
+                ascii.delete(0, ascii.length());
+                sb.append('\n');
+            }
+        }
+    }
+    protected final MemorySegment memorySegment;
+
+    /**
+     *
+     * if we will fit exact in the provided memorySegment just take it otherwise
+     * take a new slice out of the proovided memorySegment.
+     *
+     * @param memorySegment the memory to use
+     * @param offset
+     * @param sizeInBytes
+     */
+    public OpaqueMemory(MemorySegment memorySegment, long offset, long sizeInBytes) {
+        if ((offset == 0) && (sizeInBytes == memorySegment.byteSize())) {
+            this.memorySegment = memorySegment;
+        } else {
+            this.memorySegment = memorySegment.asSlice(offset, sizeInBytes);
+        }
+    }
+
+    public OpaqueMemory(OpaqueMemory mem, long offset, long sizeInBytes) {
+        if ((offset == 0) && (sizeInBytes == mem.memorySegment.byteSize())) {
+            this.memorySegment = mem.memorySegment;
+        } else {
+            this.memorySegment = mem.memorySegment.asSlice(offset, sizeInBytes);
+        }
+    }
+
+    public OpaqueMemory(MemoryAddress baseAddress, MemorySession ms, long sizeInBytes) {
+        memorySegment = MemorySegment.ofAddress(baseAddress, sizeInBytes, ms);
+    }
+
+    public final long sizeof() {
+        return memorySegment.byteSize();
+    }
+
+    @Override
+    public Addressable toAddressable() {
+        return memorySegment;
     }
 
     @Override
@@ -292,72 +339,23 @@ public abstract class OpaqueMemory<T> implements Native, Pointer<T> {
         }
     }
 
-    public final static String printMemory(final OpaqueMemory mem, final boolean printAddress) {
-        StringBuilder sb = new StringBuilder();
-        try {
-            printMemory(sb, mem, printAddress);
-        } catch (IOException ioe) {
-            throw new RuntimeException(ioe);
-        }
-        return sb.toString();
-    }
-
-    public static void printMemory(Appendable sb, final OpaqueMemory mem, final boolean printAddress) throws IOException {
-        final StringBuilder ascii = new StringBuilder();
-        final long SIZE_IN_BYTES = mem.sizeof();
-        final long BASE_ADDRESS = mem.memorySegment.address().toRawLongValue();
-        final int BLOCK_SIZE = 16;
-        final int BLOCK_REMINDER = (int) (SIZE_IN_BYTES % BLOCK_SIZE);
-        final long BLOCK_COUNT = SIZE_IN_BYTES / BLOCK_SIZE + (BLOCK_REMINDER == 0 ? 0 : 1);
-        byte[] block = new byte[BLOCK_SIZE];
-        for (long i = 0; i < BLOCK_COUNT; i++) {
-            if (i == BLOCK_COUNT - 1) {
-                Arrays.fill(block, (byte) 0);
-                copy(mem, i * BLOCK_SIZE, block, 0, BLOCK_REMINDER == 0 ? BLOCK_SIZE : BLOCK_REMINDER);
-            } else {
-                copy(mem, i * BLOCK_SIZE, block, 0, BLOCK_SIZE);
-            }
-            if (printAddress) {
-                sb.append(JnhwFormater.formatAddress(MemoryAddress.ofLong(BASE_ADDRESS + BLOCK_SIZE * i))).append(": ");
-            }
-            for (int j = 0; j < BLOCK_SIZE; j++) {
-                ascii.append((char) (block[j] & 0x00ff));
-                switch (j) {
-                    case 4, 12 -> {
-                        if (j < SIZE_IN_BYTES) {
-                            sb.append(String.format(" %02x", block[j]));
-                        } else {
-                            sb.append("   ");
-                        }
-                    }
-                    case 8 -> {
-                        if (j < SIZE_IN_BYTES) {
-                            sb.append(String.format("  %02x", block[j]));
-                        } else {
-                            sb.append("    ");
-                        }
-                    }
-                    default -> {
-                        if (j < SIZE_IN_BYTES) {
-                            sb.append(String.format("%02x", block[j]));
-                        } else {
-                            sb.append("  ");
-                        }
-                    }
-                }
-            }
-            sb.append(" | ");
-            sb.append(ascii);
-            if (i != BLOCK_COUNT - 1) {
-                ascii.delete(0, ascii.length());
-                sb.append('\n');
-            }
-        }
-    }
-
     @Override
     final public String toString() {
         return String.format("{baseAddress : %s, sizeof : %d}", JnhwFormater.formatAddress(memorySegment.address()), sizeof());
+    }
+
+    @FunctionalInterface
+    public static interface OpaqueMemoryProducer<T extends OpaqueMemory, P extends OpaqueMemory> {
+
+        /**
+         *
+         * @param address the address to use.
+         * @param ms the memorysession to use
+         * @param parent the parent of the result with given address.
+         * @return a cached or new OpaqueMemory.
+         */
+        T produce(MemoryAddress address, MemorySession ms, P parent);
+
     }
 
 }

@@ -42,7 +42,7 @@ public interface JnhwMh__V___A extends JnhwMethodHandle {
     interface ExceptionErased extends JnhwMh__V___A {
 
         @Override
-        default void invoke__V___P(Pointer<?> arg1) {
+        default void invoke__V___P(Pointer arg1) {
             invoke__V___A(arg1.toAddressable());
         }
 
@@ -76,7 +76,7 @@ public interface JnhwMh__V___A extends JnhwMethodHandle {
         };
     }
 
-    default void invoke__V___P(Pointer<?> arg1) throws NoSuchNativeMethodException {
+    default void invoke__V___P(Pointer arg1) throws NoSuchNativeMethodException {
         invoke__V___A(arg1.toAddressable());
     }
 

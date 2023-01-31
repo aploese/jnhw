@@ -40,12 +40,12 @@ public class Int16_t extends NativeIntNumber<Short> {
         return new Int16_t(MemorySegment.allocateNative(DATA_TYPE.SIZE_OF, ms), 0);
     }
 
-    public Int16_t(MemorySegment memorySegment, long offset) {
-        super(memorySegment, offset, DATA_TYPE.SIZE_OF);
-    }
-
     public static Int16_t map(OpaqueMemory mem, long offset) {
         return new Int16_t(mem.memorySegment, offset);
+    }
+
+    public Int16_t(MemorySegment memorySegment, long offset) {
+        super(memorySegment, offset, DATA_TYPE.SIZE_OF);
     }
 
     @int16_t

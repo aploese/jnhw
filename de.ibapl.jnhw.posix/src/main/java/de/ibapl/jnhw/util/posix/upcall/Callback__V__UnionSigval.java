@@ -21,7 +21,7 @@
  */
 package de.ibapl.jnhw.util.posix.upcall;
 
-import de.ibapl.jnhw.common.memory.OpaqueMemory;
+import de.ibapl.jnhw.common.datatypes.Pointer;
 import de.ibapl.jnhw.common.upcall.Callback__V__Union_I_MA;
 import java.lang.foreign.MemoryAddress;
 import java.util.function.Function;
@@ -29,10 +29,11 @@ import java.util.function.Function;
 /**
  *
  * @author aploese
+ * @param <A>
  */
-public abstract class Callback__V__UnionSigval<A extends OpaqueMemory> extends Callback__V__Union_I_MA<A> {
+public abstract class Callback__V__UnionSigval<A extends Pointer> extends Callback__V__Union_I_MA<A> {
 
-    protected <T extends Callback__V__Union_I_MA<A>> Callback__V__UnionSigval(Function<T, MemoryAddress> producer) {
+    protected <T extends Callback__V__UnionSigval<A>> Callback__V__UnionSigval(Function<T, MemoryAddress> producer) {
         super(producer);
     }
 

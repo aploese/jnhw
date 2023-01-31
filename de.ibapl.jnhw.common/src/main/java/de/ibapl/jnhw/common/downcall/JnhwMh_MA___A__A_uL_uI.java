@@ -43,7 +43,7 @@ public interface JnhwMh_MA___A__A_uL_uI extends JnhwMethodHandle {
     interface ExceptionErased extends JnhwMh_MA___A__A_uL_uI {
 
         @Override
-        default MemoryAddress invoke_MA___P__P_uL_uI(Pointer<?> arg1, Pointer<?> arg2, long arg3, int arg4) {
+        default MemoryAddress invoke_MA___P__P_uL_uI(Pointer arg1, Pointer arg2, long arg3, int arg4) {
             return invoke_MA___A__A_uL_uI(arg1.toAddressable(), arg2.toAddressable(), arg3, arg4);
         }
 
@@ -97,7 +97,7 @@ public interface JnhwMh_MA___A__A_uL_uI extends JnhwMethodHandle {
         };
     }
 
-    default MemoryAddress invoke_MA___P__P_uL_uI(Pointer<?> arg1, Pointer<?> arg2, long arg3, int arg4) throws NoSuchNativeMethodException {
+    default MemoryAddress invoke_MA___P__P_uL_uI(Pointer arg1, Pointer arg2, long arg3, int arg4) throws NoSuchNativeMethodException {
         return invoke_MA___A__A_uL_uI(arg1.toAddressable(), arg2.toAddressable(), arg3, arg4);
     }
 

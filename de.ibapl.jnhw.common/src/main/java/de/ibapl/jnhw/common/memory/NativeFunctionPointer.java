@@ -36,18 +36,10 @@ import java.util.function.Function;
  */
 public class NativeFunctionPointer implements Pointer {
 
-    @Override
-    public final Addressable toAddressable() {
-        return memoryAddress;
-    }
-
-    public final MemoryAddress toAddress() {
-        return memoryAddress;
-    }
-
     public static NativeFunctionPointer wrap(MemoryAddress memoryAddress) {
         return new NativeFunctionPointer(memoryAddress);
     }
+    protected final MemoryAddress memoryAddress;
 
     @SuppressWarnings("unchecked")
     public <T extends NativeFunctionPointer> NativeFunctionPointer(Function<T, MemoryAddress> producer) {
@@ -58,7 +50,14 @@ public class NativeFunctionPointer implements Pointer {
         this.memoryAddress = src;
     }
 
-    protected final MemoryAddress memoryAddress;
+    @Override
+    public final Addressable toAddressable() {
+        return memoryAddress;
+    }
+
+    public final MemoryAddress toAddress() {
+        return memoryAddress;
+    }
 
     @Override
     public int hashCode() {

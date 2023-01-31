@@ -43,7 +43,7 @@ public interface JnhwMh_BL___A_uL__A_uL__A_uL__A__A extends JnhwMethodHandle {
     interface ExceptionErased extends JnhwMh_BL___A_uL__A_uL__A_uL__A__A {
 
         @Override
-        default boolean invoke_BL___P_uI__P_uL__P_uL__P__P(Pointer<?> arg1, int arg2, Pointer<?> arg3, long arg4, Pointer<?> arg5, long arg6, Pointer<?> arg7, Pointer<?> arg8) {
+        default boolean invoke_BL___P_uI__P_uL__P_uL__P__P(Pointer arg1, int arg2, Pointer arg3, long arg4, Pointer arg5, long arg6, Pointer arg7, Pointer arg8) {
             return invoke_BL___A_uI__A_uL__A_uL__A__A(
                     arg1.toAddressable(),
                     arg2,
@@ -125,7 +125,7 @@ public interface JnhwMh_BL___A_uL__A_uL__A_uL__A__A extends JnhwMethodHandle {
         };
     }
 
-    default boolean invoke_BL___P_uI__P_uL__P_uL__P__P(Pointer<?> arg1, int arg2, Pointer<?> arg3, long arg4, Pointer<?> arg5, long arg6, Pointer<?> arg7, Pointer<?> arg8) throws NoSuchNativeMethodException {
+    default boolean invoke_BL___P_uI__P_uL__P_uL__P__P(Pointer arg1, int arg2, Pointer arg3, long arg4, Pointer arg5, long arg6, Pointer arg7, Pointer arg8) throws NoSuchNativeMethodException {
         return invoke_BL___A_uI__A_uL__A_uL__A__A(
                 arg1.toAddressable(),
                 arg2,

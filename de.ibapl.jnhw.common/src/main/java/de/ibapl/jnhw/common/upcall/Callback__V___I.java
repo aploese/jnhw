@@ -39,7 +39,7 @@ public abstract class Callback__V___I extends FunctionPtr__V___I {
 
     /**
      * Iterate over weak references all instances oth this class and if the
-     * reference is gone remove the weak reference. Return the first found
+     * reference is gone remove the weak reference.Return the first found
      * instance or null if none is found.
      *
      * @param callbackPtr
@@ -84,8 +84,7 @@ public abstract class Callback__V___I extends FunctionPtr__V___I {
     }
 
     public Callback__V___I() {
-        super(CallbackFactory__V___I::aquire);
-        REFS.add(new WeakReference<>(this));
+        this(CallbackFactory__V___I::aquire);
     }
 
     public void release() {

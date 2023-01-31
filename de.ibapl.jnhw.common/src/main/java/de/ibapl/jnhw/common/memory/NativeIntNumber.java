@@ -26,8 +26,9 @@ import java.lang.foreign.MemorySegment;
 /**
  *
  * @author aploese
+ * @param <N>
  */
-public abstract class NativeIntNumber<T extends Number> extends OpaqueMemory<T> {
+public abstract class NativeIntNumber<N extends Number> extends OpaqueMemory {
 
     protected NativeIntNumber(MemorySegment memorySegment, long offset, long sizeInBytes) {
         super(memorySegment, offset, sizeInBytes);

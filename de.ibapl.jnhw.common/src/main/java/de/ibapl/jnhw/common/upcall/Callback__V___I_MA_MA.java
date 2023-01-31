@@ -21,7 +21,7 @@
  */
 package de.ibapl.jnhw.common.upcall;
 
-import de.ibapl.jnhw.common.memory.OpaqueMemory;
+import de.ibapl.jnhw.common.datatypes.Pointer;
 import de.ibapl.jnhw.common.nativepointer.FunctionPtr__V___I_MA_MA;
 import java.lang.foreign.MemoryAddress;
 import java.lang.ref.WeakReference;
@@ -33,8 +33,10 @@ import java.util.function.Function;
 /**
  *
  * @author aploese
+ * @param <A1>
+ * @param <A2>
  */
-public abstract class Callback__V___I_MA_MA<A extends OpaqueMemory, B extends OpaqueMemory> extends FunctionPtr__V___I_MA_MA<A, B> {
+public abstract class Callback__V___I_MA_MA<A1 extends Pointer, A2 extends Pointer> extends FunctionPtr__V___I_MA_MA<A1, A2> {
 
     private static final List<WeakReference<Callback__V___I_MA_MA<?, ?>>> REFS = new LinkedList<>();
 
@@ -46,8 +48,8 @@ public abstract class Callback__V___I_MA_MA<A extends OpaqueMemory, B extends Op
      * @param callbackPtr
      * @return the first found instance or null if none is found.
      */
-    public static Callback__V___I_MA_MA<?, ?> find(FunctionPtr__V___I_MA_MA callbackPtr) {
-        return find(callbackPtr.toAddressable().address());
+    public static <A1 extends Pointer, A2 extends Pointer> Callback__V___I_MA_MA<A1, A2> find(FunctionPtr__V___I_MA_MA<A1, A2> callbackPtr) {
+        return (Callback__V___I_MA_MA<A1, A2>) find(callbackPtr.toAddressable().address());
     }
 
     /**
@@ -74,7 +76,7 @@ public abstract class Callback__V___I_MA_MA<A extends OpaqueMemory, B extends Op
         return null;
     }
 
-    protected <T extends Callback__V___I_MA_MA<A, B>> Callback__V___I_MA_MA(Function<T, MemoryAddress> producer) {
+    protected <T extends Callback__V___I_MA_MA<A1, A2>> Callback__V___I_MA_MA(Function<T, MemoryAddress> producer) {
         super(producer);
         REFS.add(new WeakReference<>(this));
     }
@@ -85,8 +87,7 @@ public abstract class Callback__V___I_MA_MA<A extends OpaqueMemory, B extends Op
     }
 
     public Callback__V___I_MA_MA() {
-        super(CallbackFactory__V___I_MA_MA::aquire);
-        REFS.add(new WeakReference<>(this));
+        this(CallbackFactory__V___I_MA_MA::aquire);
     }
 
     public void release() {

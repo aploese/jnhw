@@ -40,12 +40,12 @@ public class Int32_t extends NativeIntNumber<Integer> {
         return new Int32_t(MemorySegment.allocateNative(DATA_TYPE.SIZE_OF, ms), 0);
     }
 
-    public Int32_t(MemorySegment memorySegment, long offset) {
-        super(memorySegment, offset, DATA_TYPE.SIZE_OF);
-    }
-
     public static Int32_t map(OpaqueMemory mem, long offset) {
         return new Int32_t(mem.memorySegment, offset);
+    }
+
+    public Int32_t(MemorySegment memorySegment, long offset) {
+        super(memorySegment, offset, DATA_TYPE.SIZE_OF);
     }
 
     public int int32_t() {

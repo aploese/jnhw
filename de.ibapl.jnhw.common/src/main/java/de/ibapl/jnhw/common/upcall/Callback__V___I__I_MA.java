@@ -21,7 +21,7 @@
  */
 package de.ibapl.jnhw.common.upcall;
 
-import de.ibapl.jnhw.common.memory.OpaqueMemory;
+import de.ibapl.jnhw.common.datatypes.Pointer;
 import de.ibapl.jnhw.common.nativepointer.FunctionPtr__V___I__I_MA;
 import java.lang.foreign.MemoryAddress;
 import java.lang.ref.WeakReference;
@@ -33,8 +33,9 @@ import java.util.function.Function;
 /**
  *
  * @author aploese
+ * @param <A>
  */
-public abstract class Callback__V___I__I_MA<A extends OpaqueMemory> extends FunctionPtr__V___I__I_MA<A> {
+public abstract class Callback__V___I__I_MA<A extends Pointer> extends FunctionPtr__V___I__I_MA<A> {
 
     private static final List<WeakReference<Callback__V___I__I_MA<?>>> REFS = new LinkedList<>();
 
@@ -43,11 +44,13 @@ public abstract class Callback__V___I__I_MA<A extends OpaqueMemory> extends Func
      * reference is gone remove the weak reference.Return the first found
      * instance or null if none is found.
      *
+     * @param <T>
+     * @param <A>
      * @param callbackPtr
      * @return the first found instance or null if none is found.
      */
-    public static Callback__V___I__I_MA<?> find(FunctionPtr__V___I__I_MA callbackPtr) {
-        return find(callbackPtr.toAddressable().address());
+    public static <A extends Pointer> Callback__V___I__I_MA<A> find(FunctionPtr__V___I__I_MA<A> callbackPtr) {
+        return (Callback__V___I__I_MA<A>) find(callbackPtr.toAddressable().address());
     }
 
     /**
@@ -85,8 +88,7 @@ public abstract class Callback__V___I__I_MA<A extends OpaqueMemory> extends Func
     }
 
     public Callback__V___I__I_MA() {
-        super(CallbackFactory__V___I__I_MA::aquire);
-        REFS.add(new WeakReference<>(this));
+        this(CallbackFactory__V___I__I_MA::aquire);
     }
 
     public void release() {

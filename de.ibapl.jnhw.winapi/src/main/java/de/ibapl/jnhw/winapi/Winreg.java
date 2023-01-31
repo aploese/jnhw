@@ -269,7 +269,7 @@ public abstract class Winreg {
      */
     public final static void RegOpenKeyExW(HKEY hKey, String lpSubKey, int ulOptions, int samDesired, WinDef.PHKEY phkResult) throws NativeErrorException {
         try (MemorySession ms = MemorySession.openConfined()) {
-            Pointer<WinDef.LPWSTR> _lpSubKey = lpSubKey != null ? WinDef.LPWSTR.wrap(lpSubKey, true, ms) : Pointer.NULL;
+            Pointer _lpSubKey = lpSubKey != null ? WinDef.LPWSTR.wrap(lpSubKey, true, ms) : Pointer.NULL;
             final int result = RegOpenKeyExW.invoke_sI___P__P_uI_uI__P(
                     hKey,
                     _lpSubKey,

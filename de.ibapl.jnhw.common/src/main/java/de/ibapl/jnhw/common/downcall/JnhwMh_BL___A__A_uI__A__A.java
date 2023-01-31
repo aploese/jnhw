@@ -42,7 +42,7 @@ public interface JnhwMh_BL___A__A_uI__A__A extends JnhwMethodHandle {
     interface ExceptionErased extends JnhwMh_BL___A__A_uI__A__A {
 
         @Override
-        default boolean invoke_BL___P__A_uI__P__P(Pointer<?> arg1, Addressable arg2, int arg3, Pointer<?> arg4, Pointer<?> arg5) {
+        default boolean invoke_BL___P__A_uI__P__P(Pointer arg1, Addressable arg2, int arg3, Pointer arg4, Pointer arg5) {
             return invoke_BL___A__A_uI__A__A(
                     arg1.toAddressable(),
                     arg2,
@@ -52,7 +52,7 @@ public interface JnhwMh_BL___A__A_uI__A__A extends JnhwMethodHandle {
         }
 
         @Override
-        default boolean invoke_BL___P__P_uI__P__P(Pointer<?> arg1, Pointer<?> arg2, int arg3, Pointer<?> arg4, Pointer<?> arg5) {
+        default boolean invoke_BL___P__P_uI__P__P(Pointer arg1, Pointer arg2, int arg3, Pointer arg4, Pointer arg5) {
             return invoke_BL___A__A_uI__A__A(
                     arg1.toAddressable(),
                     arg2.toAddressable(),
@@ -116,7 +116,7 @@ public interface JnhwMh_BL___A__A_uI__A__A extends JnhwMethodHandle {
         };
     }
 
-    default boolean invoke_BL___P__A_uI__P__P(Pointer<?> arg1, Addressable arg2, int arg3, Pointer<?> arg4, Pointer<?> arg5) throws NoSuchNativeMethodException {
+    default boolean invoke_BL___P__A_uI__P__P(Pointer arg1, Addressable arg2, int arg3, Pointer arg4, Pointer arg5) throws NoSuchNativeMethodException {
         return invoke_BL___A__A_uI__A__A(
                 arg1.toAddressable(),
                 arg2,
@@ -125,7 +125,7 @@ public interface JnhwMh_BL___A__A_uI__A__A extends JnhwMethodHandle {
                 arg5.toAddressable());
     }
 
-    default boolean invoke_BL___P__P_uI__P__P(Pointer<?> arg1, Pointer<?> arg2, int arg3, Pointer<?> arg4, Pointer<?> arg5) throws NoSuchNativeMethodException {
+    default boolean invoke_BL___P__P_uI__P__P(Pointer arg1, Pointer arg2, int arg3, Pointer arg4, Pointer arg5) throws NoSuchNativeMethodException {
         return invoke_BL___A__A_uI__A__A(
                 arg1.toAddressable(),
                 arg2.toAddressable(),

@@ -72,7 +72,7 @@ public class Aio {
      * aiocb}</a>.
      *
      */
-    public static final class Aiocb<T extends OpaqueMemory> extends PosixStruct {
+    public static final class Aiocb<T extends Pointer> extends PosixStruct {
 
         public final static Alignment alignof;
         public final static long offsetof_Aio_buf;

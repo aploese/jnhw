@@ -76,6 +76,9 @@ public abstract class Callback__V___L extends FunctionPtr__V___L {
     /**
      * new instance for that the native => java bridge must be obtaind by the
      * caller.
+     *
+     * @param <T>
+     * @param producer
      */
     protected <T extends Callback__V___L> Callback__V___L(Function<T, MemoryAddress> producer) {
         super(producer);
@@ -92,8 +95,7 @@ public abstract class Callback__V___L extends FunctionPtr__V___L {
      *
      */
     public Callback__V___L() {
-        super(CallbackFactory__V___L::aquire);
-        REFS.add(new WeakReference<>(this));
+        this(CallbackFactory__V___L::aquire);
     }
 
     public void release() {

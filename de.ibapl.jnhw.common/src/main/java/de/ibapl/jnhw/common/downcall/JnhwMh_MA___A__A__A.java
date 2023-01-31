@@ -44,12 +44,12 @@ public interface JnhwMh_MA___A__A__A extends JnhwMethodHandle {
     interface ExceptionErased extends JnhwMh_MA___A__A__A {
 
         @Override
-        default MemoryAddress invoke_MA__P_P_P(Pointer<?> arg1, Pointer<?> arg2, Pointer<?> arg3) {
+        default MemoryAddress invoke_MA__P_P_P(Pointer arg1, Pointer arg2, Pointer arg3) {
             return invoke_MA___A__A__A(arg1.toAddressable(), arg2.toAddressable(), arg3.toAddressable());
         }
 
         @Override
-        default MemoryAddress invoke_MA__A_A_P(Addressable arg1, Addressable arg2, Pointer<?> arg3) {
+        default MemoryAddress invoke_MA__A_A_P(Addressable arg1, Addressable arg2, Pointer arg3) {
             return invoke_MA___A__A__A(arg1, arg2, arg3.toAddressable());
         }
 
@@ -98,11 +98,11 @@ public interface JnhwMh_MA___A__A__A extends JnhwMethodHandle {
         };
     }
 
-    default MemoryAddress invoke_MA__P_P_P(Pointer<?> arg1, Pointer<?> arg2, Pointer<?> arg3) throws NoSuchNativeMethodException {
+    default MemoryAddress invoke_MA__P_P_P(Pointer arg1, Pointer arg2, Pointer arg3) throws NoSuchNativeMethodException {
         return invoke_MA___A__A__A(arg1.toAddressable(), arg2.toAddressable(), arg3.toAddressable());
     }
 
-    default MemoryAddress invoke_MA__A_A_P(Addressable arg1, Addressable arg2, Pointer<?> arg3) throws NoSuchNativeMethodException {
+    default MemoryAddress invoke_MA__A_A_P(Addressable arg1, Addressable arg2, Pointer arg3) throws NoSuchNativeMethodException {
         return invoke_MA___A__A__A(arg1, arg2, arg3.toAddressable());
     }
 

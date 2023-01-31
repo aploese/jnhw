@@ -21,7 +21,6 @@
  */
 package de.ibapl.jnhw.common.memory;
 
-import de.ibapl.jnhw.common.datatypes.Native;
 import de.ibapl.jnhw.common.datatypes.Pointer;
 import de.ibapl.jnhw.common.util.JnhwFormater;
 import java.lang.foreign.Addressable;
@@ -32,15 +31,20 @@ import java.lang.foreign.MemoryAddress;
  * The base class for any pointer like win api HANDLE.
  *
  * @author aploese
+ * @param <T>
  */
-public abstract class OpaquePointer<T> implements Pointer<T> {
+public abstract class OpaquePointer<T extends OpaquePointer> implements Pointer {
+
+    protected final MemoryAddress nativeValue;
+
+    public OpaquePointer(MemoryAddress address) {
+        nativeValue = address;
+    }
 
     @Override
     final public Addressable toAddressable() {
         return nativeValue;
     }
-
-    protected final MemoryAddress nativeValue;
 
     @Override
     public boolean equals(Object obj) {
@@ -67,10 +71,6 @@ public abstract class OpaquePointer<T> implements Pointer<T> {
     @Override
     public String toString() {
         return "{nativeValue : " + JnhwFormater.formatAddress(nativeValue) + "}";
-    }
-
-    public OpaquePointer(MemoryAddress address) {
-        nativeValue = address;
     }
 
     @Override

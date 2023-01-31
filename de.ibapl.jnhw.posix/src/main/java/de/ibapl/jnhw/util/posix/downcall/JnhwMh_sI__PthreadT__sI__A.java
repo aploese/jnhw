@@ -48,7 +48,7 @@ public interface JnhwMh_sI__PthreadT__sI__A extends JnhwMethodHandle {
     interface ExceptionErased extends JnhwMh_sI__PthreadT__sI__A {
 
         @Override
-        default int invoke_sI__PthreadT__sI__P(Pthread.Pthread_t arg1, int arg2, Pointer<?> arg3) {
+        default int invoke_sI__PthreadT__sI__P(Pthread.Pthread_t arg1, int arg2, Pointer arg3) {
             return invoke_sI__PthreadT__sI__A(arg1, arg2, arg3.toAddressable());
         }
 
@@ -126,7 +126,7 @@ public interface JnhwMh_sI__PthreadT__sI__A extends JnhwMethodHandle {
         };
     }
 
-    default int invoke_sI__PthreadT__sI__P(Pthread.Pthread_t arg1, int arg2, Pointer<?> arg3) throws NoSuchNativeMethodException {
+    default int invoke_sI__PthreadT__sI__P(Pthread.Pthread_t arg1, int arg2, Pointer arg3) throws NoSuchNativeMethodException {
         return invoke_sI__PthreadT__sI__A(arg1, arg2, arg3.toAddressable());
     }
 

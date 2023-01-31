@@ -253,14 +253,14 @@ public class Time {
         public final static Alignment alignof = PosixDataType.timer_t != null ? PosixDataType.timer_t.ALIGN_OF : null;
         public final static int sizeof = PosixDataType.timer_t != null ? PosixDataType.timer_t.SIZE_OF : 0;
 
-        public final static Timer_t tryAllocateNative(MemorySession ms) throws NoSuchNativeTypeException {
+        public static Timer_t tryAllocateNative(MemorySession ms) throws NoSuchNativeTypeException {
             if (alignof == null) {
                 throw new NoSuchNativeTypeException("Timer_t");
             }
             return new Timer_t(MemorySegment.allocateNative(sizeof, ms), 0);
         }
 
-        public final static Timer_t ofAddress(MemoryAddress address, MemorySession ms) throws NoSuchNativeTypeException {
+        public static Timer_t ofAddress(MemoryAddress address, MemorySession ms) throws NoSuchNativeTypeException {
             return new Timer_t(MemorySegment.ofAddress(address, sizeof, ms), 0);
         }
 
@@ -314,7 +314,7 @@ public class Time {
         }
 
         public Timer_t get(final MemorySession ms) {
-            return get((address, _ms, parent) -> {
+            return super.getAsOpaqueMemory((address, _ms, parent) -> {
                 try {
                     return Timer_t.ofAddress(address, _ms);
                 } catch (NoSuchNativeTypeException e) {
@@ -1641,20 +1641,31 @@ public class Time {
         }
     }
 
+    private final static MemorySegment timezone;
+
+    static {
+        MemorySegment _timezone = LibcLoader.lookup("timezone").get();
+        timezone = MemorySegment.ofAddress(_timezone.address(), ValueLayout.JAVA_LONG.byteSize(), _timezone.session());
+    }
+
     /**
      * <b>POSIX.XSI:</b>
      * <a href="https://pubs.opengroup.org/onlinepubs/9699919799/functions/timezone.html">daylight,
      * timezone, tzname, tzset - set timezone conversion information</a>.
      *
      * @return the native value of timezone.
-     * @throws NoSuchNativeMethodException if the method timezone is not
-     * available natively.
      */
     public final static long timezone() {
-        return timezone.address().get(ValueLayout.JAVA_LONG, 0);
+        return timezone.get(ValueLayout.JAVA_LONG, 0);
     }
 
-    private final static MemorySegment timezone = LibcLoader.lookup("timezone").get();
+    private final static MemorySegment tzname;
+    private final static int TZNAME_ENTRIES = 2;
+
+    static {
+        MemorySegment _tzname = LibcLoader.lookup("tzname").get();
+        tzname = MemorySegment.ofAddress(_tzname.address(), ValueLayout.ADDRESS.byteSize() * TZNAME_ENTRIES, _tzname.session());
+    }
 
     /**
      * <b>POSIX:</b>
@@ -1665,14 +1676,12 @@ public class Time {
      *
      */
     public final static String[] tzname() {
-        final String[] result = new String[2];
-        for (int i = 0; i < result.length; i++) {
-            result[i] = tzname.address().getUtf8String(i * BaseDataType.C_pointer.SIZE_OF);
+        final String[] result = new String[TZNAME_ENTRIES];
+        for (int i = 0; i < TZNAME_ENTRIES; i++) {
+            result[i] = tzname.get(ValueLayout.ADDRESS, i * ValueLayout.ADDRESS.byteSize()).getUtf8String(0);
         }
         return result;
     }
-
-    private final static MemorySegment tzname = LibcLoader.lookup("tzname").get();
 
     /**
      * <b>POSIX:</b>

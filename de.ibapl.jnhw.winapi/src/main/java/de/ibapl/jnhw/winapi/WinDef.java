@@ -80,7 +80,7 @@ public abstract class WinDef {
      * typedef BYTE far *LPBYTE;
      * </p>
      */
-    public static class LPBYTE extends OpaqueMemory<Byte> {
+    public static class LPBYTE extends OpaqueMemory {
 
         private final static int SIZE_OF_WCHAR = WinApiDataType.WCHAR.SIZE_OF;
 
