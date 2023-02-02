@@ -21,7 +21,6 @@
  */
 package de.ibapl.jnhw.common.downcall.jni;
 
-import java.lang.foreign.Addressable;
 import java.lang.foreign.MemorySegment;
 
 /**
@@ -36,13 +35,13 @@ public class JniMi__I___L__I__A extends JniMethodInvoker {
         super(methodAddress, name);
     }
 
-    public int invoke_sI__uL_sI__A(long arg1, int arg2, Addressable arg3) {
+    public int invoke_sI__uL_sI__A(long arg1, int arg2, MemorySegment arg3) {
         try {
             return invoke__I___L__I__A(
-                    ns.address().toRawLongValue(),
+                    ns.address(),
                     arg1,
                     arg2,
-                    arg3.address().toRawLongValue());
+                    arg3.address());
         } catch (IllegalArgumentException | NullPointerException e) {
             throw e;
         } catch (Throwable t) {

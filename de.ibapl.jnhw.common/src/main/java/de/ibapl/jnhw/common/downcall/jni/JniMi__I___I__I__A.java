@@ -22,7 +22,6 @@
 package de.ibapl.jnhw.common.downcall.jni;
 
 import de.ibapl.jnhw.common.downcall.JnhwMh_sI__sI_sI__A;
-import java.lang.foreign.Addressable;
 import java.lang.foreign.MemorySegment;
 
 /**
@@ -38,13 +37,13 @@ public class JniMi__I___I__I__A extends JniMethodInvoker implements JnhwMh_sI__s
     }
 
     @Override
-    public int invoke_sI__sI_sI__A(int arg1, int arg2, Addressable arg3) {
+    public int invoke_sI__sI_sI__A(int arg1, int arg2, MemorySegment arg3) {
         try {
             return invoke__I___I__I__A(
-                    ns.address().toRawLongValue(),
+                    ns.address(),
                     arg1,
                     arg2,
-                    arg3.address().toRawLongValue());
+                    arg3.address());
         } catch (IllegalArgumentException | NullPointerException e) {
             throw e;
         } catch (Throwable t) {
@@ -52,13 +51,13 @@ public class JniMi__I___I__I__A extends JniMethodInvoker implements JnhwMh_sI__s
         }
     }
 
-    public int invoke_sI__uI_sI__A(int arg1, int arg2, Addressable arg3) {
+    public int invoke_sI__uI_sI__A(int arg1, int arg2, MemorySegment arg3) {
         try {
             return invoke__I___I__I__A(
-                    ns.address().toRawLongValue(),
+                    ns.address(),
                     arg1,
                     arg2,
-                    arg3.address().toRawLongValue());
+                    arg3.address());
         } catch (IllegalArgumentException | NullPointerException e) {
             throw e;
         } catch (Throwable t) {

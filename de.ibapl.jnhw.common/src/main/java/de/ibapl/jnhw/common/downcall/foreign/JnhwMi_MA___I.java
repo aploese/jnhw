@@ -24,7 +24,6 @@ package de.ibapl.jnhw.common.downcall.foreign;
 import de.ibapl.jnhw.common.downcall.JnhwMh_MA__sI;
 import de.ibapl.jnhw.common.downcall.JnhwMh_MA__uI;
 import java.lang.foreign.FunctionDescriptor;
-import java.lang.foreign.MemoryAddress;
 import java.lang.foreign.MemorySegment;
 import java.lang.foreign.ValueLayout;
 
@@ -35,13 +34,13 @@ import java.lang.foreign.ValueLayout;
 public class JnhwMi_MA___I extends JnhwMethodInvoker implements JnhwMh_MA__sI.ExceptionErased, JnhwMh_MA__uI.ExceptionErased {
 
     public JnhwMi_MA___I(MemorySegment memoryAddress, String name) {
-        super(memoryAddress, name, FunctionDescriptor.of(ValueLayout.ADDRESS, ValueLayout.JAVA_INT));
+        super(memoryAddress, name, FunctionDescriptor.of(ValueLayout.ADDRESS.asUnbounded(), ValueLayout.JAVA_INT));
     }
 
     @Override
-    public MemoryAddress invoke_MA__sI(int arg1) {
+    public MemorySegment invoke_MA__sI(int arg1) {
         try {
-            return (MemoryAddress) methodHandle.invokeExact(arg1);
+            return (MemorySegment) methodHandle.invokeExact(arg1);
         } catch (IllegalArgumentException | NullPointerException e) {
             throw e;
         } catch (Throwable t) {
@@ -50,9 +49,9 @@ public class JnhwMi_MA___I extends JnhwMethodInvoker implements JnhwMh_MA__sI.Ex
     }
 
     @Override
-    public MemoryAddress invoke_MA__uI(int arg1) {
+    public MemorySegment invoke_MA__uI(int arg1) {
         try {
-            return (MemoryAddress) methodHandle.invokeExact(arg1);
+            return (MemorySegment) methodHandle.invokeExact(arg1);
         } catch (IllegalArgumentException | NullPointerException e) {
             throw e;
         } catch (Throwable t) {

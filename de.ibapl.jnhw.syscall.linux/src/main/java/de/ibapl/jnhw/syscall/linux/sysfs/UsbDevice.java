@@ -35,7 +35,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.io.Reader;
 import java.lang.foreign.MemorySegment;
-import java.lang.foreign.MemorySession;
+import java.lang.foreign.SegmentScope;
 import java.util.Iterator;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -101,8 +101,8 @@ public class UsbDevice {
     }
 
     private String readFile(File f) {
-        try ( Reader r = new FileReader(f)) {
-            try ( BufferedReader br = new BufferedReader(r)) {
+        try (Reader r = new FileReader(f)) {
+            try (BufferedReader br = new BufferedReader(r)) {
                 return br.readLine();
             } catch (IOException ex) {
                 throw new RuntimeException(ex);
@@ -119,7 +119,7 @@ public class UsbDevice {
         private int currentPos = 0;
         private long length;
 
-        protected DeviceIterator(MemorySession ms) {
+        protected DeviceIterator(SegmentScope ms) {
             mem = MemorySegment.allocateNative(1024 * 64, ms);
             try {
                 final int fd = Fcntl.open(new File(sysFsDir, "descriptors").getAbsolutePath(), Fcntl.O_RDONLY);
@@ -156,7 +156,7 @@ public class UsbDevice {
         }
     }
 
-    public Iterable<AbstractDescriptor> descriptors(MemorySession ms) {
+    public Iterable<AbstractDescriptor> descriptors(SegmentScope ms) {
         return () -> new DeviceIterator(ms);
     }
 

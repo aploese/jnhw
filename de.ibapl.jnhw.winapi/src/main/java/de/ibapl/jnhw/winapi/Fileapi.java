@@ -37,9 +37,8 @@ import de.ibapl.jnhw.winapi.Minwinbase.LPOVERLAPPED;
 import de.ibapl.jnhw.winapi.Minwinbase.SECURITY_ATTRIBUTES;
 import de.ibapl.jnhw.winapi.Winnt.HANDLE;
 import java.io.File;
-import java.lang.foreign.MemoryAddress;
+import java.lang.foreign.Arena;
 import java.lang.foreign.MemorySegment;
-import java.lang.foreign.MemorySession;
 import java.nio.ByteBuffer;
 
 /**
@@ -219,9 +218,9 @@ public final class Fileapi {
      * indicates an error.
      */
     public final static HANDLE CreateFileW(String lpFileName, int dwDesiredAccess, int dwShareMode, SECURITY_ATTRIBUTES lpSecurityAttributes, int dwCreationDisposition, int dwFlagsAndAttributes, HANDLE hTemplateFile) throws NativeErrorException {
-        try (MemorySession ms = MemorySession.openConfined()) {
-            WinDef.LPWSTR _lpFileName = WinDef.LPWSTR.wrap(lpFileName, true, ms);
-            final MemoryAddress result = CreateFileW.invoke_MA___P_uI_uI__P_uI_uI__P(
+        try (Arena ms = Arena.openConfined()) {
+            WinDef.LPWSTR _lpFileName = WinDef.LPWSTR.wrap(lpFileName, true, ms.scope());
+            final MemorySegment result = CreateFileW.invoke_MA___P_uI_uI__P_uI_uI__P(
                     _lpFileName,
                     dwDesiredAccess,
                     dwShareMode,
@@ -275,8 +274,8 @@ public final class Fileapi {
      * indicates an error.
      */
     public static void ReadFile(HANDLE hFile, byte[] lpBuffer, WinDef.LPDWORD lpNumberOfBytesRead) throws NativeErrorException {
-        try (MemorySession ms = MemorySession.openConfined()) {
-            final MemorySegment _lpBuffer = MemorySegment.allocateNative(lpBuffer.length, ms);
+        try (Arena ms = Arena.openConfined()) {
+            final MemorySegment _lpBuffer = MemorySegment.allocateNative(lpBuffer.length, ms.scope());
             if (!ReadFile.invoke_BL___P__A_uI__P__P(
                     hFile,
                     _lpBuffer,
@@ -313,8 +312,8 @@ public final class Fileapi {
      * indicates an error.
      */
     public final static void ReadFile(HANDLE hFile, byte[] lpBuffer, int off, int nNumberOfBytesToRead, WinDef.LPDWORD lpNumberOfBytesRead) throws NativeErrorException {
-        try (MemorySession ms = MemorySession.openConfined()) {
-            final MemorySegment _lpBuffer = MemorySegment.allocateNative(nNumberOfBytesToRead, ms);
+        try (Arena ms = Arena.openConfined()) {
+            final MemorySegment _lpBuffer = MemorySegment.allocateNative(nNumberOfBytesToRead, ms.scope());
             if (!ReadFile.invoke_BL___P__A_uI__P__P(
                     hFile,
                     _lpBuffer,
@@ -796,8 +795,8 @@ public final class Fileapi {
      * indicates an error.
      */
     public static void WriteFile(HANDLE hFile, byte[] lpBuffer, WinDef.LPDWORD lpNumberOfBytesWritten) throws NativeErrorException {
-        try (MemorySession ms = MemorySession.openConfined()) {
-            final MemorySegment _lpBuffer = MemorySegment.allocateNative(lpBuffer.length, ms);
+        try (Arena ms = Arena.openConfined()) {
+            final MemorySegment _lpBuffer = MemorySegment.allocateNative(lpBuffer.length, ms.scope());
             _lpBuffer.copyFrom(MemorySegment.ofArray(lpBuffer));
             if (!WriteFile.invoke_BL___P__A_uI__P__P(
                     hFile,
@@ -833,8 +832,8 @@ public final class Fileapi {
      * indicates an error.
      */
     public final static void WriteFile(HANDLE hFile, byte[] lpBuffer, int off, int nNumberOfBytesToWrite, WinDef.LPDWORD lpNumberOfBytesWritten) throws NativeErrorException {
-        try (MemorySession ms = MemorySession.openConfined()) {
-            final MemorySegment _lpBuffer = MemorySegment.allocateNative(nNumberOfBytesToWrite, ms);
+        try (Arena ms = Arena.openConfined()) {
+            final MemorySegment _lpBuffer = MemorySegment.allocateNative(nNumberOfBytesToWrite, ms.scope());
             _lpBuffer.copyFrom(MemorySegment.ofArray(lpBuffer).asSlice(off, nNumberOfBytesToWrite));
             if (!WriteFile.invoke_BL___P__A_uI__P__P(
                     hFile,

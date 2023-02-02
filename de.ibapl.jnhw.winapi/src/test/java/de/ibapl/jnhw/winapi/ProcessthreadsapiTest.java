@@ -23,7 +23,7 @@ package de.ibapl.jnhw.winapi;
 
 import de.ibapl.jnhw.common.exception.NativeErrorException;
 import de.ibapl.jnhw.winapi.Winnt.HANDLE;
-import java.lang.foreign.MemorySession;
+import java.lang.foreign.Arena;
 import org.junit.jupiter.api.AfterEach;
 import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.BeforeEach;
@@ -37,11 +37,11 @@ import org.junit.jupiter.api.condition.EnabledOnOs;
 @EnabledOnOs(org.junit.jupiter.api.condition.OS.WINDOWS)
 public class ProcessthreadsapiTest {
 
-    private MemorySession ms;
+    private Arena ms;
 
     @BeforeEach
     public void setUp() throws Exception {
-        ms = MemorySession.openConfined();
+        ms = Arena.openConfined();
     }
 
     @AfterEach

@@ -40,7 +40,7 @@ public class JniMi__I___I__I_VARARGS__I extends JniMethodInvoker implements Jnhw
     public int invoke_sI__sI_sI_sI(int arg1, int arg2, int arg3) {
         try {
             return invoke__I___I__I_VARARGS__I(
-                    ns.address().toRawLongValue(),
+                    ns.address(),
                     arg1,
                     arg2,
                     arg3);

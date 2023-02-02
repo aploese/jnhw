@@ -22,11 +22,9 @@
 package de.ibapl.jnhw.posix;
 
 import de.ibapl.jnhw.common.memory.layout.Alignment;
-import de.ibapl.jnhw.libloader.MultiarchTupelBuilder;
-import de.ibapl.jnhw.libloader.OS;
 import de.ibapl.jnhw.util.posix.DefinesTest;
 import de.ibapl.jnhw.util.posix.PosixDataType;
-import java.lang.foreign.MemorySession;
+import java.lang.foreign.Arena;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
@@ -72,12 +70,12 @@ public class PollTest {
         JnhwTestLogger.logAfterAll(testTnfo);
     }
 
-    private MemorySession ms;
+    private Arena ms;
 
     @BeforeEach
     public void setUp(TestInfo testInfo) throws Exception {
         JnhwTestLogger.logBeforeEach(testInfo);
-        ms = MemorySession.openConfined();
+        ms = Arena.openConfined();
     }
 
     @AfterEach
@@ -88,7 +86,7 @@ public class PollTest {
 
     @Test
     public void testCreatePollFd() throws Exception {
-        Poll.PollFds pollFds = Poll.PollFds.allocateNative(ms, 2);
+        Poll.PollFds pollFds = Poll.PollFds.allocateNative(ms.scope(), 2);
     }
 
     @Test
@@ -105,7 +103,7 @@ public class PollTest {
             case 4 -> {
                 Assertions.assertEquals(Alignment.AT_4, PosixDataType.nfds_t.ALIGN_OF);
                 Assertions.assertTrue(PosixDataType.nfds_t.UNSIGNED);
-                Poll.Nfds_t instance = Poll.Nfds_t.allocateNative(ms);
+                Poll.Nfds_t instance = Poll.Nfds_t.allocateNative(ms.scope());
                 Assertions.assertThrows(
                         IllegalArgumentException.class,
                         () -> instance.setFromUnsignedLong(0x8070605040302010L));
@@ -122,7 +120,7 @@ public class PollTest {
             case 8 -> {
                 Assertions.assertEquals(Alignment.AT_8, PosixDataType.nfds_t.ALIGN_OF);
                 Assertions.assertTrue(PosixDataType.nfds_t.UNSIGNED);
-                Poll.Nfds_t instance = Poll.Nfds_t.allocateNative(ms);
+                Poll.Nfds_t instance = Poll.Nfds_t.allocateNative(ms.scope());
                 instance.setFromUnsignedLong(0x8070605040302010L);
                 assertEquals(0x8070605040302010L, instance.getAsUnsignedLong());
                 assertEquals(Long.toUnsignedString(0x8070605040302010L), instance.nativeToString());

@@ -22,9 +22,7 @@
 package de.ibapl.jnhw.common.downcall.jni;
 
 import de.ibapl.jnhw.common.downcall.JnhwMh_sI___A_uI__A__A__A__A__A__A;
-import java.lang.foreign.Addressable;
 import java.lang.foreign.MemorySegment;
-import java.lang.foreign.SymbolLookup;
 
 /**
  *
@@ -39,18 +37,18 @@ public class JniMi__I___A__I__A__A__A__A__A__A extends JniMethodInvoker implemen
     }
 
     @Override
-    public int invoke_sI___A_uI__A__A__A__A__A__A(Addressable arg1, int arg2, Addressable arg3, Addressable arg4, Addressable arg5, Addressable arg6, Addressable arg7, Addressable arg8) {
+    public int invoke_sI___A_uI__A__A__A__A__A__A(MemorySegment arg1, int arg2, MemorySegment arg3, MemorySegment arg4, MemorySegment arg5, MemorySegment arg6, MemorySegment arg7, MemorySegment arg8) {
         try {
             return invoke__I___A__I__A__A__A__A__A__A(
-                    ns.address().toRawLongValue(),
-                    arg1.address().toRawLongValue(),
+                    ns.address(),
+                    arg1.address(),
                     arg2,
-                    arg3.address().toRawLongValue(),
-                    arg4.address().toRawLongValue(),
-                    arg5.address().toRawLongValue(),
-                    arg6.address().toRawLongValue(),
-                    arg7.address().toRawLongValue(),
-                    arg8.address().toRawLongValue());
+                    arg3.address(),
+                    arg4.address(),
+                    arg5.address(),
+                    arg6.address(),
+                    arg7.address(),
+                    arg8.address());
         } catch (IllegalArgumentException | NullPointerException e) {
             throw e;
         } catch (Throwable t) {

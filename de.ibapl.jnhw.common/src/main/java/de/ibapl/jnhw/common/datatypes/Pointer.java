@@ -21,9 +21,9 @@
  */
 package de.ibapl.jnhw.common.datatypes;
 
-import java.util.Objects;
-import java.lang.foreign.Addressable;
-import java.lang.foreign.MemoryAddress;
+import de.ibapl.jnhw.common.util.JnhwFormater;
+import java.io.IOException;
+import java.lang.foreign.MemorySegment;
 
 /**
  *
@@ -37,8 +37,13 @@ public interface Pointer {
     public final static Pointer NULL = new Pointer() {
 
         @Override
-        public Addressable toAddressable() {
-            return MemoryAddress.NULL;
+        public MemorySegment toMemorySegment() {
+            return MemorySegment.NULL;
+        }
+
+        @Override
+        public long toAddress() {
+            return 0;
         }
 
         @Override
@@ -53,7 +58,9 @@ public interface Pointer {
 
     };
 
-    Addressable toAddressable();
+    MemorySegment toMemorySegment();
+
+    long toAddress();
 
     /**
      * test if adresses are the same. If either {@code address} or {@code op} is
@@ -64,24 +71,20 @@ public interface Pointer {
      * @param op
      * @return
      */
-    static boolean isSameAddress(MemoryAddress address, Pointer op) {
-        if (address == null) {
-            return op == null ? true : op.toAddressable().address() == MemoryAddress.NULL;
-        } else {
-            if (op == null) {
-                return address.equals(MemoryAddress.NULL);
-            } else {
-                return Objects.equals(address, op.toAddressable().address());
-            }
-        }
+    static boolean isSameAddress(MemorySegment address, Pointer op) {
+        return address.address() == op.toAddress();
     }
 
     static boolean isSameAddress(Pointer ptr1, Pointer ptr2) {
-        return (ptr1 == ptr2) || (ptr1 != null && ptr1.toAddressable().address().equals(ptr2.toAddressable().address()));
+        return ptr1.toAddress() == ptr2.toAddress();
     }
 
     boolean is_NULL();
 
     boolean is_Not_NULL();
+
+    default void nativeToString(Appendable sb, String INDENT, String indent) throws IOException {
+        sb.append(getClass().getSimpleName() + ": {address: " + JnhwFormater.formatAddress(toMemorySegment()) + "}");
+    }
 
 }

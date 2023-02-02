@@ -25,7 +25,7 @@ import de.ibapl.jnhw.common.annotation.int32_t;
 import de.ibapl.jnhw.common.datatypes.BaseDataType;
 import java.io.IOException;
 import java.lang.foreign.MemorySegment;
-import java.lang.foreign.MemorySession;
+import java.lang.foreign.SegmentScope;
 
 /**
  *
@@ -36,7 +36,7 @@ public class Int32_t extends NativeIntNumber<Integer> {
 
     public final static BaseDataType DATA_TYPE = BaseDataType.int32_t;
 
-    public static Int32_t allocateNative(MemorySession ms) {
+    public static Int32_t allocateNative(SegmentScope ms) {
         return new Int32_t(MemorySegment.allocateNative(DATA_TYPE.SIZE_OF, ms), 0);
     }
 

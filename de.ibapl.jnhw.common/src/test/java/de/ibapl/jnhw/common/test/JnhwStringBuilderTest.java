@@ -28,9 +28,8 @@ import de.ibapl.jnhw.common.memory.Struct;
 import de.ibapl.jnhw.common.util.JsonStringBuilder;
 import de.ibapl.jnhw.libloader.MultiarchTupelBuilder;
 import java.io.IOException;
-import java.lang.foreign.MemoryAddress;
+import java.lang.foreign.Arena;
 import java.lang.foreign.MemorySegment;
-import java.lang.foreign.MemorySession;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
 import static org.junit.jupiter.api.Assertions.*;
@@ -94,7 +93,7 @@ public class JnhwStringBuilderTest {
 
     @Test
     public void testFormatCompact() throws Exception {
-        try (MemorySession ms = MemorySession.openConfined()) {
+        try (Arena ms = Arena.openConfined()) {
             JsonStringBuilder jsb = new JsonStringBuilder("", "");
             jsb.appendByteMember("_byte", Byte.MAX_VALUE);
             jsb.appendCharMember("_char", 'a');
@@ -105,8 +104,8 @@ public class JnhwStringBuilderTest {
             }, "]");
             jsb.appendShortMember("_short", Short.MAX_VALUE);
             jsb.appendStringMember("_string", "Hello!");
-            jsb.appendStruct32Member("_struct32", new StructTest(MemorySegment.allocateNative(16, ms)));
-            jsb.appendStructArray32Member("array", new MemoryArrayTest(MemorySegment.allocateNative(12, ms), 0));
+            jsb.appendStruct32Member("_struct32", new StructTest(ms.allocate(16)));
+            jsb.appendStructArray32Member("array", new MemoryArrayTest(ms.allocate(12), 0));
             assertEquals("{_byte : 127, _char : \"a\", _int : 2147483647, _long : 9223372036854775807, _flags : [ONE, TWO], _short : 32767, _string : \"Hello!\", _struct32 : {memory : \"00000000 00000000  00000000 00000000 | \u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\"}, array : [{i0 : 0x00, i1 : 0x00}, {i0 : 0x00, i1 : 0x01}, {i0 : 0x00, i1 : 0x02}]}", jsb.toString()
             );
         }
@@ -114,7 +113,7 @@ public class JnhwStringBuilderTest {
 
     @Test
     public void testFormatPretty() throws Exception {
-        try (MemorySession ms = MemorySession.openConfined()) {
+        try (Arena ms = Arena.openConfined()) {
             JsonStringBuilder jsb = new JsonStringBuilder("", " ");
             jsb.appendByteMember("_byte", Byte.MAX_VALUE);
             jsb.appendCharMember("_char", 'a');
@@ -125,8 +124,8 @@ public class JnhwStringBuilderTest {
             }, "]");
             jsb.appendShortMember("_short", Short.MAX_VALUE);
             jsb.appendStringMember("_string", "Hello!");
-            jsb.appendStruct32Member("_struct32", new StructTest(MemorySegment.allocateNative(16, ms)));
-            jsb.appendStructArray32Member("array", new MemoryArrayTest(MemorySegment.allocateNative(12, ms), 0));
+            jsb.appendStruct32Member("_struct32", new StructTest(ms.allocate(16)));
+            jsb.appendStructArray32Member("array", new MemoryArrayTest(ms.allocate(12), 0));
             assertEquals("""
                          {
                           _byte : 127,
@@ -161,7 +160,7 @@ public class JnhwStringBuilderTest {
     @Test
     public void testFormatAddress() throws Exception {
         JsonStringBuilder jsb = new JsonStringBuilder("", "");
-        jsb.appendAddressMember("_address", MemoryAddress.ofLong(42));
+        jsb.appendAddressMember("_address", MemorySegment.ofAddress(42));
         switch (MultiarchTupelBuilder.getMemoryModel().sizeOf_pointer) {
             case _64_BIT ->
                 assertEquals("{_address : 0x000000000000002a}", jsb.toString());

@@ -24,7 +24,6 @@ package de.ibapl.jnhw.common.downcall.jni;
 import de.ibapl.jnhw.common.downcall.JnhwMh_sI___A_sI__A__A;
 import de.ibapl.jnhw.common.downcall.JnhwMh_sI___A_uL__A__A;
 import de.ibapl.jnhw.common.util.ConversionsJava2Native;
-import java.lang.foreign.Addressable;
 import java.lang.foreign.MemorySegment;
 
 /**
@@ -40,14 +39,14 @@ public class JniMi__I___A__I__A__A extends JniMethodInvoker implements JnhwMh_sI
     }
 
     @Override
-    public int invoke_sI___A_sI__A__A(Addressable arg1, int arg2, Addressable arg3, Addressable arg4) {
+    public int invoke_sI___A_sI__A__A(MemorySegment arg1, int arg2, MemorySegment arg3, MemorySegment arg4) {
         try {
             return invoke__I___A__I__A__A(
-                    ns.address().toRawLongValue(),
-                    arg1.address().toRawLongValue(),
+                    ns.address(),
+                    arg1.address(),
                     arg2,
-                    arg3.address().toRawLongValue(),
-                    arg4.address().toRawLongValue());
+                    arg3.address(),
+                    arg4.address());
         } catch (IllegalArgumentException | NullPointerException e) {
             throw e;
         } catch (Throwable t) {
@@ -56,14 +55,14 @@ public class JniMi__I___A__I__A__A extends JniMethodInvoker implements JnhwMh_sI
     }
 
     @Override
-    public int invoke_sI___A_uL__A__A(Addressable arg1, long arg2, Addressable arg3, Addressable arg4) {
+    public int invoke_sI___A_uL__A__A(MemorySegment arg1, long arg2, MemorySegment arg3, MemorySegment arg4) {
         try {
             return invoke__I___A__I__A__A(
-                    ns.address().toRawLongValue(),
-                    arg1.address().toRawLongValue(),
+                    ns.address(),
+                    arg1.address(),
                     ConversionsJava2Native.long_TO_uint32_t(arg2),
-                    arg3.address().toRawLongValue(),
-                    arg4.address().toRawLongValue());
+                    arg3.address(),
+                    arg4.address());
         } catch (IllegalArgumentException | NullPointerException e) {
             throw e;
         } catch (Throwable t) {

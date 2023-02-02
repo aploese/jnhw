@@ -39,7 +39,7 @@ public class JniMi__V___V extends JniMethodInvoker implements JnhwMh__V___V.Exce
     @Override
     public void invoke__V___V() {
         try {
-            invoke__V___V(ns.address().toRawLongValue());
+            invoke__V___V(ns.address());
         } catch (IllegalArgumentException | NullPointerException e) {
             throw e;
         } catch (Throwable t) {

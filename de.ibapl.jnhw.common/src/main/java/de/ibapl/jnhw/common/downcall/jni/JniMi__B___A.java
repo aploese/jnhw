@@ -22,9 +22,7 @@
 package de.ibapl.jnhw.common.downcall.jni;
 
 import de.ibapl.jnhw.common.downcall.JnhwMh_sB___A;
-import java.lang.foreign.Addressable;
 import java.lang.foreign.MemorySegment;
-import java.lang.foreign.SymbolLookup;
 
 /**
  *
@@ -39,11 +37,11 @@ public class JniMi__B___A extends JniMethodInvoker implements JnhwMh_sB___A.Exce
     }
 
     @Override
-    public byte invoke_sB___A(Addressable arg1) {
+    public byte invoke_sB___A(MemorySegment arg1) {
         try {
             return invoke__B___A(
-                    ns.address().toRawLongValue(),
-                    arg1.address().toRawLongValue());
+                    ns.address(),
+                    arg1.address());
         } catch (IllegalArgumentException | NullPointerException e) {
             throw e;
         } catch (Throwable t) {

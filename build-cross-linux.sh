@@ -2,8 +2,8 @@
 
 #autoreconf -i
 
-# no need to compile java anymore 
-#mvn clean compile test-compile || exit 1
+#compile for jni in common  
+mvn clean compile || exit 1
 
 # "x86_64-linux-gnu"
 # "i386-linux-gnu"
@@ -18,16 +18,13 @@
 #sparc is not tested...
 # "sparc64-linux-gnu"
 
-#not supported anymore by debian - no OpenJDK > 19
-# "mips-linux-gnu"\
-# "mips64-linux-gnuabi64"\
-
 for d in\
  "aarch64-linux-gnu"\
  "arm-linux-gnueabi"\
  "arm-linux-gnueabihf"\
  "mipsel-linux-gnu"\
  "mips64el-linux-gnuabi64"\
+ "powerpc-linux-gnu"\
  "powerpc64le-linux-gnu"\
  "riscv64-linux-gnu"\
  "s390x-linux-gnu"
@@ -46,3 +43,7 @@ make clean || exit 1
 make || exit 1
 
 mvn -fae install || exit 1
+mvn -PNativeProvider_JNI -fae test || exit 1
+echo "search for crashed tests: *.dump*"
+find -name "*.dump*"
+

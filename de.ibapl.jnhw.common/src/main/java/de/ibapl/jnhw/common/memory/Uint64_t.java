@@ -25,7 +25,7 @@ import de.ibapl.jnhw.common.annotation.uint64_t;
 import de.ibapl.jnhw.common.datatypes.BaseDataType;
 import java.io.IOException;
 import java.lang.foreign.MemorySegment;
-import java.lang.foreign.MemorySession;
+import java.lang.foreign.SegmentScope;
 
 /**
  *
@@ -36,7 +36,7 @@ public class Uint64_t extends NativeIntNumber {
 
     public final static BaseDataType DATA_TYPE = BaseDataType.uint64_t;
 
-    public static Uint64_t allocateNative(MemorySession ms) {
+    public static Uint64_t allocateNative(SegmentScope ms) {
         return new Uint64_t(MemorySegment.allocateNative(DATA_TYPE.SIZE_OF, ms), 0);
     }
 

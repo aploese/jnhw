@@ -91,12 +91,12 @@ public final class MemoryAccessorImpl_L64 extends AbstractMemoryAccessorImpl {
 
     @Override
     public String intptr_t_AsHex(MemorySegment mem, long offset) {
-        return String.format("0x%08x", intptr_t(mem, offset).toRawLongValue());
+        return String.format("0x%08x", intptr_t(mem, offset).address());
     }
 
     @Override
     public String uintptr_t_AsHex(MemorySegment mem, long offset) {
-        return String.format("0x%08x", uintptr_t(mem, offset).toRawLongValue());
+        return String.format("0x%08x", uintptr_t(mem, offset).address());
     }
 
 }

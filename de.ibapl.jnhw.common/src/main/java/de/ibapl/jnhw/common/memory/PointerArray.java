@@ -22,27 +22,28 @@
 package de.ibapl.jnhw.common.memory;
 
 import de.ibapl.jnhw.common.datatypes.BaseDataType;
+import de.ibapl.jnhw.common.datatypes.Pointer;
+import de.ibapl.jnhw.common.exception.InvalidCacheException;
 import java.io.IOException;
-import java.lang.foreign.MemoryAddress;
 import java.lang.foreign.MemorySegment;
 
 /**
  *
  * @author aploese
- * @param <T>
+ * @param <D>
  */
-public class PointerArray<T extends OpaqueMemory> extends OpaqueMemory {
+public class PointerArray<D extends Pointer> extends OpaqueMemory {
 
-    private final OpaqueMemory[] cachedReferences;
+    private final D[] cachedReferences;
 
     public PointerArray(MemorySegment memorySegment, long offset, int arrayLength) {
         super(memorySegment, offset, arrayLength * BaseDataType.uintptr_t.SIZE_OF);
-        cachedReferences = new OpaqueMemory[arrayLength];
+        cachedReferences = (D[]) new Pointer[arrayLength];
     }
 
-    public void set(int i, T element) {
+    public void set(int i, D element) throws IndexOutOfBoundsException {
+        MEM_ACCESS.uintptr_t_AtIndex(memorySegment, i, element.toMemorySegment());
         cachedReferences[i] = element;
-        MEM_ACCESS.uintptr_t_AtIndex(memorySegment, i, element.memorySegment);
     }
 
     @Override
@@ -55,16 +56,17 @@ public class PointerArray<T extends OpaqueMemory> extends OpaqueMemory {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
-    public final T get(int index, ElementProducer<T> p) {
-        @SuppressWarnings("unchecked")
-        final T ref = (T) cachedReferences[index];
-        final MemoryAddress elementBaseAddress = MEM_ACCESS.uintptr_t_AtIndex(memorySegment, index);
-        if (ref == null ? elementBaseAddress == MemoryAddress.NULL : elementBaseAddress.equals(ref.memorySegment.address())) {
+    public final MemorySegment get(int index) throws IndexOutOfBoundsException {
+        return MEM_ACCESS.uintptr_t_AtIndex(memorySegment, index);
+    }
+
+    public final D getAs(int index) throws InvalidCacheException, IndexOutOfBoundsException {
+        final MemorySegment elementBaseAddress = MEM_ACCESS.uintptr_t_AtIndex(memorySegment, index);
+        final D ref = cachedReferences[index];
+        if ((ref != null) && (ref.toAddress() == elementBaseAddress.address())) {
             return ref;
         } else {
-            final T newRef = p.produce(elementBaseAddress, index, ref);
-            cachedReferences[index] = newRef;
-            return newRef;
+            throw new InvalidCacheException(ref, elementBaseAddress);
         }
     }
 
@@ -86,7 +88,7 @@ public class PointerArray<T extends OpaqueMemory> extends OpaqueMemory {
             sb.append("\n").append(INDENT);
         }
         boolean first = true;
-        for (OpaqueMemory element : cachedReferences) {
+        for (Pointer element : cachedReferences) {
             if (first) {
                 first = false;
             } else {
@@ -104,19 +106,4 @@ public class PointerArray<T extends OpaqueMemory> extends OpaqueMemory {
         }
         sb.append("]");
     }
-
-    @FunctionalInterface
-    public static interface ElementProducer<T extends OpaqueMemory> {
-
-        /**
-         *
-         * @param baseAddress
-         * @param index
-         * @param cachedElement
-         * @return
-         */
-        T produce(MemoryAddress baseAddress, int index, T cachedElement);
-
-    }
-
 }

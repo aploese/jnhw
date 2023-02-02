@@ -24,7 +24,6 @@ package de.ibapl.jnhw.util.posix.downcall.jni;
 import de.ibapl.jnhw.common.downcall.jni.JniMi__I___I__I__A;
 import de.ibapl.jnhw.posix.Pthread;
 import de.ibapl.jnhw.util.posix.downcall.JnhwMh_sI__PthreadT__sI__A;
-import java.lang.foreign.Addressable;
 import java.lang.foreign.MemorySegment;
 
 /**
@@ -38,7 +37,7 @@ public class JniMi__I__PthreadTI__I__A extends JniMi__I___I__I__A implements Jnh
     }
 
     @Override
-    public int invoke_sI__PthreadT__sI__A(Pthread.Pthread_t arg1, int arg2, Addressable arg3) {
+    public int invoke_sI__PthreadT__sI__A(Pthread.Pthread_t arg1, int arg2, MemorySegment arg3) {
         return invoke_sI__uI_sI__A(arg1.asUint32_t(), arg2, arg3);
     }
 

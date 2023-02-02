@@ -32,9 +32,8 @@ import de.ibapl.jnhw.common.test.JnhwTestLogger;
 import de.ibapl.jnhw.common.test.LibJnhwCommonTestLoader;
 import de.ibapl.jnhw.common.upcall.CallbackFactory__V___I;
 import de.ibapl.jnhw.common.upcall.Callback__V___I;
-import java.lang.foreign.MemoryAddress;
+import java.lang.foreign.Arena;
 import java.lang.foreign.MemorySegment;
-import java.lang.foreign.MemorySession;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
 import static org.junit.jupiter.api.Assertions.*;
@@ -95,7 +94,7 @@ public class Callback__V___I_Test {
             throw new RuntimeException(t);
         }
     }
-    private MemorySession ms;
+    private Arena ms;
 
     @BeforeEach
     public void setUpBeforeEach(TestInfo testTnfo) throws Exception {
@@ -110,7 +109,7 @@ public class Callback__V___I_Test {
     @BeforeEach
     public void setUpBefore() throws Exception {
         System.gc();
-        ms = MemorySession.openConfined();
+        ms = Arena.openConfined();
     }
 
     @AfterEach
@@ -146,7 +145,7 @@ public class Callback__V___I_Test {
 
     @Test
     public void testNativeFunctionPointer() {
-        final Callback__V___I testPtr = new Callback__V___I((t) -> MemoryAddress.ofLong(121)) {
+        final Callback__V___I testPtr = new Callback__V___I((t) -> MemorySegment.ofAddress(121)) {
             @Override
             protected void callback(int value) {
                 throw new UnsupportedOperationException("Not supported yet.");
@@ -174,7 +173,7 @@ public class Callback__V___I_Test {
     public void testCallAndRelease(final int testValue) {
         JnhwTestLogger.logTest("Callback__V__L_Test.testCallAndRelease 0x%08x %1$d \n", testValue);
         final int[] ref = new int[1];
-        final Callback__V___I NULL_PTR = new Callback__V___I((t) -> MemoryAddress.NULL) {
+        final Callback__V___I NULL_PTR = new Callback__V___I((t) -> MemorySegment.NULL) {
             @Override
             protected void callback(int value) {
                 throw new UnsupportedOperationException("Not supported yet.");
@@ -198,7 +197,7 @@ public class Callback__V___I_Test {
             }
 
         };
-        final NativeFunctionPointer nativeCallbackPointer = NativeFunctionPointer.wrap(callback.toAddressable().address());
+        final NativeFunctionPointer nativeCallbackPointer = NativeFunctionPointer.wrap(callback.toMemorySegment());
         try {
 
             setCallback__V___I(callback);
@@ -212,7 +211,7 @@ public class Callback__V___I_Test {
             ref[0] = 0;
             JnhwMh__V__sI.of(
                     MemorySegment.ofAddress(
-                            getCallback__V___I().toAddressable().address(), 0, ms),
+                            getCallback__V___I().toAddress(), 0, ms.scope()),
                     "testCallback",
                     BaseDataType.int32_t
             ).invoke__V__sI(testValue);
@@ -236,7 +235,7 @@ public class Callback__V___I_Test {
         //The logs shoud show: Unassigned callback for trampoline_o(testValue/2)
         JnhwMh__V__sI.of(
                 MemorySegment.ofAddress(
-                        getCallback__V___I().toAddressable().address(), 0, ms),
+                        getCallback__V___I().toAddress(), 0, ms.scope()),
                 "testCallback",
                 BaseDataType.int32_t
         ).invoke__V__sI(testValue / 2);

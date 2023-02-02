@@ -28,9 +28,9 @@ import de.ibapl.jnhw.common.test.JnhwTestLogger;
 import de.ibapl.jnhw.common.test.memory.layout.S_i8_i64OnTheFlyImpl;
 import de.ibapl.jnhw.libloader.MultiarchTupelBuilder;
 import de.ibapl.jnhw.libloader.SizeInBit;
-import java.lang.foreign.MemoryAddress;
+import java.lang.foreign.Arena;
 import java.lang.foreign.MemorySegment;
-import java.lang.foreign.MemorySession;
+import java.lang.foreign.SegmentScope;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
@@ -63,7 +63,7 @@ public class OpaqueMemoryTest {
 
     private static class MemToTest extends OpaqueMemory {
 
-        MemToTest(int sizeInBytes, MemorySession ms) {
+        MemToTest(int sizeInBytes, SegmentScope ms) {
             super(MemorySegment.allocateNative(sizeInBytes, ms), 0, sizeInBytes);
         }
 
@@ -85,8 +85,8 @@ public class OpaqueMemoryTest {
 
     @Test
     public void testAllocateDirtyMem() throws Exception {
-        try (MemorySession ms = MemorySession.openConfined()) {
-            OpaqueMemory mem = new MemToTest(1024, ms);
+        try (Arena ms = Arena.openConfined()) {
+            OpaqueMemory mem = new MemToTest(1024, ms.scope());
             Assertions.assertEquals(1024, mem.sizeof());
         }
         System.gc();
@@ -96,8 +96,8 @@ public class OpaqueMemoryTest {
 
     @Test
     public void testAllocateCleanMem() throws Exception {
-        try (MemorySession ms = MemorySession.openConfined()) {
-            OpaqueMemory mem = new MemToTest(1024, ms);
+        try (Arena ms = Arena.openConfined()) {
+            OpaqueMemory mem = new MemToTest(1024, ms.scope());
             Assertions.assertEquals(1024, mem.sizeof());
         }
         System.gc();
@@ -109,8 +109,8 @@ public class OpaqueMemoryTest {
 
     @Test
     public void testCopy() throws Exception {
-        try (MemorySession ms = MemorySession.openConfined()) {
-            OpaqueMemory mem = new MemToTest(1024, ms);
+        try (Arena ms = Arena.openConfined()) {
+            OpaqueMemory mem = new MemToTest(1024, ms.scope());
             final int MEM_POS = 753;
             OpaqueMemory.copy(HELLO_WORLD, 0, mem, MEM_POS, HELLO_WORLD.length);
             byte[] received = new byte[HELLO_WORLD.length];
@@ -121,9 +121,9 @@ public class OpaqueMemoryTest {
 
     @Test
     public void testCopyIndex() throws Exception {
-        try (MemorySession ms = MemorySession.openConfined()) {
+        try (Arena ms = Arena.openConfined()) {
             final byte[] array = new byte[16];
-            final OpaqueMemory mem = new MemToTest(array.length, ms);
+            final OpaqueMemory mem = new MemToTest(array.length, ms.scope());
             Assertions.assertAll(() -> {
                 //exact fit
                 OpaqueMemory.copy(mem, 0, array, 0, array.length);
@@ -188,8 +188,8 @@ public class OpaqueMemoryTest {
 
     @Test
     public void testGetSetByte() throws Exception {
-        try (MemorySession ms = MemorySession.openConfined()) {
-            OpaqueMemory mem = new MemToTest(1024, ms);
+        try (Arena ms = Arena.openConfined()) {
+            OpaqueMemory mem = new MemToTest(1024, ms.scope());
             OpaqueMemory.setByte(mem, 67, (byte) 9);
             Assertions.assertEquals((byte) 9, OpaqueMemory.getByte(mem, 67));
         }
@@ -197,8 +197,8 @@ public class OpaqueMemoryTest {
 
     @Test
     public void testSetGetIndex() throws Exception {
-        try (MemorySession ms = MemorySession.openConfined()) {
-            final OpaqueMemory mem = new MemToTest(16, ms);
+        try (Arena ms = Arena.openConfined()) {
+            final OpaqueMemory mem = new MemToTest(16, ms.scope());
             Assertions.assertAll(() -> {
                 //Exact fit
                 OpaqueMemory.getByte(mem, 0);
@@ -229,8 +229,8 @@ public class OpaqueMemoryTest {
 
     @Test
     public void testClear() throws Exception {
-        try (MemorySession ms = MemorySession.openConfined()) {
-            OpaqueMemory mem = new MemToTest(1024, ms);
+        try (Arena ms = Arena.openConfined()) {
+            OpaqueMemory mem = new MemToTest(1024, ms.scope());
             OpaqueMemory.clear(mem);
             for (int i = 0; i < mem.sizeof(); i++) {
                 Assertions.assertEquals(0, OpaqueMemory.getByte(mem, i));
@@ -240,8 +240,8 @@ public class OpaqueMemoryTest {
 
     @Test
     public void testSetMem() throws Exception {
-        try (MemorySession ms = MemorySession.openConfined()) {
-            OpaqueMemory mem = new MemToTest(1024, ms);
+        try (Arena ms = Arena.openConfined()) {
+            OpaqueMemory mem = new MemToTest(1024, ms.scope());
             OpaqueMemory.memset(mem, (byte) 42);
             for (int i = 0; i < mem.sizeof(); i++) {
                 Assertions.assertEquals(42, OpaqueMemory.getByte(mem, i));
@@ -251,9 +251,9 @@ public class OpaqueMemoryTest {
 
     @Test
     public void testEquals() throws Exception {
-        try (MemorySession ms = MemorySession.openConfined()) {
-            OpaqueMemory mem = new MemToTest(MemorySegment.ofAddress(MemoryAddress.ofLong(0x2aL), 8, ms));
-            OpaqueMemory mem1 = new MemToTest(MemorySegment.ofAddress(MemoryAddress.ofLong(42L), 8, ms));
+        try (Arena ms = Arena.openConfined()) {
+            OpaqueMemory mem = new MemToTest(MemorySegment.ofAddress(0x2aL, 8, ms.scope()));
+            OpaqueMemory mem1 = new MemToTest(MemorySegment.ofAddress(42L, 8, ms.scope()));
             OpaqueMemory mem2 = new MemToTest(OpaqueMemory.getMemorySegment(mem));
             switch (MultiarchTupelBuilder.getMemoryModel().sizeOf_pointer) {
                 case _32_BIT -> {
@@ -280,18 +280,18 @@ public class OpaqueMemoryTest {
 
     @Test
     public void testAddressOn32BitNotNegative() {
-        try (MemorySession ms = MemorySession.openConfined()) {
-            MemToTest parent = new MemToTest(48, ms);
+        try (Arena ms = Arena.openConfined()) {
+            MemToTest parent = new MemToTest(48, ms.scope());
             if (MultiarchTupelBuilder.getMemoryModel().sizeOf_pointer == SizeInBit._32_BIT) {
-                Assertions.assertTrue(parent.toAddressable().address().toRawLongValue() > 0, "baseaddress must not be negative");
+                Assertions.assertTrue(parent.toAddress() > 0, "baseaddress must not be negative");
             }
         }
     }
 
     @Test
     public void testCalcNextOffset() {
-        try (MemorySession ms = MemorySession.openConfined()) {
-            S_i8_i64OnTheFlyImpl struct = new S_i8_i64OnTheFlyImpl(MemorySegment.allocateNative(56, ms), 0, 56);
+        try (Arena ms = Arena.openConfined()) {
+            S_i8_i64OnTheFlyImpl struct = new S_i8_i64OnTheFlyImpl(ms.allocate(56), 0, 56);
 
             Assertions.assertEquals(0, OpaqueMemory.offsetof(struct, struct._0_i8));
             struct._0_i8((byte) 0x11);
@@ -487,6 +487,25 @@ public class OpaqueMemoryTest {
                 }
             }
         }
+    }
+
+    @Test
+    public void testNULLinConstructor() {
+        Assertions.assertThrows(NullPointerException.class,
+                () -> new OpaqueMemory(MemorySegment.NULL, 0, 0) {
+            @Override
+            public BaseDataType getBaseDataType() {
+                throw new RuntimeException();
+            }
+        });
+
+        Assertions.assertThrows(NullPointerException.class,
+                () -> new OpaqueMemory(0, SegmentScope.global(), 0) {
+            @Override
+            public BaseDataType getBaseDataType() {
+                throw new RuntimeException();
+            }
+        });
     }
 
 }

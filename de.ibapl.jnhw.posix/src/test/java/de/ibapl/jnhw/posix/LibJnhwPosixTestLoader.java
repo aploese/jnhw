@@ -37,9 +37,8 @@ import de.ibapl.jnhw.common.memory.IntPtr_t;
 import de.ibapl.jnhw.libloader.LoadResult;
 import de.ibapl.jnhw.libloader.LoadState;
 import de.ibapl.jnhw.libloader.NativeLibResolver;
-import java.lang.foreign.Addressable;
-import java.lang.foreign.MemoryAddress;
-import java.lang.foreign.MemorySession;
+import java.lang.foreign.Arena;
+import java.lang.foreign.MemorySegment;
 import java.lang.foreign.SymbolLookup;
 import java.util.NoSuchElementException;
 import java.util.logging.Logger;
@@ -58,14 +57,14 @@ public final class LibJnhwPosixTestLoader {
     private final static Object loadLock = new Object();
     private static LoadState state = LoadState.INIT;
     public static SymbolLookup SYMBOL_LOOKUP = null;
-    public final static MemorySession MEMORY_SESSION = MemorySession.openShared();
+    public final static Arena MEMORY_ARENA = Arena.openShared();
 
     static {
         LibJnhwPosixTestLoader.touch();
     }
 
     protected static void doLoadTestLib(String absoluteLibName) {
-        SYMBOL_LOOKUP = SymbolLookup.libraryLookup(absoluteLibName, MEMORY_SESSION);
+        SYMBOL_LOOKUP = SymbolLookup.libraryLookup(absoluteLibName, MEMORY_ARENA.scope());
     }
 
     public static LoadResult getLoadResult() {
@@ -108,7 +107,7 @@ public final class LibJnhwPosixTestLoader {
         return JnhwMh_sB___V.mandatoryOf(SYMBOL_LOOKUP, name, BaseDataType.int8_t).invoke_sB___V() != 0;
     }
 
-    public static boolean invokeExact_CharToBool_Adr(String name, Addressable arg1) {
+    public static boolean invokeExact_CharToBool_Adr(String name, MemorySegment arg1) {
         return JnhwMh_sB___A.mandatoryOf(SYMBOL_LOOKUP, name, BaseDataType.int8_t, BaseDataType.intptr_t).invoke_sB___A(arg1) != 0;
     }
 
@@ -124,11 +123,11 @@ public final class LibJnhwPosixTestLoader {
         return JnhwMh_sI__sI_sB_sI_sI.mandatoryOf(SYMBOL_LOOKUP, name, BaseDataType.int32_t, BaseDataType.int32_t, BaseDataType.int8_t, BaseDataType.int32_t, BaseDataType.int32_t).invoke_sI__sI_sB_sI_sI(arg1, arg2, arg3, arg4);
     }
 
-    public static MemoryAddress invoke_MA___V(String name) {
+    public static MemorySegment invoke_MA___V(String name) {
         return JnhwMh_MA___V.mandatoryOf(SYMBOL_LOOKUP, name, BaseDataType.intptr_t).invoke_MA___V();
     }
 
-    public static MemoryAddress invoke_MA___A_sI(String name, Addressable arg1, int arg2) {
+    public static MemorySegment invoke_MA___A_sI(String name, MemorySegment arg1, int arg2) {
         return JnhwMh_MA___A_sI.mandatoryOf(SYMBOL_LOOKUP, name, BaseDataType.uintptr_t, BaseDataType.uintptr_t, BaseDataType.int32_t).invoke_MA___A_sI(arg1, arg2);
     }
 
@@ -136,15 +135,15 @@ public final class LibJnhwPosixTestLoader {
         return JnhwMh_sL___V.mandatoryOf(SYMBOL_LOOKUP, name, BaseDataType.int64_t).invoke_sL___V();
     }
 
-    public static MemoryAddress invoke_MA___A(String name, Addressable arg1) {
+    public static MemorySegment invoke_MA___A(String name, MemorySegment arg1) {
         return JnhwMh_MA___A.mandatoryOf(SYMBOL_LOOKUP, name, BaseDataType.uintptr_t, BaseDataType.uintptr_t).invoke_MA___A(arg1);
     }
 
     public static Integer getClassIntegerDefine(String name) {
-        try (MemorySession ms = MemorySession.openConfined()) {
-            Int32_t value = Int32_t.allocateNative(ms);
-            MemoryAddress result = invoke_MA___A("tryGetValueOf_" + name, value.toAddressable().address());
-            if (MemoryAddress.NULL == result) {
+        try (Arena ms = Arena.openConfined()) {
+            Int32_t value = Int32_t.allocateNative(ms.scope());
+            MemorySegment result = invoke_MA___A("tryGetValueOf_" + name, value.toMemorySegment());
+            if (result.address() == 0L) {
                 return null;
             } else {
                 return value.int32_t();
@@ -168,22 +167,22 @@ public final class LibJnhwPosixTestLoader {
         return invoke_sL___V("getValueOf_" + name);
     }
 
-    public static MemoryAddress getAdrDefine(String name) {
+    public static MemorySegment getAdrDefine(String name) {
         return invoke_MA___V("getValueOf_" + name);
     }
 
-    public static MemoryAddress lookup(String name) {
-        return SYMBOL_LOOKUP.lookup(name).orElseThrow(() -> new NoSuchElementException("lookup for: \"" + name + "\" in: \"" + LIB_JNHW_POSIX_TEST_LOAD_RESULT.libFileName + "\" failed")).address();
+    public static MemorySegment find(String name) {
+        return SYMBOL_LOOKUP.find(name).orElseThrow(() -> new NoSuchElementException("lookup for: \"" + name + "\" in: \"" + LIB_JNHW_POSIX_TEST_LOAD_RESULT.libFileName + "\" failed"));
     }
 
     private LibJnhwPosixTestLoader() {
     }
 
-    public static MemoryAddress tryGetAdrDefine(String name) {
-        try (MemorySession ms = MemorySession.openConfined()) {
-            IntPtr_t value = IntPtr_t.allocateNative(ms);
-            MemoryAddress result = invoke_MA___A("tryGetValueOf_" + name, value.toAddressable().address());
-            if (MemoryAddress.NULL == result) {
+    public static MemorySegment tryGetAdrDefine(String name) {
+        try (Arena ms = Arena.openConfined()) {
+            IntPtr_t value = IntPtr_t.allocateNative(ms.scope());
+            MemorySegment result = invoke_MA___A("tryGetValueOf_" + name, value.toMemorySegment());
+            if (result.address() == 0L) {
                 return null;
             } else {
                 return value.get();

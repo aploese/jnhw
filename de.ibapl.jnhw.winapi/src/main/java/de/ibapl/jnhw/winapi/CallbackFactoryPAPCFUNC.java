@@ -26,9 +26,8 @@ import de.ibapl.jnhw.common.util.ConversionsNative2Java;
 import de.ibapl.jnhw.util.winapi.WinApiDataType;
 import java.lang.foreign.FunctionDescriptor;
 import java.lang.foreign.Linker;
-import java.lang.foreign.MemoryAddress;
 import java.lang.foreign.MemorySegment;
-import java.lang.foreign.MemorySession;
+import java.lang.foreign.SegmentScope;
 import java.lang.foreign.ValueLayout;
 import java.lang.invoke.MethodHandle;
 import java.lang.invoke.MethodHandles;
@@ -75,11 +74,11 @@ final class CallbackFactoryPAPCFUNC {
         switch (WinApiDataType.ULONG_PTR.SIZE_OF) {
             case 4 -> {
                 final MethodHandle handle = MethodHandles.lookup().findStatic(CallbackFactoryPAPCFUNC.class, "trampoline32_" + index, MethodType.methodType(void.class, int.class));
-                return NATIVE_LINKER.upcallStub(handle, FunctionDescriptor.ofVoid(ValueLayout.JAVA_INT), MemorySession.global());
+                return NATIVE_LINKER.upcallStub(handle, FunctionDescriptor.ofVoid(ValueLayout.JAVA_INT), SegmentScope.global());
             }
             case 8 -> {
                 final MethodHandle handle = MethodHandles.lookup().findStatic(CallbackFactoryPAPCFUNC.class, "trampoline64_" + index, MethodType.methodType(void.class, long.class));
-                return NATIVE_LINKER.upcallStub(handle, FunctionDescriptor.ofVoid(ValueLayout.JAVA_LONG), MemorySession.global());
+                return NATIVE_LINKER.upcallStub(handle, FunctionDescriptor.ofVoid(ValueLayout.JAVA_LONG), SegmentScope.global());
             }
             default ->
                 throw new RuntimeException("Can't handle sizeof ULONG_PTR = " + WinApiDataType.ULONG_PTR.SIZE_OF);
@@ -517,7 +516,7 @@ final class CallbackFactoryPAPCFUNC {
         }
     }
 
-    public static synchronized MemoryAddress aquire(Winnt.PAPCFUNC cb) {
+    public static synchronized MemorySegment aquire(Winnt.PAPCFUNC cb) {
         for (int i = 0; i < MAX_CALL_BACKS; i++) {
             if (REFS[i].get() == null) {
                 REFS[i] = new WeakReference(cb);
@@ -530,7 +529,7 @@ final class CallbackFactoryPAPCFUNC {
                         throw new RuntimeException(ex);
                     }
                 }
-                return NATIVE_SYMBOLS[i].address();
+                return NATIVE_SYMBOLS[i];
             }
         }
         //Hint: Try run GC to free any??? or add more cbs...

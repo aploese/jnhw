@@ -24,7 +24,6 @@ package de.ibapl.jnhw.common.upcall.jni;
 import de.ibapl.jnhw.common.upcall.CallbackFactory__V___L;
 import de.ibapl.jnhw.common.upcall.Callback__V___L;
 import de.ibapl.jnhw.common.util.jni.LibJnhwCommon;
-import java.lang.foreign.MemoryAddress;
 import java.lang.foreign.MemorySegment;
 
 /**
@@ -50,7 +49,7 @@ public class JniCallbackFactory__V___L extends CallbackFactory__V___L {
             LOG.severe(msg);
             throw new RuntimeException(msg);
         }
-        return MemorySegment.ofAddress(MemoryAddress.ofLong(result), result, LibJnhwCommon.LIB_JNHW_COMMON_MEMORY_SESSION);
+        return MemorySegment.ofAddress(result, 0, LibJnhwCommon.scope());
     }
 
     private static native int getMaxCallBacks();
@@ -72,7 +71,7 @@ public class JniCallbackFactory__V___L extends CallbackFactory__V___L {
     }
 
     @Override
-    protected MemoryAddress aquire0(Callback__V___L cb) {
+    protected MemorySegment aquire0(Callback__V___L cb) {
         for (int i = 0; i < MAX_CALL_BACKS; i++) {
             if (REFS[i] == null) {
                 REFS[i] = cb;
@@ -80,7 +79,7 @@ public class JniCallbackFactory__V___L extends CallbackFactory__V___L {
                 if (NATIVE_SYMBOLS[i] == null) {
                     NATIVE_SYMBOLS[i] = registerCallBack(i);
                 }
-                return NATIVE_SYMBOLS[i].address();
+                return NATIVE_SYMBOLS[i];
             }
         }
         //Hint: Try run GC to free any??? or add more cbs...

@@ -24,9 +24,8 @@ package de.ibapl.jnhw.common.test.foreign;
 import de.ibapl.jnhw.common.test.JnhwTestLogger;
 import de.ibapl.jnhw.libloader.MemoryModel;
 import de.ibapl.jnhw.libloader.MultiarchTupelBuilder;
-import java.lang.foreign.MemoryAddress;
+import java.lang.foreign.Arena;
 import java.lang.foreign.MemorySegment;
-import java.lang.foreign.MemorySession;
 import java.lang.foreign.ValueLayout;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
@@ -67,17 +66,17 @@ public class JavaForeignTest {
 
     @Test
     public void testGetAtIndex_32BitAddress() {
-        try (MemorySession ms = MemorySession.openConfined()) {
+        try (Arena ms = Arena.openConfined()) {
 
-            MemorySegment pointerArray = MemorySegment.allocateNative(128, ms);
-            MemoryAddress expected = MemoryAddress.ofLong(0x0000000080000000L);
+            MemorySegment pointerArray = ms.allocate(128);
+            MemorySegment expected = MemorySegment.ofAddress(0x0000000080000000L);
 
             pointerArray.setAtIndex(ValueLayout.ADDRESS, 0, expected);
 
             //on 32 bit an signed int is cast to long ...
-            MemoryAddress actual = pointerArray.getAtIndex(ValueLayout.ADDRESS, 0);
+            MemorySegment actual = pointerArray.getAtIndex(ValueLayout.ADDRESS, 0);
             if (MultiarchTupelBuilder.getMemoryModel() == MemoryModel.ILP32) {
-                Assertions.assertEquals(MemoryAddress.ofLong((int) expected.toRawLongValue()), actual);
+                Assertions.assertEquals(MemorySegment.ofAddress((int) expected.address()), actual);
             } else {
                 Assertions.assertEquals(expected, actual);
             }
@@ -86,18 +85,18 @@ public class JavaForeignTest {
 
     @Test
     public void testGet_32BitAddress() {
-        try (MemorySession ms = MemorySession.openConfined()) {
+        try (Arena ms = Arena.openConfined()) {
 
-            MemorySegment pointerArray = MemorySegment.allocateNative(128, ms);
-            MemoryAddress expected = MemoryAddress.ofLong(0x0000000080000000L);
+            MemorySegment pointerArray = ms.allocate(128);
+            MemorySegment expected = MemorySegment.ofAddress(0x0000000080000000L);
 
             pointerArray.set(ValueLayout.ADDRESS, 0, expected);
 
-            MemoryAddress actual = pointerArray.get(ValueLayout.ADDRESS, 0);
+            MemorySegment actual = pointerArray.get(ValueLayout.ADDRESS, 0);
 
             //on 32 bit an signed int is cast to long ...
             if (MultiarchTupelBuilder.getMemoryModel() == MemoryModel.ILP32) {
-                Assertions.assertEquals(MemoryAddress.ofLong((int) expected.toRawLongValue()), actual);
+                Assertions.assertEquals(MemorySegment.ofAddress((int) expected.address()), actual);
             } else {
                 Assertions.assertEquals(expected, actual);
             }

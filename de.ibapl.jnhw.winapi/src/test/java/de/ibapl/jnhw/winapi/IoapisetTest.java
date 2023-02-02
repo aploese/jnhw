@@ -27,7 +27,7 @@ import de.ibapl.jnhw.common.memory.OpaqueMemory;
 import de.ibapl.jnhw.common.memory.Uint16_t;
 import de.ibapl.jnhw.common.memory.Uint8_t;
 import java.io.File;
-import java.lang.foreign.MemorySession;
+import java.lang.foreign.Arena;
 import java.nio.ByteBuffer;
 import org.junit.jupiter.api.AfterEach;
 import static org.junit.jupiter.api.Assertions.*;
@@ -43,11 +43,11 @@ import org.junit.jupiter.api.condition.EnabledOnOs;
 @EnabledOnOs(org.junit.jupiter.api.condition.OS.WINDOWS)
 public class IoapisetTest {
 
-    private MemorySession ms;
+    private Arena ms;
 
     @BeforeEach
     public void setUp() throws Exception {
-        ms = MemorySession.openConfined();
+        ms = Arena.openConfined();
     }
 
     @AfterEach
@@ -100,9 +100,9 @@ public class IoapisetTest {
                 0,
                 null);
 
-        MemoryHeap lpOutBuffer = MemoryHeap.allocateNative(128, ms);
+        MemoryHeap lpOutBuffer = MemoryHeap.allocateNative(128, ms.scope());
 
-        WinDef.LPDWORD lpBytesReturned = WinDef.LPDWORD.allocateNative(ms);
+        WinDef.LPDWORD lpBytesReturned = WinDef.LPDWORD.allocateNative(ms.scope());
 
         Ioapiset.DeviceIoControl(hDevice, Winioctl.FSCTL_GET_COMPRESSION, null, lpOutBuffer, lpBytesReturned, null);
 
@@ -110,7 +110,7 @@ public class IoapisetTest {
         Uint16_t uint16_t = new Uint16_t(OpaqueMemory.getMemorySegment(lpOutBuffer), 0);
         assertEquals(Winnt.COMPRESSION_FORMAT_NONE, uint16_t.uint16_t());
 
-        Uint8_t uint8_t = Uint8_t.allocateNative(ms);
+        Uint8_t uint8_t = Uint8_t.allocateNative(ms.scope());
         NativeErrorException nee = assertThrows(NativeErrorException.class, ()
                 -> Ioapiset.DeviceIoControl(hDevice, Winioctl.FSCTL_GET_COMPRESSION, null, uint8_t, lpBytesReturned, null)
         );
@@ -131,7 +131,7 @@ public class IoapisetTest {
         Minwinbase.LPOVERLAPPED lpOverlapped = null;
         boolean bWait = false;
         int expResult = 0;
-        WinDef.LPDWORD lpBytesReturned = WinDef.LPDWORD.allocateNative(ms);
+        WinDef.LPDWORD lpBytesReturned = WinDef.LPDWORD.allocateNative(ms.scope());
         Ioapiset.GetOverlappedResult(hFile, lpOverlapped, lpBytesReturned, bWait);
         assertEquals(expResult, lpBytesReturned.uint32_t());
         // TODO review the generated test code and remove the default call to fail.
@@ -150,7 +150,7 @@ public class IoapisetTest {
         ByteBuffer lpBuffer = null;
         boolean bWait = false;
         int expResult = 0;
-        WinDef.LPDWORD lpBytesReturned = WinDef.LPDWORD.allocateNative(ms);
+        WinDef.LPDWORD lpBytesReturned = WinDef.LPDWORD.allocateNative(ms.scope());
         Ioapiset.GetOverlappedResult(hFile, lpOverlapped, lpBuffer, lpBytesReturned, bWait);
         assertEquals(expResult, lpBytesReturned.uint32_t());
         // TODO review the generated test code and remove the default call to fail.

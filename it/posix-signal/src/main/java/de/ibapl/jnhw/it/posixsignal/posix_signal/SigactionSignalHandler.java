@@ -23,15 +23,13 @@ package de.ibapl.jnhw.it.posixsignal.posix_signal;
 
 import de.ibapl.jnhw.common.datatypes.BaseDataType;
 import de.ibapl.jnhw.common.downcall.JnhwMh__V__sI__A__A;
-import de.ibapl.jnhw.common.downcall.foreign.JnhwMi__V___I__A__A;
 import de.ibapl.jnhw.common.exception.NoSuchNativeTypeException;
 import de.ibapl.jnhw.common.upcall.Callback__V___I_MA_MA;
 import de.ibapl.jnhw.common.util.OutputStreamAppender;
 import de.ibapl.jnhw.posix.Signal;
 import java.io.IOException;
-import java.lang.foreign.MemoryAddress;
+import java.lang.foreign.Arena;
 import java.lang.foreign.MemorySegment;
-import java.lang.foreign.MemorySession;
 
 /**
  *
@@ -39,25 +37,25 @@ import java.lang.foreign.MemorySession;
  */
 public class SigactionSignalHandler extends SignalHandler {
 
-    final MemorySession ms = MemorySession.openShared();
+    final Arena ms = Arena.openShared();
 
-    final Signal.Sigaction act = Signal.Sigaction.allocateNative(ms);
-    final Signal.Sigaction oact = Signal.Sigaction.allocateNative(ms);
+    final Signal.Sigaction act = Signal.Sigaction.allocateNative(ms.scope());
+    final Signal.Sigaction oact = Signal.Sigaction.allocateNative(ms.scope());
     Callback__V___I_MA_MA<Signal.Siginfo_t, Signal.Ucontext_t> sa_handler = new Callback__V___I_MA_MA<>() {
 
         @Override
-        protected void callback(int value, MemoryAddress siginfoPtr, MemoryAddress ucontextPtr) {
+        protected void callback(int value, MemorySegment siginfoPtr, MemorySegment ucontextPtr) {
             try {
                 OutputStreamAppender sb = new OutputStreamAppender(System.out);
                 sb.append("\n\n********Caught Signal " + value + " in thread: " + Thread.currentThread() + "\n");
 
                 sb.append("siginfo: ");
-                final Signal.Siginfo_t siginfo = Signal.Siginfo_t.ofAddress(siginfoPtr, ms);
+                final Signal.Siginfo_t siginfo = Signal.Siginfo_t.ofAddress(siginfoPtr.address(), ms.scope());
                 siginfo.nativeToString(sb, "", " ");
                 sb.append("\n");
 
                 sb.append("ucontext: ");
-                final Signal.Ucontext_t ucontext = Signal.Ucontext_t.tryOfAddress(ucontextPtr, ms);
+                final Signal.Ucontext_t ucontext = Signal.Ucontext_t.tryOfAddress(ucontextPtr.address(), ms.scope());
                 ucontext.nativeToString(sb, "", " ");
                 sb.append("\n");
 
@@ -67,9 +65,9 @@ public class SigactionSignalHandler extends SignalHandler {
                     case PRINT_MSG_AND_SYSTEM_EXIT ->
                         System.exit(value);
                     case PRINT_MSG_AND_CALL_OLD_HANDLER -> {
-                        try (MemorySession ms = MemorySession.openConfined()) {
+                        try (Arena ms = Arena.openConfined()) {
                             JnhwMh__V__sI__A__A.of(
-                                    MemorySegment.ofAddress(oact.sa_sigaction().toAddressable().address(), 0, ms),
+                                    MemorySegment.ofAddress(oact.sa_sigaction().toMemorySegment().address(), 0, ms.scope()),
                                     "testCallback",
                                     BaseDataType.C_int,
                                     BaseDataType.C_pointer,

@@ -39,6 +39,7 @@ import de.ibapl.jnhw.common.downcall.JnhwMh_sI__sI;
 import de.ibapl.jnhw.common.downcall.JnhwMh_sI__sI__A__A;
 import de.ibapl.jnhw.common.downcall.JnhwMh_sI__sI_sI;
 import de.ibapl.jnhw.common.downcall.JnhwMh_sI__sI_sI__A;
+import de.ibapl.jnhw.common.exception.InvalidCacheException;
 import de.ibapl.jnhw.common.exception.NativeErrorException;
 import de.ibapl.jnhw.common.exception.NoSuchNativeMethodException;
 import de.ibapl.jnhw.common.exception.NoSuchNativeTypeException;
@@ -46,6 +47,7 @@ import de.ibapl.jnhw.common.exception.NoSuchNativeTypeMemberException;
 import de.ibapl.jnhw.common.memory.Int32_t;
 import de.ibapl.jnhw.common.memory.NativeFunctionPointer;
 import de.ibapl.jnhw.common.memory.OpaqueMemory;
+import de.ibapl.jnhw.common.memory.OpaquePointer;
 import de.ibapl.jnhw.common.memory.Struct;
 import de.ibapl.jnhw.common.memory.layout.Alignment;
 import de.ibapl.jnhw.common.nativepointer.FunctionPtr__V___I;
@@ -55,7 +57,6 @@ import de.ibapl.jnhw.common.upcall.Callback__V___I_MA_MA;
 import de.ibapl.jnhw.common.util.IntDefine;
 import de.ibapl.jnhw.common.util.JsonStringBuilder;
 import de.ibapl.jnhw.common.util.ObjectDefine;
-import de.ibapl.jnhw.libloader.MemoryModel;
 import de.ibapl.jnhw.libloader.MultiarchInfo;
 import de.ibapl.jnhw.libloader.MultiarchTupelBuilder;
 import de.ibapl.jnhw.libloader.libraries.LibcLoader;
@@ -64,11 +65,10 @@ import de.ibapl.jnhw.util.posix.PosixDataType;
 import de.ibapl.jnhw.util.posix.downcall.JnhwMh_sI__PthreadT_sI;
 import de.ibapl.jnhw.util.posix.memory.PosixStruct;
 import de.ibapl.jnhw.util.posix.upcall.Callback__V__UnionSigval;
-import de.ibapl.jnhw.x_open.Ucontext;
 import java.io.IOException;
-import java.lang.foreign.MemoryAddress;
+import java.lang.foreign.Arena;
 import java.lang.foreign.MemorySegment;
-import java.lang.foreign.MemorySession;
+import java.lang.foreign.SegmentScope;
 import java.lang.foreign.SymbolLookup;
 
 /**
@@ -111,10 +111,10 @@ public class Signal {
         public final static int SEGV_MAPERR = 1;
 
         public final static int SIG_BLOCK = 1;
-        public final static FunctionPtr__V___I SIG_DFL = new FunctionPtr__V___I(MemoryAddress.ofLong(0));
+        public final static FunctionPtr__V___I SIG_DFL = new FunctionPtr__V___I(MemorySegment.ofAddress(0));
 
-        public final static FunctionPtr__V___I SIG_ERR = new FunctionPtr__V___I(MemoryAddress.ofLong(-1));
-        public final static FunctionPtr__V___I SIG_IGN = new FunctionPtr__V___I(MemoryAddress.ofLong(1));
+        public final static FunctionPtr__V___I SIG_ERR = new FunctionPtr__V___I(MemorySegment.ofAddress(-1));
+        public final static FunctionPtr__V___I SIG_IGN = new FunctionPtr__V___I(MemorySegment.ofAddress(1));
         public final static int SIG_SETMASK = 3;
 
         public final static int SIG_UNBLOCK = 2;
@@ -183,7 +183,7 @@ public class Signal {
         public final static int SI_QUEUE = 65538;
         public final static int SI_TIMER = 65539;
         public final static int SI_USER = 65537;
-        public final static FunctionPtr__V___I SIG_HOLD = new FunctionPtr__V___I(MemoryAddress.ofLong(5));
+        public final static FunctionPtr__V___I SIG_HOLD = new FunctionPtr__V___I(MemorySegment.ofAddress(5));
         public final static int SIGEV_NONE = 0;
         public final static int SIGEV_SIGNAL = 1;
         public final static int SIGEV_THREAD = 3;
@@ -221,7 +221,7 @@ public class Signal {
         public final static int SI_TIMER = 65539;
 
         public final static int SI_USER = 65537;
-        public final static FunctionPtr__V___I SIG_HOLD = new FunctionPtr__V___I(MemoryAddress.ofLong(3));
+        public final static FunctionPtr__V___I SIG_HOLD = new FunctionPtr__V___I(MemorySegment.ofAddress(3));
         public final static int SIGEV_NONE = 0;
         public final static int SIGEV_SIGNAL = 1;
         public final static int SIGEV_THREAD = 2;
@@ -270,10 +270,10 @@ public class Signal {
         public final int SEGV_MAPERR = 1;
         public final int SI_QUEUE = -1;
         public final int SI_USER = 0;
-        public final FunctionPtr__V___I SIG_DFL = new FunctionPtr__V___I(MemoryAddress.ofLong(0));
+        public final FunctionPtr__V___I SIG_DFL = new FunctionPtr__V___I(MemorySegment.ofAddress(0));
         public final FunctionPtr__V___I SIG_ERR;
-        public final FunctionPtr__V___I SIG_HOLD = new FunctionPtr__V___I(MemoryAddress.ofLong(2));
-        public final FunctionPtr__V___I SIG_IGN = new FunctionPtr__V___I(MemoryAddress.ofLong(1));
+        public final FunctionPtr__V___I SIG_HOLD = new FunctionPtr__V___I(MemorySegment.ofAddress(2));
+        public final FunctionPtr__V___I SIG_IGN = new FunctionPtr__V___I(MemorySegment.ofAddress(1));
         public final int SIGABRT = 6;
         public final int SIGALRM = 14;
         public final int SIGEV_NONE = 1;
@@ -324,9 +324,9 @@ public class Signal {
         public LinuxDefines(MultiarchInfo multiarchInfo) {
             switch (multiarchInfo.getMemoryModel()) {
                 case ILP32 ->
-                    SIG_ERR = new FunctionPtr__V___I(MemoryAddress.ofLong(Integer.toUnsignedLong(-1)));
+                    SIG_ERR = new FunctionPtr__V___I(MemorySegment.ofAddress(Integer.toUnsignedLong(-1)));
                 case LP64 ->
-                    SIG_ERR = new FunctionPtr__V___I(MemoryAddress.ofLong(-1));
+                    SIG_ERR = new FunctionPtr__V___I(MemorySegment.ofAddress(-1));
                 default ->
                     throw new NoClassDefFoundError("unknown memory model: " + MultiarchTupelBuilder.getMemoryModel());
             }
@@ -484,14 +484,14 @@ public class Signal {
 
         }
 
-        public final static Mcontext_t tryAllocateNative(MemorySession ms) throws NoSuchNativeTypeException {
+        public final static Mcontext_t tryAllocateNative(SegmentScope ms) throws NoSuchNativeTypeException {
             if (alignof == null) {
                 throw new NoSuchNativeTypeException("Mcontext_t");
             }
             return new Mcontext_t(MemorySegment.allocateNative(sizeof, ms), 0);
         }
 
-        public static Mcontext_t tryOfAddress(MemoryAddress baseAddress, MemorySession ms) throws NoSuchNativeTypeException {
+        public static Mcontext_t tryOfAddress(long baseAddress, SegmentScope ms) throws NoSuchNativeTypeException {
             return new Mcontext_t(MemorySegment.ofAddress(baseAddress, Mcontext_t.sizeof, ms), 0);
         }
 
@@ -623,7 +623,7 @@ public class Signal {
             }
         }
 
-        public final static Sigaction allocateNative(MemorySession ms) {
+        public final static Sigaction allocateNative(SegmentScope ms) {
             return new Sigaction(MemorySegment.allocateNative(sizeof, ms), 0);
         }
 
@@ -860,15 +860,18 @@ public class Signal {
             }
         }
 
-        public static <T extends Pointer> Sigevent<T> tryAllocateNative(MemorySession ms) throws NoSuchNativeTypeException {
+        public static <T extends Pointer> Sigevent<T> tryAllocateNative(SegmentScope ms) throws NoSuchNativeTypeException {
             if (alignof == null) {
                 throw new NoSuchNativeTypeException("Sigevent");
             }
             return new Sigevent(MemorySegment.allocateNative(sizeof, ms), 0);
         }
 
-        public static <T extends Pointer> Sigevent<T> tryOfAddress(MemoryAddress baseAddress, MemorySession ms) throws NoSuchNativeTypeException {
-            return new Sigevent<>(MemorySegment.ofAddress(baseAddress, Sigevent.sizeof, ms), 0);
+        public static <T extends Pointer> Sigevent<T> tryOfAddress(long baseAddress, SegmentScope ms) throws NoSuchNativeTypeException {
+            if (alignof == null) {
+                throw new NoSuchNativeTypeException("Sigevent");
+            }
+            return new Sigevent<>(baseAddress, ms);
         }
 
         private Pthread.Pthread_attr_t sigev_notify_attributes;
@@ -884,6 +887,14 @@ public class Signal {
 
         public Sigevent(MemorySegment memorySegment, long offset) throws NoSuchNativeTypeException {
             super(memorySegment, offset, Sigevent.sizeof);
+            if (alignof == null) {
+                throw new NoSuchNativeTypeException("Sigevent");
+            }
+            sigev_value = new Sigval(this.memorySegment, Sigevent.offsetof_Sigev_value);
+        }
+
+        public Sigevent(long baseAddress, SegmentScope ms) throws NoSuchNativeTypeException {
+            super(baseAddress, ms, sizeof);
             if (alignof == null) {
                 throw new NoSuchNativeTypeException("Sigevent");
             }
@@ -917,22 +928,16 @@ public class Signal {
             MEM_ACCESS.int32_t(memorySegment, Sigevent.offsetof_Sigev_notify, value);
         }
 
-        protected MemoryAddress sigev_notify_attributes() {
+        public MemorySegment sigev_notify_attributes() {
             return MEM_ACCESS.uintptr_t(memorySegment, Sigevent.offsetof_Sigev_notify_attributes);
         }
 
-        public final Pthread.Pthread_attr_t sigev_notify_attributes(OpaqueMemoryProducer<Pthread.Pthread_attr_t, Sigevent<D>> producer, MemorySession ms) {
-            final MemoryAddress sigev_notify_attributesAddress = sigev_notify_attributes();
-            if (sigev_notify_attributes != null) {
-                if (!OpaqueMemory.isSameAddress(sigev_notify_attributesAddress, sigev_notify_attributes)) {
-                    sigev_notify_attributes = producer.produce(sigev_notify_attributesAddress, ms, this);
-                }
+        public final Pthread.Pthread_attr_t sigev_notify_attributesAs() throws InvalidCacheException {
+            final MemorySegment sigev_notify_attributesAddress = sigev_notify_attributes();
+            if ((sigev_notify_attributes != null) && (sigev_notify_attributesAddress.address() == sigev_notify_attributesAddress.address())) {
                 return sigev_notify_attributes;
             } else {
-                if (!sigev_notify_attributesAddress.equals(MemoryAddress.NULL)) {
-                    sigev_notify_attributes = producer.produce(sigev_notify_attributesAddress, ms, this);
-                }
-                return sigev_notify_attributes;
+                throw new InvalidCacheException(sigev_notify_attributes, sigev_notify_attributesAddress);
             }
         }
 
@@ -1102,11 +1107,11 @@ public class Signal {
          */
         public final Sigval<?> si_value;
 
-        public static Siginfo_t allocateNative(MemorySession ms) {
+        public static Siginfo_t allocateNative(SegmentScope ms) {
             return new Siginfo_t(MemorySegment.allocateNative(sizeof, ms), 0);
         }
 
-        public static Siginfo_t ofAddress(MemoryAddress address, MemorySession ms) {
+        public static Siginfo_t ofAddress(long address, SegmentScope ms) {
             return new Siginfo_t(MemorySegment.ofAddress(address, Siginfo_t.sizeof, ms), 0);
         }
 
@@ -1138,7 +1143,7 @@ public class Signal {
          *
          * @return the native value of si_addr.
          */
-        public final MemoryAddress si_addr() {
+        public final MemorySegment si_addr() {
             return MEM_ACCESS.uintptr_t(memorySegment, Siginfo_t.offsetof_Si_addr);
         }
 
@@ -1263,7 +1268,7 @@ public class Signal {
             }
         }
 
-        public final static Sigset_t allocateNative(MemorySession ms) {
+        public final static Sigset_t allocateNative(SegmentScope ms) {
             return new Sigset_t(MemorySegment.allocateNative(sizeof, ms), 0);
         }
 
@@ -1466,11 +1471,11 @@ public class Signal {
             }
         }
 
-        public static <T extends Pointer> Sigval<T> allocateNative(MemorySession ms) {
+        public static <T extends Pointer> Sigval<T> allocateNative(SegmentScope ms) {
             return new Sigval<>(MemorySegment.allocateNative(sizeof, ms), 0);
         }
 
-        public static <T extends Pointer> Sigval<T> ofAddress(MemoryAddress baseAddress, MemorySession ms) {
+        public static <T extends Pointer> Sigval<T> ofAddress(long baseAddress, SegmentScope ms) {
             return new Sigval<>(MemorySegment.ofAddress(baseAddress, Sigval.sizeof, ms), 0);
         }
 
@@ -1508,34 +1513,27 @@ public class Signal {
          */
         public void sival_int(int sival_int) {
             MEM_ACCESS.int32_t(memorySegment, Sigval.offsetof_Sival_int, sival_int);
+            sival_ptr = (D) new OpaquePointer(MemorySegment.ofAddress(sival_int)) {
+            };
         }
 
-        public MemoryAddress sival_ptr() {
+        public MemorySegment sival_ptr() {
             return MEM_ACCESS.uintptr_t(memorySegment, offsetof_Sival_ptr);
         }
 
         /**
-         * Pointer signal value.
-         * <b>POSIX:</b>
+         * Pointer signal value.<b>POSIX:</b>
          * <a href="https://pubs.opengroup.org/onlinepubs/9699919799/basedefs/signal.h.html">{@code union sigval}</a>.
          *
          * @return the native value of sival_ptr.
+         * @throws de.ibapl.jnhw.common.exception.InvalidCacheException
          */
-        //TODO method Optional getCachedSival_Ptr() ?
-        @Deprecated
-        public <T extends OpaqueMemory> T sival_ptrAsOpaqueMemory(OpaqueMemoryProducer<T, Sigval<D>> producer, MemorySession ms) {
-            final MemoryAddress baseAddress = sival_ptr();
-            if (sival_ptr instanceof OpaqueMemory sival_ptr_Om) {
-                if (!OpaqueMemory.isSameAddress(baseAddress, sival_ptr_Om)) {
-                    sival_ptr_Om = producer.produce(baseAddress, ms, this);
-                }
-                sival_ptr = (D) sival_ptr_Om;
-                return (T) sival_ptr_Om;
+        public D sival_ptrAs() throws InvalidCacheException {
+            final MemorySegment baseAddress = sival_ptr();
+            if ((sival_ptr == null) && (sival_ptr.toAddress() == baseAddress.address())) {
+                return sival_ptr;
             } else {
-                if (!MemoryAddress.NULL.equals(baseAddress)) {
-                    sival_ptr = (D) producer.produce(baseAddress, ms, this);
-                }
-                return (T) sival_ptr;
+                throw new InvalidCacheException(sival_ptr, baseAddress);
             }
         }
 
@@ -1548,7 +1546,7 @@ public class Signal {
          */
         public final void sival_ptr(D sival_ptr) {
             this.sival_ptr = sival_ptr;
-            MEM_ACCESS.uintptr_t(memorySegment, Sigval.offsetof_Sival_ptr, sival_ptr.toAddressable());
+            MEM_ACCESS.uintptr_t(memorySegment, Sigval.offsetof_Sival_ptr, sival_ptr.toMemorySegment());
         }
 
     }
@@ -1618,7 +1616,7 @@ public class Signal {
             }
         }
 
-        public final static <T extends OpaqueMemory> Stack_t<T> allocateNative(MemorySession ms) {
+        public final static <T extends OpaqueMemory> Stack_t<T> allocateNative(SegmentScope ms) {
             return new Stack_t(MemorySegment.allocateNative(sizeof, ms), 0);
         }
 
@@ -1629,7 +1627,7 @@ public class Signal {
          * @param ss_sp
          * @return
          */
-        public static <T extends OpaqueMemory> Stack_t<T> allocateNativeAndInit(MemorySession ms, int ss_flags, T ss_sp) {
+        public static <T extends OpaqueMemory> Stack_t<T> allocateNativeAndInit(SegmentScope ms, int ss_flags, T ss_sp) {
             final Stack_t<T> result = (Stack_t<T>) allocateNative(ms);
             result.ss_flags(ss_flags);
             result.ss_sp(ss_sp);
@@ -1689,7 +1687,7 @@ public class Signal {
          * @return the native value of ss_sp.
          */
         //TODO this is a Pointer
-        public final <T extends OpaqueMemory> T ss_sp(OpaqueMemoryProducer<T, Stack_t<A>> producer, MemorySession ms) {
+        public final <T extends OpaqueMemory> T ss_sp(OpaqueMemoryProducer<T, Stack_t<A>> producer, SegmentScope ms) {
             return producer.produce(ss_sp(), ms, this);
         }
 
@@ -1697,7 +1695,7 @@ public class Signal {
             MEM_ACCESS.uintptr_t(memorySegment, Stack_t.offsetof_Ss_sp, OpaqueMemory.getMemorySegment(ss_sp));
         }
 
-        public MemoryAddress ss_sp() {
+        public MemorySegment ss_sp() {
             return MEM_ACCESS.uintptr_t(memorySegment, Stack_t.offsetof_Ss_sp);
         }
 
@@ -1860,14 +1858,14 @@ public class Signal {
          */
         public final Stack_t uc_stack;
 
-        public static Ucontext_t tryAllocateNative(MemorySession ms) throws NoSuchNativeTypeException {
+        public static Ucontext_t tryAllocateNative(SegmentScope ms) throws NoSuchNativeTypeException {
             if (Ucontext_t.alignof == null) {
                 throw new NoSuchNativeTypeException("Ucontext_t");
             }
             return new Ucontext_t(MemorySegment.allocateNative(sizeof, ms), 0);
         }
 
-        public static Ucontext_t tryOfAddress(MemoryAddress baseAddress, MemorySession ms) throws NoSuchNativeTypeException {
+        public static Ucontext_t tryOfAddress(long baseAddress, SegmentScope ms) throws NoSuchNativeTypeException {
             return new Ucontext_t(MemorySegment.ofAddress(baseAddress, Ucontext_t.sizeof, ms), 0);
         }
 
@@ -1897,7 +1895,7 @@ public class Signal {
          * ucontext_t}</a>.
          *
          */
-        public final Ucontext_t uc_link(OpaqueMemoryProducer<Ucontext_t, Ucontext_t> producer, MemorySession ms) {
+        public final Ucontext_t uc_link(OpaqueMemoryProducer<Ucontext_t, Ucontext_t> producer, SegmentScope ms) {
             return producer.produce(uc_link0(), ms, this);
         }
 
@@ -1908,7 +1906,7 @@ public class Signal {
          *
          * @return the native value of uc_link.
          */
-        private MemoryAddress uc_link0() {
+        private MemorySegment uc_link0() {
             return MEM_ACCESS.uintptr_t(memorySegment, Ucontext_t.offsetof_Uc_link);
         }
 
@@ -3160,11 +3158,11 @@ public class Signal {
      * available natively.
      */
     public final static void psiginfo(Siginfo_t pinfo, String message) throws NativeErrorException, NoSuchNativeMethodException {
-        try (MemorySession ms = MemorySession.openConfined()) {
+        try (Arena ms = Arena.openConfined()) {
             if (message == null) {
                 message = "";
             }
-            MemorySegment _message = MemorySegment.allocateNative(message.length() + 1, ms);
+            MemorySegment _message = ms.allocate(message.length() + 1);
             _message.setUtf8String(0, message);
             final int old_errno = Errno.errno();
             Errno.errno(0);
@@ -3186,11 +3184,11 @@ public class Signal {
      * indicates an error.
      */
     public final static void psignal(int signum, String message) throws NativeErrorException {
-        try (MemorySession ms = MemorySession.openConfined()) {
+        try (Arena ms = Arena.openConfined()) {
             if (message == null) {
                 message = "";
             }
-            MemorySegment _message = MemorySegment.allocateNative(message.length() + 1, ms);
+            MemorySegment _message = ms.allocate(message.length() + 1);
             _message.setUtf8String(0, message);
             final int old_errno = Errno.errno();
             Errno.errno(0);
@@ -3429,8 +3427,8 @@ public class Signal {
      * indicates an error.
      */
     public final static FunctionPtr__V___I signal(int sig, FunctionPtr__V___I func) throws NativeErrorException {
-        MemoryAddress result = signal.invoke_MA__sI__P(sig, func != null ? func : Pointer.NULL);
-        if (SIG_ERR.toAddressable().equals(result)) {
+        MemorySegment result = signal.invoke_MA__sI__P(sig, func != null ? func : Pointer.NULL);
+        if (SIG_ERR.toMemorySegment().equals(result)) {
             throw new NativeErrorException(Errno.errno());
         } else {
             return new FunctionPtr__V___I(result);
@@ -3599,8 +3597,8 @@ public class Signal {
      * natively.
      *///TODO args missing ....
     public final static FunctionPtr__V___I sigset(int sig, FunctionPtr__V___I disp) throws NativeErrorException, NoSuchNativeMethodException {
-        final MemoryAddress result = sigset.invoke_MA__sI__P(sig, disp != null ? disp : Pointer.NULL);
-        if (SIG_ERR.toAddressable().equals(result)) {
+        final MemorySegment result = sigset.invoke_MA__sI__P(sig, disp != null ? disp : Pointer.NULL);
+        if (SIG_ERR.toMemorySegment().equals(result)) {
             throw new NativeErrorException(Errno.errno());
         } else {
             return new FunctionPtr__V___I(result);

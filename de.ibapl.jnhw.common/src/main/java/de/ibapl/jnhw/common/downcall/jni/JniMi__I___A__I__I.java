@@ -24,7 +24,7 @@ package de.ibapl.jnhw.common.downcall.jni;
 import de.ibapl.jnhw.common.downcall.JnhwMh_sI___A_uL_sI;
 import de.ibapl.jnhw.common.downcall.JnhwMh_uI___A_uI_BL;
 import de.ibapl.jnhw.common.util.ConversionsJava2Native;
-import java.lang.foreign.Addressable;
+import java.lang.foreign.MemorySegment;
 import java.lang.foreign.MemorySegment;
 import java.lang.foreign.SymbolLookup;
 
@@ -41,11 +41,11 @@ public class JniMi__I___A__I__I extends JniMethodInvoker implements JnhwMh_uI___
     }
 
     @Override
-    public int invoke_uI___A_uI_BL(Addressable arg1, int arg2, boolean arg3) {
+    public int invoke_uI___A_uI_BL(MemorySegment arg1, int arg2, boolean arg3) {
         try {
             return invoke__I___A__I__I(
-                    ns.address().toRawLongValue(),
-                    arg1.address().toRawLongValue(),
+                    ns.address(),
+                    arg1.address(),
                     arg2,
                     ConversionsJava2Native.boolean_TO_int32_t(arg3));
         } catch (NullPointerException | IllegalArgumentException ex) {
@@ -56,11 +56,11 @@ public class JniMi__I___A__I__I extends JniMethodInvoker implements JnhwMh_uI___
     }
 
     @Override
-    public int invoke_sI___A_uL_sI(Addressable arg1, long arg2, int arg3) {
+    public int invoke_sI___A_uL_sI(MemorySegment arg1, long arg2, int arg3) {
         try {
             return invoke__I___A__I__I(
-                    ns.address().toRawLongValue(),
-                    arg1.address().toRawLongValue(),
+                    ns.address(),
+                    arg1.address(),
                     ConversionsJava2Native.long_TO_uint32_t(arg2),
                     arg3);
         } catch (IllegalArgumentException | NullPointerException e) {

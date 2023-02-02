@@ -25,7 +25,6 @@ import de.ibapl.jnhw.common.downcall.JnhwMh_BL___A__A_uI;
 import de.ibapl.jnhw.common.downcall.JnhwMh_BL___A__A_uL;
 import de.ibapl.jnhw.common.util.ConversionsJava2Native;
 import de.ibapl.jnhw.common.util.ConversionsNative2Java;
-import java.lang.foreign.Addressable;
 import java.lang.foreign.MemorySegment;
 
 /**
@@ -41,13 +40,13 @@ public class JniMi__I___A__A__I extends JniMethodInvoker implements JnhwMh_BL___
     }
 
     @Override
-    public boolean invoke_BL___A__A_uI(Addressable arg1, Addressable arg2, int arg3) {
+    public boolean invoke_BL___A__A_uI(MemorySegment arg1, MemorySegment arg2, int arg3) {
         try {
             return ConversionsNative2Java.int32_t_TO_boolean(
                     invoke__I___A__A__I(
-                            ns.address().toRawLongValue(),
-                            arg1.address().toRawLongValue(),
-                            arg2.address().toRawLongValue(),
+                            ns.address(),
+                            arg1.address(),
+                            arg2.address(),
                             arg3));
         } catch (IllegalArgumentException | NullPointerException e) {
             throw e;
@@ -57,13 +56,13 @@ public class JniMi__I___A__A__I extends JniMethodInvoker implements JnhwMh_BL___
     }
 
     @Override
-    public boolean invoke_BL___A__A_uL(Addressable arg1, Addressable arg2, long arg3) {
+    public boolean invoke_BL___A__A_uL(MemorySegment arg1, MemorySegment arg2, long arg3) {
         try {
             return ConversionsNative2Java.int32_t_TO_boolean(
                     invoke__I___A__A__I(
-                            ns.address().address().toRawLongValue(),
-                            arg1.address().toRawLongValue(),
-                            arg2.address().toRawLongValue(),
+                            ns.address(),
+                            arg1.address(),
+                            arg2.address(),
                             ConversionsJava2Native.long_TO_uint32_t(arg3)));
         } catch (IllegalArgumentException | NullPointerException e) {
             throw e;

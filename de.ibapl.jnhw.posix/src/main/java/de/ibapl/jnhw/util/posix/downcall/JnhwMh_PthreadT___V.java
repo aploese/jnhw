@@ -34,7 +34,7 @@ import de.ibapl.jnhw.util.posix.downcall.jni.JniMi_PthreadTI___V;
 import de.ibapl.jnhw.util.posix.downcall.jni.JniMi_PthreadTL___V;
 import de.ibapl.jnhw.util.posix.downcall.jni.JniMi_PthreadTMA___V;
 import java.lang.foreign.MemorySegment;
-import java.lang.foreign.MemorySession;
+import java.lang.foreign.SegmentScope;
 import java.lang.foreign.SymbolLookup;
 
 /**
@@ -47,7 +47,7 @@ public interface JnhwMh_PthreadT___V extends JnhwMethodHandle {
     interface ExceptionErased extends JnhwMh_PthreadT___V {
 
         @Override
-        Pthread.Pthread_t invoke_PthreadT___V(MemorySession ms);
+        Pthread.Pthread_t invoke_PthreadT___V(SegmentScope ms);
     }
 
     static JnhwMh_PthreadT___V.ExceptionErased mandatoryOf(SymbolLookup symbolLookup, String name, BaseDataType result) {
@@ -84,6 +84,6 @@ public interface JnhwMh_PthreadT___V extends JnhwMethodHandle {
         };
     }
 
-    Pthread.Pthread_t invoke_PthreadT___V(MemorySession ms) throws NoSuchNativeMethodException;
+    Pthread.Pthread_t invoke_PthreadT___V(SegmentScope ms) throws NoSuchNativeMethodException;
 
 }

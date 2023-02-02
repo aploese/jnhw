@@ -40,7 +40,7 @@ public class JniMi__I___I__L_VARARGS_NONE extends JniMethodInvoker implements Jn
     public int invoke_sI__sI_uL(int arg1, long arg2) {
         try {
             return invoke__I___I__I(
-                    ns.address().toRawLongValue(),
+                    ns.address(),
                     arg1,
                     arg2);
         } catch (IllegalArgumentException | NullPointerException e) {

@@ -23,7 +23,7 @@ package de.ibapl.jnhw.util.posix.upcall;
 
 import de.ibapl.jnhw.common.datatypes.Pointer;
 import de.ibapl.jnhw.common.upcall.Callback__V__Union_I_MA;
-import java.lang.foreign.MemoryAddress;
+import java.lang.foreign.MemorySegment;
 import java.util.function.Function;
 
 /**
@@ -33,11 +33,11 @@ import java.util.function.Function;
  */
 public abstract class Callback__V__UnionSigval<A extends Pointer> extends Callback__V__Union_I_MA<A> {
 
-    protected <T extends Callback__V__UnionSigval<A>> Callback__V__UnionSigval(Function<T, MemoryAddress> producer) {
+    protected <T extends Callback__V__UnionSigval<A>> Callback__V__UnionSigval(Function<T, MemorySegment> producer) {
         super(producer);
     }
 
-    protected Callback__V__UnionSigval(MemoryAddress address) {
+    protected Callback__V__UnionSigval(MemorySegment address) {
         super(address);
     }
 

@@ -22,9 +22,7 @@
 package de.ibapl.jnhw.common.downcall.jni;
 
 import de.ibapl.jnhw.common.downcall.JnhwMh_MA___V;
-import java.lang.foreign.MemoryAddress;
 import java.lang.foreign.MemorySegment;
-import java.lang.foreign.SymbolLookup;
 
 /**
  *
@@ -39,9 +37,11 @@ public class JniMi_MA___V extends JniMethodInvoker implements JnhwMh_MA___V.Exce
     }
 
     @Override
-    public MemoryAddress invoke_MA___V() {
+    public MemorySegment invoke_MA___V() {
         try {
-            return MemoryAddress.ofLong(invoke_MA___V(ns.address().toRawLongValue()));
+            return MemorySegment.ofAddress(
+                    invoke_MA___V(ns.address()),
+                    Long.MAX_VALUE);
         } catch (Throwable t) {
             throw createRuntimeExceptionInvoke(t);
         }

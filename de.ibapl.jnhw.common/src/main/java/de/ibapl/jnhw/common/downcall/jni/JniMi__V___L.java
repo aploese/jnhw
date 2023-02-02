@@ -22,9 +22,9 @@
 package de.ibapl.jnhw.common.downcall.jni;
 
 import de.ibapl.jnhw.common.downcall.JnhwMh__V__sL;
-import java.lang.foreign.Addressable;
 import java.lang.foreign.MemorySegment;
-import java.lang.foreign.MemorySession;
+import java.lang.foreign.MemorySegment;
+import java.lang.foreign.SegmentScope;
 
 /**
  *
@@ -41,7 +41,7 @@ public class JniMi__V___L extends JniMethodInvoker implements JnhwMh__V__sL.Exce
     @Override
     public void invoke__V__sL(long arg1) {
         try {
-            invoke__V___L(ns.address().toRawLongValue(), arg1);
+            invoke__V___L(ns.address(), arg1);
         } catch (IllegalArgumentException | NullPointerException e) {
             throw e;
         } catch (Throwable t) {

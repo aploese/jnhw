@@ -27,7 +27,7 @@ import de.ibapl.jnhw.common.exception.NoSuchNativeTypeMemberException;
 import de.ibapl.jnhw.libloader.MultiarchTupelBuilder;
 import de.ibapl.jnhw.libloader.OS;
 import de.ibapl.jnhw.util.posix.DefinesTest;
-import java.lang.foreign.MemorySession;
+import java.lang.foreign.Arena;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
@@ -78,12 +78,12 @@ public class SchedTest {
         JnhwTestLogger.logAfterAll(testTnfo);
     }
 
-    private MemorySession ms;
+    private Arena ms;
 
     @BeforeEach
     public void setUp(TestInfo testInfo) throws Exception {
         JnhwTestLogger.logBeforeEach(testInfo);
-        ms = MemorySession.openConfined();
+        ms = Arena.openConfined();
     }
 
     @AfterEach
@@ -148,14 +148,14 @@ public class SchedTest {
         switch (MultiarchTupelBuilder.getOS()) {
             case APPLE, OPEN_BSD ->
                 Assertions.assertThrows(NoSuchNativeMethodException.class, () -> {
-                    Sched.sched_rr_get_interval(Unistd.getpid(), Time.Timespec.allocateNative(ms));
+                    Sched.sched_rr_get_interval(Unistd.getpid(), Time.Timespec.allocateNative(ms.scope()));
                 });
             default -> {
                 Assertions.assertThrows(NullPointerException.class, () -> {
                     Sched.sched_rr_get_interval(Unistd.getpid(), null);
                 });
 
-                Time.Timespec interval = Time.Timespec.allocateNative(ms);
+                Time.Timespec interval = Time.Timespec.allocateNative(ms.scope());
                 Sched.sched_rr_get_interval(Unistd.getpid(), interval);
                 switch (MultiarchTupelBuilder.getOS()) {
                     case LINUX -> {
@@ -183,18 +183,18 @@ public class SchedTest {
         switch (MultiarchTupelBuilder.getOS()) {
             case APPLE, OPEN_BSD -> {
                 Assertions.assertThrows(NoSuchNativeMethodException.class,
-                        () -> Sched.sched_setparam(Unistd.getpid(), Sched.Sched_param.allocateNative(ms)));
+                        () -> Sched.sched_setparam(Unistd.getpid(), Sched.Sched_param.allocateNative(ms.scope())));
                 Assertions.assertThrows(NoSuchNativeMethodException.class,
-                        () -> Sched.sched_getparam(Unistd.getpid(), Sched.Sched_param.allocateNative(ms)));
+                        () -> Sched.sched_getparam(Unistd.getpid(), Sched.Sched_param.allocateNative(ms.scope())));
             }
             default -> {
                 Assertions.assertThrows(NullPointerException.class,
                         () -> Sched.sched_setparam(Unistd.getpid(), null));
                 Assertions.assertThrows(NullPointerException.class,
                         () -> Sched.sched_getparam(Unistd.getpid(), null));
-                Sched.Sched_param param = Sched.Sched_param.allocateNative(ms);
+                Sched.Sched_param param = Sched.Sched_param.allocateNative(ms.scope());
                 param.sched_priority(0);
-                Sched.Sched_param param1 = Sched.Sched_param.allocateNative(ms);
+                Sched.Sched_param param1 = Sched.Sched_param.allocateNative(ms.scope());
 
                 Sched.sched_setparam(Unistd.getpid(), param);
                 Sched.sched_getparam(Unistd.getpid(), param1);
@@ -211,11 +211,11 @@ public class SchedTest {
         switch (MultiarchTupelBuilder.getOS()) {
             case APPLE, OPEN_BSD ->
                 Assertions.assertThrows(NoSuchNativeMethodException.class,
-                        () -> Sched.sched_setscheduler(Unistd.getpid(), Sched.SCHED_OTHER, Sched.Sched_param.allocateNative(ms)));
+                        () -> Sched.sched_setscheduler(Unistd.getpid(), Sched.SCHED_OTHER, Sched.Sched_param.allocateNative(ms.scope())));
             default -> {
                 Assertions.assertThrows(NullPointerException.class,
                         () -> Sched.sched_setscheduler(Unistd.getpid(), Sched.SCHED_OTHER, null));
-                Sched.Sched_param param = Sched.Sched_param.allocateNative(ms);
+                Sched.Sched_param param = Sched.Sched_param.allocateNative(ms.scope());
                 if (MultiarchTupelBuilder.getOS() == OS.FREE_BSD) {
                     //Any idea why this is so?
                     NativeErrorException nee = Assertions.assertThrows(NativeErrorException.class,
@@ -245,7 +245,7 @@ public class SchedTest {
     @Test
     public void teststruct_sched_param() throws Exception {
         int memberSum = 0;
-        Sched.Sched_param sched_param = Sched.Sched_param.allocateNative(ms);
+        Sched.Sched_param sched_param = Sched.Sched_param.allocateNative(ms.scope());
         sched_param.sched_priority(1);
         memberSum += sched_param.sched_priority();
         try {

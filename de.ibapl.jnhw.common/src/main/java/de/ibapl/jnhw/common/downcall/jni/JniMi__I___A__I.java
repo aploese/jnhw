@@ -29,9 +29,7 @@ import de.ibapl.jnhw.common.downcall.JnhwMh_uI___A_uI;
 import de.ibapl.jnhw.common.downcall.JnhwMh_uI___A_uL;
 import de.ibapl.jnhw.common.util.ConversionsJava2Native;
 import de.ibapl.jnhw.common.util.ConversionsNative2Java;
-import java.lang.foreign.Addressable;
 import java.lang.foreign.MemorySegment;
-import java.lang.foreign.SymbolLookup;
 
 /**
  *
@@ -46,11 +44,11 @@ public class JniMi__I___A__I extends JniMethodInvoker implements JnhwMh_sI___A_u
     }
 
     @Override
-    public int invoke_sI___A_uL(Addressable arg1, long arg2) {
+    public int invoke_sI___A_uL(MemorySegment arg1, long arg2) {
         try {
             return invoke__I___A__I(
-                    ns.address().toRawLongValue(),
-                    arg1.address().toRawLongValue(),
+                    ns.address(),
+                    arg1.address(),
                     ConversionsJava2Native.long_TO_uint32_t(arg2));
         } catch (IllegalArgumentException | NullPointerException e) {
             throw e;
@@ -60,11 +58,11 @@ public class JniMi__I___A__I extends JniMethodInvoker implements JnhwMh_sI___A_u
     }
 
     @Override
-    public int invoke_sI___A_sI(Addressable arg1, int arg2) {
+    public int invoke_sI___A_sI(MemorySegment arg1, int arg2) {
         try {
             return invoke__I___A__I(
-                    ns.address().toRawLongValue(),
-                    arg1.address().toRawLongValue(),
+                    ns.address(),
+                    arg1.address(),
                     arg2);
         } catch (IllegalArgumentException | NullPointerException e) {
             throw e;
@@ -74,11 +72,11 @@ public class JniMi__I___A__I extends JniMethodInvoker implements JnhwMh_sI___A_u
     }
 
     @Override
-    public int invoke_sI___A_uI(Addressable arg1, int arg2) {
+    public int invoke_sI___A_uI(MemorySegment arg1, int arg2) {
         try {
             return invoke__I___A__I(
-                    ns.address().toRawLongValue(),
-                    arg1.address().toRawLongValue(),
+                    ns.address(),
+                    arg1.address(),
                     arg2);
         } catch (IllegalArgumentException | NullPointerException e) {
             throw e;
@@ -88,12 +86,12 @@ public class JniMi__I___A__I extends JniMethodInvoker implements JnhwMh_sI___A_u
     }
 
     @Override
-    public boolean invoke_BL___A_uI(Addressable arg1, int arg2) {
+    public boolean invoke_BL___A_uI(MemorySegment arg1, int arg2) {
         try {
             return ConversionsNative2Java.int32_t_TO_boolean(
                     invoke__I___A__I(
-                            ns.address().toRawLongValue(),
-                            arg1.address().toRawLongValue(),
+                            ns.address(),
+                            arg1.address(),
                             arg2));
         } catch (IllegalArgumentException | NullPointerException e) {
             throw e;
@@ -103,11 +101,11 @@ public class JniMi__I___A__I extends JniMethodInvoker implements JnhwMh_sI___A_u
     }
 
     @Override
-    public int invoke_uI___A_uI(Addressable arg1, int arg2) {
+    public int invoke_uI___A_uI(MemorySegment arg1, int arg2) {
         try {
             return invoke__I___A__I(
-                    ns.address().toRawLongValue(),
-                    arg1.address().toRawLongValue(),
+                    ns.address(),
+                    arg1.address(),
                     arg2);
         } catch (IllegalArgumentException | NullPointerException e) {
             throw e;
@@ -117,11 +115,11 @@ public class JniMi__I___A__I extends JniMethodInvoker implements JnhwMh_sI___A_u
     }
 
     @Override
-    public int invoke_uI___A_uL(Addressable arg1, long arg2) {
+    public int invoke_uI___A_uL(MemorySegment arg1, long arg2) {
         try {
             return invoke__I___A__I(
-                    ns.address().toRawLongValue(),
-                    arg1.address().toRawLongValue(),
+                    ns.address(),
+                    arg1.address(),
                     ConversionsJava2Native.long_TO_uint32_t(arg2));
         } catch (IllegalArgumentException | NullPointerException e) {
             throw e;

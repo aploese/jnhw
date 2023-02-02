@@ -22,7 +22,7 @@
 package de.ibapl.jnhw.winapi;
 
 import de.ibapl.jnhw.common.exception.NativeErrorException;
-import java.lang.foreign.MemorySession;
+import java.lang.foreign.Arena;
 import java.time.Duration;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
@@ -33,11 +33,11 @@ import org.junit.jupiter.api.condition.EnabledOnOs;
 @EnabledOnOs(org.junit.jupiter.api.condition.OS.WINDOWS)
 public class SynchapiTest {
 
-    private MemorySession ms;
+    private Arena ms;
 
     @BeforeEach
     public void setUp() throws Exception {
-        ms = MemorySession.openShared();
+        ms = Arena.openShared();
     }
 
     @AfterEach
@@ -58,7 +58,7 @@ public class SynchapiTest {
     public void testWaitForMultipleSignaled() throws Exception {
         final Winnt.HANDLE hEvent1 = Synchapi.CreateEventW(null, true, false, null);
         final Winnt.HANDLE hEvent2 = Synchapi.CreateEventW(null, true, false, null);
-        final Winnt.ArrayOfHandle handles = Winnt.ArrayOfHandle.allocateNative(2, ms);
+        final Winnt.ArrayOfHandle handles = Winnt.ArrayOfHandle.allocateNative(2, ms.scope());
         handles.set(0, hEvent1);
         handles.set(1, hEvent2);
         Assertions.assertTimeoutPreemptively(Duration.ofMillis(5000), () -> {
@@ -83,7 +83,7 @@ public class SynchapiTest {
     public void testWaitForMultipleTimeout() throws Exception {
         final Winnt.HANDLE hEvent1 = Synchapi.CreateEventW(null, true, false, null);
         final Winnt.HANDLE hEvent2 = Synchapi.CreateEventW(null, true, false, null);
-        final Winnt.ArrayOfHandle handles = Winnt.ArrayOfHandle.allocateNative(2, ms);
+        final Winnt.ArrayOfHandle handles = Winnt.ArrayOfHandle.allocateNative(2, ms.scope());
         handles.set(0, hEvent1);
         handles.set(1, hEvent2);
 

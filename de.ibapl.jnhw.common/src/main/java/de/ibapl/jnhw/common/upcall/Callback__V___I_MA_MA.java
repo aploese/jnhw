@@ -23,7 +23,7 @@ package de.ibapl.jnhw.common.upcall;
 
 import de.ibapl.jnhw.common.datatypes.Pointer;
 import de.ibapl.jnhw.common.nativepointer.FunctionPtr__V___I_MA_MA;
-import java.lang.foreign.MemoryAddress;
+import java.lang.foreign.MemorySegment;
 import java.lang.ref.WeakReference;
 import java.util.LinkedList;
 import java.util.List;
@@ -49,7 +49,7 @@ public abstract class Callback__V___I_MA_MA<A1 extends Pointer, A2 extends Point
      * @return the first found instance or null if none is found.
      */
     public static <A1 extends Pointer, A2 extends Pointer> Callback__V___I_MA_MA<A1, A2> find(FunctionPtr__V___I_MA_MA<A1, A2> callbackPtr) {
-        return (Callback__V___I_MA_MA<A1, A2>) find(callbackPtr.toAddressable().address());
+        return (Callback__V___I_MA_MA<A1, A2>) find(callbackPtr.toMemorySegment());
     }
 
     /**
@@ -60,7 +60,7 @@ public abstract class Callback__V___I_MA_MA<A1 extends Pointer, A2 extends Point
      * @param callbackPtr
      * @return the first found instance or null if none is found.
      */
-    public static Callback__V___I_MA_MA<?, ?> find(MemoryAddress callbackPtr) {
+    public static Callback__V___I_MA_MA<?, ?> find(MemorySegment callbackPtr) {
         final ListIterator<WeakReference<Callback__V___I_MA_MA<?, ?>>> iter = REFS.listIterator();
         while (iter.hasNext()) {
             final WeakReference<Callback__V___I_MA_MA<?, ?>> weak = iter.next();
@@ -76,12 +76,12 @@ public abstract class Callback__V___I_MA_MA<A1 extends Pointer, A2 extends Point
         return null;
     }
 
-    protected <T extends Callback__V___I_MA_MA<A1, A2>> Callback__V___I_MA_MA(Function<T, MemoryAddress> producer) {
+    protected <T extends Callback__V___I_MA_MA<A1, A2>> Callback__V___I_MA_MA(Function<T, MemorySegment> producer) {
         super(producer);
         REFS.add(new WeakReference<>(this));
     }
 
-    protected Callback__V___I_MA_MA(MemoryAddress address) {
+    protected Callback__V___I_MA_MA(MemorySegment address) {
         super(address);
         REFS.add(new WeakReference<>(this));
     }
@@ -101,6 +101,6 @@ public abstract class Callback__V___I_MA_MA<A1 extends Pointer, A2 extends Point
      * @param a
      * @param b
      */
-    protected abstract void callback(int value, MemoryAddress a, MemoryAddress b);
+    protected abstract void callback(int value, MemorySegment a, MemorySegment b);
 
 }

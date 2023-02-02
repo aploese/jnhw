@@ -39,7 +39,7 @@ import de.ibapl.jnhw.libloader.libraries.LibcLoader;
 import de.ibapl.jnhw.util.posix.PosixDataType;
 import java.io.IOException;
 import java.lang.foreign.MemorySegment;
-import java.lang.foreign.MemorySession;
+import java.lang.foreign.SegmentScope;
 
 /**
  * Wrapper around the {@code <poll.h>} header.
@@ -258,7 +258,7 @@ public final class Poll {
     @nfds_t
     public static class Nfds_t extends AsUnsignedLong {
 
-        public final static Nfds_t allocateNative(MemorySession ms) {
+        public final static Nfds_t allocateNative(SegmentScope ms) {
             return new Nfds_t(MemorySegment.allocateNative(PosixDataType.nfds_t.SIZE_OF, ms), 0);
         }
 
@@ -279,7 +279,7 @@ public final class Poll {
             return new PollFd(memorySegment, elementoffset);
         }
 
-        public final static PollFds allocateNative(MemorySession ms, int arraylength) {
+        public final static PollFds allocateNative(SegmentScope ms, int arraylength) {
             return new PollFds(MemorySegment.allocateNative(PollFd.sizeof * arraylength, ms), 0, arraylength);
         }
 

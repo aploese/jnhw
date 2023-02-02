@@ -23,9 +23,8 @@ package de.ibapl.jnhw.common.memory;
 
 import de.ibapl.jnhw.common.datatypes.BaseDataType;
 import de.ibapl.jnhw.common.memory.layout.Alignment;
-import java.lang.foreign.MemoryAddress;
 import java.lang.foreign.MemorySegment;
-import java.lang.foreign.MemorySession;
+import java.lang.foreign.SegmentScope;
 
 /**
  *
@@ -33,7 +32,7 @@ import java.lang.foreign.MemorySession;
  */
 public class MemoryHeap extends OpaqueMemory {
 
-    public static MemoryHeap allocateNative(long bytesSize, MemorySession ms) {
+    public static MemoryHeap allocateNative(long bytesSize, SegmentScope ms) {
         return new MemoryHeap(MemorySegment.allocateNative(bytesSize, ms), 0, bytesSize);
     }
 
@@ -41,7 +40,7 @@ public class MemoryHeap extends OpaqueMemory {
         super(memorySegment, offset, sizeInBytes);
     }
 
-    public MemoryHeap(MemoryAddress address, MemorySession ms, long sizeInBytes) {
+    public MemoryHeap(long address, SegmentScope ms, long sizeInBytes) {
         super(address, ms, sizeInBytes);
     }
 

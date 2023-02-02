@@ -28,7 +28,6 @@ import de.ibapl.jnhw.common.downcall.foreign.JnhwMi__V___A__A;
 import de.ibapl.jnhw.common.downcall.jni.JniMi__V___A__A;
 import de.ibapl.jnhw.common.exception.NoSuchNativeMethodException;
 import de.ibapl.jnhw.common.util.NativeProvider;
-import java.lang.foreign.Addressable;
 import java.lang.foreign.MemorySegment;
 import java.lang.foreign.SymbolLookup;
 
@@ -44,16 +43,16 @@ public interface JnhwMh__V___A__A extends JnhwMethodHandle {
 
         @Override
         default void invoke__V___P__P(Pointer arg1, Pointer arg2) {
-            invoke__V___A__A(arg1.toAddressable(), arg2.toAddressable());
+            invoke__V___A__A(arg1.toMemorySegment(), arg2.toMemorySegment());
         }
 
         @Override
-        default void invoke__V___P__A(Pointer arg1, Addressable arg2) {
-            invoke__V___A__A(arg1.toAddressable(), arg2);
+        default void invoke__V___P__A(Pointer arg1, MemorySegment arg2) {
+            invoke__V___A__A(arg1.toMemorySegment(), arg2);
         }
 
         @Override
-        void invoke__V___A__A(Addressable arg1, Addressable arg2);
+        void invoke__V___A__A(MemorySegment arg1, MemorySegment arg2);
     }
 
     static JnhwMh__V___A__A.ExceptionErased mandatoryOf(SymbolLookup symbolLookup, String name, BaseDataType arg1, BaseDataType arg2) {
@@ -88,12 +87,12 @@ public interface JnhwMh__V___A__A extends JnhwMethodHandle {
     }
 
     default void invoke__V___P__P(Pointer arg1, Pointer arg2) throws NoSuchNativeMethodException {
-        invoke__V___A__A(arg1.toAddressable(), arg2.toAddressable());
+        invoke__V___A__A(arg1.toMemorySegment(), arg2.toMemorySegment());
     }
 
-    default void invoke__V___P__A(Pointer arg1, Addressable arg2) throws NoSuchNativeMethodException {
-        invoke__V___A__A(arg1.toAddressable(), arg2);
+    default void invoke__V___P__A(Pointer arg1, MemorySegment arg2) throws NoSuchNativeMethodException {
+        invoke__V___A__A(arg1.toMemorySegment(), arg2);
     }
 
-    void invoke__V___A__A(Addressable arg1, Addressable arg2) throws NoSuchNativeMethodException;
+    void invoke__V___A__A(MemorySegment arg1, MemorySegment arg2) throws NoSuchNativeMethodException;
 }

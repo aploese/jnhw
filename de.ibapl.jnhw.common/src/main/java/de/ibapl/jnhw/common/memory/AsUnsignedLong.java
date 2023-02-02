@@ -24,7 +24,7 @@ package de.ibapl.jnhw.common.memory;
 import de.ibapl.jnhw.common.datatypes.BaseDataType;
 import java.io.IOException;
 import java.lang.foreign.MemorySegment;
-import java.lang.foreign.MemorySession;
+import java.lang.foreign.SegmentScope;
 
 /**
  *
@@ -32,7 +32,7 @@ import java.lang.foreign.MemorySession;
  */
 public class AsUnsignedLong extends NativeIntNumber {
 
-    public static AsUnsignedLong allocateNative(BaseDataType nativeType, MemorySession ms) {
+    public static AsUnsignedLong allocateNative(BaseDataType nativeType, SegmentScope ms) {
         return new AsUnsignedLong(nativeType, MemorySegment.allocateNative(nativeType.SIZE_OF, ms), 0);
     }
 

@@ -13,8 +13,8 @@
     </description>
 
     <properties>
-        <compile.source>19</compile.source>
-        <compile.target>19</compile.target>
+        <compile.source>21</compile.source>
+        <compile.target>21</compile.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <commandLineArg.ChooseVM/>
         <nativeProvider.propertyName>de.ibapl.jnhw.common.util.NativeProvider</nativeProvider.propertyName>

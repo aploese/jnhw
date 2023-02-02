@@ -24,7 +24,7 @@ package de.ibapl.jnhw.common.memory;
 import de.ibapl.jnhw.common.datatypes.BaseDataType;
 import java.io.IOException;
 import java.lang.foreign.MemorySegment;
-import java.lang.foreign.MemorySession;
+import java.lang.foreign.SegmentScope;
 
 /**
  *
@@ -34,7 +34,7 @@ public class PtrChar extends OpaqueMemory {
 
     public final static BaseDataType DATA_TYPE = BaseDataType.C_char_pointer;
 
-    public static PtrChar allocateNative(MemorySession ms) {
+    public static PtrChar allocateNative(SegmentScope ms) {
         return new PtrChar(MemorySegment.allocateNative(DATA_TYPE.SIZE_OF, ms), 0);
     }
 

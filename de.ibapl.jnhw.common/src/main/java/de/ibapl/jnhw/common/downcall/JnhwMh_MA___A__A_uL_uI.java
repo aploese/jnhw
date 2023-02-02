@@ -27,8 +27,6 @@ import de.ibapl.jnhw.common.downcall.foreign.JnhwMi_MA___A__A__L__I;
 import de.ibapl.jnhw.common.downcall.jni.JniMi_MA___A__A__L__I;
 import de.ibapl.jnhw.common.exception.NoSuchNativeMethodException;
 import de.ibapl.jnhw.common.util.NativeProvider;
-import java.lang.foreign.Addressable;
-import java.lang.foreign.MemoryAddress;
 import java.lang.foreign.MemorySegment;
 import java.lang.foreign.SymbolLookup;
 
@@ -43,12 +41,12 @@ public interface JnhwMh_MA___A__A_uL_uI extends JnhwMethodHandle {
     interface ExceptionErased extends JnhwMh_MA___A__A_uL_uI {
 
         @Override
-        default MemoryAddress invoke_MA___P__P_uL_uI(Pointer arg1, Pointer arg2, long arg3, int arg4) {
-            return invoke_MA___A__A_uL_uI(arg1.toAddressable(), arg2.toAddressable(), arg3, arg4);
+        default MemorySegment invoke_MA___P__P_uL_uI(Pointer arg1, Pointer arg2, long arg3, int arg4) {
+            return invoke_MA___A__A_uL_uI(arg1.toMemorySegment(), arg2.toMemorySegment(), arg3, arg4);
         }
 
         @Override
-        MemoryAddress invoke_MA___A__A_uL_uI(Addressable arg1, Addressable arg2, long arg3, int arg4);
+        MemorySegment invoke_MA___A__A_uL_uI(MemorySegment arg1, MemorySegment arg2, long arg3, int arg4);
     }
 
     static JnhwMh_MA___A__A_uL_uI.ExceptionErased mandatoryOf(SymbolLookup symbolLookup, String name, BaseDataType result, BaseDataType arg1, BaseDataType arg2, BaseDataType arg3, BaseDataType arg4) {
@@ -97,9 +95,9 @@ public interface JnhwMh_MA___A__A_uL_uI extends JnhwMethodHandle {
         };
     }
 
-    default MemoryAddress invoke_MA___P__P_uL_uI(Pointer arg1, Pointer arg2, long arg3, int arg4) throws NoSuchNativeMethodException {
-        return invoke_MA___A__A_uL_uI(arg1.toAddressable(), arg2.toAddressable(), arg3, arg4);
+    default MemorySegment invoke_MA___P__P_uL_uI(Pointer arg1, Pointer arg2, long arg3, int arg4) throws NoSuchNativeMethodException {
+        return invoke_MA___A__A_uL_uI(arg1.toMemorySegment(), arg2.toMemorySegment(), arg3, arg4);
     }
 
-    MemoryAddress invoke_MA___A__A_uL_uI(Addressable arg1, Addressable arg2, long arg3, int arg4) throws NoSuchNativeMethodException;
+    MemorySegment invoke_MA___A__A_uL_uI(MemorySegment arg1, MemorySegment arg2, long arg3, int arg4) throws NoSuchNativeMethodException;
 }

@@ -25,7 +25,7 @@ import de.ibapl.jnhw.common.annotation.int8_t;
 import de.ibapl.jnhw.common.datatypes.BaseDataType;
 import java.io.IOException;
 import java.lang.foreign.MemorySegment;
-import java.lang.foreign.MemorySession;
+import java.lang.foreign.SegmentScope;
 
 /**
  *
@@ -36,7 +36,7 @@ public class Int8_t extends NativeIntNumber<Byte> {
 
     public final static BaseDataType DATA_TYPE = BaseDataType.int8_t;
 
-    public static Int8_t allocateNative(MemorySession ms) {
+    public static Int8_t allocateNative(SegmentScope ms) {
         return new Int8_t(MemorySegment.allocateNative(DATA_TYPE.SIZE_OF, ms), 0);
     }
 

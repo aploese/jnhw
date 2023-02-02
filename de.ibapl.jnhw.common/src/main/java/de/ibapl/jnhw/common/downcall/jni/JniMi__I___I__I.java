@@ -47,7 +47,7 @@ public class JniMi__I___I__I extends JniMethodInvoker implements JnhwMh_uI__uI_s
     public int invoke_uI__uI_sI(int arg1, int arg2) {
         try {
             return invoke__I___I__I(
-                    ns.address().toRawLongValue(),
+                    ns.address(),
                     arg1,
                     arg2);
         } catch (IllegalArgumentException | NullPointerException e) {
@@ -62,7 +62,7 @@ public class JniMi__I___I__I extends JniMethodInvoker implements JnhwMh_uI__uI_s
         try {
             return ConversionsNative2Java.uint32_t_TO_long(
                     invoke__I___I__I(
-                            ns.address().toRawLongValue(),
+                            ns.address(),
                             arg1,
                             ConversionsJava2Native.boolean_TO_int32_t(arg2)));
         } catch (IllegalArgumentException | NullPointerException e) {
@@ -76,7 +76,7 @@ public class JniMi__I___I__I extends JniMethodInvoker implements JnhwMh_uI__uI_s
     public int invoke_sI__sI_uL(int arg1, long arg2) {
         try {
             return invoke__I___I__I(
-                    ns.address().toRawLongValue(),
+                    ns.address(),
                     arg1,
                     ConversionsJava2Native.long_TO_uint32_t(arg2));
         } catch (IllegalArgumentException | NullPointerException e) {
@@ -90,7 +90,7 @@ public class JniMi__I___I__I extends JniMethodInvoker implements JnhwMh_uI__uI_s
     public int invoke_sI__sI_sI(int arg1, int arg2) {
         try {
             return invoke__I___I__I(
-                    ns.address().toRawLongValue(),
+                    ns.address(),
                     arg1,
                     arg2);
         } catch (IllegalArgumentException | NullPointerException e) {
@@ -104,7 +104,7 @@ public class JniMi__I___I__I extends JniMethodInvoker implements JnhwMh_uI__uI_s
     public int invoke_sI__uI_sI(int arg1, int arg2) {
         try {
             return invoke__I___I__I(
-                    ns.address().toRawLongValue(),
+                    ns.address(),
                     arg1,
                     arg2);
         } catch (IllegalArgumentException | NullPointerException e) {
@@ -118,7 +118,7 @@ public class JniMi__I___I__I extends JniMethodInvoker implements JnhwMh_uI__uI_s
     public int invoke_sI__uI_uI(int arg1, int arg2) {
         try {
             return invoke__I___I__I(
-                    ns.address().toRawLongValue(),
+                    ns.address(),
                     arg1,
                     arg2);
         } catch (IllegalArgumentException | NullPointerException e) {

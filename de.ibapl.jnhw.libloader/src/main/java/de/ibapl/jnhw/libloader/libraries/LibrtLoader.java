@@ -22,8 +22,9 @@
 package de.ibapl.jnhw.libloader.libraries;
 
 import de.ibapl.jnhw.libloader.MultiarchTupelBuilder;
+import java.lang.foreign.Arena;
 import java.lang.foreign.MemorySegment;
-import java.lang.foreign.MemorySession;
+import java.lang.foreign.SegmentScope;
 import java.lang.foreign.SymbolLookup;
 import java.util.Optional;
 
@@ -31,19 +32,19 @@ import java.util.Optional;
  *
  * @author aploese
  */
-public class LibrtLoader {
+public final class LibrtLoader {
 
     public final static SymbolLookup LIB_RT_SYMBOL_LOOKUP;
-    private final static MemorySession LIB_RT_MEMORY_SESSION = MemorySession.openShared();
+    private final static Arena LIB_RT_MEMORY_ARENA = Arena.openShared();
 
     static {
         LIB_RT_SYMBOL_LOOKUP = switch (MultiarchTupelBuilder.getOS()) {
             case APPLE -> //TODO Quick and dirty ... Symbol
                 throw new AssertionError("Darwin has no lib rt! its in libc");
             case FREE_BSD -> //TODO Quick and dirty ... Symbol
-                SymbolLookup.libraryLookup("librt.so.1", LIB_RT_MEMORY_SESSION);
+                SymbolLookup.libraryLookup("librt.so.1", LIB_RT_MEMORY_ARENA.scope());
             case LINUX -> //TODO Quick and dirty ... Symbol
-                SymbolLookup.libraryLookup("librt.so.1", LIB_RT_MEMORY_SESSION);
+                SymbolLookup.libraryLookup("librt.so.1", LIB_RT_MEMORY_ARENA.scope());
             default ->
                 throw new AssertionError("No idea where to find the librt");
         };
@@ -52,8 +53,17 @@ public class LibrtLoader {
 //TODO  does not work anymore       LIB_RT_SYMBOL_LOOKUP = SymbolLookup.libraryLookup("rt", MemorySession.global());
     }
 
-    public static Optional<MemorySegment> lookup(String name) {
-        return LIB_RT_SYMBOL_LOOKUP.lookup(name);
+//TODO unboundedAddress?
+    public final static Optional<MemorySegment> find(String name, long byteSize) {
+        Optional<MemorySegment> _result = LIB_RT_SYMBOL_LOOKUP.find(name);
+        if (_result.isPresent()) {
+            return Optional.of(MemorySegment.ofAddress(_result.get().address(), byteSize, scope()));
+        } else {
+            return _result;
+        }
     }
 
+    public final static SegmentScope scope() {
+        return LIB_RT_MEMORY_ARENA.scope();
+    }
 }

@@ -25,8 +25,7 @@ import de.ibapl.jnhw.common.datatypes.Pointer;
 import de.ibapl.jnhw.common.util.JnhwFormater;
 import de.ibapl.jnhw.common.util.JsonStringBuilder;
 import java.io.IOException;
-import java.lang.foreign.Addressable;
-import java.lang.foreign.MemoryAddress;
+import java.lang.foreign.MemorySegment;
 import java.util.Objects;
 import java.util.function.Function;
 
@@ -36,27 +35,28 @@ import java.util.function.Function;
  */
 public class NativeFunctionPointer implements Pointer {
 
-    public static NativeFunctionPointer wrap(MemoryAddress memoryAddress) {
+    public static NativeFunctionPointer wrap(MemorySegment memoryAddress) {
         return new NativeFunctionPointer(memoryAddress);
     }
-    protected final MemoryAddress memoryAddress;
+    protected final MemorySegment memoryAddress;
 
     @SuppressWarnings("unchecked")
-    public <T extends NativeFunctionPointer> NativeFunctionPointer(Function<T, MemoryAddress> producer) {
+    public <T extends NativeFunctionPointer> NativeFunctionPointer(Function<T, MemorySegment> producer) {
         this.memoryAddress = producer.apply((T) this);
     }
 
-    public NativeFunctionPointer(MemoryAddress src) {
+    public NativeFunctionPointer(MemorySegment src) {
         this.memoryAddress = src;
     }
 
     @Override
-    public final Addressable toAddressable() {
+    public final MemorySegment toMemorySegment() {
         return memoryAddress;
     }
 
-    public final MemoryAddress toAddress() {
-        return memoryAddress;
+    @Override
+    public final long toAddress() {
+        return memoryAddress.address();
     }
 
     @Override
@@ -80,12 +80,12 @@ public class NativeFunctionPointer implements Pointer {
 
     @Override
     public final boolean is_NULL() {
-        return memoryAddress == MemoryAddress.NULL;
+        return memoryAddress.address() == 0L;
     }
 
     @Override
     public final boolean is_Not_NULL() {
-        return memoryAddress != MemoryAddress.NULL;
+        return memoryAddress.address() != 0L;
     }
 
     @Override
@@ -102,7 +102,7 @@ public class NativeFunctionPointer implements Pointer {
     @FunctionalInterface
     public interface Producer<A extends NativeFunctionPointer> {
 
-        A produce(MemoryAddress address);
+        A produce(MemorySegment address);
     }
 
 }

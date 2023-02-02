@@ -26,7 +26,6 @@ import de.ibapl.jnhw.common.downcall.JnhwMh_sI___A;
 import de.ibapl.jnhw.common.downcall.JnhwMh_sL___A;
 import de.ibapl.jnhw.common.downcall.JnhwMh_uL___A;
 import de.ibapl.jnhw.common.util.ConversionsNative2Java;
-import java.lang.foreign.Addressable;
 import java.lang.foreign.MemorySegment;
 
 /**
@@ -42,11 +41,11 @@ public class JniMi__I___A extends JniMethodInvoker implements JnhwMh_sI___A.Exce
     }
 
     @Override
-    public int invoke_sI___A(Addressable arg1) {
+    public int invoke_sI___A(MemorySegment arg1) {
         try {
             return invoke__I___A(
-                    ns.address().toRawLongValue(),
-                    arg1.address().toRawLongValue());
+                    ns.address(),
+                    arg1.address());
         } catch (IllegalArgumentException | NullPointerException e) {
             throw e;
         } catch (Throwable t) {
@@ -55,11 +54,11 @@ public class JniMi__I___A extends JniMethodInvoker implements JnhwMh_sI___A.Exce
     }
 
     @Override
-    public long invoke_sL___A(Addressable arg1) {
+    public long invoke_sL___A(MemorySegment arg1) {
         try {
             return invoke__I___A(
-                    ns.address().toRawLongValue(),
-                    arg1.address().toRawLongValue());
+                    ns.address(),
+                    arg1.address());
         } catch (IllegalArgumentException | NullPointerException e) {
             throw e;
         } catch (Throwable t) {
@@ -68,12 +67,12 @@ public class JniMi__I___A extends JniMethodInvoker implements JnhwMh_sI___A.Exce
     }
 
     @Override
-    public boolean invoke_BL___A(Addressable arg1) {
+    public boolean invoke_BL___A(MemorySegment arg1) {
         try {
             return ConversionsNative2Java.int32_t_TO_boolean(
                     invoke__I___A(
-                            ns.address().toRawLongValue(),
-                            arg1.address().toRawLongValue()));
+                            ns.address(),
+                            arg1.address()));
         } catch (IllegalArgumentException | NullPointerException e) {
             throw e;
         } catch (Throwable t) {
@@ -82,12 +81,12 @@ public class JniMi__I___A extends JniMethodInvoker implements JnhwMh_sI___A.Exce
     }
 
     @Override
-    public long invoke_uL___A(Addressable arg1) {
+    public long invoke_uL___A(MemorySegment arg1) {
         try {
             return ConversionsNative2Java.uint32_t_TO_long(
                     invoke__I___A(
-                            ns.address().toRawLongValue(),
-                            arg1.address().toRawLongValue()));
+                            ns.address(),
+                            arg1.address()));
         } catch (IllegalArgumentException | NullPointerException e) {
             throw e;
         } catch (Throwable t) {

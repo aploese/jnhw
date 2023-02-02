@@ -27,7 +27,7 @@ import de.ibapl.jnhw.common.memory.NativeIntNumber;
 import de.ibapl.jnhw.libloader.MultiarchTupelBuilder;
 import de.ibapl.jnhw.util.winapi.WinApiDataType;
 import java.lang.foreign.MemorySegment;
-import java.lang.foreign.MemorySession;
+import java.lang.foreign.SegmentScope;
 
 /**
  * Wrapper around the
@@ -79,7 +79,7 @@ public abstract class BaseTsd {
 
         public final static BaseDataType DATA_TYPE = WinApiDataType.ULONG_PTR;
 
-        public static PULONG_PTR allocateNative(MemorySession ms) {
+        public static PULONG_PTR allocateNative(SegmentScope ms) {
             final MemorySegment segment = MemorySegment.allocateNative(DATA_TYPE.SIZE_OF, ms);
             switch (DATA_TYPE) {
                 case uint32_t -> {

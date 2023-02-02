@@ -27,7 +27,6 @@ import de.ibapl.jnhw.common.downcall.foreign.JnhwMi__I___A__A__A__I;
 import de.ibapl.jnhw.common.downcall.jni.JniMi__I___A__A__A__I;
 import de.ibapl.jnhw.common.exception.NoSuchNativeMethodException;
 import de.ibapl.jnhw.common.util.NativeProvider;
-import java.lang.foreign.Addressable;
 import java.lang.foreign.MemorySegment;
 import java.lang.foreign.SymbolLookup;
 
@@ -43,11 +42,11 @@ public interface JnhwMh_BL___A__A__A_BL extends JnhwMethodHandle {
 
         @Override
         default boolean invoke_BL___P__P__P_BL(Pointer arg1, Pointer arg2, Pointer arg3, boolean arg4) {
-            return invoke_BL___A__A__A_BL(arg1.toAddressable(), arg2.toAddressable(), arg3.toAddressable(), arg4);
+            return invoke_BL___A__A__A_BL(arg1.toMemorySegment(), arg2.toMemorySegment(), arg3.toMemorySegment(), arg4);
         }
 
         @Override
-        boolean invoke_BL___A__A__A_BL(Addressable arg1, Addressable arg2, Addressable arg3, boolean arg4);
+        boolean invoke_BL___A__A__A_BL(MemorySegment arg1, MemorySegment arg2, MemorySegment arg3, boolean arg4);
     }
 
     static JnhwMh_BL___A__A__A_BL.ExceptionErased mandatoryOf(SymbolLookup symbolLookup, String name, BaseDataType result, BaseDataType arg1, BaseDataType arg2, BaseDataType arg3, BaseDataType arg4) {
@@ -97,8 +96,8 @@ public interface JnhwMh_BL___A__A__A_BL extends JnhwMethodHandle {
     }
 
     default boolean invoke_BL___P__P__P_BL(Pointer arg1, Pointer arg2, Pointer arg3, boolean arg4) throws NoSuchNativeMethodException {
-        return invoke_BL___A__A__A_BL(arg1.toAddressable(), arg2.toAddressable(), arg3.toAddressable(), arg4);
+        return invoke_BL___A__A__A_BL(arg1.toMemorySegment(), arg2.toMemorySegment(), arg3.toMemorySegment(), arg4);
     }
 
-    boolean invoke_BL___A__A__A_BL(Addressable arg1, Addressable arg2, Addressable arg3, boolean arg4) throws NoSuchNativeMethodException;
+    boolean invoke_BL___A__A__A_BL(MemorySegment arg1, MemorySegment arg2, MemorySegment arg3, boolean arg4) throws NoSuchNativeMethodException;
 }

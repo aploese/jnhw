@@ -25,7 +25,7 @@ import de.ibapl.jnhw.common.memory.NativeFunctionPointer;
 import de.ibapl.jnhw.common.upcall.foreign.JnhwCallbackFactory__V___I;
 import de.ibapl.jnhw.common.upcall.jni.JniCallbackFactory__V___I;
 import de.ibapl.jnhw.common.util.NativeProvider;
-import java.lang.foreign.MemoryAddress;
+import java.lang.foreign.MemorySegment;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -45,7 +45,7 @@ public abstract class CallbackFactory__V___I {
     public static final int MAX_CALL_BACKS = 16;
     protected static final Callback__V___I[] REFS = new Callback__V___I[MAX_CALL_BACKS];
 
-    static synchronized MemoryAddress aquire(Callback__V___I cb) {
+    static synchronized MemorySegment aquire(Callback__V___I cb) {
         return INSTANCE.aquire0(cb);
     }
 
@@ -228,7 +228,7 @@ public abstract class CallbackFactory__V___I {
         }
     }
 
-    protected abstract MemoryAddress aquire0(Callback__V___I cb);
+    protected abstract MemorySegment aquire0(Callback__V___I cb);
 
     protected abstract void release0(Callback__V___I cb);
 

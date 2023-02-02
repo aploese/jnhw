@@ -21,6 +21,7 @@
  */
 package de.ibapl.jnhw.it.hello_world_async_io;
 
+import de.ibapl.jnhw.common.exception.InvalidCacheException;
 import de.ibapl.jnhw.common.exception.NativeErrorException;
 import de.ibapl.jnhw.common.exception.NoSuchNativeMethodException;
 import de.ibapl.jnhw.common.exception.NoSuchNativeTypeException;
@@ -37,16 +38,14 @@ import de.ibapl.jnhw.posix.Unistd;
 import de.ibapl.jnhw.util.posix.upcall.Callback__V__UnionSigval;
 import java.io.File;
 import java.io.IOException;
-import java.lang.foreign.MemoryAddress;
+import java.lang.foreign.Arena;
 import java.lang.foreign.MemorySegment;
-import java.lang.foreign.MemorySession;
-import java.util.function.ToIntFunction;
 
 public class Posix {
 
     final boolean isDebug;
     long transmitted;
-    final MemorySession ms = MemorySession.openShared();
+    final Arena ms = Arena.openShared();
     final Aio.Aiocb<Aio.Aiocb> aiocb;
 
     final Object[] objRef = new Object[1];
@@ -56,7 +55,7 @@ public class Posix {
 
         @Override
         @SuppressWarnings("unchecked")
-        protected void callback(MemoryAddress sival_ptr, int sival_int) {
+        protected void callback(MemorySegment sival_ptr, int sival_int) {
             debugThread("Enter callback");
             try {
                 int errno = Aio.aio_error(aiocb);
@@ -87,7 +86,7 @@ public class Posix {
     public Posix(boolean isDebug) {
         this.isDebug = isDebug;
         try {
-            aiocb = Aio.Aiocb.tryAllocateNative(ms);
+            aiocb = Aio.Aiocb.tryAllocateNative(ms.scope());
         } catch (NoSuchNativeTypeException nsnte) {
             throw new RuntimeException(nsnte);
         }
@@ -168,7 +167,7 @@ public class Posix {
 
     private void debugThread(String msg) {
         if (isDebug) {
-            System.out.append(msg).append(" thread: ").append(Thread.currentThread().toString()).append(" pthread_t: ").println(Pthread.pthread_self(ms).nativeToString());
+            System.out.append(msg).append(" thread: ").append(Thread.currentThread().toString()).append(" pthread_t: ").println(Pthread.pthread_self(ms.scope()).nativeToString());
             System.out.flush();
         }
     }
@@ -183,14 +182,26 @@ public class Posix {
                 osa.append("aiocb : ");
                 aiocb.nativeToString(osa, "", " ");
                 osa.append("\n");
-                final Pthread.Pthread_attr_t sigev_notify_attributes = aiocb.aio_sigevent.sigev_notify_attributes((address, _scope, parent) -> Pthread.Pthread_attr_t.ofAddress(address, _scope),
-                        ms
-                );
-                if (sigev_notify_attributes != null) {
-                    osa.append("aiocb.aio_sigevent.sigev_notify_attributes : ");
-                    sigev_notify_attributes.nativeToString(osa, "", " ");
-                    osa.append("\n");
+                Pthread.Pthread_attr_t sigev_notify_attributes;
+                try {
+                    sigev_notify_attributes = aiocb.aio_sigevent.sigev_notify_attributesAs();
+                } catch (InvalidCacheException ice) {
+                    final long address = aiocb.aio_sigevent.sigev_notify_attributes().address();
+                    if (address != 0L) {
+                        sigev_notify_attributes = Pthread.Pthread_attr_t.ofAddress(address, ms.scope());
+                    } else {
+                        sigev_notify_attributes = null;
+                    }
                 }
+
+                osa.append("aiocb.aio_sigevent.sigev_notify_attributes : ");
+                if (sigev_notify_attributes == null) {
+                    osa.append("null");
+                } else {
+                    sigev_notify_attributes.nativeToString(osa, "", " ");
+                }
+                osa.append("\n");
+
                 osa.append("native callback same address as aiocb.aio_sigevent.sigev_notify_function: ");
                 callback.nativeToString(osa, "", " ");
                 osa.append("\n");

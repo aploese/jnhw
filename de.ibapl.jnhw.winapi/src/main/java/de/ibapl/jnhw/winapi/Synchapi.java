@@ -29,7 +29,6 @@ import de.ibapl.jnhw.common.downcall.JnhwMh_uI___A_uI;
 import de.ibapl.jnhw.common.downcall.JnhwMh_uI___A_uI_BL;
 import de.ibapl.jnhw.common.downcall.JnhwMh_uI__uI__A_BL_uI;
 import de.ibapl.jnhw.common.downcall.JnhwMh_uI__uI__A_BL_uI_BL;
-import de.ibapl.jnhw.common.downcall.JnhwMh_uI__uI_sI;
 import de.ibapl.jnhw.common.downcall.JnhwMh_uL__uI_BL;
 import de.ibapl.jnhw.common.exception.NativeErrorException;
 import de.ibapl.jnhw.util.winapi.Kernel32Loader;
@@ -37,8 +36,8 @@ import de.ibapl.jnhw.util.winapi.WinApiDataType;
 import de.ibapl.jnhw.winapi.Minwinbase.SECURITY_ATTRIBUTES;
 import de.ibapl.jnhw.winapi.Winnt.ArrayOfHandle;
 import de.ibapl.jnhw.winapi.Winnt.HANDLE;
-import java.lang.foreign.MemoryAddress;
-import java.lang.foreign.MemorySession;
+import java.lang.foreign.Arena;
+import java.lang.foreign.MemorySegment;
 
 /**
  * Wrapper around the
@@ -138,13 +137,13 @@ public abstract class Synchapi {
      * indicates an error.
      */
     public final static HANDLE CreateEventW(SECURITY_ATTRIBUTES lpEventAttributes, boolean bManualReset, boolean bInitialState, String lpName) throws NativeErrorException {
-        try (MemorySession ms = MemorySession.openConfined()) {
-            MemoryAddress result = CreateEventW.invoke_MA___P_BL_BL__P(
+        try (Arena ms = Arena.openConfined()) {
+            MemorySegment result = CreateEventW.invoke_MA___P_BL_BL__P(
                     lpEventAttributes != null ? lpEventAttributes : Pointer.NULL,
                     bManualReset,
                     bInitialState,
-                    lpName != null ? WinDef.LPWSTR.wrap(lpName, true, ms) : Pointer.NULL);
-            if (result == MemoryAddress.NULL) {
+                    lpName != null ? WinDef.LPWSTR.wrap(lpName, true, ms.scope()) : Pointer.NULL);
+            if (result.address() == 0L) {
                 throw new NativeErrorException(Errhandlingapi.GetLastError());
             }
             return HANDLE.of(result);

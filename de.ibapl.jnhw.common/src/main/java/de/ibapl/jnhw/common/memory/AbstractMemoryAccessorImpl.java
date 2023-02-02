@@ -24,8 +24,6 @@ package de.ibapl.jnhw.common.memory;
 import de.ibapl.jnhw.common.datatypes.Pointer;
 import de.ibapl.jnhw.libloader.Arch;
 import de.ibapl.jnhw.libloader.MultiarchTupelBuilder;
-import java.lang.foreign.Addressable;
-import java.lang.foreign.MemoryAddress;
 import java.lang.foreign.MemorySegment;
 import java.lang.foreign.ValueLayout;
 import java.nio.ByteBuffer;
@@ -78,7 +76,8 @@ public sealed abstract class AbstractMemoryAccessorImpl implements MemoryAccesso
         }
         LAYOUT_UINT64_T = LAYOUT_INT64_T;
 
-        LAYOUT_ADDRESS = ValueLayout.ADDRESS.withOrder(byteOrder);
+        //TODO how to handle bounded addresses ???
+        LAYOUT_ADDRESS = ValueLayout.ADDRESS.withOrder(byteOrder).asUnbounded();
         LAYOUT_INTPTR_T = LAYOUT_ADDRESS;
         LAYOUT_UINTPTR_T = LAYOUT_ADDRESS;
 
@@ -95,7 +94,8 @@ public sealed abstract class AbstractMemoryAccessorImpl implements MemoryAccesso
         LAYOUT_INT64_T = ValueLayout.JAVA_LONG.withOrder(byteOrder).withBitAlignment(alignmentBits);
         LAYOUT_UINT64_T = LAYOUT_INT64_T;
 
-        LAYOUT_ADDRESS = ValueLayout.ADDRESS.withOrder(byteOrder).withBitAlignment(alignmentBits);
+        //TODO how to handle bounded addresses ???
+        LAYOUT_ADDRESS = ValueLayout.ADDRESS.withOrder(byteOrder).withBitAlignment(alignmentBits).asUnbounded();
         LAYOUT_INTPTR_T = LAYOUT_ADDRESS;
         LAYOUT_UINTPTR_T = LAYOUT_ADDRESS;
 
@@ -143,18 +143,18 @@ public sealed abstract class AbstractMemoryAccessorImpl implements MemoryAccesso
     }
 
     @Override
-    public MemoryAddress intptr_t(MemorySegment mem, long offset) {
+    public MemorySegment intptr_t(MemorySegment mem, long offset) {
         return mem.get(LAYOUT_INTPTR_T, offset);
     }
 
     @Override
-    public void intptr_t(MemorySegment mem, long offset, Addressable value) {
+    public void intptr_t(MemorySegment mem, long offset, MemorySegment value) {
         mem.set(LAYOUT_INTPTR_T, offset, value);
     }
 
     @Override
     public void intptr_t(MemorySegment mem, long offset, Pointer value) {
-        mem.set(LAYOUT_INTPTR_T, offset, value.toAddressable());
+        mem.set(LAYOUT_INTPTR_T, offset, value.toMemorySegment());
     }
 
     @Override
@@ -163,18 +163,13 @@ public sealed abstract class AbstractMemoryAccessorImpl implements MemoryAccesso
     }
 
     @Override
-    public MemoryAddress intptr_t_AtIndex(MemorySegment mem, long index) {
+    public MemorySegment intptr_t_AtIndex(MemorySegment mem, long index) {
         return mem.getAtIndex(LAYOUT_INTPTR_T, index);
     }
 
     @Override
-    public void intptr_t_AtIndex(MemorySegment mem, long index, Addressable dest) {
+    public void intptr_t_AtIndex(MemorySegment mem, long index, MemorySegment dest) {
         mem.setAtIndex(LAYOUT_INTPTR_T, index, dest);
-    }
-
-    @Override
-    public void intptr_t_AtIndex(MemorySegment mem, long index, Pointer dest) {
-        mem.setAtIndex(LAYOUT_INTPTR_T, index, dest.toAddressable());
     }
 
     @Override
@@ -218,12 +213,12 @@ public sealed abstract class AbstractMemoryAccessorImpl implements MemoryAccesso
     }
 
     @Override
-    public MemoryAddress uintptr_t(MemorySegment mem, long offset) {
+    public MemorySegment uintptr_t(MemorySegment mem, long offset) {
         return mem.get(LAYOUT_INTPTR_T, offset);
     }
 
     @Override
-    public void uintptr_t(MemorySegment mem, long offset, Addressable value) {
+    public void uintptr_t(MemorySegment mem, long offset, MemorySegment value) {
         mem.set(LAYOUT_UINTPTR_T, offset, value);
     }
 
@@ -243,13 +238,8 @@ public sealed abstract class AbstractMemoryAccessorImpl implements MemoryAccesso
     }
 
     @Override
-    public MemoryAddress uintptr_t_AtIndex(MemorySegment mem, long index) {
+    public MemorySegment uintptr_t_AtIndex(MemorySegment mem, long index) {
         return mem.getAtIndex(LAYOUT_UINTPTR_T, index);
-    }
-
-    @Override
-    public void uintptr_t_AtIndex(MemorySegment mem, long index, MemoryAddress dest) {
-        mem.setAtIndex(LAYOUT_UINTPTR_T, index, dest);
     }
 
     @Override

@@ -29,8 +29,7 @@ import de.ibapl.jnhw.common.test.LibJnhwCommonTestLoader;
 import de.ibapl.jnhw.libloader.Endianess;
 import de.ibapl.jnhw.libloader.MultiarchTupelBuilder;
 import de.ibapl.jnhw.libloader.OS;
-import java.lang.foreign.MemorySegment;
-import java.lang.foreign.MemorySession;
+import java.lang.foreign.Arena;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
 import static org.junit.jupiter.api.Assertions.*;
@@ -190,8 +189,8 @@ public class BaseDataTypeTest {
 
     @Test
     public void testEndianes() {
-        try (MemorySession ms = MemorySession.openConfined()) {
-            final Uint64_t uint64_t = new Uint64_t(MemorySegment.allocateNative(BaseDataType.uint64_t.SIZE_OF, ms), 0);
+        try (Arena ms = Arena.openConfined()) {
+            final Uint64_t uint64_t = new Uint64_t(ms.allocate(BaseDataType.uint64_t.SIZE_OF), 0);
             OpaqueMemory.setByte(uint64_t, 0, (byte) 0x01);
             OpaqueMemory.setByte(uint64_t, 1, (byte) 0x02);
             OpaqueMemory.setByte(uint64_t, 2, (byte) 0x03);

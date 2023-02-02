@@ -37,7 +37,7 @@ public class JniMi_clock_tI___V extends JniMi__I___V implements JnhwMh_clock_t__
 
     @Override
     public long invoke_clock_t___V() {
-        return invoke__I___V(ns.address().toRawLongValue());
+        return invoke__I___V(ns.address());
     }
 
 }

@@ -23,12 +23,11 @@ package de.ibapl.jnhw.it.posixsignal.posix_signal;
 
 import de.ibapl.jnhw.common.datatypes.BaseDataType;
 import de.ibapl.jnhw.common.downcall.JnhwMh__V__sI;
-import de.ibapl.jnhw.common.downcall.foreign.JnhwMi__V___I;
 import de.ibapl.jnhw.common.nativepointer.FunctionPtr__V___I;
 import de.ibapl.jnhw.common.upcall.Callback__V___I;
 import de.ibapl.jnhw.posix.Signal;
+import java.lang.foreign.Arena;
 import java.lang.foreign.MemorySegment;
-import java.lang.foreign.MemorySession;
 
 /**
  *
@@ -51,10 +50,10 @@ public class SimpleSignalHandler extends SignalHandler {
                 case PRINT_MSG_AND_SYSTEM_EXIT ->
                     System.exit(value);
                 case PRINT_MSG_AND_CALL_OLD_HANDLER -> {
-                    try (MemorySession ms = MemorySession.openConfined()) {
+                    try (Arena ms = Arena.openConfined()) {
                         JnhwMh__V__sI.of(
                                 MemorySegment.ofAddress(
-                                        originalHandler.toAddressable().address(), 0, ms),
+                                        originalHandler.toMemorySegment().address(), 0, ms.scope()),
                                 "testCallback",
                                 BaseDataType.C_int
                         ).invoke__V__sI(value);

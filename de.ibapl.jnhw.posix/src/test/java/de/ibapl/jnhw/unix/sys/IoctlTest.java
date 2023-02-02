@@ -24,12 +24,11 @@ package de.ibapl.jnhw.unix.sys;
 import de.ibapl.jnhw.common.datatypes.BaseDataType;
 import de.ibapl.jnhw.common.memory.Int32_t;
 import de.ibapl.jnhw.libloader.MultiarchTupelBuilder;
-import de.ibapl.jnhw.libloader.OS;
 import de.ibapl.jnhw.posix.JnhwTestLogger;
 import de.ibapl.jnhw.posix.LibJnhwPosixTestLoader;
 import de.ibapl.jnhw.util.posix.DefinesTest;
-import java.lang.foreign.MemoryAddress;
-import java.lang.foreign.MemorySession;
+import java.lang.foreign.Arena;
+import java.lang.foreign.MemorySegment;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
@@ -65,12 +64,12 @@ public class IoctlTest {
         JnhwTestLogger.logAfterAll(testTnfo);
     }
 
-    private MemorySession ms;
+    private Arena ms;
 
     @BeforeEach
     public void setUp(TestInfo testInfo) throws Exception {
         JnhwTestLogger.logBeforeEach(testInfo);
-        ms = MemorySession.openConfined();
+        ms = Arena.openConfined();
     }
 
     @AfterEach
@@ -186,13 +185,13 @@ public class IoctlTest {
     @Test
     public void test_IOC_DIR() throws Exception {
         final int arg = 1;
-        final Int32_t resultArg = Int32_t.allocateNative(ms);
-        final MemoryAddress result = LibJnhwPosixTestLoader.invoke_MA___A_sI("tryGet_IOC_DIR", resultArg.toAddressable(), arg);
+        final Int32_t resultArg = Int32_t.allocateNative(ms.scope());
+        final MemorySegment result = LibJnhwPosixTestLoader.invoke_MA___A_sI("tryGet_IOC_DIR", resultArg.toMemorySegment(), arg);
         switch (MultiarchTupelBuilder.getOS()) {
             case APPLE, FREE_BSD, OPEN_BSD ->
-                Assertions.assertEquals(MemoryAddress.NULL, result);
+                Assertions.assertEquals(0L, result.address());
             case LINUX -> {
-                Assertions.assertNotEquals(MemoryAddress.NULL, result);
+                Assertions.assertNotEquals(0L, result.address());
                 Assertions.assertEquals(resultArg.int32_t(), Ioctl._IOC_DIR(arg));
             }
             default ->
@@ -203,13 +202,13 @@ public class IoctlTest {
     @Test
     public void test_IOC_NR() throws Exception {
         final int arg = 1;
-        final Int32_t resultArg = Int32_t.allocateNative(ms);
-        final MemoryAddress result = LibJnhwPosixTestLoader.invoke_MA___A_sI("tryGet_IOC_NR", resultArg.toAddressable(), arg);
+        final Int32_t resultArg = Int32_t.allocateNative(ms.scope());
+        final MemorySegment result = LibJnhwPosixTestLoader.invoke_MA___A_sI("tryGet_IOC_NR", resultArg.toMemorySegment(), arg);
         switch (MultiarchTupelBuilder.getOS()) {
             case APPLE, FREE_BSD, OPEN_BSD ->
-                Assertions.assertEquals(MemoryAddress.NULL, result);
+                Assertions.assertEquals(0L, result.address());
             case LINUX -> {
-                Assertions.assertNotEquals(MemoryAddress.NULL, result);
+                Assertions.assertNotEquals(0L, result.address());
                 Assertions.assertEquals(resultArg.int32_t(), Ioctl._IOC_NR(arg));
             }
             default ->
@@ -220,13 +219,13 @@ public class IoctlTest {
     @Test
     public void test_IOC_SIZE() throws Exception {
         final int arg = 1;
-        final Int32_t resultArg = Int32_t.allocateNative(ms);
-        final MemoryAddress result = LibJnhwPosixTestLoader.invoke_MA___A_sI("tryGet_IOC_SIZE", resultArg.toAddressable(), arg);
+        final Int32_t resultArg = Int32_t.allocateNative(ms.scope());
+        final MemorySegment result = LibJnhwPosixTestLoader.invoke_MA___A_sI("tryGet_IOC_SIZE", resultArg.toMemorySegment(), arg);
         switch (MultiarchTupelBuilder.getOS()) {
             case APPLE, FREE_BSD, OPEN_BSD ->
-                Assertions.assertEquals(MemoryAddress.NULL, result);
+                Assertions.assertEquals(0L, result.address());
             case LINUX -> {
-                Assertions.assertNotEquals(MemoryAddress.NULL, result);
+                Assertions.assertNotEquals(0L, result.address());
                 Assertions.assertEquals(resultArg.int32_t(), Ioctl._IOC_SIZE(arg));
             }
             default ->
@@ -237,13 +236,13 @@ public class IoctlTest {
     @Test
     public void test_IOC_TYPE() throws Exception {
         final int arg = 1;
-        final Int32_t resultArg = Int32_t.allocateNative(ms);
-        final MemoryAddress result = LibJnhwPosixTestLoader.invoke_MA___A_sI("tryGet_IOC_TYPE", resultArg.toAddressable(), arg);
+        final Int32_t resultArg = Int32_t.allocateNative(ms.scope());
+        final MemorySegment result = LibJnhwPosixTestLoader.invoke_MA___A_sI("tryGet_IOC_TYPE", resultArg.toMemorySegment(), arg);
         switch (MultiarchTupelBuilder.getOS()) {
             case APPLE, FREE_BSD, OPEN_BSD ->
-                Assertions.assertEquals(MemoryAddress.NULL, result);
+                Assertions.assertEquals(0L, result.address());
             case LINUX -> {
-                Assertions.assertNotEquals(MemoryAddress.NULL, result);
+                Assertions.assertNotEquals(0L, result.address());
                 Assertions.assertEquals(resultArg.int32_t(), Ioctl._IOC_TYPE(arg));
             }
             default ->
@@ -254,15 +253,15 @@ public class IoctlTest {
     @Test
     public void test_IOCPARM_LEN() throws Exception {
         final int arg = 1;
-        final Int32_t resultArg = Int32_t.allocateNative(ms);
-        final MemoryAddress result = LibJnhwPosixTestLoader.invoke_MA___A_sI("tryGet_IOCPARM_LEN", resultArg.toAddressable(), arg);
+        final Int32_t resultArg = Int32_t.allocateNative(ms.scope());
+        final MemorySegment result = LibJnhwPosixTestLoader.invoke_MA___A_sI("tryGet_IOCPARM_LEN", resultArg.toMemorySegment(), arg);
         switch (MultiarchTupelBuilder.getOS()) {
             case APPLE, FREE_BSD, OPEN_BSD -> {
-                Assertions.assertNotEquals(MemoryAddress.NULL, result);
+                Assertions.assertNotEquals(0L, result.address());
                 Assertions.assertEquals(resultArg.int32_t(), Ioctl.IOCPARM_LEN(arg));
             }
             case LINUX -> {
-                Assertions.assertEquals(MemoryAddress.NULL, result);
+                Assertions.assertEquals(0L, result.address());
                 Assertions.assertThrows(NoSuchMethodException.class,
                         () -> Ioctl.IOCPARM_LEN(1));
             }
@@ -274,15 +273,15 @@ public class IoctlTest {
     @Test
     public void test_IOCBASECMD() throws Exception {
         final int arg = 1;
-        final Int32_t resultArg = Int32_t.allocateNative(ms);
-        MemoryAddress result = LibJnhwPosixTestLoader.invoke_MA___A_sI("tryGet_IOCBASECMD", resultArg.toAddressable(), arg);
+        final Int32_t resultArg = Int32_t.allocateNative(ms.scope());
+        MemorySegment result = LibJnhwPosixTestLoader.invoke_MA___A_sI("tryGet_IOCBASECMD", resultArg.toMemorySegment(), arg);
         switch (MultiarchTupelBuilder.getOS()) {
             case APPLE, FREE_BSD, OPEN_BSD -> {
-                Assertions.assertNotEquals(MemoryAddress.NULL, result);
+                Assertions.assertNotEquals(0L, result.address());
                 Assertions.assertEquals(resultArg.int32_t(), Ioctl.IOCBASECMD(arg));
             }
             case LINUX -> {
-                Assertions.assertEquals(MemoryAddress.NULL, result);
+                Assertions.assertEquals(0L, result.address());
                 Assertions.assertThrows(NoSuchMethodException.class,
                         () -> Ioctl.IOCBASECMD(1));
             }
@@ -294,15 +293,15 @@ public class IoctlTest {
     @Test
     public void test_IOCGROUP() throws Exception {
         final int arg = 1;
-        final Int32_t resultArg = Int32_t.allocateNative(ms);
-        MemoryAddress result = LibJnhwPosixTestLoader.invoke_MA___A_sI("tryGet_IOCGROUP", resultArg.toAddressable(), 1);
+        final Int32_t resultArg = Int32_t.allocateNative(ms.scope());
+        MemorySegment result = LibJnhwPosixTestLoader.invoke_MA___A_sI("tryGet_IOCGROUP", resultArg.toMemorySegment(), 1);
         switch (MultiarchTupelBuilder.getOS()) {
             case APPLE, FREE_BSD, OPEN_BSD -> {
-                Assertions.assertNotEquals(MemoryAddress.NULL, result);
+                Assertions.assertNotEquals(0L, result.address());
                 Assertions.assertEquals(resultArg.int32_t(), Ioctl.IOCGROUP(arg));
             }
             case LINUX -> {
-                Assertions.assertEquals(MemoryAddress.NULL, result);
+                Assertions.assertEquals(0L, result.address());
                 Assertions.assertThrows(NoSuchMethodException.class,
                         () -> Ioctl.IOCGROUP(1));
             }

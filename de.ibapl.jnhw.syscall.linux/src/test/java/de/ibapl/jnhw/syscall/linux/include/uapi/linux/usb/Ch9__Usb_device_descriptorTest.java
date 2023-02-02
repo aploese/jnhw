@@ -24,7 +24,7 @@ package de.ibapl.jnhw.syscall.linux.include.uapi.linux.usb;
 import de.ibapl.jnhw.syscall.linux.sysfs.SysFs;
 import de.ibapl.jnhw.syscall.linux.sysfs.UsbDevice;
 import de.ibapl.jnhw.syscall.linux.sysfs.UsbSerialDevice;
-import java.lang.foreign.MemorySession;
+import java.lang.foreign.Arena;
 import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.Test;
 
@@ -42,12 +42,12 @@ public class Ch9__Usb_device_descriptorTest {
      */
     @Test
     public void testUsb_device_descriptor() throws Exception {
-        try ( MemorySession ms = MemorySession.openConfined()) {
+        try (Arena ms = Arena.openConfined()) {
             System.out.println("test Usb_device_descriptor");
             for (UsbDevice dev : SysFs.bus().usb().devices()) {
                 System.out.println("SysFs dir: \"" + dev.getSysDir() + "\" links to device dir: \"" + dev.getSysDir().getCanonicalPath() + "\"");
                 System.out.println(dev.toShortString());
-                for (AbstractDescriptor descriptor : dev.descriptors(ms)) {
+                for (AbstractDescriptor descriptor : dev.descriptors(ms.scope())) {
                     descriptor.nativeToString(System.out, "", "");
                     System.out.println();
                     if (descriptor.bDescriptorType() == Ch9.USB_DT_DEVICE) {

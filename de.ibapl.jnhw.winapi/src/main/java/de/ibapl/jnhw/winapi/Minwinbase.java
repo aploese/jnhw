@@ -34,10 +34,8 @@ import de.ibapl.jnhw.common.upcall.Callback__V___I__I_MA;
 import de.ibapl.jnhw.util.winapi.memory.WinApiStdStructLayoutFactory;
 import de.ibapl.jnhw.util.winapi.memory.WinApiStruct;
 import de.ibapl.jnhw.winapi.Winnt.HANDLE;
-import java.lang.foreign.Addressable;
-import java.lang.foreign.MemoryAddress;
 import java.lang.foreign.MemorySegment;
-import java.lang.foreign.MemorySession;
+import java.lang.foreign.SegmentScope;
 
 /**
  * Wrapper around the
@@ -52,7 +50,7 @@ public class Minwinbase {
     public abstract static class LPOVERLAPPED_COMPLETION_ROUTINE extends Callback__V___I__I_MA<LPOVERLAPPED> {
 
         @Override
-        protected abstract void callback(int dwErrorCode, int dwNumberOfBytesTransferred, MemoryAddress lpOverlapped);
+        protected abstract void callback(int dwErrorCode, int dwNumberOfBytesTransferred, MemorySegment lpOverlapped);
 
     }
 
@@ -63,7 +61,7 @@ public class Minwinbase {
      */
     public final static class LPOVERLAPPED extends WinApiStruct {
 
-        public static LPOVERLAPPED allocateNative(MemorySession ms) {
+        public static LPOVERLAPPED allocateNative(SegmentScope ms) {
             return new LPOVERLAPPED(MemorySegment.allocateNative(Layout.sizeof, ms), 0);
         }
 
@@ -216,7 +214,7 @@ public class Minwinbase {
          * @return
          */
         @PVOID
-        public final MemoryAddress Pointer() {
+        public final MemorySegment Pointer() {
             return ACCESSOR_PVOID.PVOID(memorySegment, Layout.InternalHigh);
         }
 
@@ -265,11 +263,11 @@ public class Minwinbase {
         }
 
         @PVOID
-        public MemoryAddress lpSecurityDescriptor() {
+        public MemorySegment lpSecurityDescriptor() {
             return ACCESSOR_PVOID.PVOID(memorySegment, Layout.lpSecurityDescriptor);
         }
 
-        public void lpSecurityDescriptor(@PVOID Addressable lpSecurityDescriptor) {
+        public void lpSecurityDescriptor(@PVOID MemorySegment lpSecurityDescriptor) {
             ACCESSOR_PVOID.PVOID(memorySegment, Layout.lpSecurityDescriptor, lpSecurityDescriptor);
         }
 

@@ -38,7 +38,7 @@ public class JnhwMi__I__PthreadTA extends JnhwMi__I___A implements JnhwMh_sI__Pt
 
     @Override
     public int invoke_sI__PthreadT(Pthread.Pthread_t arg1) {
-        return invoke_sI___A(arg1.toAddressable());
+        return invoke_sI___A(arg1.toMemorySegment());
     }
 
 }

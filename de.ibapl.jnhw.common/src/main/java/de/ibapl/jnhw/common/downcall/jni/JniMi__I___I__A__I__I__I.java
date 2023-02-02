@@ -24,7 +24,7 @@ package de.ibapl.jnhw.common.downcall.jni;
 import de.ibapl.jnhw.common.downcall.JnhwMh_uI__uI__A_BL_uI_BL;
 import de.ibapl.jnhw.common.downcall.JnhwMh_uI__uI__A_uI_uI_uI;
 import de.ibapl.jnhw.common.util.ConversionsJava2Native;
-import java.lang.foreign.Addressable;
+import java.lang.foreign.MemorySegment;
 import java.lang.foreign.MemorySegment;
 import java.lang.foreign.SymbolLookup;
 
@@ -41,12 +41,12 @@ public class JniMi__I___I__A__I__I__I extends JniMethodInvoker implements JnhwMh
     }
 
     @Override
-    public int invoke_uI__uI__A_uI_uI_uI(int arg1, Addressable arg2, int arg3, int arg4, int arg5) {
+    public int invoke_uI__uI__A_uI_uI_uI(int arg1, MemorySegment arg2, int arg3, int arg4, int arg5) {
         try {
             return invoke__I___I__A__I__I__I(
-                    ns.address().toRawLongValue(),
+                    ns.address(),
                     arg1,
-                    arg2.address().toRawLongValue(),
+                    arg2.address(),
                     arg3,
                     arg4,
                     arg5);
@@ -58,12 +58,12 @@ public class JniMi__I___I__A__I__I__I extends JniMethodInvoker implements JnhwMh
     }
 
     @Override
-    public int invoke_uI__uI__A_BL_uI_BL(int arg1, Addressable arg2, boolean arg3, int arg4, boolean arg5) {
+    public int invoke_uI__uI__A_BL_uI_BL(int arg1, MemorySegment arg2, boolean arg3, int arg4, boolean arg5) {
         try {
             return invoke__I___I__A__I__I__I(
-                    ns.address().toRawLongValue(),
+                    ns.address(),
                     arg1,
-                    arg2.address().toRawLongValue(),
+                    arg2.address(),
                     ConversionsJava2Native.boolean_TO_int32_t(arg3),
                     arg4,
                     ConversionsJava2Native.boolean_TO_int32_t(arg5));

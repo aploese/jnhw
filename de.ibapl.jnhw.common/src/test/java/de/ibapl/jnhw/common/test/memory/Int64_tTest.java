@@ -25,8 +25,7 @@ import de.ibapl.jnhw.common.datatypes.BaseDataType;
 import de.ibapl.jnhw.common.memory.Int64_t;
 import de.ibapl.jnhw.common.memory.layout.Alignment;
 import de.ibapl.jnhw.common.test.JnhwTestLogger;
-import java.lang.foreign.MemorySegment;
-import java.lang.foreign.MemorySession;
+import java.lang.foreign.Arena;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
 import static org.junit.jupiter.api.Assertions.*;
@@ -82,8 +81,8 @@ public class Int64_tTest {
      */
     @Test
     public void testRawInt64_t() {
-        try (MemorySession ms = MemorySession.openConfined()) {
-            Int64_t instance = Int64_t.allocateNative(ms);
+        try (Arena ms = Arena.openConfined()) {
+            Int64_t instance = Int64_t.allocateNative(ms.scope());
             long expResult = 0x08070605040302010L;
             instance.int64_t(expResult);
             assertEquals(expResult, instance.int64_t());
@@ -92,8 +91,8 @@ public class Int64_tTest {
 
     @Test
     public void testNativeToString() {
-        try (MemorySession ms = MemorySession.openConfined()) {
-            Int64_t instance = new Int64_t(MemorySegment.allocateNative(BaseDataType.int64_t.SIZE_OF, ms), 0);
+        try (Arena ms = Arena.openConfined()) {
+            Int64_t instance = new Int64_t(ms.allocate(BaseDataType.int64_t.SIZE_OF), 0);
             instance.int64_t(-2);
             assertEquals("-2", instance.nativeToString());
             assertEquals("0xfffffffffffffffe", instance.nativeToHexString());

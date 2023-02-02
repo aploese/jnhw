@@ -34,7 +34,6 @@ import de.ibapl.jnhw.util.posix.downcall.foreign.JnhwMi__I__PthreadTL__A__A;
 import de.ibapl.jnhw.util.posix.downcall.jni.JniMi__I__PthreadTA__A__A;
 import de.ibapl.jnhw.util.posix.downcall.jni.JniMi__I__PthreadTI__A__A;
 import de.ibapl.jnhw.util.posix.downcall.jni.JniMi__I__PthreadTL__A__A;
-import java.lang.foreign.Addressable;
 import java.lang.foreign.MemorySegment;
 import java.lang.foreign.SymbolLookup;
 
@@ -49,11 +48,11 @@ public interface JnhwMh_sI__PthreadT__A__A extends JnhwMethodHandle {
 
         @Override
         default int invoke_sI__PthreadT__P__P(Pthread.Pthread_t arg1, Pointer arg2, Pointer arg3) {
-            return invoke_sI__PthreadT__A__A(arg1, arg2.toAddressable(), arg3.toAddressable());
+            return invoke_sI__PthreadT__A__A(arg1, arg2.toMemorySegment(), arg3.toMemorySegment());
         }
 
         @Override
-        int invoke_sI__PthreadT__A__A(Pthread.Pthread_t arg1, Addressable arg2, Addressable arg3);
+        int invoke_sI__PthreadT__A__A(Pthread.Pthread_t arg1, MemorySegment arg2, MemorySegment arg3);
     }
 
     static JnhwMh_sI__PthreadT__A__A.ExceptionErased mandatoryOf(SymbolLookup symbolLookup, String name, BaseDataType result, BaseDataType arg1, BaseDataType arg2, BaseDataType arg3) {
@@ -126,8 +125,8 @@ public interface JnhwMh_sI__PthreadT__A__A extends JnhwMethodHandle {
     }
 
     default int invoke_sI__PthreadT__P__P(Pthread.Pthread_t arg1, Pointer arg2, Pointer arg3) throws NoSuchNativeMethodException {
-        return invoke_sI__PthreadT__A__A(arg1, arg2.toAddressable(), arg3.toAddressable());
+        return invoke_sI__PthreadT__A__A(arg1, arg2.toMemorySegment(), arg3.toMemorySegment());
     }
 
-    int invoke_sI__PthreadT__A__A(Pthread.Pthread_t arg1, Addressable arg2, Addressable arg3) throws NoSuchNativeMethodException;
+    int invoke_sI__PthreadT__A__A(Pthread.Pthread_t arg1, MemorySegment arg2, MemorySegment arg3) throws NoSuchNativeMethodException;
 }

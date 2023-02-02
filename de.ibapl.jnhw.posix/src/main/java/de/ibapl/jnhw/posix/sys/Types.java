@@ -43,7 +43,7 @@ import de.ibapl.jnhw.libloader.MultiarchTupelBuilder;
 import de.ibapl.jnhw.util.posix.PosixDataType;
 import java.io.IOException;
 import java.lang.foreign.MemorySegment;
-import java.lang.foreign.MemorySession;
+import java.lang.foreign.SegmentScope;
 
 /**
  * Wrapper around the {@code  <sys/stat.h>} header.
@@ -62,7 +62,7 @@ public class Types {
 
         private final static BaseDataType dataType = PosixDataType.clock_t;
 
-        public final static Clock_t allocateNative(MemorySession ms) {
+        public final static Clock_t allocateNative(SegmentScope ms) {
             return new Clock_t(MemorySegment.allocateNative(PosixDataType.clock_t.SIZE_OF, ms), 0);
         }
 
@@ -118,7 +118,7 @@ public class Types {
 
         private final static BaseDataType dataType = PosixDataType.clockid_t;
 
-        public final static Clockid_t allocateNative(MemorySession ms) {
+        public final static Clockid_t allocateNative(SegmentScope ms) {
             return new Clockid_t(MemorySegment.allocateNative(PosixDataType.clock_t.SIZE_OF, ms), 0);
         }
 
@@ -172,7 +172,7 @@ public class Types {
     @gid_t
     public final static class Gid_t extends Uint32_t {
 
-        public static Gid_t allocateNative(MemorySession ms) {
+        public static Gid_t allocateNative(SegmentScope ms) {
             return new Gid_t(MemorySegment.allocateNative(PosixDataType.gid_t.SIZE_OF, ms), 0);
         }
 
@@ -184,7 +184,7 @@ public class Types {
     @mode_t
     public static class Mode_t extends AsUnsignedInt {
 
-        public final static Mode_t allocateNative(MemorySession ms) {
+        public final static Mode_t allocateNative(SegmentScope ms) {
             return new Mode_t(MemorySegment.allocateNative(PosixDataType.mode_t.SIZE_OF, ms), 0);
         }
 
@@ -197,7 +197,7 @@ public class Types {
     @off_t
     public static class Off_t extends AsSignedLong {
 
-        public final static Off_t allocateNative(MemorySession ms) {
+        public final static Off_t allocateNative(SegmentScope ms) {
             return new Off_t(MemorySegment.allocateNative(PosixDataType.off_t.SIZE_OF, ms), 0);
         }
 
@@ -210,7 +210,7 @@ public class Types {
     @pid_t
     public static class Pid_t extends Int32_t {
 
-        public static Pid_t allocateNative(MemorySession ms) {
+        public static Pid_t allocateNative(SegmentScope ms) {
             return new Pid_t(MemorySegment.allocateNative(PosixDataType.pid_t.SIZE_OF, ms), 0);
         }
 
@@ -223,7 +223,7 @@ public class Types {
     @size_t
     public static class Size_t extends AsUnsignedLong {
 
-        public static Size_t allocateNative(MemorySession ms) {
+        public static Size_t allocateNative(SegmentScope ms) {
             return new Size_t(MemorySegment.allocateNative(PosixDataType.size_t.SIZE_OF, ms), 0);
         }
 
@@ -235,7 +235,7 @@ public class Types {
     @ssize_t
     public static class Ssize_t extends AsSignedLong {
 
-        public static Ssize_t allocateNative(MemorySession ms) {
+        public static Ssize_t allocateNative(SegmentScope ms) {
             return new Ssize_t(MemorySegment.allocateNative(PosixDataType.ssize_t.SIZE_OF, ms), 0);
         }
 
@@ -248,7 +248,7 @@ public class Types {
     @time_t
     public static class Time_t extends AsSignedLong {
 
-        public static Time_t allocateNative(MemorySession ms) {
+        public static Time_t allocateNative(SegmentScope ms) {
             return new Time_t(MemorySegment.allocateNative(PosixDataType.time_t.SIZE_OF, ms), 0);
         }
 
@@ -261,7 +261,7 @@ public class Types {
     @uid_t
     public static class Uid_t extends Uint32_t {
 
-        public static Uid_t allocateNative(MemorySession ms) {
+        public static Uid_t allocateNative(SegmentScope ms) {
             return new Uid_t(MemorySegment.allocateNative(PosixDataType.uid_t.SIZE_OF, ms), 0);
         }
 

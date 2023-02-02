@@ -51,11 +51,11 @@ import de.ibapl.jnhw.common.util.IntDefine;
 import de.ibapl.jnhw.libloader.MultiarchTupelBuilder;
 import de.ibapl.jnhw.libloader.libraries.LibcLoader;
 import de.ibapl.jnhw.util.posix.PosixDataType;
+import java.lang.foreign.Arena;
 import java.lang.foreign.MemorySegment;
-import java.lang.foreign.MemorySession;
+import java.lang.foreign.SegmentScope;
 import java.nio.ByteBuffer;
 import java.util.Objects;
-import java.util.Optional;
 
 /**
  * Wrapper around the {@code <stdio.h>} header.
@@ -290,7 +290,7 @@ public final class Unistd {
             return new Int32_t(memorySegment, elementoffset);
         }
 
-        public final static JnhwPipeFiledes allocateNative(MemorySession ms) {
+        public final static JnhwPipeFiledes allocateNative(SegmentScope ms) {
             return new JnhwPipeFiledes(MemorySegment.allocateNative(Int32_t.DATA_TYPE.SIZE_OF * ARRAY_LENGTH, ms), 0);
         }
 
@@ -631,8 +631,8 @@ public final class Unistd {
      */
     @ssize_t
     public final static int read(int fildes, byte[] buf) throws NativeErrorException {
-        try (MemorySession ms = MemorySession.openConfined()) {
-            final MemorySegment mem = MemorySegment.allocateNative(buf.length, ms);
+        try (Arena ms = Arena.openConfined()) {
+            final MemorySegment mem = ms.allocate(buf.length);
             final long result = read.invoke_sL__sI__A_uL(fildes, mem, buf.length);
             if (result == -1) {
                 throw new NativeErrorException(Errno.errno());
@@ -665,8 +665,8 @@ public final class Unistd {
     @ssize_t
     public final static int read(int fildes, byte[] buf, int destOff, @size_t int nbyte) throws NativeErrorException {
         Objects.checkFromIndexSize(destOff, nbyte, buf.length);
-        try (MemorySession ms = MemorySession.openConfined()) {
-            final MemorySegment mem = MemorySegment.allocateNative(nbyte, ms);
+        try (Arena ms = Arena.openConfined()) {
+            final MemorySegment mem = ms.allocate(nbyte);
             final long result = read.invoke_sL__sI__A_uL(fildes, mem, nbyte);
             if (result == -1) {
                 throw new NativeErrorException(Errno.errno());
@@ -960,8 +960,8 @@ public final class Unistd {
      */
     @ssize_t
     public final static int write(int fildes, byte[] buf) throws NativeErrorException {
-        try (MemorySession ms = MemorySession.openConfined()) {
-            final MemorySegment mem = MemorySegment.allocateNative(buf.length, ms);
+        try (Arena ms = Arena.openConfined()) {
+            final MemorySegment mem = ms.allocate(buf.length);
             mem.copyFrom(MemorySegment.ofArray(buf));
             final long result = write.invoke_sL__sI__A_uL(fildes, mem, buf.length);
             if (result == -1) {
@@ -994,8 +994,8 @@ public final class Unistd {
     @ssize_t
     public final static int write(int fildes, byte[] buf, int srcOff, @size_t int nbyte) throws NativeErrorException {
         Objects.checkFromIndexSize(srcOff, nbyte, buf.length);
-        try (MemorySession ms = MemorySession.openConfined()) {
-            final MemorySegment mem = MemorySegment.allocateNative(nbyte, ms);
+        try (Arena ms = Arena.openConfined()) {
+            final MemorySegment mem = ms.allocate(nbyte);
             mem.copyFrom(MemorySegment.ofArray(buf).asSlice(srcOff, nbyte));
             final long result = write.invoke_sL__sI__A_uL(fildes, mem, nbyte);
             if (result == -1) {

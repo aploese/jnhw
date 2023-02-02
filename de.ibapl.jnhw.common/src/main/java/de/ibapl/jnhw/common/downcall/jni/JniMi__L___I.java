@@ -40,7 +40,7 @@ public class JniMi__L___I extends JniMethodInvoker implements JnhwMh_sL__sI.Exce
     public long invoke_sL__sI(int arg1) {
         try {
             return invoke__L___I(
-                    ns.address().toRawLongValue(),
+                    ns.address(),
                     arg1);
         } catch (IllegalArgumentException | NullPointerException e) {
             throw e;

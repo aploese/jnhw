@@ -28,8 +28,6 @@ import de.ibapl.jnhw.common.downcall.foreign.JnhwMi_MA___A__I__I__A__I__I__A;
 import de.ibapl.jnhw.common.downcall.jni.JniMi_MA___A__I__I__A__I__I__A;
 import de.ibapl.jnhw.common.exception.NoSuchNativeMethodException;
 import de.ibapl.jnhw.common.util.NativeProvider;
-import java.lang.foreign.Addressable;
-import java.lang.foreign.MemoryAddress;
 import java.lang.foreign.MemorySegment;
 import java.lang.foreign.SymbolLookup;
 
@@ -44,19 +42,19 @@ public interface JnhwMh_MA___A_uI_uI__A_uI_uI__A extends JnhwMethodHandle {
     interface ExceptionErased extends JnhwMh_MA___A_uI_uI__A_uI_uI__A {
 
         @Override
-        default MemoryAddress invoke_MA___P_uI_uI__P_uI_uI__P(Pointer arg1, int arg2, int arg3, Pointer arg4, int arg5, int arg6, Pointer arg7) {
+        default MemorySegment invoke_MA___P_uI_uI__P_uI_uI__P(Pointer arg1, int arg2, int arg3, Pointer arg4, int arg5, int arg6, Pointer arg7) {
             return invoke_MA___A_uI_uI__A_uI_uI__A(
-                    arg1.toAddressable(),
+                    arg1.toMemorySegment(),
                     arg2,
                     arg3,
-                    arg4.toAddressable(),
+                    arg4.toMemorySegment(),
                     arg5,
                     arg6,
-                    arg7.toAddressable());
+                    arg7.toMemorySegment());
         }
 
         @Override
-        MemoryAddress invoke_MA___A_uI_uI__A_uI_uI__A(Addressable arg1, int arg2, int arg3, Addressable arg4, int arg5, int arg6, Addressable arg7);
+        MemorySegment invoke_MA___A_uI_uI__A_uI_uI__A(MemorySegment arg1, int arg2, int arg3, MemorySegment arg4, int arg5, int arg6, MemorySegment arg7);
     }
 
     static JnhwMh_MA___A_uI_uI__A_uI_uI__A.ExceptionErased mandatoryOf(SymbolLookup symbolLookup, String name, BaseDataType result, BaseDataType arg1, BaseDataType arg2, BaseDataType arg3, BaseDataType arg4, BaseDataType arg5, BaseDataType arg6, BaseDataType arg7) {
@@ -120,16 +118,16 @@ public interface JnhwMh_MA___A_uI_uI__A_uI_uI__A extends JnhwMethodHandle {
         };
     }
 
-    default MemoryAddress invoke_MA___P_uI_uI__P_uI_uI__P(Pointer arg1, int arg2, int arg3, Pointer arg4, int arg5, int arg6, Pointer arg7) throws NoSuchNativeMethodException {
+    default MemorySegment invoke_MA___P_uI_uI__P_uI_uI__P(Pointer arg1, int arg2, int arg3, Pointer arg4, int arg5, int arg6, Pointer arg7) throws NoSuchNativeMethodException {
         return invoke_MA___A_uI_uI__A_uI_uI__A(
-                arg1.toAddressable(),
+                arg1.toMemorySegment(),
                 arg2,
                 arg3,
-                arg4.toAddressable(),
+                arg4.toMemorySegment(),
                 arg5,
                 arg6,
-                arg7.toAddressable());
+                arg7.toMemorySegment());
     }
 
-    MemoryAddress invoke_MA___A_uI_uI__A_uI_uI__A(Addressable arg1, int arg2, int arg3, Addressable arg4, int arg5, int arg6, Addressable arg7) throws NoSuchNativeMethodException;
+    MemorySegment invoke_MA___A_uI_uI__A_uI_uI__A(MemorySegment arg1, int arg2, int arg3, MemorySegment arg4, int arg5, int arg6, MemorySegment arg7) throws NoSuchNativeMethodException;
 }

@@ -27,8 +27,8 @@ import de.ibapl.jnhw.common.memory.UintPtr_t;
 import de.ibapl.jnhw.common.util.ByteBufferUtils;
 import java.io.File;
 import java.io.FileInputStream;
-import java.lang.foreign.MemoryAddress;
-import java.lang.foreign.MemorySession;
+import java.lang.foreign.Arena;
+import java.lang.foreign.MemorySegment;
 import java.nio.ByteBuffer;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
@@ -41,7 +41,7 @@ import org.junit.jupiter.api.condition.EnabledOnOs;
 @EnabledOnOs(org.junit.jupiter.api.condition.OS.WINDOWS)
 public class FileapiTest {
 
-    private MemorySession ms;
+    private Arena ms;
 
     private final static byte[] WRITE_VALUE = "Hello world!".getBytes();
 
@@ -57,7 +57,7 @@ public class FileapiTest {
     @BeforeEach
     public void setUp() throws Exception {
         file = File.createTempFile("JNHW_FileapiTest", ".txt");
-        ms = MemorySession.openConfined();
+        ms = Arena.openConfined();
     }
 
     @AfterEach
@@ -74,12 +74,12 @@ public class FileapiTest {
                 Fileapi.OPEN_EXISTING,
                 0,
                 null);
-        WinDef.LPDWORD lpNumberOfBytesWritten = WinDef.LPDWORD.allocateNative(ms);
+        WinDef.LPDWORD lpNumberOfBytesWritten = WinDef.LPDWORD.allocateNative(ms.scope());
         Fileapi.WriteFile(hFile, WRITE_VALUE, 0, WRITE_VALUE.length, lpNumberOfBytesWritten);
         Handleapi.CloseHandle(hFile);
         Assertions.assertEquals(WRITE_VALUE.length, lpNumberOfBytesWritten.uint32_t());
 
-        try ( FileInputStream fio = new FileInputStream(file)) {
+        try (FileInputStream fio = new FileInputStream(file)) {
             byte[] readBuffer = new byte[WRITE_VALUE.length];
             fio.read(readBuffer);
             for (int i = 0; i < WRITE_VALUE.length; i++) {
@@ -94,7 +94,7 @@ public class FileapiTest {
                 0,
                 null);
         byte[] readBuffer = new byte[WRITE_VALUE.length];
-        WinDef.LPDWORD lpNumberOfBytesRead = WinDef.LPDWORD.allocateNative(ms);
+        WinDef.LPDWORD lpNumberOfBytesRead = WinDef.LPDWORD.allocateNative(ms.scope());
         Fileapi.ReadFile(hFile, readBuffer, 0, readBuffer.length, lpNumberOfBytesRead);
         Handleapi.CloseHandle(hFile);
         Assertions.assertEquals(WRITE_VALUE.length, lpNumberOfBytesRead.uint32_t());
@@ -112,9 +112,9 @@ public class FileapiTest {
                 Fileapi.OPEN_EXISTING,
                 Winbase.FILE_FLAG_OVERLAPPED,
                 null);
-        Minwinbase.LPOVERLAPPED overlapped = Minwinbase.LPOVERLAPPED.allocateNative(ms);
+        Minwinbase.LPOVERLAPPED overlapped = Minwinbase.LPOVERLAPPED.allocateNative(ms.scope());
         overlapped.hEvent(Synchapi.CreateEventW(null, true, false, null));
-        WinDef.LPDWORD lpNumberOfBytesTransferred = WinDef.LPDWORD.allocateNative(ms);
+        WinDef.LPDWORD lpNumberOfBytesTransferred = WinDef.LPDWORD.allocateNative(ms.scope());
 
         ByteBuffer byteBuffer = ByteBuffer.allocateDirect(64);
         byteBuffer.put(WRITE_VALUE);
@@ -129,7 +129,7 @@ public class FileapiTest {
         Handleapi.CloseHandle(hFile);
         Assertions.assertFalse(byteBuffer.hasRemaining());
 
-        try ( FileInputStream fio = new FileInputStream(file)) {
+        try (FileInputStream fio = new FileInputStream(file)) {
             byte[] readBuffer = new byte[WRITE_VALUE.length];
             fio.read(readBuffer);
             for (int i = 0; i < WRITE_VALUE.length; i++) {
@@ -168,9 +168,9 @@ public class FileapiTest {
                 Fileapi.OPEN_EXISTING,
                 Winbase.FILE_FLAG_OVERLAPPED,
                 null);
-        final Minwinbase.LPOVERLAPPED overlapped = Minwinbase.LPOVERLAPPED.allocateNative(ms);
+        final Minwinbase.LPOVERLAPPED overlapped = Minwinbase.LPOVERLAPPED.allocateNative(ms.scope());
         overlapped.hEvent(Synchapi.CreateEventW(null, true, false, null));
-        WinDef.LPDWORD lpNumberOfBytesTransferred = WinDef.LPDWORD.allocateNative(ms);
+        WinDef.LPDWORD lpNumberOfBytesTransferred = WinDef.LPDWORD.allocateNative(ms.scope());
 
         ByteBuffer byteBuffer = ByteBuffer.allocateDirect(64);
         byteBuffer.put(WRITE_VALUE);
@@ -178,7 +178,7 @@ public class FileapiTest {
 
         Minwinbase.LPOVERLAPPED_COMPLETION_ROUTINE overlappedCompletionRoutine = new Minwinbase.LPOVERLAPPED_COMPLETION_ROUTINE() {
             @Override
-            protected void callback(int dwErrorCode, int dwNumberOfBytesTransferred, MemoryAddress lpOverlapped) {
+            protected void callback(int dwErrorCode, int dwNumberOfBytesTransferred, MemorySegment lpOverlapped) {
                 Assertions.assertEquals(Winerror.ERROR_SUCCESS, dwErrorCode);
                 Assertions.assertEquals(WRITE_VALUE.length, dwNumberOfBytesTransferred);
                 Assertions.assertEquals(OpaqueMemory.getMemorySegment(overlapped).address(), lpOverlapped);
@@ -195,7 +195,7 @@ public class FileapiTest {
         Handleapi.CloseHandle(hFile);
         Assertions.assertFalse(byteBuffer.hasRemaining());
 
-        try ( FileInputStream fio = new FileInputStream(file)) {
+        try (FileInputStream fio = new FileInputStream(file)) {
             byte[] readBuffer = new byte[WRITE_VALUE.length];
             fio.read(readBuffer);
             for (int i = 0; i < WRITE_VALUE.length; i++) {
@@ -235,7 +235,7 @@ public class FileapiTest {
                 Fileapi.OPEN_EXISTING,
                 Winbase.FILE_FLAG_OVERLAPPED,
                 null);
-        final Minwinbase.LPOVERLAPPED overlapped = Minwinbase.LPOVERLAPPED.allocateNative(ms);
+        final Minwinbase.LPOVERLAPPED overlapped = Minwinbase.LPOVERLAPPED.allocateNative(ms.scope());
         final long COMPLETION_KEY = 25;
         Winnt.HANDLE hIoCompletionPort = IoAPI.CreateIoCompletionPort(hFile, null, COMPLETION_KEY, 0);
 
@@ -243,15 +243,15 @@ public class FileapiTest {
         byteBuffer.put(WRITE_VALUE);
         byteBuffer.flip();
 
-        WinDef.LPDWORD lpNumberOfBytesTransferred = WinDef.LPDWORD.allocateNative(ms);
-        BaseTsd.PULONG_PTR lpCompletionKey = BaseTsd.PULONG_PTR.allocateNative(ms);
+        WinDef.LPDWORD lpNumberOfBytesTransferred = WinDef.LPDWORD.allocateNative(ms.scope());
+        BaseTsd.PULONG_PTR lpCompletionKey = BaseTsd.PULONG_PTR.allocateNative(ms.scope());
 
         Fileapi.WriteFile(hFile, byteBuffer, overlapped);
 
-        UintPtr_t<Minwinbase.LPOVERLAPPED> lpOverlappedPtr = UintPtr_t.allocateNative(ms);
+        UintPtr_t<Minwinbase.LPOVERLAPPED> lpOverlappedPtr = UintPtr_t.allocateNative(ms.scope());
         IoAPI.GetQueuedCompletionStatus(hIoCompletionPort, lpNumberOfBytesTransferred, lpCompletionKey, lpOverlappedPtr, 1000);
 
-        Assertions.assertNotEquals(MemoryAddress.NULL, lpOverlappedPtr.get());
+        Assertions.assertNotEquals(MemorySegment.NULL, lpOverlappedPtr.get());
         Assertions.assertEquals(COMPLETION_KEY, lpCompletionKey.PULONG_PTR());
         Assertions.assertEquals(WRITE_VALUE.length, lpNumberOfBytesTransferred.uint32_t());
         ByteBufferUtils.fixBufferPos(byteBuffer, lpNumberOfBytesTransferred.uint32_t());
@@ -260,7 +260,7 @@ public class FileapiTest {
         Handleapi.CloseHandle(hFile);
         Assertions.assertFalse(byteBuffer.hasRemaining());
 
-        try ( FileInputStream fio = new FileInputStream(file)) {
+        try (FileInputStream fio = new FileInputStream(file)) {
             byte[] readBuffer = new byte[WRITE_VALUE.length];
             fio.read(readBuffer);
             for (int i = 0; i < WRITE_VALUE.length; i++) {
@@ -283,7 +283,7 @@ public class FileapiTest {
 
         IoAPI.GetQueuedCompletionStatus(hIoCompletionPort, lpNumberOfBytesTransferred, lpCompletionKey, lpOverlappedPtr, 1000);
 
-        Assertions.assertNotEquals(MemoryAddress.NULL, lpOverlappedPtr.get());
+        Assertions.assertNotEquals(MemorySegment.NULL, lpOverlappedPtr.get());
         Assertions.assertEquals(COMPLETION_KEY, lpCompletionKey.PULONG_PTR());
         Assertions.assertEquals(WRITE_VALUE.length, lpNumberOfBytesTransferred.uint32_t());
         ByteBufferUtils.fixBufferPos(byteBuffer, lpNumberOfBytesTransferred.uint32_t());
@@ -310,13 +310,13 @@ public class FileapiTest {
         ByteBuffer byteBuffer = ByteBuffer.allocate(64);
         byteBuffer.put(WRITE_VALUE);
         byteBuffer.flip();
-        WinDef.LPDWORD lpNumberOfBytesTransferred = WinDef.LPDWORD.allocateNative(ms);
+        WinDef.LPDWORD lpNumberOfBytesTransferred = WinDef.LPDWORD.allocateNative(ms.scope());
         Fileapi.WriteFile(hFile, byteBuffer, lpNumberOfBytesTransferred);
 
         Handleapi.CloseHandle(hFile);
         Assertions.assertFalse(byteBuffer.hasRemaining());
 
-        try ( FileInputStream fio = new FileInputStream(file)) {
+        try (FileInputStream fio = new FileInputStream(file)) {
             byte[] readBuffer = new byte[WRITE_VALUE.length];
             fio.read(readBuffer);
             for (int i = 0; i < WRITE_VALUE.length; i++) {
@@ -353,12 +353,12 @@ public class FileapiTest {
         ByteBuffer byteBuffer = ByteBuffer.allocateDirect(64);
         byteBuffer.put(WRITE_VALUE);
         byteBuffer.flip();
-        WinDef.LPDWORD lpNumberOfBytesTransferred = WinDef.LPDWORD.allocateNative(ms);
+        WinDef.LPDWORD lpNumberOfBytesTransferred = WinDef.LPDWORD.allocateNative(ms.scope());
         Fileapi.WriteFile(hFile, byteBuffer, lpNumberOfBytesTransferred);
         Handleapi.CloseHandle(hFile);
         Assertions.assertFalse(byteBuffer.hasRemaining());
 
-        try ( FileInputStream fio = new FileInputStream(file)) {
+        try (FileInputStream fio = new FileInputStream(file)) {
             byte[] readBuffer = new byte[WRITE_VALUE.length];
             fio.read(readBuffer);
             for (int i = 0; i < WRITE_VALUE.length; i++) {
@@ -392,16 +392,16 @@ public class FileapiTest {
                 Fileapi.OPEN_EXISTING,
                 Winbase.FILE_FLAG_OVERLAPPED,
                 null);
-        Minwinbase.LPOVERLAPPED overlapped = Minwinbase.LPOVERLAPPED.allocateNative(ms);
+        Minwinbase.LPOVERLAPPED overlapped = Minwinbase.LPOVERLAPPED.allocateNative(ms.scope());
         overlapped.hEvent(Synchapi.CreateEventW(null, true, false, null));
-        WinDef.LPDWORD lpNumberOfBytesTransferred = WinDef.LPDWORD.allocateNative(ms);
+        WinDef.LPDWORD lpNumberOfBytesTransferred = WinDef.LPDWORD.allocateNative(ms.scope());
 
-        MemoryHeap opaqueMemory = MemoryHeap.allocateNative(64, ms);
+        MemoryHeap opaqueMemory = MemoryHeap.allocateNative(64, ms.scope());
         OpaqueMemory.copy(WRITE_VALUE, 0, opaqueMemory, 0, WRITE_VALUE.length);
 
         Minwinbase.LPOVERLAPPED_COMPLETION_ROUTINE overlappedCompletionRoutine = new Minwinbase.LPOVERLAPPED_COMPLETION_ROUTINE() {
             @Override
-            protected void callback(int dwErrorCode, int dwNumberOfBytesTransferred, MemoryAddress lpOverlapped) {
+            protected void callback(int dwErrorCode, int dwNumberOfBytesTransferred, MemorySegment lpOverlapped) {
                 Assertions.assertEquals(Winerror.ERROR_SUCCESS, dwErrorCode);
                 Assertions.assertEquals(WRITE_VALUE.length, dwNumberOfBytesTransferred);
                 Assertions.assertEquals(OpaqueMemory.getMemorySegment(overlapped).address(), lpOverlapped);
@@ -418,7 +418,7 @@ public class FileapiTest {
         Handleapi.CloseHandle(hFile);
         Assertions.assertEquals(WRITE_VALUE.length, lpNumberOfBytesTransferred.uint32_t());
 
-        try ( FileInputStream fio = new FileInputStream(file)) {
+        try (FileInputStream fio = new FileInputStream(file)) {
             byte[] readBuffer = new byte[WRITE_VALUE.length];
             fio.read(readBuffer);
             for (int i = 0; i < WRITE_VALUE.length; i++) {
@@ -458,11 +458,11 @@ public class FileapiTest {
                 Fileapi.OPEN_EXISTING,
                 Winbase.FILE_FLAG_OVERLAPPED,
                 null);
-        Minwinbase.LPOVERLAPPED overlapped = Minwinbase.LPOVERLAPPED.allocateNative(ms);
+        Minwinbase.LPOVERLAPPED overlapped = Minwinbase.LPOVERLAPPED.allocateNative(ms.scope());
         overlapped.hEvent(Synchapi.CreateEventW(null, true, false, null));
-        WinDef.LPDWORD lpNumberOfBytesTransferred = WinDef.LPDWORD.allocateNative(ms);
+        WinDef.LPDWORD lpNumberOfBytesTransferred = WinDef.LPDWORD.allocateNative(ms.scope());
 
-        MemoryHeap opaqueMemory = MemoryHeap.allocateNative(64, ms);
+        MemoryHeap opaqueMemory = MemoryHeap.allocateNative(64, ms.scope());
         OpaqueMemory.copy(WRITE_VALUE, 0, opaqueMemory, 0, WRITE_VALUE.length);
         Fileapi.WriteFile(hFile, opaqueMemory, overlapped);
         long waitResult = Synchapi.WaitForSingleObject(overlapped.hEvent(), Winbase.INFINITE);
@@ -474,7 +474,7 @@ public class FileapiTest {
         Handleapi.CloseHandle(hFile);
         Assertions.assertEquals(opaqueMemory.sizeof(), lpNumberOfBytesTransferred.uint32_t());
 
-        try ( FileInputStream fio = new FileInputStream(file)) {
+        try (FileInputStream fio = new FileInputStream(file)) {
             byte[] readBuffer = new byte[WRITE_VALUE.length];
             fio.read(readBuffer);
             for (int i = 0; i < WRITE_VALUE.length; i++) {
@@ -513,23 +513,23 @@ public class FileapiTest {
                 Fileapi.OPEN_EXISTING,
                 Winbase.FILE_FLAG_OVERLAPPED,
                 null);
-        final Minwinbase.LPOVERLAPPED overlapped = Minwinbase.LPOVERLAPPED.allocateNative(ms);
+        final Minwinbase.LPOVERLAPPED overlapped = Minwinbase.LPOVERLAPPED.allocateNative(ms.scope());
         final long COMPLETION_KEY = 29;
         Winnt.HANDLE hIoCompletionPort = IoAPI.CreateIoCompletionPort(hFile, null, COMPLETION_KEY, 0);
 
-        MemoryHeap opaqueMemory = MemoryHeap.allocateNative(64, ms);
+        MemoryHeap opaqueMemory = MemoryHeap.allocateNative(64, ms.scope());
         OpaqueMemory.copy(WRITE_VALUE, 0, opaqueMemory, 0, WRITE_VALUE.length);
 
-        WinDef.LPDWORD lpNumberOfBytesTransferred = WinDef.LPDWORD.allocateNative(ms);
-        BaseTsd.PULONG_PTR lpCompletionKey = BaseTsd.PULONG_PTR.allocateNative(ms);
+        WinDef.LPDWORD lpNumberOfBytesTransferred = WinDef.LPDWORD.allocateNative(ms.scope());
+        BaseTsd.PULONG_PTR lpCompletionKey = BaseTsd.PULONG_PTR.allocateNative(ms.scope());
 
         Fileapi.WriteFile(hFile, opaqueMemory, 0, WRITE_VALUE.length, overlapped);
 
-        UintPtr_t<Minwinbase.LPOVERLAPPED> overlappedPtr = UintPtr_t.allocateNative(ms);
+        UintPtr_t<Minwinbase.LPOVERLAPPED> overlappedPtr = UintPtr_t.allocateNative(ms.scope());
 
         IoAPI.GetQueuedCompletionStatus(hIoCompletionPort, lpNumberOfBytesTransferred, lpCompletionKey, overlappedPtr, 1000);
 
-        Assertions.assertNotEquals(MemoryAddress.NULL, overlappedPtr.get());
+        Assertions.assertNotEquals(MemorySegment.NULL, overlappedPtr.get());
         Assertions.assertEquals(OpaqueMemory.getMemorySegment(overlapped).address(), overlappedPtr.get());
         Assertions.assertEquals(COMPLETION_KEY, lpCompletionKey.PULONG_PTR());
         Assertions.assertEquals(WRITE_VALUE.length, lpNumberOfBytesTransferred.uint32_t());
@@ -537,7 +537,7 @@ public class FileapiTest {
         Handleapi.CloseHandle(hIoCompletionPort);
         Handleapi.CloseHandle(hFile);
 
-        try ( FileInputStream fio = new FileInputStream(file)) {
+        try (FileInputStream fio = new FileInputStream(file)) {
             byte[] readBuffer = new byte[WRITE_VALUE.length];
             fio.read(readBuffer);
             for (int i = 0; i < WRITE_VALUE.length; i++) {
@@ -559,7 +559,7 @@ public class FileapiTest {
 
         IoAPI.GetQueuedCompletionStatus(hIoCompletionPort, lpNumberOfBytesTransferred, lpCompletionKey, overlappedPtr, 1000);
 
-        Assertions.assertNotEquals(MemoryAddress.NULL, overlappedPtr.get());
+        Assertions.assertNotEquals(MemorySegment.NULL, overlappedPtr.get());
         Assertions.assertEquals(OpaqueMemory.getMemorySegment(overlapped).address(), overlappedPtr.get());
         Assertions.assertEquals(COMPLETION_KEY, lpCompletionKey.PULONG_PTR());
         Assertions.assertEquals(WRITE_VALUE.length, lpNumberOfBytesTransferred.uint32_t());
@@ -580,14 +580,14 @@ public class FileapiTest {
                 Fileapi.OPEN_EXISTING,
                 0,
                 null);
-        WinDef.LPDWORD lpNumberOfBytesTransferred = WinDef.LPDWORD.allocateNative(ms);
-        MemoryHeap opaqueMemory = MemoryHeap.allocateNative(64, ms);
+        WinDef.LPDWORD lpNumberOfBytesTransferred = WinDef.LPDWORD.allocateNative(ms.scope());
+        MemoryHeap opaqueMemory = MemoryHeap.allocateNative(64, ms.scope());
         OpaqueMemory.copy(WRITE_VALUE, 0, opaqueMemory, 0, WRITE_VALUE.length);
         Fileapi.WriteFile(hFile, opaqueMemory, 0, WRITE_VALUE.length, lpNumberOfBytesTransferred);
         Handleapi.CloseHandle(hFile);
         Assertions.assertEquals(WRITE_VALUE.length, lpNumberOfBytesTransferred.uint32_t());
 
-        try ( FileInputStream fio = new FileInputStream(file)) {
+        try (FileInputStream fio = new FileInputStream(file)) {
             byte[] readBuffer = new byte[WRITE_VALUE.length];
             fio.read(readBuffer);
             for (int i = 0; i < WRITE_VALUE.length; i++) {
@@ -619,16 +619,16 @@ public class FileapiTest {
                 Fileapi.OPEN_EXISTING,
                 Winbase.FILE_FLAG_OVERLAPPED,
                 null);
-        Minwinbase.LPOVERLAPPED overlapped = Minwinbase.LPOVERLAPPED.allocateNative(ms);
+        Minwinbase.LPOVERLAPPED overlapped = Minwinbase.LPOVERLAPPED.allocateNative(ms.scope());
         overlapped.hEvent(Synchapi.CreateEventW(null, true, false, null));
-        WinDef.LPDWORD lpNumberOfBytesTransferred = WinDef.LPDWORD.allocateNative(ms);
+        WinDef.LPDWORD lpNumberOfBytesTransferred = WinDef.LPDWORD.allocateNative(ms.scope());
 
-        MemoryHeap opaqueMemory = MemoryHeap.allocateNative(64, ms);
+        MemoryHeap opaqueMemory = MemoryHeap.allocateNative(64, ms.scope());
         OpaqueMemory.copy(WRITE_VALUE, 0, opaqueMemory, 0, WRITE_VALUE.length);
 
         Minwinbase.LPOVERLAPPED_COMPLETION_ROUTINE overlappedCompletionRoutine = new Minwinbase.LPOVERLAPPED_COMPLETION_ROUTINE() {
             @Override
-            protected void callback(int dwErrorCode, int dwNumberOfBytesTransferred, MemoryAddress lpOverlapped) {
+            protected void callback(int dwErrorCode, int dwNumberOfBytesTransferred, MemorySegment lpOverlapped) {
                 Assertions.assertEquals(Winerror.ERROR_SUCCESS, dwErrorCode);
                 Assertions.assertEquals(WRITE_VALUE.length, dwNumberOfBytesTransferred);
                 Assertions.assertEquals(OpaqueMemory.getMemorySegment(overlapped).address(), lpOverlapped);
@@ -645,7 +645,7 @@ public class FileapiTest {
         Handleapi.CloseHandle(hFile);
         Assertions.assertEquals(WRITE_VALUE.length, lpNumberOfBytesTransferred.uint32_t());
 
-        try ( FileInputStream fio = new FileInputStream(file)) {
+        try (FileInputStream fio = new FileInputStream(file)) {
             byte[] readBuffer = new byte[WRITE_VALUE.length];
             fio.read(readBuffer);
             for (int i = 0; i < WRITE_VALUE.length; i++) {
@@ -685,11 +685,11 @@ public class FileapiTest {
                 Fileapi.OPEN_EXISTING,
                 Winbase.FILE_FLAG_OVERLAPPED,
                 null);
-        Minwinbase.LPOVERLAPPED overlapped = Minwinbase.LPOVERLAPPED.allocateNative(ms);
+        Minwinbase.LPOVERLAPPED overlapped = Minwinbase.LPOVERLAPPED.allocateNative(ms.scope());
         overlapped.hEvent(Synchapi.CreateEventW(null, true, false, null));
-        WinDef.LPDWORD lpNumberOfBytesTransferred = WinDef.LPDWORD.allocateNative(ms);
+        WinDef.LPDWORD lpNumberOfBytesTransferred = WinDef.LPDWORD.allocateNative(ms.scope());
 
-        MemoryHeap opaqueMemory = MemoryHeap.allocateNative(64, ms);
+        MemoryHeap opaqueMemory = MemoryHeap.allocateNative(64, ms.scope());
         OpaqueMemory.copy(WRITE_VALUE, 0, opaqueMemory, 0, WRITE_VALUE.length);
         Fileapi.WriteFile(hFile, opaqueMemory, 0, (int) opaqueMemory.sizeof(), overlapped);
         long waitResult = Synchapi.WaitForSingleObject(overlapped.hEvent(), Winbase.INFINITE);
@@ -701,7 +701,7 @@ public class FileapiTest {
         Handleapi.CloseHandle(hFile);
         Assertions.assertEquals(opaqueMemory.sizeof(), lpNumberOfBytesTransferred.uint32_t());
 
-        try ( FileInputStream fio = new FileInputStream(file)) {
+        try (FileInputStream fio = new FileInputStream(file)) {
             byte[] readBuffer = new byte[WRITE_VALUE.length];
             fio.read(readBuffer);
             for (int i = 0; i < WRITE_VALUE.length; i++) {
@@ -740,22 +740,22 @@ public class FileapiTest {
                 Fileapi.OPEN_EXISTING,
                 Winbase.FILE_FLAG_OVERLAPPED,
                 null);
-        final Minwinbase.LPOVERLAPPED overlapped = Minwinbase.LPOVERLAPPED.allocateNative(ms);
+        final Minwinbase.LPOVERLAPPED overlapped = Minwinbase.LPOVERLAPPED.allocateNative(ms.scope());
         final long COMPLETION_KEY = 27;
         Winnt.HANDLE hIoCompletionPort = IoAPI.CreateIoCompletionPort(hFile, null, COMPLETION_KEY, 0);
 
-        MemoryHeap opaqueMemory = MemoryHeap.allocateNative(64, ms);
+        MemoryHeap opaqueMemory = MemoryHeap.allocateNative(64, ms.scope());
         OpaqueMemory.copy(WRITE_VALUE, 0, opaqueMemory, 0, WRITE_VALUE.length);
 
-        WinDef.LPDWORD lpNumberOfBytesTransferred = WinDef.LPDWORD.allocateNative(ms);
-        BaseTsd.PULONG_PTR lpCompletionKey = BaseTsd.PULONG_PTR.allocateNative(ms);
+        WinDef.LPDWORD lpNumberOfBytesTransferred = WinDef.LPDWORD.allocateNative(ms.scope());
+        BaseTsd.PULONG_PTR lpCompletionKey = BaseTsd.PULONG_PTR.allocateNative(ms.scope());
 
         Fileapi.WriteFile(hFile, opaqueMemory, 0, WRITE_VALUE.length, overlapped);
 
-        UintPtr_t<Minwinbase.LPOVERLAPPED> overlappedPtr = UintPtr_t.allocateNative(ms);
+        UintPtr_t<Minwinbase.LPOVERLAPPED> overlappedPtr = UintPtr_t.allocateNative(ms.scope());
         IoAPI.GetQueuedCompletionStatus(hIoCompletionPort, lpNumberOfBytesTransferred, lpCompletionKey, overlappedPtr, 1000);
 
-        Assertions.assertNotEquals(MemoryAddress.NULL, overlappedPtr.get());
+        Assertions.assertNotEquals(MemorySegment.NULL, overlappedPtr.get());
         Assertions.assertEquals(OpaqueMemory.getMemorySegment(overlapped).address(), overlappedPtr.get());
         Assertions.assertEquals(COMPLETION_KEY, lpCompletionKey.PULONG_PTR());
         Assertions.assertEquals(WRITE_VALUE.length, lpNumberOfBytesTransferred.uint32_t());
@@ -763,7 +763,7 @@ public class FileapiTest {
         Handleapi.CloseHandle(hIoCompletionPort);
         Handleapi.CloseHandle(hFile);
 
-        try ( FileInputStream fio = new FileInputStream(file)) {
+        try (FileInputStream fio = new FileInputStream(file)) {
             byte[] readBuffer = new byte[WRITE_VALUE.length];
             fio.read(readBuffer);
             for (int i = 0; i < WRITE_VALUE.length; i++) {
@@ -785,7 +785,7 @@ public class FileapiTest {
 
         IoAPI.GetQueuedCompletionStatus(hIoCompletionPort, lpNumberOfBytesTransferred, lpCompletionKey, overlappedPtr, 1000);
 
-        Assertions.assertNotEquals(MemoryAddress.NULL, overlappedPtr.get());
+        Assertions.assertNotEquals(MemorySegment.NULL, overlappedPtr.get());
         Assertions.assertEquals(OpaqueMemory.getMemorySegment(overlapped).address(), overlappedPtr.get());
         Assertions.assertEquals(COMPLETION_KEY, lpCompletionKey.PULONG_PTR());
         Assertions.assertEquals(WRITE_VALUE.length, lpNumberOfBytesTransferred.uint32_t());
@@ -806,14 +806,14 @@ public class FileapiTest {
                 Fileapi.OPEN_EXISTING,
                 0,
                 null);
-        MemoryHeap opaqueMemory = MemoryHeap.allocateNative(64, ms);
+        MemoryHeap opaqueMemory = MemoryHeap.allocateNative(64, ms.scope());
         OpaqueMemory.copy(WRITE_VALUE, 0, opaqueMemory, 0, WRITE_VALUE.length);
-        WinDef.LPDWORD lpNumberOfBytesTransferred = WinDef.LPDWORD.allocateNative(ms);
+        WinDef.LPDWORD lpNumberOfBytesTransferred = WinDef.LPDWORD.allocateNative(ms.scope());
         Fileapi.WriteFile(hFile, opaqueMemory, 0, WRITE_VALUE.length, lpNumberOfBytesTransferred);
         Handleapi.CloseHandle(hFile);
         Assertions.assertEquals(WRITE_VALUE.length, lpNumberOfBytesTransferred.uint32_t());
 
-        try ( FileInputStream fio = new FileInputStream(file)) {
+        try (FileInputStream fio = new FileInputStream(file)) {
             byte[] readBuffer = new byte[WRITE_VALUE.length];
             fio.read(readBuffer);
             for (int i = 0; i < WRITE_VALUE.length; i++) {

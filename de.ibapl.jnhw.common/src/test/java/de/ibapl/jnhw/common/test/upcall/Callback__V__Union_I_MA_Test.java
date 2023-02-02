@@ -27,7 +27,6 @@ import de.ibapl.jnhw.common.downcall.JnhwMh__V___A;
 import de.ibapl.jnhw.common.downcall.JnhwMh__V__sI;
 import de.ibapl.jnhw.common.downcall.JnhwMh__V__sL;
 import de.ibapl.jnhw.common.memory.NativeFunctionPointer;
-import de.ibapl.jnhw.common.memory.OpaqueMemory;
 import de.ibapl.jnhw.common.nativepointer.FunctionPtr__V__Union_I_MA;
 import de.ibapl.jnhw.common.test.JnhwTestLogger;
 import de.ibapl.jnhw.common.test.LibJnhwCommonTestLoader;
@@ -37,9 +36,8 @@ import de.ibapl.jnhw.common.util.ConversionsJava2Native;
 import static de.ibapl.jnhw.libloader.MemoryModel.ILP32;
 import static de.ibapl.jnhw.libloader.MemoryModel.LP64;
 import de.ibapl.jnhw.libloader.MultiarchTupelBuilder;
-import java.lang.foreign.MemoryAddress;
+import java.lang.foreign.Arena;
 import java.lang.foreign.MemorySegment;
-import java.lang.foreign.MemorySession;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
 import static org.junit.jupiter.api.Assertions.*;
@@ -95,14 +93,14 @@ public class Callback__V__Union_I_MA_Test {
         }
     }
 
-    private static void doCallback__V__Union_I_MAA(MemoryAddress value) {
+    private static void doCallback__V__Union_I_MAA(MemorySegment value) {
         try {
             doCallback__V__Union_I_MAA.invoke__V___A(value);
         } catch (Throwable t) {
             throw new RuntimeException(t);
         }
     }
-    private MemorySession ms;
+    private Arena ms;
 
     @BeforeEach
     public void setUpBeforeEach(TestInfo testTnfo) throws Exception {
@@ -117,7 +115,7 @@ public class Callback__V__Union_I_MA_Test {
     @BeforeEach
     public void setUp(TestInfo testInfo) throws Exception {
         System.gc(); //TODO removint this will fail the tests ...?
-        ms = MemorySession.openConfined();
+        ms = Arena.openConfined();
         assertEquals(CallbackFactory__V__Union_I_MA.MAX_CALL_BACKS, CallbackFactory__V__Union_I_MA.callbacksAvailable());
     }
 
@@ -164,9 +162,9 @@ public class Callback__V__Union_I_MA_Test {
 
     @Test
     public void testNativeFunctionPointer() {
-        final Callback__V__Union_I_MA testPtr = new Callback__V__Union_I_MA((t) -> MemoryAddress.ofLong(121)) {
+        final Callback__V__Union_I_MA testPtr = new Callback__V__Union_I_MA((t) -> MemorySegment.ofAddress(121)) {
             @Override
-            protected void callback(MemoryAddress value_ptr, int value_int) {
+            protected void callback(MemorySegment value_ptr, int value_int) {
                 throw new UnsupportedOperationException("Not supported yet.");
             }
 
@@ -195,9 +193,9 @@ public class Callback__V__Union_I_MA_Test {
         final long[] addressValueRef = new long[1];
         final int[] intValueRef = new int[1];
 
-        final Callback__V__Union_I_MA NULL_PTR = new Callback__V__Union_I_MA((t) -> MemoryAddress.NULL) {
+        final Callback__V__Union_I_MA NULL_PTR = new Callback__V__Union_I_MA((t) -> MemorySegment.NULL) {
             @Override
-            protected void callback(MemoryAddress sival_ptr, int sival_int) {
+            protected void callback(MemorySegment sival_ptr, int sival_int) {
                 throw new UnsupportedOperationException("Not supported yet.");
             }
 
@@ -210,19 +208,19 @@ public class Callback__V__Union_I_MA_Test {
         Callback__V__Union_I_MA callback = new Callback__V__Union_I_MA() {
 
             @Override
-            protected void callback(MemoryAddress sival_ptr, int sival_int) {
-                addressValueRef[0] = sival_ptr.toRawLongValue();
+            protected void callback(MemorySegment sival_ptr, int sival_int) {
+                addressValueRef[0] = sival_ptr.address();
                 intValueRef[0] = sival_int;
             }
 
         };
-        final NativeFunctionPointer nativeCallbackPointer = NativeFunctionPointer.wrap(callback.toAddressable().address());
+        final NativeFunctionPointer nativeCallbackPointer = NativeFunctionPointer.wrap(callback.toMemorySegment());
         try {
 
             setCallback__V__Union_I_MA(callback);
             assertEquals(getCallback__V__Union_I_MA(), callback);
             assertSame(Callback__V__Union_I_MA.find(getCallback__V__Union_I_MA()), callback);
-            doCallback__V__Union_I_MAA(MemoryAddress.ofLong(testValue));
+            doCallback__V__Union_I_MAA(MemorySegment.ofAddress(testValue));
 
             switch (MultiarchTupelBuilder.getMemoryModel()) {
                 case ILP32 ->
@@ -251,12 +249,12 @@ public class Callback__V__Union_I_MA_Test {
             intValueRef[0] = 0;
             JnhwMh__V___A.of(
                     MemorySegment.ofAddress(
-                            getCallback__V__Union_I_MA().toAddressable().address(),
+                            getCallback__V__Union_I_MA().toAddress(),
                             0,
-                            ms),
+                            ms.scope()),
                     "testCalllback",
                     BaseDataType.uintptr_t
-            ).invoke__V___A(MemoryAddress.ofLong(testValue));
+            ).invoke__V___A(MemorySegment.ofAddress(testValue));
 
             switch (MultiarchTupelBuilder.getMemoryModel()) {
                 case ILP32 ->
@@ -291,7 +289,7 @@ public class Callback__V__Union_I_MA_Test {
         //Just check that the reference is gone...
         addressValueRef[0] = -1;
         intValueRef[0] = -1;
-        doCallback__V__Union_I_MAA(MemoryAddress.ofLong(testValue / 2));
+        doCallback__V__Union_I_MAA(MemorySegment.ofAddress(testValue / 2));
         assertEquals(-1, addressValueRef[0]);
         assertEquals(-1, intValueRef[0]);
 
@@ -301,9 +299,9 @@ public class Callback__V__Union_I_MA_Test {
 //The logs should show: Unassigned callback for trampoline_0(testValue/2)
         JnhwMh__V__sL.of(
                 MemorySegment.ofAddress(
-                        getCallback__V__Union_I_MA().toAddressable().address(),
+                        getCallback__V__Union_I_MA().toAddress(),
                         0,
-                        ms),
+                        ms.scope()),
                 "testCallback",
                 BaseDataType.int64_t
         ).invoke__V__sL(testValue / 2);
@@ -323,9 +321,9 @@ public class Callback__V__Union_I_MA_Test {
     public void testCallAndRelease_I(final int testValue) {
         final long[] addressValueRef = new long[1];
         final int[] intValueRef = new int[1];
-        final Callback__V__Union_I_MA NULL_PTR = new Callback__V__Union_I_MA((t) -> MemoryAddress.NULL) {
+        final Callback__V__Union_I_MA NULL_PTR = new Callback__V__Union_I_MA((t) -> MemorySegment.NULL) {
             @Override
-            protected void callback(MemoryAddress value_ptr, int value_int) {
+            protected void callback(MemorySegment value_ptr, int value_int) {
                 throw new UnsupportedOperationException("Not supported yet.");
             }
 
@@ -338,13 +336,13 @@ public class Callback__V__Union_I_MA_Test {
         Callback__V__Union_I_MA callback = new Callback__V__Union_I_MA() {
 
             @Override
-            protected void callback(MemoryAddress value_ptr, int value_int) {
-                addressValueRef[0] = value_ptr.toRawLongValue();
+            protected void callback(MemorySegment value_ptr, int value_int) {
+                addressValueRef[0] = value_ptr.address();
                 intValueRef[0] = value_int;
             }
 
         };
-        final NativeFunctionPointer nativeCallbackPointer = NativeFunctionPointer.wrap(callback.toAddressable().address());
+        final NativeFunctionPointer nativeCallbackPointer = NativeFunctionPointer.wrap(callback.toMemorySegment());
         try {
 
             setCallback__V__Union_I_MA(callback);
@@ -371,18 +369,18 @@ public class Callback__V__Union_I_MA_Test {
                 case ILP32 ->
                     JnhwMh__V__sI.of(
                             MemorySegment.ofAddress(
-                                    getCallback__V__Union_I_MA().toAddressable().address(),
+                                    getCallback__V__Union_I_MA().toAddress(),
                                     0,
-                                    ms),
+                                    ms.scope()),
                             "testCallback",
                             BaseDataType.int32_t
                     ).invoke__V__sI(testValue);
                 case LLP64, LP64 ->
                     JnhwMh__V__sL.of(
                             MemorySegment.ofAddress(
-                                    getCallback__V__Union_I_MA().toAddressable().address(),
+                                    getCallback__V__Union_I_MA().toAddress(),
                                     0,
-                                    ms),
+                                    ms.scope()),
                             "testCallback",
                             BaseDataType.int64_t
                     ).invoke__V__sL(switch (MultiarchTupelBuilder.getEndianess()) {
@@ -437,9 +435,9 @@ public class Callback__V__Union_I_MA_Test {
         //The logs shoud show: Unassigned callback for trampoline_o(testValue/2)
         JnhwMh__V__sI.of(
                 MemorySegment.ofAddress(
-                        getCallback__V__Union_I_MA().toAddressable().address(),
+                        getCallback__V__Union_I_MA().toAddress(),
                         0,
-                        ms),
+                        ms.scope()),
                 "testCallback",
                 BaseDataType.int32_t
         ).invoke__V__sI(testValue / 2);
@@ -451,7 +449,7 @@ public class Callback__V__Union_I_MA_Test {
     private class DummyCB extends Callback__V__Union_I_MA {
 
         @Override
-        protected void callback(MemoryAddress value_ptr, int value_int) {
+        protected void callback(MemorySegment value_ptr, int value_int) {
             throw new UnsupportedOperationException("Not supported yet.");
         }
 

@@ -26,7 +26,7 @@ import de.ibapl.jnhw.common.util.ConversionsNative2Java;
 import de.ibapl.jnhw.posix.Pthread;
 import de.ibapl.jnhw.util.posix.downcall.JnhwMh_PthreadT___V;
 import java.lang.foreign.MemorySegment;
-import java.lang.foreign.MemorySession;
+import java.lang.foreign.SegmentScope;
 
 /**
  *
@@ -39,7 +39,7 @@ public class JnhwMi_PthreadTI___V extends JnhwMi__I___V implements JnhwMh_Pthrea
     }
 
     @Override
-    public Pthread.Pthread_t invoke_PthreadT___V(MemorySession ms) {
+    public Pthread.Pthread_t invoke_PthreadT___V(SegmentScope ms) {
         return Pthread.Pthread_t.wrap(ConversionsNative2Java.uint32_t_TO_long(invoke_uI___V()), ms);
     }
 }

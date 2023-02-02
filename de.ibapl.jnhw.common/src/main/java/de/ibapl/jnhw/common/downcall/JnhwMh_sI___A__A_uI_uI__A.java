@@ -28,7 +28,6 @@ import de.ibapl.jnhw.common.downcall.foreign.JnhwMi__I___A__A__I__I__A;
 import de.ibapl.jnhw.common.downcall.jni.JniMi__I___A__A__I__I__A;
 import de.ibapl.jnhw.common.exception.NoSuchNativeMethodException;
 import de.ibapl.jnhw.common.util.NativeProvider;
-import java.lang.foreign.Addressable;
 import java.lang.foreign.MemorySegment;
 import java.lang.foreign.SymbolLookup;
 
@@ -45,14 +44,14 @@ public interface JnhwMh_sI___A__A_uI_uI__A extends JnhwMethodHandle {
         @Override
         default int invoke_sI___P__P_uI_uI__P(Pointer arg1, Pointer arg2, int arg3, int arg4, Pointer arg5) {
             return invoke_sI___A__A_uI_uI__A(
-                    arg1.toAddressable(),
-                    arg2.toAddressable(),
+                    arg1.toMemorySegment(),
+                    arg2.toMemorySegment(),
                     arg3,
                     arg4,
-                    arg5.toAddressable());
+                    arg5.toMemorySegment());
         }
 
-        int invoke_sI___A__A_uI_uI__A(Addressable arg1, Addressable arg2, int arg3, int arg4, Addressable arg5);
+        int invoke_sI___A__A_uI_uI__A(MemorySegment arg1, MemorySegment arg2, int arg3, int arg4, MemorySegment arg5);
     }
 
     static JnhwMh_sI___A__A_uI_uI__A.ExceptionErased mandatoryOf(SymbolLookup symbolLookup, String name, BaseDataType result, BaseDataType arg1, BaseDataType arg2, BaseDataType arg3, BaseDataType arg4, BaseDataType arg5) {
@@ -108,12 +107,12 @@ public interface JnhwMh_sI___A__A_uI_uI__A extends JnhwMethodHandle {
 
     default int invoke_sI___P__P_uI_uI__P(Pointer arg1, Pointer arg2, int arg3, int arg4, Pointer arg5) throws NoSuchNativeMethodException {
         return invoke_sI___A__A_uI_uI__A(
-                arg1.toAddressable(),
-                arg2.toAddressable(),
+                arg1.toMemorySegment(),
+                arg2.toMemorySegment(),
                 arg3,
                 arg4,
-                arg5.toAddressable());
+                arg5.toMemorySegment());
     }
 
-    int invoke_sI___A__A_uI_uI__A(Addressable arg1, Addressable arg2, int arg3, int arg4, Addressable arg5) throws NoSuchNativeMethodException;
+    int invoke_sI___A__A_uI_uI__A(MemorySegment arg1, MemorySegment arg2, int arg3, int arg4, MemorySegment arg5) throws NoSuchNativeMethodException;
 }

@@ -23,11 +23,9 @@ package de.ibapl.jnhw.it.fun_with_memory_and_function_pointers;
 
 import de.ibapl.jnhw.common.datatypes.BaseDataType;
 import de.ibapl.jnhw.common.downcall.JnhwMh__V__sI;
-import de.ibapl.jnhw.common.downcall.foreign.JnhwMi__V___I;
 import de.ibapl.jnhw.common.upcall.Callback__V___I;
-import java.lang.foreign.MemoryAddress;
 import java.lang.foreign.MemorySegment;
-import java.lang.foreign.MemorySession;
+import java.lang.foreign.SegmentScope;
 
 /**
  *
@@ -51,7 +49,7 @@ public class FunctionPointer {
         //get the native address and encapsulate it in an NativeAddressHolder..
         System.out.println("nah: " + cb.toAddress());
         JnhwMh__V__sI.ExceptionErased cn = JnhwMh__V__sI.of(
-                MemorySegment.ofAddress(cb.toAddress(), 0, MemorySession.global()),
+                MemorySegment.ofAddress(cb.toAddress(), 0, SegmentScope.global()),
                 "testCallback",
                 BaseDataType.C_int);
         System.out.println("cn: " + cn.toString());

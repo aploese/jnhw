@@ -40,9 +40,9 @@ import de.ibapl.jnhw.libloader.libraries.LibcLoader;
 import de.ibapl.jnhw.util.posix.PosixDataType;
 import de.ibapl.jnhw.util.posix.memory.PosixStruct;
 import java.io.IOException;
-import java.lang.foreign.MemoryAddress;
+import java.lang.foreign.Arena;
 import java.lang.foreign.MemorySegment;
-import java.lang.foreign.MemorySession;
+import java.lang.foreign.SegmentScope;
 
 /**
  * Wrapper around the {@code <aio.h>} header.
@@ -61,7 +61,7 @@ public class Locale {
         public final static int LC_ALL = 0;
         public final static int LC_COLLATE = 1;
         public final static int LC_CTYPE = 2;
-        public final static Locale_t LC_GLOBAL_LOCALE = Locale_t.of(MemoryAddress.ofLong(-1));
+        public final static Locale_t LC_GLOBAL_LOCALE = Locale_t.ofAddress(-1);
         public final static int LC_MESSAGES = 6;
         public final static int LC_MONETARY = 3;
         public final static int LC_NUMERIC = 4;
@@ -254,7 +254,7 @@ public class Locale {
             }
         }
 
-        public Lconv(MemoryAddress memoryAddress, MemorySession ms) {
+        public Lconv(long memoryAddress, SegmentScope ms) {
             super(MemorySegment.ofAddress(memoryAddress, Lconv.sizeof, ms), 0, Lconv.sizeof);
         }
 
@@ -604,9 +604,9 @@ public class Locale {
         public LinuxDefines(MultiarchInfo multiarchInfo) {
             switch (multiarchInfo.getMemoryModel()) {
                 case ILP32 ->
-                    LC_GLOBAL_LOCALE = Locale_t.of(MemoryAddress.ofLong(Integer.toUnsignedLong(-1)));
+                    LC_GLOBAL_LOCALE = Locale_t.ofAddress(Integer.toUnsignedLong(-1));
                 case LP64 ->
-                    LC_GLOBAL_LOCALE = Locale_t.of(MemoryAddress.ofLong(-1));
+                    LC_GLOBAL_LOCALE = Locale_t.ofAddress(-1);
                 default ->
                     throw new RuntimeException("No LC_GLOBAL_LOCALE for: " + multiarchInfo.getTupelName());
             }
@@ -621,19 +621,19 @@ public class Locale {
      * @author aploese
      */
     @locale_t
-    public static class Locale_t extends OpaquePointer<Locale_t> {
+    public static class Locale_t extends OpaquePointer {
 
-        public final static Locale_t LOCALE_T_0 = new Locale_t(MemoryAddress.NULL);
+        public final static Locale_t LOCALE_T_0 = new Locale_t(MemorySegment.NULL);
 
-        public static Locale_t of(MemoryAddress address) {
-            if (MemoryAddress.NULL == address) {
+        public static Locale_t ofAddress(long address) {
+            if (address == 0L) {
                 return LOCALE_T_0;
             } else {
-                return new Locale_t(address);
+                return new Locale_t(MemorySegment.ofAddress(address));
             }
         }
 
-        private Locale_t(MemoryAddress nativeValue) {
+        private Locale_t(MemorySegment nativeValue) {
             super(nativeValue);
         }
 
@@ -916,8 +916,8 @@ public class Locale {
      * @return The localeconv() function shall return a pointer to the filled-in
      * object.
      */
-    public final static Lconv localeconv(MemorySession ms) {
-        return new Lconv(localeconv.invoke_MA___V(), ms);
+    public final static Lconv localeconv(SegmentScope ms) {
+        return new Lconv(localeconv.invoke_MA___V().address(), ms);
     }
 
     /**
@@ -939,11 +939,11 @@ public class Locale {
         if (LC_GLOBAL_LOCALE.equals(base)) {
             throw new IllegalArgumentException("base is LC_GLOBAL_LOCALE");
         }
-        try (MemorySession ms = MemorySession.openConfined()) {
-            MemorySegment _locale = MemorySegment.allocateNative(locale.length() + 1, ms);
+        try (Arena ms = Arena.openConfined()) {
+            MemorySegment _locale = ms.allocate(locale.length() + 1);
             _locale.setUtf8String(0, locale);
-            final MemoryAddress resultAdr = newlocale.invoke_MA__sI__A__P(category_mask, _locale, base);
-            if (resultAdr == MemoryAddress.NULL) {
+            final MemorySegment resultAdr = newlocale.invoke_MA__sI__A__P(category_mask, _locale, base);
+            if (resultAdr.address() == 0L) {
                 throw new NativeErrorException(Errno.errno());
             }
             return new Locale_t(resultAdr);
@@ -961,16 +961,16 @@ public class Locale {
      * specified category for the new locale. otherwise {@code null}
      */
     public final static String setlocale(int category, String locale) {
-        try (MemorySession ms = MemorySession.openConfined()) {
-            final MemoryAddress resultAdr;
+        try (Arena ms = Arena.openConfined()) {
+            final MemorySegment resultAdr;
             if (locale == null) {
-                resultAdr = setlocale.invoke_MA__sI__A(category, MemoryAddress.NULL);
+                resultAdr = setlocale.invoke_MA__sI__A(category, MemorySegment.NULL);
             } else {
-                MemorySegment _locale = MemorySegment.allocateNative(locale.length() + 1, ms);
+                MemorySegment _locale = ms.allocate(locale.length() + 1);
                 _locale.setUtf8String(0, locale);
                 resultAdr = setlocale.invoke_MA__sI__A(category, _locale);
             }
-            if (resultAdr == MemoryAddress.NULL) {
+            if (resultAdr.address() == 0L) {
                 return null;
             } else {
                 return resultAdr.getUtf8String(0);
@@ -994,8 +994,8 @@ public class Locale {
      * indicates an error.
      */
     public final static Locale_t uselocale(Locale_t newloc) throws NativeErrorException {
-        final MemoryAddress resultAdr = uselocale.invoke_MA___P(newloc);
-        if (resultAdr == MemoryAddress.NULL) {
+        final MemorySegment resultAdr = uselocale.invoke_MA___P(newloc);
+        if (resultAdr.address() == 0L) {
             throw new NativeErrorException(Errno.errno());
         } else {
             return new Locale_t(resultAdr);

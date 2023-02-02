@@ -24,7 +24,6 @@ package de.ibapl.jnhw.common.downcall.jni;
 import de.ibapl.jnhw.common.downcall.JnhwMh_sI___V;
 import de.ibapl.jnhw.common.downcall.JnhwMh_sS___V;
 import java.lang.foreign.MemorySegment;
-import java.lang.foreign.SymbolLookup;
 
 /**
  *
@@ -41,7 +40,7 @@ public class JniMi__S___V extends JniMethodInvoker implements JnhwMh_sI___V.Exce
     @Override
     public int invoke_sI___V() {
         try {
-            return invoke__S___V(ns.address().toRawLongValue());
+            return invoke__S___V(ns.address());
         } catch (IllegalArgumentException | NullPointerException e) {
             throw e;
         } catch (Throwable t) {
@@ -52,7 +51,7 @@ public class JniMi__S___V extends JniMethodInvoker implements JnhwMh_sI___V.Exce
     @Override
     public short invoke_sS___V() {
         try {
-            return invoke__S___V(ns.address().toRawLongValue());
+            return invoke__S___V(ns.address());
         } catch (IllegalArgumentException | NullPointerException e) {
             throw e;
         } catch (Throwable t) {

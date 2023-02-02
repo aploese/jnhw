@@ -24,8 +24,6 @@ package de.ibapl.jnhw.util.winapi.memory;
 import de.ibapl.jnhw.common.memory.Struct;
 import de.ibapl.jnhw.libloader.MultiarchTupelBuilder;
 import de.ibapl.jnhw.winapi.Winnt;
-import java.lang.foreign.Addressable;
-import java.lang.foreign.MemoryAddress;
 import java.lang.foreign.MemorySegment;
 
 /**
@@ -113,12 +111,12 @@ public class WinApiStruct extends Struct {
     protected static class Accessor_PVOID_As_uintptr_t implements Accessor_PVOID {
 
         @Override
-        public MemoryAddress PVOID(MemorySegment memorySegment, long offset) {
+        public MemorySegment PVOID(MemorySegment memorySegment, long offset) {
             return MEM_ACCESS.uintptr_t(memorySegment, offset);
         }
 
         @Override
-        public void PVOID(MemorySegment memorySegment, long offset, Addressable value) {
+        public void PVOID(MemorySegment memorySegment, long offset, MemorySegment value) {
             MEM_ACCESS.uintptr_t(memorySegment, offset, value);
         }
 

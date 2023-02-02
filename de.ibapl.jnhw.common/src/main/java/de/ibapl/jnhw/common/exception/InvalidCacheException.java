@@ -19,32 +19,19 @@
  * Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
  */
-package de.ibapl.jnhw.common.downcall.foreign;
+package de.ibapl.jnhw.common.exception;
 
-import de.ibapl.jnhw.common.downcall.JnhwMh__V___A;
-import java.lang.foreign.FunctionDescriptor;
+import de.ibapl.jnhw.common.datatypes.Pointer;
 import java.lang.foreign.MemorySegment;
-import java.lang.foreign.ValueLayout;
 
 /**
  *
  * @author aploese
  */
-public class JnhwMi__V___A extends JnhwMethodInvoker implements JnhwMh__V___A.ExceptionErased {
+public class InvalidCacheException extends Exception {
 
-    public JnhwMi__V___A(MemorySegment methodAddress, String name) {
-        super(methodAddress, name, FunctionDescriptor.ofVoid(ValueLayout.ADDRESS));
-    }
-
-    @Override
-    public void invoke__V___A(MemorySegment arg1) {
-        try {
-            methodHandle.invokeExact(arg1);
-        } catch (IllegalArgumentException | NullPointerException e) {
-            throw e;
-        } catch (Throwable t) {
-            throw createRuntimeExceptionInvoke(t);
-        }
+    public InvalidCacheException(Pointer cache, MemorySegment current) {
+        super("Cache is " + cache + " current is: " + current);
     }
 
 }

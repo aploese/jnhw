@@ -22,12 +22,7 @@
 package de.ibapl.jnhw.common.downcall.jni;
 
 import de.ibapl.jnhw.common.util.jni.LibJnhwCommon;
-import java.lang.foreign.Addressable;
 import java.lang.foreign.MemorySegment;
-import java.lang.foreign.MemorySession;
-import java.lang.foreign.SymbolLookup;
-
-import java.util.Optional;
 
 /**
  *

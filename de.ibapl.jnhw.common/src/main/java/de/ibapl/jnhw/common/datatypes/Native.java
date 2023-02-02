@@ -21,8 +21,6 @@
  */
 package de.ibapl.jnhw.common.datatypes;
 
-import java.io.IOException;
-
 /**
  *
  * @author aploese
@@ -30,8 +28,6 @@ import java.io.IOException;
 public interface Native {
 
     BaseDataType getBaseDataType();
-
-    void nativeToString(Appendable sb, String indentPrefix, String indent) throws IOException;
 
     String nativeToString();
 

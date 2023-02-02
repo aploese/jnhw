@@ -28,7 +28,7 @@ import de.ibapl.jnhw.common.annotation.uint8_t;
 import de.ibapl.jnhw.common.annotation.uintptr_t;
 import de.ibapl.jnhw.libloader.MemoryModel;
 import de.ibapl.jnhw.libloader.MultiarchTupelBuilder;
-import java.lang.foreign.MemoryAddress;
+import java.lang.foreign.MemorySegment;
 
 /**
  *
@@ -60,18 +60,18 @@ public final class ConversionsNative2Java {
      * @param value
      * @return
      */
-    public final static MemoryAddress uintptr_t_TO_MemoryAddress(@uintptr_t long value) {
+    public final static MemorySegment uintptr_t_TO_MemoryAddress(@uintptr_t long value) {
         return switch (MEMORY_MODEL) {
             case ILP32, LP32 ->
-                MemoryAddress.ofLong(value & 0x00000000ffffffffL);
+                MemorySegment.ofAddress(value & 0x00000000ffffffffL);
             case LP64, ILP64 ->
-                MemoryAddress.ofLong(value);
+                MemorySegment.ofAddress(value);
             default ->
                 throw new RuntimeException("Can't handle memory model: " + MEMORY_MODEL);
         };
     }
 
-    public final static MemoryAddress uintptr_t_TO_MemoryAddress(@uintptr_t int value) {
-        return MemoryAddress.ofLong(value & 0x00000000ffffffffL);
+    public final static MemorySegment uintptr_t_TO_MemoryAddress(@uintptr_t int value) {
+        return MemorySegment.ofAddress(value & 0x00000000ffffffffL);
     }
 }

@@ -33,9 +33,9 @@ import de.ibapl.jnhw.common.test.JnhwTestLogger;
 import de.ibapl.jnhw.common.test.LibJnhwCommonTestLoader;
 import de.ibapl.jnhw.common.upcall.CallbackFactory__V___I__I_MA;
 import de.ibapl.jnhw.common.upcall.Callback__V___I__I_MA;
-import java.lang.foreign.MemoryAddress;
+import java.lang.foreign.Arena;
 import java.lang.foreign.MemorySegment;
-import java.lang.foreign.MemorySession;
+import java.lang.foreign.SegmentScope;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
 import static org.junit.jupiter.api.Assertions.*;
@@ -75,7 +75,7 @@ public class Callback__V___I__I_MA_Test {
 
     private static FunctionPtr__V___I__I_MA getCallback__V___I__I_MA() {
         try {
-            return FunctionPtr__V___I__I_MA.wrap((MemoryAddress) getCallback__V___I__I_MA.invoke_MA___V());
+            return FunctionPtr__V___I__I_MA.wrap(getCallback__V___I__I_MA.invoke_MA___V());
         } catch (Throwable t) {
             throw new RuntimeException(t);
         }
@@ -97,7 +97,7 @@ public class Callback__V___I__I_MA_Test {
         }
     }
 
-    private MemorySession ms;
+    private Arena ms;
 
     @BeforeEach
     public void setUpBeforeEach(TestInfo testTnfo) throws Exception {
@@ -112,7 +112,7 @@ public class Callback__V___I__I_MA_Test {
     @BeforeEach
     public void setUpBefore() throws Exception {
         System.gc();
-        ms = MemorySession.openConfined();
+        ms = Arena.openConfined();
     }
 
     @AfterEach
@@ -149,9 +149,9 @@ public class Callback__V___I__I_MA_Test {
     @Test
     public void testNativeFunctionPointer() {
         @SuppressWarnings("unchecked")
-        final Callback__V___I__I_MA testPtr = new Callback__V___I__I_MA((t) -> MemoryAddress.ofLong(121)) {
+        final Callback__V___I__I_MA testPtr = new Callback__V___I__I_MA((t) -> MemorySegment.ofAddress(121)) {
             @Override
-            protected void callback(int a, int b, MemoryAddress c) {
+            protected void callback(int a, int b, MemorySegment c) {
                 throw new UnsupportedOperationException("Not supported yet.");
             }
 
@@ -175,19 +175,19 @@ public class Callback__V___I__I_MA_Test {
         JnhwTestLogger.logTest("Callback__V__I__I_MA_Test.testCallAndRelease 0x%08x %1$d \n", testValueInt);
         final int[] refA = new int[1];
         final int[] refB = new int[1];
-        final MemoryAddress[] refC = new MemoryAddress[1];
-        C c = new C(ms);
+        final MemorySegment[] refC = new MemorySegment[1];
+        C c = new C(ms.scope());
         Callback__V___I__I_MA callback = new Callback__V___I__I_MA() {
 
             @Override
-            protected void callback(int a, int b, MemoryAddress c) {
+            protected void callback(int a, int b, MemorySegment c) {
                 refA[0] = a;
                 refB[0] = b;
                 refC[0] = c;
             }
 
         };
-        final NativeFunctionPointer nativeCallbackPointer = NativeFunctionPointer.wrap(callback.toAddressable().address());
+        final NativeFunctionPointer nativeCallbackPointer = NativeFunctionPointer.wrap(callback.toMemorySegment());
         try {
 
             setCallback__V___I__I_MA(callback);
@@ -197,8 +197,8 @@ public class Callback__V___I__I_MA_Test {
             doCallback__V___I__I_MA(testValueInt, ~testValueInt, c);
             assertEquals(testValueInt, refA[0]);
             assertEquals(~testValueInt, refB[0]);
-            assertEquals(c.toAddressable().address(), refC[0]);
-            assertNotSame(c.toAddressable().address(), refC[0]);
+            assertEquals(c.toMemorySegment(), refC[0]);
+            assertNotSame(c.toMemorySegment(), refC[0]);
 
             refA[0] = -1;
             refB[0] = -1;
@@ -206,7 +206,7 @@ public class Callback__V___I__I_MA_Test {
 
             JnhwMh__V__sI_sI__A.of(
                     MemorySegment.ofAddress(
-                            getCallback__V___I__I_MA().toAddressable().address(), 0, ms),
+                            getCallback__V___I__I_MA().toAddress(), 0, ms.scope()),
                     "testCallback",
                     BaseDataType.int32_t,
                     BaseDataType.int32_t,
@@ -215,8 +215,8 @@ public class Callback__V___I__I_MA_Test {
 
             assertEquals(~testValueInt, refA[0]);
             assertEquals(testValueInt, refB[0]);
-            assertEquals(c.toAddressable().address(), refC[0]);
-            assertNotSame(c.toAddressable().address(), refC[0]);
+            assertEquals(c.toMemorySegment(), refC[0]);
+            assertNotSame(c.toMemorySegment(), refC[0]);
 
         } finally {
             callback.release();
@@ -240,11 +240,11 @@ public class Callback__V___I__I_MA_Test {
 
         public final static int SIZE_OF = 2;
 
-        public C(MemoryAddress nativeAddress, MemorySession ms) {
-            super(MemorySegment.ofAddress(nativeAddress, SIZE_OF, ms), 0, SIZE_OF);
+        public C(MemorySegment nativeAddress, SegmentScope ms) {
+            super(MemorySegment.ofAddress(nativeAddress.address(), SIZE_OF, ms), 0, SIZE_OF);
         }
 
-        public C(MemorySession ms) {
+        public C(SegmentScope ms) {
             super(MemorySegment.allocateNative(SIZE_OF, ms), 0, SIZE_OF);
         }
 
@@ -253,7 +253,7 @@ public class Callback__V___I__I_MA_Test {
     private class DummyCB extends Callback__V___I__I_MA {
 
         @Override
-        protected void callback(int a, int b, MemoryAddress c) {
+        protected void callback(int a, int b, MemorySegment c) {
             throw new UnsupportedOperationException("Not supported yet.");
         }
     }

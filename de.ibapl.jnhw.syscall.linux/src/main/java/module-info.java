@@ -21,6 +21,8 @@
  */
 module de.ibapl.jnhw.syscall.linux {
 
+    //TODO common is transistive in posix.... Netbeans compiler sees this not so....
+    requires de.ibapl.jnhw.common;
     requires de.ibapl.jnhw.posix;
 
     exports de.ibapl.jnhw.syscall.linux;

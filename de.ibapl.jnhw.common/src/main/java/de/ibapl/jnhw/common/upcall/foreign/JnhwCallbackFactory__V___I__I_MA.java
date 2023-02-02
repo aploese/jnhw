@@ -26,7 +26,6 @@ import de.ibapl.jnhw.common.upcall.Callback__V___I__I_MA;
 import de.ibapl.jnhw.common.util.jni.LibJnhwCommon;
 import java.lang.foreign.FunctionDescriptor;
 import java.lang.foreign.Linker;
-import java.lang.foreign.MemoryAddress;
 import java.lang.foreign.MemorySegment;
 import java.lang.foreign.ValueLayout;
 import java.lang.invoke.MethodHandle;
@@ -48,8 +47,8 @@ public class JnhwCallbackFactory__V___I__I_MA extends CallbackFactory__V___I__I_
     private static final MemorySegment[] NATIVE_SYMBOLS = new MemorySegment[MAX_CALL_BACKS];
 
     private MemorySegment registerCallBack(int index) throws NoSuchMethodException, IllegalAccessException {
-        MethodHandle handle = MethodHandles.lookup().findStatic(JnhwCallbackFactory__V___I__I_MA.class, "trampoline_" + index, MethodType.methodType(void.class, int.class, int.class, MemoryAddress.class));
-        return NATIVE_LINKER.upcallStub(handle, FunctionDescriptor.ofVoid(ValueLayout.JAVA_INT, ValueLayout.JAVA_INT, ValueLayout.ADDRESS), LibJnhwCommon.LIB_JNHW_COMMON_MEMORY_SESSION);
+        MethodHandle handle = MethodHandles.lookup().findStatic(JnhwCallbackFactory__V___I__I_MA.class, "trampoline_" + index, MethodType.methodType(void.class, int.class, int.class, MemorySegment.class));
+        return NATIVE_LINKER.upcallStub(handle, FunctionDescriptor.ofVoid(ValueLayout.JAVA_INT, ValueLayout.JAVA_INT, ValueLayout.ADDRESS.asUnbounded()), LibJnhwCommon.scope());
     }
 
     /**
@@ -69,7 +68,7 @@ public class JnhwCallbackFactory__V___I__I_MA extends CallbackFactory__V___I__I_
     }
 
     @Override
-    protected MemoryAddress aquire0(Callback__V___I__I_MA cb) {
+    protected MemorySegment aquire0(Callback__V___I__I_MA cb) {
         for (int i = 0; i < MAX_CALL_BACKS; i++) {
             if (REFS[i] == null) {
                 REFS[i] = cb;
@@ -82,7 +81,7 @@ public class JnhwCallbackFactory__V___I__I_MA extends CallbackFactory__V___I__I_
                         throw new RuntimeException(ex);
                     }
                 }
-                return NATIVE_SYMBOLS[i].address();
+                return NATIVE_SYMBOLS[i];
             }
         }
         //Hint: Try run GC to free any??? or add more cbs...

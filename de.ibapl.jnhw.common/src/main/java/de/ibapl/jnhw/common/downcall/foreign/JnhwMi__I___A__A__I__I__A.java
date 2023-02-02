@@ -22,7 +22,6 @@
 package de.ibapl.jnhw.common.downcall.foreign;
 
 import de.ibapl.jnhw.common.downcall.JnhwMh_sI___A__A_uI_uI__A;
-import java.lang.foreign.Addressable;
 import java.lang.foreign.FunctionDescriptor;
 import java.lang.foreign.MemorySegment;
 import java.lang.foreign.ValueLayout;
@@ -38,7 +37,7 @@ public class JnhwMi__I___A__A__I__I__A extends JnhwMethodInvoker implements Jnhw
     }
 
     @Override
-    public int invoke_sI___A__A_uI_uI__A(Addressable arg1, Addressable arg2, int arg3, int arg4, Addressable arg5) {
+    public int invoke_sI___A__A_uI_uI__A(MemorySegment arg1, MemorySegment arg2, int arg3, int arg4, MemorySegment arg5) {
         try {
             return (int) methodHandle.invokeExact(
                     arg1,

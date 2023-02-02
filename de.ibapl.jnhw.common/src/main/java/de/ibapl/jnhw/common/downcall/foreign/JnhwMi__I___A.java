@@ -26,7 +26,6 @@ import de.ibapl.jnhw.common.downcall.JnhwMh_sI___A;
 import de.ibapl.jnhw.common.downcall.JnhwMh_sL___A;
 import de.ibapl.jnhw.common.downcall.JnhwMh_uL___A;
 import de.ibapl.jnhw.common.util.ConversionsNative2Java;
-import java.lang.foreign.Addressable;
 import java.lang.foreign.FunctionDescriptor;
 import java.lang.foreign.MemorySegment;
 import java.lang.foreign.ValueLayout;
@@ -42,7 +41,7 @@ public class JnhwMi__I___A extends JnhwMethodInvoker implements JnhwMh_sI___A.Ex
     }
 
     @Override
-    public int invoke_sI___A(Addressable arg1) {
+    public int invoke_sI___A(MemorySegment arg1) {
         try {
             return (int) methodHandle.invokeExact(arg1);
         } catch (IllegalArgumentException | NullPointerException e) {
@@ -53,7 +52,7 @@ public class JnhwMi__I___A extends JnhwMethodInvoker implements JnhwMh_sI___A.Ex
     }
 
     @Override
-    public boolean invoke_BL___A(Addressable arg1) {
+    public boolean invoke_BL___A(MemorySegment arg1) {
         try {
             return ConversionsNative2Java.int32_t_TO_boolean(
                     (int) methodHandle.invokeExact(arg1));
@@ -65,7 +64,7 @@ public class JnhwMi__I___A extends JnhwMethodInvoker implements JnhwMh_sI___A.Ex
     }
 
     @Override
-    public long invoke_sL___A(Addressable arg1) {
+    public long invoke_sL___A(MemorySegment arg1) {
         try {
             return (int) methodHandle.invokeExact(arg1);
         } catch (IllegalArgumentException | NullPointerException e) {
@@ -76,7 +75,7 @@ public class JnhwMi__I___A extends JnhwMethodInvoker implements JnhwMh_sI___A.Ex
     }
 
     @Override
-    public long invoke_uL___A(Addressable arg1) {
+    public long invoke_uL___A(MemorySegment arg1) {
         try {
             return ConversionsNative2Java.uint32_t_TO_long(
                     (int) methodHandle.invokeExact(arg1));

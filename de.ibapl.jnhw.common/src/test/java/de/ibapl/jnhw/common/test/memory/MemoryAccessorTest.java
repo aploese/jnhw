@@ -31,9 +31,8 @@ import de.ibapl.jnhw.common.memory.Uint64_t;
 import de.ibapl.jnhw.common.test.JnhwTestLogger;
 import de.ibapl.jnhw.libloader.MultiarchTupelBuilder;
 import de.ibapl.jnhw.libloader.SizeInBit;
-import java.lang.foreign.MemoryAddress;
+import java.lang.foreign.Arena;
 import java.lang.foreign.MemorySegment;
-import java.lang.foreign.MemorySession;
 import java.nio.ByteOrder;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
@@ -76,11 +75,11 @@ public class MemoryAccessorTest {
 
     private final static boolean IS_BIG_ENDIAN = MultiarchTupelBuilder.getEndianess().isBigEndian();
 
-    private final static MemorySession ms = MemorySession.openConfined();
+    private final static Arena ms = Arena.openConfined();
 
     private final static int HEAP_SIZE = 8 * 12;
 
-    private final static MemoryHeap heap = MemoryHeap.wrap(MemorySegment.allocateNative(HEAP_SIZE, ms));
+    private final static MemoryHeap heap = MemoryHeap.wrap(ms.allocate(HEAP_SIZE));
     private final static Int64_t prev = Int64_t.map(heap, 0);
 
     //Her is the place to write/read
@@ -585,16 +584,16 @@ public class MemoryAccessorTest {
         switch (MultiarchTupelBuilder.getMemoryModel().sizeOf_pointer) {
             case _32_BIT -> {
                 // TODO BUG OpneJDK silent masking with 0x000000ffffffL
-                ma.intptr_t(OpaqueMemory.getMemorySegment(mem64), 0, MemoryAddress.ofLong(value));
+                ma.intptr_t(OpaqueMemory.getMemorySegment(mem64), 0, MemorySegment.ofAddress(value));
                 assertMemIsClean();
                 assertMemEqualsInt((int) value);
-                assertEquals(MemoryAddress.ofLong((int) value), ma.intptr_t(OpaqueMemory.getMemorySegment(mem32), 0));
+                assertEquals(MemorySegment.ofAddress((int) value), ma.intptr_t(OpaqueMemory.getMemorySegment(mem32), 0));
             }
             case _64_BIT -> {
-                ma.intptr_t(OpaqueMemory.getMemorySegment(mem64), 0, MemoryAddress.ofLong(value));
+                ma.intptr_t(OpaqueMemory.getMemorySegment(mem64), 0, MemorySegment.ofAddress(value));
                 assertMemIsClean();
                 assertMemEqualsLong(value);
-                assertEquals(MemoryAddress.ofLong(value), ma.intptr_t(OpaqueMemory.getMemorySegment(mem64), 0));
+                assertEquals(MemorySegment.ofAddress(value), ma.intptr_t(OpaqueMemory.getMemorySegment(mem64), 0));
             }
             default ->
                 fail();
@@ -603,22 +602,22 @@ public class MemoryAccessorTest {
 
     @Test
     public void testIntptr_t_AtIndex() {
-        final MemoryAddress address;
+        final MemorySegment address;
         switch (MultiarchTupelBuilder.getMemoryModel().sizeOf_pointer) {
             case _32_BIT -> {
-                address = MemoryAddress.ofLong(0x04030201L);
+                address = MemorySegment.ofAddress(0x04030201L);
                 ma.intptr_t_AtIndex(OpaqueMemory.getMemorySegment(heap), 2, address);
                 assertEquals(address, ma.intptr_t_AtIndex(OpaqueMemory.getMemorySegment(heap), 2));
                 assertEquals(0, prev.int64_t());
-                assertEquals(address, MemoryAddress.ofLong(ma.int32_t(OpaqueMemory.getMemorySegment(mem32), 0)));
+                assertEquals(address, MemorySegment.ofAddress(ma.int32_t(OpaqueMemory.getMemorySegment(mem32), 0)));
                 assertEquals(0, succ32_1.uint32_t());
             }
             case _64_BIT -> {
-                address = MemoryAddress.ofLong(0x0807060504030201L);
+                address = MemorySegment.ofAddress(0x0807060504030201L);
                 ma.intptr_t_AtIndex(OpaqueMemory.getMemorySegment(heap), 1, address);
                 assertEquals(address, ma.intptr_t_AtIndex(OpaqueMemory.getMemorySegment(heap), 1));
                 assertEquals(0, prev.int64_t());
-                assertEquals(address, MemoryAddress.ofLong(ma.int64_t(OpaqueMemory.getMemorySegment(mem64), 0)));
+                assertEquals(address, MemorySegment.ofAddress(ma.int64_t(OpaqueMemory.getMemorySegment(mem64), 0)));
                 assertEquals(0, succ64_1.uint64_t());
             }
             default ->
@@ -632,16 +631,16 @@ public class MemoryAccessorTest {
         switch (MultiarchTupelBuilder.getMemoryModel().sizeOf_pointer) {
             case _32_BIT -> {
                 // TODO BUG OpneJDK silent masking with 0x000000ffffffL
-                ma.intptr_t(OpaqueMemory.getMemorySegment(mem64), 0, MemoryAddress.ofLong(value));
+                ma.intptr_t(OpaqueMemory.getMemorySegment(mem64), 0, MemorySegment.ofAddress(value));
                 assertMemIsClean();
                 assertMemEqualsInt((int) value);
-                assertEquals(MemoryAddress.ofLong((int) value), ma.intptr_t_AtIndex(OpaqueMemory.getMemorySegment(mem32), 0));
+                assertEquals(MemorySegment.ofAddress((int) value), ma.intptr_t_AtIndex(OpaqueMemory.getMemorySegment(mem32), 0));
             }
             case _64_BIT -> {
-                ma.intptr_t(OpaqueMemory.getMemorySegment(mem64), 0, MemoryAddress.ofLong(value));
+                ma.intptr_t(OpaqueMemory.getMemorySegment(mem64), 0, MemorySegment.ofAddress(value));
                 assertMemIsClean();
                 assertMemEqualsLong(value);
-                assertEquals(MemoryAddress.ofLong(value), ma.intptr_t_AtIndex(OpaqueMemory.getMemorySegment(mem64), 0));
+                assertEquals(MemorySegment.ofAddress(value), ma.intptr_t_AtIndex(OpaqueMemory.getMemorySegment(mem64), 0));
             }
             default ->
                 fail();
@@ -654,17 +653,17 @@ public class MemoryAccessorTest {
         switch (MultiarchTupelBuilder.getMemoryModel().sizeOf_pointer) {
             case _32_BIT -> {
                 // TODO BUG OpneJDK silent masking with 0x000000ffffffL
-                ma.uintptr_t(OpaqueMemory.getMemorySegment(mem64), 0, MemoryAddress.ofLong(value));
+                ma.uintptr_t(OpaqueMemory.getMemorySegment(mem64), 0, MemorySegment.ofAddress(value));
                 assertMemIsClean();
                 assertMemEqualsInt((int) value);
-                assertEquals(MemoryAddress.ofLong(0xffffffffL & value), ma.uintptr_t(OpaqueMemory.getMemorySegment(mem32), 0));
+                assertEquals(MemorySegment.ofAddress(0xffffffffL & value), ma.uintptr_t(OpaqueMemory.getMemorySegment(mem32), 0));
                 assertEquals(String.format("0x%08x", 0xffffffffL & value), ma.uintptr_t_AsHex(OpaqueMemory.getMemorySegment(mem32), 0));
             }
             case _64_BIT -> {
-                ma.uintptr_t(OpaqueMemory.getMemorySegment(mem64), 0, MemoryAddress.ofLong(value));
+                ma.uintptr_t(OpaqueMemory.getMemorySegment(mem64), 0, MemorySegment.ofAddress(value));
                 assertMemIsClean();
                 assertMemEqualsLong(value);
-                assertEquals(MemoryAddress.ofLong(value), ma.uintptr_t(OpaqueMemory.getMemorySegment(mem64), 0));
+                assertEquals(MemorySegment.ofAddress(value), ma.uintptr_t(OpaqueMemory.getMemorySegment(mem64), 0));
                 assertEquals(String.format("0x%016x", value), ma.uintptr_t_AsHex(OpaqueMemory.getMemorySegment(mem64), 0));
             }
             default ->
@@ -674,22 +673,22 @@ public class MemoryAccessorTest {
 
     @Test
     public void testUintptr_t_AtIndex() {
-        final MemoryAddress address;
+        final MemorySegment address;
         switch (MultiarchTupelBuilder.getMemoryModel().sizeOf_pointer) {
             case _32_BIT -> {
-                address = MemoryAddress.ofLong(0x04030201L);
+                address = MemorySegment.ofAddress(0x04030201L);
                 ma.uintptr_t_AtIndex(OpaqueMemory.getMemorySegment(heap), 2, address);
                 assertEquals(address, ma.uintptr_t_AtIndex(OpaqueMemory.getMemorySegment(heap), 2));
                 assertEquals(0, prev.int64_t());
-                assertEquals(address, MemoryAddress.ofLong(ma.uint32_t(OpaqueMemory.getMemorySegment(mem32), 0)));
+                assertEquals(address, MemorySegment.ofAddress(ma.uint32_t(OpaqueMemory.getMemorySegment(mem32), 0)));
                 assertEquals(0, succ32_1.uint32_t());
             }
             case _64_BIT -> {
-                address = MemoryAddress.ofLong(0x0807060504030201L);
+                address = MemorySegment.ofAddress(0x0807060504030201L);
                 ma.uintptr_t_AtIndex(OpaqueMemory.getMemorySegment(heap), 1, address);
                 assertEquals(address, ma.uintptr_t_AtIndex(OpaqueMemory.getMemorySegment(heap), 1));
                 assertEquals(0, prev.int64_t());
-                assertEquals(address, MemoryAddress.ofLong(ma.uint64_t(OpaqueMemory.getMemorySegment(mem64), 0)));
+                assertEquals(address, MemorySegment.ofAddress(ma.uint64_t(OpaqueMemory.getMemorySegment(mem64), 0)));
                 assertEquals(0, succ64_1.uint64_t());
             }
             default ->
@@ -703,17 +702,17 @@ public class MemoryAccessorTest {
         switch (MultiarchTupelBuilder.getMemoryModel().sizeOf_pointer) {
             case _32_BIT -> {
                 //TODO OpenJDK bug int to long wiht sign ....
-                ma.uintptr_t(OpaqueMemory.getMemorySegment(mem64), 0, MemoryAddress.ofLong(value));
+                ma.uintptr_t(OpaqueMemory.getMemorySegment(mem64), 0, MemorySegment.ofAddress(value));
                 assertMemIsClean();
                 assertMemEqualsInt((int) value);
-                assertEquals(MemoryAddress.ofLong(0xffffffffL & value), ma.uintptr_t_AtIndex(OpaqueMemory.getMemorySegment(mem32), 0));
+                assertEquals(MemorySegment.ofAddress(0xffffffffL & value), ma.uintptr_t_AtIndex(OpaqueMemory.getMemorySegment(mem32), 0));
 
             }
             case _64_BIT -> {
-                ma.uintptr_t_AtIndex(OpaqueMemory.getMemorySegment(mem64), 0, MemoryAddress.ofLong(value));
+                ma.uintptr_t_AtIndex(OpaqueMemory.getMemorySegment(mem64), 0, MemorySegment.ofAddress(value));
                 assertMemIsClean();
                 assertMemEqualsLong(value);
-                assertEquals(MemoryAddress.ofLong(value), ma.uintptr_t(OpaqueMemory.getMemorySegment(mem64), 0));
+                assertEquals(MemorySegment.ofAddress(value), ma.uintptr_t(OpaqueMemory.getMemorySegment(mem64), 0));
             }
             default ->
                 fail();

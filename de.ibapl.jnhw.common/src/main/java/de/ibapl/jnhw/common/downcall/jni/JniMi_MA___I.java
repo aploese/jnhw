@@ -23,9 +23,7 @@ package de.ibapl.jnhw.common.downcall.jni;
 
 import de.ibapl.jnhw.common.downcall.JnhwMh_MA__sI;
 import de.ibapl.jnhw.common.downcall.JnhwMh_MA__uI;
-import java.lang.foreign.MemoryAddress;
 import java.lang.foreign.MemorySegment;
-import java.lang.foreign.SymbolLookup;
 
 /**
  *
@@ -40,12 +38,13 @@ public class JniMi_MA___I extends JniMethodInvoker implements JnhwMh_MA__sI.Exce
     }
 
     @Override
-    public MemoryAddress invoke_MA__sI(int arg1) {
+    public MemorySegment invoke_MA__sI(int arg1) {
         try {
-            return MemoryAddress.ofLong(
+            return MemorySegment.ofAddress(
                     invoke_MA___I(
-                            ns.address().toRawLongValue(),
-                            arg1));
+                            ns.address(),
+                            arg1),
+                     Long.MAX_VALUE);
         } catch (IllegalArgumentException | NullPointerException e) {
             throw e;
         } catch (Throwable t) {
@@ -54,12 +53,13 @@ public class JniMi_MA___I extends JniMethodInvoker implements JnhwMh_MA__sI.Exce
     }
 
     @Override
-    public MemoryAddress invoke_MA__uI(int arg1) {
+    public MemorySegment invoke_MA__uI(int arg1) {
         try {
-            return MemoryAddress.ofLong(
+            return MemorySegment.ofAddress(
                     invoke_MA___I(
-                            ns.address().toRawLongValue(),
-                            arg1));
+                            ns.address(),
+                            arg1),
+                     Long.MAX_VALUE);
         } catch (IllegalArgumentException | NullPointerException e) {
             throw e;
         } catch (Throwable t) {

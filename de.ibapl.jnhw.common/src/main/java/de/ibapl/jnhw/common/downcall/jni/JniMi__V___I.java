@@ -23,9 +23,7 @@ package de.ibapl.jnhw.common.downcall.jni;
 
 import de.ibapl.jnhw.common.downcall.JnhwMh__V__sI;
 import de.ibapl.jnhw.common.downcall.JnhwMh__V__uI;
-import java.lang.foreign.Addressable;
 import java.lang.foreign.MemorySegment;
-import java.lang.foreign.MemorySession;
 
 /**
  *
@@ -42,7 +40,7 @@ public class JniMi__V___I extends JniMethodInvoker implements JnhwMh__V__sI.Exce
     @Override
     public void invoke__V__sI(int arg1) {
         try {
-            invoke__V___I(ns.address().toRawLongValue(), arg1);
+            invoke__V___I(ns.address(), arg1);
         } catch (IllegalArgumentException | NullPointerException e) {
             throw e;
         } catch (Throwable t) {
@@ -53,7 +51,7 @@ public class JniMi__V___I extends JniMethodInvoker implements JnhwMh__V__sI.Exce
     @Override
     public void invoke__V__uI(int arg1) {
         try {
-            invoke__V___I(ns.address().toRawLongValue(), arg1);
+            invoke__V___I(ns.address(), arg1);
         } catch (IllegalArgumentException | NullPointerException e) {
             throw e;
         } catch (Throwable t) {

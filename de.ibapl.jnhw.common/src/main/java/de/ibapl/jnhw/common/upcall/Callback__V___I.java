@@ -22,7 +22,7 @@
 package de.ibapl.jnhw.common.upcall;
 
 import de.ibapl.jnhw.common.nativepointer.FunctionPtr__V___I;
-import java.lang.foreign.MemoryAddress;
+import java.lang.foreign.MemorySegment;
 import java.lang.ref.WeakReference;
 import java.util.LinkedList;
 import java.util.List;
@@ -46,7 +46,7 @@ public abstract class Callback__V___I extends FunctionPtr__V___I {
      * @return the first found instance or null if none is found.
      */
     public static Callback__V___I find(FunctionPtr__V___I callbackPtr) {
-        return find(callbackPtr.toAddressable().address());
+        return find(callbackPtr.toMemorySegment());
     }
 
     /**
@@ -57,7 +57,7 @@ public abstract class Callback__V___I extends FunctionPtr__V___I {
      * @param callbackPtr
      * @return the first found instance or null if none is found.
      */
-    public static Callback__V___I find(MemoryAddress callbackPtr) {
+    public static Callback__V___I find(MemorySegment callbackPtr) {
         final ListIterator<WeakReference<Callback__V___I>> iter = REFS.listIterator();
         while (iter.hasNext()) {
             final WeakReference<Callback__V___I> weak = iter.next();
@@ -73,12 +73,12 @@ public abstract class Callback__V___I extends FunctionPtr__V___I {
         return null;
     }
 
-    protected <T extends Callback__V___I> Callback__V___I(Function<T, MemoryAddress> producer) {
+    protected <T extends Callback__V___I> Callback__V___I(Function<T, MemorySegment> producer) {
         super(producer);
         REFS.add(new WeakReference<>(this));
     }
 
-    protected Callback__V___I(MemoryAddress address) {
+    protected Callback__V___I(MemorySegment address) {
         super(address);
         REFS.add(new WeakReference<>(this));
     }

@@ -23,27 +23,31 @@ package de.ibapl.jnhw.common.memory;
 
 import de.ibapl.jnhw.common.datatypes.Pointer;
 import de.ibapl.jnhw.common.util.JnhwFormater;
-import java.lang.foreign.Addressable;
-import java.lang.foreign.MemoryAddress;
+import java.lang.foreign.MemorySegment;
+import java.util.Objects;
 
 /**
  *
  * The base class for any pointer like win api HANDLE.
  *
  * @author aploese
- * @param <T>
  */
-public abstract class OpaquePointer<T extends OpaquePointer> implements Pointer {
+public abstract class OpaquePointer implements Pointer {
 
-    protected final MemoryAddress nativeValue;
+    protected final MemorySegment nativeValue;
 
-    public OpaquePointer(MemoryAddress address) {
+    public OpaquePointer(MemorySegment address) {
         nativeValue = address;
     }
 
     @Override
-    final public Addressable toAddressable() {
+    final public MemorySegment toMemorySegment() {
         return nativeValue;
+    }
+
+    @Override
+    final public long toAddress() {
+        return nativeValue.address();
     }
 
     @Override
@@ -57,14 +61,17 @@ public abstract class OpaquePointer<T extends OpaquePointer> implements Pointer 
         if (getClass() != obj.getClass()) {
             return false;
         }
-        final OpaquePointer other = (OpaquePointer) obj;
-        return this.nativeValue.toRawLongValue() == other.nativeValue.toRawLongValue();
+        if (obj instanceof OpaquePointer other) {
+            return this.nativeValue.address() == other.nativeValue.address();
+        } else {
+            return false;
+        }
     }
 
     @Override
     public int hashCode() {
         int hash = 7;
-        hash = 73 * hash + (int) (this.nativeValue.toRawLongValue() ^ (this.nativeValue.toRawLongValue() >>> 32));
+        hash = 29 * hash + Objects.hashCode(this.nativeValue);
         return hash;
     }
 
@@ -75,12 +82,12 @@ public abstract class OpaquePointer<T extends OpaquePointer> implements Pointer 
 
     @Override
     public boolean is_NULL() {
-        return nativeValue == MemoryAddress.NULL;
+        return nativeValue.address() == 0L;
     }
 
     @Override
     public boolean is_Not_NULL() {
-        return nativeValue != MemoryAddress.NULL;
+        return nativeValue.address() != 0L;
     }
 
 }

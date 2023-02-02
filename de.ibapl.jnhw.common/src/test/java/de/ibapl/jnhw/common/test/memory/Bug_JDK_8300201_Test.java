@@ -22,22 +22,21 @@
 package de.ibapl.jnhw.common.test.memory;
 
 import de.ibapl.jnhw.common.annotation.Bug_JDK_8300201;
-import de.ibapl.jnhw.libloader.MultiarchTupelBuilder;
-import de.ibapl.jnhw.libloader.SizeInBit;
-import java.lang.foreign.MemoryAddress;
-import java.lang.foreign.MemorySegment;
-import java.lang.foreign.MemorySession;
-import java.lang.foreign.ValueLayout;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.Assertions;
 import de.ibapl.jnhw.common.datatypes.BaseDataType;
 import de.ibapl.jnhw.common.downcall.JnhwMh_MA___V;
 import de.ibapl.jnhw.common.test.JnhwTestLogger;
 import de.ibapl.jnhw.common.test.LibJnhwCommonTestLoader;
+import de.ibapl.jnhw.libloader.MultiarchTupelBuilder;
+import de.ibapl.jnhw.libloader.SizeInBit;
+import java.lang.foreign.Arena;
+import java.lang.foreign.MemorySegment;
+import java.lang.foreign.ValueLayout;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInfo;
 
 /**
@@ -52,7 +51,7 @@ import org.junit.jupiter.api.TestInfo;
 public class Bug_JDK_8300201_Test {
 
     final static long TEST_VALUE = 0x0000000080000000L;
-    final static MemoryAddress BUGGY_VALUE = MemoryAddress.ofLong(0xffffffff00000000L | TEST_VALUE);
+    final static MemorySegment BUGGY_VALUE = MemorySegment.ofAddress(0xffffffff00000000L | TEST_VALUE);
 
     @BeforeAll
     public static void setUpBeforeClass(TestInfo testTnfo) throws Exception {
@@ -80,14 +79,14 @@ public class Bug_JDK_8300201_Test {
             //Nothing to test ... only 32bit are of interest here.
             return;
         }
-        try (MemorySession ms = MemorySession.openConfined()) {
+        try (Arena ms = Arena.openConfined()) {
 
-            MemorySegment pointerArray = MemorySegment.allocateNative(128, ms);
-            MemoryAddress expected = MemoryAddress.ofLong(TEST_VALUE);
+            MemorySegment pointerArray = ms.allocate(128);
+            MemorySegment expected = MemorySegment.ofAddress(TEST_VALUE);
 
             pointerArray.setAtIndex(ValueLayout.ADDRESS, 0, expected);
 
-            MemoryAddress actual = pointerArray.getAtIndex(ValueLayout.ADDRESS, 0);
+            MemorySegment actual = pointerArray.getAtIndex(ValueLayout.ADDRESS, 0);
 
             Assertions.assertEquals(BUGGY_VALUE, actual);
 //            Assertions.assertEquals(expected, actual);
@@ -100,14 +99,14 @@ public class Bug_JDK_8300201_Test {
             //Nothing to test ... only 32bit are of interest here.
             return;
         }
-        try (MemorySession ms = MemorySession.openConfined()) {
+        try (Arena ms = Arena.openConfined()) {
 
-            MemorySegment pointerArray = MemorySegment.allocateNative(128, ms);
-            MemoryAddress expected = MemoryAddress.ofLong(TEST_VALUE);
+            MemorySegment pointerArray = ms.allocate(128);
+            MemorySegment expected = MemorySegment.ofAddress(TEST_VALUE);
 
             pointerArray.set(ValueLayout.ADDRESS, 0, expected);
 
-            MemoryAddress actual = pointerArray.get(ValueLayout.ADDRESS, 0);
+            MemorySegment actual = pointerArray.get(ValueLayout.ADDRESS, 0);
 
             Assertions.assertEquals(BUGGY_VALUE, actual);
 //            Assertions.assertEquals(expected, actual);
@@ -125,8 +124,8 @@ public class Bug_JDK_8300201_Test {
                 "JnhwUintptrT__MA___V_0x0000000080000000L",
                 BaseDataType.uintptr_t);
 
-        MemoryAddress actual = call_uintptr_t.invoke_MA___V();
-        Assertions.assertEquals(TEST_VALUE, actual.toRawLongValue());
+        MemorySegment actual = call_uintptr_t.invoke_MA___V();
+        Assertions.assertEquals(TEST_VALUE, actual.address());
 
         JnhwMh_MA___V.ExceptionErased call_intptr_t = JnhwMh_MA___V.mandatoryOf(
                 LibJnhwCommonTestLoader.SYMBOL_LOOKUP,
@@ -134,7 +133,7 @@ public class Bug_JDK_8300201_Test {
                 BaseDataType.intptr_t);
 
         actual = call_intptr_t.invoke_MA___V();
-        Assertions.assertEquals(TEST_VALUE, actual.toRawLongValue());
+        Assertions.assertEquals(TEST_VALUE, actual.address());
     }
 
 }

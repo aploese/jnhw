@@ -22,7 +22,6 @@
 package de.ibapl.jnhw.common.memory;
 
 import de.ibapl.jnhw.common.annotation.Bug_JDK_8300201;
-import java.lang.foreign.MemoryAddress;
 import java.lang.foreign.MemorySegment;
 import java.lang.foreign.ValueLayout;
 import java.nio.ByteOrder;
@@ -115,24 +114,24 @@ public final class MemoryAccessorImpl_ILP32 extends AbstractMemoryAccessorImpl {
 
     @Override
     @Bug_JDK_8300201
-    public MemoryAddress uintptr_t_AtIndex(MemorySegment mem, long index) {
-        return MemoryAddress.ofLong(0xffffffffL & mem.getAtIndex(LAYOUT_UINTPTR_T, index));
+    public MemorySegment uintptr_t_AtIndex(MemorySegment mem, long index) {
+        return MemorySegment.ofAddress(0xffffffffL & mem.getAtIndex(LAYOUT_UINTPTR_T, index));
     }
 
     @Override
     @Bug_JDK_8300201
-    public MemoryAddress uintptr_t(MemorySegment mem, long offset) {
-        return MemoryAddress.ofLong(0xffffffffL & mem.get(LAYOUT_UINTPTR_T, offset));
+    public MemorySegment uintptr_t(MemorySegment mem, long offset) {
+        return MemorySegment.ofAddress(0xffffffffL & mem.get(LAYOUT_UINTPTR_T, offset));
     }
 
     @Override
     public String intptr_t_AsHex(MemorySegment mem, long offset) {
-        return String.format("0x%08x", (int) intptr_t(mem, offset).toRawLongValue());
+        return String.format("0x%08x", (int) intptr_t(mem, offset).address());
     }
 
     @Override
     public String uintptr_t_AsHex(MemorySegment mem, long offset) {
-        return String.format("0x%08x", (int) uintptr_t(mem, offset).toRawLongValue());
+        return String.format("0x%08x", (int) uintptr_t(mem, offset).address());
     }
 
 }

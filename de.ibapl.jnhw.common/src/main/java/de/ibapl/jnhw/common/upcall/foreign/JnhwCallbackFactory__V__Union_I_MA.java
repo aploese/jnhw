@@ -21,14 +21,11 @@
  */
 package de.ibapl.jnhw.common.upcall.foreign;
 
-import de.ibapl.jnhw.common.upcall.CallbackFactory__V__MA;
 import de.ibapl.jnhw.common.upcall.CallbackFactory__V__Union_I_MA;
-import de.ibapl.jnhw.common.upcall.Callback__V__MA;
 import de.ibapl.jnhw.common.upcall.Callback__V__Union_I_MA;
 import de.ibapl.jnhw.common.util.jni.LibJnhwCommon;
 import java.lang.foreign.FunctionDescriptor;
 import java.lang.foreign.Linker;
-import java.lang.foreign.MemoryAddress;
 import java.lang.foreign.MemorySegment;
 import java.lang.foreign.ValueLayout;
 import java.lang.invoke.MethodHandle;
@@ -42,7 +39,7 @@ import java.util.logging.Level;
  */
 public class JnhwCallbackFactory__V__Union_I_MA extends CallbackFactory__V__Union_I_MA {
 
-    public MemoryAddress aquire(Callback__V__Union_I_MA cb) {
+    public MemorySegment aquire(Callback__V__Union_I_MA cb) {
         for (int i = 0; i < MAX_CALL_BACKS; i++) {
             if (REFS[i] == null) {
                 REFS[i] = cb;
@@ -55,7 +52,7 @@ public class JnhwCallbackFactory__V__Union_I_MA extends CallbackFactory__V__Unio
                         throw new RuntimeException(ex);
                     }
                 }
-                return NATIVE_SYMBOLS[i].address();
+                return NATIVE_SYMBOLS[i];
             }
         }
         //Hint: Try run GC to free any??? or add more cbs...
@@ -70,8 +67,8 @@ public class JnhwCallbackFactory__V__Union_I_MA extends CallbackFactory__V__Unio
     private static final MemorySegment[] NATIVE_SYMBOLS = new MemorySegment[MAX_CALL_BACKS];
 
     private MemorySegment registerCallBack(int index) throws NoSuchMethodException, IllegalAccessException {
-        MethodHandle handle = MethodHandles.lookup().findStatic(JnhwCallbackFactory__V__Union_I_MA.class, "trampoline_" + index, MethodType.methodType(void.class, MemoryAddress.class));
-        return NATIVE_LINKER.upcallStub(handle, FunctionDescriptor.ofVoid(ValueLayout.ADDRESS), LibJnhwCommon.LIB_JNHW_COMMON_MEMORY_SESSION);
+        MethodHandle handle = MethodHandles.lookup().findStatic(JnhwCallbackFactory__V__Union_I_MA.class, "trampoline_" + index, MethodType.methodType(void.class, MemorySegment.class));
+        return NATIVE_LINKER.upcallStub(handle, FunctionDescriptor.ofVoid(ValueLayout.ADDRESS.asUnbounded()), LibJnhwCommon.scope());
     }
 
     /**
@@ -91,7 +88,7 @@ public class JnhwCallbackFactory__V__Union_I_MA extends CallbackFactory__V__Unio
     }
 
     @Override
-    protected MemoryAddress aquire0(Callback__V__Union_I_MA cb) {
+    protected MemorySegment aquire0(Callback__V__Union_I_MA cb) {
         for (int i = 0; i < MAX_CALL_BACKS; i++) {
             if (REFS[i] == null) {
                 REFS[i] = cb;
@@ -104,7 +101,7 @@ public class JnhwCallbackFactory__V__Union_I_MA extends CallbackFactory__V__Unio
                         throw new RuntimeException(ex);
                     }
                 }
-                return NATIVE_SYMBOLS[i].address();
+                return NATIVE_SYMBOLS[i];
             }
         }
         //Hint: Try run GC to free any??? or add more cbs...

@@ -23,7 +23,7 @@ package de.ibapl.jnhw.common.util;
 
 import de.ibapl.jnhw.libloader.MultiarchTupelBuilder;
 import de.ibapl.jnhw.libloader.SizeInBit;
-import java.lang.foreign.MemoryAddress;
+import java.lang.foreign.MemorySegment;
 
 /**
  *
@@ -39,14 +39,14 @@ public class JnhwFormater {
      * @param address
      * @return
      */
-    public static String formatAddress(MemoryAddress address) {
+    public static String formatAddress(MemorySegment address) {
         switch (POINTER_SIZE) {
             case _64_BIT -> {
-                return String.format("0x%016x", address.toRawLongValue());
+                return String.format("0x%016x", address.address());
             }
             case _32_BIT -> {
-                final long upper32 = address.toRawLongValue() & 0xFFFFFFFF00000000L;
-                final long lower32 = address.toRawLongValue() & 0x00000000FFFFFFFFL;
+                final long upper32 = address.address() & 0xFFFFFFFF00000000L;
+                final long lower32 = address.address() & 0x00000000FFFFFFFFL;
                 if (upper32 == 0L) {
                     return String.format("0x%08x", lower32);
                 } else {

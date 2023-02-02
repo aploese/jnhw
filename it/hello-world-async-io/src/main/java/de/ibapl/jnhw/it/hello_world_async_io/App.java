@@ -24,8 +24,8 @@ package de.ibapl.jnhw.it.hello_world_async_io;
 import de.ibapl.jnhw.libloader.MultiarchTupelBuilder;
 import de.ibapl.jnhw.libloader.OS;
 import java.io.File;
+import java.lang.foreign.Arena;
 import java.lang.foreign.MemorySegment;
-import java.lang.foreign.MemorySession;
 
 /**
  * Hello world!
@@ -34,9 +34,9 @@ import java.lang.foreign.MemorySession;
 public class App {
 
     public static void main(String[] args) throws Exception {
-        try (MemorySession ms = MemorySession.openConfined()) {
+        try (Arena ms = Arena.openConfined()) {
             String STRING_TO_WRITE = "\n\t\tHello World! - AIO from POSIX\n\n";
-            final MemorySegment aioBuffer = MemorySegment.allocateNative(STRING_TO_WRITE.length() + 1, ms);
+            final MemorySegment aioBuffer = MemorySegment.allocateNative(STRING_TO_WRITE.length() + 1, ms.scope());
             aioBuffer.setUtf8String(0, STRING_TO_WRITE);
             final File file = File.createTempFile("JNHW-Win-aio", "txt");
 

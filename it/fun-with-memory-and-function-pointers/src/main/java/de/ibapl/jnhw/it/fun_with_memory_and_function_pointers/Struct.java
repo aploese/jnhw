@@ -36,7 +36,7 @@ import de.ibapl.jnhw.common.memory.layout.Alignment;
 import de.ibapl.jnhw.common.memory.layout.StructLayoutFactory;
 import de.ibapl.jnhw.common.memory.layout.StructLayoutFactoryImpl;
 import java.io.IOException;
-import java.lang.foreign.MemorySession;
+import java.lang.foreign.SegmentScope;
 
 /**
  *
@@ -44,7 +44,7 @@ import java.lang.foreign.MemorySession;
  */
 public class Struct {
 
-    public static void getMemory(MemorySession ms) {
+    public static void getMemory(SegmentScope ms) {
         System.out.println("\n\nStruct.getMemory()\n");
         final MemoryHeap heap = MemoryHeap.allocateNative(1024, ms);
 
@@ -80,7 +80,7 @@ public class Struct {
      * }
      * }
      */
-    public static void onTheFlyStructure(MemorySession ms) {
+    public static void onTheFlyStructure(SegmentScope ms) {
         System.out.println("\n\nStruct.onTheFlyStructure()\n");
         final MemoryHeap heap = MemoryHeap.allocateNative(16, ms);
         StructLayoutFactory slf = new StructLayoutFactoryImpl(StructLayoutFactory.Type.STRUCT);
@@ -119,7 +119,7 @@ public class Struct {
      * }
      * }
      */
-    public static void onTheFlyUnion(MemorySession ms) {
+    public static void onTheFlyUnion(SegmentScope ms) {
         System.out.println("\n\nStruct.onTheFlyUnion()\n");
         final MemoryHeap heap = MemoryHeap.allocateNative(16, ms);
         StructLayoutFactory slf = new StructLayoutFactoryImpl(StructLayoutFactory.Type.STRUCT);
@@ -145,7 +145,7 @@ public class Struct {
         System.out.println();
     }
 
-    public static void printMemory(MemorySession ms) throws IOException {
+    public static void printMemory(SegmentScope ms) throws IOException {
         System.out.println("\n\nStruct.printMemory()\n");
         final MemoryHeap heap = MemoryHeap.allocateNative(256, ms);
         for (int i = 0; i < heap.sizeof(); i++) {

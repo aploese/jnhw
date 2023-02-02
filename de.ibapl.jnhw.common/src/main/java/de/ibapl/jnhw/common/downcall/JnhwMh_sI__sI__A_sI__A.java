@@ -28,7 +28,6 @@ import de.ibapl.jnhw.common.downcall.foreign.JnhwMi__I___I__A__I__A;
 import de.ibapl.jnhw.common.downcall.jni.JniMi__I___I__A__I__A;
 import de.ibapl.jnhw.common.exception.NoSuchNativeMethodException;
 import de.ibapl.jnhw.common.util.NativeProvider;
-import java.lang.foreign.Addressable;
 import java.lang.foreign.MemorySegment;
 import java.lang.foreign.SymbolLookup;
 
@@ -46,13 +45,13 @@ public interface JnhwMh_sI__sI__A_sI__A extends JnhwMethodHandle {
         default int invoke_sI__sI__P_sI__P(int arg1, Pointer arg2, int arg3, Pointer arg4) {
             return invoke_sI__sI__A_sI__A(
                     arg1,
-                    arg2.toAddressable(),
+                    arg2.toMemorySegment(),
                     arg3,
-                    arg4.toAddressable());
+                    arg4.toMemorySegment());
         }
 
         @Override
-        int invoke_sI__sI__A_sI__A(int arg1, Addressable arg2, int arg3, Addressable arg4);
+        int invoke_sI__sI__A_sI__A(int arg1, MemorySegment arg2, int arg3, MemorySegment arg4);
     }
 
     static JnhwMh_sI__sI__A_sI__A.ExceptionErased mandatoryOf(SymbolLookup symbolLookup, String name, BaseDataType result, BaseDataType arg1, BaseDataType arg2, BaseDataType arg3, BaseDataType arg4) {
@@ -104,10 +103,10 @@ public interface JnhwMh_sI__sI__A_sI__A extends JnhwMethodHandle {
     default int invoke_sI__sI__P_sI__P(int arg1, Pointer arg2, int arg3, Pointer arg4) throws NoSuchNativeMethodException {
         return invoke_sI__sI__A_sI__A(
                 arg1,
-                arg2.toAddressable(),
+                arg2.toMemorySegment(),
                 arg3,
-                arg4.toAddressable());
+                arg4.toMemorySegment());
     }
 
-    int invoke_sI__sI__A_sI__A(int arg1, Addressable arg2, int arg3, Addressable arg4) throws NoSuchNativeMethodException;
+    int invoke_sI__sI__A_sI__A(int arg1, MemorySegment arg2, int arg3, MemorySegment arg4) throws NoSuchNativeMethodException;
 }

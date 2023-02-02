@@ -22,9 +22,7 @@
 package de.ibapl.jnhw.common.downcall.foreign;
 
 import de.ibapl.jnhw.common.downcall.JnhwMh_MA___A;
-import java.lang.foreign.Addressable;
 import java.lang.foreign.FunctionDescriptor;
-import java.lang.foreign.MemoryAddress;
 import java.lang.foreign.MemorySegment;
 import java.lang.foreign.ValueLayout;
 
@@ -35,13 +33,13 @@ import java.lang.foreign.ValueLayout;
 public class JnhwMi_MA___A extends JnhwMethodInvoker implements JnhwMh_MA___A.ExceptionErased {
 
     public JnhwMi_MA___A(MemorySegment methodAddress, String name) {
-        super(methodAddress, name, FunctionDescriptor.of(ValueLayout.ADDRESS, ValueLayout.ADDRESS));
+        super(methodAddress, name, FunctionDescriptor.of(ValueLayout.ADDRESS.asUnbounded(), ValueLayout.ADDRESS));
     }
 
     @Override
-    public MemoryAddress invoke_MA___A(Addressable arg1) {
+    public MemorySegment invoke_MA___A(MemorySegment arg1) {
         try {
-            return (MemoryAddress) methodHandle.invokeExact(arg1);
+            return (MemorySegment) methodHandle.invokeExact(arg1);
         } catch (IllegalArgumentException | NullPointerException e) {
             throw e;
         } catch (Throwable t) {

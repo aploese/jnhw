@@ -22,8 +22,6 @@
 package de.ibapl.jnhw.common.downcall.jni;
 
 import de.ibapl.jnhw.common.downcall.JnhwMh_MA___A;
-import java.lang.foreign.Addressable;
-import java.lang.foreign.MemoryAddress;
 import java.lang.foreign.MemorySegment;
 
 /**
@@ -39,12 +37,13 @@ public class JniMi_MA___A extends JniMethodInvoker implements JnhwMh_MA___A.Exce
     }
 
     @Override
-    public MemoryAddress invoke_MA___A(Addressable arg1) {
+    public MemorySegment invoke_MA___A(MemorySegment arg1) {
         try {
-            return MemoryAddress.ofLong(
+            return MemorySegment.ofAddress(
                     invoke_MA___A(
-                            ns.address().toRawLongValue(),
-                            arg1.address().toRawLongValue()));
+                            ns.address(),
+                            arg1.address()),
+                    Long.MAX_VALUE);
         } catch (IllegalArgumentException | NullPointerException e) {
             throw e;
         } catch (Throwable t) {

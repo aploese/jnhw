@@ -22,8 +22,6 @@
 package de.ibapl.jnhw.util.winapi.memory;
 
 import de.ibapl.jnhw.annotation.winapi.basetsd.PVOID;
-import java.lang.foreign.Addressable;
-import java.lang.foreign.MemoryAddress;
 import java.lang.foreign.MemorySegment;
 
 /**
@@ -34,8 +32,8 @@ import java.lang.foreign.MemorySegment;
 public interface Accessor_PVOID {
 
     @PVOID
-    MemoryAddress PVOID(MemorySegment memorySegment, long offset);
+    MemorySegment PVOID(MemorySegment memorySegment, long offset);
 
-    void PVOID(MemorySegment memorySegment, long offset, @PVOID Addressable value);
+    void PVOID(MemorySegment memorySegment, long offset, @PVOID MemorySegment value);
 
 }

@@ -28,9 +28,8 @@ import de.ibapl.jnhw.common.memory.Struct;
 import de.ibapl.jnhw.common.memory.Uint32_t;
 import de.ibapl.jnhw.util.winapi.WinApiDataType;
 import de.ibapl.jnhw.winapi.Winnt.HANDLE;
-import java.lang.foreign.MemoryAddress;
 import java.lang.foreign.MemorySegment;
-import java.lang.foreign.MemorySession;
+import java.lang.foreign.SegmentScope;
 
 /**
  * Wrapper around the
@@ -52,21 +51,21 @@ public abstract class WinDef {
      */
     public static class HKEY extends HANDLE {
 
-        public final static HKEY NULL = new HKEY(MemoryAddress.NULL);
+        public final static HKEY NULL = new HKEY(MemorySegment.NULL);
 
-        public final static HKEY INVALID_HANDLE_VALUE = new HKEY(MemoryAddress.ofLong(_INVALID_HANDLE_VALUE));
+        public final static HKEY INVALID_HANDLE_VALUE = new HKEY(MemorySegment.ofAddress(_INVALID_HANDLE_VALUE));
 
-        public static HKEY of(MemoryAddress value) {
-            if (value == MemoryAddress.NULL) {
+        public static HKEY of(MemorySegment value) {
+            if (value.address() == 0L) {
                 return NULL;
-            } else if (value.toRawLongValue() == _INVALID_HANDLE_VALUE) {
+            } else if (value.address() == _INVALID_HANDLE_VALUE) {
                 return INVALID_HANDLE_VALUE;
             } else {
                 return new HKEY(value);
             }
         }
 
-        protected HKEY(MemoryAddress value) {
+        protected HKEY(MemorySegment value) {
             super(value);
         }
 
@@ -84,7 +83,7 @@ public abstract class WinDef {
 
         private final static int SIZE_OF_WCHAR = WinApiDataType.WCHAR.SIZE_OF;
 
-        public static LPBYTE allocateNative(int size, MemorySession ms) {
+        public static LPBYTE allocateNative(int size, SegmentScope ms) {
             return new LPBYTE(MemorySegment.allocateNative(size, ms), 0, size);
         }
 
@@ -123,7 +122,7 @@ public abstract class WinDef {
      */
     public static class LPDWORD extends Uint32_t {
 
-        public static LPDWORD allocateNative(MemorySession ms) {
+        public static LPDWORD allocateNative(SegmentScope ms) {
             return new LPDWORD(MemorySegment.allocateNative(DATA_TYPE.SIZE_OF, ms), 0);
         }
 
@@ -143,7 +142,7 @@ public abstract class WinDef {
      */
     public static class LPWSTR extends Struct {
 
-        public static LPWSTR wrap(String value, boolean isNullTerminated, MemorySession ms) {
+        public static LPWSTR wrap(String value, boolean isNullTerminated, SegmentScope ms) {
             final int length = value.length() * 2 + (isNullTerminated ? 2 : 0);
             final LPWSTR result = new LPWSTR(MemorySegment.allocateNative(length, ms), 0, length);
             result.setString(value, isNullTerminated);
@@ -194,11 +193,11 @@ public abstract class WinDef {
      */
     public final static class PHKEY extends Winnt.PHANDLE {
 
-        public static PHKEY allocateNative(MemorySession ms) {
+        public static PHKEY allocateNative(SegmentScope ms) {
             return new PHKEY(MemorySegment.allocateNative(SIZE_OF, ms), 0);
         }
 
-        public static PHKEY allocateNative(HKEY value, MemorySession ms) {
+        public static PHKEY allocateNative(HKEY value, SegmentScope ms) {
             return new PHKEY(MemorySegment.allocateNative(SIZE_OF, ms), 0, value);
         }
 
@@ -211,7 +210,7 @@ public abstract class WinDef {
         }
 
         @Override
-        protected HKEY createTarget(MemoryAddress value) {
+        protected HKEY createTarget(MemorySegment value) {
             return HKEY.of(value);
         }
 

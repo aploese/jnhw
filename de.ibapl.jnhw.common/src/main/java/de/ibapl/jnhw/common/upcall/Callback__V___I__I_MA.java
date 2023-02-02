@@ -23,7 +23,7 @@ package de.ibapl.jnhw.common.upcall;
 
 import de.ibapl.jnhw.common.datatypes.Pointer;
 import de.ibapl.jnhw.common.nativepointer.FunctionPtr__V___I__I_MA;
-import java.lang.foreign.MemoryAddress;
+import java.lang.foreign.MemorySegment;
 import java.lang.ref.WeakReference;
 import java.util.LinkedList;
 import java.util.List;
@@ -50,7 +50,7 @@ public abstract class Callback__V___I__I_MA<A extends Pointer> extends FunctionP
      * @return the first found instance or null if none is found.
      */
     public static <A extends Pointer> Callback__V___I__I_MA<A> find(FunctionPtr__V___I__I_MA<A> callbackPtr) {
-        return (Callback__V___I__I_MA<A>) find(callbackPtr.toAddressable().address());
+        return (Callback__V___I__I_MA<A>) find(callbackPtr.toMemorySegment());
     }
 
     /**
@@ -61,7 +61,7 @@ public abstract class Callback__V___I__I_MA<A extends Pointer> extends FunctionP
      * @param callbackPtr
      * @return the first found instance or null if none is found.
      */
-    public static Callback__V___I__I_MA<?> find(MemoryAddress callbackPtr) {
+    public static Callback__V___I__I_MA<?> find(MemorySegment callbackPtr) {
         final ListIterator<WeakReference<Callback__V___I__I_MA<?>>> iter = REFS.listIterator();
         while (iter.hasNext()) {
             final WeakReference<Callback__V___I__I_MA<?>> weak = iter.next();
@@ -77,12 +77,12 @@ public abstract class Callback__V___I__I_MA<A extends Pointer> extends FunctionP
         return null;
     }
 
-    protected <T extends Callback__V___I__I_MA<A>> Callback__V___I__I_MA(Function<T, MemoryAddress> producer) {
+    protected <T extends Callback__V___I__I_MA<A>> Callback__V___I__I_MA(Function<T, MemorySegment> producer) {
         super(producer);
         REFS.add(new WeakReference<>(this));
     }
 
-    protected Callback__V___I__I_MA(MemoryAddress address) {
+    protected Callback__V___I__I_MA(MemorySegment address) {
         super(address);
         REFS.add(new WeakReference<>(this));
     }
@@ -102,6 +102,6 @@ public abstract class Callback__V___I__I_MA<A extends Pointer> extends FunctionP
      * @param b
      * @param c
      */
-    protected abstract void callback(int a, int b, MemoryAddress c);
+    protected abstract void callback(int a, int b, MemorySegment c);
 
 }

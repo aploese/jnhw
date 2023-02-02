@@ -28,8 +28,6 @@ import de.ibapl.jnhw.common.downcall.foreign.JnhwMi_MA___A__I__I__A;
 import de.ibapl.jnhw.common.downcall.jni.JniMi_MA___A__I__I__A;
 import de.ibapl.jnhw.common.exception.NoSuchNativeMethodException;
 import de.ibapl.jnhw.common.util.NativeProvider;
-import java.lang.foreign.Addressable;
-import java.lang.foreign.MemoryAddress;
 import java.lang.foreign.MemorySegment;
 import java.lang.foreign.SymbolLookup;
 
@@ -44,12 +42,12 @@ public interface JnhwMh_MA___A_BL_BL__A extends JnhwMethodHandle {
     interface ExceptionErased extends JnhwMh_MA___A_BL_BL__A {
 
         @Override
-        default MemoryAddress invoke_MA___P_BL_BL__P(Pointer arg1, boolean arg2, boolean arg3, Pointer arg4) {
-            return invoke_MA___A_BL_BL__A(arg1.toAddressable(), arg2, arg3, arg4.toAddressable());
+        default MemorySegment invoke_MA___P_BL_BL__P(Pointer arg1, boolean arg2, boolean arg3, Pointer arg4) {
+            return invoke_MA___A_BL_BL__A(arg1.toMemorySegment(), arg2, arg3, arg4.toMemorySegment());
         }
 
         @Override
-        MemoryAddress invoke_MA___A_BL_BL__A(Addressable arg1, boolean arg2, boolean arg3, Addressable arg4);
+        MemorySegment invoke_MA___A_BL_BL__A(MemorySegment arg1, boolean arg2, boolean arg3, MemorySegment arg4);
     }
 
     static JnhwMh_MA___A_BL_BL__A.ExceptionErased mandatoryOf(SymbolLookup symbolLookup, String name, BaseDataType result, BaseDataType arg1, BaseDataType arg2, BaseDataType arg3, BaseDataType arg4) {
@@ -98,9 +96,9 @@ public interface JnhwMh_MA___A_BL_BL__A extends JnhwMethodHandle {
         };
     }
 
-    default MemoryAddress invoke_MA___P_BL_BL__P(Pointer arg1, boolean arg2, boolean arg3, Pointer arg4) throws NoSuchNativeMethodException {
-        return invoke_MA___A_BL_BL__A(arg1.toAddressable(), arg2, arg3, arg4.toAddressable());
+    default MemorySegment invoke_MA___P_BL_BL__P(Pointer arg1, boolean arg2, boolean arg3, Pointer arg4) throws NoSuchNativeMethodException {
+        return invoke_MA___A_BL_BL__A(arg1.toMemorySegment(), arg2, arg3, arg4.toMemorySegment());
     }
 
-    MemoryAddress invoke_MA___A_BL_BL__A(Addressable arg1, boolean arg2, boolean arg3, Addressable arg4) throws NoSuchNativeMethodException;
+    MemorySegment invoke_MA___A_BL_BL__A(MemorySegment arg1, boolean arg2, boolean arg3, MemorySegment arg4) throws NoSuchNativeMethodException;
 }

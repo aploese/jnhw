@@ -54,13 +54,13 @@ import de.ibapl.jnhw.common.annotation.Define;
 import de.ibapl.jnhw.common.memory.MemoryArray;
 import de.ibapl.jnhw.common.memory.OpaqueMemory;
 import de.ibapl.jnhw.common.memory.Struct;
-import static de.ibapl.jnhw.syscall.linux.uapi.asm_generic.Types.__u8;
-import static de.ibapl.jnhw.syscall.linux.uapi.asm_generic.Types.__u16;
-import static de.ibapl.jnhw.syscall.linux.uapi.asm_generic.Types.__u32;
+import de.ibapl.jnhw.syscall.linux.uapi.asm_generic.Types.__u16;
+import de.ibapl.jnhw.syscall.linux.uapi.asm_generic.Types.__u32;
+import de.ibapl.jnhw.syscall.linux.uapi.asm_generic.Types.__u8;
 import de.ibapl.jnhw.unix.sys.Ioctl;
-import java.nio.ByteBuffer;
-import java.lang.foreign.MemoryAddress;
 import java.lang.foreign.MemorySegment;
+import java.lang.foreign.SegmentScope;
+import java.nio.ByteBuffer;
 
 public final class Usbdevice_fs {
 
@@ -113,7 +113,7 @@ public final class Usbdevice_fs {
         /* in milliseconds */
         public abstract void timeout(@__u32 int timeout);
 
-        public abstract MemoryAddress data();
+        public abstract MemorySegment data();
 
         public abstract void data(OpaqueMemory data);
     };
@@ -197,7 +197,7 @@ public final class Usbdevice_fs {
 
         public abstract int signr();
 
-        public abstract MemoryAddress context();
+        public abstract MemorySegment context();
 
     };
 
@@ -312,7 +312,7 @@ public final class Usbdevice_fs {
 
         public abstract int flags();
 
-        public abstract MemoryAddress buffer();
+        public abstract MemorySegment buffer();
 
         public abstract int buffer_length();
 
@@ -334,7 +334,7 @@ public final class Usbdevice_fs {
 				  or 0 if none should be sent. */
         public abstract int signr();
 
-        public abstract MemoryAddress usercontext();
+        public abstract SegmentScope usercontext();
         final MemoryArray<Usbdevfs_iso_packet_desc> iso_frame_desc;
     };
 
@@ -353,7 +353,7 @@ public final class Usbdevice_fs {
         public abstract int ioctl_code();
 
         /* param buffer (in, or out) */
-        public abstract MemoryAddress data();
+        public abstract MemorySegment data();
     };
 
     /* You can do most things with hubs just through control messages,

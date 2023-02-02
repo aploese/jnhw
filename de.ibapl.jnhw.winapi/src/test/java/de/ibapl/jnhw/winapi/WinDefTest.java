@@ -22,7 +22,7 @@
 package de.ibapl.jnhw.winapi;
 
 import de.ibapl.jnhw.common.memory.OpaqueMemory;
-import java.lang.foreign.MemorySession;
+import java.lang.foreign.Arena;
 import java.nio.charset.Charset;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
@@ -33,11 +33,11 @@ import org.junit.jupiter.api.condition.EnabledOnOs;
 @EnabledOnOs(org.junit.jupiter.api.condition.OS.WINDOWS)
 public class WinDefTest {
 
-    private MemorySession ms;
+    private Arena ms;
 
     @BeforeEach
     public void setUp() throws Exception {
-        ms = MemorySession.openConfined();
+        ms = Arena.openConfined();
     }
 
     @AfterEach
@@ -48,7 +48,7 @@ public class WinDefTest {
     @Test
     public void test_LPBYTE_stringValueOfNullTerminated() throws Exception {
         byte[] data = "HELLO WORLD!\0".getBytes(Charset.forName("UTF-16LE"));
-        WinDef.LPBYTE lpByte = WinDef.LPBYTE.allocateNative(64, ms);
+        WinDef.LPBYTE lpByte = WinDef.LPBYTE.allocateNative(64, ms.scope());
         OpaqueMemory.copy(data, 0, lpByte, 0, data.length);
         Assertions.assertEquals("HELLO WORLD!", WinDef.LPBYTE.getUnicodeString(lpByte, true, data.length));
     }

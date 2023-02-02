@@ -26,24 +26,22 @@ import de.ibapl.jnhw.common.datatypes.Pointer;
 import de.ibapl.jnhw.common.memory.layout.Alignment;
 import de.ibapl.jnhw.common.util.JnhwFormater;
 import java.io.IOException;
-import java.lang.foreign.Addressable;
-import java.lang.foreign.MemoryAddress;
 import java.lang.foreign.MemorySegment;
-import java.lang.foreign.MemorySession;
+import java.lang.foreign.SegmentScope;
 import java.lang.foreign.ValueLayout;
 import java.nio.ByteOrder;
 import java.util.Arrays;
-import java.util.Objects;
 import java.util.logging.Logger;
 
 /**
  *
  * The base class for any chunk (i.e.pointer to or structs) of native memory.
  * The run method in MemoryCleaner will clean up the allocated memory after
- * finalizing this instance - if this instance owns the memory.
+ * finalizing this instance - if this instance owns the memory. The NULL address
+ * for the backing MemorySegment is not allowed a NullPointerException will be
+ * thrown in the constructor.
  *
  * @author aploese
- * @param <T>
  */
 public abstract class OpaqueMemory implements Native, Pointer {
 
@@ -66,7 +64,7 @@ public abstract class OpaqueMemory implements Native, Pointer {
      * @return the offset om menber in its parent.
      */
     public static long offsetof(OpaqueMemory parent, OpaqueMemory member) {
-        final long offset = member.memorySegment.address().toRawLongValue() - parent.memorySegment.address().toRawLongValue();
+        final long offset = member.toAddress() - parent.toAddress();
         if (offset < 0) {
             throw new IndexOutOfBoundsException("member start outside of parent");
         } else if (offset + member.sizeof() < parent.sizeof()) {
@@ -92,24 +90,8 @@ public abstract class OpaqueMemory implements Native, Pointer {
      * @return the aligned offset
      */
     public static long calcOffsetForAlignment(final OpaqueMemory mem, final Alignment structAlignment, final long startOffset) {
-        final long baseAddress = mem.memorySegment.address().toRawLongValue();
+        final long baseAddress = mem.toAddress();
         return structAlignment.doAlignment(baseAddress + startOffset) - baseAddress;
-    }
-
-    /**
-     * test if adresses are the same. If either nativeAddress or om is null and
-     * the other has a address of 0 it is considered as the same address.
-     *
-     * @param address must not be null instead use MemoryAddress.NULL.
-     * @param om
-     * @return
-     */
-    public static boolean isSameAddress(MemoryAddress address, OpaqueMemory om) {
-        if (om == null) {
-            return address == MemoryAddress.NULL;
-        } else {
-            return Objects.equals(address, om.memorySegment.address());
-        }
     }
 
     @Deprecated //Use OpaqueMemory.sliceMemorySegment(mem, destOff, nbyte)
@@ -180,7 +162,7 @@ public abstract class OpaqueMemory implements Native, Pointer {
     public static void printMemory(Appendable sb, final OpaqueMemory mem, final boolean printAddress) throws IOException {
         final StringBuilder ascii = new StringBuilder();
         final long SIZE_IN_BYTES = mem.sizeof();
-        final long BASE_ADDRESS = mem.memorySegment.address().toRawLongValue();
+        final long BASE_ADDRESS = mem.toAddress();
         final int BLOCK_SIZE = 16;
         final int BLOCK_REMINDER = (int) (SIZE_IN_BYTES % BLOCK_SIZE);
         final long BLOCK_COUNT = SIZE_IN_BYTES / BLOCK_SIZE + (BLOCK_REMINDER == 0 ? 0 : 1);
@@ -193,7 +175,7 @@ public abstract class OpaqueMemory implements Native, Pointer {
                 copy(mem, i * BLOCK_SIZE, block, 0, BLOCK_SIZE);
             }
             if (printAddress) {
-                sb.append(JnhwFormater.formatAddress(MemoryAddress.ofLong(BASE_ADDRESS + BLOCK_SIZE * i))).append(": ");
+                sb.append(JnhwFormater.formatAddress(MemorySegment.ofAddress(BASE_ADDRESS + BLOCK_SIZE * i))).append(": ");
             }
             for (int j = 0; j < BLOCK_SIZE; j++) {
                 ascii.append((char) (block[j] & 0x00ff));
@@ -241,6 +223,9 @@ public abstract class OpaqueMemory implements Native, Pointer {
      * @param sizeInBytes
      */
     public OpaqueMemory(MemorySegment memorySegment, long offset, long sizeInBytes) {
+        if (memorySegment.address() == 0L) {
+            throw new NullPointerException("memorySegemnt points to NULL!");
+        }
         if ((offset == 0) && (sizeInBytes == memorySegment.byteSize())) {
             this.memorySegment = memorySegment;
         } else {
@@ -256,7 +241,10 @@ public abstract class OpaqueMemory implements Native, Pointer {
         }
     }
 
-    public OpaqueMemory(MemoryAddress baseAddress, MemorySession ms, long sizeInBytes) {
+    public OpaqueMemory(long baseAddress, SegmentScope ms, long sizeInBytes) {
+        if (baseAddress == 0L) {
+            throw new NullPointerException("baseAddress points to NULL!");
+        }
         memorySegment = MemorySegment.ofAddress(baseAddress, sizeInBytes, ms);
     }
 
@@ -265,14 +253,19 @@ public abstract class OpaqueMemory implements Native, Pointer {
     }
 
     @Override
-    public Addressable toAddressable() {
+    public final MemorySegment toMemorySegment() {
         return memorySegment;
+    }
+
+    @Override
+    public final long toAddress() {
+        return memorySegment.address();
     }
 
     @Override
     public int hashCode() {
         long hash = 5;
-        hash = 37 * hash + this.memorySegment.address().toRawLongValue();
+        hash = 37 * hash + this.toAddress();
         hash = 37 * hash + this.sizeof();
         return (int) (hash ^ (hash >>> 32));
     }
@@ -286,7 +279,7 @@ public abstract class OpaqueMemory implements Native, Pointer {
             return false;
         }
         if (obj instanceof OpaqueMemory other) {
-            if (Objects.equals(this.memorySegment.address(), other.memorySegment.address())) {
+            if (this.toAddress() == other.toAddress()) {
                 return (this.sizeof() == other.sizeof());
             } else {
                 return false;
@@ -298,12 +291,12 @@ public abstract class OpaqueMemory implements Native, Pointer {
 
     @Override
     public boolean is_NULL() {
-        return memorySegment.address() == MemoryAddress.NULL;
+        return memorySegment.address() == 0L;
     }
 
     @Override
     public boolean is_Not_NULL() {
-        return memorySegment.address() != MemoryAddress.NULL;
+        return memorySegment.address() != 0L;
     }
 
     @Override
@@ -341,7 +334,7 @@ public abstract class OpaqueMemory implements Native, Pointer {
 
     @Override
     final public String toString() {
-        return String.format("{baseAddress : %s, sizeof : %d}", JnhwFormater.formatAddress(memorySegment.address()), sizeof());
+        return String.format("{baseAddress : %s, sizeof : %d}", JnhwFormater.formatAddress(memorySegment), sizeof());
     }
 
     @FunctionalInterface
@@ -350,11 +343,11 @@ public abstract class OpaqueMemory implements Native, Pointer {
         /**
          *
          * @param address the address to use.
-         * @param ms the memorysession to use
+         * @param ms the SegmentScope to use
          * @param parent the parent of the result with given address.
          * @return a cached or new OpaqueMemory.
          */
-        T produce(MemoryAddress address, MemorySession ms, P parent);
+        T produce(MemorySegment address, SegmentScope ms, P parent);
 
     }
 

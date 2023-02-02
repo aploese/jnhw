@@ -38,7 +38,7 @@ public class JniMi__I___L__I extends JniMethodInvoker {
     public int invoke_sI__uL_sI(long arg1, int arg2) {
         try {
             return invoke__I___L__I(
-                    ns.address().toRawLongValue(),
+                    ns.address(),
                     arg1,
                     arg2);
         } catch (IllegalArgumentException | NullPointerException e) {

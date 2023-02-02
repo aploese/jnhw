@@ -23,8 +23,8 @@ package de.ibapl.jnhw.common.test.datatypes;
 
 import de.ibapl.jnhw.common.test.JnhwTestLogger;
 import de.ibapl.jnhw.libloader.MultiarchTupelBuilder;
+import java.lang.foreign.Arena;
 import java.lang.foreign.MemorySegment;
-import java.lang.foreign.MemorySession;
 import java.lang.foreign.VaList;
 import java.lang.foreign.ValueLayout;
 import org.junit.jupiter.api.AfterAll;
@@ -79,23 +79,23 @@ public class VaListTest {
     //TODO reenable and catch exception once bug in OpenJDK is fixed
     //@Test
     public void testVaListOfAddressCrash() {
-        try (MemorySession ms = MemorySession.openConfined()) {
-            MemorySegment mem = MemorySegment.allocateNative(128, ms);
+        try (Arena ms = Arena.openConfined()) {
+            MemorySegment mem = ms.allocate(128);
             mem.set(ValueLayout.JAVA_INT, 0, 42);
-            VaList vaList = VaList.ofAddress(mem.address(), ms);
+            VaList vaList = VaList.ofAddress(mem.address(), ms.scope());
             assertEquals(42, vaList.nextVarg(ValueLayout.JAVA_INT));
         }
     }
 
     @Test
     public void testVaListOfAddress() {
-        try (MemorySession ms = MemorySession.openConfined()) {
+        try (Arena ms = Arena.openConfined()) {
             switch (MultiarchTupelBuilder.getMultiarch()) {
                 case AARCH64__LINUX__GNU, X86_64__APPLE_DARWIN, X86_64__FREE_BSD__BSD, X86_64__LINUX__GNU, X86_64__WINDOWS__PE32_PLUS -> {
                     VaList mem = VaList.make((t) -> {
                         t.addVarg(ValueLayout.JAVA_INT, 42);
-                    }, ms);
-                    VaList vaList = VaList.ofAddress(mem.address(), ms);
+                    }, ms.scope());
+                    VaList vaList = VaList.ofAddress(mem.segment().address(), ms.scope());
                     assertEquals(42, vaList.nextVarg(ValueLayout.JAVA_INT));
                     //TODO report this - no boundary checks - it crashes too
                     /*
@@ -107,19 +107,19 @@ public class VaListTest {
                 default ->
                     assertThrows(UnsupportedOperationException.class, () -> VaList.make((t) -> {
                         t.addVarg(ValueLayout.JAVA_INT, 42);
-                    }, ms));
+                    }, ms.scope()));
             }
         }
     }
 
     @Test
     public void testVaList() {
-        try (MemorySession ms = MemorySession.openConfined()) {
+        try (Arena ms = Arena.openConfined()) {
             switch (MultiarchTupelBuilder.getMultiarch()) {
                 case AARCH64__LINUX__GNU, X86_64__APPLE_DARWIN, X86_64__FREE_BSD__BSD, X86_64__LINUX__GNU, X86_64__WINDOWS__PE32_PLUS -> {
                     VaList vaList = VaList.make((t) -> {
                         t.addVarg(ValueLayout.JAVA_INT, 42);
-                    }, ms);
+                    }, ms.scope());
                     assertEquals(42, vaList.nextVarg(ValueLayout.JAVA_INT));
 
                 }
@@ -128,7 +128,7 @@ public class VaListTest {
                             () -> VaList.make((t) -> {
                                 t.addVarg(ValueLayout.JAVA_INT,
                                         42);
-                            }, ms));
+                            }, ms.scope()));
 
             }
         }

@@ -27,7 +27,6 @@ import de.ibapl.jnhw.common.downcall.foreign.JnhwMi_MA___V;
 import de.ibapl.jnhw.common.downcall.jni.JniMi_MA___V;
 import de.ibapl.jnhw.common.exception.NoSuchNativeMethodException;
 import de.ibapl.jnhw.common.util.NativeProvider;
-import java.lang.foreign.MemoryAddress;
 import java.lang.foreign.MemorySegment;
 import java.lang.foreign.SymbolLookup;
 
@@ -42,7 +41,7 @@ public interface JnhwMh_MA___V extends JnhwMethodHandle {
     interface ExceptionErased extends JnhwMh_MA___V {
 
         @Override
-        MemoryAddress invoke_MA___V();
+        MemorySegment invoke_MA___V();
     }
 
     static JnhwMh_MA___V.ExceptionErased mandatoryOf(SymbolLookup symbolLookup, String name, BaseDataType result) {
@@ -71,6 +70,6 @@ public interface JnhwMh_MA___V extends JnhwMethodHandle {
         };
     }
 
-    MemoryAddress invoke_MA___V() throws NoSuchNativeMethodException;
+    MemorySegment invoke_MA___V() throws NoSuchNativeMethodException;
 
 }

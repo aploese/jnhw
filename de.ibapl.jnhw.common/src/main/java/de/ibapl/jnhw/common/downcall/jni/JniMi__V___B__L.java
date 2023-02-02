@@ -41,7 +41,7 @@ public class JniMi__V___B__L extends JniMethodInvoker implements JnhwMh__V__BL_s
     public void invoke__V__BL_sL(boolean arg1, long arg2) {
         try {
             invoke__V___B__L(
-                    ns.address().toRawLongValue(),
+                    ns.address(),
                     ConversionsJava2Native.boolean_TO_int8_t(arg1),
                     arg2);
         } catch (IllegalArgumentException | NullPointerException e) {

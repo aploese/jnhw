@@ -33,7 +33,7 @@ import de.ibapl.jnhw.util.winapi.Kernel32Loader;
 import de.ibapl.jnhw.util.winapi.WinApiDataType;
 import de.ibapl.jnhw.winapi.Minwinbase.LPOVERLAPPED;
 import de.ibapl.jnhw.winapi.Winnt.HANDLE;
-import java.lang.foreign.MemoryAddress;
+import java.lang.foreign.MemorySegment;
 
 /**
  * Wrapper around the
@@ -99,12 +99,12 @@ public final class IoAPI {
         if (NumberOfConcurrentThreads < 0) {
             throw new IllegalArgumentException("NumberOfConcurrentThreads must >= 0!");
         }
-        final MemoryAddress result = CreateIoCompletionPort.invoke_MA___P__P_uL_uI(
+        final MemorySegment result = CreateIoCompletionPort.invoke_MA___P__P_uL_uI(
                 FileHandle,
                 ExistingCompletionPort != null ? ExistingCompletionPort : Pointer.NULL,
                 CompletionKey,
                 NumberOfConcurrentThreads);
-        if (result == MemoryAddress.NULL) {
+        if (result.address() == 0L) {
             throw new NativeErrorException(Errhandlingapi.GetLastError());
         }
         return HANDLE.of(result);

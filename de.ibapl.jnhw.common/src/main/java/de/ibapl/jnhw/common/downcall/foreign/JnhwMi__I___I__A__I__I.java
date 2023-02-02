@@ -25,7 +25,6 @@ import de.ibapl.jnhw.common.downcall.JnhwMh_uI__uI__A_BL_uI;
 import de.ibapl.jnhw.common.downcall.JnhwMh_uI__uI__A_uI_uI;
 import de.ibapl.jnhw.common.util.ConversionsJava2Native;
 import de.ibapl.jnhw.common.util.ConversionsNative2Java;
-import java.lang.foreign.Addressable;
 import java.lang.foreign.FunctionDescriptor;
 import java.lang.foreign.MemorySegment;
 import java.lang.foreign.ValueLayout;
@@ -41,7 +40,7 @@ public class JnhwMi__I___I__A__I__I extends JnhwMethodInvoker implements JnhwMh_
     }
 
     @Override
-    public int invoke_uI__uI__A_uI_uI(int arg1, Addressable arg2, int arg3, int arg4) {
+    public int invoke_uI__uI__A_uI_uI(int arg1, MemorySegment arg2, int arg3, int arg4) {
         try {
             return (int) methodHandle.invokeExact(
                     arg1,
@@ -56,7 +55,7 @@ public class JnhwMi__I___I__A__I__I extends JnhwMethodInvoker implements JnhwMh_
     }
 
     @Override
-    public long invoke_uL__uI__A_BL_uI(int arg1, Addressable arg2, boolean arg3, int arg4) {
+    public long invoke_uL__uI__A_BL_uI(int arg1, MemorySegment arg2, boolean arg3, int arg4) {
         try {
             return ConversionsNative2Java.uint32_t_TO_long(
                     (int) methodHandle.invokeExact(

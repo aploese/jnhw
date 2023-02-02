@@ -40,7 +40,7 @@ public class Util {
     public final static MemoryModel MEMORY_MODEL = MultiarchTupelBuilder.getMemoryModel();
 
     public static <T> T buidExistingMethod(SymbolLookup symbolLookup, String name, Function<MemorySegment, T> onSuccess) {
-        final Optional<MemorySegment> oms = symbolLookup.lookup(name);
+        final Optional<MemorySegment> oms = symbolLookup.find(name);
         if (oms.isEmpty()) {
             //TODO which ex?
             throw new RuntimeException("Method: \"" + name + "\" not found!");
@@ -50,7 +50,7 @@ public class Util {
     }
 
     public static <T> T buidOptionalMethod(SymbolLookup symbolLookup, String name, Function<MemorySegment, T> onSuccess, Supplier<T> onFailure) {
-        final Optional<MemorySegment> oms = symbolLookup.lookup(name);
+        final Optional<MemorySegment> oms = symbolLookup.find(name);
         if (oms.isEmpty()) {
             return onFailure.get();
         } else {

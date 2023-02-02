@@ -22,9 +22,8 @@
 package de.ibapl.jnhw.common.memory;
 
 import de.ibapl.jnhw.common.datatypes.BaseDataType;
-import java.lang.foreign.MemoryAddress;
 import java.lang.foreign.MemorySegment;
-import java.lang.foreign.MemorySession;
+import java.lang.foreign.SegmentScope;
 
 /**
  *
@@ -40,7 +39,7 @@ public abstract class Struct extends OpaqueMemory {
         super(mem, offset, sizeInBytes);
     }
 
-    public Struct(MemoryAddress baseAddress, MemorySession ms, long sizeInBytes) {
+    public Struct(long baseAddress, SegmentScope ms, long sizeInBytes) {
         super(baseAddress, ms, sizeInBytes);
     }
 

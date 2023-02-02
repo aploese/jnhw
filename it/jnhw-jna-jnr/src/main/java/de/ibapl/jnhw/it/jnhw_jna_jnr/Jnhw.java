@@ -24,7 +24,7 @@ package de.ibapl.jnhw.it.jnhw_jna_jnr;
 import de.ibapl.jnhw.common.exception.NativeErrorException;
 import de.ibapl.jnhw.common.memory.MemoryHeap;
 import de.ibapl.jnhw.posix.Time;
-import java.lang.foreign.MemorySession;
+import java.lang.foreign.Arena;
 
 /**
  *
@@ -34,8 +34,8 @@ public class Jnhw {
 
     public static void runFullTest_HeapAllocated(final int count) throws NativeErrorException {
         final int CLOCK_MONOTONIC = Time.CLOCK_MONOTONIC;
-        try ( MemorySession ms = MemorySession.openConfined()) {
-            final MemoryHeap heap = MemoryHeap.allocateNative(Time.Timespec.sizeof, ms);
+        try (Arena ms = Arena.openConfined()) {
+            final MemoryHeap heap = MemoryHeap.allocateNative(Time.Timespec.sizeof, ms.scope());
             for (int i = 0; i < count; i++) {
                 final Time.Timespec timespec = new Time.Timespec(heap, 0);
                 Time.clock_gettime(CLOCK_MONOTONIC, timespec);
@@ -49,8 +49,8 @@ public class Jnhw {
     public static void runFullTest_DirectAllocation(final int count) throws NativeErrorException {
         final int CLOCK_MONOTONIC = Time.CLOCK_MONOTONIC;
         for (int i = 0; i < count; i++) {
-            try ( MemorySession ms = MemorySession.openConfined()) {
-                final Time.Timespec timespec = Time.Timespec.allocateNative(ms);
+            try (Arena ms = Arena.openConfined()) {
+                final Time.Timespec timespec = Time.Timespec.allocateNative(ms.scope());
                 Time.clock_gettime(CLOCK_MONOTONIC, timespec);
                 final long val = timespec.tv_sec();
                 timespec.tv_sec(timespec.tv_nsec());
@@ -67,8 +67,8 @@ public class Jnhw {
      * @param count
      */
     public static void mem_HeapAllocated(final int count) {
-        try ( MemorySession ms = MemorySession.openConfined()) {
-            final MemoryHeap heap = MemoryHeap.allocateNative(Time.Timespec.sizeof, ms);
+        try (Arena ms = Arena.openConfined()) {
+            final MemoryHeap heap = MemoryHeap.allocateNative(Time.Timespec.sizeof, ms.scope());
             for (int i = 0; i < count; i++) {
                 ts = new Time.Timespec(heap, 0);
             }
@@ -77,16 +77,16 @@ public class Jnhw {
 
     public static void mem_DirectAllocation(final int count) {
         for (int i = 0; i < count; i++) {
-            try ( MemorySession ms = MemorySession.openConfined()) {
-                ts = Time.Timespec.allocateNative(ms);
+            try (Arena ms = Arena.openConfined()) {
+                ts = Time.Timespec.allocateNative(ms.scope());
             }
         }
     }
 
     public static void clock_gettime(final int count) throws NativeErrorException {
-        try ( MemorySession ms = MemorySession.openConfined()) {
+        try (Arena ms = Arena.openConfined()) {
             final int CLOCK_MONOTONIC = Time.CLOCK_MONOTONIC;
-            final Time.Timespec timespec = Time.Timespec.allocateNative(ms);
+            final Time.Timespec timespec = Time.Timespec.allocateNative(ms.scope());
             for (int i = 0; i < count; i++) {
                 Time.clock_gettime(CLOCK_MONOTONIC, timespec);
             }
@@ -94,8 +94,8 @@ public class Jnhw {
     }
 
     public static int clock_settime(final int clock) {
-        try ( MemorySession ms = MemorySession.openConfined()) {
-            final Time.Timespec timespec = Time.Timespec.allocateNative(ms);
+        try (Arena ms = Arena.openConfined()) {
+            final Time.Timespec timespec = Time.Timespec.allocateNative(ms.scope());
             try {
                 Time.clock_settime(clock, timespec);
                 throw new RuntimeException("Expected error");
@@ -108,8 +108,8 @@ public class Jnhw {
     static volatile long val;
 
     public static void get(final int count) {
-        try ( MemorySession ms = MemorySession.openConfined()) {
-            final Time.Timespec timespec = Time.Timespec.allocateNative(ms);
+        try (Arena ms = Arena.openConfined()) {
+            final Time.Timespec timespec = Time.Timespec.allocateNative(ms.scope());
             for (int i = 0; i < count; i++) {
                 val = timespec.tv_sec();
                 val = timespec.tv_nsec();
@@ -118,8 +118,8 @@ public class Jnhw {
     }
 
     public static void set(final int count) {
-        try ( MemorySession ms = MemorySession.openConfined()) {
-            final Time.Timespec timespec = Time.Timespec.allocateNative(ms);
+        try (Arena ms = Arena.openConfined()) {
+            final Time.Timespec timespec = Time.Timespec.allocateNative(ms.scope());
             for (int i = 0; i < count; i++) {
                 timespec.tv_sec(val);
                 timespec.tv_nsec(val);

@@ -26,7 +26,7 @@ import de.ibapl.jnhw.common.downcall.JnhwMh_sI___V;
 import de.ibapl.jnhw.libloader.LoadResult;
 import de.ibapl.jnhw.libloader.LoadState;
 import de.ibapl.jnhw.libloader.NativeLibResolver;
-import java.lang.foreign.MemorySession;
+import java.lang.foreign.Arena;
 import java.lang.foreign.SymbolLookup;
 
 /**
@@ -41,14 +41,14 @@ public final class LibJnhwCommonTestLoader {
     private final static Object loadLock = new Object();
     private static LoadState state = LoadState.INIT;
     public static SymbolLookup SYMBOL_LOOKUP = null;
-    private static MemorySession MEM_SESSION = MemorySession.openShared();
+    private static Arena MEM_ARENA = Arena.openShared();
 
     static {
         LibJnhwCommonTestLoader.touch();
     }
 
     protected static void doLoadTestLib(String absoluteLibName) {
-        SYMBOL_LOOKUP = SymbolLookup.libraryLookup(absoluteLibName, MEM_SESSION);
+        SYMBOL_LOOKUP = SymbolLookup.libraryLookup(absoluteLibName, MEM_ARENA.scope());
     }
 
     public static LoadResult getLoadResult() {

@@ -24,10 +24,10 @@ package de.ibapl.jnhw.common.memory;
 
 import de.ibapl.jnhw.common.datatypes.BaseDataType;
 import de.ibapl.jnhw.common.datatypes.Pointer;
+import de.ibapl.jnhw.common.exception.InvalidCacheException;
 import java.io.IOException;
-import java.lang.foreign.MemoryAddress;
 import java.lang.foreign.MemorySegment;
-import java.lang.foreign.MemorySession;
+import java.lang.foreign.SegmentScope;
 
 /**
  *
@@ -38,12 +38,12 @@ public class IntPtr_t<D extends Pointer> extends OpaqueMemory {
 
     public final static BaseDataType DATA_TYPE = BaseDataType.intptr_t;
 
-    public static <T extends Pointer> IntPtr_t<T> allocateNative(MemorySession ms) {
+    public static <T extends Pointer> IntPtr_t<T> allocateNative(SegmentScope ms) {
         return new IntPtr_t<>(MemorySegment.allocateNative(DATA_TYPE.SIZE_OF, ms), 0);
     }
 
-    public static <T extends Pointer> IntPtr_t<T> ofAddress(MemoryAddress baseAddress, MemorySession ms) {
-        return new IntPtr_t<>(MemorySegment.ofAddress(baseAddress, DATA_TYPE.SIZE_OF, ms), 0);
+    public static <T extends Pointer> IntPtr_t<T> ofAddress(MemorySegment baseAddress, SegmentScope ms) {
+        return new IntPtr_t<>(MemorySegment.ofAddress(baseAddress.address(), DATA_TYPE.SIZE_OF, ms), 0);
     }
 
     private D cached;
@@ -52,30 +52,25 @@ public class IntPtr_t<D extends Pointer> extends OpaqueMemory {
         super(memorySegment, offset, DATA_TYPE.SIZE_OF);
     }
 
-    public <O extends OpaqueMemory> O getAsOpaqueMemory(OpaqueMemoryProducer<O, IntPtr_t<D>> opaqueMemoryProducer, MemorySession ms) {
-        final MemoryAddress result = get();
-        if (cached instanceof OpaqueMemory cachedOM) {
-            if (OpaqueMemory.isSameAddress(result, cachedOM)) {
-                //no-op
-            } else {
-                cached = (D) opaqueMemoryProducer.produce(result, ms, this);
-            }
+    public D getAs() throws InvalidCacheException {
+        final MemorySegment result = get();
+        if ((cached != null) && (cached.toAddress() == result.address())) {
+            return cached;
         } else {
-            cached = (D) opaqueMemoryProducer.produce(result, ms, this);
+            throw new InvalidCacheException(cached, result);
         }
-        return (O) cached;
     }
 
-    public MemoryAddress get() {
+    public MemorySegment get() {
         return MEM_ACCESS.intptr_t(memorySegment, 0);
     }
 
     public void set(D value) {
-        MEM_ACCESS.intptr_t(memorySegment, 0, value.toAddressable());
+        MEM_ACCESS.intptr_t(memorySegment, 0, value.toMemorySegment());
         cached = value;
     }
 
-    public void set(MemoryAddress value) {
+    public void set(MemorySegment value) {
         MEM_ACCESS.intptr_t(memorySegment, 0, value);
     }
 

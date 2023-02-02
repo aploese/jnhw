@@ -35,8 +35,6 @@ import de.ibapl.jnhw.common.datatypes.Pointer;
 import de.ibapl.jnhw.common.util.ConversionsJava2Native;
 import de.ibapl.jnhw.common.util.ConversionsNative2Java;
 import de.ibapl.jnhw.libloader.MultiarchTupelBuilder;
-import java.lang.foreign.Addressable;
-import java.lang.foreign.MemoryAddress;
 import java.lang.foreign.MemorySegment;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
@@ -165,9 +163,9 @@ public sealed interface MemoryAccessor permits AbstractMemoryAccessorImpl {
     }
 
     @intptr_t
-    MemoryAddress intptr_t(MemorySegment mem, long offset);
+    MemorySegment intptr_t(MemorySegment mem, long offset);
 
-    void intptr_t(MemorySegment mem, long offset, @intptr_t Addressable value);
+    void intptr_t(MemorySegment mem, long offset, @intptr_t MemorySegment value);
 
     void intptr_t(MemorySegment mem, long offset, @intptr_t Pointer value);
 
@@ -176,13 +174,15 @@ public sealed interface MemoryAccessor permits AbstractMemoryAccessorImpl {
     String intptr_t_nativeToString(MemorySegment mem, long offset);
 
     @intptr_t
-    MemoryAddress intptr_t_AtIndex(MemorySegment mem, long index);
+    MemorySegment intptr_t_AtIndex(MemorySegment mem, long index);
 
     @intptr_t
-    void intptr_t_AtIndex(MemorySegment mem, long index, Addressable dest);
+    void intptr_t_AtIndex(MemorySegment mem, long index, MemorySegment dest);
 
     @intptr_t
-    void intptr_t_AtIndex(MemorySegment mem, long index, Pointer dest);
+    default void intptr_t_AtIndex(MemorySegment mem, long index, Pointer dest) {
+        intptr_t_AtIndex(mem, index, dest.toMemorySegment());
+    }
 
     @uint8_t
     byte uint8_t(MemorySegment mem, long offset);
@@ -264,7 +264,6 @@ public sealed interface MemoryAccessor permits AbstractMemoryAccessorImpl {
      *
      * @param mem
      * @param offset
-     * @return
      */
     void signed_long(MemorySegment mem, long offset, long value);
 
@@ -331,9 +330,9 @@ public sealed interface MemoryAccessor permits AbstractMemoryAccessorImpl {
     }
 
     @uintptr_t
-    MemoryAddress uintptr_t(MemorySegment mem, long offset);
+    MemorySegment uintptr_t(MemorySegment mem, long offset);
 
-    void uintptr_t(MemorySegment mem, long offset, @uintptr_t Addressable dest);
+    void uintptr_t(MemorySegment mem, long offset, @uintptr_t MemorySegment dest);
 
     void uintptr_t(MemorySegment mem, long offset, @uintptr_t ByteBuffer dest);
 
@@ -344,13 +343,13 @@ public sealed interface MemoryAccessor permits AbstractMemoryAccessorImpl {
     String uintptr_t_AsHex(MemorySegment mem, long offset);
 
     @uintptr_t
-    MemoryAddress uintptr_t_AtIndex(MemorySegment mem, long index);
+    MemorySegment uintptr_t_AtIndex(MemorySegment mem, long index);
 
-    //TODO use Addressable BUT Addressable is not found by junit
-    void uintptr_t_AtIndex(MemorySegment mem, long index, @uintptr_t MemoryAddress dest);
-
-    //TODO use Addressable BUT Addressable is not found by junit
     void uintptr_t_AtIndex(MemorySegment mem, long index, @uintptr_t MemorySegment dest);
+
+    default void uintptr_t_AtIndex(MemorySegment mem, long index, @uintptr_t Pointer dest) {
+        uintptr_t_AtIndex(mem, index, dest.toMemorySegment());
+    }
 
     default int getSignedIntOf(MemorySegment mem, long offset, int realSize) {
         return switch (realSize) {

@@ -23,7 +23,6 @@ package de.ibapl.jnhw.common.downcall.jni;
 
 import de.ibapl.jnhw.common.downcall.JnhwMh_sI__sB_sI;
 import java.lang.foreign.MemorySegment;
-import java.lang.foreign.SymbolLookup;
 
 /**
  *
@@ -41,7 +40,7 @@ public class JniMi__I___B__I extends JniMethodInvoker implements JnhwMh_sI__sB_s
     public int invoke_sI__sB_sI(byte arg1, int arg2) {
         try {
             return invoke__I___B__I(
-                    ns.address().toRawLongValue(),
+                    ns.address(),
                     arg1,
                     arg2);
         } catch (IllegalArgumentException | NullPointerException e) {

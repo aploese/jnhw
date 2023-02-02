@@ -21,10 +21,9 @@
  */
 package de.ibapl.jnhw.common.downcall.jni;
 
+import de.ibapl.jnhw.common.downcall.JnhwMh_BL___A__A__A_BL;
 import de.ibapl.jnhw.common.util.ConversionsJava2Native;
 import de.ibapl.jnhw.common.util.ConversionsNative2Java;
-import java.lang.foreign.Addressable;
-import de.ibapl.jnhw.common.downcall.JnhwMh_BL___A__A__A_BL;
 import java.lang.foreign.MemorySegment;
 
 /**
@@ -40,14 +39,14 @@ public class JniMi__I___A__A__A__I extends JniMethodInvoker implements JnhwMh_BL
     }
 
     @Override
-    public boolean invoke_BL___A__A__A_BL(Addressable arg1, Addressable arg2, Addressable arg3, boolean arg4) {
+    public boolean invoke_BL___A__A__A_BL(MemorySegment arg1, MemorySegment arg2, MemorySegment arg3, boolean arg4) {
         try {
             return ConversionsNative2Java.int32_t_TO_boolean(
                     invoke__I___A__A__A__I(
-                            ns.address().toRawLongValue(),
-                            arg1.address().toRawLongValue(),
-                            arg2.address().toRawLongValue(),
-                            arg3.address().toRawLongValue(),
+                            ns.address(),
+                            arg1.address(),
+                            arg2.address(),
+                            arg3.address(),
                             ConversionsJava2Native.boolean_TO_int32_t(arg4)));
         } catch (IllegalArgumentException | NullPointerException e) {
             throw e;

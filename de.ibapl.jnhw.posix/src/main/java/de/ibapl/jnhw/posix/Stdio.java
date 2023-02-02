@@ -30,8 +30,8 @@ import de.ibapl.jnhw.common.downcall.JnhwMh_sI__sI;
 import de.ibapl.jnhw.common.exception.NativeErrorException;
 import de.ibapl.jnhw.libloader.MultiarchTupelBuilder;
 import de.ibapl.jnhw.libloader.libraries.LibcLoader;
+import java.lang.foreign.Arena;
 import java.lang.foreign.MemorySegment;
-import java.lang.foreign.MemorySession;
 
 /**
  * Wrapper around the {@code <stdio.h>} header.
@@ -188,8 +188,8 @@ public class Stdio {
      * indicates an error.
      */
     public final static void remove(String path) throws NativeErrorException {
-        try (MemorySession ms = MemorySession.openConfined()) {
-            MemorySegment _path = MemorySegment.allocateNative(path.length() + 1, ms);
+        try (Arena ms = Arena.openConfined()) {
+            MemorySegment _path = ms.allocate(path.length() + 1);
             _path.setUtf8String(0, path);
             int result = remove.invoke_sI___A(_path);
             if (result != 0) {

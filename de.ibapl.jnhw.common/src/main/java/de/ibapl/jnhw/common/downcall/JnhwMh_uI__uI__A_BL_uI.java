@@ -27,7 +27,6 @@ import de.ibapl.jnhw.common.downcall.foreign.JnhwMi__I___I__A__I__I;
 import de.ibapl.jnhw.common.downcall.jni.JniMi__I___I__A__I__I;
 import de.ibapl.jnhw.common.exception.NoSuchNativeMethodException;
 import de.ibapl.jnhw.common.util.NativeProvider;
-import java.lang.foreign.Addressable;
 import java.lang.foreign.MemorySegment;
 import java.lang.foreign.SymbolLookup;
 
@@ -43,11 +42,11 @@ public interface JnhwMh_uI__uI__A_BL_uI extends JnhwMethodHandle {
 
         @Override
         default long invoke_uL__uI__P_BL_uI(int arg1, Pointer arg2, boolean arg3, int arg4) {
-            return invoke_uL__uI__A_BL_uI(arg1, arg2.toAddressable(), arg3, arg4);
+            return invoke_uL__uI__A_BL_uI(arg1, arg2.toMemorySegment(), arg3, arg4);
         }
 
         @Override
-        long invoke_uL__uI__A_BL_uI(int arg1, Addressable arg2, boolean arg3, int arg4);
+        long invoke_uL__uI__A_BL_uI(int arg1, MemorySegment arg2, boolean arg3, int arg4);
     }
 
     static JnhwMh_uI__uI__A_BL_uI.ExceptionErased mandatoryOf(SymbolLookup symbolLookup, String name, BaseDataType result, BaseDataType arg1, BaseDataType arg2, BaseDataType arg3, BaseDataType arg4) {
@@ -97,8 +96,8 @@ public interface JnhwMh_uI__uI__A_BL_uI extends JnhwMethodHandle {
     }
 
     default long invoke_uL__uI__P_BL_uI(int arg1, Pointer arg2, boolean arg3, int arg4) throws Exception {
-        return invoke_uL__uI__A_BL_uI(arg1, arg2.toAddressable(), arg3, arg4);
+        return invoke_uL__uI__A_BL_uI(arg1, arg2.toMemorySegment(), arg3, arg4);
     }
 
-    long invoke_uL__uI__A_BL_uI(int arg1, Addressable arg2, boolean arg3, int arg4) throws Exception;
+    long invoke_uL__uI__A_BL_uI(int arg1, MemorySegment arg2, boolean arg3, int arg4) throws Exception;
 }

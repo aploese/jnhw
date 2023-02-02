@@ -30,8 +30,7 @@ import de.ibapl.jnhw.common.exception.NoSuchNativeMethodException;
 import de.ibapl.jnhw.libloader.MultiarchTupelBuilder;
 import de.ibapl.jnhw.libloader.libraries.LibcLoader;
 import de.ibapl.jnhw.util.posix.PosixDataType;
-import java.lang.foreign.MemoryAddress;
-import java.util.Optional;
+import java.lang.foreign.MemorySegment;
 
 /**
  * Wrapper around the {@code <string.h>} header.
@@ -89,11 +88,12 @@ public class StringHeader {
      * strerror_l, strerror_r - get error message string</a>.
      */
     public final static String strerror(int errnum) throws NativeErrorException {
-        final MemoryAddress result = strerror.invoke_MA__sI(errnum);
-        if (result == MemoryAddress.NULL) {
+        final MemorySegment result = strerror.invoke_MA__sI(errnum);
+        if (result.address() == 0L) {
             throw new NativeErrorException(Errno.errno());
         }
-        return result.getUtf8String(0);
+        //TODO 1024 is a guess
+        return MemorySegment.ofAddress(result.address(), 1024).getUtf8String(0);
     }
 
     /**
@@ -105,8 +105,8 @@ public class StringHeader {
      * available natively.
      */
     public final static String strerror_l(int errnum, Locale.Locale_t locale) throws NoSuchNativeMethodException, NativeErrorException {
-        final MemoryAddress result = strerror_l.invoke_MA__sI__P(errnum, locale);
-        if (result == MemoryAddress.NULL) {
+        final MemorySegment result = strerror_l.invoke_MA__sI__P(errnum, locale);
+        if (result.address() == 0L) {
             throw new NativeErrorException(Errno.errno());
         }
         return result.getUtf8String(0);
@@ -118,8 +118,8 @@ public class StringHeader {
      * - get name of signal</a>.
      */
     public final static String strsignal(int signum) {
-        final MemoryAddress result = strsignal.invoke_MA__sI(signum);
-        if (result == MemoryAddress.NULL) {
+        final MemorySegment result = strsignal.invoke_MA__sI(signum);
+        if (result.address() == 0L) {
             return null;
         }
         return result.getUtf8String(0);

@@ -21,26 +21,27 @@
  */
 package de.ibapl.jnhw.util.posix.nativepointer;
 
+import de.ibapl.jnhw.common.datatypes.Pointer;
 import de.ibapl.jnhw.common.memory.NativeFunctionPointer;
-import de.ibapl.jnhw.common.memory.OpaqueMemory;
-import java.lang.foreign.MemoryAddress;
+import java.lang.foreign.MemorySegment;
 import java.util.function.Function;
 
 /**
  *
  * @author aploese
+ * @param <A>
  */
-public class FunctionPtr__V__UnionSigval<A extends OpaqueMemory> extends NativeFunctionPointer {
+public class FunctionPtr__V__UnionSigval<A extends Pointer> extends NativeFunctionPointer {
 
-    public static FunctionPtr__V__UnionSigval wrap(MemoryAddress srcm) {
+    public static FunctionPtr__V__UnionSigval wrap(MemorySegment srcm) {
         return new FunctionPtr__V__UnionSigval(srcm);
     }
 
-    protected <T extends FunctionPtr__V__UnionSigval<A>> FunctionPtr__V__UnionSigval(Function<T, MemoryAddress> producer) {
+    protected <T extends FunctionPtr__V__UnionSigval<A>> FunctionPtr__V__UnionSigval(Function<T, MemorySegment> producer) {
         super(producer);
     }
 
-    public FunctionPtr__V__UnionSigval(MemoryAddress src) {
+    public FunctionPtr__V__UnionSigval(MemorySegment src) {
         super(src);
     }
 

@@ -24,7 +24,6 @@ package de.ibapl.jnhw.util.posix.downcall.foreign;
 import de.ibapl.jnhw.common.downcall.foreign.JnhwMi__I___L__I__A;
 import de.ibapl.jnhw.posix.Pthread;
 import de.ibapl.jnhw.util.posix.downcall.JnhwMh_sI__PthreadT__sI__A;
-import java.lang.foreign.Addressable;
 import java.lang.foreign.MemorySegment;
 
 /**
@@ -38,7 +37,7 @@ public class JnhwMi__I__PthreadTL__I__A extends JnhwMi__I___L__I__A implements J
     }
 
     @Override
-    public int invoke_sI__PthreadT__sI__A(Pthread.Pthread_t arg1, int arg2, Addressable arg3) {
+    public int invoke_sI__PthreadT__sI__A(Pthread.Pthread_t arg1, int arg2, MemorySegment arg3) {
         return invoke_sI__uL_sI__A(arg1.asUint64_t(), arg2, arg3);
     }
 

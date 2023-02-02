@@ -43,15 +43,14 @@ import de.ibapl.jnhw.common.util.IntDefine;
 import de.ibapl.jnhw.common.util.JsonStringBuilder;
 import de.ibapl.jnhw.libloader.MultiarchTupelBuilder;
 import de.ibapl.jnhw.libloader.libraries.LibcLoader;
+import de.ibapl.jnhw.libloader.libraries.LibrtLoader;
 import de.ibapl.jnhw.posix.Signal.Sigevent;
 import de.ibapl.jnhw.posix.Time.Timespec;
-import de.ibapl.jnhw.libloader.libraries.LibrtLoader;
 import de.ibapl.jnhw.util.posix.PosixDataType;
 import de.ibapl.jnhw.util.posix.memory.PosixStruct;
 import java.io.IOException;
-import java.lang.foreign.MemoryAddress;
 import java.lang.foreign.MemorySegment;
-import java.lang.foreign.MemorySession;
+import java.lang.foreign.SegmentScope;
 import java.lang.foreign.SymbolLookup;
 import java.nio.ByteBuffer;
 
@@ -161,7 +160,7 @@ public class Aio {
          */
         public final Sigevent<T> aio_sigevent;
 
-        public static Aiocb tryAllocateNative(MemorySession ms) throws NoSuchNativeTypeException {
+        public static Aiocb tryAllocateNative(SegmentScope ms) throws NoSuchNativeTypeException {
             if (alignof == null) {
                 throw new NoSuchNativeTypeException("aiocb");
             }
@@ -173,7 +172,7 @@ public class Aio {
          *
          * @param address
          */
-        public static Aiocb tryOfAddress(MemoryAddress address, MemorySession ms) throws NoSuchNativeTypeException {
+        public static Aiocb tryOfAddress(long address, SegmentScope ms) throws NoSuchNativeTypeException {
             if (alignof == null) {
                 throw new NoSuchNativeTypeException("aiocb");
             }
@@ -194,7 +193,7 @@ public class Aio {
          *
          * @return the native value of aio_buf.
          */
-        public MemoryAddress aio_buf() {
+        public MemorySegment aio_buf() {
             return MEM_ACCESS.uintptr_t(memorySegment, Aiocb.offsetof_Aio_buf);
         }
 
@@ -209,7 +208,7 @@ public class Aio {
          */
         public void aio_buf(ByteBuffer aio_buf) {
             if (aio_buf == null) {
-                MEM_ACCESS.uintptr_t(memorySegment, Aiocb.offsetof_Aio_buf, MemoryAddress.NULL);
+                MEM_ACCESS.uintptr_t(memorySegment, Aiocb.offsetof_Aio_buf, MemorySegment.NULL);
                 ACCESSOR_SIZE_T.size_t(memorySegment, Aiocb.offsetof_Aio_nbytes, 0);
             } else {
                 MEM_ACCESS.uintptr_t(memorySegment, Aiocb.offsetof_Aio_buf, aio_buf);
@@ -229,7 +228,7 @@ public class Aio {
          */
         public void aio_buf(OpaqueMemory aio_buf) {
             if (aio_buf == null) {
-                MEM_ACCESS.uintptr_t(memorySegment, Aiocb.offsetof_Aio_buf, MemoryAddress.NULL);
+                MEM_ACCESS.uintptr_t(memorySegment, Aiocb.offsetof_Aio_buf, MemorySegment.NULL);
                 ACCESSOR_SIZE_T.size_t(memorySegment, Aiocb.offsetof_Aio_nbytes, 0);
             } else {
                 MEM_ACCESS.uintptr_t(memorySegment, Aiocb.offsetof_Aio_buf, OpaqueMemory.getMemorySegment(aio_buf));
@@ -249,7 +248,7 @@ public class Aio {
          */
         public void aio_buf(MemorySegment aio_buf) {
             if (aio_buf == null) {
-                MEM_ACCESS.uintptr_t(memorySegment, Aiocb.offsetof_Aio_buf, MemoryAddress.NULL);
+                MEM_ACCESS.uintptr_t(memorySegment, Aiocb.offsetof_Aio_buf, MemorySegment.NULL);
                 ACCESSOR_SIZE_T.size_t(memorySegment, Aiocb.offsetof_Aio_nbytes, 0);
             } else {
                 MEM_ACCESS.uintptr_t(memorySegment, Aiocb.offsetof_Aio_buf, aio_buf);
@@ -279,7 +278,7 @@ public class Aio {
                 if (aio_nbytes != 0) {
                     throw new IllegalArgumentException("aio_nbytes must be 0");
                 }
-                MEM_ACCESS.uintptr_t(memorySegment, Aiocb.offsetof_Aio_buf, MemoryAddress.NULL);
+                MEM_ACCESS.uintptr_t(memorySegment, Aiocb.offsetof_Aio_buf, MemorySegment.NULL);
                 ACCESSOR_SIZE_T.size_t(memorySegment, Aiocb.offsetof_Aio_nbytes, 0);
             } else {
                 if ((off < 0) || (off >= aio_buf.sizeof())) {
@@ -316,7 +315,7 @@ public class Aio {
                 if (aio_nbytes != 0) {
                     throw new IllegalArgumentException("aio_nbytes must be 0");
                 }
-                MEM_ACCESS.uintptr_t(memorySegment, Aiocb.offsetof_Aio_buf, MemoryAddress.NULL);
+                MEM_ACCESS.uintptr_t(memorySegment, Aiocb.offsetof_Aio_buf, MemorySegment.NULL);
                 ACCESSOR_SIZE_T.size_t(memorySegment, Aiocb.offsetof_Aio_nbytes, 0);
             } else {
                 if ((off < 0) || (off >= aio_buf.byteSize())) {
@@ -339,9 +338,9 @@ public class Aio {
          * @return the native value of aio_buf.
          */
         public ByteBuffer aio_bufAsByteBuffer() {
-            final MemoryAddress result = aio_buf();
+            final MemorySegment result = aio_buf();
             if (aio_buf == null) {
-                if (MemoryAddress.NULL.equals(result)) {
+                if (result.address() == 0L) {
                     return null;
                 } else {
                     throw new RuntimeException("aio_buf_ expected to be NULL, but was " + result.toString());
@@ -361,9 +360,9 @@ public class Aio {
          * @return the native value of aio_buf.
          */
         public OpaqueMemory aio_bufAsOpaqueMemory() {
-            final MemoryAddress result = aio_buf();
+            final MemorySegment result = aio_buf();
             if (aio_buf == null) {
-                if (MemoryAddress.NULL.equals(result)) {
+                if (result.address() == 0L) {
                     return null;
                 } else {
                     throw new RuntimeException("aio_buf_ expected to be NULL, but was " + result.toString());
@@ -383,9 +382,9 @@ public class Aio {
          * @return the native value of aio_buf.
          */
         public MemorySegment aio_bufAsMemorySegment() {
-            final MemoryAddress result = aio_buf();
+            final MemorySegment result = aio_buf();
             if (aio_buf == null) {
-                if (MemoryAddress.NULL.equals(result)) {
+                if (result.address() == 0L) {
                     return null;
                 } else {
                     throw new RuntimeException("aio_buf_ expected to be NULL, but was " + result.toString());
@@ -524,7 +523,7 @@ public class Aio {
      */
     public static final class Aiocbs extends PointerArray<Aiocb> {
 
-        public final static Aiocbs tryAllocateNative(MemorySession ms, int arraylength) throws NoSuchNativeTypeException {
+        public final static Aiocbs tryAllocateNative(SegmentScope ms, int arraylength) throws NoSuchNativeTypeException {
             if (Aiocb.alignof == null) {
                 throw new NoSuchNativeTypeException("aiocb");
             }

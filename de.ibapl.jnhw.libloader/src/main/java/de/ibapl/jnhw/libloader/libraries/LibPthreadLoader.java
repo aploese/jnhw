@@ -22,9 +22,9 @@
 package de.ibapl.jnhw.libloader.libraries;
 
 import de.ibapl.jnhw.libloader.MultiarchTupelBuilder;
-import de.ibapl.jnhw.libloader.MultiarchTupelBuilder;
+import java.lang.foreign.Arena;
 import java.lang.foreign.MemorySegment;
-import java.lang.foreign.MemorySession;
+import java.lang.foreign.SegmentScope;
 import java.lang.foreign.SymbolLookup;
 import java.util.Optional;
 
@@ -32,17 +32,17 @@ import java.util.Optional;
  *
  * @author aploese
  */
-public class LibPthreadLoader {
+public final class LibPthreadLoader {
 
     public final static SymbolLookup LIB_PTHREAD_SYMBOL_LOOKUP;
-    private final static MemorySession LIB_PTHREAD_MEMORY_SESSION = MemorySession.openShared();
+    private final static Arena LIB_PTHREAD_MEMORY_ARENA = Arena.openShared();
 
     static {
         LIB_PTHREAD_SYMBOL_LOOKUP = switch (MultiarchTupelBuilder.getOS()) {
             case APPLE -> //TODO Quick and dirty ... Symbol
-                SymbolLookup.libraryLookup("libpthread.dylib", LIB_PTHREAD_MEMORY_SESSION);
+                SymbolLookup.libraryLookup("libpthread.dylib", LIB_PTHREAD_MEMORY_ARENA.scope());
             case FREE_BSD -> //TODO Quick and dirty ... Symbol
-                SymbolLookup.libraryLookup("libpthread.so", LIB_PTHREAD_MEMORY_SESSION);
+                SymbolLookup.libraryLookup("libpthread.so", LIB_PTHREAD_MEMORY_ARENA.scope());
             case LINUX -> //TODO Quick and dirty ... Symbol
                 throw new AssertionError("Linux has no lib pthread! its in libc");
             default ->
@@ -50,7 +50,17 @@ public class LibPthreadLoader {
         };
     }
 
-    public static Optional<MemorySegment> lookup(String name) {
-        return LIB_PTHREAD_SYMBOL_LOOKUP.lookup(name);
+//TODO unboundedAddress?
+    public final static Optional<MemorySegment> find(String name, long byteSize) {
+        Optional<MemorySegment> _result = LIB_PTHREAD_SYMBOL_LOOKUP.find(name);
+        if (_result.isPresent()) {
+            return Optional.of(MemorySegment.ofAddress(_result.get().address(), byteSize, scope()));
+        } else {
+            return _result;
+        }
+    }
+
+    public final static SegmentScope scope() {
+        return LIB_PTHREAD_MEMORY_ARENA.scope();
     }
 }

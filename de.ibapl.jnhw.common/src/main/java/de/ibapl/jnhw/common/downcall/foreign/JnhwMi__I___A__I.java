@@ -29,10 +29,8 @@ import de.ibapl.jnhw.common.downcall.JnhwMh_uI___A_uI;
 import de.ibapl.jnhw.common.downcall.JnhwMh_uI___A_uL;
 import de.ibapl.jnhw.common.util.ConversionsJava2Native;
 import de.ibapl.jnhw.common.util.ConversionsNative2Java;
-import java.lang.foreign.Addressable;
 import java.lang.foreign.FunctionDescriptor;
 import java.lang.foreign.MemorySegment;
-
 import java.lang.foreign.ValueLayout;
 
 /**
@@ -46,7 +44,7 @@ public class JnhwMi__I___A__I extends JnhwMethodInvoker implements JnhwMh_sI___A
     }
 
     @Override
-    public int invoke_sI___A_uL(Addressable arg1, long arg2) {
+    public int invoke_sI___A_uL(MemorySegment arg1, long arg2) {
         final int _arg2 = ConversionsJava2Native.long_TO_uint32_t(arg2);
         try {
             return (int) methodHandle.invokeExact(arg1, _arg2);
@@ -58,7 +56,7 @@ public class JnhwMi__I___A__I extends JnhwMethodInvoker implements JnhwMh_sI___A
     }
 
     @Override
-    public int invoke_sI___A_sI(Addressable arg1, int arg2) {
+    public int invoke_sI___A_sI(MemorySegment arg1, int arg2) {
         try {
             return (int) methodHandle.invokeExact(arg1, arg2);
         } catch (IllegalArgumentException | NullPointerException e) {
@@ -69,7 +67,7 @@ public class JnhwMi__I___A__I extends JnhwMethodInvoker implements JnhwMh_sI___A
     }
 
     @Override
-    public int invoke_sI___A_uI(Addressable arg1, int arg2) {
+    public int invoke_sI___A_uI(MemorySegment arg1, int arg2) {
         try {
             return (int) methodHandle.invokeExact(arg1, arg2);
         } catch (IllegalArgumentException | NullPointerException e) {
@@ -80,7 +78,7 @@ public class JnhwMi__I___A__I extends JnhwMethodInvoker implements JnhwMh_sI___A
     }
 
     @Override
-    public boolean invoke_BL___A_uI(Addressable arg1, int arg2) {
+    public boolean invoke_BL___A_uI(MemorySegment arg1, int arg2) {
         try {
             return ConversionsNative2Java.int32_t_TO_boolean(
                     (int) methodHandle.invokeExact(arg1, arg2));
@@ -92,7 +90,7 @@ public class JnhwMi__I___A__I extends JnhwMethodInvoker implements JnhwMh_sI___A
     }
 
     @Override
-    public int invoke_uI___A_uI(Addressable arg1, int arg2) {
+    public int invoke_uI___A_uI(MemorySegment arg1, int arg2) {
         try {
             return (int) methodHandle.invokeExact(arg1, arg2);
         } catch (IllegalArgumentException | NullPointerException e) {
@@ -103,7 +101,7 @@ public class JnhwMi__I___A__I extends JnhwMethodInvoker implements JnhwMh_sI___A
     }
 
     @Override
-    public int invoke_uI___A_uL(Addressable arg1, long arg2) {
+    public int invoke_uI___A_uL(MemorySegment arg1, long arg2) {
         try {
             return (int) methodHandle.invokeExact(
                     arg1,

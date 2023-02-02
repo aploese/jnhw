@@ -42,7 +42,7 @@ public class JniMi__I___I extends JniMethodInvoker implements JnhwMh_sI__sI.Exce
     public int invoke_sI__sI(int arg1) {
         try {
             return invoke__I___I(
-                    ns.address().toRawLongValue(),
+                    ns.address(),
                     arg1);
         } catch (IllegalArgumentException | NullPointerException e) {
             throw e;
@@ -55,7 +55,7 @@ public class JniMi__I___I extends JniMethodInvoker implements JnhwMh_sI__sI.Exce
     public int invoke_sI__uI(int arg1) {
         try {
             return invoke__I___I(
-                    ns.address().toRawLongValue(),
+                    ns.address(),
                     arg1);
         } catch (IllegalArgumentException | NullPointerException e) {
             throw e;
@@ -68,7 +68,7 @@ public class JniMi__I___I extends JniMethodInvoker implements JnhwMh_sI__sI.Exce
     public long invoke_sL__sI(int arg1) {
         try {
             return invoke__I___I(
-                    ns.address().toRawLongValue(),
+                    ns.address(),
                     arg1);
         } catch (IllegalArgumentException | NullPointerException e) {
             throw e;

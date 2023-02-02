@@ -41,7 +41,7 @@ public class JniMi__D___I__I extends JniMethodInvoker implements JnhwMh__D__sL_s
     public double invoke__D__sL_sL(long arg1, long arg2) {
         try {
             return invoke__D___I__I(
-                    ns.address().toRawLongValue(),
+                    ns.address(),
                     ConversionsJava2Native.long_TO_int32_t(arg1),
                     ConversionsJava2Native.long_TO_int32_t(arg2));
         } catch (IllegalArgumentException | NullPointerException e) {

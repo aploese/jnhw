@@ -22,14 +22,12 @@
 package de.ibapl.jnhw.it.jnhw_jna_jnr;
 
 import de.ibapl.jnhw.posix.Time;
-import java.lang.foreign.Addressable;
+import java.lang.foreign.Arena;
 import java.lang.foreign.FunctionDescriptor;
 import java.lang.foreign.Linker;
-import java.lang.foreign.MemoryAddress;
 import java.lang.foreign.MemoryLayout;
 import java.lang.foreign.MemoryLayout.PathElement;
 import java.lang.foreign.MemorySegment;
-import java.lang.foreign.MemorySession;
 import java.lang.foreign.SymbolLookup;
 import java.lang.foreign.ValueLayout;
 import java.lang.invoke.MethodHandle;
@@ -54,18 +52,18 @@ public class Ffm {
     final static Linker LINKER = Linker.nativeLinker();
     final static SymbolLookup SYMBOL_LOOKUP = LINKER.defaultLookup();
     final static MethodHandle clock_gettime = LINKER.downcallHandle(
-            SYMBOL_LOOKUP.lookup("clock_gettime").get(),
+            SYMBOL_LOOKUP.find("clock_gettime").get(),
             FunctionDescriptor.of(ValueLayout.JAVA_LONG, ValueLayout.JAVA_INT, ValueLayout.ADDRESS)
     );
     final static MethodHandle clock_settime = LINKER.downcallHandle(
-            SYMBOL_LOOKUP.lookup("clock_settime").get(),
+            SYMBOL_LOOKUP.find("clock_settime").get(),
             FunctionDescriptor.of(ValueLayout.JAVA_LONG, ValueLayout.JAVA_INT, ValueLayout.ADDRESS)
     );
 
     final static int getErrno() {
         try {
-            final MethodHandle errnoAddr = LINKER.downcallHandle(SYMBOL_LOOKUP.lookup("__errno_location").get(), FunctionDescriptor.of(ValueLayout.ADDRESS));
-            return ((MemoryAddress) errnoAddr.invoke()).get(ValueLayout.JAVA_INT, 0);
+            final MethodHandle errnoAddr = LINKER.downcallHandle(SYMBOL_LOOKUP.find("__errno_location").get(), FunctionDescriptor.of(ValueLayout.ADDRESS.asUnbounded()));
+            return ((MemorySegment) errnoAddr.invoke()).get(ValueLayout.JAVA_INT, 0);
         } catch (Throwable th) {
             throw new RuntimeException("Cant find errno", th);
         }
@@ -73,13 +71,13 @@ public class Ffm {
 
     public static void runFullTest_HeapAllocated(final int count) {
         final int CLOCK_MONOTONIC = de.ibapl.jnhw.posix.Time.CLOCK_MONOTONIC;
-        try ( MemorySession ms = MemorySession.openConfined()) {
-            MemorySegment heap = MemorySegment.allocateNative(1024, ms);
+        try (Arena ms = Arena.openConfined()) {
+            MemorySegment heap = ms.allocate(1024);
             if (DIRECT_ACCESS) {
                 for (int i = 0; i < count; i++) {
                     MemorySegment timespec = heap.asSlice(0, de.ibapl.jnhw.posix.Time.Timespec.sizeof);
 
-                    if (((long) clock_gettime.invokeExact(CLOCK_MONOTONIC, (Addressable) timespec)) != 0) {
+                    if (((long) clock_gettime.invokeExact(CLOCK_MONOTONIC, timespec)) != 0) {
                         throw new RuntimeException("Errno: " + getErrno());
                     }
                     final long value = timespec.get(ValueLayout.JAVA_LONG, Time.Timespec.offsetof_Tv_sec);
@@ -90,7 +88,7 @@ public class Ffm {
                 for (int i = 0; i < count; i++) {
                     MemorySegment timespec = heap.asSlice(0, de.ibapl.jnhw.posix.Time.Timespec.sizeof);
 
-                    if (((long) clock_gettime.invokeExact(CLOCK_MONOTONIC, (Addressable) timespec)) != 0) {
+                    if (((long) clock_gettime.invokeExact(CLOCK_MONOTONIC, timespec)) != 0) {
                         throw new RuntimeException("Errno: " + getErrno());
                     }
                     final long value = (long) tv_sec.get(timespec);
@@ -107,10 +105,10 @@ public class Ffm {
         final int CLOCK_MONOTONIC = de.ibapl.jnhw.posix.Time.CLOCK_MONOTONIC;
         if (DIRECT_ACCESS) {
             for (int i = 0; i < count; i++) {
-                try ( MemorySession ms = MemorySession.openConfined()) {
-                    MemorySegment timespec = MemorySegment.allocateNative(de.ibapl.jnhw.posix.Time.Timespec.sizeof, ms);
+                try (Arena ms = Arena.openConfined()) {
+                    MemorySegment timespec = ms.allocate(de.ibapl.jnhw.posix.Time.Timespec.sizeof);
 
-                    if (((long) clock_gettime.invokeExact(CLOCK_MONOTONIC, (Addressable) timespec)) != 0) {
+                    if (((long) clock_gettime.invokeExact(CLOCK_MONOTONIC, timespec)) != 0) {
                         throw new RuntimeException("Errno: " + getErrno());
                     }
                     final long value = timespec.get(ValueLayout.JAVA_LONG, Time.Timespec.offsetof_Tv_sec);
@@ -122,10 +120,10 @@ public class Ffm {
             }
         } else {
             for (int i = 0; i < count; i++) {
-                try ( MemorySession ms = MemorySession.openConfined()) {
-                    MemorySegment timespec = MemorySegment.allocateNative(de.ibapl.jnhw.posix.Time.Timespec.sizeof, ms);
+                try (Arena ms = Arena.openConfined()) {
+                    MemorySegment timespec = ms.allocate(de.ibapl.jnhw.posix.Time.Timespec.sizeof);
 
-                    if (((long) clock_gettime.invokeExact(CLOCK_MONOTONIC, (Addressable) timespec)) != 0) {
+                    if (((long) clock_gettime.invokeExact(CLOCK_MONOTONIC, timespec)) != 0) {
                         throw new RuntimeException("Errno: " + getErrno());
                     }
                     final long value = (long) tv_sec.get(timespec);
@@ -142,8 +140,8 @@ public class Ffm {
 
     public static void mem(final int count) {
         for (int i = 0; i < count; i++) {
-            try ( MemorySession ms = MemorySession.openConfined()) {
-                ts = MemorySegment.allocateNative(de.ibapl.jnhw.posix.Time.Timespec.sizeof, ms);
+            try (Arena ms = Arena.openConfined()) {
+                ts = ms.allocate(de.ibapl.jnhw.posix.Time.Timespec.sizeof);
             } catch (Throwable th) {
                 throw new RuntimeException(th);
             }
@@ -152,10 +150,10 @@ public class Ffm {
 
     public static void clock_gettime(final int count) {
         final int CLOCK_MONOTONIC = de.ibapl.jnhw.posix.Time.CLOCK_MONOTONIC;
-        try ( MemorySession ms = MemorySession.openConfined()) {
-            final MemorySegment timespec = MemorySegment.allocateNative(de.ibapl.jnhw.posix.Time.Timespec.sizeof, ms);
+        try (Arena ms = Arena.openConfined()) {
+            final MemorySegment timespec = ms.allocate(de.ibapl.jnhw.posix.Time.Timespec.sizeof);
             for (int i = 0; i < count; i++) {
-                if (((long) clock_gettime.invokeExact(CLOCK_MONOTONIC, (Addressable) timespec)) != 0) {
+                if (((long) clock_gettime.invokeExact(CLOCK_MONOTONIC, timespec)) != 0) {
                     throw new RuntimeException("Errno: " + getErrno());
                 }
             }
@@ -165,9 +163,9 @@ public class Ffm {
     }
 
     public static int clock_settime(final int clock) {
-        try ( MemorySession ms = MemorySession.openConfined()) {
-            final MemorySegment timespec = MemorySegment.allocateNative(de.ibapl.jnhw.posix.Time.Timespec.sizeof, ms);
-            if (((long) clock_settime.invokeExact(clock, (Addressable) timespec)) != 0) {
+        try (Arena ms = Arena.openConfined()) {
+            final MemorySegment timespec = ms.allocate(de.ibapl.jnhw.posix.Time.Timespec.sizeof);
+            if (((long) clock_settime.invokeExact(clock, timespec)) != 0) {
                 return getErrno();
             } else {
                 throw new RuntimeException("Expected error");
@@ -180,8 +178,8 @@ public class Ffm {
     static volatile long val;
 
     public static void get(final int count) {
-        try ( MemorySession ms = MemorySession.openConfined()) {
-            final MemorySegment timespec = MemorySegment.allocateNative(de.ibapl.jnhw.posix.Time.Timespec.sizeof, ms);
+        try (Arena ms = Arena.openConfined()) {
+            final MemorySegment timespec = ms.allocate(de.ibapl.jnhw.posix.Time.Timespec.sizeof);
             if (DIRECT_ACCESS) {
                 for (int i = 0; i < count; i++) {
                     val = timespec.get(ValueLayout.JAVA_LONG, Time.Timespec.offsetof_Tv_sec);
@@ -197,8 +195,8 @@ public class Ffm {
     }
 
     public static void set(final int count) {
-        try ( MemorySession ms = MemorySession.openConfined()) {
-            final MemorySegment timespec = MemorySegment.allocateNative(de.ibapl.jnhw.posix.Time.Timespec.sizeof, ms);
+        try (Arena ms = Arena.openConfined()) {
+            final MemorySegment timespec = ms.allocate(de.ibapl.jnhw.posix.Time.Timespec.sizeof);
             if (DIRECT_ACCESS) {
                 for (int i = 0; i < count; i++) {
                     timespec.set(ValueLayout.JAVA_LONG, Time.Timespec.offsetof_Tv_sec, val);

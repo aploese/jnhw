@@ -25,7 +25,7 @@ import de.ibapl.jnhw.common.memory.MemoryArray;
 import de.ibapl.jnhw.common.memory.NativeFunctionPointer;
 import de.ibapl.jnhw.common.memory.Struct;
 import java.io.IOException;
-import java.lang.foreign.MemoryAddress;
+import java.lang.foreign.MemorySegment;
 import java.util.function.IntFunction;
 
 /**
@@ -125,7 +125,7 @@ public class JsonStringBuilder {
         sb.append(valueFormatter.apply(value));
     }
 
-    public void appendAddressMember(String name, MemoryAddress value) throws IOException {
+    public void appendAddressMember(String name, MemorySegment value) throws IOException {
         appendMemberName(name);
         sb.append(JnhwFormater.formatAddress(value));
     }

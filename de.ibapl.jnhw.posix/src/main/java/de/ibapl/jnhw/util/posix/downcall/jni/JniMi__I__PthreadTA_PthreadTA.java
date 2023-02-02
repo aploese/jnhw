@@ -38,7 +38,7 @@ public class JniMi__I__PthreadTA_PthreadTA extends JniMi__I___A__A implements Jn
 
     @Override
     public int invoke_sI__PthreadT_PthreadT(Pthread.Pthread_t arg1, Pthread.Pthread_t arg2) {
-        return invoke_sI___A__A(arg1.toAddressable(), arg2.toAddressable());
+        return invoke_sI___A__A(arg1.toMemorySegment(), arg2.toMemorySegment());
     }
 
 }

@@ -25,7 +25,7 @@ import de.ibapl.jnhw.syscall.linux.include.uapi.linux.usb.AbstractDescriptor;
 import de.ibapl.jnhw.syscall.linux.sysfs.SysFs;
 import de.ibapl.jnhw.syscall.linux.sysfs.UsbDevice;
 import java.io.IOException;
-import java.lang.foreign.MemorySession;
+import java.lang.foreign.Arena;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -48,11 +48,11 @@ public class LsUsb {
     }
 
     private void listLong() {
-        try ( MemorySession ms = MemorySession.openConfined()) {
+        try (Arena ms = Arena.openConfined()) {
             for (UsbDevice dev : SysFs.bus().usb().devices()) {
                 System.out.println("SysFs dir: \"" + dev.getSysDir() + "\"");
                 System.out.println(dev.toShortString());
-                for (AbstractDescriptor descr : dev.descriptors(ms)) {
+                for (AbstractDescriptor descr : dev.descriptors(ms.scope())) {
                     try {
                         descr.nativeToString(System.out, " ", " ");
                     } catch (IOException ex) {

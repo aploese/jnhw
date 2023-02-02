@@ -22,11 +22,9 @@
 package de.ibapl.jnhw.posix;
 
 import de.ibapl.jnhw.common.exception.NativeErrorException;
-import de.ibapl.jnhw.libloader.MultiarchTupelBuilder;
-import de.ibapl.jnhw.libloader.OS;
 import de.ibapl.jnhw.util.posix.Defines;
 import de.ibapl.jnhw.util.posix.DefinesTest;
-import java.lang.foreign.MemorySession;
+import java.lang.foreign.Arena;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
@@ -57,7 +55,7 @@ public class LocaleTest {
         DefinesTest.testDefines(Locale.class, "HAVE_LOCALE_H", (name) -> {
             return switch (name) {
                 case "LC_GLOBAL_LOCALE" ->
-                    Locale.Locale_t.of(LibJnhwPosixTestLoader.getAdrDefine(name));
+                    Locale.Locale_t.ofAddress(LibJnhwPosixTestLoader.getAdrDefine(name).address());
                 default ->
                     throw new AssertionError();
             };
@@ -104,7 +102,7 @@ public class LocaleTest {
         JnhwTestLogger.logAfterAll(testTnfo);
     }
 
-    private MemorySession ms;
+    private Arena ms;
 
     @Test
     public void testSizeof__locale_t() throws Exception {
@@ -114,7 +112,7 @@ public class LocaleTest {
     @BeforeEach
     public void setUp(TestInfo testInfo) throws Exception {
         JnhwTestLogger.logBeforeEach(testInfo);
-        ms = MemorySession.openConfined();
+        ms = Arena.openConfined();
     }
 
     @AfterEach
@@ -130,7 +128,7 @@ public class LocaleTest {
      */
     @Test
     public void testUnwrapLC_GLOBAL_LOCALE() throws Exception {
-        Assertions.assertTrue(LibJnhwPosixTestLoader.invokeExact_CharToBool_Adr("test_LC_GLOBAL_LOCALE_equals", Locale.LC_GLOBAL_LOCALE.toAddressable()), "Natively not the same LC_GLOBAL_LOCALE");
+        Assertions.assertTrue(LibJnhwPosixTestLoader.invokeExact_CharToBool_Adr("test_LC_GLOBAL_LOCALE_equals", Locale.LC_GLOBAL_LOCALE.toMemorySegment()), "Natively not the same LC_GLOBAL_LOCALE");
     }
 
     /**
@@ -155,7 +153,7 @@ public class LocaleTest {
      */
     @Test
     public void testLocaleconv() {
-        Locale.Lconv result = Locale.localeconv(ms);
+        Locale.Lconv result = Locale.localeconv(ms.scope());
         Assertions.assertNotNull(result);
         JnhwTestLogger.logTest("localeconv: " + result);
     }

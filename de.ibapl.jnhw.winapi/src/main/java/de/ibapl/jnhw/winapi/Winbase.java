@@ -44,7 +44,7 @@ import de.ibapl.jnhw.util.winapi.memory.WinApiStdStructLayoutFactory;
 import de.ibapl.jnhw.util.winapi.memory.WinApiStruct;
 import de.ibapl.jnhw.winapi.Winnt.HANDLE;
 import java.lang.foreign.MemorySegment;
-import java.lang.foreign.MemorySession;
+import java.lang.foreign.SegmentScope;
 
 /**
  * Wrapper around the
@@ -87,7 +87,7 @@ public abstract class Winbase {
 
         }
 
-        public static COMMTIMEOUTS allocateNative(MemorySession ms) {
+        public static COMMTIMEOUTS allocateNative(SegmentScope ms) {
             return new COMMTIMEOUTS(MemorySegment.allocateNative(Layout.sizeof, ms), 0);
         }
 
@@ -225,7 +225,7 @@ public abstract class Winbase {
 
         }
 
-        public static COMSTAT allocateNative(MemorySession ms) {
+        public static COMSTAT allocateNative(SegmentScope ms) {
             return new COMSTAT(MemorySegment.allocateNative(Layout.sizeof, ms), 0);
         }
 
@@ -389,7 +389,7 @@ public abstract class Winbase {
 
         }
 
-        public static DCB allocateNative(MemorySession ms) {
+        public static DCB allocateNative(SegmentScope ms) {
             return new DCB(MemorySegment.allocateNative(Layout.sizeof, ms), 0);
         }
 

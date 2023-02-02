@@ -25,8 +25,7 @@ import de.ibapl.jnhw.common.datatypes.BaseDataType;
 import de.ibapl.jnhw.common.memory.Uint16_t;
 import de.ibapl.jnhw.common.memory.layout.Alignment;
 import de.ibapl.jnhw.common.test.JnhwTestLogger;
-import java.lang.foreign.MemorySegment;
-import java.lang.foreign.MemorySession;
+import java.lang.foreign.Arena;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
 import static org.junit.jupiter.api.Assertions.*;
@@ -85,8 +84,8 @@ public class Uint16_tTest {
      */
     @Test
     public void testRawUint16_t() {
-        try (MemorySession ms = MemorySession.openConfined()) {
-            Uint16_t instance = Uint16_t.allocateNative(ms);
+        try (Arena ms = Arena.openConfined()) {
+            Uint16_t instance = Uint16_t.allocateNative(ms.scope());
             short expResult = 0x2010;
             instance.uint16_t(expResult);
             assertEquals(expResult, instance.uint16_t());
@@ -98,8 +97,8 @@ public class Uint16_tTest {
 
     @Test
     public void testNativeToString() {
-        try (MemorySession ms = MemorySession.openConfined()) {
-            Uint16_t instance = new Uint16_t(MemorySegment.allocateNative(BaseDataType.uint16_t.SIZE_OF, ms), 0);
+        try (Arena ms = Arena.openConfined()) {
+            Uint16_t instance = new Uint16_t(ms.allocate(BaseDataType.uint16_t.SIZE_OF), 0);
             instance.uint16_t((short) -2);
             assertEquals(String.valueOf(0x0000FFFF & -2), instance.nativeToString());
             assertEquals(String.valueOf(Short.toUnsignedInt((short) -2)), instance.nativeToString());

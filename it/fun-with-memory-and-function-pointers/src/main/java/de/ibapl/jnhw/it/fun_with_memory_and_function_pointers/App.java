@@ -21,7 +21,7 @@
  */
 package de.ibapl.jnhw.it.fun_with_memory_and_function_pointers;
 
-import java.lang.foreign.MemorySession;
+import java.lang.foreign.Arena;
 
 /**
  * Hello world!
@@ -30,11 +30,11 @@ import java.lang.foreign.MemorySession;
 public class App {
 
     public static void main(String[] args) throws Exception {
-        try ( MemorySession ms = MemorySession.openConfined()) {
-            Struct.getMemory(ms);
-            Struct.onTheFlyStructure(ms);
-            Struct.onTheFlyUnion(ms);
-            Struct.printMemory(ms);
+        try (Arena ms = Arena.openConfined()) {
+            Struct.getMemory(ms.scope());
+            Struct.onTheFlyStructure(ms.scope());
+            Struct.onTheFlyUnion(ms.scope());
+            Struct.printMemory(ms.scope());
 
             FunctionPointer.call_I__V();
         }

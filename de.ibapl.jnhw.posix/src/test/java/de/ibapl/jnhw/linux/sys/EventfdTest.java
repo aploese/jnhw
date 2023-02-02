@@ -21,12 +21,10 @@
  */
 package de.ibapl.jnhw.linux.sys;
 
-import de.ibapl.jnhw.libloader.MultiarchTupelBuilder;
-import de.ibapl.jnhw.libloader.OS;
 import de.ibapl.jnhw.posix.JnhwTestLogger;
 import de.ibapl.jnhw.posix.Unistd;
 import de.ibapl.jnhw.util.posix.DefinesTest;
-import java.lang.foreign.MemorySession;
+import java.lang.foreign.Arena;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
@@ -58,12 +56,12 @@ public class EventfdTest {
         JnhwTestLogger.logAfterAll(testTnfo);
     }
 
-    private MemorySession ms;
+    private Arena ms;
 
     @BeforeEach
     public void setUp(TestInfo testInfo) throws Exception {
         JnhwTestLogger.logBeforeEach(testInfo);
-        ms = MemorySession.openConfined();
+        ms = Arena.openConfined();
     }
 
     @AfterEach
@@ -75,7 +73,7 @@ public class EventfdTest {
     @Test
     public void testEventFD() throws Exception {
         int fd = Eventfd.eventfd(42, 0);
-        Eventfd.PtrEventfd_t readValue = Eventfd.PtrEventfd_t.allocateNative(ms);
+        Eventfd.PtrEventfd_t readValue = Eventfd.PtrEventfd_t.allocateNative(ms.scope());
 
         Eventfd.eventfd_read(fd, readValue);
         Assertions.assertEquals(42, readValue.uint64_t());
@@ -95,7 +93,7 @@ public class EventfdTest {
     @Test
     public void testEventFD_0() throws Exception {
         int fd = Eventfd.eventfd(0, 0);
-        Eventfd.PtrEventfd_t readValue = Eventfd.PtrEventfd_t.allocateNative(ms);
+        Eventfd.PtrEventfd_t readValue = Eventfd.PtrEventfd_t.allocateNative(ms.scope());
 
         Eventfd.eventfd_write(fd, 1);
         Eventfd.eventfd_read(fd, readValue);

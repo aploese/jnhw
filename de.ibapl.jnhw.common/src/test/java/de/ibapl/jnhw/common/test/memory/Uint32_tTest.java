@@ -25,8 +25,7 @@ import de.ibapl.jnhw.common.datatypes.BaseDataType;
 import de.ibapl.jnhw.common.memory.Uint32_t;
 import de.ibapl.jnhw.common.memory.layout.Alignment;
 import de.ibapl.jnhw.common.test.JnhwTestLogger;
-import java.lang.foreign.MemorySegment;
-import java.lang.foreign.MemorySession;
+import java.lang.foreign.Arena;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
 import static org.junit.jupiter.api.Assertions.*;
@@ -85,8 +84,8 @@ public class Uint32_tTest {
      */
     @Test
     public void testRawUint32_t() {
-        try (MemorySession ms = MemorySession.openConfined()) {
-            Uint32_t instance = Uint32_t.allocateNative(ms);
+        try (Arena ms = Arena.openConfined()) {
+            Uint32_t instance = Uint32_t.allocateNative(ms.scope());
             int expResult = 0x40302010;
             instance.uint32_t(expResult);
             assertEquals(expResult, instance.uint32_t());
@@ -98,8 +97,8 @@ public class Uint32_tTest {
 
     @Test
     public void testNativeToString() {
-        try (MemorySession ms = MemorySession.openConfined()) {
-            Uint32_t instance = new Uint32_t(MemorySegment.allocateNative(BaseDataType.uint32_t.SIZE_OF, ms), 0);
+        try (Arena ms = Arena.openConfined()) {
+            Uint32_t instance = new Uint32_t(ms.allocate(BaseDataType.uint32_t.SIZE_OF), 0);
             instance.uint32_t(-2);
             assertEquals(String.valueOf(0x00000000FFFFFFFFL & -2), instance.nativeToString());
             assertEquals(Integer.toUnsignedString(-2), instance.nativeToString());

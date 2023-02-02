@@ -26,7 +26,6 @@ import de.ibapl.jnhw.common.upcall.Callback__V___L;
 import de.ibapl.jnhw.common.util.jni.LibJnhwCommon;
 import java.lang.foreign.FunctionDescriptor;
 import java.lang.foreign.Linker;
-import java.lang.foreign.MemoryAddress;
 import java.lang.foreign.MemorySegment;
 import java.lang.foreign.ValueLayout;
 import java.lang.invoke.MethodHandle;
@@ -49,7 +48,7 @@ public class JnhwCallbackFactory__V___L extends CallbackFactory__V___L {
 
     private MemorySegment registerCallBack(int index) throws NoSuchMethodException, IllegalAccessException {
         MethodHandle handle = MethodHandles.lookup().findStatic(JnhwCallbackFactory__V___L.class, "trampoline_" + index, MethodType.methodType(void.class, long.class));
-        return NATIVE_LINKER.upcallStub(handle, FunctionDescriptor.ofVoid(ValueLayout.JAVA_LONG), LibJnhwCommon.LIB_JNHW_COMMON_MEMORY_SESSION);
+        return NATIVE_LINKER.upcallStub(handle, FunctionDescriptor.ofVoid(ValueLayout.JAVA_LONG), LibJnhwCommon.scope());
     }
 
     /**
@@ -69,7 +68,7 @@ public class JnhwCallbackFactory__V___L extends CallbackFactory__V___L {
     }
 
     @Override
-    protected MemoryAddress aquire0(Callback__V___L cb) {
+    protected MemorySegment aquire0(Callback__V___L cb) {
         for (int i = 0; i < MAX_CALL_BACKS; i++) {
             if (REFS[i] == null) {
                 REFS[i] = cb;
@@ -82,7 +81,7 @@ public class JnhwCallbackFactory__V___L extends CallbackFactory__V___L {
                         throw new RuntimeException(ex);
                     }
                 }
-                return NATIVE_SYMBOLS[i].address();
+                return NATIVE_SYMBOLS[i];
             }
         }
         //Hint: Try run GC to free any??? or add more cbs...

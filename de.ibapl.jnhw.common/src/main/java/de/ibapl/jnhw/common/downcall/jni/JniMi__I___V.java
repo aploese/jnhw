@@ -24,10 +24,7 @@ package de.ibapl.jnhw.common.downcall.jni;
 import de.ibapl.jnhw.common.downcall.JnhwMh_sI___V;
 import de.ibapl.jnhw.common.downcall.JnhwMh_sL___V;
 import de.ibapl.jnhw.common.downcall.JnhwMh_uI___V;
-import java.lang.foreign.Addressable;
 import java.lang.foreign.MemorySegment;
-import java.lang.foreign.MemorySession;
-import java.lang.foreign.SymbolLookup;
 
 /**
  *
@@ -44,7 +41,7 @@ public class JniMi__I___V extends JniMethodInvoker implements JnhwMh_sI___V.Exce
     @Override
     public int invoke_sI___V() {
         try {
-            return invoke__I___V(ns.address().toRawLongValue());
+            return invoke__I___V(ns.address());
         } catch (IllegalArgumentException | NullPointerException e) {
             throw e;
         } catch (Throwable t) {
@@ -55,7 +52,7 @@ public class JniMi__I___V extends JniMethodInvoker implements JnhwMh_sI___V.Exce
     @Override
     public long invoke_sL___V() {
         try {
-            return invoke__I___V(ns.address().toRawLongValue());
+            return invoke__I___V(ns.address());
         } catch (IllegalArgumentException | NullPointerException e) {
             throw e;
         } catch (Throwable t) {
@@ -66,7 +63,7 @@ public class JniMi__I___V extends JniMethodInvoker implements JnhwMh_sI___V.Exce
     @Override
     public int invoke_uI___V() {
         try {
-            return invoke__I___V(ns.address().toRawLongValue());
+            return invoke__I___V(ns.address());
         } catch (IllegalArgumentException | NullPointerException e) {
             throw e;
         } catch (Throwable t) {

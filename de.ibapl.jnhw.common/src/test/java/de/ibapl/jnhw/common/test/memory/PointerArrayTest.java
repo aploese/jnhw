@@ -22,17 +22,16 @@
 package de.ibapl.jnhw.common.test.memory;
 
 import de.ibapl.jnhw.common.datatypes.BaseDataType;
+import de.ibapl.jnhw.common.datatypes.Pointer;
+import de.ibapl.jnhw.common.exception.InvalidCacheException;
+import de.ibapl.jnhw.common.memory.Int8_t;
 import de.ibapl.jnhw.common.memory.MemoryHeap;
 import de.ibapl.jnhw.common.memory.OpaqueMemory;
 import de.ibapl.jnhw.common.memory.PointerArray;
 import de.ibapl.jnhw.common.memory.layout.Alignment;
 import de.ibapl.jnhw.common.test.JnhwTestLogger;
-import de.ibapl.jnhw.common.test.LibJnhwCommonTestLoader;
 import de.ibapl.jnhw.libloader.MultiarchTupelBuilder;
-import java.lang.foreign.MemoryAddress;
-import java.lang.foreign.MemorySegment;
-import java.lang.foreign.MemorySession;
-import java.lang.foreign.ValueLayout;
+import java.lang.foreign.Arena;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
@@ -102,46 +101,25 @@ public class PointerArrayTest {
      */
     @Test
     @SuppressWarnings("unchecked")
-    public void testSetAndGet() {
-        try (MemorySession ms = MemorySession.openConfined()) {
-            final OpaqueMemory element1 = MemoryHeap.wrap(MemorySegment.allocateNative(8, ms));
-            OpaqueMemory.setByte(element1, 0, (byte) 1);
-            final OpaqueMemory element2 = MemoryHeap.wrap(MemorySegment.allocateNative(8, ms));
-            OpaqueMemory.setByte(element2, 0, (byte) 2);
+    public void testSetAndGet() throws InvalidCacheException {
+        try (Arena ms = Arena.openConfined()) {
+            final Int8_t element1 = Int8_t.allocateNative(ms.scope());
+            element1.int8_t((byte) 1);
+            final Int8_t element2 = Int8_t.allocateNative(ms.scope());
+            element2.int8_t((byte) 2);
 
-            PointerArray.ElementProducer<OpaqueMemory> producerFail = (baseAddress, index, cachedElement) -> {
-                Assertions.fail(String.format(
-                        """
-                        Not expecting to be called for index: %d baseaddress: \"%s\
-                        cachedElement: \"%s\" element1: \"%s\" element2: \"%s\"
-                        """,
-                        index,
-                        baseAddress,
-                        cachedElement,
-                        element1,
-                        element2
-                ));
-                return null;
-            };
-
-            PointerArray<OpaqueMemory> instance = new PointerArray<>(MemorySegment.allocateNative(16 * BaseDataType.uintptr_t.SIZE_OF, ms), 0, 16);
+            PointerArray<Int8_t> instance = new PointerArray<>(ms.allocate(16 * BaseDataType.uintptr_t.SIZE_OF), 0, 16);
 
             instance.set(1, element1);
-            Assertions.assertEquals(1, OpaqueMemory.getByte(instance.get(1, producerFail), 0));
-            for (int i = 0; i < instance.length(); i++) {
-                instance.get(i, producerFail);
-            }
+            Assertions.assertEquals(1, instance.getAs(1).int8_t());
+            testInstance(instance);
 
             instance.set(2, element2);
-            Assertions.assertEquals(2, OpaqueMemory.getByte(instance.get(2, producerFail), 0));
-            for (int i = 0; i < instance.length(); i++) {
-                instance.get(i, producerFail);
-            }
+            Assertions.assertEquals(2, instance.getAs(2).int8_t());
+            testInstance(instance);
 
             instance.set(4, element1);
-            for (int i = 0; i < instance.length(); i++) {
-                instance.get(i, producerFail);
-            }
+            testInstance(instance);
         }
     }
 
@@ -151,9 +129,9 @@ public class PointerArrayTest {
     @Test
     @SuppressWarnings("unchecked")
     public void testNativeToString() {
-        try (MemorySession ms = MemorySession.openConfined()) {
-            PointerArray<OpaqueMemory> instance = new PointerArray<>(MemorySegment.allocateNative(6 * BaseDataType.uintptr_t.SIZE_OF, ms), 0, 6);
-            OpaqueMemory element1 = MemoryHeap.wrap(MemorySegment.allocateNative(1, ms));
+        try (Arena ms = Arena.openConfined()) {
+            PointerArray<OpaqueMemory> instance = new PointerArray<>(ms.allocate(6 * BaseDataType.uintptr_t.SIZE_OF), 0, 6);
+            OpaqueMemory element1 = MemoryHeap.wrap(ms.allocate(1));
             instance.set(1, element1);
             String result = instance.nativeToString();
             Assertions.assertEquals("[null, " + element1.nativeToString() + ", null, null, null, null]", result);
@@ -163,25 +141,36 @@ public class PointerArrayTest {
     @Test
     @SuppressWarnings("unchecked")
     public void testArrayBounds() {
-        try (MemorySession ms = MemorySession.openConfined()) {
-            PointerArray<OpaqueMemory> instance = new PointerArray<>(MemorySegment.allocateNative(2 * BaseDataType.uintptr_t.SIZE_OF, ms), 0, 2);
+        try (Arena ms = Arena.openConfined()) {
+            PointerArray<Pointer> instance = new PointerArray<>(ms.allocate(2 * BaseDataType.uintptr_t.SIZE_OF), 0, 2);
 
-            Assertions.assertThrows(ArrayIndexOutOfBoundsException.class, () -> {
-                instance.set(-1, null);
+            Assertions.assertThrows(IndexOutOfBoundsException.class, () -> {
+                instance.set(-1, Pointer.NULL);
             });
-            Assertions.assertThrows(ArrayIndexOutOfBoundsException.class, () -> {
-                instance.get(-1, (baseAddress, index, cachedElement) -> {
-                    return null;
-                });
+            Assertions.assertThrows(IndexOutOfBoundsException.class, () -> {
+                instance.get(-1);
             });
-            Assertions.assertThrows(ArrayIndexOutOfBoundsException.class, () -> {
-                instance.set(16, null);
+            Assertions.assertThrows(IndexOutOfBoundsException.class, () -> {
+                instance.set(16, Pointer.NULL);
             });
-            Assertions.assertThrows(ArrayIndexOutOfBoundsException.class, () -> {
-                instance.get(16, (baseAddress, index, cachedElement) -> {
-                    return null;
-                });
+            Assertions.assertThrows(IndexOutOfBoundsException.class, () -> {
+                instance.get(16);
             });
+        }
+    }
+
+    private void testInstance(PointerArray<?> instance) {
+        for (int i = 0; i < instance.length(); i++) {
+            try {
+                instance.getAs(i);
+                if (instance.get(i).address() == 0L) {
+                    Assertions.fail();
+                }
+            } catch (InvalidCacheException ice) {
+                if (instance.get(i).address() != 0L) {
+                    Assertions.fail();
+                }
+            }
         }
     }
 

@@ -24,8 +24,7 @@ package de.ibapl.jnhw.common.test.memory;
 import de.ibapl.jnhw.common.datatypes.BaseDataType;
 import de.ibapl.jnhw.common.memory.AsUnsignedInt;
 import de.ibapl.jnhw.common.test.JnhwTestLogger;
-import java.lang.foreign.MemorySegment;
-import java.lang.foreign.MemorySession;
+import java.lang.foreign.Arena;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
 import static org.junit.jupiter.api.Assertions.*;
@@ -62,12 +61,12 @@ public class AsUnsignedIntTest {
 
     @Test
     public void testNative() {
-        try (MemorySession ms = MemorySession.openConfined()) {
-            AsUnsignedInt instance = AsUnsignedInt.allocateNative(BaseDataType.uint16_t, ms);
+        try (Arena ms = Arena.openConfined()) {
+            AsUnsignedInt instance = AsUnsignedInt.allocateNative(BaseDataType.uint16_t, ms.scope());
             instance.setFromUnsignedInt(33);
             assertEquals(33, instance.getAsUnsignedInt());
             assertThrows(IllegalArgumentException.class, () -> instance.setFromUnsignedInt(-1));
-            assertThrows(IllegalArgumentException.class, () -> new AsUnsignedInt(BaseDataType.int8_t, MemorySegment.allocateNative(BaseDataType.uint8_t.SIZE_OF, ms), 0));
+            assertThrows(IllegalArgumentException.class, () -> new AsUnsignedInt(BaseDataType.int8_t, ms.allocate(BaseDataType.uint8_t.SIZE_OF), 0));
         }
     }
 

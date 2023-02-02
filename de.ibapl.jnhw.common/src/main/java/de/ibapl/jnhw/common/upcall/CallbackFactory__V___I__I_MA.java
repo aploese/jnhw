@@ -25,7 +25,7 @@ import de.ibapl.jnhw.common.memory.NativeFunctionPointer;
 import de.ibapl.jnhw.common.upcall.foreign.JnhwCallbackFactory__V___I__I_MA;
 import de.ibapl.jnhw.common.upcall.jni.JniCallbackFactory__V___I__I_MA;
 import de.ibapl.jnhw.common.util.NativeProvider;
-import java.lang.foreign.MemoryAddress;
+import java.lang.foreign.MemorySegment;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -45,15 +45,15 @@ public abstract class CallbackFactory__V___I__I_MA {
 
     protected final static void trampoline_0(final int a, final int b, final long c) {
         try {
-            REFS[0].callback(a, b, MemoryAddress.ofLong(c));
+            REFS[0].callback(a, b, MemorySegment.ofAddress(c));
         } catch (NullPointerException npe) {
-            LOG.log(Level.SEVERE, String.format("Unassigned callback for trampoline_0(%d,%d,%s)", a, b, MemoryAddress.ofLong(c)));
+            LOG.log(Level.SEVERE, String.format("Unassigned callback for trampoline_0(%d,%d,%s)", a, b, MemorySegment.ofAddress(c)));
         } catch (Throwable t) {
-            LOG.log(Level.SEVERE, String.format("Exception was thrown in  trampoline_0(%d,%d,%s)", a, b, MemoryAddress.ofLong(c)), t);
+            LOG.log(Level.SEVERE, String.format("Exception was thrown in  trampoline_0(%d,%d,%s)", a, b, MemorySegment.ofAddress(c)), t);
         }
     }
 
-    protected final static void trampoline_0(final int a, final int b, final MemoryAddress c) {
+    protected final static void trampoline_0(final int a, final int b, final MemorySegment c) {
         try {
             REFS[0].callback(a, b, c);
         } catch (NullPointerException npe) {
@@ -65,15 +65,15 @@ public abstract class CallbackFactory__V___I__I_MA {
 
     protected final static void trampoline_1(final int a, final int b, final long c) {
         try {
-            REFS[1].callback(a, b, MemoryAddress.ofLong(c));
+            REFS[1].callback(a, b, MemorySegment.ofAddress(c));
         } catch (NullPointerException npe) {
-            LOG.log(Level.SEVERE, String.format("Unassigned callback for trampoline_1(%d,%d,%s)", a, b, MemoryAddress.ofLong(c)));
+            LOG.log(Level.SEVERE, String.format("Unassigned callback for trampoline_1(%d,%d,%s)", a, b, MemorySegment.ofAddress(c)));
         } catch (Throwable t) {
-            LOG.log(Level.SEVERE, String.format("Exception was thrown in  trampoline_1(%d,%d,%s)", a, b, MemoryAddress.ofLong(c)), t);
+            LOG.log(Level.SEVERE, String.format("Exception was thrown in  trampoline_1(%d,%d,%s)", a, b, MemorySegment.ofAddress(c)), t);
         }
     }
 
-    protected final static void trampoline_1(final int a, final int b, final MemoryAddress c) {
+    protected final static void trampoline_1(final int a, final int b, final MemorySegment c) {
         try {
             REFS[1].callback(a, b, c);
         } catch (NullPointerException npe) {
@@ -85,15 +85,15 @@ public abstract class CallbackFactory__V___I__I_MA {
 
     protected final static void trampoline_2(final int a, final int b, final long c) {
         try {
-            REFS[2].callback(a, b, MemoryAddress.ofLong(c));
+            REFS[2].callback(a, b, MemorySegment.ofAddress(c));
         } catch (NullPointerException npe) {
-            LOG.log(Level.SEVERE, String.format("Unassigned callback for trampoline_2(%d,%d,%s)", a, b, MemoryAddress.ofLong(c)));
+            LOG.log(Level.SEVERE, String.format("Unassigned callback for trampoline_2(%d,%d,%s)", a, b, MemorySegment.ofAddress(c)));
         } catch (Throwable t) {
-            LOG.log(Level.SEVERE, String.format("Exception was thrown in  trampoline_2(%d,%d,%s)", a, b, MemoryAddress.ofLong(c)), t);
+            LOG.log(Level.SEVERE, String.format("Exception was thrown in  trampoline_2(%d,%d,%s)", a, b, MemorySegment.ofAddress(c)), t);
         }
     }
 
-    protected final static void trampoline_2(final int a, final int b, final MemoryAddress c) {
+    protected final static void trampoline_2(final int a, final int b, final MemorySegment c) {
         try {
             REFS[2].callback(a, b, c);
         } catch (NullPointerException npe) {
@@ -105,15 +105,15 @@ public abstract class CallbackFactory__V___I__I_MA {
 
     protected final static void trampoline_3(final int a, final int b, final long c) {
         try {
-            REFS[3].callback(a, b, MemoryAddress.ofLong(c));
+            REFS[3].callback(a, b, MemorySegment.ofAddress(c));
         } catch (NullPointerException npe) {
-            LOG.log(Level.SEVERE, String.format("Unassigned callback for trampoline_3(%d,%d,%s)", a, b, MemoryAddress.ofLong(c)));
+            LOG.log(Level.SEVERE, String.format("Unassigned callback for trampoline_3(%d,%d,%s)", a, b, MemorySegment.ofAddress(c)));
         } catch (Throwable t) {
-            LOG.log(Level.SEVERE, String.format("Exception was thrown in  trampoline_3(%d,%d,%s)", a, b, MemoryAddress.ofLong(c)), t);
+            LOG.log(Level.SEVERE, String.format("Exception was thrown in  trampoline_3(%d,%d,%s)", a, b, MemorySegment.ofAddress(c)), t);
         }
     }
 
-    protected final static void trampoline_3(final int a, final int b, final MemoryAddress c) {
+    protected final static void trampoline_3(final int a, final int b, final MemorySegment c) {
         try {
             REFS[3].callback(a, b, c);
         } catch (NullPointerException npe) {
@@ -125,15 +125,15 @@ public abstract class CallbackFactory__V___I__I_MA {
 
     protected final static void trampoline_4(final int a, final int b, final long c) {
         try {
-            REFS[4].callback(a, b, MemoryAddress.ofLong(c));
+            REFS[4].callback(a, b, MemorySegment.ofAddress(c));
         } catch (NullPointerException npe) {
-            LOG.log(Level.SEVERE, String.format("Unassigned callback for trampoline_4(%d,%d,%s)", a, b, MemoryAddress.ofLong(c)));
+            LOG.log(Level.SEVERE, String.format("Unassigned callback for trampoline_4(%d,%d,%s)", a, b, MemorySegment.ofAddress(c)));
         } catch (Throwable t) {
-            LOG.log(Level.SEVERE, String.format("Exception was thrown in  trampoline_4(%d,%d,%s)", a, b, MemoryAddress.ofLong(c)), t);
+            LOG.log(Level.SEVERE, String.format("Exception was thrown in  trampoline_4(%d,%d,%s)", a, b, MemorySegment.ofAddress(c)), t);
         }
     }
 
-    protected final static void trampoline_4(final int a, final int b, final MemoryAddress c) {
+    protected final static void trampoline_4(final int a, final int b, final MemorySegment c) {
         try {
             REFS[4].callback(a, b, c);
         } catch (NullPointerException npe) {
@@ -145,15 +145,15 @@ public abstract class CallbackFactory__V___I__I_MA {
 
     protected final static void trampoline_5(final int a, final int b, final long c) {
         try {
-            REFS[5].callback(a, b, MemoryAddress.ofLong(c));
+            REFS[5].callback(a, b, MemorySegment.ofAddress(c));
         } catch (NullPointerException npe) {
-            LOG.log(Level.SEVERE, String.format("Unassigned callback for trampoline_5(%d,%d,%s)", a, b, MemoryAddress.ofLong(c)));
+            LOG.log(Level.SEVERE, String.format("Unassigned callback for trampoline_5(%d,%d,%s)", a, b, MemorySegment.ofAddress(c)));
         } catch (Throwable t) {
-            LOG.log(Level.SEVERE, String.format("Exception was thrown in  trampoline_5(%d,%d,%s)", a, b, MemoryAddress.ofLong(c)), t);
+            LOG.log(Level.SEVERE, String.format("Exception was thrown in  trampoline_5(%d,%d,%s)", a, b, MemorySegment.ofAddress(c)), t);
         }
     }
 
-    protected final static void trampoline_5(final int a, final int b, final MemoryAddress c) {
+    protected final static void trampoline_5(final int a, final int b, final MemorySegment c) {
         try {
             REFS[5].callback(a, b, c);
         } catch (NullPointerException npe) {
@@ -165,15 +165,15 @@ public abstract class CallbackFactory__V___I__I_MA {
 
     protected final static void trampoline_6(final int a, final int b, final long c) {
         try {
-            REFS[6].callback(a, b, MemoryAddress.ofLong(c));
+            REFS[6].callback(a, b, MemorySegment.ofAddress(c));
         } catch (NullPointerException npe) {
-            LOG.log(Level.SEVERE, String.format("Unassigned callback for trampoline_6(%d,%d,%s)", a, b, MemoryAddress.ofLong(c)));
+            LOG.log(Level.SEVERE, String.format("Unassigned callback for trampoline_6(%d,%d,%s)", a, b, MemorySegment.ofAddress(c)));
         } catch (Throwable t) {
-            LOG.log(Level.SEVERE, String.format("Exception was thrown in  trampoline_6(%d,%d,%s)", a, b, MemoryAddress.ofLong(c)), t);
+            LOG.log(Level.SEVERE, String.format("Exception was thrown in  trampoline_6(%d,%d,%s)", a, b, MemorySegment.ofAddress(c)), t);
         }
     }
 
-    protected final static void trampoline_6(final int a, final int b, final MemoryAddress c) {
+    protected final static void trampoline_6(final int a, final int b, final MemorySegment c) {
         try {
             REFS[6].callback(a, b, c);
         } catch (NullPointerException npe) {
@@ -185,15 +185,15 @@ public abstract class CallbackFactory__V___I__I_MA {
 
     protected final static void trampoline_7(final int a, final int b, final long c) {
         try {
-            REFS[7].callback(a, b, MemoryAddress.ofLong(c));
+            REFS[7].callback(a, b, MemorySegment.ofAddress(c));
         } catch (NullPointerException npe) {
-            LOG.log(Level.SEVERE, String.format("Unassigned callback for trampoline_7(%d,%d,%s)", a, b, MemoryAddress.ofLong(c)));
+            LOG.log(Level.SEVERE, String.format("Unassigned callback for trampoline_7(%d,%d,%s)", a, b, MemorySegment.ofAddress(c)));
         } catch (Throwable t) {
-            LOG.log(Level.SEVERE, String.format("Exception was thrown in  trampoline_7(%d,%d,%s)", a, b, MemoryAddress.ofLong(c)), t);
+            LOG.log(Level.SEVERE, String.format("Exception was thrown in  trampoline_7(%d,%d,%s)", a, b, MemorySegment.ofAddress(c)), t);
         }
     }
 
-    protected final static void trampoline_7(final int a, final int b, final MemoryAddress c) {
+    protected final static void trampoline_7(final int a, final int b, final MemorySegment c) {
         try {
             REFS[7].callback(a, b, c);
         } catch (NullPointerException npe) {
@@ -205,15 +205,15 @@ public abstract class CallbackFactory__V___I__I_MA {
 
     protected final static void trampoline_8(final int a, final int b, final long c) {
         try {
-            REFS[8].callback(a, b, MemoryAddress.ofLong(c));
+            REFS[8].callback(a, b, MemorySegment.ofAddress(c));
         } catch (NullPointerException npe) {
-            LOG.log(Level.SEVERE, String.format("Unassigned callback for trampoline_8(%d,%d,%s)", a, b, MemoryAddress.ofLong(c)));
+            LOG.log(Level.SEVERE, String.format("Unassigned callback for trampoline_8(%d,%d,%s)", a, b, MemorySegment.ofAddress(c)));
         } catch (Throwable t) {
-            LOG.log(Level.SEVERE, String.format("Exception was thrown in  trampoline_8(%d,%d,%s)", a, b, MemoryAddress.ofLong(c)), t);
+            LOG.log(Level.SEVERE, String.format("Exception was thrown in  trampoline_8(%d,%d,%s)", a, b, MemorySegment.ofAddress(c)), t);
         }
     }
 
-    protected final static void trampoline_8(final int a, final int b, final MemoryAddress c) {
+    protected final static void trampoline_8(final int a, final int b, final MemorySegment c) {
         try {
             REFS[8].callback(a, b, c);
         } catch (NullPointerException npe) {
@@ -225,15 +225,15 @@ public abstract class CallbackFactory__V___I__I_MA {
 
     protected final static void trampoline_9(final int a, final int b, final long c) {
         try {
-            REFS[9].callback(a, b, MemoryAddress.ofLong(c));
+            REFS[9].callback(a, b, MemorySegment.ofAddress(c));
         } catch (NullPointerException npe) {
-            LOG.log(Level.SEVERE, String.format("Unassigned callback for trampoline_9(%d,%d,%s)", a, b, MemoryAddress.ofLong(c)));
+            LOG.log(Level.SEVERE, String.format("Unassigned callback for trampoline_9(%d,%d,%s)", a, b, MemorySegment.ofAddress(c)));
         } catch (Throwable t) {
-            LOG.log(Level.SEVERE, String.format("Exception was thrown in  trampoline_9(%d,%d,%s)", a, b, MemoryAddress.ofLong(c)), t);
+            LOG.log(Level.SEVERE, String.format("Exception was thrown in  trampoline_9(%d,%d,%s)", a, b, MemorySegment.ofAddress(c)), t);
         }
     }
 
-    protected final static void trampoline_9(final int a, final int b, final MemoryAddress c) {
+    protected final static void trampoline_9(final int a, final int b, final MemorySegment c) {
         try {
             REFS[9].callback(a, b, c);
         } catch (NullPointerException npe) {
@@ -245,15 +245,15 @@ public abstract class CallbackFactory__V___I__I_MA {
 
     protected final static void trampoline_10(final int a, final int b, final long c) {
         try {
-            REFS[10].callback(a, b, MemoryAddress.ofLong(c));
+            REFS[10].callback(a, b, MemorySegment.ofAddress(c));
         } catch (NullPointerException npe) {
-            LOG.log(Level.SEVERE, String.format("Unassigned callback for trampoline_10(%d,%d,%s)", a, b, MemoryAddress.ofLong(c)));
+            LOG.log(Level.SEVERE, String.format("Unassigned callback for trampoline_10(%d,%d,%s)", a, b, MemorySegment.ofAddress(c)));
         } catch (Throwable t) {
-            LOG.log(Level.SEVERE, String.format("Exception was thrown in  trampoline_10(%d,%d,%s)", a, b, MemoryAddress.ofLong(c)), t);
+            LOG.log(Level.SEVERE, String.format("Exception was thrown in  trampoline_10(%d,%d,%s)", a, b, MemorySegment.ofAddress(c)), t);
         }
     }
 
-    protected final static void trampoline_10(final int a, final int b, final MemoryAddress c) {
+    protected final static void trampoline_10(final int a, final int b, final MemorySegment c) {
         try {
             REFS[10].callback(a, b, c);
         } catch (NullPointerException npe) {
@@ -265,15 +265,15 @@ public abstract class CallbackFactory__V___I__I_MA {
 
     protected final static void trampoline_11(final int a, final int b, final long c) {
         try {
-            REFS[11].callback(a, b, MemoryAddress.ofLong(c));
+            REFS[11].callback(a, b, MemorySegment.ofAddress(c));
         } catch (NullPointerException npe) {
-            LOG.log(Level.SEVERE, String.format("Unassigned callback for trampoline_11(%d,%d,%s)", a, b, MemoryAddress.ofLong(c)));
+            LOG.log(Level.SEVERE, String.format("Unassigned callback for trampoline_11(%d,%d,%s)", a, b, MemorySegment.ofAddress(c)));
         } catch (Throwable t) {
-            LOG.log(Level.SEVERE, String.format("Exception was thrown in  trampoline_11(%d,%d,%s)", a, b, MemoryAddress.ofLong(c)), t);
+            LOG.log(Level.SEVERE, String.format("Exception was thrown in  trampoline_11(%d,%d,%s)", a, b, MemorySegment.ofAddress(c)), t);
         }
     }
 
-    protected final static void trampoline_11(final int a, final int b, final MemoryAddress c) {
+    protected final static void trampoline_11(final int a, final int b, final MemorySegment c) {
         try {
             REFS[11].callback(a, b, c);
         } catch (NullPointerException npe) {
@@ -285,15 +285,15 @@ public abstract class CallbackFactory__V___I__I_MA {
 
     protected final static void trampoline_12(final int a, final int b, final long c) {
         try {
-            REFS[12].callback(a, b, MemoryAddress.ofLong(c));
+            REFS[12].callback(a, b, MemorySegment.ofAddress(c));
         } catch (NullPointerException npe) {
-            LOG.log(Level.SEVERE, String.format("Unassigned callback for trampoline_12(%d,%d,%s)", a, b, MemoryAddress.ofLong(c)));
+            LOG.log(Level.SEVERE, String.format("Unassigned callback for trampoline_12(%d,%d,%s)", a, b, MemorySegment.ofAddress(c)));
         } catch (Throwable t) {
-            LOG.log(Level.SEVERE, String.format("Exception was thrown in  trampoline_12(%d,%d,%s)", a, b, MemoryAddress.ofLong(c)), t);
+            LOG.log(Level.SEVERE, String.format("Exception was thrown in  trampoline_12(%d,%d,%s)", a, b, MemorySegment.ofAddress(c)), t);
         }
     }
 
-    protected final static void trampoline_12(final int a, final int b, final MemoryAddress c) {
+    protected final static void trampoline_12(final int a, final int b, final MemorySegment c) {
         try {
             REFS[12].callback(a, b, c);
         } catch (NullPointerException npe) {
@@ -305,15 +305,15 @@ public abstract class CallbackFactory__V___I__I_MA {
 
     protected final static void trampoline_13(final int a, final int b, final long c) {
         try {
-            REFS[13].callback(a, b, MemoryAddress.ofLong(c));
+            REFS[13].callback(a, b, MemorySegment.ofAddress(c));
         } catch (NullPointerException npe) {
-            LOG.log(Level.SEVERE, String.format("Unassigned callback for trampoline_13(%d,%d,%s)", a, b, MemoryAddress.ofLong(c)));
+            LOG.log(Level.SEVERE, String.format("Unassigned callback for trampoline_13(%d,%d,%s)", a, b, MemorySegment.ofAddress(c)));
         } catch (Throwable t) {
-            LOG.log(Level.SEVERE, String.format("Exception was thrown in  trampoline_13(%d,%d,%s)", a, b, MemoryAddress.ofLong(c)), t);
+            LOG.log(Level.SEVERE, String.format("Exception was thrown in  trampoline_13(%d,%d,%s)", a, b, MemorySegment.ofAddress(c)), t);
         }
     }
 
-    protected final static void trampoline_13(final int a, final int b, final MemoryAddress c) {
+    protected final static void trampoline_13(final int a, final int b, final MemorySegment c) {
         try {
             REFS[13].callback(a, b, c);
         } catch (NullPointerException npe) {
@@ -325,15 +325,15 @@ public abstract class CallbackFactory__V___I__I_MA {
 
     protected final static void trampoline_14(final int a, final int b, final long c) {
         try {
-            REFS[14].callback(a, b, MemoryAddress.ofLong(c));
+            REFS[14].callback(a, b, MemorySegment.ofAddress(c));
         } catch (NullPointerException npe) {
-            LOG.log(Level.SEVERE, String.format("Unassigned callback for trampoline_14(%d,%d,%s)", a, b, MemoryAddress.ofLong(c)));
+            LOG.log(Level.SEVERE, String.format("Unassigned callback for trampoline_14(%d,%d,%s)", a, b, MemorySegment.ofAddress(c)));
         } catch (Throwable t) {
-            LOG.log(Level.SEVERE, String.format("Exception was thrown in  trampoline_14(%d,%d,%s)", a, b, MemoryAddress.ofLong(c)), t);
+            LOG.log(Level.SEVERE, String.format("Exception was thrown in  trampoline_14(%d,%d,%s)", a, b, MemorySegment.ofAddress(c)), t);
         }
     }
 
-    protected final static void trampoline_14(final int a, final int b, final MemoryAddress c) {
+    protected final static void trampoline_14(final int a, final int b, final MemorySegment c) {
         try {
             REFS[14].callback(a, b, c);
         } catch (NullPointerException npe) {
@@ -345,15 +345,15 @@ public abstract class CallbackFactory__V___I__I_MA {
 
     protected final static void trampoline_15(final int a, final int b, final long c) {
         try {
-            REFS[15].callback(a, b, MemoryAddress.ofLong(c));
+            REFS[15].callback(a, b, MemorySegment.ofAddress(c));
         } catch (NullPointerException npe) {
-            LOG.log(Level.SEVERE, String.format("Unassigned callback for trampoline_15(%d,%d,%s)", a, b, MemoryAddress.ofLong(c)));
+            LOG.log(Level.SEVERE, String.format("Unassigned callback for trampoline_15(%d,%d,%s)", a, b, MemorySegment.ofAddress(c)));
         } catch (Throwable t) {
-            LOG.log(Level.SEVERE, String.format("Exception was thrown in  trampoline_15(%d,%d,%s)", a, b, MemoryAddress.ofLong(c)), t);
+            LOG.log(Level.SEVERE, String.format("Exception was thrown in  trampoline_15(%d,%d,%s)", a, b, MemorySegment.ofAddress(c)), t);
         }
     }
 
-    protected final static void trampoline_15(final int a, final int b, final MemoryAddress c) {
+    protected final static void trampoline_15(final int a, final int b, final MemorySegment c) {
         try {
             REFS[15].callback(a, b, c);
         } catch (NullPointerException npe) {
@@ -363,7 +363,7 @@ public abstract class CallbackFactory__V___I__I_MA {
         }
     }
 
-    static synchronized MemoryAddress aquire(Callback__V___I__I_MA cb) {
+    static synchronized MemorySegment aquire(Callback__V___I__I_MA cb) {
         return INSTANCE.aquire0(cb);
     }
 
@@ -386,7 +386,7 @@ public abstract class CallbackFactory__V___I__I_MA {
         INSTANCE.release0(cb);
     }
 
-    protected abstract MemoryAddress aquire0(Callback__V___I__I_MA cb);
+    protected abstract MemorySegment aquire0(Callback__V___I__I_MA cb);
 
     protected abstract void release0(Callback__V___I__I_MA cb);
 

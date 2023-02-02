@@ -41,7 +41,7 @@ public class JniMi__I___I__I__I__I extends JniMethodInvoker implements JnhwMh_sI
     public int invoke_sI__sI_sL_sL_sI(int arg1, long arg2, long arg3, int arg4) {
         try {
             return invoke__I___I__I__I__I(
-                    ns.address().toRawLongValue(),
+                    ns.address(),
                     arg1,
                     ConversionsJava2Native.long_TO_int32_t(arg2),
                     ConversionsJava2Native.long_TO_int32_t(arg3),

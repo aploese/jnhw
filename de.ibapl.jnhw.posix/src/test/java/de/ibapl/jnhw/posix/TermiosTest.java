@@ -23,13 +23,12 @@ package de.ibapl.jnhw.posix;
 
 import de.ibapl.jnhw.common.exception.NoSuchNativeTypeMemberException;
 import de.ibapl.jnhw.libloader.MultiarchTupelBuilder;
-import de.ibapl.jnhw.libloader.OS;
 import static de.ibapl.jnhw.posix.Termios.CLOCAL;
 import static de.ibapl.jnhw.posix.Termios.CREAD;
 import static de.ibapl.jnhw.posix.Termios.CRTSCTS;
 import static de.ibapl.jnhw.posix.Termios.CS8;
 import de.ibapl.jnhw.util.posix.DefinesTest;
-import java.lang.foreign.MemorySession;
+import java.lang.foreign.Arena;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
@@ -80,12 +79,12 @@ public class TermiosTest {
         JnhwTestLogger.logAfterAll(testTnfo);
     }
 
-    private MemorySession ms;
+    private Arena ms;
 
     @BeforeEach
     public void setUp(TestInfo testInfo) throws Exception {
         JnhwTestLogger.logBeforeEach(testInfo);
-        ms = MemorySession.openConfined();
+        ms = Arena.openConfined();
     }
 
     @AfterEach
@@ -96,7 +95,7 @@ public class TermiosTest {
 
     @Test
     public void structTermios_c_ispeed() throws Exception {
-        Termios.StructTermios structTermios = Termios.StructTermios.allocateNative(ms);
+        Termios.StructTermios structTermios = Termios.StructTermios.allocateNative(ms.scope());
         switch (MultiarchTupelBuilder.getOS()) {
             case APPLE, FREE_BSD -> {
                 //Do the test
@@ -126,7 +125,7 @@ public class TermiosTest {
 
     @Test
     public void structTermios_c_ospeed() throws Exception {
-        Termios.StructTermios structTermios = Termios.StructTermios.allocateNative(ms);
+        Termios.StructTermios structTermios = Termios.StructTermios.allocateNative(ms.scope());
         switch (MultiarchTupelBuilder.getOS()) {
             case APPLE, FREE_BSD -> {
                 //Do the test
@@ -156,7 +155,7 @@ public class TermiosTest {
 
     @Test
     public void structTermiosToString() throws Exception {
-        Termios.StructTermios termios = Termios.StructTermios.allocateNative(ms);
+        Termios.StructTermios termios = Termios.StructTermios.allocateNative(ms.scope());
         Termios.StructTermios.clear(termios);
 
         Termios.cfsetspeed(termios, Termios.B9600);

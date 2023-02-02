@@ -22,10 +22,7 @@
 package de.ibapl.jnhw.common.downcall.jni;
 
 import de.ibapl.jnhw.common.downcall.JnhwMh_sI__sI__A_sI_VARARGS_NONE;
-import de.ibapl.jnhw.common.util.ConversionsJava2Native;
-import java.lang.foreign.Addressable;
 import java.lang.foreign.MemorySegment;
-import java.lang.foreign.SymbolLookup;
 
 /**
  *
@@ -40,12 +37,12 @@ public class JniMi__I___I__A__I_VARARGS_NONE extends JniMethodInvoker implements
     }
 
     @Override
-    public int invoke_sI__sI__A_sI(int arg1, Addressable arg2, int arg3) {
+    public int invoke_sI__sI__A_sI(int arg1, MemorySegment arg2, int arg3) {
         try {
             return invoke__I___I__A__I_VARARGS_NONE(
-                    ns.address().toRawLongValue(),
+                    ns.address(),
                     arg1,
-                    arg2.address().toRawLongValue(),
+                    arg2.address(),
                     arg3);
         } catch (IllegalArgumentException | NullPointerException e) {
             throw e;

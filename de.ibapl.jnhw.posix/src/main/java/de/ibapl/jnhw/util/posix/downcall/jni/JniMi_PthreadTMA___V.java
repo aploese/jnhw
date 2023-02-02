@@ -25,8 +25,7 @@ import de.ibapl.jnhw.common.downcall.jni.JniMi_MA___V;
 import de.ibapl.jnhw.posix.Pthread;
 import de.ibapl.jnhw.util.posix.downcall.JnhwMh_PthreadT___V;
 import java.lang.foreign.MemorySegment;
-import java.lang.foreign.MemorySession;
-import java.lang.foreign.SymbolLookup;
+import java.lang.foreign.SegmentScope;
 
 /**
  *
@@ -39,8 +38,8 @@ public class JniMi_PthreadTMA___V extends JniMi_MA___V implements JnhwMh_Pthread
     }
 
     @Override
-    public Pthread.Pthread_t invoke_PthreadT___V(MemorySession ms) {
-        return Pthread.Pthread_t.ofAddress(invoke_MA___V(), ms);
+    public Pthread.Pthread_t invoke_PthreadT___V(SegmentScope ms) {
+        return Pthread.Pthread_t.ofAddress(invoke_MA___V().address(), ms);
     }
 
 }

@@ -21,6 +21,7 @@
  */
 package de.ibapl.jnhw.posix;
 
+import de.ibapl.jnhw.common.exception.InvalidCacheException;
 import de.ibapl.jnhw.common.exception.NativeErrorException;
 import de.ibapl.jnhw.common.exception.NoSuchNativeTypeException;
 import de.ibapl.jnhw.common.memory.OpaqueMemory;
@@ -35,10 +36,11 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
-import java.lang.foreign.MemoryAddress;
-import java.lang.foreign.MemorySession;
+import java.lang.foreign.Arena;
+import java.lang.foreign.MemorySegment;
 import java.nio.ByteBuffer;
 import java.time.Duration;
+import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
@@ -46,12 +48,10 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTimeoutPreemptively;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
-import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -94,8 +94,8 @@ public class AioTest {
         switch (MultiarchTupelBuilder.getOS()) {
             case OPEN_BSD ->
                 assertThrows(NoSuchNativeTypeException.class, () -> {
-                    try (MemorySession ms = MemorySession.openConfined()) {
-                        Aio.Aiocb.tryAllocateNative(ms);
+                    try (Arena ms = Arena.openConfined()) {
+                        Aio.Aiocb.tryAllocateNative(ms.scope());
                     }
                 });
             default ->
@@ -119,13 +119,13 @@ public class AioTest {
         JnhwTestLogger.logAfterAll(testTnfo);
     }
 
-    private MemorySession sharedSession;
+    private Arena sharedSession;
 
     @BeforeEach
     public void setUp(TestInfo testInfo) throws Exception {
         JnhwTestLogger.logBeforeEach(testInfo);
         assertEquals(CallbackFactory__V__UnionSigval.MAX_CALL_BACKS, CallbackFactory__V__UnionSigval.callbacksAvailable());
-        sharedSession = MemorySession.openShared();
+        sharedSession = Arena.openShared();
     }
 
     @AfterEach
@@ -143,12 +143,12 @@ public class AioTest {
         switch (MultiarchTupelBuilder.getOS()) {
             case OPEN_BSD ->
                 assertThrows(NoSuchNativeTypeException.class, () -> {
-                    Aio.Aiocb.tryAllocateNative(sharedSession);
+                    Aio.Aiocb.tryAllocateNative(sharedSession.scope());
                 });
             default -> {
-                Aio.Aiocb aiocb = Aio.Aiocb.tryAllocateNative(sharedSession);
+                Aio.Aiocb aiocb = Aio.Aiocb.tryAllocateNative(sharedSession.scope());
                 JnhwTestLogger.logTest("aiocb : " + aiocb.nativeToString());
-                assertEquals(MemoryAddress.NULL, aiocb.aio_buf());
+                assertEquals(0L, aiocb.aio_buf().address());
 
                 ByteBuffer buf = ByteBuffer.allocateDirect(128);
                 buf.position(16);
@@ -156,7 +156,7 @@ public class AioTest {
                 aiocb.aio_fildes(-1);
                 assertEquals(-1, aiocb.aio_fildes());
                 aiocb.aio_buf(buf);
-                assertNotEquals(MemoryAddress.NULL, aiocb.aio_buf());
+                assertNotEquals(0L, aiocb.aio_buf().address());
                 assertEquals(0, aiocb.aio_offset());
                 assertEquals(48, aiocb.aio_nbytes());
                 aiocb.aio_offset(8);
@@ -176,16 +176,17 @@ public class AioTest {
             case OPEN_BSD ->
                 assertFalse(Aio.HAVE_AIO_H);
             default -> {
-                Aio.Aiocbs aiocbs = Aio.Aiocbs.tryAllocateNative(sharedSession, 1);
+                Aio.Aiocbs aiocbs = Aio.Aiocbs.tryAllocateNative(sharedSession.scope(), 1);
 
-                Aio.Aiocb aiocb_null = aiocbs.get(0, null);
-                assertNull(aiocb_null);
+                assertThrows(InvalidCacheException.class,
+                        () -> aiocbs.getAs(0)
+                );
 
-                Aio.Aiocb aiocb = Aio.Aiocb.tryAllocateNative(sharedSession);
+                Aio.Aiocb aiocb = Aio.Aiocb.tryAllocateNative(sharedSession.scope());
                 aiocb.aio_fildes(-1);
                 aiocbs.set(0, aiocb);
 
-                Aio.Aiocb aiocb_get = aiocbs.get(0, null);
+                Aio.Aiocb aiocb_get = aiocbs.getAs(0);
                 assertEquals(aiocb, aiocb_get);
             }
         }
@@ -199,7 +200,7 @@ public class AioTest {
     public void testAio_cancel() throws Exception {
         switch (MultiarchTupelBuilder.getOS()) {
             case APPLE -> {
-                Aio.Aiocb aiocb = Aio.Aiocb.tryAllocateNative(sharedSession);
+                Aio.Aiocb aiocb = Aio.Aiocb.tryAllocateNative(sharedSession.scope());
                 aiocb.aio_sigevent.sigev_notify(Signal.SIGEV_NONE.get());
                 aiocb.aio_fildes(-1);
 
@@ -211,9 +212,9 @@ public class AioTest {
             }
             case OPEN_BSD ->
                 // preconditions not met can only test this this way.
-                assertTrue(LibrtLoader.LIB_RT_SYMBOL_LOOKUP.lookup("aio_cancel").isEmpty(), "aio_cancel is available");
+                assertTrue(LibrtLoader.LIB_RT_SYMBOL_LOOKUP.find("aio_cancel").isEmpty(), "aio_cancel is available");
             default -> {
-                Aio.Aiocb aiocb = Aio.Aiocb.tryAllocateNative(sharedSession);
+                Aio.Aiocb aiocb = Aio.Aiocb.tryAllocateNative(sharedSession.scope());
                 aiocb.aio_sigevent.sigev_notify(Signal.SIGEV_NONE.get());
                 aiocb.aio_fildes(-1);
 
@@ -234,7 +235,7 @@ public class AioTest {
     public void testAio_error() throws Exception {
         switch (MultiarchTupelBuilder.getOS()) {
             case APPLE -> {
-                Aio.Aiocb aiocb = Aio.Aiocb.tryAllocateNative(sharedSession);
+                Aio.Aiocb aiocb = Aio.Aiocb.tryAllocateNative(sharedSession.scope());
                 aiocb.aio_sigevent.sigev_notify(Signal.SIGEV_NONE.get());
                 aiocb.aio_fildes(-1);
                 NativeErrorException nee = assertThrows(NativeErrorException.class,
@@ -242,18 +243,18 @@ public class AioTest {
                 ErrnoTest.assertErrnoEquals(Errno.EINVAL, nee.errno);
             }
             case FREE_BSD -> {
-                Aio.Aiocb aiocb = Aio.Aiocb.tryAllocateNative(sharedSession);
+                Aio.Aiocb aiocb = Aio.Aiocb.tryAllocateNative(sharedSession.scope());
                 aiocb.aio_sigevent.sigev_notify(Signal.SIGEV_NONE.get());
                 aiocb.aio_fildes(-1);
                 ErrnoTest.assertErrnoEquals(Errno.EINVAL, Aio.aio_error(aiocb));
             }
             case OPEN_BSD -> {
                 // preconditions not met can only test this this way.
-                assertTrue(LibrtLoader.LIB_RT_SYMBOL_LOOKUP.lookup("aio_error").isEmpty(), "aio_error is available");
+                assertTrue(LibrtLoader.LIB_RT_SYMBOL_LOOKUP.find("aio_error").isEmpty(), "aio_error is available");
                 return;
             }
             default -> {
-                Aio.Aiocb aiocb = Aio.Aiocb.tryAllocateNative(sharedSession);
+                Aio.Aiocb aiocb = Aio.Aiocb.tryAllocateNative(sharedSession.scope());
                 aiocb.aio_sigevent.sigev_notify(Signal.SIGEV_NONE.get());
                 aiocb.aio_fildes(-1);
                 ErrnoTest.assertErrnoEquals(0, Aio.aio_error(aiocb));
@@ -269,7 +270,7 @@ public class AioTest {
     public void testAio_fsync() throws Exception {
         switch (MultiarchTupelBuilder.getOS()) {
             case APPLE -> {
-                Aio.Aiocb aiocb = Aio.Aiocb.tryAllocateNative(sharedSession);
+                Aio.Aiocb aiocb = Aio.Aiocb.tryAllocateNative(sharedSession.scope());
                 aiocb.aio_sigevent.sigev_notify(Signal.SIGEV_NONE.get());
                 aiocb.aio_fildes(-1);
 
@@ -281,11 +282,11 @@ public class AioTest {
             }
             case OPEN_BSD -> {
                 // preconditions not met can only test this this way.
-                assertTrue(LibrtLoader.LIB_RT_SYMBOL_LOOKUP.lookup("aio_fsync").isEmpty(), "aio_fsync is available");
+                assertTrue(LibrtLoader.LIB_RT_SYMBOL_LOOKUP.find("aio_fsync").isEmpty(), "aio_fsync is available");
                 return;
             }
             default -> {
-                Aio.Aiocb aiocb = Aio.Aiocb.tryAllocateNative(sharedSession);
+                Aio.Aiocb aiocb = Aio.Aiocb.tryAllocateNative(sharedSession.scope());
                 aiocb.aio_sigevent.sigev_notify(Signal.SIGEV_NONE.get());
                 aiocb.aio_fildes(-1);
 
@@ -306,7 +307,7 @@ public class AioTest {
         switch (MultiarchTupelBuilder.getOS()) {
             case OPEN_BSD ->
                 // preconditions not met can only test this this way.
-                assertTrue(LibrtLoader.LIB_RT_SYMBOL_LOOKUP.lookup("aio_read").isEmpty(), "aio_read is available");
+                assertTrue(LibrtLoader.LIB_RT_SYMBOL_LOOKUP.find("aio_read").isEmpty(), "aio_read is available");
             default -> {
                 //Clean up references to Callbacks
                 System.gc();
@@ -321,7 +322,7 @@ public class AioTest {
                 }
 
                 @SuppressWarnings("unchecked")
-                final Aio.Aiocb<Aio.Aiocb> aiocb = Aio.Aiocb.tryAllocateNative(sharedSession);
+                final Aio.Aiocb<Aio.Aiocb> aiocb = Aio.Aiocb.tryAllocateNative(sharedSession.scope());
                 aiocb.aio_reqprio((int) Unistd.sysconf(Unistd._SC_AIO_PRIO_DELTA_MAX));
 
                 aiocb.aio_fildes(Fcntl.open(tmpFile.getAbsolutePath(), Fcntl.O_RDWR));
@@ -337,20 +338,20 @@ public class AioTest {
                 aiocb.aio_sigevent.sigev_value.sival_ptr(aiocb);
 
                 JnhwTestLogger.logTest("aio_read aiocb.aio_sigevent.sigev_value: " + aiocb.aio_sigevent.sigev_value);
-                JnhwTestLogger.logTest("aio_read Pthread_t: " + Pthread.pthread_self(sharedSession));
+                JnhwTestLogger.logTest("aio_read Pthread_t: " + Pthread.pthread_self(sharedSession.scope()));
                 JnhwTestLogger.logTest("aio_read currentThread: " + Thread.currentThread());
 
                 Callback__V__UnionSigval cb = new Callback__V__UnionSigval<Aio.Aiocb>() {
 
                     @Override
                     @SuppressWarnings("unchecked")
-                    protected void callback(MemoryAddress sival_ptr, int sival_int) {
+                    protected void callback(MemorySegment sival_ptr, int sival_int) {
                         try {
-                            assertEquals(OpaqueMemory.getMemorySegment(aiocb).address().toRawLongValue(), sival_ptr.toRawLongValue(), "testAio_read_ByteBuffer callback MemoryAddress mismatch");
+                            assertEquals(OpaqueMemory.getMemorySegment(aiocb).address(), sival_ptr.address(), "testAio_read_ByteBuffer callback MemoryAddress mismatch");
                             final Aio.Aiocb callback_aiocb;
-                            callback_aiocb = Aio.Aiocb.tryOfAddress(sival_ptr, sharedSession);
+                            callback_aiocb = Aio.Aiocb.tryOfAddress(sival_ptr.address(), sharedSession.scope());
 
-                            JnhwTestLogger.logTest("aio_read enter callback Pthread_t: " + Pthread.pthread_self(sharedSession));
+                            JnhwTestLogger.logTest("aio_read enter callback Pthread_t: " + Pthread.pthread_self(sharedSession.scope()));
                             JnhwTestLogger.logTest("aio_read in callback currentThread: " + Thread.currentThread());
                             assertEquals(0, Aio.aio_error(callback_aiocb));
 
@@ -397,7 +398,7 @@ public class AioTest {
                     if (objRef[0] instanceof Throwable throwable) {
                         throw throwable;
                     } else {
-                        assertEquals(aiocb.toAddressable().address(), objRef[0]);
+                        assertEquals(aiocb.toMemorySegment(), objRef[0]);
                     }
 
                     Unistd.close(aiocb.aio_fildes());
@@ -432,7 +433,7 @@ public class AioTest {
         switch (MultiarchTupelBuilder.getOS()) {
             case OPEN_BSD ->
                 // preconditions not met can only test this this way.
-                assertTrue(LibrtLoader.LIB_RT_SYMBOL_LOOKUP.lookup("aio_read").isEmpty(), "aio_read is available");
+                assertTrue(LibrtLoader.LIB_RT_SYMBOL_LOOKUP.find("aio_read").isEmpty(), "aio_read is available");
             default -> {
                 final String HELLO_WORLD = "Hello world!\n";
 
@@ -443,7 +444,7 @@ public class AioTest {
                 }
 
                 @SuppressWarnings("unchecked")
-                final Aio.Aiocb<Aio.Aiocb> aiocb = Aio.Aiocb.tryAllocateNative(sharedSession);
+                final Aio.Aiocb<Aio.Aiocb> aiocb = Aio.Aiocb.tryAllocateNative(sharedSession.scope());
 
                 aiocb.aio_fildes(Fcntl.open(tmpFile.getAbsolutePath(), Fcntl.O_RDWR));
                 final ByteBuffer aioBuffer = ByteBuffer.allocateDirect(1024);
@@ -456,7 +457,7 @@ public class AioTest {
 
                 aiocb.aio_sigevent.sigev_notify(Signal.SIGEV_NONE.get());
 
-                JnhwTestLogger.logTest("aio_read Pthread_t: " + Pthread.pthread_self(sharedSession));
+                JnhwTestLogger.logTest("aio_read Pthread_t: " + Pthread.pthread_self(sharedSession.scope()));
                 JnhwTestLogger.logTest("aio_read currentThread: " + Thread.currentThread());
 
                 Aio.aio_read(aiocb);
@@ -495,7 +496,7 @@ public class AioTest {
         switch (MultiarchTupelBuilder.getOS()) {
             case OPEN_BSD ->
                 // preconditions not met can only test this this way.
-                assertTrue(LibrtLoader.LIB_RT_SYMBOL_LOOKUP.lookup("aio_read").isEmpty(), "aio_read is available");
+                assertTrue(LibrtLoader.LIB_RT_SYMBOL_LOOKUP.find("aio_read").isEmpty(), "aio_read is available");
             default -> {
                 //Clean up references to Callbacks
                 System.gc();
@@ -506,7 +507,7 @@ public class AioTest {
                 final File tmpFile = File.createTempFile("Jnhw-Posix-Aio-Test-Read", ".txt");
 
                 @SuppressWarnings("unchecked")
-                final Aio.Aiocb<Struct> aiocb = Aio.Aiocb.tryAllocateNative(sharedSession);
+                final Aio.Aiocb<Struct> aiocb = Aio.Aiocb.tryAllocateNative(sharedSession.scope());
                 aiocb.aio_fildes(Fcntl.open(tmpFile.getAbsolutePath(), Fcntl.O_RDWR));
                 final ByteBuffer aioBuffer = ByteBuffer.allocateDirect(1024);
 
@@ -518,16 +519,16 @@ public class AioTest {
                 aiocb.aio_sigevent.sigev_value.sival_int(SIVAL_INT);
 
                 JnhwTestLogger.logTest("aio_read aiocb.aio_sigevent.sigev_value: " + aiocb.aio_sigevent.sigev_value);
-                JnhwTestLogger.logTest("aio_read Pthread_t: " + Pthread.pthread_self(sharedSession));
+                JnhwTestLogger.logTest("aio_read Pthread_t: " + Pthread.pthread_self(sharedSession.scope()));
                 JnhwTestLogger.logTest("aio_read currentThread: " + Thread.currentThread());
 
                 Callback__V__UnionSigval cb = new Callback__V__UnionSigval() {
 
                     @Override
-                    protected void callback(MemoryAddress sival_ptr, int sival_int) {
+                    protected void callback(MemorySegment sival_ptr, int sival_int) {
                         try {
                             assertEquals(SIVAL_INT, sival_int);
-                            JnhwTestLogger.logTest("aio_read enter callback Pthread_t: " + Pthread.pthread_self(sharedSession));
+                            JnhwTestLogger.logTest("aio_read enter callback Pthread_t: " + Pthread.pthread_self(sharedSession.scope()));
                             JnhwTestLogger.logTest("aio_read in callback currentThread: " + Thread.currentThread());
                             assertEquals(0, Aio.aio_error(aiocb));
                             aioBuffer.position(aioBuffer.position() + (int) Aio.aio_return(aiocb));
@@ -627,12 +628,12 @@ public class AioTest {
         switch (MultiarchTupelBuilder.getOS()) {
             case OPEN_BSD ->
                 // preconditions not met can only test this this way.
-                assertTrue(LibrtLoader.LIB_RT_SYMBOL_LOOKUP.lookup("aio_read").isEmpty(), "aio_read is available");
+                assertTrue(LibrtLoader.LIB_RT_SYMBOL_LOOKUP.find("aio_read").isEmpty(), "aio_read is available");
             default -> {
                 File tmpFile = File.createTempFile("Jnhw-Posix-Aio-Test-Read", ".txt");
 
                 @SuppressWarnings("unchecked")
-                final Aio.Aiocb<Struct> aiocb = Aio.Aiocb.tryAllocateNative(sharedSession);
+                final Aio.Aiocb<Struct> aiocb = Aio.Aiocb.tryAllocateNative(sharedSession.scope());
                 aiocb.aio_fildes(Fcntl.open(tmpFile.getAbsolutePath(), Fcntl.O_RDWR));
                 final ByteBuffer aioBuffer = ByteBuffer.allocateDirect(1024);
 
@@ -642,7 +643,7 @@ public class AioTest {
 
                 aiocb.aio_sigevent.sigev_notify(Signal.SIGEV_NONE.get());
 
-                JnhwTestLogger.logTest("aio_read Pthread_t: " + Pthread.pthread_self(sharedSession));
+                JnhwTestLogger.logTest("aio_read Pthread_t: " + Pthread.pthread_self(sharedSession.scope()));
                 JnhwTestLogger.logTest("aio_read currentThread: " + Thread.currentThread());
 
                 //No read or write executed....
@@ -680,7 +681,7 @@ public class AioTest {
     public void testAio_return() throws Exception {
         switch (MultiarchTupelBuilder.getOS()) {
             case APPLE -> {
-                final Aio.Aiocb aiocb = Aio.Aiocb.tryAllocateNative(sharedSession);
+                final Aio.Aiocb aiocb = Aio.Aiocb.tryAllocateNative(sharedSession.scope());
                 aiocb.aio_sigevent.sigev_notify(Signal.SIGEV_NONE.get());
                 aiocb.aio_fildes(-1);
 
@@ -690,7 +691,7 @@ public class AioTest {
                 ErrnoTest.assertErrnoEquals(Errno.EINVAL, nee.errno);
             }
             case FREE_BSD -> {
-                final Aio.Aiocb aiocb = Aio.Aiocb.tryAllocateNative(sharedSession);
+                final Aio.Aiocb aiocb = Aio.Aiocb.tryAllocateNative(sharedSession.scope());
                 aiocb.aio_sigevent.sigev_notify(Signal.SIGEV_NONE.get());
                 aiocb.aio_fildes(-1);
 
@@ -700,9 +701,9 @@ public class AioTest {
             }
             case OPEN_BSD ->
                 // preconditions not met can only test this this way.
-                assertTrue(LibrtLoader.LIB_RT_SYMBOL_LOOKUP.lookup("aio_return").isEmpty(), "aio_return is available");
+                assertTrue(LibrtLoader.LIB_RT_SYMBOL_LOOKUP.find("aio_return").isEmpty(), "aio_return is available");
             default -> {
-                final Aio.Aiocb aiocb = Aio.Aiocb.tryAllocateNative(sharedSession);
+                final Aio.Aiocb aiocb = Aio.Aiocb.tryAllocateNative(sharedSession.scope());
                 aiocb.aio_sigevent.sigev_notify(Signal.SIGEV_NONE.get());
                 aiocb.aio_fildes(-1);
 
@@ -720,12 +721,12 @@ public class AioTest {
     public void testAio_suspend() throws Exception {
         switch (MultiarchTupelBuilder.getOS()) {
             case APPLE -> {
-                Aio.Aiocbs aiocbs = Aio.Aiocbs.tryAllocateNative(sharedSession, 1);
-                Aio.Aiocb aiocb = Aio.Aiocb.tryAllocateNative(sharedSession);
+                Aio.Aiocbs aiocbs = Aio.Aiocbs.tryAllocateNative(sharedSession.scope(), 1);
+                Aio.Aiocb aiocb = Aio.Aiocb.tryAllocateNative(sharedSession.scope());
                 aiocb.aio_sigevent.sigev_notify(Signal.SIGEV_NONE.get());
                 aiocb.aio_fildes(-1);
                 aiocbs.set(0, aiocb);
-                Time.Timespec timeout = Time.Timespec.allocateNative(sharedSession);
+                Time.Timespec timeout = Time.Timespec.allocateNative(sharedSession.scope());
                 timeout.tv_sec(1);
 
                 NativeErrorException nee = assertThrows(NativeErrorException.class,
@@ -734,16 +735,16 @@ public class AioTest {
             }
             case OPEN_BSD -> {
                 // preconditions not met can only test this this way.
-                assertTrue(LibrtLoader.LIB_RT_SYMBOL_LOOKUP.lookup("aio_suspend").isEmpty(), "aio_suspend is available");
+                assertTrue(LibrtLoader.LIB_RT_SYMBOL_LOOKUP.find("aio_suspend").isEmpty(), "aio_suspend is available");
                 return;
             }
             default -> {
-                Aio.Aiocbs aiocbs = Aio.Aiocbs.tryAllocateNative(sharedSession, 1);
-                Aio.Aiocb aiocb = Aio.Aiocb.tryAllocateNative(sharedSession);
+                Aio.Aiocbs aiocbs = Aio.Aiocbs.tryAllocateNative(sharedSession.scope(), 1);
+                Aio.Aiocb aiocb = Aio.Aiocb.tryAllocateNative(sharedSession.scope());
                 aiocb.aio_sigevent.sigev_notify(Signal.SIGEV_NONE.get());
                 aiocb.aio_fildes(-1);
                 aiocbs.set(0, aiocb);
-                Time.Timespec timeout = Time.Timespec.allocateNative(sharedSession);
+                Time.Timespec timeout = Time.Timespec.allocateNative(sharedSession.scope());
                 timeout.tv_sec(1);
 
                 //Just a dry run....
@@ -751,12 +752,12 @@ public class AioTest {
             }
         }
 
-        Aio.Aiocbs aiocbs = Aio.Aiocbs.tryAllocateNative(sharedSession, 1);
-        Aio.Aiocb aiocb = Aio.Aiocb.tryAllocateNative(sharedSession);
+        Aio.Aiocbs aiocbs = Aio.Aiocbs.tryAllocateNative(sharedSession.scope(), 1);
+        Aio.Aiocb aiocb = Aio.Aiocb.tryAllocateNative(sharedSession.scope());
         aiocb.aio_sigevent.sigev_notify(Signal.SIGEV_NONE.get());
         aiocb.aio_fildes(-1);
         aiocbs.set(0, aiocb);
-        Time.Timespec timeout = Time.Timespec.allocateNative(sharedSession);
+        Time.Timespec timeout = Time.Timespec.allocateNative(sharedSession.scope());
         timeout.tv_sec(1);
 
         assertThrows(NullPointerException.class,
@@ -772,7 +773,7 @@ public class AioTest {
     public void testAio_write_ByteBuffer() throws Throwable {
         switch (MultiarchTupelBuilder.getOS()) {
             case OPEN_BSD -> // preconditions not met can only test this this way.
-                assertTrue(LibrtLoader.LIB_RT_SYMBOL_LOOKUP.lookup("aio_write").isEmpty(), "aio_write is available");
+                assertTrue(LibrtLoader.LIB_RT_SYMBOL_LOOKUP.find("aio_write").isEmpty(), "aio_write is available");
             default -> {
                 //Clean up references to Callbacks
                 System.gc();
@@ -784,7 +785,7 @@ public class AioTest {
                 File tmpFile = File.createTempFile("Jnhw-Posix-Aio-Test-Write", ".txt");
 
                 @SuppressWarnings("unchecked")
-                final Aio.Aiocb<Struct> aiocb = Aio.Aiocb.tryAllocateNative(sharedSession);
+                final Aio.Aiocb<Struct> aiocb = Aio.Aiocb.tryAllocateNative(sharedSession.scope());
                 aiocb.aio_fildes(Fcntl.open(tmpFile.getAbsolutePath(), Fcntl.O_RDWR));
                 final ByteBuffer aioBuffer = ByteBuffer.allocateDirect(1024);
                 aioBuffer.put(HELLO_WORLD.getBytes());
@@ -799,16 +800,16 @@ public class AioTest {
                 aiocb.aio_sigevent.sigev_value.sival_int(SIVAL_INT);
 
                 JnhwTestLogger.logTest("aio_write aiocb.aio_sigevent.sigev_value: " + aiocb.aio_sigevent.sigev_value);
-                JnhwTestLogger.logTest("aio_write Pthread_t: " + Pthread.pthread_self(sharedSession));
+                JnhwTestLogger.logTest("aio_write Pthread_t: " + Pthread.pthread_self(sharedSession.scope()));
                 JnhwTestLogger.logTest("aio_write currentThread: " + Thread.currentThread());
 
                 Callback__V__UnionSigval cb = new Callback__V__UnionSigval() {
 
                     @Override
-                    protected void callback(MemoryAddress sival_ptr, int sival_int) {
+                    protected void callback(MemorySegment sival_ptr, int sival_int) {
                         try {
                             assertEquals(SIVAL_INT, sival_int);
-                            JnhwTestLogger.logTest("aio_write enter callback Pthread_t: " + Pthread.pthread_self(sharedSession));
+                            JnhwTestLogger.logTest("aio_write enter callback Pthread_t: " + Pthread.pthread_self(sharedSession.scope()));
                             JnhwTestLogger.logTest("aio_write in callback currentThread: " + Thread.currentThread());
                             assertEquals(0, Aio.aio_error(aiocb));
                             aioBuffer.position(aioBuffer.position() + (int) Aio.aio_return(aiocb));
@@ -877,14 +878,14 @@ public class AioTest {
     public void testAio_write_Buffer_NoSignal() throws Exception {
         switch (MultiarchTupelBuilder.getOS()) {
             case OPEN_BSD -> // preconditions not met can only test this this way.
-                assertTrue(LibrtLoader.LIB_RT_SYMBOL_LOOKUP.lookup("aio_write").isEmpty(), "aio_write is available");
+                assertTrue(LibrtLoader.LIB_RT_SYMBOL_LOOKUP.find("aio_write").isEmpty(), "aio_write is available");
             default -> {
                 final String HELLO_WORLD = "Hello world!\n";
 
                 File tmpFile = File.createTempFile("Jnhw-Posix-Aio-Test-Write", ".txt");
 
                 @SuppressWarnings("unchecked")
-                final Aio.Aiocb<Struct> aiocb = Aio.Aiocb.tryAllocateNative(sharedSession);
+                final Aio.Aiocb<Struct> aiocb = Aio.Aiocb.tryAllocateNative(sharedSession.scope());
                 aiocb.aio_fildes(Fcntl.open(tmpFile.getAbsolutePath(), Fcntl.O_RDWR));
                 final ByteBuffer aioBuffer = ByteBuffer.allocateDirect(1024);
                 aioBuffer.put(HELLO_WORLD.getBytes());
@@ -897,7 +898,7 @@ public class AioTest {
 
                 aiocb.aio_sigevent.sigev_notify(Signal.SIGEV_NONE.get());
 
-                JnhwTestLogger.logTest("aio_write Pthread_t: " + Pthread.pthread_self(sharedSession));
+                JnhwTestLogger.logTest("aio_write Pthread_t: " + Pthread.pthread_self(sharedSession.scope()));
                 JnhwTestLogger.logTest("aio_write currentThread: " + Thread.currentThread());
 
                 Aio.aio_write(aiocb);
@@ -928,9 +929,9 @@ public class AioTest {
     public void testread_filedescriptor() throws Exception {
         switch (MultiarchTupelBuilder.getOS()) {
             case OPEN_BSD -> // preconditions not met can only test this this way.
-                assertTrue(LibrtLoader.LIB_RT_SYMBOL_LOOKUP.lookup("lio_listio").isEmpty(), "lio_listio is available");
+                assertTrue(LibrtLoader.LIB_RT_SYMBOL_LOOKUP.find("lio_listio").isEmpty(), "lio_listio is available");
             default -> {
-                Aio.Aiocb aiocb = Aio.Aiocb.tryAllocateNative(sharedSession);
+                Aio.Aiocb aiocb = Aio.Aiocb.tryAllocateNative(sharedSession.scope());
                 aiocb.aio_sigevent.sigev_notify(Signal.SIGEV_NONE.get());
                 aiocb.aio_fildes(-1);
 
@@ -976,13 +977,13 @@ public class AioTest {
     public void testLio_listio() throws Exception {
         switch (MultiarchTupelBuilder.getOS()) {
             case OPEN_BSD -> // preconditions not met can only test this this way.
-                assertTrue(LibrtLoader.LIB_RT_SYMBOL_LOOKUP.lookup("lio_listio").isEmpty(), "lio_listio is available");
+                assertTrue(LibrtLoader.LIB_RT_SYMBOL_LOOKUP.find("lio_listio").isEmpty(), "lio_listio is available");
             default -> {
                 //Clean up references to Callbacks
                 System.gc();
 
-                final Aio.Aiocbs list = Aio.Aiocbs.tryAllocateNative(sharedSession, 1);
-                Aio.Aiocb aiocb = Aio.Aiocb.tryAllocateNative(sharedSession);
+                final Aio.Aiocbs list = Aio.Aiocbs.tryAllocateNative(sharedSession.scope(), 1);
+                Aio.Aiocb aiocb = Aio.Aiocb.tryAllocateNative(sharedSession.scope());
                 aiocb.aio_sigevent.sigev_notify(Signal.SIGEV_NONE.get());
                 aiocb.aio_fildes(-1);
                 list.set(0, aiocb);
@@ -1032,7 +1033,7 @@ public class AioTest {
     public void testReadLio_listio() throws Exception {
         switch (MultiarchTupelBuilder.getOS()) {
             case OPEN_BSD -> // preconditions not met can only test this this way.
-                assertTrue(LibrtLoader.LIB_RT_SYMBOL_LOOKUP.lookup("lio_listio").isEmpty(), "lio_listio is available");
+                assertTrue(LibrtLoader.LIB_RT_SYMBOL_LOOKUP.find("lio_listio").isEmpty(), "lio_listio is available");
             default -> {
                 //Clean up references to Callbacks
                 System.gc();
@@ -1046,7 +1047,7 @@ public class AioTest {
                 }
 
                 @SuppressWarnings("unchecked")
-                final Aio.Aiocb<Aio.Aiocb> aiocb = Aio.Aiocb.tryAllocateNative(sharedSession);
+                final Aio.Aiocb<Aio.Aiocb> aiocb = Aio.Aiocb.tryAllocateNative(sharedSession.scope());
                 aiocb.aio_sigevent.sigev_notify(Signal.SIGEV_NONE.get());
                 aiocb.aio_fildes(Fcntl.open(tmpFile.getAbsolutePath(), Fcntl.O_RDWR));
                 aiocb.aio_lio_opcode(Aio.LIO_READ.get());
@@ -1056,7 +1057,7 @@ public class AioTest {
                 aiocb.aio_buf(aioBuffer);
                 assertEquals(0, aioBuffer.position());
 
-                Aio.Aiocbs list = Aio.Aiocbs.tryAllocateNative(sharedSession, 1);
+                Aio.Aiocbs list = Aio.Aiocbs.tryAllocateNative(sharedSession.scope(), 1);
                 list.set(0, aiocb);
 
                 Aio.lio_listio(Aio.LIO_NOWAIT.get(), list);

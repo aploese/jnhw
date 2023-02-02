@@ -22,8 +22,8 @@
 package de.ibapl.jnhw.common.nativepointer;
 
 import de.ibapl.jnhw.common.memory.NativeFunctionPointer;
+import java.lang.foreign.MemorySegment;
 import java.util.function.Function;
-import java.lang.foreign.MemoryAddress;
 
 /**
  *
@@ -31,15 +31,15 @@ import java.lang.foreign.MemoryAddress;
  */
 public class FunctionPtr__V___L extends NativeFunctionPointer {
 
-    public static FunctionPtr__V___L wrap(MemoryAddress srcm) {
+    public static FunctionPtr__V___L wrap(MemorySegment srcm) {
         return new FunctionPtr__V___L(srcm);
     }
 
-    protected <T extends FunctionPtr__V___L> FunctionPtr__V___L(Function<T, MemoryAddress> producer) {
+    protected <T extends FunctionPtr__V___L> FunctionPtr__V___L(Function<T, MemorySegment> producer) {
         super(producer);
     }
 
-    public FunctionPtr__V___L(MemoryAddress src) {
+    public FunctionPtr__V___L(MemorySegment src) {
         super(src);
     }
 

@@ -21,13 +21,12 @@
  */
 package de.ibapl.jnhw.common.downcall.foreign;
 
+import de.ibapl.jnhw.common.downcall.JnhwMh_BL___A__A__A_BL;
 import de.ibapl.jnhw.common.util.ConversionsJava2Native;
 import de.ibapl.jnhw.common.util.ConversionsNative2Java;
-import java.lang.foreign.Addressable;
 import java.lang.foreign.FunctionDescriptor;
-import java.lang.foreign.ValueLayout;
-import de.ibapl.jnhw.common.downcall.JnhwMh_BL___A__A__A_BL;
 import java.lang.foreign.MemorySegment;
+import java.lang.foreign.ValueLayout;
 
 /**
  *
@@ -40,7 +39,7 @@ public class JnhwMi__I___A__A__A__I extends JnhwMethodInvoker implements JnhwMh_
     }
 
     @Override
-    public boolean invoke_BL___A__A__A_BL(Addressable arg1, Addressable arg2, Addressable arg3, boolean arg4) {
+    public boolean invoke_BL___A__A__A_BL(MemorySegment arg1, MemorySegment arg2, MemorySegment arg3, boolean arg4) {
         try {
             return ConversionsNative2Java.int32_t_TO_boolean(
                     (int) methodHandle.invokeExact(

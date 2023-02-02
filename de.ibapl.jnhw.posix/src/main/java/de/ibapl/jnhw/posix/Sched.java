@@ -39,7 +39,7 @@ import de.ibapl.jnhw.libloader.MultiarchTupelBuilder;
 import de.ibapl.jnhw.libloader.libraries.LibcLoader;
 import de.ibapl.jnhw.util.posix.PosixDataType;
 import java.lang.foreign.MemorySegment;
-import java.lang.foreign.MemorySession;
+import java.lang.foreign.SegmentScope;
 
 /**
  * Wrapper around the {@code <pthread.h>} header.
@@ -118,7 +118,7 @@ public class Sched {
             offsetof_Sched_ss_repl_period = -1;
         }
 
-        public final static Sched_param allocateNative(MemorySession ms) {
+        public final static Sched_param allocateNative(SegmentScope ms) {
             return new Sched_param(MemorySegment.allocateNative(sizeof, ms), 0);
         }
 

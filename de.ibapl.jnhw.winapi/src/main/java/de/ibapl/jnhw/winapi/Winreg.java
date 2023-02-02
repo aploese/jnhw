@@ -34,8 +34,8 @@ import de.ibapl.jnhw.winapi.WinDef.HKEY;
 import de.ibapl.jnhw.winapi.WinDef.LPBYTE;
 import de.ibapl.jnhw.winapi.WinDef.LPDWORD;
 import de.ibapl.jnhw.winapi.Winnt.LPWSTR;
-import java.lang.foreign.MemoryAddress;
-import java.lang.foreign.MemorySession;
+import java.lang.foreign.Arena;
+import java.lang.foreign.MemorySegment;
 
 /**
  * Wrapper around the
@@ -55,7 +55,7 @@ public abstract class Winreg {
      *
      */
     @Define
-    public final static HKEY HKEY_CLASSES_ROOT = HKEY.of(MemoryAddress.ofLong(0x80000000L));
+    public final static HKEY HKEY_CLASSES_ROOT = HKEY.of(MemorySegment.ofAddress(0x80000000L));
 
     /**
      * <a href="https://docs.microsoft.com/en-us/windows/win32/sysinfo/predefined-keys/">HKEY_CURRENT_CONFIG</a>
@@ -64,7 +64,7 @@ public abstract class Winreg {
      *
      */
     @Define
-    public final static HKEY HKEY_CURRENT_CONFIG = HKEY.of(MemoryAddress.ofLong(0x80000005L));
+    public final static HKEY HKEY_CURRENT_CONFIG = HKEY.of(MemorySegment.ofAddress(0x80000005L));
 
     /**
      * <a href="https://docs.microsoft.com/en-us/windows/win32/sysinfo/predefined-keys/">HKEY_CURRENT_USER</a>
@@ -73,7 +73,7 @@ public abstract class Winreg {
      *
      */
     @Define
-    public final static HKEY HKEY_CURRENT_USER = HKEY.of(MemoryAddress.ofLong(0x80000001L));
+    public final static HKEY HKEY_CURRENT_USER = HKEY.of(MemorySegment.ofAddress(0x80000001L));
 
     /**
      * <a href="https://docs.microsoft.com/en-us/windows/win32/sysinfo/predefined-keys/">HKEY_CURRENT_USER_LOCAL_SETTINGS</a>
@@ -82,7 +82,7 @@ public abstract class Winreg {
      *
      */
     @Define
-    public final static HKEY HKEY_CURRENT_USER_LOCAL_SETTINGS = HKEY.of(MemoryAddress.ofLong(0x80000007L));
+    public final static HKEY HKEY_CURRENT_USER_LOCAL_SETTINGS = HKEY.of(MemorySegment.ofAddress(0x80000007L));
 
     /**
      * <a href="https://docs.microsoft.com/en-us/windows/win32/sysinfo/predefined-keys/">HKEY_CLASSES_ROOT</a>
@@ -91,7 +91,7 @@ public abstract class Winreg {
      *
      */
     @Define
-    public final static HKEY HKEY_DYN_DATA = HKEY.of(MemoryAddress.ofLong(0x80000006L));
+    public final static HKEY HKEY_DYN_DATA = HKEY.of(MemorySegment.ofAddress(0x80000006L));
 
     /**
      * <a href="https://docs.microsoft.com/en-us/windows/win32/sysinfo/predefined-keys/">HKEY_LOCAL_MACHINE</a>
@@ -101,7 +101,7 @@ public abstract class Winreg {
      *
      */
     @Define
-    public final static HKEY HKEY_LOCAL_MACHINE = HKEY.of(MemoryAddress.ofLong(0x80000002L));
+    public final static HKEY HKEY_LOCAL_MACHINE = HKEY.of(MemorySegment.ofAddress(0x80000002L));
 
     /**
      * <a href="https://docs.microsoft.com/en-us/windows/win32/sysinfo/predefined-keys/">HKEY_PERFORMANCE_DATA</a>
@@ -110,7 +110,7 @@ public abstract class Winreg {
      *
      */
     @Define
-    public final static HKEY HKEY_PERFORMANCE_DATA = HKEY.of(MemoryAddress.ofLong(0x80000004L));
+    public final static HKEY HKEY_PERFORMANCE_DATA = HKEY.of(MemorySegment.ofAddress(0x80000004L));
 
     /**
      * <a href="https://docs.microsoft.com/en-us/windows/win32/sysinfo/predefined-keys/">HKEY_PERFORMANCE_NLSTEXT</a>
@@ -120,7 +120,7 @@ public abstract class Winreg {
      *
      */
     @Define
-    public final static HKEY HKEY_PERFORMANCE_NLSTEXT = HKEY.of(MemoryAddress.ofLong(0x80000060L));
+    public final static HKEY HKEY_PERFORMANCE_NLSTEXT = HKEY.of(MemorySegment.ofAddress(0x80000060L));
 
     /**
      * <a href="https://docs.microsoft.com/en-us/windows/win32/sysinfo/predefined-keys/">HKEY_PERFORMANCE_TEXT</a>
@@ -129,7 +129,7 @@ public abstract class Winreg {
      *
      */
     @Define
-    public final static HKEY HKEY_PERFORMANCE_TEXT = HKEY.of(MemoryAddress.ofLong(0x80000050L));
+    public final static HKEY HKEY_PERFORMANCE_TEXT = HKEY.of(MemorySegment.ofAddress(0x80000050L));
 
     /**
      * <a href="https://docs.microsoft.com/en-us/windows/win32/sysinfo/predefined-keys/">HKEY_USERS</a>
@@ -139,7 +139,7 @@ public abstract class Winreg {
      *
      */
     @Define
-    public final static HKEY HKEY_USERS = HKEY.of(MemoryAddress.ofLong(0x80000003L));
+    public final static HKEY HKEY_USERS = HKEY.of(MemorySegment.ofAddress(0x80000003L));
 
     private final static JnhwMh_sI___A.ExceptionErased RegCloseKey = JnhwMh_sI___A.mandatoryOf(
             Kernel32Loader.DLL_KERNEL32_SYMBOL_LOOKUP,
@@ -268,8 +268,8 @@ public abstract class Winreg {
      * indicates an error.
      */
     public final static void RegOpenKeyExW(HKEY hKey, String lpSubKey, int ulOptions, int samDesired, WinDef.PHKEY phkResult) throws NativeErrorException {
-        try (MemorySession ms = MemorySession.openConfined()) {
-            Pointer _lpSubKey = lpSubKey != null ? WinDef.LPWSTR.wrap(lpSubKey, true, ms) : Pointer.NULL;
+        try (Arena ms = Arena.openConfined()) {
+            Pointer _lpSubKey = lpSubKey != null ? WinDef.LPWSTR.wrap(lpSubKey, true, ms.scope()) : Pointer.NULL;
             final int result = RegOpenKeyExW.invoke_sI___P__P_uI_uI__P(
                     hKey,
                     _lpSubKey,

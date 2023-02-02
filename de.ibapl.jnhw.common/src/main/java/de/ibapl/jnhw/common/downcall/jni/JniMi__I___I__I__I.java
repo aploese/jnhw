@@ -24,8 +24,6 @@ package de.ibapl.jnhw.common.downcall.jni;
 import de.ibapl.jnhw.common.downcall.JnhwMh_sI__sI_sL_sL;
 import de.ibapl.jnhw.common.downcall.JnhwMh_sL__sI_sL_sI;
 import de.ibapl.jnhw.common.util.ConversionsJava2Native;
-import java.lang.foreign.SymbolLookup;
-import de.ibapl.jnhw.common.downcall.JnhwMh_sI__sI_sI_VARARGS_sI;
 import java.lang.foreign.MemorySegment;
 
 /**
@@ -44,7 +42,7 @@ public class JniMi__I___I__I__I extends JniMethodInvoker implements JnhwMh_sL__s
     public int invoke_sI__sI_sL_sL(int arg1, long arg2, long arg3) {
         try {
             return invoke__I___I__I__I(
-                    ns.address().toRawLongValue(),
+                    ns.address(),
                     arg1,
                     ConversionsJava2Native.long_TO_int32_t(arg2),
                     ConversionsJava2Native.long_TO_int32_t(arg3));
@@ -59,7 +57,7 @@ public class JniMi__I___I__I__I extends JniMethodInvoker implements JnhwMh_sL__s
     public long invoke_sL__sI_sL_sI(int arg1, long arg2, int arg3) {
         try {
             return invoke__I___I__I__I(
-                    ns.address().toRawLongValue(),
+                    ns.address(),
                     arg1,
                     ConversionsJava2Native.long_TO_int32_t(arg2),
                     arg3);

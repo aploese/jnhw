@@ -35,9 +35,8 @@ import static de.ibapl.jnhw.libloader.MemoryModel.ILP32;
 import static de.ibapl.jnhw.libloader.MemoryModel.LLP64;
 import static de.ibapl.jnhw.libloader.MemoryModel.LP64;
 import de.ibapl.jnhw.libloader.MultiarchTupelBuilder;
-import java.lang.foreign.MemoryAddress;
+import java.lang.foreign.Arena;
 import java.lang.foreign.MemorySegment;
-import java.lang.foreign.MemorySession;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
 import static org.junit.jupiter.api.Assertions.*;
@@ -91,14 +90,14 @@ public class Callback__V__MA_Test {
         }
     }
 
-    private static void doCallback__V__MA(MemoryAddress value) {
+    private static void doCallback__V__MA(MemorySegment value) {
         try {
             doCallback__V__MA.invoke__V___A(value);
         } catch (Throwable t) {
             throw new RuntimeException(t);
         }
     }
-    private MemorySession ms;
+    private Arena ms;
 
     @BeforeEach
     public void setUpBeforeEach(TestInfo testTnfo) throws Exception {
@@ -113,7 +112,7 @@ public class Callback__V__MA_Test {
     @BeforeEach
     public void setUpBefore() throws Exception {
         System.gc();
-        ms = MemorySession.openConfined();
+        ms = Arena.openConfined();
     }
 
     @AfterEach
@@ -149,9 +148,9 @@ public class Callback__V__MA_Test {
 
     @Test
     public void testNativeFunctionPointer() {
-        final Callback__V__MA testPtr = new Callback__V__MA((t) -> MemoryAddress.ofLong(121)) {
+        final Callback__V__MA testPtr = new Callback__V__MA((t) -> MemorySegment.ofAddress(121)) {
             @Override
-            protected void callback(MemoryAddress value) {
+            protected void callback(MemorySegment value) {
                 throw new UnsupportedOperationException("Not supported yet.");
             }
 
@@ -179,9 +178,9 @@ public class Callback__V__MA_Test {
     public void testCallAndRelease(final long testValue) {
         JnhwTestLogger.logTest("Callback__V__L_Test.testCallAndRelease 0x%016x %1$d \n", testValue);
         final long[] ref = new long[1];
-        final Callback__V__MA NULL_PTR = new Callback__V__MA((t) -> MemoryAddress.NULL) {
+        final Callback__V__MA NULL_PTR = new Callback__V__MA((t) -> MemorySegment.NULL) {
             @Override
-            protected void callback(MemoryAddress value) {
+            protected void callback(MemorySegment value) {
                 throw new UnsupportedOperationException("Not supported yet.");
             }
 
@@ -194,23 +193,23 @@ public class Callback__V__MA_Test {
         Callback__V__MA callback = new Callback__V__MA() {
 
             @Override
-            protected void callback(MemoryAddress value) {
+            protected void callback(MemorySegment value) {
                 if (t.equals(Thread.currentThread())) {
-                    ref[0] = value.toRawLongValue();
+                    ref[0] = value.address();
                 } else {
-                    ref[0] = ~value.toRawLongValue();
+                    ref[0] = ~value.address();
                 }
             }
 
         };
-        final NativeFunctionPointer nativeCallbackPointer = NativeFunctionPointer.wrap(callback.toAddressable().address());
+        final NativeFunctionPointer nativeCallbackPointer = NativeFunctionPointer.wrap(callback.toMemorySegment());
         try {
 
             setCallback__V__MA(callback);
 
             assertEquals(getCallback__V__MA(), callback);
             assertSame(Callback__V__MA.find(getCallback__V__MA()), callback);
-            doCallback__V__MA(MemoryAddress.ofLong(testValue));
+            doCallback__V__MA(MemorySegment.ofAddress(testValue));
             switch (MultiarchTupelBuilder.getMemoryModel()) {
                 case ILP32 ->
                     assertEquals(testValue & 0xffffffffL, ref[0]);
@@ -224,10 +223,10 @@ public class Callback__V__MA_Test {
             ref[0] = 0;
             JnhwMh__V___A.of(
                     MemorySegment.ofAddress(
-                            getCallback__V__MA().toAddressable().address(), 0, ms),
+                            getCallback__V__MA().toAddress(), 0, ms.scope()),
                     "testCallback",
                     BaseDataType.uintptr_t
-            ).invoke__V___A(MemoryAddress.ofLong(testValue));
+            ).invoke__V___A(MemorySegment.ofAddress(testValue));
 
             switch (MultiarchTupelBuilder.getMemoryModel()) {
                 case ILP32 ->
@@ -248,14 +247,14 @@ public class Callback__V__MA_Test {
 
         //Just check that the reference is gone...
         ref[0] = -1;
-        doCallback__V__MA(MemoryAddress.ofLong(testValue / 2));
+        doCallback__V__MA(MemorySegment.ofAddress(testValue / 2));
         assertEquals(-1, ref[0]);
 
         ref[0] = -1;
         //The logs shoud show: Unassigned callback for trampoline_0(testValue/2)
         JnhwMh__V__sL.of(
                 MemorySegment.ofAddress(
-                        getCallback__V__MA().toAddressable().address(), 0, ms),
+                        getCallback__V__MA().toAddress(), 0, ms.scope()),
                 "testCallback",
                 BaseDataType.int64_t
         ).invoke__V__sL(testValue / 2);
@@ -267,7 +266,7 @@ public class Callback__V__MA_Test {
     private class DummyCB extends Callback__V__MA {
 
         @Override
-        protected void callback(MemoryAddress value) {
+        protected void callback(MemorySegment value) {
             throw new UnsupportedOperationException("Not supported yet.");
         }
 

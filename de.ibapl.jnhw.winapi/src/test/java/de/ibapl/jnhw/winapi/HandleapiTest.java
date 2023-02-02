@@ -21,10 +21,10 @@
  */
 package de.ibapl.jnhw.winapi;
 
+import java.lang.foreign.MemorySegment;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.condition.EnabledOnOs;
-import java.lang.foreign.MemoryAddress;
 
 @EnabledOnOs(org.junit.jupiter.api.condition.OS.WINDOWS)
 public class HandleapiTest {
@@ -32,7 +32,7 @@ public class HandleapiTest {
     @Test
     public void testDefines() throws Exception {
         Winnt.HANDLE h = Handleapi.INVALID_HANDLE_VALUE;
-        Assertions.assertNotEquals(h, Winnt.HANDLE.of(MemoryAddress.NULL));
+        Assertions.assertNotEquals(h, Winnt.HANDLE.of(MemorySegment.NULL));
     }
 
 }

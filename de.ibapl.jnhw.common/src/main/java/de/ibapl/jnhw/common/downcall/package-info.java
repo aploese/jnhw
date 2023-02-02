@@ -38,7 +38,7 @@
  * <tr><td>{@code uL}</td><td>{@code unsigned long uint64_t}</td><td>{@code (unsigned) long}</td></tr>
  * <tr><td>{@code BL}</td><td>{@code mapped to ...}</td><td>{@code boolean}</td></tr>
  * <tr><td>{@code MA}</td><td>{@code void * intptr_t}</td><td>{@code MemoryAddress}</td></tr>
- * <tr><td>{@code A}</td><td>{@code void * intptr_t}</td><td>{@code Addressable}</td></tr>
+ * <tr><td>{@code A}</td><td>{@code void * intptr_t}</td><td>{@code MemorySegment}</td></tr>
  * <tr><td>{@code P}</td><td>{@code Pointer}</td></tr>
  * <tr><td>{@code D}</td><td>{@code double}</td><td>{@code double}</td></tr>
  * <tr><td>{@code F}</td><td>{@code float}</td><td>{@code float}</td></tr>
@@ -51,7 +51,7 @@
  * <tr><th>C code</th><th>Java code</th><tr>
  * <tr><td>{@code int invoke_sI__uB(unsigned char arg1)}</td><td>{@code int invoke_sI__uB(byte arg1)}</td></tr>
  * <tr><td>{@code void invoke__V___V()}</td><td>{@code void invoke__V___V()}</td></tr>
- * <td>{@code void *invoke_MA___A(void *arg1)}</td><td>{@code MemoryAddress invoke_MA___A(Addressable arg1)}</td></tr>
+ * <td>{@code void *invoke_MA___A(void *arg1)}</td><td>{@code MemoryAddress invoke_MA___A(MemorySegment arg1)}</td></tr>
  * <td>{@code unsigned int invoke_uI__sI(int arg1)}</td><td>{@code long invoke_uL___B(boolean arg1)}</td></tr>
  * <td>{@code int invoke_sI__sI(int arg1)}</td><td>{@code boolean invoke__B__uI(int arg1)}</td></tr>
  * </table>

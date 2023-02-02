@@ -28,8 +28,12 @@ import de.ibapl.jnhw.common.annotation.Define;
 import de.ibapl.jnhw.common.annotation.Include;
 import de.ibapl.jnhw.common.datatypes.BaseDataType;
 import de.ibapl.jnhw.common.downcall.JnhwMh_sI___A_sI_VARARGS_NONE;
+import de.ibapl.jnhw.common.downcall.JnhwMh_sI___A_sI_VARARGS_uI;
 import de.ibapl.jnhw.common.downcall.JnhwMh_sI___A_uI;
+import de.ibapl.jnhw.common.downcall.JnhwMh_sI__sI__A_sI_VARARGS_NONE;
+import de.ibapl.jnhw.common.downcall.JnhwMh_sI__sI__A_sI_VARARGS_uI;
 import de.ibapl.jnhw.common.downcall.JnhwMh_sI__sI_sI_VARARGS_NONE;
+import de.ibapl.jnhw.common.downcall.JnhwMh_sI__sI_sI_VARARGS_sI;
 import de.ibapl.jnhw.common.downcall.JnhwMh_sI__sI_sL_sL;
 import de.ibapl.jnhw.common.downcall.JnhwMh_sI__sI_sL_sL_sI;
 import de.ibapl.jnhw.common.exception.NativeErrorException;
@@ -37,15 +41,11 @@ import de.ibapl.jnhw.common.exception.NoSuchNativeMethodException;
 import de.ibapl.jnhw.common.util.IntDefine;
 import de.ibapl.jnhw.libloader.MultiarchInfo;
 import de.ibapl.jnhw.libloader.MultiarchTupelBuilder;
-import de.ibapl.jnhw.posix.sys.Stat;
 import de.ibapl.jnhw.libloader.libraries.LibcLoader;
+import de.ibapl.jnhw.posix.sys.Stat;
 import de.ibapl.jnhw.util.posix.PosixDataType;
+import java.lang.foreign.Arena;
 import java.lang.foreign.MemorySegment;
-import java.lang.foreign.MemorySession;
-import de.ibapl.jnhw.common.downcall.JnhwMh_sI__sI_sI_VARARGS_sI;
-import de.ibapl.jnhw.common.downcall.JnhwMh_sI___A_sI_VARARGS_uI;
-import de.ibapl.jnhw.common.downcall.JnhwMh_sI__sI__A_sI_VARARGS_NONE;
-import de.ibapl.jnhw.common.downcall.JnhwMh_sI__sI__A_sI_VARARGS_uI;
 
 /**
  * Wrapper around the {@code <fcntl.h>} header.
@@ -1021,8 +1021,8 @@ public final class Fcntl {
      *
      */
     public final static int creat(String path, @mode_t int mode) throws NativeErrorException {
-        try (MemorySession ms = MemorySession.openConfined()) {
-            MemorySegment _path = MemorySegment.allocateNative(path.length() + 1, ms);
+        try (Arena ms = Arena.openConfined()) {
+            MemorySegment _path = ms.allocate(path.length() + 1);
             _path.setUtf8String(0, path);
             final int result = creat.invoke_sI___A_uI(_path, mode);
             if (result == -1) {
@@ -1043,8 +1043,8 @@ public final class Fcntl {
      * defined.
      */
     public final static int creat64(String path, @mode_t int mode) throws NativeErrorException, NoSuchNativeMethodException {
-        try (MemorySession ms = MemorySession.openConfined()) {
-            MemorySegment _path = MemorySegment.allocateNative(path.length() + 1, ms);
+        try (Arena ms = Arena.openConfined()) {
+            MemorySegment _path = ms.allocate(path.length() + 1);
             _path.setUtf8String(0, path);
             final int result = creat64.invoke_sI___A_uI(_path, mode);
             if (result == -1) {
@@ -1151,8 +1151,8 @@ public final class Fcntl {
      * indicates an error.
      */
     public final static int open(String path, int oflag) throws NativeErrorException {
-        try (MemorySession ms = MemorySession.openConfined()) {
-            MemorySegment _path = MemorySegment.allocateNative(path.length() + 1, ms);
+        try (Arena ms = Arena.openConfined()) {
+            MemorySegment _path = ms.allocate(path.length() + 1);
             _path.setUtf8String(0, path);
             final int result = open.invoke_sI___A_sI(_path, oflag);
             if (result == -1) {
@@ -1172,11 +1172,12 @@ public final class Fcntl {
      * @param oflag the open flags.
      * @param mode the file access modes from {@link Stat}.
      * @return a handle to the opend file.
+     * @throws de.ibapl.jnhw.common.exception.NativeErrorException
      *
      */
     public final static int open(String path, int oflag, @mode_t int mode) throws NativeErrorException {
-        try (MemorySession ms = MemorySession.openConfined()) {
-            MemorySegment _path = MemorySegment.allocateNative(path.length() + 1, ms);
+        try (Arena ms = Arena.openConfined()) {
+            MemorySegment _path = ms.allocate(path.length() + 1);
             _path.setUtf8String(0, path);
             final int result = open__VARARG_mode_t.invoke_sI___A_sI_uI(_path, oflag, mode);
             if (result == -1) {
@@ -1187,13 +1188,14 @@ public final class Fcntl {
     }
 
     /**
-     * <b>Linux:</b> Available if _LARGEFILE64_SOURCE is defined.
-     * <a href="https://pubs.opengroup.org/onlinepubs/9699919799/functions/open.html">open,
+     * <b>Linux:</b> Available if _LARGEFILE64_SOURCE is
+     * defined.<a href="https://pubs.opengroup.org/onlinepubs/9699919799/functions/open.html">open,
      * openat - open file</a>.
      *
      * @param path the pathname naming the file.
      * @param oflag the open flags.
      * @return a handle to the opend file.
+     * @throws de.ibapl.jnhw.common.exception.NativeErrorException
      *
      * @throws NullPointerException if {@code file} is {@code null}.
      *
@@ -1201,8 +1203,8 @@ public final class Fcntl {
      * defined.
      */
     public final static int open64(String path, int oflag) throws NativeErrorException, NoSuchNativeMethodException {
-        try (MemorySession ms = MemorySession.openConfined()) {
-            MemorySegment _path = MemorySegment.allocateNative(path.length() + 1, ms);
+        try (Arena ms = Arena.openConfined()) {
+            MemorySegment _path = ms.allocate(path.length() + 1);
             _path.setUtf8String(0, path);
             final int result = open64.invoke_sI___A_sI(_path, oflag);
             if (result == -1) {
@@ -1228,8 +1230,8 @@ public final class Fcntl {
      * defined.
      */
     public final static int open64(String path, int oflag, @mode_t int mode) throws NativeErrorException, NoSuchNativeMethodException {
-        try (MemorySession ms = MemorySession.openConfined()) {
-            MemorySegment _path = MemorySegment.allocateNative(path.length() + 1, ms);
+        try (Arena ms = Arena.openConfined()) {
+            MemorySegment _path = ms.allocate(path.length() + 1);
             _path.setUtf8String(0, path);
             final int result = open64__VARARG_mode_t.invoke_sI___A_sI_uI(_path, oflag, mode);
             if (result == -1) {
@@ -1251,13 +1253,14 @@ public final class Fcntl {
      * parent direcory.
      * @param oflag the open flags.
      * @return a handle to the opend file.
+     * @throws de.ibapl.jnhw.common.exception.NativeErrorException
      *
      * @throws NullPointerException if {@code file} is {@code null}.
      *
      */
     public final static int openat(int fd, String path, int oflag) throws NativeErrorException {
-        try (MemorySession ms = MemorySession.openConfined()) {
-            MemorySegment _path = MemorySegment.allocateNative(path.length() + 1, ms);
+        try (Arena ms = Arena.openConfined()) {
+            MemorySegment _path = ms.allocate(path.length() + 1);
             _path.setUtf8String(0, path);
             final int result = openat.invoke_sI__sI__A_sI(fd, _path, oflag);
             if (result == -1) {
@@ -1282,8 +1285,8 @@ public final class Fcntl {
      *
      */
     public final static int openat(int fd, String path, int oflag, @mode_t int mode) throws NativeErrorException {
-        try (MemorySession ms = MemorySession.openConfined()) {
-            MemorySegment _path = MemorySegment.allocateNative(path.length() + 1, ms);
+        try (Arena ms = Arena.openConfined()) {
+            MemorySegment _path = ms.allocate(path.length() + 1);
             _path.setUtf8String(0, path);
             final int result = openat__VARARG_mode_t.invoke_sI__sI__A_sI_uI(fd, _path, oflag, mode);
             if (result == -1) {
@@ -1309,8 +1312,8 @@ public final class Fcntl {
      * defined.
      */
     public final static int openat64(int fd, String path, int oflag) throws NativeErrorException, NoSuchNativeMethodException {
-        try (MemorySession ms = MemorySession.openConfined()) {
-            MemorySegment _path = MemorySegment.allocateNative(path.length() + 1, ms);
+        try (Arena ms = Arena.openConfined()) {
+            MemorySegment _path = ms.allocate(path.length() + 1);
             _path.setUtf8String(0, path);
             final int result = openat64.invoke_sI__sI__A_sI(fd, _path, oflag);
             if (result == -1) {
@@ -1322,8 +1325,8 @@ public final class Fcntl {
     }
 
     /**
-     * <b>Linux:</b> Available if _LARGEFILE64_SOURCE is defined.
-     * <a href="https://pubs.opengroup.org/onlinepubs/9699919799/functions/open.html">open,
+     * <b>Linux:</b> Available if _LARGEFILE64_SOURCE is
+     * defined.<a href="https://pubs.opengroup.org/onlinepubs/9699919799/functions/open.html">open,
      * openat - open file</a>.
      *
      * @param fd a filedescriptor of a directory.
@@ -1332,13 +1335,14 @@ public final class Fcntl {
      * @param oflag the open flags.
      * @param mode the file access modes from {@link Stat}.
      * @return a handle to the opend file.
+     * @throws de.ibapl.jnhw.common.exception.NativeErrorException
      *
      * @throws NoSuchNativeMethodException if _LARGEFILE64_SOURCE is not
      * defined.
      */
     public final static int openat64(int fd, String path, int oflag, @mode_t int mode) throws NativeErrorException, NoSuchNativeMethodException {
-        try (MemorySession ms = MemorySession.openConfined()) {
-            MemorySegment _path = MemorySegment.allocateNative(path.length() + 1, ms);
+        try (Arena ms = Arena.openConfined()) {
+            MemorySegment _path = ms.allocate(path.length() + 1);
             _path.setUtf8String(0, path);
             final int result = openat64__VARARG_mode_t.invoke_sI__sI__A_sI_uI(fd, _path, oflag, mode);
             if (result == -1) {

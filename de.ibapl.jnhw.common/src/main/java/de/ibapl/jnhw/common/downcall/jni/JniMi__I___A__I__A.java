@@ -22,9 +22,7 @@
 package de.ibapl.jnhw.common.downcall.jni;
 
 import de.ibapl.jnhw.common.downcall.JnhwMh_sI___A_sI__A;
-import java.lang.foreign.Addressable;
 import java.lang.foreign.MemorySegment;
-import java.lang.foreign.SymbolLookup;
 
 /**
  *
@@ -39,13 +37,13 @@ public class JniMi__I___A__I__A extends JniMethodInvoker implements JnhwMh_sI___
     }
 
     @Override
-    public int invoke_sI___A_sI__A(Addressable arg1, int arg2, Addressable arg3) {
+    public int invoke_sI___A_sI__A(MemorySegment arg1, int arg2, MemorySegment arg3) {
         try {
             return invoke__I___A__I__A(
-                    ns.address().toRawLongValue(),
-                    arg1.address().toRawLongValue(),
+                    ns.address(),
+                    arg1.address(),
                     arg2,
-                    arg3.address().toRawLongValue());
+                    arg3.address());
         } catch (IllegalArgumentException | NullPointerException e) {
             throw e;
         } catch (Throwable t) {
