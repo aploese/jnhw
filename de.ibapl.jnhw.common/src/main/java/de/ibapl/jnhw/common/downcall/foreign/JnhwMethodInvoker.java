@@ -39,13 +39,13 @@ public abstract class JnhwMethodInvoker {
     private final MemorySegment methodAddress;
     private final String name;
 
-    public JnhwMethodInvoker(MemorySegment methodAddress, String name, FunctionDescriptor fd) {
+    public JnhwMethodInvoker(MemorySegment methodAddress, String name, FunctionDescriptor fd, Linker.Option... options) {
         if (methodAddress == null) {
             throw new IllegalArgumentException("methodAddress of: \"" + name + "\" is null!");
         }
         this.name = name;
         this.methodAddress = methodAddress;
-        methodHandle = NATIVE_LINKER.downcallHandle(methodAddress, fd);
+        methodHandle = NATIVE_LINKER.downcallHandle(methodAddress, fd, options);
     }
 
     protected RuntimeException createRuntimeExceptionInvoke(Throwable t) {

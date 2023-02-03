@@ -23,6 +23,7 @@ package de.ibapl.jnhw.common.downcall.foreign;
 
 import de.ibapl.jnhw.common.downcall.JnhwMh_sI__sI_uL_VARARGS__A;
 import java.lang.foreign.FunctionDescriptor;
+import java.lang.foreign.Linker;
 import java.lang.foreign.MemorySegment;
 import java.lang.foreign.ValueLayout;
 
@@ -33,7 +34,16 @@ import java.lang.foreign.ValueLayout;
 public class JnhwMi__I___I__L_VARARGS__A extends JnhwMethodInvoker implements JnhwMh_sI__sI_uL_VARARGS__A.ExceptionErased {
 
     public JnhwMi__I___I__L_VARARGS__A(MemorySegment methodAddress, String name) {
-        super(methodAddress, name, FunctionDescriptor.of(ValueLayout.JAVA_INT, ValueLayout.JAVA_INT, ValueLayout.JAVA_LONG, ValueLayout.ADDRESS));
+        super(methodAddress,
+                name,
+                FunctionDescriptor.of(
+                        ValueLayout.JAVA_INT,
+                        ValueLayout.JAVA_INT,
+                        ValueLayout.JAVA_LONG,
+                        ValueLayout.ADDRESS
+                ),
+                Linker.Option.firstVariadicArg(3)
+        );
     }
 
     @Override

@@ -22,7 +22,7 @@
 package de.ibapl.jnhw.common.downcall;
 
 import de.ibapl.jnhw.common.datatypes.BaseDataType;
-import de.ibapl.jnhw.common.downcall.foreign.JnhwMi__I___I__I_VARARGS_I;
+import de.ibapl.jnhw.common.downcall.foreign.JnhwMi__I___I__I_VARARGS__I;
 import de.ibapl.jnhw.common.downcall.jni.JniMi__I___I__I_VARARGS__I;
 import de.ibapl.jnhw.common.exception.NoSuchNativeMethodException;
 import de.ibapl.jnhw.common.util.NativeProvider;
@@ -68,7 +68,7 @@ public interface JnhwMh_sI__sI_sI_VARARGS_sI extends JnhwMethodHandle {
                                 switch (arg3) {
                                     case int32_t ->
                                         NativeProvider.getProvider(
-                                        () -> new JnhwMi__I___I__I_VARARGS_I(methodAddress, name),
+                                        () -> new JnhwMi__I___I__I_VARARGS__I(methodAddress, name),
                                         () -> new JniMi__I___I__I_VARARGS__I(methodAddress, name));
                                     default ->
                                         throw new IllegalArgumentException("arg3 unexpected data type: " + name + " " + arg3);

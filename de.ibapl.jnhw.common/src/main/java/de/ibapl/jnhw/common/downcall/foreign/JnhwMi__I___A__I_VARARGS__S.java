@@ -24,6 +24,7 @@ package de.ibapl.jnhw.common.downcall.foreign;
 import de.ibapl.jnhw.common.downcall.JnhwMh_sI___A_sI_VARARGS_uI;
 import de.ibapl.jnhw.common.util.ConversionsJava2Native;
 import java.lang.foreign.FunctionDescriptor;
+import java.lang.foreign.Linker;
 import java.lang.foreign.MemorySegment;
 import java.lang.foreign.ValueLayout;
 
@@ -34,16 +35,26 @@ import java.lang.foreign.ValueLayout;
 public class JnhwMi__I___A__I_VARARGS__S extends JnhwMethodInvoker implements JnhwMh_sI___A_sI_VARARGS_uI.ExceptionErased {
 
     public JnhwMi__I___A__I_VARARGS__S(MemorySegment methodAddress, String name) {
-        super(methodAddress, name, FunctionDescriptor.of(ValueLayout.JAVA_INT, ValueLayout.ADDRESS, ValueLayout.JAVA_INT, ValueLayout.JAVA_SHORT));
+        super(methodAddress,
+                name,
+                FunctionDescriptor.of(
+                        ValueLayout.JAVA_INT,
+                        ValueLayout.ADDRESS,
+                        ValueLayout.JAVA_INT,
+                        ValueLayout.JAVA_SHORT
+                ),
+                Linker.Option.firstVariadicArg(3)
+        );
     }
 
     @Override
-    public int invoke_sI___A_sI_uI(MemorySegment arg1, int arg2, int arg3) {
+    public int invoke_sI___A_sI_uI(MemorySegment arg1, int arg2, final int arg3) {
         try {
             return (int) methodHandle.invokeExact(
                     arg1,
                     arg2,
-                    ConversionsJava2Native.int_TO_uint16_t(arg3));
+                    ConversionsJava2Native.int_TO_uint16_t(arg3)
+            );
         } catch (IllegalArgumentException | NullPointerException e) {
             throw e;
         } catch (Throwable t) {
