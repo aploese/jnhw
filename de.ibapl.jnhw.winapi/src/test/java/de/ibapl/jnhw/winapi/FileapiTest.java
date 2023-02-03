@@ -181,7 +181,7 @@ public class FileapiTest {
             protected void callback(int dwErrorCode, int dwNumberOfBytesTransferred, MemorySegment lpOverlapped) {
                 Assertions.assertEquals(Winerror.ERROR_SUCCESS, dwErrorCode);
                 Assertions.assertEquals(WRITE_VALUE.length, dwNumberOfBytesTransferred);
-                Assertions.assertEquals(OpaqueMemory.getMemorySegment(overlapped).address(), lpOverlapped);
+                Assertions.assertEquals(OpaqueMemory.getMemorySegment(overlapped).address(), lpOverlapped.address());
             }
         };
 
@@ -404,7 +404,7 @@ public class FileapiTest {
             protected void callback(int dwErrorCode, int dwNumberOfBytesTransferred, MemorySegment lpOverlapped) {
                 Assertions.assertEquals(Winerror.ERROR_SUCCESS, dwErrorCode);
                 Assertions.assertEquals(WRITE_VALUE.length, dwNumberOfBytesTransferred);
-                Assertions.assertEquals(OpaqueMemory.getMemorySegment(overlapped).address(), lpOverlapped);
+                Assertions.assertEquals(OpaqueMemory.getMemorySegment(overlapped).address(), lpOverlapped.address());
             }
         };
 
@@ -560,7 +560,7 @@ public class FileapiTest {
         IoAPI.GetQueuedCompletionStatus(hIoCompletionPort, lpNumberOfBytesTransferred, lpCompletionKey, overlappedPtr, 1000);
 
         Assertions.assertNotEquals(MemorySegment.NULL, overlappedPtr.get());
-        Assertions.assertEquals(OpaqueMemory.getMemorySegment(overlapped).address(), overlappedPtr.get());
+        Assertions.assertEquals(OpaqueMemory.getMemorySegment(overlapped).address(), overlappedPtr.get().address());
         Assertions.assertEquals(COMPLETION_KEY, lpCompletionKey.PULONG_PTR());
         Assertions.assertEquals(WRITE_VALUE.length, lpNumberOfBytesTransferred.uint32_t());
 
@@ -631,7 +631,7 @@ public class FileapiTest {
             protected void callback(int dwErrorCode, int dwNumberOfBytesTransferred, MemorySegment lpOverlapped) {
                 Assertions.assertEquals(Winerror.ERROR_SUCCESS, dwErrorCode);
                 Assertions.assertEquals(WRITE_VALUE.length, dwNumberOfBytesTransferred);
-                Assertions.assertEquals(OpaqueMemory.getMemorySegment(overlapped).address(), lpOverlapped);
+                Assertions.assertEquals(OpaqueMemory.getMemorySegment(overlapped).address(), lpOverlapped.address());
             }
         };
 
@@ -786,7 +786,7 @@ public class FileapiTest {
         IoAPI.GetQueuedCompletionStatus(hIoCompletionPort, lpNumberOfBytesTransferred, lpCompletionKey, overlappedPtr, 1000);
 
         Assertions.assertNotEquals(MemorySegment.NULL, overlappedPtr.get());
-        Assertions.assertEquals(OpaqueMemory.getMemorySegment(overlapped).address(), overlappedPtr.get());
+        Assertions.assertEquals(OpaqueMemory.getMemorySegment(overlapped).address(), overlappedPtr.get().address());
         Assertions.assertEquals(COMPLETION_KEY, lpCompletionKey.PULONG_PTR());
         Assertions.assertEquals(WRITE_VALUE.length, lpNumberOfBytesTransferred.uint32_t());
 

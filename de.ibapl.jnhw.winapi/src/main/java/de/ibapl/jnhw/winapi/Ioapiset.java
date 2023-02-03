@@ -25,6 +25,7 @@ import de.ibapl.jnhw.common.annotation.Include;
 import de.ibapl.jnhw.common.datatypes.Pointer;
 import de.ibapl.jnhw.common.downcall.JnhwMh_BL___A;
 import de.ibapl.jnhw.common.downcall.JnhwMh_BL___A__A;
+import de.ibapl.jnhw.common.downcall.JnhwMh_BL___A__A__A_BL;
 import de.ibapl.jnhw.common.downcall.JnhwMh_BL___A_uL__A_uL__A_uL__A__A;
 import de.ibapl.jnhw.common.exception.NativeErrorException;
 import de.ibapl.jnhw.common.memory.OpaqueMemory;
@@ -33,7 +34,6 @@ import de.ibapl.jnhw.util.winapi.WinApiDataType;
 import de.ibapl.jnhw.winapi.Minwinbase.LPOVERLAPPED;
 import de.ibapl.jnhw.winapi.Winnt.HANDLE;
 import java.nio.ByteBuffer;
-import de.ibapl.jnhw.common.downcall.JnhwMh_BL___A__A__A_BL;
 
 /**
  * Wrapper around the
@@ -144,13 +144,14 @@ public final class Ioapiset {
                 lpOutBuffer == null ? 0 : lpOutBuffer.sizeof(),
                 lpBytesReturned,
                 lpOverlapped != null ? lpOverlapped : Pointer.NULL)) {
-            if (Errhandlingapi.GetLastError() == Winerror.ERROR_IO_PENDING) {
+            final int errno = Errhandlingapi.GetLastError();
+            if (errno == Winerror.ERROR_IO_PENDING) {
                 if (lpOverlapped == null) {
                     //if lpOverlapped is not NULL and GetLastError() == ERROR_IO_PENDING is not an error condition
-                    throw new NativeErrorException(Errhandlingapi.GetLastError());
+                    throw new NativeErrorException(errno);
                 }
             } else {
-                throw new NativeErrorException(Errhandlingapi.GetLastError());
+                throw new NativeErrorException(errno);
             }
         }
     }
