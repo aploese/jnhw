@@ -82,7 +82,7 @@ public class IoAPITest {
         lpCompletionKey.PULONG_PTR(0);
         assertEquals(dwNumberOfBytesTransferred, lpNumberOfBytesTransferred.uint32_t());
         lpNumberOfBytesTransferred.uint32_t(0);
-        assertEquals(lpOverlapped.get(), OpaqueMemory.getMemorySegment(overlapped).address());
+        assertEquals(lpOverlapped.get().address(), OpaqueMemory.getMemorySegment(overlapped).address());
         UintPtr_t<Minwinbase.LPOVERLAPPED> lpOverlapped0 = UintPtr_t.allocateNative(ms.scope());
 
         IoAPI.PostQueuedCompletionStatus(completionPort, dwNumberOfBytesTransferred, COMPLETION_KEY, null);

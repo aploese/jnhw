@@ -114,8 +114,8 @@ public class IoapisetTest {
         NativeErrorException nee = assertThrows(NativeErrorException.class, ()
                 -> Ioapiset.DeviceIoControl(hDevice, Winioctl.FSCTL_GET_COMPRESSION, null, uint8_t, lpBytesReturned, null)
         );
-        assertEquals(Winerror.ERROR_INVALID_PARAMETER, Errhandlingapi.GetLastError());
         assertEquals(Winerror.ERROR_INVALID_PARAMETER, nee.errno);
+        assertEquals(Winerror.ERROR_INVALID_PARAMETER, Errhandlingapi.GetLastError());
 
         Handleapi.CloseHandle(hDevice);
     }
