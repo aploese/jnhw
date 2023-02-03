@@ -39,7 +39,7 @@ public class JniMi_PthreadTI___V extends JniMi__I___V implements JnhwMh_PthreadT
 
     @Override
     public Pthread.Pthread_t invoke_PthreadT___V(SegmentScope ms) {
-        return Pthread.Pthread_t.wrap(invoke_uI___V(), ms);
+        return Pthread.Pthread_t.wrapUint32_t(invoke_uI___V(), ms);
     }
 
 }

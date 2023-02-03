@@ -658,13 +658,13 @@ public class Pthread {
             return new Pthread_t(address, ms);
         }
 
-        public static Pthread_t wrap(long value, SegmentScope ms) {
+        public static Pthread_t wrapUint64_t(long value, SegmentScope ms) {
             Pthread_t result = Pthread_t.allocateNative(ms);
             result.asUint64_t(value);
             return result;
         }
 
-        public static Pthread_t wrap(int value, SegmentScope ms) {
+        public static Pthread_t wrapUint32_t(int value, SegmentScope ms) {
             Pthread_t result = Pthread_t.allocateNative(ms);
             result.asUint32_t(value);
             return result;

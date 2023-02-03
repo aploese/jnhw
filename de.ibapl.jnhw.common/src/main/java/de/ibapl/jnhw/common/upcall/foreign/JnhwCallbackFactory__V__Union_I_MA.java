@@ -26,11 +26,14 @@ import de.ibapl.jnhw.common.upcall.Callback__V__Union_I_MA;
 import de.ibapl.jnhw.common.util.jni.LibJnhwCommon;
 import java.lang.foreign.FunctionDescriptor;
 import java.lang.foreign.Linker;
+import java.lang.foreign.MemoryLayout;
 import java.lang.foreign.MemorySegment;
+import java.lang.foreign.UnionLayout;
 import java.lang.foreign.ValueLayout;
 import java.lang.invoke.MethodHandle;
 import java.lang.invoke.MethodHandles;
 import java.lang.invoke.MethodType;
+import java.lang.invoke.VarHandle;
 import java.util.logging.Level;
 
 /**
@@ -38,6 +41,16 @@ import java.util.logging.Level;
  * @author aploese
  */
 public class JnhwCallbackFactory__V__Union_I_MA extends CallbackFactory__V__Union_I_MA {
+
+    public final static UnionLayout LAYOUT__UNION_I_MA = MemoryLayout.unionLayout(
+            ValueLayout.ADDRESS.withName("value_ptr"),
+            ValueLayout.JAVA_INT.withName("value_int")
+    );
+
+    public final static VarHandle HANDLE_VALUE_PTR
+            = LAYOUT__UNION_I_MA.varHandle(MemoryLayout.PathElement.groupElement("value_ptr"));
+    public final static VarHandle HANDLE_VALUE_INT
+            = LAYOUT__UNION_I_MA.varHandle(MemoryLayout.PathElement.groupElement("value_int"));
 
     public MemorySegment aquire(Callback__V__Union_I_MA cb) {
         for (int i = 0; i < MAX_CALL_BACKS; i++) {
@@ -68,7 +81,7 @@ public class JnhwCallbackFactory__V__Union_I_MA extends CallbackFactory__V__Unio
 
     private MemorySegment registerCallBack(int index) throws NoSuchMethodException, IllegalAccessException {
         MethodHandle handle = MethodHandles.lookup().findStatic(JnhwCallbackFactory__V__Union_I_MA.class, "trampoline_" + index, MethodType.methodType(void.class, MemorySegment.class));
-        return NATIVE_LINKER.upcallStub(handle, FunctionDescriptor.ofVoid(ValueLayout.ADDRESS.asUnbounded()), LibJnhwCommon.scope());
+        return NATIVE_LINKER.upcallStub(handle, FunctionDescriptor.ofVoid(LAYOUT__UNION_I_MA), LibJnhwCommon.scope());
     }
 
     /**

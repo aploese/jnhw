@@ -51,6 +51,7 @@ import de.ibapl.jnhw.common.exception.NativeException;
 import de.ibapl.jnhw.common.exception.NoSuchNativeMethodException;
 import de.ibapl.jnhw.common.exception.NoSuchNativeSymbolException;
 import de.ibapl.jnhw.common.exception.NoSuchNativeTypeException;
+import de.ibapl.jnhw.common.memory.AsSignedLong;
 import de.ibapl.jnhw.common.memory.IntPtr_t;
 import de.ibapl.jnhw.common.memory.OpaqueMemory;
 import de.ibapl.jnhw.common.memory.Struct;
@@ -1327,6 +1328,7 @@ public class Time {
      * @param timer time in seconds since the Epoch
      *
      * @return
+     * @throws de.ibapl.jnhw.common.exception.NativeErrorException
      */
     public final static Tm gmtime(Types.Time_t timer) throws NativeErrorException {
         final MemorySegment result = gmtime.invoke_MA___P(timer);
@@ -1643,7 +1645,12 @@ public class Time {
         }
     }
 
-    private final static MemorySegment timezone = LibcLoader.find("timezone", BaseDataType.C_long.SIZE_OF).get();
+    private final static AsSignedLong timezone;
+
+    static {
+        MemorySegment mem = LibcLoader.find("timezone", BaseDataType.C_long.SIZE_OF).get();
+        timezone = new AsSignedLong(BaseDataType.C_long, mem, 0);
+    }
 
     /**
      * <b>POSIX.XSI:</b>
@@ -1653,14 +1660,14 @@ public class Time {
      * @return the native value of timezone.
      */
     public final static long timezone() {
-        return timezone.get(ValueLayout.JAVA_LONG, 0);
+        return timezone.getAsSignedLong();
     }
 
     private final static int TZNAME_ENTRIES = 2;
     private final static MemorySegment tzname = LibcLoader.find("tzname", BaseDataType.C_char_pointer.SIZE_OF * 2).get();
 
     /**
-     * <b>POSIX:</b>
+     * <b>POSIX.CX:</b>
      * <a href="https://pubs.opengroup.org/onlinepubs/9699919799/functions/tzname.html">daylight,
      * timezone, tzname, tzset - set timezone conversion information</a>.
      *
@@ -1676,7 +1683,7 @@ public class Time {
     }
 
     /**
-     * <b>POSIX:</b>
+     * <b>POSIX.CX:</b>
      * <a href="https://pubs.opengroup.org/onlinepubs/9699919799/functions/tzset.html">daylight,
      * timezone, tzname, tzset - set timezone conversion information</a>.
      *

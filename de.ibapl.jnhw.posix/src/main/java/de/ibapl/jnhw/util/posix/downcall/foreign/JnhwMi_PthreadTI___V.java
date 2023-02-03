@@ -22,7 +22,6 @@
 package de.ibapl.jnhw.util.posix.downcall.foreign;
 
 import de.ibapl.jnhw.common.downcall.foreign.JnhwMi__I___V;
-import de.ibapl.jnhw.common.util.ConversionsNative2Java;
 import de.ibapl.jnhw.posix.Pthread;
 import de.ibapl.jnhw.util.posix.downcall.JnhwMh_PthreadT___V;
 import java.lang.foreign.MemorySegment;
@@ -40,6 +39,6 @@ public class JnhwMi_PthreadTI___V extends JnhwMi__I___V implements JnhwMh_Pthrea
 
     @Override
     public Pthread.Pthread_t invoke_PthreadT___V(SegmentScope ms) {
-        return Pthread.Pthread_t.wrap(ConversionsNative2Java.uint32_t_TO_long(invoke_uI___V()), ms);
+        return Pthread.Pthread_t.wrapUint32_t(invoke_uI___V(), ms);
     }
 }

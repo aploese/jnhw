@@ -39,7 +39,7 @@ public class JnhwMi_PthreadTL___V extends JnhwMi__L___V implements JnhwMh_Pthrea
 
     @Override
     public Pthread.Pthread_t invoke_PthreadT___V(SegmentScope ms) {
-        return Pthread.Pthread_t.wrap(invoke_uL___V(), ms);
+        return Pthread.Pthread_t.wrapUint64_t(invoke_uL___V(), ms);
     }
 
 }
