@@ -28,6 +28,7 @@ import de.ibapl.jnhw.common.datatypes.BaseDataType;
 import de.ibapl.jnhw.common.memory.NativeFunctionPointer;
 import de.ibapl.jnhw.common.memory.OpaqueMemory;
 import de.ibapl.jnhw.common.memory.OpaquePointer;
+import de.ibapl.jnhw.common.memory.layout.Alignment;
 import de.ibapl.jnhw.util.winapi.WinApiDataType;
 import de.ibapl.jnhw.util.winapi.memory.WinApiStruct;
 import java.lang.foreign.MemorySegment;
@@ -54,7 +55,7 @@ public final class Winnt {
         public final int length;
 
         public static ArrayOfHandle allocateNative(int length, SegmentScope ms) {
-            return new ArrayOfHandle(MemorySegment.allocateNative(length * WinApiDataType.HANDLE.SIZE_OF, ms), length);
+            return new ArrayOfHandle(MemorySegment.allocateNative(length * WinApiDataType.HANDLE.SIZE_OF, WinApiDataType.HANDLE.ALIGN_OF.alignof, ms), length);
         }
 
         public ArrayOfHandle(MemorySegment memorySegment, int length) {
@@ -198,7 +199,7 @@ public final class Winnt {
         private final static int SIZE_OF_WCHAR = WinApiDataType.WCHAR.SIZE_OF;
 
         public static LPWSTR allocateNative(int stringLength, SegmentScope ms) {
-            return new LPWSTR(MemorySegment.allocateNative(stringLength * SIZE_OF_WCHAR, ms), 0, stringLength);
+            return new LPWSTR(MemorySegment.allocateNative(stringLength * SIZE_OF_WCHAR, 2, ms), 0, stringLength);
         }
 
         static int getWCHAR_Length(LPWSTR value) {
@@ -292,11 +293,11 @@ public final class Winnt {
     public static class PHANDLE extends OpaqueMemory {
 
         public static PHANDLE allocateNative(SegmentScope ms) {
-            return new PHANDLE(MemorySegment.allocateNative(SIZE_OF, ms), 0);
+            return new PHANDLE(MemorySegment.allocateNative(SIZE_OF, ALIGN_OF.alignof, ms), 0);
         }
 
         public static PHANDLE allocateNative(HANDLE value, SegmentScope ms) {
-            return new PHANDLE(MemorySegment.allocateNative(SIZE_OF, ms), 0, value);
+            return new PHANDLE(MemorySegment.allocateNative(SIZE_OF, ALIGN_OF.alignof, ms), 0, value);
         }
 
         @FunctionalInterface
@@ -307,6 +308,7 @@ public final class Winnt {
         }
 
         protected final static int SIZE_OF = WinApiDataType.PHANDLE.SIZE_OF;
+        protected final static Alignment ALIGN_OF = WinApiDataType.PHANDLE.ALIGN_OF;
 
         HANDLE cachedHandle;
 

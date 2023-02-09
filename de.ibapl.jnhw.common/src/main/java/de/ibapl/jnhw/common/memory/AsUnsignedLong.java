@@ -33,7 +33,7 @@ import java.lang.foreign.SegmentScope;
 public class AsUnsignedLong extends NativeIntNumber {
 
     public static AsUnsignedLong allocateNative(BaseDataType nativeType, SegmentScope ms) {
-        return new AsUnsignedLong(nativeType, MemorySegment.allocateNative(nativeType.SIZE_OF, ms), 0);
+        return new AsUnsignedLong(nativeType, MemorySegment.allocateNative(nativeType.SIZE_OF, nativeType.ALIGN_OF.alignof, ms), 0);
     }
 
     private final BaseDataType dataType;

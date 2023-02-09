@@ -32,6 +32,10 @@ import java.lang.foreign.SegmentScope;
  */
 public class MemoryHeap extends OpaqueMemory {
 
+    public static MemoryHeap allocateNative(long bytesSize, Alignment alignment, SegmentScope ms) {
+        return new MemoryHeap(MemorySegment.allocateNative(bytesSize, alignment.alignof, ms), 0, bytesSize);
+    }
+
     public static MemoryHeap allocateNative(long bytesSize, SegmentScope ms) {
         return new MemoryHeap(MemorySegment.allocateNative(bytesSize, ms), 0, bytesSize);
     }

@@ -371,7 +371,7 @@ public class UnistdTest {
         }
 
         public final static TestPipeFiledes_1 allocateNative(SegmentScope ms) {
-            return new TestPipeFiledes_1(MemorySegment.allocateNative(Int32_t.DATA_TYPE.SIZE_OF * ARRAY_LENGTH, ms), 0);
+            return new TestPipeFiledes_1(MemorySegment.allocateNative(Int32_t.DATA_TYPE.SIZE_OF * ARRAY_LENGTH, Int32_t.DATA_TYPE.ALIGN_OF.alignof, ms), 0);
         }
 
         public TestPipeFiledes_1(MemorySegment memorySegment, long offset) {

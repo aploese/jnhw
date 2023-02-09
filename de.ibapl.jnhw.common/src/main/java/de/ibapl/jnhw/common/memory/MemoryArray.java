@@ -22,19 +22,21 @@
 package de.ibapl.jnhw.common.memory;
 
 import de.ibapl.jnhw.common.datatypes.BaseDataType;
+import de.ibapl.jnhw.common.memory.layout.Alignment;
 import java.io.IOException;
+import java.lang.foreign.MemorySegment;
+import java.lang.foreign.SegmentScope;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.Spliterator;
 import java.util.function.Consumer;
-import java.lang.foreign.MemorySegment;
 
 /**
  *
  * @author aploese
  * @param <T>
  */
-public abstract class MemoryArray<T extends OpaqueMemory> extends OpaqueMemory implements Iterable<T> {
+public class MemoryArray<T extends OpaqueMemory> extends OpaqueMemory implements Iterable<T> {
 
     @FunctionalInterface
     protected interface ElementFactory<T extends OpaqueMemory> {
@@ -51,6 +53,17 @@ public abstract class MemoryArray<T extends OpaqueMemory> extends OpaqueMemory i
 
     }
 
+    public static <T extends OpaqueMemory> MemoryArray<T> allocateNative(SegmentScope ms, T[] array, ElementFactory<T> factory, Alignment alignment, long elementSizeInBytes) {
+        return new MemoryArray<>(MemorySegment.allocateNative(array.length * elementSizeInBytes, alignment.alignof, ms), 0, array, factory, elementSizeInBytes);
+    }
+
+    public static <T extends OpaqueMemory> MemoryArray<T> map(OpaqueMemory mem, long offset, T[] array, ElementFactory<T> factory, Alignment alignment, long elementSizeInBytes) {
+        if (0 != mem.memorySegment.address() % alignment.alignof) {
+            throw new IllegalArgumentException("alignment mismatch must be aligned at " + alignment.alignof);
+        }
+        return new MemoryArray<>(mem.memorySegment, offset, array, factory, elementSizeInBytes);
+    }
+
     private final T[] elements;
 
     protected MemoryArray(MemorySegment memorySegment, long offset, T[] array, ElementFactory<T> factory, long elementSizeInBytes) {
@@ -58,6 +71,10 @@ public abstract class MemoryArray<T extends OpaqueMemory> extends OpaqueMemory i
         elements = array;
         for (int i = 0; i < array.length; i++) {
             elements[i] = factory.create(memorySegment, elementSizeInBytes * i + offset, i);
+            //TODO check alignment??
+            if (elements[i].memorySegment.byteSize() != elementSizeInBytes) {
+                throw new IllegalArgumentException("Size of element[" + i + "] " + elements[i].memorySegment.byteSize() + " != " + elementSizeInBytes);
+            }
         }
     }
 

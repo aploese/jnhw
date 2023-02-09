@@ -37,7 +37,7 @@ public class Uint64_t extends NativeIntNumber {
     public final static BaseDataType DATA_TYPE = BaseDataType.uint64_t;
 
     public static Uint64_t allocateNative(SegmentScope ms) {
-        return new Uint64_t(MemorySegment.allocateNative(DATA_TYPE.SIZE_OF, ms), 0);
+        return new Uint64_t(MemorySegment.allocateNative(DATA_TYPE.SIZE_OF, DATA_TYPE.ALIGN_OF.alignof, ms), 0);
     }
 
     public Uint64_t(MemorySegment memorySegment, long offset) {

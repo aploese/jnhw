@@ -11,6 +11,7 @@
     <artifactId>de.ibapl.jnhw.common</artifactId>
 
     <name>JNHW :: Common</name>
+    <description>Provider which accesses the native resources with a Java Native Header Wrapper (JNHW) binding.</description>
 
     <dependencies>
 
@@ -37,6 +38,15 @@
     </dependencies>
 
     <build>
+        <testResources>
+            <testResource>
+                <directory>${basedir}/src/test/resources</directory>
+            </testResource>
+            <testResource>
+                <directory>${basedir}/src/main/native/lib</directory>
+                <targetPath>./lib/</targetPath>
+            </testResource>
+        </testResources>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -65,9 +75,26 @@
                     <argLine>${commandLineArg.ChooseVM} ${commandLineArg.NativeProvider} --enable-preview --enable-native-access=ALL-UNNAMED</argLine>
                 </configuration>
             </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-assembly-plugin</artifactId>
+                <version>3.4.2</version>
+                <executions>
+                    <execution>
+                        <id>assembly-native-libs</id> <!-- this is used for inheritance merges -->
+                        <phase>package</phase> <!-- append to the packaging phase. -->
+                        <goals>
+                            <goal>single</goal> <!-- goals == mojos -->
+                        </goals>
+                        <configuration>
+                            <descriptors>
+                                <descriptor>src/main/assembly/native-libs.xml</descriptor>
+                            </descriptors>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
         </plugins>
     </build>
-
-    <description>Provider which accesses the native resources with a Java Native Header Wrapper (JNHW) binding.</description>
 
 </project>

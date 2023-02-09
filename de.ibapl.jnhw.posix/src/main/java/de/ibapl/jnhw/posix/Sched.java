@@ -119,7 +119,7 @@ public class Sched {
         }
 
         public final static Sched_param allocateNative(SegmentScope ms) {
-            return new Sched_param(MemorySegment.allocateNative(sizeof, ms), 0);
+            return new Sched_param(MemorySegment.allocateNative(sizeof, alignof.alignof, ms), 0);
         }
 
         /**

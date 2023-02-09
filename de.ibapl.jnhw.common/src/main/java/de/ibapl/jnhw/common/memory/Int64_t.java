@@ -37,7 +37,7 @@ public class Int64_t extends NativeIntNumber<Long> {
     public final static BaseDataType DATA_TYPE = BaseDataType.int64_t;
 
     public static Int64_t allocateNative(SegmentScope ms) {
-        return new Int64_t(MemorySegment.allocateNative(DATA_TYPE.SIZE_OF, ms), 0);
+        return new Int64_t(MemorySegment.allocateNative(DATA_TYPE.SIZE_OF, DATA_TYPE.ALIGN_OF.alignof, ms), 0);
     }
 
     public static Int64_t map(OpaqueMemory mem, long offset) {

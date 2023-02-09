@@ -13997,7 +13997,7 @@ esac
 
 
 
-JNHW_RESOURCES_DIR="\$(top_builddir)/src/main/resources/lib/\$(JNHW_MULTIARCH_TUPEL)"
+JNHW_RESOURCES_DIR="./lib/\$(JNHW_MULTIARCH_TUPEL)"
 
 
 JNHW_TEST_RESOURCES_DIR="\$(top_builddir)/src/test/resources/lib/\$(JNHW_MULTIARCH_TUPEL)"

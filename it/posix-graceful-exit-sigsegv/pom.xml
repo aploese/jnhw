@@ -14,6 +14,18 @@
     <name>JNHW-Example: POSIX graceful exit SIGSEGV</name>
 
     <dependencies>
+        <!-- de.ibapl.jnhw.common are two jars one with the java classes and the other the one with the native libs-->
+        <dependency>
+            <groupId>de.ibapl.jnhw</groupId>
+            <artifactId>de.ibapl.jnhw.common</artifactId>
+            <version>4.0.0-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>de.ibapl.jnhw</groupId>
+            <artifactId>de.ibapl.jnhw.common</artifactId>
+            <version>4.0.0-SNAPSHOT</version>
+            <classifier>native</classifier>
+        </dependency>
         <dependency>
             <groupId>de.ibapl.jnhw</groupId>
             <artifactId>de.ibapl.jnhw.posix</artifactId>

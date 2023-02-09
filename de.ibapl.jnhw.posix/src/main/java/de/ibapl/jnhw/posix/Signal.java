@@ -488,7 +488,7 @@ public class Signal {
             if (alignof == null) {
                 throw new NoSuchNativeTypeException("Mcontext_t");
             }
-            return new Mcontext_t(MemorySegment.allocateNative(sizeof, ms), 0);
+            return new Mcontext_t(MemorySegment.allocateNative(sizeof, alignof.alignof, ms), 0);
         }
 
         public static Mcontext_t tryOfAddress(long baseAddress, SegmentScope ms) throws NoSuchNativeTypeException {
@@ -624,7 +624,7 @@ public class Signal {
         }
 
         public final static Sigaction allocateNative(SegmentScope ms) {
-            return new Sigaction(MemorySegment.allocateNative(sizeof, ms), 0);
+            return new Sigaction(MemorySegment.allocateNative(sizeof, alignof.alignof, ms), 0);
         }
 
         private NativeFunctionPointer cachedHandlerOrAction;
@@ -864,7 +864,7 @@ public class Signal {
             if (alignof == null) {
                 throw new NoSuchNativeTypeException("Sigevent");
             }
-            return new Sigevent(MemorySegment.allocateNative(sizeof, ms), 0);
+            return new Sigevent(MemorySegment.allocateNative(sizeof, alignof.alignof, ms), 0);
         }
 
         public static <T extends Pointer> Sigevent<T> tryOfAddress(long baseAddress, SegmentScope ms) throws NoSuchNativeTypeException {
@@ -1108,7 +1108,7 @@ public class Signal {
         public final Sigval<?> si_value;
 
         public static Siginfo_t allocateNative(SegmentScope ms) {
-            return new Siginfo_t(MemorySegment.allocateNative(sizeof, ms), 0);
+            return new Siginfo_t(MemorySegment.allocateNative(sizeof, alignof.alignof, ms), 0);
         }
 
         public static Siginfo_t ofAddress(long address, SegmentScope ms) {
@@ -1269,7 +1269,7 @@ public class Signal {
         }
 
         public final static Sigset_t allocateNative(SegmentScope ms) {
-            return new Sigset_t(MemorySegment.allocateNative(sizeof, ms), 0);
+            return new Sigset_t(MemorySegment.allocateNative(sizeof, alignof.alignof, ms), 0);
         }
 
         public Sigset_t(MemorySegment memorySegment, long offset) {
@@ -1472,7 +1472,7 @@ public class Signal {
         }
 
         public static <T extends Pointer> Sigval<T> allocateNative(SegmentScope ms) {
-            return new Sigval<>(MemorySegment.allocateNative(sizeof, ms), 0);
+            return new Sigval<>(MemorySegment.allocateNative(sizeof, alignof.alignof, ms), 0);
         }
 
         public static <T extends Pointer> Sigval<T> ofAddress(long baseAddress, SegmentScope ms) {
@@ -1617,7 +1617,7 @@ public class Signal {
         }
 
         public final static <T extends OpaqueMemory> Stack_t<T> allocateNative(SegmentScope ms) {
-            return new Stack_t(MemorySegment.allocateNative(sizeof, ms), 0);
+            return new Stack_t(MemorySegment.allocateNative(sizeof, alignof.alignof, ms), 0);
         }
 
         /**
@@ -1862,7 +1862,7 @@ public class Signal {
             if (Ucontext_t.alignof == null) {
                 throw new NoSuchNativeTypeException("Ucontext_t");
             }
-            return new Ucontext_t(MemorySegment.allocateNative(sizeof, ms), 0);
+            return new Ucontext_t(MemorySegment.allocateNative(sizeof, alignof.alignof, ms), 0);
         }
 
         public static Ucontext_t tryOfAddress(long baseAddress, SegmentScope ms) throws NoSuchNativeTypeException {

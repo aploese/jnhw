@@ -62,7 +62,7 @@ public class Minwinbase {
     public final static class LPOVERLAPPED extends WinApiStruct {
 
         public static LPOVERLAPPED allocateNative(SegmentScope ms) {
-            return new LPOVERLAPPED(MemorySegment.allocateNative(Layout.sizeof, ms), 0);
+            return new LPOVERLAPPED(MemorySegment.allocateNative(Layout.sizeof, Layout.alignment.alignof, ms), 0);
         }
 
         public static class Layout extends StructLayout {

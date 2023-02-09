@@ -88,7 +88,7 @@ public abstract class Winbase {
         }
 
         public static COMMTIMEOUTS allocateNative(SegmentScope ms) {
-            return new COMMTIMEOUTS(MemorySegment.allocateNative(Layout.sizeof, ms), 0);
+            return new COMMTIMEOUTS(MemorySegment.allocateNative(Layout.sizeof, Layout.alignment.alignof, ms), 0);
         }
 
         public COMMTIMEOUTS(MemorySegment memorySegment, long offset) {
@@ -226,7 +226,7 @@ public abstract class Winbase {
         }
 
         public static COMSTAT allocateNative(SegmentScope ms) {
-            return new COMSTAT(MemorySegment.allocateNative(Layout.sizeof, ms), 0);
+            return new COMSTAT(MemorySegment.allocateNative(Layout.sizeof, Layout.alignment.alignof, ms), 0);
         }
 
         public COMSTAT(MemorySegment memorySegment, long offset) {
@@ -390,7 +390,7 @@ public abstract class Winbase {
         }
 
         public static DCB allocateNative(SegmentScope ms) {
-            return new DCB(MemorySegment.allocateNative(Layout.sizeof, ms), 0);
+            return new DCB(MemorySegment.allocateNative(Layout.sizeof, Layout.alignment.alignof, ms), 0);
         }
 
         public DCB(MemorySegment memorySegment, long offset) {

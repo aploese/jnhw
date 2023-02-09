@@ -259,7 +259,7 @@ public final class Poll {
     public static class Nfds_t extends AsUnsignedLong {
 
         public final static Nfds_t allocateNative(SegmentScope ms) {
-            return new Nfds_t(MemorySegment.allocateNative(PosixDataType.nfds_t.SIZE_OF, ms), 0);
+            return new Nfds_t(MemorySegment.allocateNative(PosixDataType.nfds_t.SIZE_OF, PosixDataType.nfds_t.ALIGN_OF.alignof, ms), 0);
         }
 
         public Nfds_t(MemorySegment memorySegment, int offset) {
@@ -280,7 +280,7 @@ public final class Poll {
         }
 
         public final static PollFds allocateNative(SegmentScope ms, int arraylength) {
-            return new PollFds(MemorySegment.allocateNative(PollFd.sizeof * arraylength, ms), 0, arraylength);
+            return new PollFds(MemorySegment.allocateNative(PollFd.sizeof * arraylength, PollFd.alignof.alignof, ms), 0, arraylength);
         }
 
         public final static PollFds wrap(OpaqueMemory mem, long offset, int arraylength) {

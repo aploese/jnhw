@@ -196,7 +196,7 @@ public class JnhwStringBuilderTest {
     public static class MemoryArrayTest extends MemoryArray<MemoryArrayTestElement> {
 
         public MemoryArrayTest(MemorySegment memorySegment, long offset) {
-            super(memorySegment, offset, new MemoryArrayTestElement[3], MemoryArrayTest::createAtOffset, 3);
+            super(memorySegment, offset, new MemoryArrayTestElement[3], MemoryArrayTest::createAtOffset, 2);
         }
 
         private static MemoryArrayTestElement createAtOffset(MemorySegment memorySegment, long elementOffset, int index) {

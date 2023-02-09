@@ -35,7 +35,7 @@ public class PtrChar extends OpaqueMemory {
     public final static BaseDataType DATA_TYPE = BaseDataType.C_char_pointer;
 
     public static PtrChar allocateNative(SegmentScope ms) {
-        return new PtrChar(MemorySegment.allocateNative(DATA_TYPE.SIZE_OF, ms), 0);
+        return new PtrChar(MemorySegment.allocateNative(DATA_TYPE.SIZE_OF, DATA_TYPE.ALIGN_OF.alignof, ms), 0);
     }
 
     public PtrChar(MemorySegment memorySegment, long offset) {

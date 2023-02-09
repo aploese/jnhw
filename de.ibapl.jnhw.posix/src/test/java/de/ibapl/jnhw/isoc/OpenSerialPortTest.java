@@ -21,6 +21,8 @@
  */
 package de.ibapl.jnhw.isoc;
 
+import de.ibapl.jnhw.libloader.MultiarchTupelBuilder;
+import de.ibapl.jnhw.libloader.OS;
 import de.ibapl.jnhw.posix.JnhwTestLogger;
 import de.ibapl.jnhw.util.posix.DefinesTest;
 import org.junit.jupiter.api.AfterAll;

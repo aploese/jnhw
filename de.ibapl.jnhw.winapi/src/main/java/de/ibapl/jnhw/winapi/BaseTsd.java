@@ -80,7 +80,7 @@ public abstract class BaseTsd {
         public final static BaseDataType DATA_TYPE = WinApiDataType.ULONG_PTR;
 
         public static PULONG_PTR allocateNative(SegmentScope ms) {
-            final MemorySegment segment = MemorySegment.allocateNative(DATA_TYPE.SIZE_OF, ms);
+            final MemorySegment segment = MemorySegment.allocateNative(DATA_TYPE.SIZE_OF, DATA_TYPE.ALIGN_OF.alignof, ms);
             switch (DATA_TYPE) {
                 case uint32_t -> {
                     return new PULONG_PTR32(segment, 0);

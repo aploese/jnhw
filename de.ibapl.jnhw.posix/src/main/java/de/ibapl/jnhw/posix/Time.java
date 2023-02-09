@@ -159,7 +159,7 @@ public class Time {
             if (alignof == null) {
                 throw new NoSuchNativeTypeException("Itimerspec");
             }
-            return new Itimerspec(MemorySegment.allocateNative(sizeof, ms), 0);
+            return new Itimerspec(MemorySegment.allocateNative(sizeof, alignof.alignof, ms), 0);
         }
         /**
          * Timer period. After the timer expires after it_value, it will fire
@@ -259,7 +259,7 @@ public class Time {
             if (alignof == null) {
                 throw new NoSuchNativeTypeException("Timer_t");
             }
-            return new Timer_t(MemorySegment.allocateNative(sizeof, ms), 0);
+            return new Timer_t(MemorySegment.allocateNative(sizeof, alignof.alignof, ms), 0);
         }
 
         public static Timer_t ofAddress(long address, SegmentScope ms) throws NoSuchNativeTypeException {
@@ -308,7 +308,7 @@ public class Time {
             if (Timer_t.alignof == null) {
                 throw new NoSuchNativeTypeException("Timer_t");
             }
-            return new PtrTimer_t(MemorySegment.allocateNative(DATA_TYPE.SIZE_OF, ms), 0);
+            return new PtrTimer_t(MemorySegment.allocateNative(DATA_TYPE.SIZE_OF, DATA_TYPE.ALIGN_OF.alignof, ms), 0);
         }
 
         public PtrTimer_t(MemorySegment memorySegment, long offset) {
@@ -358,11 +358,11 @@ public class Time {
         }
 
         public final static Timespec allocateNative(SegmentScope ms) {
-            return new Timespec(MemorySegment.allocateNative(Timespec.sizeof, ms), 0);
+            return new Timespec(MemorySegment.allocateNative(sizeof, alignof.alignof, ms), 0);
         }
 
         public final static Timespec wrap(OpaqueMemory mem, long offset) {
-            return new Timespec(OpaqueMemory.sliceMemorySegment(mem, offset, Timespec.sizeof), 0);
+            return new Timespec(OpaqueMemory.sliceMemorySegment(mem, offset, sizeof), 0);
         }
 
         public Timespec(MemorySegment memorySegment, long offset) {
@@ -498,7 +498,7 @@ public class Time {
         }
 
         public final static Tm allocateNative(SegmentScope ms) {
-            return new Tm(MemorySegment.allocateNative(sizeof, ms), 0);
+            return new Tm(MemorySegment.allocateNative(sizeof, alignof.alignof, ms), 0);
         }
 
         public Tm(MemorySegment memorySegment, long offset) {

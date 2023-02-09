@@ -35,7 +35,7 @@ public class AsSignedInt extends NativeIntNumber {
     private final BaseDataType dataType;
 
     public static AsSignedInt allocateNative(BaseDataType nativeType, SegmentScope ms) {
-        return new AsSignedInt(nativeType, MemorySegment.allocateNative(nativeType.SIZE_OF, ms), 0);
+        return new AsSignedInt(nativeType, MemorySegment.allocateNative(nativeType.SIZE_OF, nativeType.ALIGN_OF.alignof, ms), 0);
     }
 
     public AsSignedInt(BaseDataType nativeType, MemorySegment memorySegment, long offset) {

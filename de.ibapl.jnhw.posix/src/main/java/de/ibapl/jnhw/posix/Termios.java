@@ -676,7 +676,7 @@ public final class Termios {
         }
 
         public final static StructTermios allocateNative(SegmentScope ms) {
-            return new StructTermios(MemorySegment.allocateNative(sizeof, ms), 0);
+            return new StructTermios(MemorySegment.allocateNative(sizeof, alignof.alignof, ms), 0);
         }
 
         public StructTermios(MemorySegment memorySegment, long offset) {

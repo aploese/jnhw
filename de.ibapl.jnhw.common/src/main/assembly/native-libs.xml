@@ -1,0 +1,18 @@
+<assembly>
+  <id>native</id>
+  <formats>
+    <format>jar</format>
+  </formats>
+  <includeBaseDirectory>false</includeBaseDirectory>
+  <fileSets>
+    <fileSet>
+      <directory>${project.basedir}/src/main/native/lib</directory>
+      <outputDirectory>/lib</outputDirectory>
+      <includes>
+        <include>**/*.dll</include>
+        <include>**/*.so*</include>
+        <include>**/*.dylib</include>
+      </includes>
+    </fileSet>
+  </fileSets>
+</assembly>

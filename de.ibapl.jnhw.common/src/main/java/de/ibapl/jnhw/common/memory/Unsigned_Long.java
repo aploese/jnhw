@@ -36,7 +36,7 @@ public class Unsigned_Long extends NativeIntNumber {
     public final static BaseDataType DATA_TYPE = BaseDataType.C_unsigned_long;
 
     public static Unsigned_Long allocateNative(SegmentScope ms) {
-        return new Unsigned_Long(MemorySegment.allocateNative(DATA_TYPE.SIZE_OF, ms), 0);
+        return new Unsigned_Long(MemorySegment.allocateNative(DATA_TYPE.SIZE_OF, DATA_TYPE.ALIGN_OF.alignof, ms), 0);
     }
 
     public Unsigned_Long(MemorySegment memorySegment, long offset) {

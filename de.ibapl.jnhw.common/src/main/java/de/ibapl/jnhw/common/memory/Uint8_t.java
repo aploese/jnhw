@@ -36,7 +36,7 @@ public class Uint8_t extends NativeIntNumber {
     public final static BaseDataType DATA_TYPE = BaseDataType.uint8_t;
 
     public static Uint8_t allocateNative(SegmentScope ms) {
-        return new Uint8_t(MemorySegment.allocateNative(DATA_TYPE.SIZE_OF, ms), 0);
+        return new Uint8_t(MemorySegment.allocateNative(DATA_TYPE.SIZE_OF, DATA_TYPE.ALIGN_OF.alignof, ms), 0);
     }
 
     public Uint8_t(MemorySegment memorySegment, long offset) {

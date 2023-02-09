@@ -37,7 +37,7 @@ public class Int32_t extends NativeIntNumber<Integer> {
     public final static BaseDataType DATA_TYPE = BaseDataType.int32_t;
 
     public static Int32_t allocateNative(SegmentScope ms) {
-        return new Int32_t(MemorySegment.allocateNative(DATA_TYPE.SIZE_OF, ms), 0);
+        return new Int32_t(MemorySegment.allocateNative(DATA_TYPE.SIZE_OF, DATA_TYPE.ALIGN_OF.alignof, ms), 0);
     }
 
     public static Int32_t map(OpaqueMemory mem, long offset) {

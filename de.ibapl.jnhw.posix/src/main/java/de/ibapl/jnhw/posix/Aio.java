@@ -164,7 +164,7 @@ public class Aio {
             if (alignof == null) {
                 throw new NoSuchNativeTypeException("aiocb");
             }
-            return new Aiocb(MemorySegment.allocateNative(sizeof, ms), 0);
+            return new Aiocb(MemorySegment.allocateNative(sizeof, alignof.alignof, ms), 0);
         }
 
         /**
@@ -527,7 +527,7 @@ public class Aio {
             if (Aiocb.alignof == null) {
                 throw new NoSuchNativeTypeException("aiocb");
             }
-            return new Aiocbs(MemorySegment.allocateNative(BaseDataType.uintptr_t.SIZE_OF * arraylength, ms), 0, arraylength);
+            return new Aiocbs(MemorySegment.allocateNative(BaseDataType.uintptr_t.SIZE_OF * arraylength, BaseDataType.uintptr_t.ALIGN_OF.alignof, ms), 0, arraylength);
         }
 
         public Aiocbs(MemorySegment memorySegment, long offset, int arrayLength) throws NoSuchNativeTypeException {

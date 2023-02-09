@@ -53,7 +53,7 @@ public final class Eventfd {
     public final static class PtrEventfd_t extends Uint64_t {
 
         public static PtrEventfd_t allocateNative(SegmentScope ms) {
-            return new PtrEventfd_t(MemorySegment.allocateNative(DATA_TYPE.SIZE_OF, ms), 0);
+            return new PtrEventfd_t(MemorySegment.allocateNative(DATA_TYPE.SIZE_OF, DATA_TYPE.ALIGN_OF.alignof, ms), 0);
         }
 
         public PtrEventfd_t(MemorySegment memorySegment, long offset) {

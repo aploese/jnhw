@@ -37,7 +37,7 @@ public class Int16_t extends NativeIntNumber<Short> {
     public final static BaseDataType DATA_TYPE = BaseDataType.int16_t;
 
     public static Int16_t allocateNative(SegmentScope ms) {
-        return new Int16_t(MemorySegment.allocateNative(DATA_TYPE.SIZE_OF, ms), 0);
+        return new Int16_t(MemorySegment.allocateNative(DATA_TYPE.SIZE_OF, DATA_TYPE.ALIGN_OF.alignof, ms), 0);
     }
 
     public static Int16_t map(OpaqueMemory mem, long offset) {

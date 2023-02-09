@@ -39,7 +39,7 @@ public class UintPtr_t<D extends Pointer> extends OpaqueMemory {
     public final static BaseDataType DATA_TYPE = BaseDataType.uintptr_t;
 
     public static <T extends Pointer> UintPtr_t<T> allocateNative(SegmentScope ms) {
-        return new UintPtr_t<>(MemorySegment.allocateNative(DATA_TYPE.SIZE_OF, ms), 0);
+        return new UintPtr_t<>(MemorySegment.allocateNative(DATA_TYPE.SIZE_OF, DATA_TYPE.ALIGN_OF.alignof, ms), 0);
     }
 
     public static <T extends Pointer> UintPtr_t<T> ofAddress(MemorySegment baseAddress, SegmentScope ms) {

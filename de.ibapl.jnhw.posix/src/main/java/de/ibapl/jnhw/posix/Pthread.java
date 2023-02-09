@@ -622,7 +622,7 @@ public class Pthread {
         };
 
         public final static Pthread_attr_t allocateNative(SegmentScope ms) {
-            return new Pthread_attr_t(MemorySegment.allocateNative(sizeof, ms), 0);
+            return new Pthread_attr_t(MemorySegment.allocateNative(sizeof, alignof.alignof, ms), 0);
         }
 
         public final static Pthread_attr_t ofAddress(long address, SegmentScope ms) {
@@ -651,7 +651,7 @@ public class Pthread {
         public final static int sizeof = PosixDataType.pthread_t.SIZE_OF;
 
         public final static Pthread_t allocateNative(SegmentScope ms) {
-            return new Pthread_t(MemorySegment.allocateNative(sizeof, ms), 0);
+            return new Pthread_t(MemorySegment.allocateNative(sizeof, alignof.alignof, ms), 0);
         }
 
         public final static Pthread_t ofAddress(long address, SegmentScope ms) {

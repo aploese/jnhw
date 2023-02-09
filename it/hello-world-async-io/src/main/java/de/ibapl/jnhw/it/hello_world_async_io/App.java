@@ -36,7 +36,7 @@ public class App {
     public static void main(String[] args) throws Exception {
         try (Arena ms = Arena.openConfined()) {
             String STRING_TO_WRITE = "\n\t\tHello World! - AIO from POSIX\n\n";
-            final MemorySegment aioBuffer = MemorySegment.allocateNative(STRING_TO_WRITE.length() + 1, ms.scope());
+            final MemorySegment aioBuffer = MemorySegment.allocateNative(STRING_TO_WRITE.length() + 1, 1, ms.scope());
             aioBuffer.setUtf8String(0, STRING_TO_WRITE);
             final File file = File.createTempFile("JNHW-Win-aio", "txt");
 
