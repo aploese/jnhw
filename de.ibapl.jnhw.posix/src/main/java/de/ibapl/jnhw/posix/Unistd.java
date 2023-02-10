@@ -28,7 +28,6 @@ import de.ibapl.jnhw.annotation.posix.sys.types.pid_t;
 import de.ibapl.jnhw.annotation.posix.sys.types.size_t;
 import de.ibapl.jnhw.annotation.posix.sys.types.ssize_t;
 import de.ibapl.jnhw.annotation.posix.sys.types.uid_t;
-import de.ibapl.jnhw.annotation.posix.sys.types.useconds_t;
 import de.ibapl.jnhw.common.annotation.Define;
 import de.ibapl.jnhw.common.annotation.Include;
 import de.ibapl.jnhw.common.datatypes.BaseDataType;
@@ -925,25 +924,6 @@ public final class Unistd {
         } else {
             return result;
         }
-    }
-
-    /**
-     * <b>LINUX,APPLE,BSD:</b>
-     * <a href="https://pubs.opengroup.org/onlinepubs/9699919799/functions/usleep.html">usleep
-     * - suspend execution for an interval</a>.
-     *
-     * POSIX.1-2001 declares this function obsolete; use nanosleep instead.
-     * POSIX.1-2008 removes the specification of usleep().
-     *
-     * @param usleep the micro seconds to sleep.
-     * @throws NativeErrorException if the return value of the native function
-     * indicates an error.
-     *
-     */
-    //TODO move to Linux?
-    @Deprecated
-    public final static void usleep(@useconds_t int usleep) throws NativeErrorException {
-        throw new AssertionError("Not Implemented anymore!");
     }
 
     /**

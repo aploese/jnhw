@@ -3615,8 +3615,6 @@ public class Signal {
      * is -1 an errno is other than EINTR.
      */
     public final static void sigsuspend(Sigset_t sigmask) throws NativeErrorException {
-        //TODO if not set to 0 it will not have EINTR!?.
-        Errno.errno(0);
         if (sigsuspend.invoke_sI___P(sigmask) == -1) {
             final int errno = Errno.errno();
             if (errno != Errno.EINTR) {

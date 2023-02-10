@@ -270,8 +270,6 @@ public class PthreadTest {
                 Pthread.pthread_setschedparam(Pthread.pthread_self(ms.scope()), policy.int32_t(), param);
             default -> {
                 NativeErrorException nee = Assertions.assertThrows(NativeErrorException.class, () -> {
-                    //TODO we must set this here oterwise error will not be EINVAL but ENOENT
-                    Errno.errno(0);
                     Pthread.pthread_setschedparam(Pthread.pthread_self(ms.scope()), policy.int32_t(), param);
                 });
                 switch (MultiarchTupelBuilder.getOS()) {

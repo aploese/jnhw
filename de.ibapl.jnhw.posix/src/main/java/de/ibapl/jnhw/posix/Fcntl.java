@@ -1402,16 +1402,8 @@ public final class Fcntl {
      * @throws NoSuchNativeMethodException
      */
     public final static void posix_fallocate(int fildes, @off_t long offset, @off_t long len) throws NativeErrorException, NoSuchNativeMethodException {
-        try {
-            if (posix_fallocate.invoke_sI__sI_sL_sL(fildes, offset, len) == -1) {
-                throw new NativeErrorException(Errno.errno());
-            }
-        } catch (NullPointerException npe) {
-            if (posix_fallocate == null) {
-                throw new NoSuchNativeMethodException("posix_fallocate");
-            } else {
-                throw npe;
-            }
+        if (posix_fallocate.invoke_sI__sI_sL_sL(fildes, offset, len) == -1) {
+            throw new NativeErrorException(Errno.errno());
         }
     }
 

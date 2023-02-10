@@ -154,7 +154,6 @@ public class TimeTest {
         JnhwTestLogger.logBeforeEach(testInfo);
         assertEquals(CallbackFactory__V__UnionSigval.MAX_CALL_BACKS, CallbackFactory__V__UnionSigval.callbacksAvailable());
         ms = Arena.openConfined();
-        Errno.errno(0);
     }
 
     @AfterEach

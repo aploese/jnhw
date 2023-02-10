@@ -35,7 +35,6 @@ import de.ibapl.jnhw.util.posix.downcall.jni.JniMi__I__PthreadTI__I;
 import de.ibapl.jnhw.util.posix.downcall.jni.JniMi__I__PthreadTL__I;
 import java.lang.foreign.MemorySegment;
 import java.lang.foreign.SymbolLookup;
-import java.util.NoSuchElementException;
 
 /**
  *

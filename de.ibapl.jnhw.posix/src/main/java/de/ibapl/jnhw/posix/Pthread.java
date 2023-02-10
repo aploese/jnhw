@@ -290,8 +290,9 @@ public class Pthread {
      * @throws de.ibapl.jnhw.common.exception.NativeErrorException
      */
     public final static void pthread_attr_destroy(Pthread_attr_t attr) throws NativeErrorException {
-        if (pthread_attr_destroy.invoke_sI___P(attr) != 0) {
-            throw new NativeErrorException(Errno.errno());
+        final int result = pthread_attr_destroy.invoke_sI___P(attr);
+        if (result != 0) {
+            throw new NativeErrorException(result);
         }
     }
 
@@ -309,8 +310,9 @@ public class Pthread {
      * indicates an error.
      */
     public final static void pthread_attr_getinheritsched(Pthread_attr_t attr, Int32_t inheritsched) throws NativeErrorException {
-        if (pthread_attr_getinheritsched.invoke_sI___P__P(attr, inheritsched) != 0) {
-            throw new NativeErrorException(Errno.errno());
+        final int result = pthread_attr_getinheritsched.invoke_sI___P__P(attr, inheritsched);
+        if (result != 0) {
+            throw new NativeErrorException(result);
         }
     }
 
@@ -325,8 +327,9 @@ public class Pthread {
      * indicates an error.
      */
     public final static void pthread_attr_getschedparam(Pthread_attr_t attr, Sched.Sched_param param) throws NativeErrorException {
-        if (pthread_attr_getschedparam.invoke_sI___P__P(attr, param) != 0) {
-            throw new NativeErrorException(Errno.errno());
+        final int result = pthread_attr_getschedparam.invoke_sI___P__P(attr, param);
+        if (result != 0) {
+            throw new NativeErrorException(result);
         }
     }
 
@@ -340,8 +343,9 @@ public class Pthread {
      * @throws de.ibapl.jnhw.common.exception.NativeErrorException
      */
     public final static void pthread_attr_init(Pthread_attr_t attr) throws NativeErrorException {
-        if (pthread_attr_init.invoke_sI___P(attr) != 0) {
-            throw new NativeErrorException(Errno.errno());
+        final int result = pthread_attr_init.invoke_sI___P(attr);
+        if (result != 0) {
+            throw new NativeErrorException(result);
         }
     }
 
@@ -357,8 +361,9 @@ public class Pthread {
      * indicates an error.
      */
     public final static void pthread_attr_setinheritsched(Pthread_attr_t attr, int inheritsched) throws NativeErrorException {
-        if (pthread_attr_setinheritsched.invoke_sI___P_sI(attr, inheritsched) != 0) {
-            throw new NativeErrorException(Errno.errno());
+        final int result = pthread_attr_setinheritsched.invoke_sI___P_sI(attr, inheritsched);
+        if (result != 0) {
+            throw new NativeErrorException(result);
         }
     }
 
@@ -373,8 +378,9 @@ public class Pthread {
      * indicates an error.
      */
     public final static void pthread_attr_setschedparam(Pthread_attr_t attr, Sched.Sched_param param) throws NativeErrorException {
-        if (pthread_attr_setschedparam.invoke_sI___P__P(attr, param) != 0) {
-            throw new NativeErrorException(Errno.errno());
+        final int result = pthread_attr_setschedparam.invoke_sI___P__P(attr, param);
+        if (result != 0) {
+            throw new NativeErrorException(result);
         }
     }
 
@@ -389,8 +395,9 @@ public class Pthread {
      * indicates an error.
      */
     final static void pthread_cancel(Pthread_t thread) throws NativeErrorException {
-        if (pthread_cancel.invoke_sI__PthreadT(thread) != 0) {
-            throw new NativeErrorException(Errno.errno());
+        final int result = pthread_cancel.invoke_sI__PthreadT(thread);
+        if (result != 0) {
+            throw new NativeErrorException(result);
         }
     }
 
@@ -419,8 +426,9 @@ public class Pthread {
      * is not available natively.
      */
     public final static void pthread_getcpuclockid(Pthread_t thread_id, Types.Clockid_t clock_id) throws NativeErrorException, NoSuchNativeMethodException {
-        if (pthread_getcpuclockid.invoke_sI__PthreadT__P(thread_id, clock_id) != 0) {
-            throw new NativeErrorException(Errno.errno());
+        final int result = pthread_getcpuclockid.invoke_sI__PthreadT__P(thread_id, clock_id);
+        if (result != 0) {
+            throw new NativeErrorException(result);
         }
     }
 
@@ -439,8 +447,9 @@ public class Pthread {
      * indicates an error.
      */
     public final static void pthread_getschedparam(Pthread_t thread, Int32_t policy, Sched.Sched_param param) throws NativeErrorException {
-        if (pthread_getschedparam.invoke_sI__PthreadT__P__P(thread, policy, param) != 0) {
-            throw new NativeErrorException(Errno.errno());
+        final int result = pthread_getschedparam.invoke_sI__PthreadT__P__P(thread, policy, param);
+        if (result != 0) {
+            throw new NativeErrorException(result);
         }
     }
 
@@ -466,8 +475,9 @@ public class Pthread {
      * indicates an error.
      */
     final static void pthread_setcancelstate(int state, Int32_t oldstate) throws NativeErrorException {
-        if (pthread_setcancelstate.invoke_sI__sI__P(state, oldstate) != 0) {
-            throw new NativeErrorException(Errno.errno());
+        final int result = pthread_setcancelstate.invoke_sI__sI__P(state, oldstate);
+        if (result != 0) {
+            throw new NativeErrorException(result);
         }
     }
 
@@ -483,8 +493,9 @@ public class Pthread {
      * @return oldtype - the 2. argument int *oldtype.
      */
     final static void pthread_setcanceltype(int type, Int32_t oldtype) throws NativeErrorException {
-        if (pthread_setcanceltype.invoke_sI__sI__P(type, oldtype) != 0) {
-            throw new NativeErrorException(Errno.errno());
+        final int result = pthread_setcanceltype.invoke_sI__sI__P(type, oldtype);
+        if (result != 0) {
+            throw new NativeErrorException(result);
         }
     }
 
@@ -501,8 +512,9 @@ public class Pthread {
      * indicates an error.
      */
     public final static void pthread_setschedparam(Pthread_t thread, int policy, Sched.Sched_param param) throws NativeErrorException {
-        if (pthread_setschedparam.invoke_sI__PthreadT__sI__P(thread, policy, param) != 0) {
-            throw new NativeErrorException(Errno.errno());
+        final int result = pthread_setschedparam.invoke_sI__PthreadT__sI__P(thread, policy, param);
+        if (result != 0) {
+            throw new NativeErrorException(result);
         }
     }
 
@@ -519,8 +531,9 @@ public class Pthread {
      * not available natively.
      */
     public final static void pthread_setschedprio(Pthread_t thread, int prio) throws NativeErrorException, NoSuchNativeMethodException {
-        if (pthread_setschedprio.invoke_sI__PthreadT_sI(thread, prio) != 0) {
-            throw new NativeErrorException(Errno.errno());
+        final int result = pthread_setschedprio.invoke_sI__PthreadT_sI(thread, prio);
+        if (result != 0) {
+            throw new NativeErrorException(result);
         }
     }
 

@@ -172,7 +172,7 @@
                          <configuration>
                         <!--forkedProcessExitTimeoutInSeconds>3600</forkedProcessExitTimeoutInSeconds>
                         <forkedProcessTimeoutInSeconds>1800</forkedProcessTimeoutInSeconds-->
-                        <argLine>${commandLineArg.ChooseVM} ${commandLineArg.NativeProvider} --enable-preview --enable-native-access=ALL-UNNAMED</argLine>
+                        <argLine>${commandLineArg.ChooseVM} ${commandLineArg.NativeProvider} --enable-preview</argLine>
                     </configuration>
                 </plugin>
                 <plugin>
@@ -180,7 +180,7 @@
                     <artifactId>exec-maven-plugin</artifactId>
                     <version>3.0.0</version>
                     <configuration>
-                        <arguments>${commandLineArg.ChooseVM} ${commandLineArg.NativeProvider} --enable-preview --enable-native-access=de.ibapl.jnhw.libloader,de.ibapl.jnhw.common,de.ibapl.jnhw.posix,de.ibapl.jnhw.winapi,ALL-UNNAMED</arguments>                    
+                        <arguments>${commandLineArg.ChooseVM} ${commandLineArg.NativeProvider} --enable-preview </arguments>                    
                     </configuration>
                 </plugin>
                 <plugin>
