@@ -17,11 +17,7 @@
     <description>Code examples for JNHW</description>
 
     <modules>
-        <module>hello-world-async-io</module>
-        <module>posix-signal</module>
-        <module>posix-graceful-exit-sigsegv</module>
-        <module>jnhw-jna-jnr</module>
-        <module>fun-with-memory-and-function-pointers</module>
+        <module>hello-world</module>
     </modules>
 
     <!-- do compile/pack the examples, but do not install or deploy them-->

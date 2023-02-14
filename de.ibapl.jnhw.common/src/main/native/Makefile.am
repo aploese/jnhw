@@ -1,4 +1,4 @@
-AM_CPPFLAGS = @JNI_INCLUDE_FLAGS@ -I @JNI_HEADER_DIR@
+AM_CPPFLAGS = @JNI_INCLUDE_FLAGS@ -I ./include
 AM_CFLAGS = -Wall -Wextra -Wconversion -Werror
 AM_LDFLAGS = -z noexecstack -no-undefined -version-info @JNHW_VERSION_INFO@
 

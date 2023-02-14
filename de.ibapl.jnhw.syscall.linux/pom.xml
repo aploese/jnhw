@@ -14,18 +14,6 @@
     <dependencies>
         <dependency>
             <groupId>de.ibapl.jnhw</groupId>
-            <artifactId>de.ibapl.jnhw.common</artifactId>
-            <version>4.0.0-SNAPSHOT</version>
-        </dependency>
-        <dependency>
-            <groupId>de.ibapl.jnhw</groupId>
-            <artifactId>de.ibapl.jnhw.common</artifactId>
-            <version>4.0.0-SNAPSHOT</version>
-            <scope>test</scope>
-            <classifier>native</classifier>
-        </dependency>
-        <dependency>
-            <groupId>de.ibapl.jnhw</groupId>
             <artifactId>de.ibapl.jnhw.posix</artifactId>
             <version>4.0.0-SNAPSHOT</version>
         </dependency>

@@ -52,21 +52,11 @@ AC_SUBST(JNHW_VERSION)
 JW_MULTIARCHTUPEL()
 JW_LIB_PREFIX_SUFFIX()
 
-JNHW_RESOURCES_DIR="./lib/\$(JNHW_MULTIARCH_TUPEL)"
+JNHW_RESOURCES_DIR="\$(top_builddir)/src/main/resources/lib/\$(JNHW_MULTIARCH_TUPEL)"
 AC_SUBST(JNHW_RESOURCES_DIR)
 
 JNHW_TEST_RESOURCES_DIR="\$(top_builddir)/src/test/resources/lib/\$(JNHW_MULTIARCH_TUPEL)"
 AC_SUBST(JNHW_TEST_RESOURCES_DIR)
-
-JNI_HEADER_DIR="\$(top_builddir)/src/main/native/include"
-AC_SUBST(JNI_HEADER_DIR)
-
-JNI_TEST_HEADER_DIR="\$(top_builddir)/src/test/native/include"
-AC_SUBST(JNI_TEST_HEADER_DIR)
-
-#get path of jnhw-common.h - The Quick and Dirty way....
-JNHW_COMMON_SRC_DIR="\$(top_builddir)/../de.ibapl.jnhw.common/src/main/native"
-AC_SUBST(JNHW_COMMON_SRC_DIR)
 
 # Checks for libraries.
 

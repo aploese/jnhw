@@ -38,7 +38,7 @@
     </dependencies>
 
     <build>
-        <testResources>
+        <!-- move native to separate jar testResources>
             <testResource>
                 <directory>${basedir}/src/test/resources</directory>
             </testResource>
@@ -46,7 +46,7 @@
                 <directory>${basedir}/src/main/native/lib</directory>
                 <targetPath>./lib/</targetPath>
             </testResource>
-        </testResources>
+        </testResources-->
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -75,16 +75,16 @@
                     <argLine>${commandLineArg.ChooseVM} ${commandLineArg.NativeProvider} --enable-preview</argLine>
                 </configuration>
             </plugin>
-            <plugin>
+            <!-- move native to separate jar plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-assembly-plugin</artifactId>
                 <version>3.4.2</version>
                 <executions>
                     <execution>
-                        <id>assembly-native-libs</id> <!-- this is used for inheritance merges -->
-                        <phase>package</phase> <!-- append to the packaging phase. -->
+                        <id>assembly-native-libs</id> <!- - this is used for inheritance merges - ->
+                        <phase>package</phase> <!- - append to the packaging phase. - ->
                         <goals>
-                            <goal>single</goal> <!-- goals == mojos -->
+                            <goal>single</goal> <!- - goals == mojos - ->
                         </goals>
                         <configuration>
                             <descriptors>
@@ -93,7 +93,7 @@
                         </configuration>
                     </execution>
                 </executions>
-            </plugin>
+            </plugin-->
         </plugins>
     </build>
 

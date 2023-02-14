@@ -103,9 +103,9 @@ public class FcntlTest {
                 ErrnoTest.assertErrnoEquals(Errno.EEXIST, nee.errno);
             case LINUX -> {
                 switch (MultiarchTupelBuilder.getArch()) {
-                    case AARCH64, I386, S390_X ->
+                    case ARM, AARCH64, I386, S390_X ->
                         ErrnoTest.assertErrnoEquals(Errno.ENOENT, nee.errno);
-                    case ARM, MIPS, MIPS_64, RISC_V_64, X86_64 ->
+                    case MIPS, MIPS_64, RISC_V_64, X86_64 ->
                         ErrnoTest.assertErrnoEquals(Errno.EEXIST, nee.errno);
                     case POWER_PC, POWER_PC_64 -> {
                         if (Errno.ENOENT == nee.errno) {

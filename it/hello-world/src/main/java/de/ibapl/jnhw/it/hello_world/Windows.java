@@ -22,20 +22,17 @@
 package de.ibapl.jnhw.it.hello_world;
 
 import de.ibapl.jnhw.common.exception.NativeErrorException;
-//Import only the needed define from the wrapper of processenv.h
-import static de.ibapl.jnhw.winapi.Winbase.STD_OUTPUT_HANDLE;
-//Import only the needed method from the wrapper of processenv.h
-import static de.ibapl.jnhw.winapi.ProcessEnv.GetStdHandle;
-//Import only the needed method from the wrapper of fileapi.h
 import static de.ibapl.jnhw.winapi.Fileapi.WriteFile;
-import static de.ibapl.jnhw.winapi.WinDef.LPDWORD;
-import java.lang.foreign.ResourceScope;
+import static de.ibapl.jnhw.winapi.ProcessEnv.GetStdHandle;
+import de.ibapl.jnhw.winapi.WinDef.LPDWORD;
+import static de.ibapl.jnhw.winapi.Winbase.STD_OUTPUT_HANDLE;
+import java.lang.foreign.Arena;
 
 public class Windows {
 
     public static void sayHello() throws NativeErrorException {
-        try ( ResourceScope scope = ResourceScope.newConfinedScope()) {
-            LPDWORD bytesWritten = LPDWORD.allocateNative(scope);
+        try (Arena arena = Arena.openConfined()) {
+            LPDWORD bytesWritten = LPDWORD.allocateNative(arena.scope());
             WriteFile(GetStdHandle(STD_OUTPUT_HANDLE), "Hello World! from WIN API\n".getBytes(), bytesWritten);
             System.out.println("Bytes written: " + bytesWritten.uint32_t());
         }

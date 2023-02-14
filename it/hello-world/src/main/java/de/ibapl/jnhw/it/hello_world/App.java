@@ -21,8 +21,8 @@
  */
 package de.ibapl.jnhw.it.hello_world;
 
-import de.ibapl.jnhw.common.datatypes.MultiarchTupelBuilder;
-import de.ibapl.jnhw.common.datatypes.OS;
+import de.ibapl.jnhw.libloader.MultiarchTupelBuilder;
+import de.ibapl.jnhw.libloader.OS;
 
 /**
  * Hello world!

@@ -20,7 +20,6 @@
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
  */
 module de.ibapl.jnhw.it.hello_world {
-    requires java.lang.foreign;
     requires de.ibapl.jnhw.posix;
     requires de.ibapl.jnhw.winapi;
 }

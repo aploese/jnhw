@@ -663,9 +663,6 @@ ac_subst_vars='am__EXEEXT_FALSE
 am__EXEEXT_TRUE
 LTLIBOBJS
 LIBOBJS
-JNHW_COMMON_SRC_DIR
-JNI_TEST_HEADER_DIR
-JNI_HEADER_DIR
 JNHW_TEST_RESOURCES_DIR
 JNHW_RESOURCES_DIR
 JNHW_STRIP_FLAG
@@ -13997,20 +13994,10 @@ esac
 
 
 
-JNHW_RESOURCES_DIR="./lib/\$(JNHW_MULTIARCH_TUPEL)"
+JNHW_RESOURCES_DIR="\$(top_builddir)/src/main/resources/lib/\$(JNHW_MULTIARCH_TUPEL)"
 
 
 JNHW_TEST_RESOURCES_DIR="\$(top_builddir)/src/test/resources/lib/\$(JNHW_MULTIARCH_TUPEL)"
-
-
-JNI_HEADER_DIR="\$(top_builddir)/src/main/native/include"
-
-
-JNI_TEST_HEADER_DIR="\$(top_builddir)/src/test/native/include"
-
-
-#get path of jnhw-common.h - The Quick and Dirty way....
-JNHW_COMMON_SRC_DIR="\$(top_builddir)/../de.ibapl.jnhw.common/src/main/native"
 
 
 # Checks for libraries.
