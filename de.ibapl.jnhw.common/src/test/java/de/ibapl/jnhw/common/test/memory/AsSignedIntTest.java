@@ -61,13 +61,13 @@ public class AsSignedIntTest {
 
     @Test
     public void testNative() {
-        try (Arena ms = Arena.openConfined()) {
-            AsSignedInt instance = AsSignedInt.allocateNative(BaseDataType.int16_t, ms.scope());
+        try (Arena arena = Arena.ofConfined()) {
+            AsSignedInt instance = AsSignedInt.allocateNative(BaseDataType.int16_t, arena);
             short expResult = 0x2010;
             instance.setFromSignedInt(expResult);
             assertEquals(expResult, instance.getAsSignedInt());
             assertThrows(IllegalArgumentException.class, () -> instance.setFromSignedInt(Integer.MAX_VALUE));
-            assertThrows(IllegalArgumentException.class, () -> new AsSignedInt(BaseDataType.uint8_t, ms.allocate(BaseDataType.uint8_t.SIZE_OF), 0));
+            assertThrows(IllegalArgumentException.class, () -> new AsSignedInt(BaseDataType.uint8_t, arena.allocate(BaseDataType.uint8_t.SIZE_OF), 0));
         }
     }
 }

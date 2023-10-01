@@ -42,12 +42,12 @@ public class Ch9__Usb_device_descriptorTest {
      */
     @Test
     public void testUsb_device_descriptor() throws Exception {
-        try (Arena ms = Arena.openConfined()) {
+        try (Arena arena = Arena.ofConfined()) {
             System.out.println("test Usb_device_descriptor");
             for (UsbDevice dev : SysFs.bus().usb().devices()) {
                 System.out.println("SysFs dir: \"" + dev.getSysDir() + "\" links to device dir: \"" + dev.getSysDir().getCanonicalPath() + "\"");
                 System.out.println(dev.toShortString());
-                for (AbstractDescriptor descriptor : dev.descriptors(ms.scope())) {
+                for (AbstractDescriptor descriptor : dev.descriptors(arena)) {
                     descriptor.nativeToString(System.out, "", "");
                     System.out.println();
                     if (descriptor.bDescriptorType() == Ch9.USB_DT_DEVICE) {

@@ -50,22 +50,22 @@ public interface JnhwMh_MA___A__A extends JnhwMethodHandle {
         MemorySegment invoke_MA___A__A(MemorySegment arg1, MemorySegment arg2);
     }
 
-    static JnhwMh_MA___A__A.ExceptionErased mandatoryOf(SymbolLookup symbolLookup, String name, BaseDataType result, BaseDataType arg1, BaseDataType arg2) {
+    static JnhwMh_MA___A__A.ExceptionErased mandatoryOf(SymbolLookup symbolLookup, String name, BaseDataType result, BaseDataType arg1, BaseDataType arg2, long targetByteSize) {
         return Util.buidExistingMethod(symbolLookup,
                 name,
-                (oms) -> of(oms, name, result, arg1, arg2));
+                (oms) -> of(oms, name, result, arg1, arg2, targetByteSize));
     }
 
-    static JnhwMh_MA___A__A optionalOf(SymbolLookup symbolLookup, String name, BaseDataType result, BaseDataType arg1, BaseDataType arg2) {
+    static JnhwMh_MA___A__A optionalOf(SymbolLookup symbolLookup, String name, BaseDataType result, BaseDataType arg1, BaseDataType arg2, long targetByteSize) {
         return Util.buidOptionalMethod(symbolLookup,
                 name,
-                (oms) -> of(oms, name, result, arg1, arg2),
+                (oms) -> of(oms, name, result, arg1, arg2, targetByteSize),
                 () -> (JnhwMh_MA___A__A) (cArg1, cArg2) -> {
                     throw new NoSuchNativeMethodException(name);
                 });
     }
 
-    public static JnhwMh_MA___A__A.ExceptionErased of(MemorySegment methodAddress, String name, BaseDataType result, BaseDataType arg1, BaseDataType arg2) {
+    public static JnhwMh_MA___A__A.ExceptionErased of(MemorySegment methodAddress, String name, BaseDataType result, BaseDataType arg1, BaseDataType arg2, long targetByteSize) {
         return switch (result) {
             case intptr_t, uintptr_t ->
                 switch (arg1) {
@@ -73,8 +73,8 @@ public interface JnhwMh_MA___A__A extends JnhwMethodHandle {
                         switch (arg2) {
                             case intptr_t, uintptr_t ->
                                 NativeProvider.getProvider(
-                                () -> new JnhwMi_MA___A__A(methodAddress, name),
-                                () -> new JniMi_MA___A__A(methodAddress, name));
+                                () -> new JnhwMi_MA___A__A(methodAddress, name, targetByteSize),
+                                () -> new JniMi_MA___A__A(methodAddress, name, targetByteSize));
                             default ->
                                 throw new IllegalArgumentException("arg2 unexpected data type: " + name + " " + arg2);
                         };

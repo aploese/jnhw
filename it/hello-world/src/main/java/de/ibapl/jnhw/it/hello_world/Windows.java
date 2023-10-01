@@ -31,8 +31,8 @@ import java.lang.foreign.Arena;
 public class Windows {
 
     public static void sayHello() throws NativeErrorException {
-        try (Arena arena = Arena.openConfined()) {
-            LPDWORD bytesWritten = LPDWORD.allocateNative(arena.scope());
+        try (Arena arena = Arena.ofConfined()) {
+            LPDWORD bytesWritten = LPDWORD.allocateNative(arena);
             WriteFile(GetStdHandle(STD_OUTPUT_HANDLE), "Hello World! from WIN API\n".getBytes(), bytesWritten);
             System.out.println("Bytes written: " + bytesWritten.uint32_t());
         }

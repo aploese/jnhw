@@ -34,8 +34,8 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.Reader;
+import java.lang.foreign.Arena;
 import java.lang.foreign.MemorySegment;
-import java.lang.foreign.SegmentScope;
 import java.util.Iterator;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -119,8 +119,8 @@ public class UsbDevice {
         private int currentPos = 0;
         private long length;
 
-        protected DeviceIterator(SegmentScope ms) {
-            mem = MemorySegment.allocateNative(1024 * 64, ms);
+        protected DeviceIterator(Arena arena) {
+            mem = arena.allocate(1024 * 64);
             try {
                 final int fd = Fcntl.open(new File(sysFsDir, "descriptors").getAbsolutePath(), Fcntl.O_RDONLY);
                 try {
@@ -156,8 +156,8 @@ public class UsbDevice {
         }
     }
 
-    public Iterable<AbstractDescriptor> descriptors(SegmentScope ms) {
-        return () -> new DeviceIterator(ms);
+    public Iterable<AbstractDescriptor> descriptors(Arena arena) {
+        return () -> new DeviceIterator(arena);
     }
 
     public File getSysDir() {

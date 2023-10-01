@@ -36,16 +36,16 @@ import org.junit.jupiter.api.condition.EnabledOnOs;
 @EnabledOnOs(org.junit.jupiter.api.condition.OS.WINDOWS)
 public class WinntTest {
 
-    private Arena ms;
+    private Arena arena;
 
     @BeforeEach
     public void setUp() throws Exception {
-        ms = Arena.openConfined();
+        arena = Arena.ofConfined();
     }
 
     @AfterEach
     public void tearDown() throws Exception {
-        ms.close();
+        arena.close();
     }
 
     @Test
@@ -58,7 +58,7 @@ public class WinntTest {
     public void test_LPWSTR_stringValueOfNullTerminated() throws Exception {
         final String str = "HELLO WORLD!\0";
         byte[] data = str.getBytes(Charset.forName("UTF-16LE"));
-        Winnt.LPWSTR lpWStr = Winnt.LPWSTR.allocateNative(64, ms.scope());
+        Winnt.LPWSTR lpWStr = Winnt.LPWSTR.allocateNative(64, arena);
         OpaqueMemory.copy(data, 0, lpWStr, 0, data.length);
         Assertions.assertEquals("HELLO WORLD!", lpWStr.getUnicodeString(str.length() - 1));
         Assertions.assertEquals("HELLO WORLD!", lpWStr.getUnicodeString(data.length / WinApiDataType.WCHAR.SIZE_OF - 1));
@@ -66,7 +66,7 @@ public class WinntTest {
 
     @Test
     public void testArrayOfHandle() throws Exception {
-        Winnt.ArrayOfHandle aoh = Winnt.ArrayOfHandle.allocateNative(3, ms.scope());
+        Winnt.ArrayOfHandle aoh = Winnt.ArrayOfHandle.allocateNative(3, arena);
         Winnt.HANDLE h1 = Winnt.HANDLE.of(MemorySegment.ofAddress(42));
         aoh.set(1, h1);
         Winnt.HANDLE h2 = Winnt.HANDLE.INVALID_HANDLE_VALUE;

@@ -44,7 +44,8 @@ public abstract class Processthreadsapi {
     private final static JnhwMh_MA___V.ExceptionErased GetCurrentThread = JnhwMh_MA___V.mandatoryOf(
             Kernel32Loader.DLL_KERNEL32_SYMBOL_LOOKUP,
             "GetCurrentThread",
-            WinApiDataType.HANDLE);
+            WinApiDataType.HANDLE,
+            0L);//Just a pointer with length 0!
 
     private final static JnhwMh_BL___A__A_uL.ExceptionErased QueueUserAPC = JnhwMh_BL___A__A_uL.mandatoryOf(
             Kernel32Loader.DLL_KERNEL32_SYMBOL_LOOKUP,

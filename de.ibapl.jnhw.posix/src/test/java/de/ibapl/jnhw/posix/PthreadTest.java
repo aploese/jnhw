@@ -24,10 +24,13 @@ package de.ibapl.jnhw.posix;
 import de.ibapl.jnhw.common.exception.NativeErrorException;
 import de.ibapl.jnhw.common.exception.NoSuchNativeMethodException;
 import de.ibapl.jnhw.common.memory.Int32_t;
+import de.ibapl.jnhw.common.memory.OpaqueMemory;
 import de.ibapl.jnhw.libloader.MultiarchTupelBuilder;
+import de.ibapl.jnhw.libloader.libraries.LibcLoader;
 import de.ibapl.jnhw.posix.sys.Types;
 import de.ibapl.jnhw.util.posix.DefinesTest;
 import java.lang.foreign.Arena;
+import java.lang.foreign.MemorySegment;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.junit.jupiter.api.AfterAll;
@@ -86,17 +89,17 @@ public class PthreadTest {
         JnhwTestLogger.logAfterAll(testTnfo);
     }
 
-    private Arena ms;
+    private Arena arena;
 
     @BeforeEach
     public void setUp(TestInfo testInfo) throws Exception {
         JnhwTestLogger.logBeforeEach(testInfo);
-        ms = Arena.openConfined();
+        arena = Arena.ofConfined();
     }
 
     @AfterEach
     public void tearDown(TestInfo testInfo) {
-        ms.close();
+        arena.close();
         JnhwTestLogger.logAfterEach(testInfo);
     }
 
@@ -105,7 +108,14 @@ public class PthreadTest {
      */
     @Test
     public void testPthread_self() {
-        Pthread.Pthread_t result = Pthread.pthread_self(ms.scope());
+        Pthread.Pthread_t result = Pthread.pthread_self(arena);
+        MemorySegment seg = OpaqueMemory.getMemorySegment(result);
+        //Te memory returned is not bound to the area of LibC
+        Assertions.assertNotEquals(LibcLoader.arena().scope(), seg.scope());
+
+        MemorySegment seg_1 = seg.reinterpret(1024);
+        Assertions.assertEquals(seg.scope(), seg_1.scope());
+
         Assertions.assertNotNull(result);
         JnhwTestLogger.logTest("PTHREAD ID: " + result);
     }
@@ -116,16 +126,16 @@ public class PthreadTest {
     @Test
     public void testPthread_equal() throws Exception {
         Assertions.assertThrows(NullPointerException.class, () -> {
-            Pthread.pthread_equal(null, Pthread.pthread_self(ms.scope()));
+            Pthread.pthread_equal(null, Pthread.pthread_self(arena));
         });
         Assertions.assertThrows(NullPointerException.class, () -> {
-            Pthread.pthread_equal(Pthread.pthread_self(ms.scope()), null);
+            Pthread.pthread_equal(Pthread.pthread_self(arena), null);
         });
         Assertions.assertThrows(NullPointerException.class, () -> {
             Pthread.pthread_equal(null, null);
         });
-        final Pthread.Pthread_t t1 = Pthread.pthread_self(ms.scope());
-        final Pthread.Pthread_t t2 = Pthread.pthread_self(ms.scope());
+        final Pthread.Pthread_t t1 = Pthread.pthread_self(arena);
+        final Pthread.Pthread_t t2 = Pthread.pthread_self(arena);
 
         Assertions.assertTrue(Pthread.pthread_equal(t1, t2));
 
@@ -136,8 +146,8 @@ public class PthreadTest {
         Thread t3 = new Thread(() -> {
             try {
                 //TODO move outside - currently junit will crash
-                final Arena sharedSession = Arena.openShared();
-                objectRef[0] = Pthread.pthread_self(sharedSession.scope());
+                final Arena sharedArena = Arena.ofShared();
+                objectRef[0] = Pthread.pthread_self(sharedArena);
             } catch (Throwable t) {
                 Assertions.fail(t);
             }
@@ -156,31 +166,31 @@ public class PthreadTest {
      */
     @Test
     public void testPthread_getcpuclockid() throws Exception {
-        Types.Clockid_t clock_id = Types.Clockid_t.allocateNative(ms.scope());
+        Types.Clockid_t clock_id = Types.Clockid_t.allocateNative(arena);
         switch (MultiarchTupelBuilder.getOS()) {
             case APPLE ->
                 Assertions.assertThrows(NoSuchNativeMethodException.class,
-                        () -> Pthread.pthread_getcpuclockid(Pthread.pthread_self(ms.scope()), clock_id));
+                        () -> Pthread.pthread_getcpuclockid(Pthread.pthread_self(arena), clock_id));
             default -> {
                 Assertions.assertThrows(NullPointerException.class,
                         () -> Pthread.pthread_getcpuclockid(null, clock_id));
 //This will crash with SIGSEV
 //            Pthread.pthread_getcpuclockid(Pthread.Pthread_t.ofAddress(MemorySegment.ofAddress(1024), scope), clock_id);
-                Pthread.pthread_getcpuclockid(Pthread.pthread_self(ms.scope()), clock_id);
+                Pthread.pthread_getcpuclockid(Pthread.pthread_self(arena), clock_id);
             }
         }
     }
 
     @Test
     public void testPthread_t() {
-        Pthread.Pthread_t pthread_t = Pthread.Pthread_t.allocateNative(ms.scope());
+        Pthread.Pthread_t pthread_t = Pthread.Pthread_t.allocateNative(arena);
         Assertions.assertNotNull(pthread_t.toString());
         Assertions.assertNotNull(pthread_t.nativeToString());
     }
 
     @Test
     public void testPthread_attr_t() throws Exception {
-        Pthread.Pthread_attr_t pthread_attr_t = Pthread.Pthread_attr_t.allocateNative(ms.scope());
+        Pthread.Pthread_attr_t pthread_attr_t = Pthread.Pthread_attr_t.allocateNative(arena);
         Pthread.pthread_attr_init(pthread_attr_t);
         Assertions.assertNotNull(pthread_attr_t.toString());
         Assertions.assertNotNull(pthread_attr_t.nativeToString());
@@ -189,9 +199,9 @@ public class PthreadTest {
 
     @Test
     public void testPthread_attr_setget_schedparam() throws Exception {
-        Pthread.Pthread_attr_t attr = Pthread.Pthread_attr_t.allocateNative(ms.scope());
+        Pthread.Pthread_attr_t attr = Pthread.Pthread_attr_t.allocateNative(arena);
         Pthread.pthread_attr_init(attr);
-        Sched.Sched_param param = Sched.Sched_param.allocateNative(ms.scope());
+        Sched.Sched_param param = Sched.Sched_param.allocateNative(arena);
         param.sched_priority(0); //TODO Any other will give a EINVAL ????
         try {
             JnhwTestLogger.logTest("pthread_attr_setschedparam ");
@@ -204,7 +214,7 @@ public class PthreadTest {
             Pthread.pthread_attr_setschedparam(attr, param);
 
             JnhwTestLogger.logTest("pthread_attr_getschedparam");
-            Sched.Sched_param param1 = Sched.Sched_param.allocateNative(ms.scope());
+            Sched.Sched_param param1 = Sched.Sched_param.allocateNative(arena);
             Assertions.assertThrows(NullPointerException.class, () -> {
                 Pthread.pthread_attr_getschedparam(null, param1);
             });
@@ -220,9 +230,9 @@ public class PthreadTest {
 
     @Test
     public void testPthread_attr_setget_inheritsched() throws Exception {
-        Pthread.Pthread_attr_t attr = Pthread.Pthread_attr_t.allocateNative(ms.scope());
+        Pthread.Pthread_attr_t attr = Pthread.Pthread_attr_t.allocateNative(arena);
         Pthread.pthread_attr_init(attr);
-        Int32_t inheritsched = Int32_t.allocateNative(ms.scope());
+        Int32_t inheritsched = Int32_t.allocateNative(arena);
         try {
             JnhwTestLogger.logTest("pthread_attr_getinheritsched");
             Assertions.assertThrows(NullPointerException.class, () -> {
@@ -245,32 +255,32 @@ public class PthreadTest {
 
     @Test
     public void testPthread_setget_schedparam() throws NativeErrorException {
-        Sched.Sched_param param = Sched.Sched_param.allocateNative(ms.scope());
-        Int32_t policy = Int32_t.allocateNative(ms.scope());
+        Sched.Sched_param param = Sched.Sched_param.allocateNative(arena);
+        Int32_t policy = Int32_t.allocateNative(arena);
 
         JnhwTestLogger.logTest("pthread_getschedparam");
 
         Assertions.assertThrows(NullPointerException.class, () -> {
-            Pthread.pthread_getschedparam(Pthread.pthread_self(ms.scope()), policy, null);
+            Pthread.pthread_getschedparam(Pthread.pthread_self(arena), policy, null);
         });
         Assertions.assertThrows(NullPointerException.class, () -> {
             Pthread.pthread_getschedparam(null, policy, param);
         });
 
-        Pthread.pthread_getschedparam(Pthread.pthread_self(ms.scope()), policy, param);
+        Pthread.pthread_getschedparam(Pthread.pthread_self(arena), policy, param);
         Assertions.assertEquals(Sched.SCHED_OTHER, policy.int32_t());
 
         JnhwTestLogger.logTest("pthread_setschedparam");
 
-        Pthread.pthread_setschedparam(Pthread.pthread_self(ms.scope()), policy.int32_t(), param);
+        Pthread.pthread_setschedparam(Pthread.pthread_self(arena), policy.int32_t(), param);
 
         param.sched_priority(Integer.MAX_VALUE);
         switch (MultiarchTupelBuilder.getOS()) {
             case FREE_BSD, OPEN_BSD ->
-                Pthread.pthread_setschedparam(Pthread.pthread_self(ms.scope()), policy.int32_t(), param);
+                Pthread.pthread_setschedparam(Pthread.pthread_self(arena), policy.int32_t(), param);
             default -> {
                 NativeErrorException nee = Assertions.assertThrows(NativeErrorException.class, () -> {
-                    Pthread.pthread_setschedparam(Pthread.pthread_self(ms.scope()), policy.int32_t(), param);
+                    Pthread.pthread_setschedparam(Pthread.pthread_self(arena), policy.int32_t(), param);
                 });
                 switch (MultiarchTupelBuilder.getOS()) {
                     case APPLE ->
@@ -283,7 +293,7 @@ public class PthreadTest {
         }
 
         Assertions.assertThrows(NullPointerException.class, () -> {
-            Pthread.pthread_setschedparam(Pthread.pthread_self(ms.scope()), 0, null);
+            Pthread.pthread_setschedparam(Pthread.pthread_self(arena), 0, null);
         });
 
         Assertions.assertThrows(NullPointerException.class, () -> {
@@ -298,12 +308,12 @@ public class PthreadTest {
         switch (MultiarchTupelBuilder.getOS()) {
             case APPLE, FREE_BSD, OPEN_BSD ->
                 Assertions.assertThrows(NoSuchNativeMethodException.class,
-                        () -> Pthread.pthread_setschedprio(Pthread.pthread_self(ms.scope()), 0));
+                        () -> Pthread.pthread_setschedprio(Pthread.pthread_self(arena), 0));
             default -> {
                 Assertions.assertThrows(NullPointerException.class, () -> {
                     Pthread.pthread_setschedprio(null, 0);
                 });
-                Pthread.pthread_setschedprio(Pthread.pthread_self(ms.scope()), 0);
+                Pthread.pthread_setschedprio(Pthread.pthread_self(arena), 0);
             }
         }
     }
@@ -312,9 +322,9 @@ public class PthreadTest {
     @Disabled //It looks, that running this test will screw up the system internally - later tests will hang.
     //TODO What is going on?
     public void testPthread_t_Cancel() throws Exception {
-        Pthread.Pthread_t me = Pthread.pthread_self(ms.scope());
-        Int32_t oldstate = Int32_t.allocateNative(ms.scope());
-        Int32_t oldtype = Int32_t.allocateNative(ms.scope());
+        Pthread.Pthread_t me = Pthread.pthread_self(arena);
+        Int32_t oldstate = Int32_t.allocateNative(arena);
+        Int32_t oldtype = Int32_t.allocateNative(arena);
 
         Pthread.pthread_setcancelstate(Pthread.PTHREAD_CANCEL_DISABLE, oldstate);
         Pthread.pthread_setcancelstate(oldstate.int32_t(), oldstate);
@@ -332,7 +342,7 @@ public class PthreadTest {
             try {
                 Pthread.pthread_testcancel();
 
-                objectRef[0] = Pthread.pthread_self(ms.scope());
+                objectRef[0] = Pthread.pthread_self(arena);
                 synchronized (objectRef) {
                     objectRef.notifyAll();
                 }

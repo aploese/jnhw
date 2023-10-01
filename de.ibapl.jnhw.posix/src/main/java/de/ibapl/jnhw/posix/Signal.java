@@ -68,7 +68,6 @@ import de.ibapl.jnhw.util.posix.upcall.Callback__V__UnionSigval;
 import java.io.IOException;
 import java.lang.foreign.Arena;
 import java.lang.foreign.MemorySegment;
-import java.lang.foreign.SegmentScope;
 import java.lang.foreign.SymbolLookup;
 
 /**
@@ -484,15 +483,15 @@ public class Signal {
 
         }
 
-        public final static Mcontext_t tryAllocateNative(SegmentScope ms) throws NoSuchNativeTypeException {
+        public final static Mcontext_t tryAllocateNative(Arena arena) throws NoSuchNativeTypeException {
             if (alignof == null) {
                 throw new NoSuchNativeTypeException("Mcontext_t");
             }
-            return new Mcontext_t(MemorySegment.allocateNative(sizeof, alignof.alignof, ms), 0);
+            return new Mcontext_t(arena.allocate(sizeof, alignof.alignof), 0);
         }
 
-        public static Mcontext_t tryOfAddress(long baseAddress, SegmentScope ms) throws NoSuchNativeTypeException {
-            return new Mcontext_t(MemorySegment.ofAddress(baseAddress, Mcontext_t.sizeof, ms), 0);
+        public static Mcontext_t tryOfAddress(long baseAddress, Arena arena) throws NoSuchNativeTypeException {
+            return new Mcontext_t(MemorySegment.ofAddress(baseAddress).reinterpret(Mcontext_t.sizeof, arena, null), 0);
         }
 
         public Mcontext_t(MemorySegment memorySegment, long offset) throws NoSuchNativeTypeException {
@@ -623,8 +622,8 @@ public class Signal {
             }
         }
 
-        public final static Sigaction allocateNative(SegmentScope ms) {
-            return new Sigaction(MemorySegment.allocateNative(sizeof, alignof.alignof, ms), 0);
+        public final static Sigaction allocateNative(Arena arena) {
+            return new Sigaction(arena.allocate(sizeof, alignof.alignof), 0);
         }
 
         private NativeFunctionPointer cachedHandlerOrAction;
@@ -860,18 +859,18 @@ public class Signal {
             }
         }
 
-        public static <T extends Pointer> Sigevent<T> tryAllocateNative(SegmentScope ms) throws NoSuchNativeTypeException {
+        public static <T extends Pointer> Sigevent<T> tryAllocateNative(Arena arena) throws NoSuchNativeTypeException {
             if (alignof == null) {
                 throw new NoSuchNativeTypeException("Sigevent");
             }
-            return new Sigevent(MemorySegment.allocateNative(sizeof, alignof.alignof, ms), 0);
+            return new Sigevent(arena.allocate(sizeof, alignof.alignof), 0);
         }
 
-        public static <T extends Pointer> Sigevent<T> tryOfAddress(long baseAddress, SegmentScope ms) throws NoSuchNativeTypeException {
+        public static <T extends Pointer> Sigevent<T> tryOfAddress(long baseAddress, Arena arena) throws NoSuchNativeTypeException {
             if (alignof == null) {
                 throw new NoSuchNativeTypeException("Sigevent");
             }
-            return new Sigevent<>(baseAddress, ms);
+            return new Sigevent<>(baseAddress, arena);
         }
 
         private Pthread.Pthread_attr_t sigev_notify_attributes;
@@ -893,8 +892,8 @@ public class Signal {
             sigev_value = new Sigval(this.memorySegment, Sigevent.offsetof_Sigev_value);
         }
 
-        public Sigevent(long baseAddress, SegmentScope ms) throws NoSuchNativeTypeException {
-            super(baseAddress, ms, sizeof);
+        public Sigevent(long baseAddress, Arena arena) throws NoSuchNativeTypeException {
+            super(baseAddress, arena, sizeof);
             if (alignof == null) {
                 throw new NoSuchNativeTypeException("Sigevent");
             }
@@ -1107,12 +1106,12 @@ public class Signal {
          */
         public final Sigval<?> si_value;
 
-        public static Siginfo_t allocateNative(SegmentScope ms) {
-            return new Siginfo_t(MemorySegment.allocateNative(sizeof, alignof.alignof, ms), 0);
+        public static Siginfo_t allocateNative(Arena arena) {
+            return new Siginfo_t(arena.allocate(sizeof, alignof.alignof), 0);
         }
 
-        public static Siginfo_t ofAddress(long address, SegmentScope ms) {
-            return new Siginfo_t(MemorySegment.ofAddress(address, Siginfo_t.sizeof, ms), 0);
+        public static Siginfo_t ofAddress(long address, Arena arena) {
+            return new Siginfo_t(MemorySegment.ofAddress(address).reinterpret(Siginfo_t.sizeof, arena, null), 0);
         }
 
         public Siginfo_t(MemorySegment memorySegment, long offset) {
@@ -1268,8 +1267,8 @@ public class Signal {
             }
         }
 
-        public final static Sigset_t allocateNative(SegmentScope ms) {
-            return new Sigset_t(MemorySegment.allocateNative(sizeof, alignof.alignof, ms), 0);
+        public final static Sigset_t allocateNative(Arena arena) {
+            return new Sigset_t(arena.allocate(sizeof, alignof.alignof), 0);
         }
 
         public Sigset_t(MemorySegment memorySegment, long offset) {
@@ -1471,12 +1470,12 @@ public class Signal {
             }
         }
 
-        public static <T extends Pointer> Sigval<T> allocateNative(SegmentScope ms) {
-            return new Sigval<>(MemorySegment.allocateNative(sizeof, alignof.alignof, ms), 0);
+        public static <T extends Pointer> Sigval<T> allocateNative(Arena arena) {
+            return new Sigval<>(arena.allocate(sizeof, alignof.alignof), 0);
         }
 
-        public static <T extends Pointer> Sigval<T> ofAddress(long baseAddress, SegmentScope ms) {
-            return new Sigval<>(MemorySegment.ofAddress(baseAddress, Sigval.sizeof, ms), 0);
+        public static <T extends Pointer> Sigval<T> ofAddress(long baseAddress, Arena arena) {
+            return new Sigval<>(MemorySegment.ofAddress(baseAddress).reinterpret(Sigval.sizeof, arena, null), 0);
         }
 
         private D sival_ptr;
@@ -1616,8 +1615,8 @@ public class Signal {
             }
         }
 
-        public final static <T extends OpaqueMemory> Stack_t<T> allocateNative(SegmentScope ms) {
-            return new Stack_t(MemorySegment.allocateNative(sizeof, alignof.alignof, ms), 0);
+        public final static <T extends OpaqueMemory> Stack_t<T> allocateNative(Arena arena) {
+            return new Stack_t(arena.allocate(sizeof, alignof.alignof), 0);
         }
 
         /**
@@ -1627,8 +1626,8 @@ public class Signal {
          * @param ss_sp
          * @return
          */
-        public static <T extends OpaqueMemory> Stack_t<T> allocateNativeAndInit(SegmentScope ms, int ss_flags, T ss_sp) {
-            final Stack_t<T> result = (Stack_t<T>) allocateNative(ms);
+        public static <T extends OpaqueMemory> Stack_t<T> allocateNativeAndInit(Arena arena, int ss_flags, T ss_sp) {
+            final Stack_t<T> result = (Stack_t<T>) allocateNative(arena);
             result.ss_flags(ss_flags);
             result.ss_sp(ss_sp);
             result.ss_size(ss_sp.sizeof());
@@ -1687,8 +1686,8 @@ public class Signal {
          * @return the native value of ss_sp.
          */
         //TODO this is a Pointer
-        public final <T extends OpaqueMemory> T ss_sp(OpaqueMemoryProducer<T, Stack_t<A>> producer, SegmentScope ms) {
-            return producer.produce(ss_sp(), ms, this);
+        public final <T extends OpaqueMemory> T ss_sp(OpaqueMemoryProducer<T, Stack_t<A>> producer, Arena arena) {
+            return producer.produce(ss_sp(), arena, this);
         }
 
         private <T extends OpaqueMemory> void ss_sp(T ss_sp) {
@@ -1858,15 +1857,15 @@ public class Signal {
          */
         public final Stack_t uc_stack;
 
-        public static Ucontext_t tryAllocateNative(SegmentScope ms) throws NoSuchNativeTypeException {
+        public static Ucontext_t tryAllocateNative(Arena arena) throws NoSuchNativeTypeException {
             if (Ucontext_t.alignof == null) {
                 throw new NoSuchNativeTypeException("Ucontext_t");
             }
-            return new Ucontext_t(MemorySegment.allocateNative(sizeof, alignof.alignof, ms), 0);
+            return new Ucontext_t(arena.allocate(sizeof, alignof.alignof), 0);
         }
 
-        public static Ucontext_t tryOfAddress(long baseAddress, SegmentScope ms) throws NoSuchNativeTypeException {
-            return new Ucontext_t(MemorySegment.ofAddress(baseAddress, Ucontext_t.sizeof, ms), 0);
+        public static Ucontext_t tryOfAddress(long baseAddress, Arena arena) throws NoSuchNativeTypeException {
+            return new Ucontext_t(MemorySegment.ofAddress(baseAddress).reinterpret(Ucontext_t.sizeof, arena, null), 0);
         }
 
         public Ucontext_t(MemorySegment memorySegment, long offset) throws NoSuchNativeTypeException {
@@ -1895,8 +1894,8 @@ public class Signal {
          * ucontext_t}</a>.
          *
          */
-        public final Ucontext_t uc_link(OpaqueMemoryProducer<Ucontext_t, Ucontext_t> producer, SegmentScope ms) {
-            return producer.produce(uc_link0(), ms, this);
+        public final Ucontext_t uc_link(OpaqueMemoryProducer<Ucontext_t, Ucontext_t> producer, Arena arena) {
+            return producer.produce(uc_link0(), arena, this);
         }
 
         /**
@@ -3039,7 +3038,8 @@ public class Signal {
             "signal",
             BaseDataType.C_pointer,
             BaseDataType.C_int,
-            BaseDataType.C_pointer);
+            BaseDataType.C_pointer,
+            0L); //Just a pointer with length 0!
 
     private final static JnhwMh_sI__sI.ExceptionErased sigpause = JnhwMh_sI__sI.mandatoryOf(
             LibcLoader.LIB_C_SYMBOL_LOOKUP,
@@ -3082,7 +3082,8 @@ public class Signal {
             "sigset",
             BaseDataType.C_pointer,
             BaseDataType.C_int,
-            BaseDataType.C_pointer);
+            BaseDataType.C_pointer,
+            0L); //result is just a pointer with length 0!
 
     private final static JnhwMh_sI___A.ExceptionErased sigsuspend = JnhwMh_sI___A.mandatoryOf(
             LibcLoader.LIB_C_SYMBOL_LOOKUP,
@@ -3158,11 +3159,11 @@ public class Signal {
      * available natively.
      */
     public final static void psiginfo(Siginfo_t pinfo, String message) throws NativeErrorException, NoSuchNativeMethodException {
-        try (Arena ms = Arena.openConfined()) {
+        try (Arena arena = Arena.ofConfined()) {
             if (message == null) {
                 message = "";
             }
-            MemorySegment _message = ms.allocate(message.length() + 1);
+            MemorySegment _message = arena.allocate(message.length() + 1);
             _message.setUtf8String(0, message);
             final int old_errno = Errno.errno();
             Errno.errno(0);
@@ -3184,11 +3185,11 @@ public class Signal {
      * indicates an error.
      */
     public final static void psignal(int signum, String message) throws NativeErrorException {
-        try (Arena ms = Arena.openConfined()) {
+        try (Arena arena = Arena.ofConfined()) {
             if (message == null) {
                 message = "";
             }
-            MemorySegment _message = ms.allocate(message.length() + 1);
+            MemorySegment _message = arena.allocate(message.length() + 1);
             _message.setUtf8String(0, message);
             final int old_errno = Errno.errno();
             Errno.errno(0);

@@ -87,10 +87,10 @@ JNIEXPORT jlong JNICALL Java_de_ibapl_jnhw_common_downcall_jni_JniMi_1MA_1_1_1A_
 
 /*
  * Class:     de_ibapl_jnhw_common_downcall_jni_JniMi_MA___A__I__I__A
- * Method:    invoke__L___A__I__I__A
+ * Method:    invoke__MA___A__I__I__A
  * Signature: (JJIIJ)J
  */
-JNIEXPORT jlong JNICALL Java_de_ibapl_jnhw_common_downcall_jni_JniMi_1MA_1_1_1A_1_1I_1_1I_1_1A_invoke_1_1L_1_1_1A_1_1I_1_1I_1_1A
+JNIEXPORT jlong JNICALL Java_de_ibapl_jnhw_common_downcall_jni_JniMi_1MA_1_1_1A_1_1I_1_1I_1_1A_invoke_1_1MA_1_1_1A_1_1I_1_1I_1_1A
   (__attribute__ ((unused)) JNIEnv *env, __attribute__ ((unused)) jclass clazz, jlong address, jlong arg1, jint arg2, jint arg3, jlong arg4) {
     return (int64_t)((uintptr_t (*)(intptr_t, int32_t, int32_t, intptr_t))(intptr_t)address)((intptr_t) arg1, arg2, arg3, (intptr_t)arg4);
 }

@@ -32,8 +32,8 @@ import java.lang.foreign.ValueLayout;
  */
 public class JnhwMi_MA___A__I extends JnhwMethodInvoker implements JnhwMh_MA___A_sI.ExceptionErased {
 
-    public JnhwMi_MA___A__I(MemorySegment methodAddress, String name) {
-        super(methodAddress, name, FunctionDescriptor.of(ValueLayout.ADDRESS.asUnbounded(), ValueLayout.ADDRESS, ValueLayout.JAVA_INT));
+    public JnhwMi_MA___A__I(MemorySegment methodAddress, String name, long resultTargetSize) {
+        super(methodAddress, name, FunctionDescriptor.of(addressLayoutForTargetSize(resultTargetSize), ValueLayout.ADDRESS, ValueLayout.JAVA_INT));
     }
 
     @Override

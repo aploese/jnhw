@@ -93,7 +93,7 @@ public class JnhwStringBuilderTest {
 
     @Test
     public void testFormatCompact() throws Exception {
-        try (Arena ms = Arena.openConfined()) {
+        try (Arena arena = Arena.ofConfined()) {
             JsonStringBuilder jsb = new JsonStringBuilder("", "");
             jsb.appendByteMember("_byte", Byte.MAX_VALUE);
             jsb.appendCharMember("_char", 'a');
@@ -104,8 +104,8 @@ public class JnhwStringBuilderTest {
             }, "]");
             jsb.appendShortMember("_short", Short.MAX_VALUE);
             jsb.appendStringMember("_string", "Hello!");
-            jsb.appendStruct32Member("_struct32", new StructTest(ms.allocate(16)));
-            jsb.appendStructArray32Member("array", new MemoryArrayTest(ms.allocate(12), 0));
+            jsb.appendStruct32Member("_struct32", new StructTest(arena.allocate(16)));
+            jsb.appendStructArray32Member("array", new MemoryArrayTest(arena.allocate(12), 0));
             assertEquals("{_byte : 127, _char : \"a\", _int : 2147483647, _long : 9223372036854775807, _flags : [ONE, TWO], _short : 32767, _string : \"Hello!\", _struct32 : {memory : \"00000000 00000000  00000000 00000000 | \u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\"}, array : [{i0 : 0x00, i1 : 0x00}, {i0 : 0x00, i1 : 0x01}, {i0 : 0x00, i1 : 0x02}]}", jsb.toString()
             );
         }
@@ -113,7 +113,7 @@ public class JnhwStringBuilderTest {
 
     @Test
     public void testFormatPretty() throws Exception {
-        try (Arena ms = Arena.openConfined()) {
+        try (Arena arena = Arena.ofConfined()) {
             JsonStringBuilder jsb = new JsonStringBuilder("", " ");
             jsb.appendByteMember("_byte", Byte.MAX_VALUE);
             jsb.appendCharMember("_char", 'a');
@@ -124,8 +124,8 @@ public class JnhwStringBuilderTest {
             }, "]");
             jsb.appendShortMember("_short", Short.MAX_VALUE);
             jsb.appendStringMember("_string", "Hello!");
-            jsb.appendStruct32Member("_struct32", new StructTest(ms.allocate(16)));
-            jsb.appendStructArray32Member("array", new MemoryArrayTest(ms.allocate(12), 0));
+            jsb.appendStruct32Member("_struct32", new StructTest(arena.allocate(16)));
+            jsb.appendStructArray32Member("array", new MemoryArrayTest(arena.allocate(12), 0));
             assertEquals("""
                          {
                           _byte : 127,

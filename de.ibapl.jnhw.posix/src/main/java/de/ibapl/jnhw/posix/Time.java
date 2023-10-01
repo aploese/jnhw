@@ -69,8 +69,8 @@ import de.ibapl.jnhw.util.posix.downcall.JnhwMh_clock_t___V;
 import de.ibapl.jnhw.util.posix.memory.PosixStruct;
 import java.io.IOException;
 import java.lang.foreign.Arena;
+import java.lang.foreign.MemoryLayout;
 import java.lang.foreign.MemorySegment;
-import java.lang.foreign.SegmentScope;
 import java.lang.foreign.SymbolLookup;
 import java.lang.foreign.ValueLayout;
 import java.util.Objects;
@@ -155,11 +155,11 @@ public class Time {
             }
         }
 
-        public final static Itimerspec tryAllocateNative(SegmentScope ms) throws NoSuchNativeTypeException {
+        public final static Itimerspec tryAllocateNative(Arena arena) throws NoSuchNativeTypeException {
             if (alignof == null) {
                 throw new NoSuchNativeTypeException("Itimerspec");
             }
-            return new Itimerspec(MemorySegment.allocateNative(sizeof, alignof.alignof, ms), 0);
+            return new Itimerspec(arena.allocate(sizeof, alignof.alignof), 0);
         }
         /**
          * Timer period. After the timer expires after it_value, it will fire
@@ -255,15 +255,15 @@ public class Time {
         public final static Alignment alignof = PosixDataType.timer_t != null ? PosixDataType.timer_t.ALIGN_OF : null;
         public final static int sizeof = PosixDataType.timer_t != null ? PosixDataType.timer_t.SIZE_OF : 0;
 
-        public static Timer_t tryAllocateNative(SegmentScope ms) throws NoSuchNativeTypeException {
+        public static Timer_t tryAllocateNative(Arena arena) throws NoSuchNativeTypeException {
             if (alignof == null) {
                 throw new NoSuchNativeTypeException("Timer_t");
             }
-            return new Timer_t(MemorySegment.allocateNative(sizeof, alignof.alignof, ms), 0);
+            return new Timer_t(arena.allocate(sizeof, alignof.alignof), 0);
         }
 
-        public static Timer_t ofAddress(long address, SegmentScope ms) throws NoSuchNativeTypeException {
-            return new Timer_t(MemorySegment.ofAddress(address, sizeof, ms), 0);
+        public static Timer_t ofAddress(long address, Arena arena) throws NoSuchNativeTypeException {
+            return new Timer_t(MemorySegment.ofAddress(address).reinterpret(sizeof, arena, null), 0);
         }
 
         public Timer_t(MemorySegment memorySegment, long offset) throws NoSuchNativeTypeException {
@@ -304,23 +304,23 @@ public class Time {
 
     public final static class PtrTimer_t extends IntPtr_t<Timer_t> {
 
-        public static PtrTimer_t tryAllocateNative(SegmentScope ms) throws NoSuchNativeTypeException {
+        public static PtrTimer_t tryAllocateNative(Arena arena) throws NoSuchNativeTypeException {
             if (Timer_t.alignof == null) {
                 throw new NoSuchNativeTypeException("Timer_t");
             }
-            return new PtrTimer_t(MemorySegment.allocateNative(DATA_TYPE.SIZE_OF, DATA_TYPE.ALIGN_OF.alignof, ms), 0);
+            return new PtrTimer_t(arena.allocate(DATA_TYPE.SIZE_OF, DATA_TYPE.ALIGN_OF.alignof), 0);
         }
 
         public PtrTimer_t(MemorySegment memorySegment, long offset) {
             super(memorySegment, offset);
         }
 
-        public Timer_t get(final SegmentScope ms) {
+        public Timer_t get(final Arena arena) {
             try {
                 return super.getAs();
             } catch (InvalidCacheException ice) {
                 try {
-                    return Timer_t.ofAddress(super.get().address(), ms);
+                    return Timer_t.ofAddress(super.get().address(), arena);
                 } catch (NoSuchNativeTypeException e) {
                     throw new RuntimeException(e);
                 }
@@ -357,8 +357,8 @@ public class Time {
             }
         }
 
-        public final static Timespec allocateNative(SegmentScope ms) {
-            return new Timespec(MemorySegment.allocateNative(sizeof, alignof.alignof, ms), 0);
+        public final static Timespec allocateNative(Arena arena) {
+            return new Timespec(arena.allocate(sizeof, alignof.alignof), 0);
         }
 
         public final static Timespec wrap(OpaqueMemory mem, long offset) {
@@ -497,16 +497,16 @@ public class Time {
             }
         }
 
-        public final static Tm allocateNative(SegmentScope ms) {
-            return new Tm(MemorySegment.allocateNative(sizeof, alignof.alignof, ms), 0);
+        public final static Tm allocateNative(Arena arena) {
+            return new Tm(arena.allocate(sizeof, alignof.alignof), 0);
         }
 
         public Tm(MemorySegment memorySegment, long offset) {
             super(memorySegment, offset, Tm.sizeof);
         }
 
-        public Tm(long baseAddress, SegmentScope ms) {
-            super(baseAddress, ms, Tm.sizeof);
+        public Tm(long baseAddress, Arena arena) {
+            super(baseAddress, arena, Tm.sizeof);
         }
 
         @Override
@@ -854,14 +854,16 @@ public class Time {
             LibcLoader.LIB_C_SYMBOL_LOOKUP,
             "asctime",
             BaseDataType.C_char_pointer,
-            BaseDataType.C_const_struct_pointer);
+            BaseDataType.C_const_struct_pointer,
+            Long.MAX_VALUE);//result is a string, which length is not known.
 
     private final static JnhwMh_MA___A__A.ExceptionErased asctime_r = JnhwMh_MA___A__A.mandatoryOf(
             LibcLoader.LIB_C_SYMBOL_LOOKUP,
             "asctime_r",
             BaseDataType.C_char_pointer,
             BaseDataType.C_const_struct_pointer,
-            BaseDataType.C_char_pointer);
+            BaseDataType.C_char_pointer,
+            0); //result is just a pointer with length 0!
 
     private final static JnhwMh_clock_t___V.ExceptionErased clock = JnhwMh_clock_t___V.mandatoryOf(
             LibcLoader.LIB_C_SYMBOL_LOOKUP,
@@ -909,14 +911,16 @@ public class Time {
             LibcLoader.LIB_C_SYMBOL_LOOKUP,
             "ctime",
             BaseDataType.C_char_pointer,
-            BaseDataType.C_const_pointer);
+            BaseDataType.C_const_pointer,
+            Long.MAX_VALUE);//result is a string, which length is not known.
 
     private final static JnhwMh_MA___A__A.ExceptionErased ctime_r = JnhwMh_MA___A__A.mandatoryOf(
             LibcLoader.LIB_C_SYMBOL_LOOKUP,
             "ctime_r",
             BaseDataType.C_char_pointer,
             BaseDataType.C_const_pointer,
-            BaseDataType.C_char_pointer);
+            BaseDataType.C_char_pointer,
+            0); //result is just a pointer with length 0!
 
     private final static JnhwMh__D__sL_sL.ExceptionErased difftime = JnhwMh__D__sL_sL.mandatoryOf(
             LibcLoader.LIB_C_SYMBOL_LOOKUP,
@@ -929,33 +933,38 @@ public class Time {
             LibcLoader.LIB_C_SYMBOL_LOOKUP,
             "getdate",
             BaseDataType.C_struct_pointer,
-            BaseDataType.C_char_pointer);
+            BaseDataType.C_char_pointer,
+            Tm.sizeof);
 
     private final static JnhwMh_MA___A.ExceptionErased gmtime = JnhwMh_MA___A.mandatoryOf(
             LibcLoader.LIB_C_SYMBOL_LOOKUP,
             "gmtime",
             BaseDataType.C_struct_pointer,
-            BaseDataType.C_pointer);
+            BaseDataType.C_pointer,
+            Tm.sizeof);
 
     private final static JnhwMh_MA___A__A.ExceptionErased gmtime_r = JnhwMh_MA___A__A.mandatoryOf(
             LibcLoader.LIB_C_SYMBOL_LOOKUP,
             "gmtime_r",
             BaseDataType.C_struct_pointer,
             BaseDataType.C_pointer,
-            BaseDataType.C_struct_pointer);
+            BaseDataType.C_struct_pointer,
+            0); //result is just a pointer with length 0!
 
     private final static JnhwMh_MA___A.ExceptionErased localtime = JnhwMh_MA___A.mandatoryOf(
             LibcLoader.LIB_C_SYMBOL_LOOKUP,
             "localtime",
             BaseDataType.C_struct_pointer,
-            BaseDataType.C_pointer);
+            BaseDataType.C_pointer,
+            Tm.sizeof);
 
     private final static JnhwMh_MA___A__A.ExceptionErased localtime_r = JnhwMh_MA___A__A.mandatoryOf(
             LibcLoader.LIB_C_SYMBOL_LOOKUP,
             "localtime_r",
             BaseDataType.C_struct_pointer,
             BaseDataType.C_pointer,
-            BaseDataType.C_struct_pointer);
+            BaseDataType.C_struct_pointer,
+            0); //result is just a pointer with length 0!
 
     private final static JnhwMh_sL___A.ExceptionErased mktime = JnhwMh_sL___A.mandatoryOf(
             LibcLoader.LIB_C_SYMBOL_LOOKUP,
@@ -995,7 +1004,8 @@ public class Time {
             BaseDataType.C_char_pointer,
             BaseDataType.C_const_char_pointer,
             BaseDataType.C_const_char_pointer,
-            BaseDataType.C_struct_pointer);
+            BaseDataType.C_struct_pointer,
+            Long.MAX_VALUE);//result is a string, which length is not known.
 
     private final static JnhwMh_sL___A.ExceptionErased time = JnhwMh_sL___A.mandatoryOf(
             LibcLoader.LIB_C_SYMBOL_LOOKUP,
@@ -1080,7 +1090,7 @@ public class Time {
         if (resultAdr.address() == 0L) {
             return null;
         } else {
-            return resultAdr.getUtf8String(0);
+            return buf.toMemorySegment().getUtf8String(0);
         }
     }
 
@@ -1242,7 +1252,7 @@ public class Time {
         if (resultAdr.address() == 0L) {
             return null;
         } else {
-            return resultAdr.getUtf8String(0);
+            return buf.toMemorySegment().getUtf8String(0);
         }
     }
 
@@ -1306,15 +1316,16 @@ public class Time {
      * available natively.
      */
     public final static Tm getdate(String string) throws NativeException, NoSuchNativeMethodException {
-        try (Arena ms = Arena.openConfined()) {
-            MemorySegment _string = ms.allocate(string.length() + 1);
+        try (Arena arena = Arena.ofConfined()) {
+            MemorySegment _string = arena.allocate(string.length() + 1);
             _string.setUtf8String(0, string);
             final MemorySegment result = getdate.invoke_MA___A(_string);
             if (result.address() == 0L) {
                 throw new NativeException("getdate");
             } else {
                 // getdate returns static memory - so do not attempt to free it...
-                return new Tm(result.address(), SegmentScope.global());
+                //TODO check if we can use result directly creating Tm()???
+                return new Tm(result.address(), Arena.global());
             }
         }
     }
@@ -1336,7 +1347,8 @@ public class Time {
             throw new NativeErrorException(Errno.errno());
         } else {
             // gmtime returns static memory - so do not attempt to free it...
-            return new Tm(result.address(), SegmentScope.global());
+            //TODO check if we can use result directly creating Tm()???
+            return new Tm(result.address(), Arena.global());
         }
     }
 
@@ -1378,7 +1390,8 @@ public class Time {
             throw new NativeErrorException(Errno.errno());
         } else {
             // localtime returns static memory - so do not attempt to free it...
-            return new Tm(result.address(), SegmentScope.global());
+            //TODO check if we can use result directly creating Tm()???
+            return new Tm(result.address(), Arena.global());
         }
     }
 
@@ -1457,9 +1470,9 @@ public class Time {
      * @return on succes the converted time otherwise {@code null}.
      */
     public final static String strftime(@size_t long maxsize, String format, Tm timeptr) {
-        try (Arena ms = Arena.openConfined()) {
-            MemorySegment s = ms.allocate(maxsize);
-            MemorySegment _format = ms.allocate(format.length() + 1);
+        try (Arena arena = Arena.ofConfined()) {
+            MemorySegment s = arena.allocate(maxsize);
+            MemorySegment _format = arena.allocate(format.length() + 1);
             _format.setUtf8String(0, format);
             final int result = strftime.invoke_sI___A_uL__A__P(s, maxsize, _format, timeptr);
             if (result == 0) {
@@ -1484,9 +1497,9 @@ public class Time {
      * @return on succes the converted time otherwise {@code null}.
      */
     public final static String strftime_l(@size_t long maxsize, String format, Tm timeptr, Locale.Locale_t locale) {
-        try (Arena ms = Arena.openConfined()) {
-            MemorySegment s = ms.allocate(maxsize);
-            MemorySegment _format = ms.allocate(format.length() + 1);
+        try (Arena arena = Arena.ofConfined()) {
+            MemorySegment s = arena.allocate(maxsize);
+            MemorySegment _format = arena.allocate(format.length() + 1);
             _format.setUtf8String(0, format);
             final int result = strftime_l.invoke_sI___A_uL_A__P__P(s, maxsize, _format, timeptr, locale);
             if (result == 0) {
@@ -1511,10 +1524,10 @@ public class Time {
      * character parsed.
      */
     public final static String strptime(String buf, String format, Tm tm) {
-        try (Arena ms = Arena.openConfined()) {
-            MemorySegment _format = ms.allocate(format.length() + 1);
+        try (Arena arena = Arena.ofConfined()) {
+            MemorySegment _format = arena.allocate(format.length() + 1);
             _format.setUtf8String(0, format);
-            MemorySegment _buf = ms.allocate(buf.length() + 1);
+            MemorySegment _buf = arena.allocate(buf.length() + 1);
             _buf.setUtf8String(0, buf);
             final MemorySegment result = strptime.invoke_MA__A_A_P(_buf, _format, tm);
             if (result.address() == 0L) {
@@ -1677,7 +1690,8 @@ public class Time {
     public final static String[] tzname() {
         final String[] result = new String[TZNAME_ENTRIES];
         for (int i = 0; i < TZNAME_ENTRIES; i++) {
-            result[i] = tzname.get(ValueLayout.ADDRESS.asUnbounded(), i * ValueLayout.ADDRESS.byteSize()).getUtf8String(0);
+            // its a string so we do not know the size in advance so use Long.MAX_VALUE... TODO set saveguards???
+            result[i] = tzname.get(ValueLayout.ADDRESS.withTargetLayout(MemoryLayout.paddingLayout(Long.MAX_VALUE)), i * ValueLayout.ADDRESS.byteSize()).getUtf8String(0);
         }
         return result;
     }

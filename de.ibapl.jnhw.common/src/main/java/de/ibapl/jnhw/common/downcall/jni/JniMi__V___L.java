@@ -23,8 +23,6 @@ package de.ibapl.jnhw.common.downcall.jni;
 
 import de.ibapl.jnhw.common.downcall.JnhwMh__V__sL;
 import java.lang.foreign.MemorySegment;
-import java.lang.foreign.MemorySegment;
-import java.lang.foreign.SegmentScope;
 
 /**
  *

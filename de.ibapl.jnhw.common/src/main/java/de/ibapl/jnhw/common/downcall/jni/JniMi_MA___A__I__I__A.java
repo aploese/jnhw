@@ -31,23 +31,35 @@ import java.lang.foreign.MemorySegment;
  */
 public class JniMi_MA___A__I__I__A extends JniMethodInvoker implements JnhwMh_MA___A_BL_BL__A.ExceptionErased {
 
-    protected final static native long invoke__L___A__I__I__A(long address, long arg1, int arg2, int arg3, long arg4);
+    protected final static native long invoke__MA___A__I__I__A(long address, long arg1, int arg2, int arg3, long arg4);
 
-    public JniMi_MA___A__I__I__A(MemorySegment methodAddress, String name) {
+    private final long targetByteSize;
+
+    public JniMi_MA___A__I__I__A(MemorySegment methodAddress, String name, long targetByteSize) {
         super(methodAddress, name);
+        this.targetByteSize = targetByteSize;
     }
 
     @Override
     public MemorySegment invoke_MA___A_BL_BL__A(MemorySegment arg1, boolean arg2, boolean arg3, MemorySegment arg4) {
         try {
-            return MemorySegment.ofAddress(
-                    invoke__L___A__I__I__A(
-                            ns.address(),
-                            arg1.address(),
-                            ConversionsJava2Native.boolean_TO_int32_t(arg2),
-                            ConversionsJava2Native.boolean_TO_int32_t(arg3),
-                            arg4.address()),
-                     Long.MAX_VALUE);
+            if (targetByteSize == 0) {
+                return MemorySegment.ofAddress(
+                        invoke__MA___A__I__I__A(
+                                ns.address(),
+                                arg1.address(),
+                                ConversionsJava2Native.boolean_TO_int32_t(arg2),
+                                ConversionsJava2Native.boolean_TO_int32_t(arg3),
+                                arg4.address()));
+            } else {
+                return MemorySegment.ofAddress(
+                        invoke__MA___A__I__I__A(
+                                ns.address(),
+                                arg1.address(),
+                                ConversionsJava2Native.boolean_TO_int32_t(arg2),
+                                ConversionsJava2Native.boolean_TO_int32_t(arg3),
+                                arg4.address())).reinterpret(targetByteSize);
+            }
         } catch (IllegalArgumentException | NullPointerException e) {
             throw e;
         } catch (Throwable t) {

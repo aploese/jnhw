@@ -24,8 +24,8 @@ package de.ibapl.jnhw.common.memory;
 import de.ibapl.jnhw.common.annotation.int64_t;
 import de.ibapl.jnhw.common.datatypes.BaseDataType;
 import java.io.IOException;
+import java.lang.foreign.Arena;
 import java.lang.foreign.MemorySegment;
-import java.lang.foreign.SegmentScope;
 
 /**
  *
@@ -36,8 +36,8 @@ public class Int64_t extends NativeIntNumber<Long> {
 
     public final static BaseDataType DATA_TYPE = BaseDataType.int64_t;
 
-    public static Int64_t allocateNative(SegmentScope ms) {
-        return new Int64_t(MemorySegment.allocateNative(DATA_TYPE.SIZE_OF, DATA_TYPE.ALIGN_OF.alignof, ms), 0);
+    public static Int64_t allocateNative(Arena arena) {
+        return new Int64_t(arena.allocate(DATA_TYPE.SIZE_OF, DATA_TYPE.ALIGN_OF.alignof), 0);
     }
 
     public static Int64_t map(OpaqueMemory mem, long offset) {

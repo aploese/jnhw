@@ -102,13 +102,13 @@ public class PointerArrayTest {
     @Test
     @SuppressWarnings("unchecked")
     public void testSetAndGet() throws InvalidCacheException {
-        try (Arena ms = Arena.openConfined()) {
-            final Int8_t element1 = Int8_t.allocateNative(ms.scope());
+        try (Arena arena = Arena.ofConfined()) {
+            final Int8_t element1 = Int8_t.allocateNative(arena);
             element1.int8_t((byte) 1);
-            final Int8_t element2 = Int8_t.allocateNative(ms.scope());
+            final Int8_t element2 = Int8_t.allocateNative(arena);
             element2.int8_t((byte) 2);
 
-            PointerArray<Int8_t> instance = new PointerArray<>(ms.allocate(16 * BaseDataType.uintptr_t.SIZE_OF), 0, 16);
+            PointerArray<Int8_t> instance = new PointerArray<>(arena.allocate(16 * BaseDataType.uintptr_t.SIZE_OF), 0, 16);
 
             instance.set(1, element1);
             Assertions.assertEquals(1, instance.getAs(1).int8_t());
@@ -129,9 +129,9 @@ public class PointerArrayTest {
     @Test
     @SuppressWarnings("unchecked")
     public void testNativeToString() {
-        try (Arena ms = Arena.openConfined()) {
-            PointerArray<OpaqueMemory> instance = new PointerArray<>(ms.allocate(6 * BaseDataType.uintptr_t.SIZE_OF), 0, 6);
-            OpaqueMemory element1 = MemoryHeap.wrap(ms.allocate(1));
+        try (Arena arena = Arena.ofConfined()) {
+            PointerArray<OpaqueMemory> instance = new PointerArray<>(arena.allocate(6 * BaseDataType.uintptr_t.SIZE_OF), 0, 6);
+            OpaqueMemory element1 = MemoryHeap.wrap(arena.allocate(1));
             instance.set(1, element1);
             String result = instance.nativeToString();
             Assertions.assertEquals("[null, " + element1.nativeToString() + ", null, null, null, null]", result);
@@ -141,8 +141,8 @@ public class PointerArrayTest {
     @Test
     @SuppressWarnings("unchecked")
     public void testArrayBounds() {
-        try (Arena ms = Arena.openConfined()) {
-            PointerArray<Pointer> instance = new PointerArray<>(ms.allocate(2 * BaseDataType.uintptr_t.SIZE_OF), 0, 2);
+        try (Arena arena = Arena.ofConfined()) {
+            PointerArray<Pointer> instance = new PointerArray<>(arena.allocate(2 * BaseDataType.uintptr_t.SIZE_OF), 0, 2);
 
             Assertions.assertThrows(IndexOutOfBoundsException.class, () -> {
                 instance.set(-1, Pointer.NULL);

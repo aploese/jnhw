@@ -84,8 +84,8 @@ public class Uint16_tTest {
      */
     @Test
     public void testRawUint16_t() {
-        try (Arena ms = Arena.openConfined()) {
-            Uint16_t instance = Uint16_t.allocateNative(ms.scope());
+        try (Arena arena = Arena.ofConfined()) {
+            Uint16_t instance = Uint16_t.allocateNative(arena);
             short expResult = 0x2010;
             instance.uint16_t(expResult);
             assertEquals(expResult, instance.uint16_t());
@@ -97,8 +97,8 @@ public class Uint16_tTest {
 
     @Test
     public void testNativeToString() {
-        try (Arena ms = Arena.openConfined()) {
-            Uint16_t instance = new Uint16_t(ms.allocate(BaseDataType.uint16_t.SIZE_OF), 0);
+        try (Arena arena = Arena.ofConfined()) {
+            Uint16_t instance = new Uint16_t(arena.allocate(BaseDataType.uint16_t.SIZE_OF), 0);
             instance.uint16_t((short) -2);
             assertEquals(String.valueOf(0x0000FFFF & -2), instance.nativeToString());
             assertEquals(String.valueOf(Short.toUnsignedInt((short) -2)), instance.nativeToString());

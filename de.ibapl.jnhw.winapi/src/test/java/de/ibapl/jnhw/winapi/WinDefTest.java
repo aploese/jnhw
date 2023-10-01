@@ -33,22 +33,22 @@ import org.junit.jupiter.api.condition.EnabledOnOs;
 @EnabledOnOs(org.junit.jupiter.api.condition.OS.WINDOWS)
 public class WinDefTest {
 
-    private Arena ms;
+    private Arena arena;
 
     @BeforeEach
     public void setUp() throws Exception {
-        ms = Arena.openConfined();
+        arena = Arena.ofConfined();
     }
 
     @AfterEach
     public void tearDown() throws Exception {
-        ms.close();
+        arena.close();
     }
 
     @Test
     public void test_LPBYTE_stringValueOfNullTerminated() throws Exception {
         byte[] data = "HELLO WORLD!\0".getBytes(Charset.forName("UTF-16LE"));
-        WinDef.LPBYTE lpByte = WinDef.LPBYTE.allocateNative(64, ms.scope());
+        WinDef.LPBYTE lpByte = WinDef.LPBYTE.allocateNative(64, arena);
         OpaqueMemory.copy(data, 0, lpByte, 0, data.length);
         Assertions.assertEquals("HELLO WORLD!", WinDef.LPBYTE.getUnicodeString(lpByte, true, data.length));
     }

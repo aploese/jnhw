@@ -43,10 +43,10 @@ public final class MemoryAccessorImpl_L64 extends AbstractMemoryAccessorImpl {
         LAYOUT__UNSIGNED_LONG = ValueLayout.JAVA_LONG.withOrder(byteOrder);
     }
 
-    public MemoryAccessorImpl_L64(ByteOrder byteOrder, long alignmentBits) {
-        super(byteOrder, alignmentBits);
-        LAYOUT__LONG = ValueLayout.JAVA_LONG.withOrder(byteOrder).withBitAlignment(alignmentBits);
-        LAYOUT__UNSIGNED_LONG = ValueLayout.JAVA_LONG.withOrder(byteOrder).withBitAlignment(alignmentBits);
+    public MemoryAccessorImpl_L64(ByteOrder byteOrder, long byteAlignment) {
+        super(byteOrder, byteAlignment);
+        LAYOUT__LONG = ValueLayout.JAVA_LONG.withOrder(byteOrder).withByteAlignment(byteAlignment);
+        LAYOUT__UNSIGNED_LONG = ValueLayout.JAVA_LONG.withOrder(byteOrder).withByteAlignment(byteAlignment);
     }
 
     @Override

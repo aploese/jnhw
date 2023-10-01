@@ -50,10 +50,9 @@ public class SimpleSignalHandler extends SignalHandler {
                 case PRINT_MSG_AND_SYSTEM_EXIT ->
                     System.exit(value);
                 case PRINT_MSG_AND_CALL_OLD_HANDLER -> {
-                    try (Arena ms = Arena.openConfined()) {
+                    try (Arena arena = Arena.ofConfined()) {
                         JnhwMh__V__sI.of(
-                                MemorySegment.ofAddress(
-                                        originalHandler.toMemorySegment().address(), 0, ms.scope()),
+                                MemorySegment.ofAddress(originalHandler.toMemorySegment().address()),
                                 "testCallback",
                                 BaseDataType.C_int
                         ).invoke__V__sI(value);

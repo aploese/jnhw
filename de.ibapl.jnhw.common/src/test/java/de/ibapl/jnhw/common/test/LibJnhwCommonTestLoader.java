@@ -41,14 +41,14 @@ public final class LibJnhwCommonTestLoader {
     private final static Object loadLock = new Object();
     private static LoadState state = LoadState.INIT;
     public static SymbolLookup SYMBOL_LOOKUP = null;
-    private static Arena MEM_ARENA = Arena.openShared();
+    private static Arena MEM_ARENA = Arena.ofShared();
 
     static {
         LibJnhwCommonTestLoader.touch();
     }
 
     protected static void doLoadTestLib(String absoluteLibName) {
-        SYMBOL_LOOKUP = SymbolLookup.libraryLookup(absoluteLibName, MEM_ARENA.scope());
+        SYMBOL_LOOKUP = SymbolLookup.libraryLookup(absoluteLibName, MEM_ARENA);
     }
 
     public static LoadResult getLoadResult() {

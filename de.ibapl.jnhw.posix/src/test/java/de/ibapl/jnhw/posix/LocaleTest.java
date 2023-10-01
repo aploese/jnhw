@@ -102,7 +102,7 @@ public class LocaleTest {
         JnhwTestLogger.logAfterAll(testTnfo);
     }
 
-    private Arena ms;
+    private Arena arena;
 
     @Test
     public void testSizeof__locale_t() throws Exception {
@@ -112,12 +112,12 @@ public class LocaleTest {
     @BeforeEach
     public void setUp(TestInfo testInfo) throws Exception {
         JnhwTestLogger.logBeforeEach(testInfo);
-        ms = Arena.openConfined();
+        arena = Arena.ofConfined();
     }
 
     @AfterEach
     public void tearDown(TestInfo testInfo) throws Exception {
-        ms.close();
+        arena.close();
         JnhwTestLogger.logAfterEach(testInfo);
     }
 
@@ -153,7 +153,7 @@ public class LocaleTest {
      */
     @Test
     public void testLocaleconv() {
-        Locale.Lconv result = Locale.localeconv(ms.scope());
+        Locale.Lconv result = Locale.localeconv(arena);
         Assertions.assertNotNull(result);
         JnhwTestLogger.logTest("localeconv: " + result);
     }

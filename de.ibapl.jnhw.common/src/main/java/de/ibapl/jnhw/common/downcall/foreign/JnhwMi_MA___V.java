@@ -24,7 +24,6 @@ package de.ibapl.jnhw.common.downcall.foreign;
 import de.ibapl.jnhw.common.downcall.JnhwMh_MA___V;
 import java.lang.foreign.FunctionDescriptor;
 import java.lang.foreign.MemorySegment;
-import java.lang.foreign.ValueLayout;
 
 /**
  *
@@ -32,8 +31,8 @@ import java.lang.foreign.ValueLayout;
  */
 public class JnhwMi_MA___V extends JnhwMethodInvoker implements JnhwMh_MA___V.ExceptionErased {
 
-    public JnhwMi_MA___V(MemorySegment methodAddress, String name) {
-        super(methodAddress, name, FunctionDescriptor.of(ValueLayout.ADDRESS.asUnbounded()));
+    public JnhwMi_MA___V(MemorySegment methodAddress, String name, long resultTargetSize) {
+        super(methodAddress, name, FunctionDescriptor.of(addressLayoutForTargetSize(resultTargetSize)));
     }
 
     @Override

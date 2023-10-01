@@ -44,27 +44,27 @@ public interface JnhwMh_MA___V extends JnhwMethodHandle {
         MemorySegment invoke_MA___V();
     }
 
-    static JnhwMh_MA___V.ExceptionErased mandatoryOf(SymbolLookup symbolLookup, String name, BaseDataType result) {
+    static JnhwMh_MA___V.ExceptionErased mandatoryOf(SymbolLookup symbolLookup, String name, BaseDataType result, long resultTargetSize) {
         return Util.buidExistingMethod(symbolLookup,
                 name,
-                (oms) -> of(oms, name, result));
+                (oms) -> of(oms, name, result, resultTargetSize));
     }
 
-    static JnhwMh_MA___V optionalOf(SymbolLookup symbolLookup, String name, BaseDataType result) {
+    static JnhwMh_MA___V optionalOf(SymbolLookup symbolLookup, String name, BaseDataType result, long resultTargetSize) {
         return Util.buidOptionalMethod(symbolLookup,
                 name,
-                (oms) -> of(oms, name, result),
+                (oms) -> of(oms, name, result, resultTargetSize),
                 () -> (JnhwMh_MA___V) () -> {
                     throw new NoSuchNativeMethodException(name);
                 });
     }
 
-    public static JnhwMh_MA___V.ExceptionErased of(MemorySegment methodAddress, String name, BaseDataType result) {
+    public static JnhwMh_MA___V.ExceptionErased of(MemorySegment methodAddress, String name, BaseDataType result, long resultTargetSize) {
         return switch (result) {
             case intptr_t, uintptr_t ->
                 NativeProvider.getProvider(
-                () -> new JnhwMi_MA___V(methodAddress, name),
-                () -> new JniMi_MA___V(methodAddress, name));
+                () -> new JnhwMi_MA___V(methodAddress, name, resultTargetSize),
+                () -> new JniMi_MA___V(methodAddress, name, resultTargetSize));
             default ->
                 throw new IllegalArgumentException("result unexpected data type: " + name + " " + result);
         };

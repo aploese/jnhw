@@ -26,8 +26,8 @@ import de.ibapl.jnhw.common.datatypes.BaseDataType;
 import de.ibapl.jnhw.common.memory.NativeIntNumber;
 import de.ibapl.jnhw.libloader.MultiarchTupelBuilder;
 import de.ibapl.jnhw.util.winapi.WinApiDataType;
+import java.lang.foreign.Arena;
 import java.lang.foreign.MemorySegment;
-import java.lang.foreign.SegmentScope;
 
 /**
  * Wrapper around the
@@ -79,8 +79,8 @@ public abstract class BaseTsd {
 
         public final static BaseDataType DATA_TYPE = WinApiDataType.ULONG_PTR;
 
-        public static PULONG_PTR allocateNative(SegmentScope ms) {
-            final MemorySegment segment = MemorySegment.allocateNative(DATA_TYPE.SIZE_OF, DATA_TYPE.ALIGN_OF.alignof, ms);
+        public static PULONG_PTR allocateNative(Arena arena) {
+            final MemorySegment segment = arena.allocate(DATA_TYPE.SIZE_OF, DATA_TYPE.ALIGN_OF.alignof);
             switch (DATA_TYPE) {
                 case uint32_t -> {
                     return new PULONG_PTR32(segment, 0);

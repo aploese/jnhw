@@ -31,8 +31,8 @@ import de.ibapl.jnhw.common.memory.OpaquePointer;
 import de.ibapl.jnhw.common.memory.layout.Alignment;
 import de.ibapl.jnhw.util.winapi.WinApiDataType;
 import de.ibapl.jnhw.util.winapi.memory.WinApiStruct;
+import java.lang.foreign.Arena;
 import java.lang.foreign.MemorySegment;
-import java.lang.foreign.SegmentScope;
 import java.lang.ref.WeakReference;
 import java.util.LinkedList;
 import java.util.List;
@@ -54,8 +54,8 @@ public final class Winnt {
 
         public final int length;
 
-        public static ArrayOfHandle allocateNative(int length, SegmentScope ms) {
-            return new ArrayOfHandle(MemorySegment.allocateNative(length * WinApiDataType.HANDLE.SIZE_OF, WinApiDataType.HANDLE.ALIGN_OF.alignof, ms), length);
+        public static ArrayOfHandle allocateNative(int length, Arena arena) {
+            return new ArrayOfHandle(arena.allocate(length * WinApiDataType.HANDLE.SIZE_OF, WinApiDataType.HANDLE.ALIGN_OF.alignof), length);
         }
 
         public ArrayOfHandle(MemorySegment memorySegment, int length) {
@@ -198,8 +198,8 @@ public final class Winnt {
 
         private final static int SIZE_OF_WCHAR = WinApiDataType.WCHAR.SIZE_OF;
 
-        public static LPWSTR allocateNative(int stringLength, SegmentScope ms) {
-            return new LPWSTR(MemorySegment.allocateNative(stringLength * SIZE_OF_WCHAR, 2, ms), 0, stringLength);
+        public static LPWSTR allocateNative(int stringLength, Arena arena) {
+            return new LPWSTR(arena.allocate(stringLength * SIZE_OF_WCHAR, 2), 0, stringLength);
         }
 
         static int getWCHAR_Length(LPWSTR value) {
@@ -292,12 +292,12 @@ public final class Winnt {
      */
     public static class PHANDLE extends OpaqueMemory {
 
-        public static PHANDLE allocateNative(SegmentScope ms) {
-            return new PHANDLE(MemorySegment.allocateNative(SIZE_OF, ALIGN_OF.alignof, ms), 0);
+        public static PHANDLE allocateNative(Arena arena) {
+            return new PHANDLE(arena.allocate(SIZE_OF, ALIGN_OF.alignof), 0);
         }
 
-        public static PHANDLE allocateNative(HANDLE value, SegmentScope ms) {
-            return new PHANDLE(MemorySegment.allocateNative(SIZE_OF, ALIGN_OF.alignof, ms), 0, value);
+        public static PHANDLE allocateNative(HANDLE value, Arena arena) {
+            return new PHANDLE(arena.allocate(SIZE_OF, ALIGN_OF.alignof), 0, value);
         }
 
         @FunctionalInterface

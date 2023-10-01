@@ -22,8 +22,8 @@
 package de.ibapl.jnhw.winapi;
 
 import de.ibapl.jnhw.common.annotation.Include;
-import de.ibapl.jnhw.common.exception.NativeErrorException;
 import de.ibapl.jnhw.common.downcall.JnhwMh_MA__uI;
+import de.ibapl.jnhw.common.exception.NativeErrorException;
 import de.ibapl.jnhw.util.winapi.Kernel32Loader;
 import de.ibapl.jnhw.util.winapi.WinApiDataType;
 import de.ibapl.jnhw.winapi.Winnt.HANDLE;
@@ -42,7 +42,8 @@ public class ProcessEnv {
             Kernel32Loader.DLL_KERNEL32_SYMBOL_LOOKUP,
             "GetStdHandle",
             WinApiDataType.HANDLE,
-            WinApiDataType.DWORD);
+            WinApiDataType.DWORD,
+            0L);//Just a pointer with length 0!
 
     /**
      * <a href="https://docs.microsoft.com/en-us/windows/console/getstdhandle">GetStdHandle</a>

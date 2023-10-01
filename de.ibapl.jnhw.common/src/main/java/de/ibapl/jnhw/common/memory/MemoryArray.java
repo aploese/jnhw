@@ -24,8 +24,8 @@ package de.ibapl.jnhw.common.memory;
 import de.ibapl.jnhw.common.datatypes.BaseDataType;
 import de.ibapl.jnhw.common.memory.layout.Alignment;
 import java.io.IOException;
+import java.lang.foreign.Arena;
 import java.lang.foreign.MemorySegment;
-import java.lang.foreign.SegmentScope;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.Spliterator;
@@ -53,8 +53,8 @@ public class MemoryArray<T extends OpaqueMemory> extends OpaqueMemory implements
 
     }
 
-    public static <T extends OpaqueMemory> MemoryArray<T> allocateNative(SegmentScope ms, T[] array, ElementFactory<T> factory, Alignment alignment, long elementSizeInBytes) {
-        return new MemoryArray<>(MemorySegment.allocateNative(array.length * elementSizeInBytes, alignment.alignof, ms), 0, array, factory, elementSizeInBytes);
+    public static <T extends OpaqueMemory> MemoryArray<T> allocateNative(Arena arena, T[] array, ElementFactory<T> factory, Alignment alignment, long elementSizeInBytes) {
+        return new MemoryArray<>(arena.allocate(array.length * elementSizeInBytes, alignment.alignof), 0, array, factory, elementSizeInBytes);
     }
 
     public static <T extends OpaqueMemory> MemoryArray<T> map(OpaqueMemory mem, long offset, T[] array, ElementFactory<T> factory, Alignment alignment, long elementSizeInBytes) {

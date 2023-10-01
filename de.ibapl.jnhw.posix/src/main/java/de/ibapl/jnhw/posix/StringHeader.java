@@ -67,20 +67,23 @@ public class StringHeader {
             LibcLoader.LIB_C_SYMBOL_LOOKUP,
             "strerror",
             BaseDataType.C_char_pointer,
-            BaseDataType.C_int);
+            BaseDataType.C_int,
+            Long.MAX_VALUE);//result is a string, which length is not known.
 
     private final static JnhwMh_MA__sI__A strerror_l = JnhwMh_MA__sI__A.optionalOf(
             LibcLoader.LIB_C_SYMBOL_LOOKUP,
             "strerror_l",
             BaseDataType.C_char_pointer,
             BaseDataType.C_int,
-            PosixDataType.locale_t);
+            PosixDataType.locale_t,
+            Long.MAX_VALUE);//result is a string, which length is not known.);
 
     private final static JnhwMh_MA__sI.ExceptionErased strsignal = JnhwMh_MA__sI.mandatoryOf(
             LibcLoader.LIB_C_SYMBOL_LOOKUP,
             "strsignal",
             BaseDataType.C_char_pointer,
-            BaseDataType.C_int);
+            BaseDataType.C_int,
+            Long.MAX_VALUE);//result is a string, which length is not known.
 
     /**
      * <b>POSIX:</b>
@@ -92,8 +95,7 @@ public class StringHeader {
         if (result.address() == 0L) {
             throw new NativeErrorException(Errno.errno());
         }
-        //TODO 1024 is a guess
-        return MemorySegment.ofAddress(result.address(), 1024).getUtf8String(0);
+        return result.getUtf8String(0);
     }
 
     /**

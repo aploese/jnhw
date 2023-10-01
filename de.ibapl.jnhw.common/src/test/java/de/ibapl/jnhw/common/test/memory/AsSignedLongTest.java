@@ -61,12 +61,12 @@ public class AsSignedLongTest {
 
     @Test
     public void testNative() {
-        try (Arena ms = Arena.openConfined()) {
-            AsSignedLong instance = AsSignedLong.allocateNative(BaseDataType.int32_t, ms.scope());
+        try (Arena arena = Arena.ofConfined()) {
+            AsSignedLong instance = AsSignedLong.allocateNative(BaseDataType.int32_t, arena);
             instance.setFromSignedLong(-33);
             assertEquals(-33, instance.getAsSignedLong());
             assertThrows(IllegalArgumentException.class, () -> instance.setFromSignedLong(Long.MAX_VALUE));
-            assertThrows(IllegalArgumentException.class, () -> new AsSignedLong(BaseDataType.uint8_t, ms.allocate(BaseDataType.uint8_t.SIZE_OF), 0));
+            assertThrows(IllegalArgumentException.class, () -> new AsSignedLong(BaseDataType.uint8_t, arena.allocate(BaseDataType.uint8_t.SIZE_OF), 0));
         }
     }
 

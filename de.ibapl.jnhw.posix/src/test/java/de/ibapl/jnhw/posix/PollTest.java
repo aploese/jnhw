@@ -70,23 +70,23 @@ public class PollTest {
         JnhwTestLogger.logAfterAll(testTnfo);
     }
 
-    private Arena ms;
+    private Arena arena;
 
     @BeforeEach
     public void setUp(TestInfo testInfo) throws Exception {
         JnhwTestLogger.logBeforeEach(testInfo);
-        ms = Arena.openConfined();
+        arena = Arena.ofConfined();
     }
 
     @AfterEach
     public void tearDown(TestInfo testInfo) {
-        ms.close();
+        arena.close();
         JnhwTestLogger.logAfterEach(testInfo);
     }
 
     @Test
     public void testCreatePollFd() throws Exception {
-        Poll.PollFds pollFds = Poll.PollFds.allocateNative(ms.scope(), 2);
+        Poll.PollFds pollFds = Poll.PollFds.allocateNative(arena, 2);
     }
 
     @Test
@@ -103,7 +103,7 @@ public class PollTest {
             case 4 -> {
                 Assertions.assertEquals(Alignment.AT_4, PosixDataType.nfds_t.ALIGN_OF);
                 Assertions.assertTrue(PosixDataType.nfds_t.UNSIGNED);
-                Poll.Nfds_t instance = Poll.Nfds_t.allocateNative(ms.scope());
+                Poll.Nfds_t instance = Poll.Nfds_t.allocateNative(arena);
                 Assertions.assertThrows(
                         IllegalArgumentException.class,
                         () -> instance.setFromUnsignedLong(0x8070605040302010L));
@@ -120,7 +120,7 @@ public class PollTest {
             case 8 -> {
                 Assertions.assertEquals(Alignment.AT_8, PosixDataType.nfds_t.ALIGN_OF);
                 Assertions.assertTrue(PosixDataType.nfds_t.UNSIGNED);
-                Poll.Nfds_t instance = Poll.Nfds_t.allocateNative(ms.scope());
+                Poll.Nfds_t instance = Poll.Nfds_t.allocateNative(arena);
                 instance.setFromUnsignedLong(0x8070605040302010L);
                 assertEquals(0x8070605040302010L, instance.getAsUnsignedLong());
                 assertEquals(Long.toUnsignedString(0x8070605040302010L), instance.nativeToString());

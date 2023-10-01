@@ -32,24 +32,39 @@ public class JniMi_MA___A__I__I__A__I__I__A extends JniMethodInvoker implements 
 
     protected final static native long invoke_MA___A__I__I__A__I__I__A(long address, long arg1, int arg2, int arg3, long arg4, int arg5, int arg6, long arg7);
 
-    public JniMi_MA___A__I__I__A__I__I__A(MemorySegment methodAddress, String name) {
+    private final long targetByteSize;
+
+    public JniMi_MA___A__I__I__A__I__I__A(MemorySegment methodAddress, String name, long targetByteSize) {
         super(methodAddress, name);
+        this.targetByteSize = targetByteSize;
     }
 
     @Override
     public MemorySegment invoke_MA___A_uI_uI__A_uI_uI__A(MemorySegment arg1, int arg2, int arg3, MemorySegment arg4, int arg5, int arg6, MemorySegment arg7) {
         try {
-            return MemorySegment.ofAddress(
-                    invoke_MA___A__I__I__A__I__I__A(
-                            ns.address(),
-                            arg1.address(),
-                            arg2,
-                            arg3,
-                            arg4.address(),
-                            arg5,
-                            arg6,
-                            arg7.address()),
-                     Long.MAX_VALUE);
+            if (targetByteSize == 0) {
+                return MemorySegment.ofAddress(
+                        invoke_MA___A__I__I__A__I__I__A(
+                                ns.address(),
+                                arg1.address(),
+                                arg2,
+                                arg3,
+                                arg4.address(),
+                                arg5,
+                                arg6,
+                                arg7.address()));
+            } else {
+                return MemorySegment.ofAddress(
+                        invoke_MA___A__I__I__A__I__I__A(
+                                ns.address(),
+                                arg1.address(),
+                                arg2,
+                                arg3,
+                                arg4.address(),
+                                arg5,
+                                arg6,
+                                arg7.address())).reinterpret(targetByteSize);
+            }
         } catch (IllegalArgumentException | NullPointerException e) {
             throw e;
         } catch (Throwable t) {

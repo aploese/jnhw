@@ -49,8 +49,8 @@ import de.ibapl.jnhw.posix.Time.Timespec;
 import de.ibapl.jnhw.util.posix.PosixDataType;
 import de.ibapl.jnhw.util.posix.memory.PosixStruct;
 import java.io.IOException;
+import java.lang.foreign.Arena;
 import java.lang.foreign.MemorySegment;
-import java.lang.foreign.SegmentScope;
 import java.lang.foreign.SymbolLookup;
 import java.nio.ByteBuffer;
 
@@ -160,11 +160,11 @@ public class Aio {
          */
         public final Sigevent<T> aio_sigevent;
 
-        public static Aiocb tryAllocateNative(SegmentScope ms) throws NoSuchNativeTypeException {
+        public static Aiocb tryAllocateNative(Arena arena) throws NoSuchNativeTypeException {
             if (alignof == null) {
                 throw new NoSuchNativeTypeException("aiocb");
             }
-            return new Aiocb(MemorySegment.allocateNative(sizeof, alignof.alignof, ms), 0);
+            return new Aiocb(arena.allocate(sizeof, alignof.alignof), 0);
         }
 
         /**
@@ -172,11 +172,11 @@ public class Aio {
          *
          * @param address
          */
-        public static Aiocb tryOfAddress(long address, SegmentScope ms) throws NoSuchNativeTypeException {
+        public static Aiocb tryOfAddress(long address, Arena arena) throws NoSuchNativeTypeException {
             if (alignof == null) {
                 throw new NoSuchNativeTypeException("aiocb");
             }
-            return new Aiocb(MemorySegment.ofAddress(address, sizeof, ms), 0);
+            return new Aiocb(MemorySegment.ofAddress(address).reinterpret(sizeof, arena, null), 0);
         }
 
         public Aiocb(MemorySegment memorySegment, long offset) throws NoSuchNativeTypeException {
@@ -523,11 +523,11 @@ public class Aio {
      */
     public static final class Aiocbs extends PointerArray<Aiocb> {
 
-        public final static Aiocbs tryAllocateNative(SegmentScope ms, int arraylength) throws NoSuchNativeTypeException {
+        public final static Aiocbs tryAllocateNative(Arena arena, int arraylength) throws NoSuchNativeTypeException {
             if (Aiocb.alignof == null) {
                 throw new NoSuchNativeTypeException("aiocb");
             }
-            return new Aiocbs(MemorySegment.allocateNative(BaseDataType.uintptr_t.SIZE_OF * arraylength, BaseDataType.uintptr_t.ALIGN_OF.alignof, ms), 0, arraylength);
+            return new Aiocbs(arena.allocate(BaseDataType.uintptr_t.SIZE_OF * arraylength, BaseDataType.uintptr_t.ALIGN_OF.alignof), 0, arraylength);
         }
 
         public Aiocbs(MemorySegment memorySegment, long offset, int arrayLength) throws NoSuchNativeTypeException {

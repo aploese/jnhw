@@ -24,7 +24,6 @@ package de.ibapl.jnhw.libloader.libraries;
 import de.ibapl.jnhw.libloader.MultiarchTupelBuilder;
 import java.lang.foreign.Arena;
 import java.lang.foreign.MemorySegment;
-import java.lang.foreign.SegmentScope;
 import java.lang.foreign.SymbolLookup;
 import java.util.Optional;
 
@@ -35,16 +34,16 @@ import java.util.Optional;
 public final class LibcLoader {
 
     public final static SymbolLookup LIB_C_SYMBOL_LOOKUP;
-    private final static Arena LIB_C_MEMORY_ARENA = Arena.openShared();
+    private final static Arena LIB_C_MEMORY_ARENA = Arena.ofShared();
 
     static {
         LIB_C_SYMBOL_LOOKUP = switch (MultiarchTupelBuilder.getOS()) {
             case APPLE -> //TODO Quick and dirty ... Symbol
-                SymbolLookup.libraryLookup("libc.dylib", LIB_C_MEMORY_ARENA.scope());
+                SymbolLookup.libraryLookup("libc.dylib", LIB_C_MEMORY_ARENA);
             case FREE_BSD -> //TODO Quick and dirty ... Symbol
-                SymbolLookup.libraryLookup("libc.so.7", LIB_C_MEMORY_ARENA.scope());
+                SymbolLookup.libraryLookup("libc.so.7", LIB_C_MEMORY_ARENA);
             case LINUX -> //TODO Quick and dirty ... Symbol
-                SymbolLookup.libraryLookup("libc.so.6", LIB_C_MEMORY_ARENA.scope());
+                SymbolLookup.libraryLookup("libc.so.6", LIB_C_MEMORY_ARENA);
             default ->
                 throw new AssertionError("No idea where to find the libc");
         };
@@ -60,13 +59,13 @@ public final class LibcLoader {
     public final static Optional<MemorySegment> find(String name, long byteSize) {
         Optional<MemorySegment> _result = LIB_C_SYMBOL_LOOKUP.find(name);
         if (_result.isPresent()) {
-            return Optional.of(MemorySegment.ofAddress(_result.get().address(), byteSize, scope()));
+            return Optional.of(_result.get().reinterpret(byteSize));
         } else {
             return _result;
         }
     }
 
-    public final static SegmentScope scope() {
-        return LIB_C_MEMORY_ARENA.scope();
+    public final static Arena arena() {
+        return LIB_C_MEMORY_ARENA;
     }
 }

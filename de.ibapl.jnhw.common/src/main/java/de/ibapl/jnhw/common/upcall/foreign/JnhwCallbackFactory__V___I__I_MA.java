@@ -48,7 +48,7 @@ public class JnhwCallbackFactory__V___I__I_MA extends CallbackFactory__V___I__I_
 
     private MemorySegment registerCallBack(int index) throws NoSuchMethodException, IllegalAccessException {
         MethodHandle handle = MethodHandles.lookup().findStatic(JnhwCallbackFactory__V___I__I_MA.class, "trampoline_" + index, MethodType.methodType(void.class, int.class, int.class, MemorySegment.class));
-        return NATIVE_LINKER.upcallStub(handle, FunctionDescriptor.ofVoid(ValueLayout.JAVA_INT, ValueLayout.JAVA_INT, ValueLayout.ADDRESS.asUnbounded()), LibJnhwCommon.scope());
+        return NATIVE_LINKER.upcallStub(handle, FunctionDescriptor.ofVoid(ValueLayout.JAVA_INT, ValueLayout.JAVA_INT, ValueLayout.ADDRESS), LibJnhwCommon.arena());
     }
 
     /**

@@ -60,16 +60,16 @@ public sealed interface MemoryAccessor permits AbstractMemoryAccessorImpl {
         };
     }
 
-    static MemoryAccessor getMemoryAccessor(ByteOrder byteOrder, long alignmentBits) {
+    static MemoryAccessor getMemoryAccessor(ByteOrder byteOrder, long byteAlignment) {
         return switch (MultiarchTupelBuilder.getMemoryModel()) {
             case ILP32 ->
-                new MemoryAccessorImpl_ILP32(byteOrder, alignmentBits);
+                new MemoryAccessorImpl_ILP32(byteOrder, byteAlignment);
             case L64 ->
-                new MemoryAccessorImpl_L64(byteOrder, alignmentBits);
+                new MemoryAccessorImpl_L64(byteOrder, byteAlignment);
             case LLP64 ->
-                new MemoryAccessorImpl_LLP64(byteOrder, alignmentBits);
+                new MemoryAccessorImpl_LLP64(byteOrder, byteAlignment);
             case LP64 ->
-                new MemoryAccessorImpl_LP64(byteOrder, alignmentBits);
+                new MemoryAccessorImpl_LP64(byteOrder, byteAlignment);
             default ->
                 throw new IllegalStateException("Unknow memory model: " + MultiarchTupelBuilder.getMemoryModel());
         };

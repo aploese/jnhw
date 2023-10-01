@@ -57,14 +57,14 @@ public final class LibJnhwPosixTestLoader {
     private final static Object loadLock = new Object();
     private static LoadState state = LoadState.INIT;
     public static SymbolLookup SYMBOL_LOOKUP = null;
-    public final static Arena MEMORY_ARENA = Arena.openShared();
+    public final static Arena MEMORY_ARENA = Arena.ofShared();
 
     static {
         LibJnhwPosixTestLoader.touch();
     }
 
     protected static void doLoadTestLib(String absoluteLibName) {
-        SYMBOL_LOOKUP = SymbolLookup.libraryLookup(absoluteLibName, MEMORY_ARENA.scope());
+        SYMBOL_LOOKUP = SymbolLookup.libraryLookup(absoluteLibName, MEMORY_ARENA);
     }
 
     public static LoadResult getLoadResult() {
@@ -123,26 +123,26 @@ public final class LibJnhwPosixTestLoader {
         return JnhwMh_sI__sI_sB_sI_sI.mandatoryOf(SYMBOL_LOOKUP, name, BaseDataType.int32_t, BaseDataType.int32_t, BaseDataType.int8_t, BaseDataType.int32_t, BaseDataType.int32_t).invoke_sI__sI_sB_sI_sI(arg1, arg2, arg3, arg4);
     }
 
-    public static MemorySegment invoke_MA___V(String name) {
-        return JnhwMh_MA___V.mandatoryOf(SYMBOL_LOOKUP, name, BaseDataType.intptr_t).invoke_MA___V();
+    public static MemorySegment invoke_MA___V(String name, long targetSize) {
+        return JnhwMh_MA___V.mandatoryOf(SYMBOL_LOOKUP, name, BaseDataType.intptr_t, targetSize).invoke_MA___V();
     }
 
-    public static MemorySegment invoke_MA___A_sI(String name, MemorySegment arg1, int arg2) {
-        return JnhwMh_MA___A_sI.mandatoryOf(SYMBOL_LOOKUP, name, BaseDataType.uintptr_t, BaseDataType.uintptr_t, BaseDataType.int32_t).invoke_MA___A_sI(arg1, arg2);
+    public static MemorySegment invoke_MA___A_sI(String name, MemorySegment arg1, int arg2, long targetByteSize) {
+        return JnhwMh_MA___A_sI.mandatoryOf(SYMBOL_LOOKUP, name, BaseDataType.uintptr_t, BaseDataType.uintptr_t, BaseDataType.int32_t, targetByteSize).invoke_MA___A_sI(arg1, arg2);
     }
 
     public static long invoke_sL___V(String name) {
         return JnhwMh_sL___V.mandatoryOf(SYMBOL_LOOKUP, name, BaseDataType.int64_t).invoke_sL___V();
     }
 
-    public static MemorySegment invoke_MA___A(String name, MemorySegment arg1) {
-        return JnhwMh_MA___A.mandatoryOf(SYMBOL_LOOKUP, name, BaseDataType.uintptr_t, BaseDataType.uintptr_t).invoke_MA___A(arg1);
+    public static MemorySegment invoke_MA___A(String name, MemorySegment arg1, long targetByteSize) {
+        return JnhwMh_MA___A.mandatoryOf(SYMBOL_LOOKUP, name, BaseDataType.uintptr_t, BaseDataType.uintptr_t, targetByteSize).invoke_MA___A(arg1);
     }
 
     public static Integer getClassIntegerDefine(String name) {
-        try (Arena ms = Arena.openConfined()) {
-            Int32_t value = Int32_t.allocateNative(ms.scope());
-            MemorySegment result = invoke_MA___A("tryGetValueOf_" + name, value.toMemorySegment());
+        try (Arena arena = Arena.ofConfined()) {
+            Int32_t value = Int32_t.allocateNative(arena);
+            MemorySegment result = invoke_MA___A("tryGetValueOf_" + name, value.toMemorySegment(), 0);
             if (result.address() == 0L) {
                 return null;
             } else {
@@ -168,7 +168,7 @@ public final class LibJnhwPosixTestLoader {
     }
 
     public static MemorySegment getAdrDefine(String name) {
-        return invoke_MA___V("getValueOf_" + name);
+        return invoke_MA___V("getValueOf_" + name, 0);
     }
 
     public static MemorySegment find(String name) {
@@ -179,9 +179,9 @@ public final class LibJnhwPosixTestLoader {
     }
 
     public static MemorySegment tryGetAdrDefine(String name) {
-        try (Arena ms = Arena.openConfined()) {
-            IntPtr_t value = IntPtr_t.allocateNative(ms.scope());
-            MemorySegment result = invoke_MA___A("tryGetValueOf_" + name, value.toMemorySegment());
+        try (Arena arena = Arena.ofConfined()) {
+            IntPtr_t value = IntPtr_t.allocateNative(arena);
+            MemorySegment result = invoke_MA___A("tryGetValueOf_" + name, value.toMemorySegment(), 0);
             if (result.address() == 0L) {
                 return null;
             } else {

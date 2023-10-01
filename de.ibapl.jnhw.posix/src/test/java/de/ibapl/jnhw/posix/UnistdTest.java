@@ -36,7 +36,6 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.lang.foreign.Arena;
 import java.lang.foreign.MemorySegment;
-import java.lang.foreign.SegmentScope;
 import java.nio.ByteBuffer;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
@@ -74,7 +73,7 @@ public class UnistdTest {
         JnhwTestLogger.logAfterAll(testTnfo);
     }
 
-    private Arena ms;
+    private Arena arena;
 
     private int fd;
     byte[] readBytes = new byte[1024];
@@ -113,7 +112,7 @@ public class UnistdTest {
     public void setUp(TestInfo testInfo) throws Exception {
         JnhwTestLogger.logBeforeEach(testInfo);
         fd = -1;
-        ms = Arena.openConfined();
+        arena = Arena.ofConfined();
     }
 
     @AfterEach
@@ -122,7 +121,7 @@ public class UnistdTest {
         if (fd != -1) {
             Unistd.close(fd);
         }
-        ms.close();
+        arena.close();
         JnhwTestLogger.logAfterEach(testInfo);
     }
 
@@ -172,7 +171,7 @@ public class UnistdTest {
 
     @Test
     public void testBufReadWrongArgs() throws Exception {
-        Unistd.JnhwPipeFiledes filedes = Unistd.JnhwPipeFiledes.allocateNative(ms.scope());
+        Unistd.JnhwPipeFiledes filedes = Unistd.JnhwPipeFiledes.allocateNative(arena);
         Unistd.pipe(filedes);
         try {
             Assertions.assertThrows(NullPointerException.class, () -> {
@@ -198,7 +197,7 @@ public class UnistdTest {
 
     @Test
     public void testBufWriteWrongArgs() throws Exception {
-        Unistd.JnhwPipeFiledes filedes = Unistd.JnhwPipeFiledes.allocateNative(ms.scope());
+        Unistd.JnhwPipeFiledes filedes = Unistd.JnhwPipeFiledes.allocateNative(arena);
         Unistd.pipe(filedes);
         try {
             Assertions.assertThrows(NullPointerException.class, () -> {
@@ -289,7 +288,7 @@ public class UnistdTest {
 
     @Test
     public void testPipe() throws Exception {
-        Unistd.JnhwPipeFiledes filedes = Unistd.JnhwPipeFiledes.allocateNative(ms.scope());
+        Unistd.JnhwPipeFiledes filedes = Unistd.JnhwPipeFiledes.allocateNative(arena);
         Unistd.pipe(filedes);
         try {
             int written = Unistd.write(filedes.writeFd(), writeBytes);
@@ -307,7 +306,7 @@ public class UnistdTest {
 
     @Test
     public void testPipeWithHeapBufferOffset() throws Exception {
-        Unistd.JnhwPipeFiledes filedes = Unistd.JnhwPipeFiledes.allocateNative(ms.scope());
+        Unistd.JnhwPipeFiledes filedes = Unistd.JnhwPipeFiledes.allocateNative(arena);
         Unistd.pipe(filedes);
         try {
             final int BYTES_TO_WRITE = 4;
@@ -342,7 +341,7 @@ public class UnistdTest {
 
     @Test
     public void testPipeWithReadOnlyBuffer() throws Exception {
-        Unistd.JnhwPipeFiledes filedes = Unistd.JnhwPipeFiledes.allocateNative(ms.scope());
+        Unistd.JnhwPipeFiledes filedes = Unistd.JnhwPipeFiledes.allocateNative(arena);
         Unistd.pipe(filedes);
         try {
             final ByteBuffer writeBuffer = ByteBuffer.wrap(this.writeBytes).asReadOnlyBuffer();
@@ -370,8 +369,8 @@ public class UnistdTest {
             return new Int32_t(memorySegment, elementoffset);
         }
 
-        public final static TestPipeFiledes_1 allocateNative(SegmentScope ms) {
-            return new TestPipeFiledes_1(MemorySegment.allocateNative(Int32_t.DATA_TYPE.SIZE_OF * ARRAY_LENGTH, Int32_t.DATA_TYPE.ALIGN_OF.alignof, ms), 0);
+        public final static TestPipeFiledes_1 allocateNative(Arena arena) {
+            return new TestPipeFiledes_1(arena.allocate(Int32_t.DATA_TYPE.SIZE_OF * ARRAY_LENGTH, Int32_t.DATA_TYPE.ALIGN_OF.alignof), 0);
         }
 
         public TestPipeFiledes_1(MemorySegment memorySegment, long offset) {
@@ -385,7 +384,7 @@ public class UnistdTest {
         Assertions.assertThrows(NullPointerException.class, () -> {
             Unistd.pipe(null);
         });
-        TestPipeFiledes_1 filedes = TestPipeFiledes_1.allocateNative(ms.scope());
+        TestPipeFiledes_1 filedes = TestPipeFiledes_1.allocateNative(arena);
         Assertions.assertThrows(IllegalArgumentException.class, () -> {
             Unistd.pipe(filedes);
         });
@@ -421,7 +420,7 @@ public class UnistdTest {
     public void testReadOpaqueMemory() throws Exception {
         writeData();
         fd = Fcntl.open(f.getAbsolutePath(), Fcntl.O_RDONLY);
-        MemoryHeap om = MemoryHeap.wrap(ms.allocate(TEST_DATA.length));
+        MemoryHeap om = MemoryHeap.wrap(arena.allocate(TEST_DATA.length));
         long read = Unistd.read(fd, om, POS, LEN);
         Assertions.assertEquals(LEN, read);
         byte[] result = OpaqueMemory.toBytes(om);
@@ -433,7 +432,7 @@ public class UnistdTest {
         writeData();
         fd = Fcntl.open(f.getAbsolutePath(), Fcntl.O_RDONLY);
         byte[] result = new byte[TEST_DATA.length];
-        Int8_t data = Int8_t.allocateNative(ms.scope());
+        Int8_t data = Int8_t.allocateNative(arena);
         for (int i = POS; i < POS + LEN; i++) {
             long read = Unistd.read(fd, data);
             Assertions.assertEquals(1, read);
@@ -465,7 +464,7 @@ public class UnistdTest {
     @Test
     public void testWriteOpaqueMemory() throws Exception {
         fd = Fcntl.open(f.getAbsolutePath(), Fcntl.O_CREAT | Fcntl.O_WRONLY, Stat.S_IRUSR | Stat.S_IWUSR);
-        MemoryHeap om = MemoryHeap.wrap(ms.allocate(TEST_DATA.length));
+        MemoryHeap om = MemoryHeap.wrap(arena.allocate(TEST_DATA.length));
         OpaqueMemory.copy(TEST_DATA, 0, om, 0, TEST_DATA.length);
         Unistd.write(fd, om, POS, LEN);
         byte[] data = readData();
@@ -508,8 +507,8 @@ public class UnistdTest {
     @Test
     public void testWriteReadByteRef10MB() throws Exception {
         fd = Fcntl.open(f.getAbsolutePath(), Fcntl.O_CREAT | Fcntl.O_RDWR);
-        Int8_t srcData = Int8_t.allocateNative(ms.scope());
-        Int8_t destData = Int8_t.allocateNative(ms.scope());
+        Int8_t srcData = Int8_t.allocateNative(arena);
+        Int8_t destData = Int8_t.allocateNative(arena);
         srcData.int8_t((byte) 1);
         long written = 0;
         for (int i = 0; i < 1_000; i++) {
@@ -519,7 +518,7 @@ public class UnistdTest {
         Unistd.lseek(fd, 0, Unistd.SEEK_SET);
 
         long read = 0;
-        Int8_t data = Int8_t.allocateNative(ms.scope());
+        Int8_t data = Int8_t.allocateNative(arena);
         for (int i = 0; i < 1_000; i++) {
             read += Unistd.read(fd, data);
             Assertions.assertEquals(1, data.int8_t());
@@ -538,9 +537,9 @@ public class UnistdTest {
      */
     @Test
     public void testWriteReadByte10MB() throws Exception {
-        Int8_t srcData = Int8_t.allocateNative(ms.scope());
+        Int8_t srcData = Int8_t.allocateNative(arena);
         srcData.int8_t((byte) 1);
-        Int8_t destData = Int8_t.allocateNative(ms.scope());
+        Int8_t destData = Int8_t.allocateNative(arena);
 
         fd = Fcntl.open(f.getAbsolutePath(), Fcntl.O_CREAT | Fcntl.O_RDWR);
         long written = 0;
@@ -614,7 +613,7 @@ public class UnistdTest {
     @Test
     public void testWriteReadOpaqueMemory_10MB() throws Exception {
         fd = Fcntl.open(f.getAbsolutePath(), Fcntl.O_CREAT | Fcntl.O_RDWR);
-        MemoryHeap mem = MemoryHeap.wrap(ms.allocate(10_000_000));
+        MemoryHeap mem = MemoryHeap.wrap(arena.allocate(10_000_000));
         long written = Unistd.write(fd, mem);
         Assertions.assertEquals(mem.sizeof(), written);
         Unistd.lseek(fd, 0, Unistd.SEEK_SET);
@@ -625,7 +624,7 @@ public class UnistdTest {
     @Test
     public void testWriteSingle() throws Exception {
         fd = Fcntl.creat(f.getAbsolutePath(), Stat.S_IRUSR | Stat.S_IWUSR);
-        Int8_t srcData = Int8_t.allocateNative(ms.scope());
+        Int8_t srcData = Int8_t.allocateNative(arena);
 
         for (int i = POS; i < POS + LEN; i++) {
             srcData.int8_t(TEST_DATA[i]);

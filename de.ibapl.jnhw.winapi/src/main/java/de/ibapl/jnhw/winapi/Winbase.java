@@ -43,8 +43,8 @@ import de.ibapl.jnhw.util.winapi.WinApiDataType;
 import de.ibapl.jnhw.util.winapi.memory.WinApiStdStructLayoutFactory;
 import de.ibapl.jnhw.util.winapi.memory.WinApiStruct;
 import de.ibapl.jnhw.winapi.Winnt.HANDLE;
+import java.lang.foreign.Arena;
 import java.lang.foreign.MemorySegment;
-import java.lang.foreign.SegmentScope;
 
 /**
  * Wrapper around the
@@ -87,8 +87,8 @@ public abstract class Winbase {
 
         }
 
-        public static COMMTIMEOUTS allocateNative(SegmentScope ms) {
-            return new COMMTIMEOUTS(MemorySegment.allocateNative(Layout.sizeof, Layout.alignment.alignof, ms), 0);
+        public static COMMTIMEOUTS allocateNative(Arena arena) {
+            return new COMMTIMEOUTS(arena.allocate(Layout.sizeof, Layout.alignment.alignof), 0);
         }
 
         public COMMTIMEOUTS(MemorySegment memorySegment, long offset) {
@@ -225,8 +225,8 @@ public abstract class Winbase {
 
         }
 
-        public static COMSTAT allocateNative(SegmentScope ms) {
-            return new COMSTAT(MemorySegment.allocateNative(Layout.sizeof, Layout.alignment.alignof, ms), 0);
+        public static COMSTAT allocateNative(Arena arena) {
+            return new COMSTAT(arena.allocate(Layout.sizeof, Layout.alignment.alignof), 0);
         }
 
         public COMSTAT(MemorySegment memorySegment, long offset) {
@@ -389,8 +389,8 @@ public abstract class Winbase {
 
         }
 
-        public static DCB allocateNative(SegmentScope ms) {
-            return new DCB(MemorySegment.allocateNative(Layout.sizeof, Layout.alignment.alignof, ms), 0);
+        public static DCB allocateNative(Arena arena) {
+            return new DCB(arena.allocate(Layout.sizeof, Layout.alignment.alignof), 0);
         }
 
         public DCB(MemorySegment memorySegment, long offset) {

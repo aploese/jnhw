@@ -58,7 +58,8 @@ public abstract class Errno {
         default ->
             throw new RuntimeException("Dont know how to get errno location");
     },
-            BaseDataType.C_int_pointer);
+            BaseDataType.C_int_pointer,
+            BaseDataType.C_int.SIZE_OF);
 
     public static interface BsdDefines {
 

@@ -24,7 +24,6 @@ package de.ibapl.jnhw.libloader.libraries;
 import de.ibapl.jnhw.libloader.MultiarchTupelBuilder;
 import java.lang.foreign.Arena;
 import java.lang.foreign.MemorySegment;
-import java.lang.foreign.SegmentScope;
 import java.lang.foreign.SymbolLookup;
 import java.util.Optional;
 
@@ -35,16 +34,16 @@ import java.util.Optional;
 public final class LibrtLoader {
 
     public final static SymbolLookup LIB_RT_SYMBOL_LOOKUP;
-    private final static Arena LIB_RT_MEMORY_ARENA = Arena.openShared();
+    private final static Arena LIB_RT_MEMORY_ARENA = Arena.ofShared();
 
     static {
         LIB_RT_SYMBOL_LOOKUP = switch (MultiarchTupelBuilder.getOS()) {
             case APPLE -> //TODO Quick and dirty ... Symbol
                 throw new AssertionError("Darwin has no lib rt! its in libc");
             case FREE_BSD -> //TODO Quick and dirty ... Symbol
-                SymbolLookup.libraryLookup("librt.so.1", LIB_RT_MEMORY_ARENA.scope());
+                SymbolLookup.libraryLookup("librt.so.1", LIB_RT_MEMORY_ARENA);
             case LINUX -> //TODO Quick and dirty ... Symbol
-                SymbolLookup.libraryLookup("librt.so.1", LIB_RT_MEMORY_ARENA.scope());
+                SymbolLookup.libraryLookup("librt.so.1", LIB_RT_MEMORY_ARENA);
             default ->
                 throw new AssertionError("No idea where to find the librt");
         };
@@ -57,13 +56,13 @@ public final class LibrtLoader {
     public final static Optional<MemorySegment> find(String name, long byteSize) {
         Optional<MemorySegment> _result = LIB_RT_SYMBOL_LOOKUP.find(name);
         if (_result.isPresent()) {
-            return Optional.of(MemorySegment.ofAddress(_result.get().address(), byteSize, scope()));
+            return Optional.of(_result.get().reinterpret(byteSize));
         } else {
             return _result;
         }
     }
 
-    public final static SegmentScope scope() {
+    public final static MemorySegment.Scope scope() {
         return LIB_RT_MEMORY_ARENA.scope();
     }
 }

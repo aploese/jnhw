@@ -55,22 +55,22 @@ public interface JnhwMh_MA___A__A__A extends JnhwMethodHandle {
         MemorySegment invoke_MA___A__A__A(MemorySegment arg1, MemorySegment arg2, MemorySegment arg3);
     }
 
-    static JnhwMh_MA___A__A__A.ExceptionErased mandatoryOf(SymbolLookup symbolLookup, String name, BaseDataType result, BaseDataType arg1, BaseDataType arg2, BaseDataType arg3) {
+    static JnhwMh_MA___A__A__A.ExceptionErased mandatoryOf(SymbolLookup symbolLookup, String name, BaseDataType result, BaseDataType arg1, BaseDataType arg2, BaseDataType arg3, long resultTargetSize) {
         return Util.buidExistingMethod(symbolLookup,
                 name,
-                (oms) -> of(oms, name, result, arg1, arg2, arg3));
+                (oms) -> of(oms, name, result, arg1, arg2, arg3, resultTargetSize));
     }
 
-    static JnhwMh_MA___A__A__A optionalOf(SymbolLookup symbolLookup, String name, BaseDataType result, BaseDataType arg1, BaseDataType arg2, BaseDataType arg3) {
+    static JnhwMh_MA___A__A__A optionalOf(SymbolLookup symbolLookup, String name, BaseDataType result, BaseDataType arg1, BaseDataType arg2, BaseDataType arg3, long resultTargetSize) {
         return Util.buidOptionalMethod(symbolLookup,
                 name,
-                (oms) -> of(oms, name, result, arg1, arg2, arg3),
+                (oms) -> of(oms, name, result, arg1, arg2, arg3, resultTargetSize),
                 () -> (JnhwMh_MA___A__A__A) (cArg1, cArg2, cArg3) -> {
                     throw new NoSuchNativeMethodException(name);
                 });
     }
 
-    public static JnhwMh_MA___A__A__A.ExceptionErased of(MemorySegment methodAddress, String name, BaseDataType result, BaseDataType arg1, BaseDataType arg2, BaseDataType arg3) {
+    public static JnhwMh_MA___A__A__A.ExceptionErased of(MemorySegment methodAddress, String name, BaseDataType result, BaseDataType arg1, BaseDataType arg2, BaseDataType arg3, long resultTargetSize) {
         return switch (result) {
             case intptr_t, uintptr_t ->
                 switch (arg1) {
@@ -80,8 +80,8 @@ public interface JnhwMh_MA___A__A__A extends JnhwMethodHandle {
                                 switch (arg3) {
                                     case intptr_t, uintptr_t ->
                                         NativeProvider.getProvider(
-                                        () -> new JnhwMi_MA___A__A__A(methodAddress, name),
-                                        () -> new JniMi_MA___A__A__A(methodAddress, name));
+                                        () -> new JnhwMi_MA___A__A__A(methodAddress, name, resultTargetSize),
+                                        () -> new JniMi_MA___A__A__A(methodAddress, name, resultTargetSize));
                                     default ->
                                         throw new IllegalArgumentException("arg3 unexpected data type: " + name + " " + arg3);
                                 };

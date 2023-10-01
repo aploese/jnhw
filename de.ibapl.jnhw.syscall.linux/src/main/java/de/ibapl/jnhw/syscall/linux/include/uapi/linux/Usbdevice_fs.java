@@ -59,7 +59,6 @@ import de.ibapl.jnhw.syscall.linux.uapi.asm_generic.Types.__u32;
 import de.ibapl.jnhw.syscall.linux.uapi.asm_generic.Types.__u8;
 import de.ibapl.jnhw.unix.sys.Ioctl;
 import java.lang.foreign.MemorySegment;
-import java.lang.foreign.SegmentScope;
 import java.nio.ByteBuffer;
 
 public final class Usbdevice_fs {
@@ -334,7 +333,8 @@ public final class Usbdevice_fs {
 				  or 0 if none should be sent. */
         public abstract int signr();
 
-        public abstract SegmentScope usercontext();
+        //TODO which datatype is usercontext ???
+//        public abstract MemorySegment usercontext();
         final MemoryArray<Usbdevfs_iso_packet_desc> iso_frame_desc;
     };
 

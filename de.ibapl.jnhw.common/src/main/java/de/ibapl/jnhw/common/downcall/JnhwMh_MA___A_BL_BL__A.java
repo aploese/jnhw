@@ -50,22 +50,22 @@ public interface JnhwMh_MA___A_BL_BL__A extends JnhwMethodHandle {
         MemorySegment invoke_MA___A_BL_BL__A(MemorySegment arg1, boolean arg2, boolean arg3, MemorySegment arg4);
     }
 
-    static JnhwMh_MA___A_BL_BL__A.ExceptionErased mandatoryOf(SymbolLookup symbolLookup, String name, BaseDataType result, BaseDataType arg1, BaseDataType arg2, BaseDataType arg3, BaseDataType arg4) {
+    static JnhwMh_MA___A_BL_BL__A.ExceptionErased mandatoryOf(SymbolLookup symbolLookup, String name, BaseDataType result, BaseDataType arg1, BaseDataType arg2, BaseDataType arg3, BaseDataType arg4, long targetByteSize) {
         return Util.buidExistingMethod(symbolLookup,
                 name,
-                (oms) -> of(oms, name, result, arg1, arg2, arg3, arg4));
+                (oms) -> of(oms, name, result, arg1, arg2, arg3, arg4, targetByteSize));
     }
 
-    static JnhwMh_MA___A_BL_BL__A optionalOf(SymbolLookup symbolLookup, String name, BaseDataType result, BaseDataType arg1, BaseDataType arg2, BaseDataType arg3, BaseDataType arg4, BaseDataType arg5) {
+    static JnhwMh_MA___A_BL_BL__A optionalOf(SymbolLookup symbolLookup, String name, BaseDataType result, BaseDataType arg1, BaseDataType arg2, BaseDataType arg3, BaseDataType arg4, BaseDataType arg5, long targetByteSize) {
         return Util.buidOptionalMethod(symbolLookup,
                 name,
-                (oms) -> of(oms, name, result, arg1, arg2, arg3, arg4),
+                (oms) -> of(oms, name, result, arg1, arg2, arg3, arg4, targetByteSize),
                 () -> (JnhwMh_MA___A_BL_BL__A) (cArg1, cArg2, cArg3, cArg4) -> {
                     throw new NoSuchNativeMethodException(name);
                 });
     }
 
-    public static JnhwMh_MA___A_BL_BL__A.ExceptionErased of(MemorySegment methodAddress, String name, BaseDataType result, BaseDataType arg1, BaseDataType arg2, BaseDataType arg3, BaseDataType arg4) {
+    public static JnhwMh_MA___A_BL_BL__A.ExceptionErased of(MemorySegment methodAddress, String name, BaseDataType result, BaseDataType arg1, BaseDataType arg2, BaseDataType arg3, BaseDataType arg4, long targetByteSize) {
         return switch (result) {
             case intptr_t, uintptr_t ->
                 switch (arg1) {
@@ -77,8 +77,8 @@ public interface JnhwMh_MA___A_BL_BL__A extends JnhwMethodHandle {
                                         switch (arg4) {
                                             case intptr_t, uintptr_t ->
                                                 NativeProvider.getProvider(
-                                                () -> new JnhwMi_MA___A__I__I__A(methodAddress, name),
-                                                () -> new JniMi_MA___A__I__I__A(methodAddress, name));
+                                                () -> new JnhwMi_MA___A__I__I__A(methodAddress, name, targetByteSize),
+                                                () -> new JniMi_MA___A__I__I__A(methodAddress, name, targetByteSize));
                                             default ->
                                                 throw new IllegalArgumentException("arg4 unexpected data type: " + name + " " + arg4);
                                         };

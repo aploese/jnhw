@@ -63,8 +63,8 @@ public class Signed_LongTest {
 
     @Test
     public void testNative() {
-        try (Arena ms = Arena.openConfined()) {
-            Signed_Long instance = Signed_Long.allocateNative(ms.scope());
+        try (Arena arena = Arena.ofConfined()) {
+            Signed_Long instance = Signed_Long.allocateNative(arena);
             long input64 = 0x8070605040302010L;
             if (BaseDataType.C_long.SIZE_OF == 8) {
                 instance.signed_long(input64);
@@ -87,8 +87,8 @@ public class Signed_LongTest {
 
     @Test
     public void testNativeToString() {
-        try (Arena ms = Arena.openConfined()) {
-            Signed_Long instance = new Signed_Long(ms.allocate(Signed_Long.DATA_TYPE.SIZE_OF), 0);
+        try (Arena arena = Arena.ofConfined()) {
+            Signed_Long instance = new Signed_Long(arena.allocate(Signed_Long.DATA_TYPE.SIZE_OF), 0);
             if (BaseDataType.C_long.SIZE_OF == 8) {
                 Int64_t int64_t = Int64_t.map(instance, 0);
                 int64_t.int64_t(0xfffffffffffffffeL);

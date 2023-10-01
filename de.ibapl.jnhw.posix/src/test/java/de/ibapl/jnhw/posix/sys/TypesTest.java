@@ -62,23 +62,23 @@ public class TypesTest {
     public static void tearDownAfterClass(TestInfo testTnfo) throws Exception {
         JnhwTestLogger.logAfterAll(testTnfo);
     }
-    private Arena ms;
+    private Arena arena;
 
     @BeforeEach
     public void setUp(TestInfo testInfo) throws Exception {
         JnhwTestLogger.logBeforeEach(testInfo);
-        ms = Arena.openConfined();
+        arena = Arena.ofConfined();
     }
 
     @AfterEach
     public void tearDown(TestInfo testInfo) {
-        ms.close();
+        arena.close();
         JnhwTestLogger.logAfterEach(testInfo);
     }
 
     @Test
     public void testClock_t() {
-        Types.Clock_t instance = Types.Clock_t.allocateNative(ms.scope());
+        Types.Clock_t instance = Types.Clock_t.allocateNative(arena);
         Assertions.assertEquals(PosixDataType.clock_t, instance.getBaseDataType());
 
         instance.setFromSignedLong(-1);
@@ -111,7 +111,7 @@ public class TypesTest {
 
     @Test
     public void testClockid_t() {
-        Types.Clockid_t instance = Types.Clockid_t.allocateNative(ms.scope());
+        Types.Clockid_t instance = Types.Clockid_t.allocateNative(arena);
         Assertions.assertEquals(PosixDataType.clockid_t, instance.getBaseDataType());
         instance.setFromSignedLong(-1);
         assertEquals(-1L, instance.getAsSignedLong());
@@ -126,7 +126,7 @@ public class TypesTest {
     @Test
     public void testMode_t() {
         Assertions.assertTrue(PosixDataType.mode_t.UNSIGNED);
-        Types.Mode_t instance = Types.Mode_t.allocateNative(ms.scope());
+        Types.Mode_t instance = Types.Mode_t.allocateNative(arena);
         switch (PosixDataType.mode_t.SIZE_OF) {
             case 2 -> {
                 Assertions.assertEquals(Alignment.AT_2, PosixDataType.mode_t.ALIGN_OF);
@@ -162,7 +162,7 @@ public class TypesTest {
     @Test
     public void testOff_t() {
         Assertions.assertFalse(PosixDataType.off_t.UNSIGNED);
-        Types.Off_t instance = Types.Off_t.allocateNative(ms.scope());
+        Types.Off_t instance = Types.Off_t.allocateNative(arena);
         instance.setFromSignedLong(-1);
         assertEquals(-1L, instance.getAsSignedLong());
         switch (PosixDataType.off_t.SIZE_OF) {
@@ -194,7 +194,7 @@ public class TypesTest {
         Assertions.assertEquals(4, PosixDataType.pid_t.SIZE_OF);
         Assertions.assertEquals(Alignment.AT_4, PosixDataType.pid_t.ALIGN_OF);
         Assertions.assertFalse(PosixDataType.pid_t.UNSIGNED);
-        Types.Pid_t instance = Types.Pid_t.allocateNative(ms.scope());
+        Types.Pid_t instance = Types.Pid_t.allocateNative(arena);
         instance.int32_t(0x80706050);
         assertEquals(0x80706050, instance.int32_t());
         assertEquals(Integer.toString(0x80706050), instance.nativeToString());
@@ -204,7 +204,7 @@ public class TypesTest {
     @Test
     public void testSize_t() {
         Assertions.assertTrue(PosixDataType.size_t.UNSIGNED);
-        Types.Size_t instance = Types.Size_t.allocateNative(ms.scope());
+        Types.Size_t instance = Types.Size_t.allocateNative(arena);
         switch (PosixDataType.size_t.SIZE_OF) {
             case 4 -> {
                 Assertions.assertEquals(Alignment.AT_4, PosixDataType.size_t.ALIGN_OF);
@@ -240,7 +240,7 @@ public class TypesTest {
     @Test
     public void testSsize_t() {
         Assertions.assertFalse(PosixDataType.ssize_t.UNSIGNED);
-        Types.Ssize_t instance = Types.Ssize_t.allocateNative(ms.scope());
+        Types.Ssize_t instance = Types.Ssize_t.allocateNative(arena);
         instance.setFromSignedLong(-1);
         assertEquals(-1L, instance.getAsSignedLong());
         if (PosixDataType.ssize_t.SIZE_OF == 4) {
@@ -267,7 +267,7 @@ public class TypesTest {
     @Test
     public void testTime_t() {
         Assertions.assertFalse(PosixDataType.time_t.UNSIGNED);
-        Types.Time_t instance = Types.Time_t.allocateNative(ms.scope());
+        Types.Time_t instance = Types.Time_t.allocateNative(arena);
         instance.setFromSignedLong(-1);
         assertEquals(-1L, instance.getAsSignedLong());
         if (PosixDataType.time_t.SIZE_OF == 4) {
@@ -296,7 +296,7 @@ public class TypesTest {
         Assertions.assertEquals(4, PosixDataType.uid_t.SIZE_OF);
         Assertions.assertEquals(Alignment.AT_4, PosixDataType.uid_t.ALIGN_OF);
         Assertions.assertTrue(PosixDataType.uid_t.UNSIGNED);
-        Types.Uid_t instance = Types.Uid_t.allocateNative(ms.scope());
+        Types.Uid_t instance = Types.Uid_t.allocateNative(arena);
         instance.uint32_t(0x80706050);
         assertEquals(0x80706050, instance.uint32_t());
         assertEquals(Integer.toUnsignedString(0x80706050), instance.nativeToString());
@@ -308,7 +308,7 @@ public class TypesTest {
         Assertions.assertEquals(4, PosixDataType.gid_t.SIZE_OF);
         Assertions.assertEquals(Alignment.AT_4, PosixDataType.gid_t.ALIGN_OF);
         Assertions.assertTrue(PosixDataType.gid_t.UNSIGNED);
-        Types.Gid_t instance = Types.Gid_t.allocateNative(ms.scope());
+        Types.Gid_t instance = Types.Gid_t.allocateNative(arena);
         instance.uint32_t(0x80706050);
         assertEquals(0x80706050, instance.uint32_t());
         assertEquals(Integer.toUnsignedString(0x80706050), instance.nativeToString());

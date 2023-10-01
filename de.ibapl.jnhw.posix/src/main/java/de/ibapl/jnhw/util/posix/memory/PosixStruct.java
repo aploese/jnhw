@@ -24,8 +24,8 @@ package de.ibapl.jnhw.util.posix.memory;
 import de.ibapl.jnhw.common.memory.OpaqueMemory;
 import de.ibapl.jnhw.common.memory.Struct;
 import de.ibapl.jnhw.util.posix.PosixDataType;
+import java.lang.foreign.Arena;
 import java.lang.foreign.MemorySegment;
-import java.lang.foreign.SegmentScope;
 
 /**
  *
@@ -329,8 +329,8 @@ public abstract class PosixStruct extends Struct {
         super(mem, offset, sizeInBytes);
     }
 
-    public PosixStruct(long baseAddress, SegmentScope ms, long sizeInBytes) {
-        super(baseAddress, ms, sizeInBytes);
+    public PosixStruct(long baseAddress, Arena arena, long sizeInBytes) {
+        super(baseAddress, arena, sizeInBytes);
     }
 
 }

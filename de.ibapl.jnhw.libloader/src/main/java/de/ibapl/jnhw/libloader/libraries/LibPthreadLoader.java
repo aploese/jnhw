@@ -24,7 +24,6 @@ package de.ibapl.jnhw.libloader.libraries;
 import de.ibapl.jnhw.libloader.MultiarchTupelBuilder;
 import java.lang.foreign.Arena;
 import java.lang.foreign.MemorySegment;
-import java.lang.foreign.SegmentScope;
 import java.lang.foreign.SymbolLookup;
 import java.util.Optional;
 
@@ -35,14 +34,14 @@ import java.util.Optional;
 public final class LibPthreadLoader {
 
     public final static SymbolLookup LIB_PTHREAD_SYMBOL_LOOKUP;
-    private final static Arena LIB_PTHREAD_MEMORY_ARENA = Arena.openShared();
+    private final static Arena LIB_PTHREAD_MEMORY_ARENA = Arena.ofShared();
 
     static {
         LIB_PTHREAD_SYMBOL_LOOKUP = switch (MultiarchTupelBuilder.getOS()) {
             case APPLE -> //TODO Quick and dirty ... Symbol
-                SymbolLookup.libraryLookup("libpthread.dylib", LIB_PTHREAD_MEMORY_ARENA.scope());
+                SymbolLookup.libraryLookup("libpthread.dylib", LIB_PTHREAD_MEMORY_ARENA);
             case FREE_BSD -> //TODO Quick and dirty ... Symbol
-                SymbolLookup.libraryLookup("libpthread.so", LIB_PTHREAD_MEMORY_ARENA.scope());
+                SymbolLookup.libraryLookup("libpthread.so", LIB_PTHREAD_MEMORY_ARENA);
             case LINUX -> //TODO Quick and dirty ... Symbol
                 throw new AssertionError("Linux has no lib pthread! its in libc");
             default ->
@@ -54,13 +53,13 @@ public final class LibPthreadLoader {
     public final static Optional<MemorySegment> find(String name, long byteSize) {
         Optional<MemorySegment> _result = LIB_PTHREAD_SYMBOL_LOOKUP.find(name);
         if (_result.isPresent()) {
-            return Optional.of(MemorySegment.ofAddress(_result.get().address(), byteSize, scope()));
+            return Optional.of(_result.get().reinterpret(byteSize));
         } else {
             return _result;
         }
     }
 
-    public final static SegmentScope scope() {
-        return LIB_PTHREAD_MEMORY_ARENA.scope();
+    public final static Arena arena() {
+        return LIB_PTHREAD_MEMORY_ARENA;
     }
 }

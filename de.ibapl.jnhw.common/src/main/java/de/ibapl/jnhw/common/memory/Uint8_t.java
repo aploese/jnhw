@@ -24,8 +24,8 @@ package de.ibapl.jnhw.common.memory;
 import de.ibapl.jnhw.common.annotation.uint8_t;
 import de.ibapl.jnhw.common.datatypes.BaseDataType;
 import java.io.IOException;
+import java.lang.foreign.Arena;
 import java.lang.foreign.MemorySegment;
-import java.lang.foreign.SegmentScope;
 
 /**
  *
@@ -35,8 +35,8 @@ public class Uint8_t extends NativeIntNumber {
 
     public final static BaseDataType DATA_TYPE = BaseDataType.uint8_t;
 
-    public static Uint8_t allocateNative(SegmentScope ms) {
-        return new Uint8_t(MemorySegment.allocateNative(DATA_TYPE.SIZE_OF, DATA_TYPE.ALIGN_OF.alignof, ms), 0);
+    public static Uint8_t allocateNative(Arena arena) {
+        return new Uint8_t(arena.allocate(DATA_TYPE.SIZE_OF, DATA_TYPE.ALIGN_OF.alignof), 0);
     }
 
     public Uint8_t(MemorySegment memorySegment, long offset) {

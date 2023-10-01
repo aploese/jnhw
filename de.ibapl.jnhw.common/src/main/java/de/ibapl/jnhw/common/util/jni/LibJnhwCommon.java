@@ -24,7 +24,6 @@ package de.ibapl.jnhw.common.util.jni;
 import de.ibapl.jnhw.libloader.LoadResult;
 import de.ibapl.jnhw.libloader.NativeLibResolver;
 import java.lang.foreign.Arena;
-import java.lang.foreign.SegmentScope;
 
 /**
  *
@@ -35,7 +34,7 @@ public class LibJnhwCommon {
     public final static String LIB_JNHW_COMMON = "jnhw-common";
     public final static int LIB_JNHW_COMMON_VERSION = 4;
 
-    private final static Arena LIB_JNHW_COMMON_MEMORY_ARENA = Arena.openShared();
+    private final static Arena LIB_JNHW_COMMON_MEMORY_ARENA = Arena.ofShared();
 
     private static LoadResult LIB_JNHW_COMMON_LOAD_RESULT;
 
@@ -55,8 +54,8 @@ public class LibJnhwCommon {
         return LIB_JNHW_COMMON_LOAD_RESULT;
     }
 
-    public static SegmentScope scope() {
-        return LIB_JNHW_COMMON_MEMORY_ARENA.scope();
+    public static Arena arena() {
+        return LIB_JNHW_COMMON_MEMORY_ARENA;
     }
 
 }

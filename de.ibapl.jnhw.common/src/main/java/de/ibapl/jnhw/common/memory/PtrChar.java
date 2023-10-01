@@ -23,8 +23,8 @@ package de.ibapl.jnhw.common.memory;
 
 import de.ibapl.jnhw.common.datatypes.BaseDataType;
 import java.io.IOException;
+import java.lang.foreign.Arena;
 import java.lang.foreign.MemorySegment;
-import java.lang.foreign.SegmentScope;
 
 /**
  *
@@ -34,8 +34,8 @@ public class PtrChar extends OpaqueMemory {
 
     public final static BaseDataType DATA_TYPE = BaseDataType.C_char_pointer;
 
-    public static PtrChar allocateNative(SegmentScope ms) {
-        return new PtrChar(MemorySegment.allocateNative(DATA_TYPE.SIZE_OF, DATA_TYPE.ALIGN_OF.alignof, ms), 0);
+    public static PtrChar allocateNative(Arena arena) {
+        return new PtrChar(arena.allocate(DATA_TYPE.SIZE_OF, DATA_TYPE.ALIGN_OF.alignof), 0);
     }
 
     public PtrChar(MemorySegment memorySegment, long offset) {

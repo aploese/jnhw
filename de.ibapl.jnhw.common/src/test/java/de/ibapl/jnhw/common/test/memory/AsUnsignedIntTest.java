@@ -61,12 +61,12 @@ public class AsUnsignedIntTest {
 
     @Test
     public void testNative() {
-        try (Arena ms = Arena.openConfined()) {
-            AsUnsignedInt instance = AsUnsignedInt.allocateNative(BaseDataType.uint16_t, ms.scope());
+        try (Arena arena = Arena.ofConfined()) {
+            AsUnsignedInt instance = AsUnsignedInt.allocateNative(BaseDataType.uint16_t, arena);
             instance.setFromUnsignedInt(33);
             assertEquals(33, instance.getAsUnsignedInt());
             assertThrows(IllegalArgumentException.class, () -> instance.setFromUnsignedInt(-1));
-            assertThrows(IllegalArgumentException.class, () -> new AsUnsignedInt(BaseDataType.int8_t, ms.allocate(BaseDataType.uint8_t.SIZE_OF), 0));
+            assertThrows(IllegalArgumentException.class, () -> new AsUnsignedInt(BaseDataType.int8_t, arena.allocate(BaseDataType.uint8_t.SIZE_OF), 0));
         }
     }
 

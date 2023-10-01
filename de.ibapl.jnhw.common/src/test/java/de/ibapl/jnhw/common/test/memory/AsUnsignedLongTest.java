@@ -61,12 +61,12 @@ public class AsUnsignedLongTest {
 
     @Test
     public void testNative() {
-        try (Arena ms = Arena.openConfined()) {
-            AsUnsignedLong instance = AsUnsignedLong.allocateNative(BaseDataType.uint32_t, ms.scope());
+        try (Arena arena = Arena.ofConfined()) {
+            AsUnsignedLong instance = AsUnsignedLong.allocateNative(BaseDataType.uint32_t, arena);
             instance.setFromUnsignedLong(33);
             assertEquals(33, instance.getAsUnsignedLong());
             assertThrows(IllegalArgumentException.class, () -> instance.setFromUnsignedLong(-1));
-            assertThrows(IllegalArgumentException.class, () -> new AsUnsignedLong(BaseDataType.int8_t, ms.allocate(BaseDataType.int8_t.SIZE_OF), 0));
+            assertThrows(IllegalArgumentException.class, () -> new AsUnsignedLong(BaseDataType.int8_t, arena.allocate(BaseDataType.int8_t.SIZE_OF), 0));
         }
     }
 

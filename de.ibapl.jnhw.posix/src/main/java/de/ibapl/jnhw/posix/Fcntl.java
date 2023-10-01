@@ -1021,8 +1021,8 @@ public final class Fcntl {
      *
      */
     public final static int creat(String path, @mode_t int mode) throws NativeErrorException {
-        try (Arena ms = Arena.openConfined()) {
-            MemorySegment _path = ms.allocate(path.length() + 1);
+        try (Arena arena = Arena.ofConfined()) {
+            MemorySegment _path = arena.allocate(path.length() + 1);
             _path.setUtf8String(0, path);
             final int result = creat.invoke_sI___A_uI(_path, mode);
             if (result == -1) {
@@ -1043,8 +1043,8 @@ public final class Fcntl {
      * defined.
      */
     public final static int creat64(String path, @mode_t int mode) throws NativeErrorException, NoSuchNativeMethodException {
-        try (Arena ms = Arena.openConfined()) {
-            MemorySegment _path = ms.allocate(path.length() + 1);
+        try (Arena arena = Arena.ofConfined()) {
+            MemorySegment _path = arena.allocate(path.length() + 1);
             _path.setUtf8String(0, path);
             final int result = creat64.invoke_sI___A_uI(_path, mode);
             if (result == -1) {
@@ -1151,8 +1151,8 @@ public final class Fcntl {
      * indicates an error.
      */
     public final static int open(String path, int oflag) throws NativeErrorException {
-        try (Arena ms = Arena.openConfined()) {
-            MemorySegment _path = ms.allocate(path.length() + 1);
+        try (Arena arena = Arena.ofConfined()) {
+            MemorySegment _path = arena.allocate(path.length() + 1);
             _path.setUtf8String(0, path);
             final int result = open.invoke_sI___A_sI(_path, oflag);
             if (result == -1) {
@@ -1176,8 +1176,8 @@ public final class Fcntl {
      *
      */
     public final static int open(String path, int oflag, @mode_t int mode) throws NativeErrorException {
-        try (Arena ms = Arena.openConfined()) {
-            MemorySegment _path = ms.allocate(path.length() + 1);
+        try (Arena arena = Arena.ofConfined()) {
+            MemorySegment _path = arena.allocate(path.length() + 1);
             _path.setUtf8String(0, path);
             final int result = open__VARARG_mode_t.invoke_sI___A_sI_uI(_path, oflag, mode);
             if (result == -1) {
@@ -1203,8 +1203,8 @@ public final class Fcntl {
      * defined.
      */
     public final static int open64(String path, int oflag) throws NativeErrorException, NoSuchNativeMethodException {
-        try (Arena ms = Arena.openConfined()) {
-            MemorySegment _path = ms.allocate(path.length() + 1);
+        try (Arena arena = Arena.ofConfined()) {
+            MemorySegment _path = arena.allocate(path.length() + 1);
             _path.setUtf8String(0, path);
             final int result = open64.invoke_sI___A_sI(_path, oflag);
             if (result == -1) {
@@ -1230,8 +1230,8 @@ public final class Fcntl {
      * defined.
      */
     public final static int open64(String path, int oflag, @mode_t int mode) throws NativeErrorException, NoSuchNativeMethodException {
-        try (Arena ms = Arena.openConfined()) {
-            MemorySegment _path = ms.allocate(path.length() + 1);
+        try (Arena arena = Arena.ofConfined()) {
+            MemorySegment _path = arena.allocate(path.length() + 1);
             _path.setUtf8String(0, path);
             final int result = open64__VARARG_mode_t.invoke_sI___A_sI_uI(_path, oflag, mode);
             if (result == -1) {
@@ -1259,8 +1259,8 @@ public final class Fcntl {
      *
      */
     public final static int openat(int fd, String path, int oflag) throws NativeErrorException {
-        try (Arena ms = Arena.openConfined()) {
-            MemorySegment _path = ms.allocate(path.length() + 1);
+        try (Arena arena = Arena.ofConfined()) {
+            MemorySegment _path = arena.allocate(path.length() + 1);
             _path.setUtf8String(0, path);
             final int result = openat.invoke_sI__sI__A_sI(fd, _path, oflag);
             if (result == -1) {
@@ -1285,8 +1285,8 @@ public final class Fcntl {
      *
      */
     public final static int openat(int fd, String path, int oflag, @mode_t int mode) throws NativeErrorException {
-        try (Arena ms = Arena.openConfined()) {
-            MemorySegment _path = ms.allocate(path.length() + 1);
+        try (Arena arena = Arena.ofConfined()) {
+            MemorySegment _path = arena.allocate(path.length() + 1);
             _path.setUtf8String(0, path);
             final int result = openat__VARARG_mode_t.invoke_sI__sI__A_sI_uI(fd, _path, oflag, mode);
             if (result == -1) {
@@ -1312,8 +1312,8 @@ public final class Fcntl {
      * defined.
      */
     public final static int openat64(int fd, String path, int oflag) throws NativeErrorException, NoSuchNativeMethodException {
-        try (Arena ms = Arena.openConfined()) {
-            MemorySegment _path = ms.allocate(path.length() + 1);
+        try (Arena arena = Arena.ofConfined()) {
+            MemorySegment _path = arena.allocate(path.length() + 1);
             _path.setUtf8String(0, path);
             final int result = openat64.invoke_sI__sI__A_sI(fd, _path, oflag);
             if (result == -1) {
@@ -1341,8 +1341,8 @@ public final class Fcntl {
      * defined.
      */
     public final static int openat64(int fd, String path, int oflag, @mode_t int mode) throws NativeErrorException, NoSuchNativeMethodException {
-        try (Arena ms = Arena.openConfined()) {
-            MemorySegment _path = ms.allocate(path.length() + 1);
+        try (Arena arena = Arena.ofConfined()) {
+            MemorySegment _path = arena.allocate(path.length() + 1);
             _path.setUtf8String(0, path);
             final int result = openat64__VARARG_mode_t.invoke_sI__sI__A_sI_uI(fd, _path, oflag, mode);
             if (result == -1) {

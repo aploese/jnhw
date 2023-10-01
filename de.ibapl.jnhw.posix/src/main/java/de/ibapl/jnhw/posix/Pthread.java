@@ -50,8 +50,8 @@ import de.ibapl.jnhw.util.posix.downcall.JnhwMh_sI__PthreadT__sI__A;
 import de.ibapl.jnhw.util.posix.downcall.JnhwMh_sI__PthreadT_sI;
 import de.ibapl.jnhw.util.posix.memory.PosixStruct;
 import java.io.IOException;
+import java.lang.foreign.Arena;
 import java.lang.foreign.MemorySegment;
-import java.lang.foreign.SegmentScope;
 import java.lang.foreign.SymbolLookup;
 
 /**
@@ -457,11 +457,11 @@ public class Pthread {
      * <a href="https://pubs.opengroup.org/onlinepubs/9699919799/functions/pthread_self.html">pthread_self
      * - get the calling thread ID</a>.
      *
-     * @param ms
+     * @param arena
      * @return
      */
-    public final static Pthread_t pthread_self(SegmentScope ms) {
-        return pthread_self.invoke_PthreadT___V(ms);
+    public final static Pthread_t pthread_self(Arena arena) {
+        return pthread_self.invoke_PthreadT___V(arena);
     }
 
     /**
@@ -634,20 +634,20 @@ public class Pthread {
                 throw new NoClassDefFoundError("No pthread.h OS defines for Pthread_attr_t " + MultiarchTupelBuilder.getMultiarch());
         };
 
-        public final static Pthread_attr_t allocateNative(SegmentScope ms) {
-            return new Pthread_attr_t(MemorySegment.allocateNative(sizeof, alignof.alignof, ms), 0);
+        public final static Pthread_attr_t allocateNative(Arena arena) {
+            return new Pthread_attr_t(arena.allocate(sizeof, alignof.alignof), 0);
         }
 
-        public final static Pthread_attr_t ofAddress(long address, SegmentScope ms) {
-            return new Pthread_attr_t(address, ms);
+        public final static Pthread_attr_t ofAddress(long address, Arena arena) {
+            return new Pthread_attr_t(address, arena);
         }
 
         public Pthread_attr_t(MemorySegment memorySegment, long offset) {
             super(memorySegment, offset, Pthread_attr_t.sizeof);
         }
 
-        public Pthread_attr_t(long baseAddress, SegmentScope ms) {
-            super(baseAddress, ms, sizeof);
+        public Pthread_attr_t(long baseAddress, Arena arena) {
+            super(baseAddress, arena, sizeof);
         }
 
     }
@@ -663,32 +663,32 @@ public class Pthread {
         public final static Alignment alignof = PosixDataType.pthread_t.ALIGN_OF;
         public final static int sizeof = PosixDataType.pthread_t.SIZE_OF;
 
-        public final static Pthread_t allocateNative(SegmentScope ms) {
-            return new Pthread_t(MemorySegment.allocateNative(sizeof, alignof.alignof, ms), 0);
+        public final static Pthread_t allocateNative(Arena arena) {
+            return new Pthread_t(arena.allocate(sizeof, alignof.alignof), 0);
         }
 
-        public final static Pthread_t ofAddress(long address, SegmentScope ms) {
-            return new Pthread_t(address, ms);
+        public final static Pthread_t ofAddress(MemorySegment address, Arena arena) {
+            return new Pthread_t(address.reinterpret(sizeof, arena, null), 0);
         }
 
-        public static Pthread_t wrapUint64_t(long value, SegmentScope ms) {
-            Pthread_t result = Pthread_t.allocateNative(ms);
+        public static Pthread_t wrapUint64_t(long value, Arena arena) {
+            Pthread_t result = Pthread_t.allocateNative(arena);
             result.asUint64_t(value);
             return result;
         }
 
-        public static Pthread_t wrapUint32_t(int value, SegmentScope ms) {
-            Pthread_t result = Pthread_t.allocateNative(ms);
+        public static Pthread_t wrapUint32_t(int value, Arena arena) {
+            Pthread_t result = Pthread_t.allocateNative(arena);
             result.asUint32_t(value);
             return result;
         }
 
         public Pthread_t(MemorySegment memorySegment, long offset) {
-            super(memorySegment, offset, Pthread_t.sizeof);
+            super(memorySegment, offset, sizeof);
         }
 
-        public Pthread_t(long baseAddress, SegmentScope ms) {
-            super(baseAddress, ms, Pthread_t.sizeof);
+        public Pthread_t(long baseAddress, Arena arena) {
+            super(baseAddress, arena, sizeof);
         }
 
         public int asUint32_t() {

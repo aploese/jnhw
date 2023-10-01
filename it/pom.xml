@@ -17,7 +17,11 @@
     <description>Code examples for JNHW</description>
 
     <modules>
-        <module>hello-world</module>
+        <module>hello-world-async-io</module>
+        <module>posix-signal</module>
+        <module>posix-graceful-exit-sigsegv</module>
+        <module>jnhw-jna-jnr</module>
+        <module>fun-with-memory-and-function-pointers</module>
     </modules>
 
     <!-- do compile/pack the examples, but do not install or deploy them-->
@@ -35,7 +39,7 @@
                 </plugin>
                 <plugin>
                     <artifactId>maven-assembly-plugin</artifactId>
-                    <version>3.3.0</version>
+                    <version>3.4.2</version>
                     <configuration>
                         <descriptorRefs>
                             <descriptorRef>jar-with-dependencies</descriptorRef>
@@ -54,7 +58,7 @@
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-install-plugin</artifactId>
-                    <version>3.1.0</version>
+                    <version>3.1.1</version>
                     <configuration>
                         <skip>true</skip>
                     </configuration>
@@ -62,7 +66,7 @@
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-deploy-plugin</artifactId>
-                    <version>3.0.0-M2</version>
+                    <version>3.1.1</version>
                     <configuration>
                         <skip>true</skip>
                     </configuration>

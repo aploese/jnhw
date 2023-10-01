@@ -32,7 +32,6 @@ import de.ibapl.jnhw.common.test.JnhwTestLogger;
 import de.ibapl.jnhw.common.test.LibJnhwCommonTestLoader;
 import de.ibapl.jnhw.common.upcall.CallbackFactory__V___L;
 import de.ibapl.jnhw.common.upcall.Callback__V___L;
-import java.lang.foreign.Arena;
 import java.lang.foreign.MemorySegment;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
@@ -57,7 +56,7 @@ public class Callback__V___L_Test {
     static {
         LibJnhwCommonTestLoader.touch();
         setCallback__V___L = JnhwMh__V___A.mandatoryOf(LibJnhwCommonTestLoader.SYMBOL_LOOKUP, "setCallback__V___L", BaseDataType.uintptr_t);
-        getCallback__V___L = JnhwMh_MA___V.mandatoryOf(LibJnhwCommonTestLoader.SYMBOL_LOOKUP, "getCallback__V___L", BaseDataType.uintptr_t);
+        getCallback__V___L = JnhwMh_MA___V.mandatoryOf(LibJnhwCommonTestLoader.SYMBOL_LOOKUP, "getCallback__V___L", BaseDataType.uintptr_t, 0);
         doCallback__V___L = JnhwMh__V__BL_sL.mandatoryOf(LibJnhwCommonTestLoader.SYMBOL_LOOKUP, "doCallback__V___L", BaseDataType.C_char, BaseDataType.int64_t);
     }
 
@@ -94,7 +93,6 @@ public class Callback__V___L_Test {
             throw new RuntimeException(t);
         }
     }
-    private Arena ms;
 
     @BeforeEach
     public void setUpBeforeEach(TestInfo testTnfo) throws Exception {
@@ -109,12 +107,10 @@ public class Callback__V___L_Test {
     @BeforeEach
     public void setUpBefore() throws Exception {
         System.gc();
-        ms = Arena.openConfined();
     }
 
     @AfterEach
     public void cleanupAfterEach() throws Exception {
-        ms.close();
     }
 
     /**
@@ -208,8 +204,7 @@ public class Callback__V___L_Test {
             //Call native from java
             ref[0] = 0;
             JnhwMh__V__sL.of(
-                    MemorySegment.ofAddress(
-                            getCallback__V___L().toAddress(), 0, ms.scope()),
+                    getCallback__V___L().toMemorySegment(),
                     "testCallback",
                     BaseDataType.int64_t
             ).invoke__V__sL(testValue);
@@ -232,8 +227,7 @@ public class Callback__V___L_Test {
         ref[0] = -1;
         //The logs shoud show: Unassigned callback for trampoline_0(testValue / 2)
         JnhwMh__V__sL.of(
-                MemorySegment.ofAddress(
-                        getCallback__V___L().toAddress(), 0, ms.scope()),
+                getCallback__V___L().toMemorySegment(),
                 "testCallback",
                 BaseDataType.int64_t
         ).invoke__V__sL(testValue / 2);

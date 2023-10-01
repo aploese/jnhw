@@ -32,19 +32,29 @@ public class JniMi_MA___A__I extends JniMethodInvoker implements JnhwMh_MA___A_s
 
     protected final static native long invoke_MA___A__I(long address, long arg1, int arg2);
 
-    public JniMi_MA___A__I(MemorySegment methodAddress, String name) {
+    private final long targetByteSize;
+
+    public JniMi_MA___A__I(MemorySegment methodAddress, String name, long targetByteSize) {
         super(methodAddress, name);
+        this.targetByteSize = targetByteSize;
     }
 
     @Override
     public MemorySegment invoke_MA___A_sI(MemorySegment arg1, int arg2) {
         try {
-            return MemorySegment.ofAddress(
-                    invoke_MA___A__I(
-                            ns.address(),
-                            arg1.address(),
-                            arg2),
-                     Long.MAX_VALUE);
+            if (targetByteSize == 0) {
+                return MemorySegment.ofAddress(
+                        invoke_MA___A__I(
+                                ns.address(),
+                                arg1.address(),
+                                arg2));
+            } else {
+                return MemorySegment.ofAddress(
+                        invoke_MA___A__I(
+                                ns.address(),
+                                arg1.address(),
+                                arg2)).reinterpret(targetByteSize);
+            }
         } catch (IllegalArgumentException | NullPointerException e) {
             throw e;
         } catch (Throwable t) {

@@ -34,16 +34,16 @@ import org.junit.jupiter.api.condition.EnabledOnOs;
 @EnabledOnOs(org.junit.jupiter.api.condition.OS.WINDOWS)
 public class IoAPITest {
 
-    private Arena ms;
+    private Arena arena;
 
     @BeforeEach
     public void setUp() throws Exception {
-        ms = Arena.openShared();
+        arena = Arena.ofShared();
     }
 
     @AfterEach
     public void tearDown() throws Exception {
-        ms.close();
+        arena.close();
     }
 
     /**
@@ -54,10 +54,10 @@ public class IoAPITest {
         System.out.println("PostQueuedCompletionStatus");
         final long COMPLETION_KEY = 0xCAFE;
         final Winnt.HANDLE completionPort = IoAPI.CreateIoCompletionPort(Winnt.HANDLE.INVALID_HANDLE_VALUE, Winnt.HANDLE.NULL, COMPLETION_KEY, 0);
-        final Minwinbase.LPOVERLAPPED overlapped = Minwinbase.LPOVERLAPPED.allocateNative(ms.scope());
-        WinDef.LPDWORD lpNumberOfBytesTransferred = WinDef.LPDWORD.allocateNative(ms.scope());
-        BaseTsd.PULONG_PTR lpCompletionKey = BaseTsd.PULONG_PTR.allocateNative(ms.scope());
-        UintPtr_t<Minwinbase.LPOVERLAPPED> lpOverlapped = UintPtr_t.allocateNative(ms.scope());
+        final Minwinbase.LPOVERLAPPED overlapped = Minwinbase.LPOVERLAPPED.allocateNative(arena);
+        WinDef.LPDWORD lpNumberOfBytesTransferred = WinDef.LPDWORD.allocateNative(arena);
+        BaseTsd.PULONG_PTR lpCompletionKey = BaseTsd.PULONG_PTR.allocateNative(arena);
+        UintPtr_t<Minwinbase.LPOVERLAPPED> lpOverlapped = UintPtr_t.allocateNative(arena);
         final int dwNumberOfBytesTransferred = 42;
         long dwMilliseconds = 5000;
         Throwable ta[] = new Throwable[1];
@@ -83,7 +83,7 @@ public class IoAPITest {
         assertEquals(dwNumberOfBytesTransferred, lpNumberOfBytesTransferred.uint32_t());
         lpNumberOfBytesTransferred.uint32_t(0);
         assertEquals(lpOverlapped.get().address(), OpaqueMemory.getMemorySegment(overlapped).address());
-        UintPtr_t<Minwinbase.LPOVERLAPPED> lpOverlapped0 = UintPtr_t.allocateNative(ms.scope());
+        UintPtr_t<Minwinbase.LPOVERLAPPED> lpOverlapped0 = UintPtr_t.allocateNative(arena);
 
         IoAPI.PostQueuedCompletionStatus(completionPort, dwNumberOfBytesTransferred, COMPLETION_KEY, null);
         IoAPI.GetQueuedCompletionStatus(completionPort, lpNumberOfBytesTransferred, lpCompletionKey, lpOverlapped0, dwMilliseconds);

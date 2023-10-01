@@ -147,18 +147,18 @@ public class TimeTest {
         JnhwTestLogger.logAfterAll(testTnfo);
     }
 
-    private Arena ms;
+    private Arena arena;
 
     @BeforeEach
     public void setUp(TestInfo testInfo) throws Exception {
         JnhwTestLogger.logBeforeEach(testInfo);
         assertEquals(CallbackFactory__V__UnionSigval.MAX_CALL_BACKS, CallbackFactory__V__UnionSigval.callbacksAvailable());
-        ms = Arena.openConfined();
+        arena = Arena.ofConfined();
     }
 
     @AfterEach
     public void tearDown(TestInfo testInfo) throws Exception {
-        ms.close();
+        arena.close();
         assertEquals(CallbackFactory__V__UnionSigval.MAX_CALL_BACKS, CallbackFactory__V__UnionSigval.callbacksAvailable());
         JnhwTestLogger.logAfterEach(testInfo);
     }
@@ -168,7 +168,7 @@ public class TimeTest {
      */
     @Test
     public void testAsctime() {
-        Time.Tm tm = Time.Tm.allocateNative(ms.scope());
+        Time.Tm tm = Time.Tm.allocateNative(arena);
         tm.tm_year(119);
         tm.tm_mon(11);
         tm.tm_mday(3);
@@ -189,7 +189,7 @@ public class TimeTest {
      */
     @Test
     public void testAsctime_r() {
-        Time.Tm tm = Time.Tm.allocateNative(ms.scope());
+        Time.Tm tm = Time.Tm.allocateNative(arena);
         tm.tm_year(119);
         tm.tm_mon(11);
         tm.tm_mday(3);
@@ -200,7 +200,7 @@ public class TimeTest {
         tm.tm_isdst(0);
 
         final int BUF_SIZE = 26;
-        MemoryHeap buf = MemoryHeap.wrap(ms.allocate(BUF_SIZE));
+        MemoryHeap buf = MemoryHeap.wrap(arena.allocate(BUF_SIZE));
         String result = Time.asctime_r(tm, buf);
         assertEquals("Wed Dec  3 08:17:07 2019\n", result);
         byte[] raw = OpaqueMemory.toBytes(buf);
@@ -212,7 +212,7 @@ public class TimeTest {
                 () -> Time.asctime_r(tm, null));
         //Test that there at least 26 bytes available in the buffer.
         Assertions.assertThrows(IllegalArgumentException.class,
-                () -> Time.asctime_r(tm, MemoryHeap.wrap(ms.allocate(25))));
+                () -> Time.asctime_r(tm, MemoryHeap.wrap(arena.allocate(25))));
     }
 
     /**
@@ -229,7 +229,7 @@ public class TimeTest {
      */
     @Test
     public void testClock_getcpuclockid() throws Exception {
-        Types.Clockid_t clock_id = Types.Clockid_t.allocateNative(ms.scope());
+        Types.Clockid_t clock_id = Types.Clockid_t.allocateNative(arena);
         switch (MultiarchTupelBuilder.getOS()) {
             case APPLE ->
                 Assertions.assertThrows(NoSuchNativeMethodException.class,
@@ -247,7 +247,7 @@ public class TimeTest {
      */
     @Test
     public void testClock_getres() throws Exception {
-        Time.Timespec timespec = Time.Timespec.allocateNative(ms.scope());
+        Time.Timespec timespec = Time.Timespec.allocateNative(arena);
         Time.clock_getres(Time.CLOCK_MONOTONIC, timespec);
 
         assertEquals(0, timespec.tv_sec());
@@ -279,7 +279,7 @@ public class TimeTest {
     @Test
     public void testClock_gettime() throws Exception {
         int clock_id = Time.CLOCK_MONOTONIC;
-        Time.Timespec timespec = Time.Timespec.allocateNative(ms.scope());
+        Time.Timespec timespec = Time.Timespec.allocateNative(arena);
         Time.clock_gettime(clock_id, timespec);
 
         JnhwTestLogger.logTest("timespec: " + timespec);
@@ -298,12 +298,12 @@ public class TimeTest {
         switch (MultiarchTupelBuilder.getOS()) {
             case APPLE, OPEN_BSD ->
                 Assertions.assertThrows(NoSuchNativeMethodException.class,
-                        () -> Time.clock_nanosleep(0, 0, Time.Timespec.allocateNative(ms.scope())));
+                        () -> Time.clock_nanosleep(0, 0, Time.Timespec.allocateNative(arena)));
             default -> {
                 int clock_id = Time.CLOCK_MONOTONIC;
                 int flags = 0;
-                Time.Timespec rqtp = Time.Timespec.allocateNative(ms.scope());
-                Time.Timespec rmtp = Time.Timespec.allocateNative(ms.scope());
+                Time.Timespec rqtp = Time.Timespec.allocateNative(arena);
+                Time.Timespec rmtp = Time.Timespec.allocateNative(arena);
 
                 long start = System.nanoTime();
                 Thread.sleep(Duration.ofMillis(10));
@@ -345,7 +345,7 @@ public class TimeTest {
      */
     @Test
     public void testClock_settime() throws Exception {
-        Time.Timespec timespec = Time.Timespec.allocateNative(ms.scope());
+        Time.Timespec timespec = Time.Timespec.allocateNative(arena);
         //We should not have the priveleges to set the CLOCK_REALTIME ... so a NativeErrorException with EPERM as errno should be thrown.
         NativeErrorException nee = Assertions.assertThrows(NativeErrorException.class,
                 () -> Time.clock_settime(Time.CLOCK_REALTIME, timespec));
@@ -368,7 +368,7 @@ public class TimeTest {
     @Test
     public void testCtime() {
         JnhwTestLogger.logTest("ctime  @" + ZoneId.systemDefault());
-        final Types.Time_t clock = Types.Time_t.allocateNative(ms.scope());
+        final Types.Time_t clock = Types.Time_t.allocateNative(arena);
         clock.setFromSignedLong(TIME_T__20191203_142044);
         String result = Time.ctime(clock);
         assertEquals(getCtimeFormated(clock.getAsSignedLong()), result);
@@ -380,9 +380,9 @@ public class TimeTest {
     @Test
     public void testCtime_r() throws Exception {
         JnhwTestLogger.logTest("ctime_r  @" + ZoneId.systemDefault());
-        final Types.Time_t clock = Types.Time_t.allocateNative(ms.scope());
+        final Types.Time_t clock = Types.Time_t.allocateNative(arena);
         clock.setFromSignedLong(TIME_T__20191203_142044);
-        MemoryHeap buf = MemoryHeap.wrap(ms.allocate(32));
+        MemoryHeap buf = MemoryHeap.wrap(arena.allocate(32));
         String result = Time.ctime_r(clock, buf);
 
         assertEquals(getCtimeFormated(clock.getAsSignedLong()), result);
@@ -395,7 +395,7 @@ public class TimeTest {
                 () -> Time.ctime_r(clock, null));
         //Test that there at least 26 bytes available in the buffer.
         Assertions.assertThrows(IllegalArgumentException.class,
-                () -> Time.ctime_r(clock, MemoryHeap.wrap(ms.allocate(25))));
+                () -> Time.ctime_r(clock, MemoryHeap.wrap(arena.allocate(25))));
     }
 
     /**
@@ -442,7 +442,7 @@ public class TimeTest {
      */
     @Test
     public void testGetdate() throws Exception {
-        String string = "Tue Dec  3 15:20:44 2019\n";
+        final String string = "Tue Dec  3 15:20:44 2019\n";
 
         switch (MultiarchTupelBuilder.getOS()) {
             case FREE_BSD, OPEN_BSD ->
@@ -462,7 +462,7 @@ public class TimeTest {
     @Test
     public void testGmtime() throws Exception {
         final Instant instant = Instant.now();
-        final Types.Time_t timer = Types.Time_t.allocateNative(ms.scope());
+        final Types.Time_t timer = Types.Time_t.allocateNative(arena);
         timer.setFromSignedLong(instant.getEpochSecond());
         Time.Tm result = Time.gmtime(timer);
         assertTm(instant, result, ZoneOffset.UTC);
@@ -474,9 +474,9 @@ public class TimeTest {
     @Test
     public void testGmtime_r() throws Exception {
         final Instant instant = Instant.now();
-        final Types.Time_t timer = Types.Time_t.allocateNative(ms.scope());
+        final Types.Time_t timer = Types.Time_t.allocateNative(arena);
         timer.setFromSignedLong(instant.getEpochSecond());
-        Time.Tm tm = Time.Tm.allocateNative(ms.scope());
+        Time.Tm tm = Time.Tm.allocateNative(arena);
         Time.gmtime_r(timer, tm);
         assertTm(instant, tm, ZoneOffset.UTC);
 
@@ -490,7 +490,7 @@ public class TimeTest {
     @Test
     public void testLocaltime() throws Exception {
         final Instant instant = Instant.now();
-        final Types.Time_t timer = Types.Time_t.allocateNative(ms.scope());
+        final Types.Time_t timer = Types.Time_t.allocateNative(arena);
         timer.setFromSignedLong(instant.getEpochSecond());
 
         final Time.Tm result = Time.localtime(timer);
@@ -526,9 +526,9 @@ public class TimeTest {
     @Test
     public void testLocaltime_r() throws Exception {
         final Instant instant = Instant.now();
-        final Types.Time_t timer = Types.Time_t.allocateNative(ms.scope());
+        final Types.Time_t timer = Types.Time_t.allocateNative(arena);
         timer.setFromSignedLong(instant.getEpochSecond());
-        final Time.Tm tm = Time.Tm.allocateNative(ms.scope());
+        final Time.Tm tm = Time.Tm.allocateNative(arena);
 
         Time.localtime_r(timer, tm);
 
@@ -545,7 +545,7 @@ public class TimeTest {
      */
     @Test
     public void testMktime() throws Exception {
-        final Types.Time_t timer = Types.Time_t.allocateNative(ms.scope());
+        final Types.Time_t timer = Types.Time_t.allocateNative(arena);
         timer.setFromSignedLong(System.currentTimeMillis() / 1000);
         Time.Tm tm = Time.localtime(timer);
         long result = Time.mktime(tm);
@@ -560,7 +560,7 @@ public class TimeTest {
      */
     @Test
     public void testStructTimespec() {
-        Time.Timespec timespec = Time.Timespec.allocateNative(ms.scope());
+        Time.Timespec timespec = Time.Timespec.allocateNative(arena);
         timespec.tv_nsec(10_000_000L); //10ms
         timespec.tv_sec(42);
         assertEquals(10_000_000L, timespec.tv_nsec(), "tv_sec");
@@ -572,7 +572,7 @@ public class TimeTest {
      */
     @Test
     public void testNanosleep() throws Exception {
-        Time.Timespec rqtp = Time.Timespec.allocateNative(ms.scope());
+        Time.Timespec rqtp = Time.Timespec.allocateNative(arena);
 
         long start = System.nanoTime();
         Thread.sleep(Duration.ofMillis(10));
@@ -586,7 +586,7 @@ public class TimeTest {
 
         rqtp.tv_sec(0);
 
-        Time.Timespec rmtp = Time.Timespec.allocateNative(ms.scope());
+        Time.Timespec rmtp = Time.Timespec.allocateNative(arena);
         rmtp.tv_nsec(42);
         rmtp.tv_sec(24);
         try {
@@ -630,7 +630,7 @@ public class TimeTest {
     public void testStrftime() {
         long maxsize = 1024;
         String format = "%Y-%m-%d %H:%M:%S";
-        Time.Tm timeptr = Time.Tm.allocateNative(ms.scope());
+        Time.Tm timeptr = Time.Tm.allocateNative(arena);
         timeptr.tm_year(2020 - 1900);
         timeptr.tm_mon(1);
         timeptr.tm_mday(19);
@@ -655,7 +655,7 @@ public class TimeTest {
     public void testStrftime_l() throws Exception {
         long maxsize = 256;
         String format = "%Y-%m-%d %H:%M:%S";
-        Time.Tm timeptr = Time.Tm.allocateNative(ms.scope());
+        Time.Tm timeptr = Time.Tm.allocateNative(arena);
         timeptr.tm_year(2020 - 1900);
         timeptr.tm_mon(1);
         timeptr.tm_mday(19);
@@ -688,7 +688,7 @@ public class TimeTest {
     public void testStrptime() {
         String buf = "2020-01-27 09:12:57\nJNHW";
         String format = "%Y-%m-%d %H:%M:%S";
-        Time.Tm tm = Time.Tm.allocateNative(ms.scope());
+        Time.Tm tm = Time.Tm.allocateNative(arena);
         String expResult = "\nJNHW";
 
         String result = Time.strptime(buf, format, tm);
@@ -737,30 +737,30 @@ public class TimeTest {
             case APPLE -> {
                 // precondition for tests not available
                 Assertions.assertThrows(NoSuchNativeTypeException.class,
-                        () -> Time.Timer_t.tryAllocateNative(ms.scope()));
+                        () -> Time.Timer_t.tryAllocateNative(arena));
                 Assertions.assertThrows(NoSuchNativeTypeException.class,
-                        () -> Time.timer_create(0, Time.PtrTimer_t.tryAllocateNative(ms.scope())));
+                        () -> Time.timer_create(0, Time.PtrTimer_t.tryAllocateNative(arena)));
                 Assertions.assertThrows(NoSuchNativeTypeException.class,
-                        () -> Time.timer_delete(Time.Timer_t.tryAllocateNative(ms.scope())));
+                        () -> Time.timer_delete(Time.Timer_t.tryAllocateNative(arena)));
                 return;
 
             }
             case OPEN_BSD -> {
                 Assertions.assertThrows(NoSuchNativeMethodException.class,
-                        () -> Time.timer_create(0, Time.PtrTimer_t.tryAllocateNative(ms.scope())));
+                        () -> Time.timer_create(0, Time.PtrTimer_t.tryAllocateNative(arena)));
                 Assertions.assertThrows(NoSuchNativeMethodException.class,
-                        () -> Time.timer_delete(Time.Timer_t.tryAllocateNative(ms.scope())));
+                        () -> Time.timer_delete(Time.Timer_t.tryAllocateNative(arena)));
                 return;
             }
         }
 
-        final Time.PtrTimer_t ptrTimerid = Time.PtrTimer_t.tryAllocateNative(ms.scope());
+        final Time.PtrTimer_t ptrTimerid = Time.PtrTimer_t.tryAllocateNative(arena);
 
         Time.timer_create(Time.CLOCK_MONOTONIC, ptrTimerid);
         try {
             JnhwTestLogger.logTest("timerid: " + ptrTimerid);
         } finally {
-            Time.timer_delete(ptrTimerid.get(ms.scope()));
+            Time.timer_delete(ptrTimerid.get(arena));
         }
 
         OpaqueMemory.clear(ptrTimerid);
@@ -768,17 +768,17 @@ public class TimeTest {
         Assertions.assertThrows(NullPointerException.class,
                 () -> Time.timer_create(Time.CLOCK_MONOTONIC, null, null));
 
-        Signal.Sigevent evp = Signal.Sigevent.tryAllocateNative(ms.scope());
+        Signal.Sigevent evp = Signal.Sigevent.tryAllocateNative(arena);
         //Setup for signal delivery
         evp.sigev_notify(Signal.SIGEV_SIGNAL.get());
         evp.sigev_signo(Signal.SIGCHLD);
 
-        Pthread.Pthread_attr_t attr = Pthread.Pthread_attr_t.allocateNative(ms.scope());
+        Pthread.Pthread_attr_t attr = Pthread.Pthread_attr_t.allocateNative(arena);
         Pthread.pthread_attr_init(attr);
         evp.sigev_notify_attributes(attr);
 
         Time.timer_create(Time.CLOCK_MONOTONIC, evp, ptrTimerid);
-        Time.Timer_t timerid = ptrTimerid.get(ms.scope());
+        Time.Timer_t timerid = ptrTimerid.get(arena);
         try {
 
             //Setup for signal delivery
@@ -796,7 +796,7 @@ public class TimeTest {
         } else {
             //linux can cope with that
             NativeErrorException nee = Assertions.assertThrows(NativeErrorException.class,
-                    () -> Time.timer_delete(ptrTimerid.get(ms.scope())));
+                    () -> Time.timer_delete(ptrTimerid.get(arena)));
             ErrnoTest.assertErrnoEquals(Errno.EINVAL, nee.errno);
 
         }
@@ -818,13 +818,13 @@ public class TimeTest {
             }
         }
 
-        final Time.PtrTimer_t ptrTimerid = Time.PtrTimer_t.tryAllocateNative(ms.scope());
-        Signal.Sigevent evp = Signal.Sigevent.tryAllocateNative(ms.scope());
+        final Time.PtrTimer_t ptrTimerid = Time.PtrTimer_t.tryAllocateNative(arena);
+        Signal.Sigevent evp = Signal.Sigevent.tryAllocateNative(arena);
         //Setup for signal delivery
         evp.sigev_notify(Signal.SIGEV_SIGNAL.get());
         evp.sigev_signo(Signal.SIGCHLD);
 
-        Pthread.Pthread_attr_t attr = Pthread.Pthread_attr_t.allocateNative(ms.scope());
+        Pthread.Pthread_attr_t attr = Pthread.Pthread_attr_t.allocateNative(arena);
         Pthread.pthread_attr_init(attr);
         evp.sigev_notify_attributes(attr);
 
@@ -832,8 +832,8 @@ public class TimeTest {
                 () -> {
                     Time.timer_create(Time.CLOCK_MONOTONIC, evp, ptrTimerid);
 
-                    Time.timer_delete(ptrTimerid.get(ms.scope()));
-                    Time.timer_delete(ptrTimerid.get(ms.scope()));
+                    Time.timer_delete(ptrTimerid.get(arena));
+                    Time.timer_delete(ptrTimerid.get(arena));
                 });
         ErrnoTest.assertErrnoEquals(Errno.EINVAL, nee.errno);
     }
@@ -847,24 +847,24 @@ public class TimeTest {
             case APPLE -> {
                 // precondition for tests not available
                 Assertions.assertThrows(NoSuchNativeTypeException.class,
-                        () -> Time.PtrTimer_t.tryAllocateNative(ms.scope()));
+                        () -> Time.PtrTimer_t.tryAllocateNative(arena));
                 Assertions.assertThrows(NoSuchNativeTypeException.class,
-                        () -> Time.Itimerspec.tryAllocateNative(ms.scope()));
+                        () -> Time.Itimerspec.tryAllocateNative(arena));
 
             }
             case OPEN_BSD -> {// precondition for tests not available
                 Assertions.assertThrows(NoSuchNativeTypeException.class,
-                        () -> Signal.Sigevent.tryAllocateNative(ms.scope()));
+                        () -> Signal.Sigevent.tryAllocateNative(arena));
             }
             default -> {
-                Time.PtrTimer_t ptrTimerid = Time.PtrTimer_t.tryAllocateNative(ms.scope());
-                Time.Itimerspec trigger = Time.Itimerspec.tryAllocateNative(ms.scope());
-                Signal.Sigevent sev = Signal.Sigevent.tryAllocateNative(ms.scope());
+                Time.PtrTimer_t ptrTimerid = Time.PtrTimer_t.tryAllocateNative(arena);
+                Time.Itimerspec trigger = Time.Itimerspec.tryAllocateNative(arena);
+                Signal.Sigevent sev = Signal.Sigevent.tryAllocateNative(arena);
 
                 sev.sigev_notify(Signal.SIGEV_NONE.get());
 
                 Time.timer_create(Time.CLOCK_REALTIME, sev, ptrTimerid);
-                final Time.Timer_t timerid = ptrTimerid.get(ms.scope());
+                final Time.Timer_t timerid = ptrTimerid.get(arena);
 
                 assertEquals(0, Time.timer_getoverrun(timerid));
 
@@ -899,7 +899,7 @@ public class TimeTest {
 
                 // precondition for tests not available
                 Assertions.assertThrows(NoSuchNativeTypeException.class,
-                        () -> Time.Timer_t.tryAllocateNative(ms.scope()));
+                        () -> Time.Timer_t.tryAllocateNative(arena));
             }
             case OPEN_BSD -> {
                 // preconditions not met can only test this this way.
@@ -911,12 +911,12 @@ public class TimeTest {
 
                 // precondition for tests not available
                 Assertions.assertThrows(NoSuchNativeTypeException.class,
-                        () -> Signal.Sigevent.tryAllocateNative(ms.scope()));
+                        () -> Signal.Sigevent.tryAllocateNative(arena));
             }
             default -> {
                 final int SIVAL_INT = 0x87654321;
                 final Object[] cbRef = new Object[1];
-                Time.PtrTimer_t ptrTimerid = Time.PtrTimer_t.tryAllocateNative(ms.scope());
+                Time.PtrTimer_t ptrTimerid = Time.PtrTimer_t.tryAllocateNative(arena);
 
                 //Pthread.Pthread_attr_t attr = new Pthread.Pthread_attr_t();
                 //Pthread.pthread_attr_init(attr);
@@ -925,7 +925,7 @@ public class TimeTest {
                 parm.sched_priority(0); //TODO Was 255 but got EINVAL
                 Pthread.pthread_attr_setschedparam(attr, parm);
                  */
-                Signal.Sigevent<OpaqueMemory> evp = Signal.Sigevent.tryAllocateNative(ms.scope());
+                Signal.Sigevent<OpaqueMemory> evp = Signal.Sigevent.tryAllocateNative(arena);
                 //evp.sigev_notify_attributes(attr);
                 evp.sigev_notify(Signal.SIGEV_THREAD.get());
 
@@ -955,10 +955,10 @@ public class TimeTest {
                     JnhwTestLogger.logTest("evp: " + evp);
 
                     Time.timer_create(Time.CLOCK_REALTIME, evp, ptrTimerid);
-                    final Time.Timer_t timerid = ptrTimerid.get(ms.scope());
+                    final Time.Timer_t timerid = ptrTimerid.get(arena);
 
                     try {
-                        Time.Itimerspec value = Time.Itimerspec.tryAllocateNative(ms.scope());
+                        Time.Itimerspec value = Time.Itimerspec.tryAllocateNative(arena);
 //          Time.Itimerspec ovalue = new Time.Itimerspec(true);
                         value.it_value.tv_sec(2); // after 2 s
                         value.it_interval.tv_sec(1); //fire all 1s
@@ -966,7 +966,7 @@ public class TimeTest {
 
 //TODO Errno.EINVAL() aka 22
                         Time.timer_settime(timerid, 0, value);
-                        Time.Itimerspec itimerspec = Time.Itimerspec.tryAllocateNative(ms.scope());
+                        Time.Itimerspec itimerspec = Time.Itimerspec.tryAllocateNative(arena);
                         JnhwTestLogger.logTest("timer_gettime");
                         Time.timer_gettime(timerid, itimerspec);
 
@@ -1052,9 +1052,9 @@ public class TimeTest {
     public void testTimer_t() throws Exception {
         if (MultiarchTupelBuilder.getOS() == OS.APPLE) {
             Assertions.assertThrows(NoSuchNativeTypeException.class,
-                    () -> Time.Timer_t.tryAllocateNative(ms.scope()));
+                    () -> Time.Timer_t.tryAllocateNative(arena));
         } else {
-            Time.Timer_t timer_t = Time.Timer_t.tryAllocateNative(ms.scope());
+            Time.Timer_t timer_t = Time.Timer_t.tryAllocateNative(arena);
             switch (Time.Timer_t.sizeof) {
                 case 4 ->
                     Assertions.assertEquals("0x00000000", timer_t.nativeToHexString());
@@ -1070,9 +1070,9 @@ public class TimeTest {
     public void testItimerspec() throws Exception {
         if (MultiarchTupelBuilder.getOS() == OS.APPLE) {
             Assertions.assertThrows(NoSuchNativeTypeException.class,
-                    () -> Time.Itimerspec.tryAllocateNative(ms.scope()));
+                    () -> Time.Itimerspec.tryAllocateNative(arena));
         } else {
-            Time.Itimerspec itimerspec = Time.Itimerspec.tryAllocateNative(ms.scope());
+            Time.Itimerspec itimerspec = Time.Itimerspec.tryAllocateNative(arena);
             Assertions.assertEquals("{it_value : {tv_sec : 0, tv_nsec : 0}, it_interval : {tv_sec : 0, tv_nsec : 0}}", itimerspec.nativeToString());
         }
     }

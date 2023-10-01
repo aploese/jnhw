@@ -28,8 +28,8 @@ import de.ibapl.jnhw.common.memory.Struct;
 import de.ibapl.jnhw.common.memory.Uint32_t;
 import de.ibapl.jnhw.util.winapi.WinApiDataType;
 import de.ibapl.jnhw.winapi.Winnt.HANDLE;
+import java.lang.foreign.Arena;
 import java.lang.foreign.MemorySegment;
-import java.lang.foreign.SegmentScope;
 
 /**
  * Wrapper around the
@@ -83,8 +83,8 @@ public abstract class WinDef {
 
         private final static int SIZE_OF_WCHAR = WinApiDataType.WCHAR.SIZE_OF;
 
-        public static LPBYTE allocateNative(int size, SegmentScope ms) {
-            return new LPBYTE(MemorySegment.allocateNative(size, 1, ms), 0, size);
+        public static LPBYTE allocateNative(int size, Arena arena) {
+            return new LPBYTE(arena.allocate(size, 1), 0, size);
         }
 
         /**
@@ -122,8 +122,8 @@ public abstract class WinDef {
      */
     public static class LPDWORD extends Uint32_t {
 
-        public static LPDWORD allocateNative(SegmentScope ms) {
-            return new LPDWORD(MemorySegment.allocateNative(DATA_TYPE.SIZE_OF, DATA_TYPE.ALIGN_OF.alignof, ms), 0);
+        public static LPDWORD allocateNative(Arena arena) {
+            return new LPDWORD(arena.allocate(DATA_TYPE.SIZE_OF, DATA_TYPE.ALIGN_OF.alignof), 0);
         }
 
         public LPDWORD(MemorySegment memorySegment, long offset) {
@@ -142,9 +142,9 @@ public abstract class WinDef {
      */
     public static class LPWSTR extends Struct {
 
-        public static LPWSTR wrap(String value, boolean isNullTerminated, SegmentScope ms) {
+        public static LPWSTR wrap(String value, boolean isNullTerminated, Arena arena) {
             final int length = value.length() * 2 + (isNullTerminated ? 2 : 0);
-            final LPWSTR result = new LPWSTR(MemorySegment.allocateNative(length, 2, ms), 0, length);
+            final LPWSTR result = new LPWSTR(arena.allocate(length, 2), 0, length);
             result.setString(value, isNullTerminated);
             return result;
         }
@@ -193,12 +193,12 @@ public abstract class WinDef {
      */
     public final static class PHKEY extends Winnt.PHANDLE {
 
-        public static PHKEY allocateNative(SegmentScope ms) {
-            return new PHKEY(MemorySegment.allocateNative(SIZE_OF, ALIGN_OF.alignof, ms), 0);
+        public static PHKEY allocateNative(Arena arena) {
+            return new PHKEY(arena.allocate(SIZE_OF, ALIGN_OF.alignof), 0);
         }
 
-        public static PHKEY allocateNative(HKEY value, SegmentScope ms) {
-            return new PHKEY(MemorySegment.allocateNative(SIZE_OF, ALIGN_OF.alignof, ms), 0, value);
+        public static PHKEY allocateNative(HKEY value, Arena arena) {
+            return new PHKEY(arena.allocate(SIZE_OF, ALIGN_OF.alignof), 0, value);
         }
 
         public PHKEY(MemorySegment memorySegment, long offset) {

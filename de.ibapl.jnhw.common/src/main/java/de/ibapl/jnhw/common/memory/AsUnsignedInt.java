@@ -23,8 +23,8 @@ package de.ibapl.jnhw.common.memory;
 
 import de.ibapl.jnhw.common.datatypes.BaseDataType;
 import java.io.IOException;
+import java.lang.foreign.Arena;
 import java.lang.foreign.MemorySegment;
-import java.lang.foreign.SegmentScope;
 
 /**
  *
@@ -32,8 +32,8 @@ import java.lang.foreign.SegmentScope;
  */
 public class AsUnsignedInt extends NativeIntNumber {
 
-    public static AsUnsignedInt allocateNative(BaseDataType nativeType, SegmentScope ms) {
-        return new AsUnsignedInt(nativeType, MemorySegment.allocateNative(nativeType.SIZE_OF, nativeType.ALIGN_OF.alignof, ms), 0);
+    public static AsUnsignedInt allocateNative(BaseDataType nativeType, Arena arena) {
+        return new AsUnsignedInt(nativeType, arena.allocate(nativeType.SIZE_OF, nativeType.ALIGN_OF.alignof), 0);
     }
 
     private final BaseDataType dataType;

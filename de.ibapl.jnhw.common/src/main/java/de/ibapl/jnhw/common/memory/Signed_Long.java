@@ -23,8 +23,8 @@ package de.ibapl.jnhw.common.memory;
 
 import de.ibapl.jnhw.common.datatypes.BaseDataType;
 import java.io.IOException;
+import java.lang.foreign.Arena;
 import java.lang.foreign.MemorySegment;
-import java.lang.foreign.SegmentScope;
 
 /**
  * teh datatype signed long
@@ -35,8 +35,8 @@ public class Signed_Long extends NativeIntNumber {
 
     public final static BaseDataType DATA_TYPE = BaseDataType.C_long;
 
-    public static Signed_Long allocateNative(SegmentScope ms) {
-        return new Signed_Long(MemorySegment.allocateNative(DATA_TYPE.SIZE_OF, DATA_TYPE.ALIGN_OF.alignof, ms), 0);
+    public static Signed_Long allocateNative(Arena arena) {
+        return new Signed_Long(arena.allocate(DATA_TYPE.SIZE_OF, DATA_TYPE.ALIGN_OF.alignof), 0);
     }
 
     public Signed_Long(MemorySegment memorySegment, long offset) {

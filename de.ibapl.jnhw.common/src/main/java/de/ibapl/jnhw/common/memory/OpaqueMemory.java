@@ -26,8 +26,8 @@ import de.ibapl.jnhw.common.datatypes.Pointer;
 import de.ibapl.jnhw.common.memory.layout.Alignment;
 import de.ibapl.jnhw.common.util.JnhwFormater;
 import java.io.IOException;
+import java.lang.foreign.Arena;
 import java.lang.foreign.MemorySegment;
-import java.lang.foreign.SegmentScope;
 import java.lang.foreign.ValueLayout;
 import java.nio.ByteOrder;
 import java.util.Arrays;
@@ -241,11 +241,11 @@ public abstract class OpaqueMemory implements Native, Pointer {
         }
     }
 
-    public OpaqueMemory(long baseAddress, SegmentScope ms, long sizeInBytes) {
+    public OpaqueMemory(long baseAddress, Arena arena, long sizeInBytes) {
         if (baseAddress == 0L) {
             throw new NullPointerException("baseAddress points to NULL!");
         }
-        memorySegment = MemorySegment.ofAddress(baseAddress, sizeInBytes, ms);
+        memorySegment = MemorySegment.ofAddress(baseAddress).reinterpret(sizeInBytes, arena, null);
     }
 
     public final long sizeof() {
@@ -343,11 +343,11 @@ public abstract class OpaqueMemory implements Native, Pointer {
         /**
          *
          * @param address the address to use.
-         * @param ms the SegmentScope to use
+         * @param arena the Arena to use
          * @param parent the parent of the result with given address.
          * @return a cached or new OpaqueMemory.
          */
-        T produce(MemorySegment address, SegmentScope ms, P parent);
+        T produce(MemorySegment address, Arena arena, P parent);
 
     }
 

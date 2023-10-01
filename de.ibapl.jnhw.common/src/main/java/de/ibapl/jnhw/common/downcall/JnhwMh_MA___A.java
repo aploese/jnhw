@@ -50,29 +50,29 @@ public interface JnhwMh_MA___A extends JnhwMethodHandle {
         MemorySegment invoke_MA___A(MemorySegment arg1);
     }
 
-    static JnhwMh_MA___A.ExceptionErased mandatoryOf(SymbolLookup symbolLookup, String name, BaseDataType result, BaseDataType arg1) {
+    static JnhwMh_MA___A.ExceptionErased mandatoryOf(SymbolLookup symbolLookup, String name, BaseDataType result, BaseDataType arg1, long targetByteSize) {
         return Util.buidExistingMethod(symbolLookup,
                 name,
-                (oms) -> of(oms, name, result, arg1));
+                (oms) -> of(oms, name, result, arg1, targetByteSize));
     }
 
-    static JnhwMh_MA___A optionalOf(SymbolLookup symbolLookup, String name, BaseDataType result, BaseDataType arg1) {
+    static JnhwMh_MA___A optionalOf(SymbolLookup symbolLookup, String name, BaseDataType result, BaseDataType arg1, long targetByteSize) {
         return Util.buidOptionalMethod(symbolLookup,
                 name,
-                (oms) -> of(oms, name, result, arg1),
+                (oms) -> of(oms, name, result, arg1, targetByteSize),
                 () -> (JnhwMh_MA___A) (cArg1) -> {
                     throw new NoSuchNativeMethodException(name);
                 });
     }
 
-    static JnhwMh_MA___A.ExceptionErased of(MemorySegment methodAddress, String name, BaseDataType result, BaseDataType arg1) {
+    static JnhwMh_MA___A.ExceptionErased of(MemorySegment methodAddress, String name, BaseDataType result, BaseDataType arg1, long targetByteSize) {
         return switch (result) {
             case intptr_t, uintptr_t ->
                 switch (arg1) {
                     case intptr_t, uintptr_t ->
                         NativeProvider.getProvider(
-                        () -> new JnhwMi_MA___A(methodAddress, name),
-                        () -> new JniMi_MA___A(methodAddress, name));
+                        () -> new JnhwMi_MA___A(methodAddress, name, targetByteSize),
+                        () -> new JniMi_MA___A(methodAddress, name, targetByteSize));
                     default ->
                         throw new IllegalArgumentException("arg1 unexpected data type: " + name + " " + arg1);
                 };

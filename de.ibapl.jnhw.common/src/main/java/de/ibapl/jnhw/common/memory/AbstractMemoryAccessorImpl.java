@@ -24,6 +24,7 @@ package de.ibapl.jnhw.common.memory;
 import de.ibapl.jnhw.common.datatypes.Pointer;
 import de.ibapl.jnhw.libloader.Arch;
 import de.ibapl.jnhw.libloader.MultiarchTupelBuilder;
+import java.lang.foreign.AddressLayout;
 import java.lang.foreign.MemorySegment;
 import java.lang.foreign.ValueLayout;
 import java.nio.ByteBuffer;
@@ -45,9 +46,9 @@ public sealed abstract class AbstractMemoryAccessorImpl implements MemoryAccesso
     private final ValueLayout.OfInt LAYOUT_UINT32_T;
     private final ValueLayout.OfLong LAYOUT_UINT64_T;
 
-    private final ValueLayout.OfAddress LAYOUT_INTPTR_T;
-    private final ValueLayout.OfAddress LAYOUT_UINTPTR_T;
-    private final ValueLayout.OfAddress LAYOUT_ADDRESS;
+    private final AddressLayout LAYOUT_INTPTR_T;
+    private final AddressLayout LAYOUT_UINTPTR_T;
+    private final AddressLayout LAYOUT_ADDRESS;
 
     private final ValueLayout.OfChar LAYOUT_UTF16;
 
@@ -70,36 +71,36 @@ public sealed abstract class AbstractMemoryAccessorImpl implements MemoryAccesso
         LAYOUT_UINT32_T = LAYOUT_INT32_T;
         //TODOO BUG OpenJDK ??? alignment in struct is 4 not 8 for memory model ILP32 at arch I386!
         if (MultiarchTupelBuilder.getArch() == Arch.I386) {
-            LAYOUT_INT64_T = ValueLayout.JAVA_LONG.withOrder(byteOrder).withBitAlignment(32);
+            LAYOUT_INT64_T = ValueLayout.JAVA_LONG.withOrder(byteOrder).withByteAlignment(4);
         } else {
             LAYOUT_INT64_T = ValueLayout.JAVA_LONG.withOrder(byteOrder);
         }
         LAYOUT_UINT64_T = LAYOUT_INT64_T;
 
         //TODO how to handle bounded addresses ???
-        LAYOUT_ADDRESS = ValueLayout.ADDRESS.withOrder(byteOrder).asUnbounded();
+        LAYOUT_ADDRESS = ValueLayout.ADDRESS.withOrder(byteOrder);
         LAYOUT_INTPTR_T = LAYOUT_ADDRESS;
         LAYOUT_UINTPTR_T = LAYOUT_ADDRESS;
 
         LAYOUT_UTF16 = ValueLayout.JAVA_CHAR.withOrder(byteOrder);
     }
 
-    public AbstractMemoryAccessorImpl(ByteOrder byteOrder, long alignmentBits) {
-        LAYOUT_INT8_T = ValueLayout.JAVA_BYTE.withOrder(byteOrder).withBitAlignment(alignmentBits);
+    public AbstractMemoryAccessorImpl(ByteOrder byteOrder, long byteAlignment) {
+        LAYOUT_INT8_T = ValueLayout.JAVA_BYTE.withOrder(byteOrder).withByteAlignment(byteAlignment);
         LAYOUT_UINT8_T = LAYOUT_INT8_T;
-        LAYOUT_INT16_T = ValueLayout.JAVA_SHORT.withOrder(byteOrder).withBitAlignment(alignmentBits);
+        LAYOUT_INT16_T = ValueLayout.JAVA_SHORT.withOrder(byteOrder).withByteAlignment(byteAlignment);
         LAYOUT_UINT16_T = LAYOUT_INT16_T;
-        LAYOUT_INT32_T = ValueLayout.JAVA_INT.withOrder(byteOrder).withBitAlignment(alignmentBits);
+        LAYOUT_INT32_T = ValueLayout.JAVA_INT.withOrder(byteOrder).withByteAlignment(byteAlignment);
         LAYOUT_UINT32_T = LAYOUT_INT32_T;
-        LAYOUT_INT64_T = ValueLayout.JAVA_LONG.withOrder(byteOrder).withBitAlignment(alignmentBits);
+        LAYOUT_INT64_T = ValueLayout.JAVA_LONG.withOrder(byteOrder).withByteAlignment(byteAlignment);
         LAYOUT_UINT64_T = LAYOUT_INT64_T;
 
         //TODO how to handle bounded addresses ???
-        LAYOUT_ADDRESS = ValueLayout.ADDRESS.withOrder(byteOrder).withBitAlignment(alignmentBits).asUnbounded();
+        LAYOUT_ADDRESS = ValueLayout.ADDRESS.withOrder(byteOrder).withByteAlignment(byteAlignment);
         LAYOUT_INTPTR_T = LAYOUT_ADDRESS;
         LAYOUT_UINTPTR_T = LAYOUT_ADDRESS;
 
-        LAYOUT_UTF16 = ValueLayout.JAVA_CHAR.withOrder(byteOrder).withBitAlignment(alignmentBits);
+        LAYOUT_UTF16 = ValueLayout.JAVA_CHAR.withOrder(byteOrder).withByteAlignment(byteAlignment);
     }
 
     @Override

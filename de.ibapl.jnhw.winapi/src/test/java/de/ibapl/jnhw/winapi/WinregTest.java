@@ -34,34 +34,34 @@ import org.junit.jupiter.api.condition.EnabledOnOs;
 @EnabledOnOs(org.junit.jupiter.api.condition.OS.WINDOWS)
 public class WinregTest {
 
-    private Arena ms;
+    private Arena arena;
 
     @BeforeEach
     public void setUp() throws Exception {
-        ms = Arena.openConfined();
+        arena = Arena.ofConfined();
     }
 
     @AfterEach
     public void tearDown() throws Exception {
-        ms.close();
+        arena.close();
     }
 
     @Test
     public void testRegOpenKey() throws Exception {
         String testKeyStr = "HARDWARE\\DESCRIPTION\\System";
-        WinDef.PHKEY phkResult = WinDef.PHKEY.allocateNative(ms.scope());
+        WinDef.PHKEY phkResult = WinDef.PHKEY.allocateNative(arena);
         Winreg.RegOpenKeyExW(Winreg.HKEY_LOCAL_MACHINE, testKeyStr, 0, Winnt.KEY_READ, phkResult);
         WinDef.HKEY testKey = phkResult.dereference();
         try {
             Assertions.assertFalse(testKey.is_INVALID_HANDLE_VALUE(), "RegistryHKEY is not valid");
             int dwIndex = 0;
-            LPWSTR lpValueName = LPWSTR.allocateNative(256, ms.scope());
-            LPDWORD lpcchValueName = LPDWORD.allocateNative(ms.scope());
+            LPWSTR lpValueName = LPWSTR.allocateNative(256, arena);
+            LPDWORD lpcchValueName = LPDWORD.allocateNative(arena);
             lpcchValueName.uint32_t(LPWSTR.getWCHAR_Length(lpValueName));
-            LPBYTE lpData = LPBYTE.allocateNative(256, ms.scope());
-            LPDWORD lpccData = LPDWORD.allocateNative(ms.scope());
+            LPBYTE lpData = LPBYTE.allocateNative(256, arena);
+            LPDWORD lpccData = LPDWORD.allocateNative(arena);
             lpccData.uint32_t((int) lpData.sizeof());
-            LPDWORD lpType = LPDWORD.allocateNative(ms.scope());
+            LPDWORD lpType = LPDWORD.allocateNative(arena);
             boolean collecting = true;
             do {
                 long result = Winreg.RegEnumValueW(testKey, dwIndex, lpValueName, lpcchValueName, lpType, lpData, lpccData);

@@ -49,7 +49,7 @@ public class JniCallbackFactory__V___L extends CallbackFactory__V___L {
             LOG.severe(msg);
             throw new RuntimeException(msg);
         }
-        return MemorySegment.ofAddress(result, 0, LibJnhwCommon.scope());
+        return MemorySegment.ofAddress(result).reinterpret(LibJnhwCommon.arena(), null);
     }
 
     private static native int getMaxCallBacks();

@@ -57,7 +57,8 @@ public abstract class Synchapi {
             WinApiDataType.LPSECURITY_ATTRIBUTES,
             WinApiDataType.BOOL,
             WinApiDataType.BOOL,
-            WinApiDataType.LPCWSTR);
+            WinApiDataType.LPCWSTR,
+            0L);//Just a pointer with length 0!
 
     private final static JnhwMh_BL___A.ExceptionErased ResetEvent = JnhwMh_BL___A.mandatoryOf(
             Kernel32Loader.DLL_KERNEL32_SYMBOL_LOOKUP,
@@ -137,12 +138,12 @@ public abstract class Synchapi {
      * indicates an error.
      */
     public final static HANDLE CreateEventW(SECURITY_ATTRIBUTES lpEventAttributes, boolean bManualReset, boolean bInitialState, String lpName) throws NativeErrorException {
-        try (Arena ms = Arena.openConfined()) {
+        try (Arena arena = Arena.ofConfined()) {
             MemorySegment result = CreateEventW.invoke_MA___P_BL_BL__P(
                     lpEventAttributes != null ? lpEventAttributes : Pointer.NULL,
                     bManualReset,
                     bInitialState,
-                    lpName != null ? WinDef.LPWSTR.wrap(lpName, true, ms.scope()) : Pointer.NULL);
+                    lpName != null ? WinDef.LPWSTR.wrap(lpName, true, arena) : Pointer.NULL);
             if (result.address() == 0L) {
                 throw new NativeErrorException(Errhandlingapi.GetLastError());
             }

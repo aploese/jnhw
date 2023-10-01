@@ -45,8 +45,8 @@ import de.ibapl.jnhw.libloader.libraries.LibcLoader;
 import de.ibapl.jnhw.util.posix.PosixDataType;
 import de.ibapl.jnhw.util.posix.memory.PosixStruct;
 import java.io.IOException;
+import java.lang.foreign.Arena;
 import java.lang.foreign.MemorySegment;
-import java.lang.foreign.SegmentScope;
 
 /**
  * Wrapper around the {@code <termios.h>} header.
@@ -675,8 +675,8 @@ public final class Termios {
             }
         }
 
-        public final static StructTermios allocateNative(SegmentScope ms) {
-            return new StructTermios(MemorySegment.allocateNative(sizeof, alignof.alignof, ms), 0);
+        public final static StructTermios allocateNative(Arena arena) {
+            return new StructTermios(arena.allocate(sizeof, alignof.alignof), 0);
         }
 
         public StructTermios(MemorySegment memorySegment, long offset) {

@@ -35,7 +35,6 @@ import de.ibapl.jnhw.common.upcall.CallbackFactory__V___I_MA_MA;
 import de.ibapl.jnhw.common.upcall.Callback__V___I_MA_MA;
 import java.lang.foreign.Arena;
 import java.lang.foreign.MemorySegment;
-import java.lang.foreign.SegmentScope;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
 import static org.junit.jupiter.api.Assertions.*;
@@ -59,7 +58,7 @@ public class Callback__V___I_MA_MA_Test {
     static {
         LibJnhwCommonTestLoader.touch();
         setCallback__V___I_MA_MA = JnhwMh__V___A.mandatoryOf(LibJnhwCommonTestLoader.SYMBOL_LOOKUP, "setCallback__V___I_MA_MA", BaseDataType.uintptr_t);
-        getCallback__V___I_MA_MA = JnhwMh_MA___V.mandatoryOf(LibJnhwCommonTestLoader.SYMBOL_LOOKUP, "getCallback__V___I_MA_MA", BaseDataType.uintptr_t);
+        getCallback__V___I_MA_MA = JnhwMh_MA___V.mandatoryOf(LibJnhwCommonTestLoader.SYMBOL_LOOKUP, "getCallback__V___I_MA_MA", BaseDataType.uintptr_t, 0);
         doCallback__V___I_MA_MA = JnhwMh__V__sI__A__A.mandatoryOf(LibJnhwCommonTestLoader.SYMBOL_LOOKUP, "doCallback__V___I_MA_MA", BaseDataType.int32_t, BaseDataType.uintptr_t, BaseDataType.uintptr_t);
     }
 
@@ -97,7 +96,7 @@ public class Callback__V___I_MA_MA_Test {
         }
     }
 
-    private Arena ms;
+    private Arena arena;
 
     @BeforeEach
     public void setUpBeforeEach(TestInfo testTnfo) throws Exception {
@@ -112,12 +111,12 @@ public class Callback__V___I_MA_MA_Test {
     @BeforeEach
     public void setUpBefore() throws Exception {
         System.gc();
-        ms = Arena.openConfined();
+        arena = Arena.ofConfined();
     }
 
     @AfterEach
     public void cleanupAfterEach() throws Exception {
-        ms.close();
+        arena.close();
     }
 
     /**
@@ -178,8 +177,8 @@ public class Callback__V___I_MA_MA_Test {
         final int[] refA = new int[1];
         final MemorySegment[] refB = new MemorySegment[1];
         final MemorySegment[] refC = new MemorySegment[1];
-        B b = new B(ms.scope());
-        C c = new C(ms.scope());
+        B b = new B(arena);
+        C c = new C(arena);
         Callback__V___I_MA_MA callback = new Callback__V___I_MA_MA() {
 
             @Override
@@ -209,8 +208,7 @@ public class Callback__V___I_MA_MA_Test {
             refC[0] = null;
 
             JnhwMh__V__sI__A__A.of(
-                    MemorySegment.ofAddress(
-                            getCallback__V___I_MA_MA().toAddress(), 0, ms.scope()),
+                    getCallback__V___I_MA_MA().toMemorySegment(),
                     "testCallback",
                     BaseDataType.int32_t,
                     BaseDataType.intptr_t,
@@ -241,12 +239,12 @@ public class Callback__V___I_MA_MA_Test {
 
         public final static int SIZE_OF = 2;
 
-        public B(MemorySegment nativeAddress, SegmentScope ms) {
-            super(MemorySegment.ofAddress(nativeAddress.address(), SIZE_OF, ms), 0, SIZE_OF);
+        public B(MemorySegment nativeAddress, Arena arena) {
+            super(nativeAddress.reinterpret(SIZE_OF, arena, null), 0, SIZE_OF);
         }
 
-        public B(SegmentScope ms) {
-            super(MemorySegment.allocateNative(SIZE_OF, ms), 0, SIZE_OF);
+        public B(Arena arena) {
+            super(arena.allocate(SIZE_OF), 0, SIZE_OF);
         }
 
     }
@@ -255,12 +253,12 @@ public class Callback__V___I_MA_MA_Test {
 
         public final static int SIZE_OF = 4;
 
-        public C(MemorySegment nativeAddress, SegmentScope ms) {
-            super(MemorySegment.ofAddress(nativeAddress.address(), SIZE_OF, ms), 0, SIZE_OF);
+        public C(MemorySegment nativeAddress, Arena arena) {
+            super(nativeAddress.reinterpret(SIZE_OF, arena, null), 0, SIZE_OF);
         }
 
-        public C(SegmentScope ms) {
-            super(MemorySegment.allocateNative(SIZE_OF, ms), 0, SIZE_OF);
+        public C(Arena arena) {
+            super(arena.allocate(SIZE_OF), 0, SIZE_OF);
         }
 
     }

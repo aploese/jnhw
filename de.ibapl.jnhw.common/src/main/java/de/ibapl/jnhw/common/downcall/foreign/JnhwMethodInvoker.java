@@ -21,9 +21,12 @@
  */
 package de.ibapl.jnhw.common.downcall.foreign;
 
+import java.lang.foreign.AddressLayout;
 import java.lang.foreign.FunctionDescriptor;
 import java.lang.foreign.Linker;
+import java.lang.foreign.MemoryLayout;
 import java.lang.foreign.MemorySegment;
+import java.lang.foreign.ValueLayout;
 import java.lang.invoke.MethodHandle;
 import java.util.Objects;
 
@@ -32,6 +35,14 @@ import java.util.Objects;
  * @author aploese
  */
 public abstract class JnhwMethodInvoker {
+
+    protected final static AddressLayout addressLayoutForTargetSize(final long resultTargetSize) {
+        if (resultTargetSize == 0) {
+            return ValueLayout.ADDRESS;
+        } else {
+            return ValueLayout.ADDRESS.withTargetLayout(MemoryLayout.paddingLayout(resultTargetSize));
+        }
+    }
 
     public final static Linker NATIVE_LINKER = Linker.nativeLinker();
 

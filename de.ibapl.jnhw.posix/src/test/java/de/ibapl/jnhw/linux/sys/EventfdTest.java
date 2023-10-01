@@ -56,24 +56,24 @@ public class EventfdTest {
         JnhwTestLogger.logAfterAll(testTnfo);
     }
 
-    private Arena ms;
+    private Arena arena;
 
     @BeforeEach
     public void setUp(TestInfo testInfo) throws Exception {
         JnhwTestLogger.logBeforeEach(testInfo);
-        ms = Arena.openConfined();
+        arena = Arena.ofConfined();
     }
 
     @AfterEach
     public void tearDown(TestInfo testInfo) {
-        ms.close();
+        arena.close();
         JnhwTestLogger.logBeforeEach(testInfo);
     }
 
     @Test
     public void testEventFD() throws Exception {
         int fd = Eventfd.eventfd(42, 0);
-        Eventfd.PtrEventfd_t readValue = Eventfd.PtrEventfd_t.allocateNative(ms.scope());
+        Eventfd.PtrEventfd_t readValue = Eventfd.PtrEventfd_t.allocateNative(arena);
 
         Eventfd.eventfd_read(fd, readValue);
         Assertions.assertEquals(42, readValue.uint64_t());
@@ -93,7 +93,7 @@ public class EventfdTest {
     @Test
     public void testEventFD_0() throws Exception {
         int fd = Eventfd.eventfd(0, 0);
-        Eventfd.PtrEventfd_t readValue = Eventfd.PtrEventfd_t.allocateNative(ms.scope());
+        Eventfd.PtrEventfd_t readValue = Eventfd.PtrEventfd_t.allocateNative(arena);
 
         Eventfd.eventfd_write(fd, 1);
         Eventfd.eventfd_read(fd, readValue);

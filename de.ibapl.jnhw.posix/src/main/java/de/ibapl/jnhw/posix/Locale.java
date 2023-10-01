@@ -42,7 +42,6 @@ import de.ibapl.jnhw.util.posix.memory.PosixStruct;
 import java.io.IOException;
 import java.lang.foreign.Arena;
 import java.lang.foreign.MemorySegment;
-import java.lang.foreign.SegmentScope;
 
 /**
  * Wrapper around the {@code <aio.h>} header.
@@ -254,8 +253,8 @@ public class Locale {
             }
         }
 
-        public Lconv(long memoryAddress, SegmentScope ms) {
-            super(MemorySegment.ofAddress(memoryAddress, Lconv.sizeof, ms), 0, Lconv.sizeof);
+        public Lconv(long memoryAddress, Arena arena) {
+            super(MemorySegment.ofAddress(memoryAddress).reinterpret(Lconv.sizeof, arena, null), 0, Lconv.sizeof);
         }
 
         public Lconv(MemorySegment memorySegment, long offset) {
@@ -846,7 +845,8 @@ public class Locale {
             LibcLoader.LIB_C_SYMBOL_LOOKUP,
             "duplocale",
             PosixDataType.locale_t,
-            PosixDataType.locale_t);
+            PosixDataType.locale_t,
+            0); //result is just a pointer with length 0!
 
     private final static JnhwMh__V___A.ExceptionErased freelocale = JnhwMh__V___A.mandatoryOf(
             LibcLoader.LIB_C_SYMBOL_LOOKUP,
@@ -856,7 +856,9 @@ public class Locale {
     private final static JnhwMh_MA___V.ExceptionErased localeconv = JnhwMh_MA___V.mandatoryOf(
             LibcLoader.LIB_C_SYMBOL_LOOKUP,
             "localeconv",
-            BaseDataType.C_pointer);
+            BaseDataType.C_pointer,
+            Lconv.sizeof
+    );
 
     private final static JnhwMh_MA__sI__A__A.ExceptionErased newlocale = JnhwMh_MA__sI__A__A.mandatoryOf(
             LibcLoader.LIB_C_SYMBOL_LOOKUP,
@@ -864,20 +866,23 @@ public class Locale {
             PosixDataType.locale_t,
             BaseDataType.C_int,
             BaseDataType.C_const_char_pointer,
-            PosixDataType.locale_t);
+            PosixDataType.locale_t,
+            0); //result is just a pointer with length 0!
 
     private final static JnhwMh_MA__sI__A.ExceptionErased setlocale = JnhwMh_MA__sI__A.mandatoryOf(
             LibcLoader.LIB_C_SYMBOL_LOOKUP,
             "setlocale",
             BaseDataType.C_char_pointer,
             BaseDataType.C_int,
-            BaseDataType.C_const_char_pointer);
+            BaseDataType.C_const_char_pointer,
+            Long.MAX_VALUE);//result is a string, which length is not known.
 
     private final static JnhwMh_MA___A.ExceptionErased uselocale = JnhwMh_MA___A.mandatoryOf(
             LibcLoader.LIB_C_SYMBOL_LOOKUP,
             "uselocale",
             PosixDataType.locale_t,
-            PosixDataType.locale_t);
+            PosixDataType.locale_t,
+            0); //result is just a pointer with length 0!
 
     /**
      * <b>POSIX:</b>
@@ -916,8 +921,8 @@ public class Locale {
      * @return The localeconv() function shall return a pointer to the filled-in
      * object.
      */
-    public final static Lconv localeconv(SegmentScope ms) {
-        return new Lconv(localeconv.invoke_MA___V().address(), ms);
+    public final static Lconv localeconv(Arena arena) {
+        return new Lconv(localeconv.invoke_MA___V().address(), arena);
     }
 
     /**
@@ -939,8 +944,8 @@ public class Locale {
         if (LC_GLOBAL_LOCALE.equals(base)) {
             throw new IllegalArgumentException("base is LC_GLOBAL_LOCALE");
         }
-        try (Arena ms = Arena.openConfined()) {
-            MemorySegment _locale = ms.allocate(locale.length() + 1);
+        try (Arena arena = Arena.ofConfined()) {
+            MemorySegment _locale = arena.allocate(locale.length() + 1);
             _locale.setUtf8String(0, locale);
             final MemorySegment resultAdr = newlocale.invoke_MA__sI__A__P(category_mask, _locale, base);
             if (resultAdr.address() == 0L) {
@@ -961,12 +966,12 @@ public class Locale {
      * specified category for the new locale. otherwise {@code null}
      */
     public final static String setlocale(int category, String locale) {
-        try (Arena ms = Arena.openConfined()) {
+        try (Arena arena = Arena.ofConfined()) {
             final MemorySegment resultAdr;
             if (locale == null) {
                 resultAdr = setlocale.invoke_MA__sI__A(category, MemorySegment.NULL);
             } else {
-                MemorySegment _locale = ms.allocate(locale.length() + 1);
+                MemorySegment _locale = arena.allocate(locale.length() + 1);
                 _locale.setUtf8String(0, locale);
                 resultAdr = setlocale.invoke_MA__sI__A(category, _locale);
             }

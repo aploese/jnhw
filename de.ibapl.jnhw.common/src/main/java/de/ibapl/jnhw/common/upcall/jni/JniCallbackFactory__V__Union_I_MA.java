@@ -49,7 +49,7 @@ public class JniCallbackFactory__V__Union_I_MA extends CallbackFactory__V__Union
             LOG.severe(msg);
             throw new RuntimeException(msg);
         }
-        return MemorySegment.ofAddress(result, 0, LibJnhwCommon.scope());
+        return MemorySegment.ofAddress(result).reinterpret(LibJnhwCommon.arena(), null);
     }
 
     private static native int getMaxCallBacks();

@@ -48,11 +48,11 @@ public class LsUsb {
     }
 
     private void listLong() {
-        try (Arena ms = Arena.openConfined()) {
+        try (Arena arena = Arena.ofConfined()) {
             for (UsbDevice dev : SysFs.bus().usb().devices()) {
                 System.out.println("SysFs dir: \"" + dev.getSysDir() + "\"");
                 System.out.println(dev.toShortString());
-                for (AbstractDescriptor descr : dev.descriptors(ms.scope())) {
+                for (AbstractDescriptor descr : dev.descriptors(arena)) {
                     try {
                         descr.nativeToString(System.out, " ", " ");
                     } catch (IOException ex) {

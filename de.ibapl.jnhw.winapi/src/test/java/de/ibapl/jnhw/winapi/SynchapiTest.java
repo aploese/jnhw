@@ -33,16 +33,16 @@ import org.junit.jupiter.api.condition.EnabledOnOs;
 @EnabledOnOs(org.junit.jupiter.api.condition.OS.WINDOWS)
 public class SynchapiTest {
 
-    private Arena ms;
+    private Arena arena;
 
     @BeforeEach
     public void setUp() throws Exception {
-        ms = Arena.openShared();
+        arena = Arena.ofShared();
     }
 
     @AfterEach
     public void tearDown() throws Exception {
-        ms.close();
+        arena.close();
     }
 
     @Test
@@ -58,7 +58,7 @@ public class SynchapiTest {
     public void testWaitForMultipleSignaled() throws Exception {
         final Winnt.HANDLE hEvent1 = Synchapi.CreateEventW(null, true, false, null);
         final Winnt.HANDLE hEvent2 = Synchapi.CreateEventW(null, true, false, null);
-        final Winnt.ArrayOfHandle handles = Winnt.ArrayOfHandle.allocateNative(2, ms.scope());
+        final Winnt.ArrayOfHandle handles = Winnt.ArrayOfHandle.allocateNative(2, arena);
         handles.set(0, hEvent1);
         handles.set(1, hEvent2);
         Assertions.assertTimeoutPreemptively(Duration.ofMillis(5000), () -> {
@@ -83,7 +83,7 @@ public class SynchapiTest {
     public void testWaitForMultipleTimeout() throws Exception {
         final Winnt.HANDLE hEvent1 = Synchapi.CreateEventW(null, true, false, null);
         final Winnt.HANDLE hEvent2 = Synchapi.CreateEventW(null, true, false, null);
-        final Winnt.ArrayOfHandle handles = Winnt.ArrayOfHandle.allocateNative(2, ms.scope());
+        final Winnt.ArrayOfHandle handles = Winnt.ArrayOfHandle.allocateNative(2, arena);
         handles.set(0, hEvent1);
         handles.set(1, hEvent2);
 

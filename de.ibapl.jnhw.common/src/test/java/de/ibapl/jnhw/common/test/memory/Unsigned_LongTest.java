@@ -64,8 +64,8 @@ public class Unsigned_LongTest {
 
     @Test
     public void testNative() {
-        try (Arena ms = Arena.openConfined()) {
-            Unsigned_Long instance = Unsigned_Long.allocateNative(ms.scope());
+        try (Arena arena = Arena.ofConfined()) {
+            Unsigned_Long instance = Unsigned_Long.allocateNative(arena);
             final long input = 0x8070605040302010L;
             if (BaseDataType.C_unsigned_long.SIZE_OF == 8) {
                 instance.unsigned_long(input);
@@ -91,8 +91,8 @@ public class Unsigned_LongTest {
 
     @Test
     public void testNativeToString() {
-        try (Arena ms = Arena.openConfined()) {
-            Unsigned_Long instance = new Unsigned_Long(ms.allocate(BaseDataType.C_unsigned_long.SIZE_OF), 0);
+        try (Arena arena = Arena.ofConfined()) {
+            Unsigned_Long instance = new Unsigned_Long(arena.allocate(BaseDataType.C_unsigned_long.SIZE_OF), 0);
             if (BaseDataType.C_unsigned_long.SIZE_OF == 8) {
                 Uint64_t uint64_t = Uint64_t.map(instance, 0);
                 uint64_t.uint64_t(0xfffffffffffffffeL);
@@ -109,12 +109,12 @@ public class Unsigned_LongTest {
 
     @Test
     public void testNative_1() {
-        try (Arena ms = Arena.openConfined()) {
-            AsUnsignedLong instance = new AsUnsignedLong(BaseDataType.uint32_t, ms.allocate(BaseDataType.uint32_t.SIZE_OF), 0);
+        try (Arena arena = Arena.ofConfined()) {
+            AsUnsignedLong instance = new AsUnsignedLong(BaseDataType.uint32_t, arena.allocate(BaseDataType.uint32_t.SIZE_OF), 0);
             instance.setFromUnsignedLong(33);
             assertEquals(33, instance.getAsUnsignedLong());
             assertThrows(IllegalArgumentException.class, () -> instance.setFromUnsignedLong(-1));
-            assertThrows(IllegalArgumentException.class, () -> new AsUnsignedLong(BaseDataType.int8_t, ms.allocate(BaseDataType.int8_t.SIZE_OF), 0));
+            assertThrows(IllegalArgumentException.class, () -> new AsUnsignedLong(BaseDataType.int8_t, arena.allocate(BaseDataType.int8_t.SIZE_OF), 0));
         }
     }
 

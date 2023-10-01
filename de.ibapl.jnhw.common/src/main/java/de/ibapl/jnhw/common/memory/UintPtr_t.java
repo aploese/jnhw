@@ -26,8 +26,8 @@ import de.ibapl.jnhw.common.datatypes.BaseDataType;
 import de.ibapl.jnhw.common.datatypes.Pointer;
 import de.ibapl.jnhw.common.exception.InvalidCacheException;
 import java.io.IOException;
+import java.lang.foreign.Arena;
 import java.lang.foreign.MemorySegment;
-import java.lang.foreign.SegmentScope;
 
 /**
  *
@@ -38,12 +38,12 @@ public class UintPtr_t<D extends Pointer> extends OpaqueMemory {
 
     public final static BaseDataType DATA_TYPE = BaseDataType.uintptr_t;
 
-    public static <T extends Pointer> UintPtr_t<T> allocateNative(SegmentScope ms) {
-        return new UintPtr_t<>(MemorySegment.allocateNative(DATA_TYPE.SIZE_OF, DATA_TYPE.ALIGN_OF.alignof, ms), 0);
+    public static <T extends Pointer> UintPtr_t<T> allocateNative(Arena arena) {
+        return new UintPtr_t<>(arena.allocate(DATA_TYPE.SIZE_OF, DATA_TYPE.ALIGN_OF.alignof), 0);
     }
 
-    public static <T extends Pointer> UintPtr_t<T> ofAddress(MemorySegment baseAddress, SegmentScope ms) {
-        return new UintPtr_t<>(MemorySegment.ofAddress(baseAddress.address(), DATA_TYPE.SIZE_OF, ms), 0);
+    public static <T extends Pointer> UintPtr_t<T> ofAddress(MemorySegment baseAddress, Arena arena) {
+        return new UintPtr_t<>(baseAddress.reinterpret(DATA_TYPE.SIZE_OF, arena, null), 0);
     }
 
     private D cached;

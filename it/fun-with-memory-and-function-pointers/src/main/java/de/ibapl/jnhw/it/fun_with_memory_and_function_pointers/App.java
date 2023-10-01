@@ -30,11 +30,11 @@ import java.lang.foreign.Arena;
 public class App {
 
     public static void main(String[] args) throws Exception {
-        try (Arena ms = Arena.openConfined()) {
-            Struct.getMemory(ms.scope());
-            Struct.onTheFlyStructure(ms.scope());
-            Struct.onTheFlyUnion(ms.scope());
-            Struct.printMemory(ms.scope());
+        try (Arena arena = Arena.ofConfined()) {
+            Struct.getMemory(arena);
+            Struct.onTheFlyStructure(arena);
+            Struct.onTheFlyUnion(arena);
+            Struct.printMemory(arena);
 
             FunctionPointer.call_I__V();
         }

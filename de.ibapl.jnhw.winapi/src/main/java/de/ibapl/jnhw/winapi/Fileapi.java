@@ -101,7 +101,8 @@ public final class Fileapi {
             WinApiDataType.LPSECURITY_ATTRIBUTES,
             WinApiDataType.DWORD,
             WinApiDataType.DWORD,
-            WinApiDataType.HANDLE);
+            WinApiDataType.HANDLE,
+            0L);//Just a pointer with length 0!
 
     private final static JnhwMh_BL___A.ExceptionErased FlushFileBuffers = JnhwMh_BL___A.mandatoryOf(
             Kernel32Loader.DLL_KERNEL32_SYMBOL_LOOKUP,
@@ -218,8 +219,8 @@ public final class Fileapi {
      * indicates an error.
      */
     public final static HANDLE CreateFileW(String lpFileName, int dwDesiredAccess, int dwShareMode, SECURITY_ATTRIBUTES lpSecurityAttributes, int dwCreationDisposition, int dwFlagsAndAttributes, HANDLE hTemplateFile) throws NativeErrorException {
-        try (Arena ms = Arena.openConfined()) {
-            WinDef.LPWSTR _lpFileName = WinDef.LPWSTR.wrap(lpFileName, true, ms.scope());
+        try (Arena arena = Arena.ofConfined()) {
+            WinDef.LPWSTR _lpFileName = WinDef.LPWSTR.wrap(lpFileName, true, arena);
             final MemorySegment result = CreateFileW.invoke_MA___P_uI_uI__P_uI_uI__P(
                     _lpFileName,
                     dwDesiredAccess,
@@ -274,8 +275,8 @@ public final class Fileapi {
      * indicates an error.
      */
     public static void ReadFile(HANDLE hFile, byte[] lpBuffer, WinDef.LPDWORD lpNumberOfBytesRead) throws NativeErrorException {
-        try (Arena ms = Arena.openConfined()) {
-            final MemorySegment _lpBuffer = ms.allocate(lpBuffer.length, 1);
+        try (Arena arena = Arena.ofConfined()) {
+            final MemorySegment _lpBuffer = arena.allocate(lpBuffer.length, 1);
             if (!ReadFile.invoke_BL___P__A_uI__P__P(
                     hFile,
                     _lpBuffer,
@@ -312,8 +313,8 @@ public final class Fileapi {
      * indicates an error.
      */
     public final static void ReadFile(HANDLE hFile, byte[] lpBuffer, int off, int nNumberOfBytesToRead, WinDef.LPDWORD lpNumberOfBytesRead) throws NativeErrorException {
-        try (Arena ms = Arena.openConfined()) {
-            final MemorySegment _lpBuffer = ms.allocate(nNumberOfBytesToRead, 1);
+        try (Arena arena = Arena.ofConfined()) {
+            final MemorySegment _lpBuffer = arena.allocate(nNumberOfBytesToRead, 1);
             if (!ReadFile.invoke_BL___P__A_uI__P__P(
                     hFile,
                     _lpBuffer,
@@ -795,8 +796,8 @@ public final class Fileapi {
      * indicates an error.
      */
     public static void WriteFile(HANDLE hFile, byte[] lpBuffer, WinDef.LPDWORD lpNumberOfBytesWritten) throws NativeErrorException {
-        try (Arena ms = Arena.openConfined()) {
-            final MemorySegment _lpBuffer = ms.allocate(lpBuffer.length, 1);
+        try (Arena arena = Arena.ofConfined()) {
+            final MemorySegment _lpBuffer = arena.allocate(lpBuffer.length, 1);
             _lpBuffer.copyFrom(MemorySegment.ofArray(lpBuffer));
             if (!WriteFile.invoke_BL___P__A_uI__P__P(
                     hFile,
@@ -832,8 +833,8 @@ public final class Fileapi {
      * indicates an error.
      */
     public final static void WriteFile(HANDLE hFile, byte[] lpBuffer, int off, int nNumberOfBytesToWrite, WinDef.LPDWORD lpNumberOfBytesWritten) throws NativeErrorException {
-        try (Arena ms = Arena.openConfined()) {
-            final MemorySegment _lpBuffer = ms.allocate(nNumberOfBytesToWrite, 1);
+        try (Arena arena = Arena.ofConfined()) {
+            final MemorySegment _lpBuffer = arena.allocate(nNumberOfBytesToWrite, 1);
             _lpBuffer.copyFrom(MemorySegment.ofArray(lpBuffer).asSlice(off, nNumberOfBytesToWrite));
             if (!WriteFile.invoke_BL___P__A_uI__P__P(
                     hFile,

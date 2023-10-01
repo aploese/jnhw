@@ -75,11 +75,11 @@ public class MemoryAccessorTest {
 
     private final static boolean IS_BIG_ENDIAN = MultiarchTupelBuilder.getEndianess().isBigEndian();
 
-    private final static Arena ms = Arena.openConfined();
+    private final static Arena arena = Arena.ofConfined();
 
     private final static int HEAP_SIZE = 8 * 12;
 
-    private final static MemoryHeap heap = MemoryHeap.wrap(ms.allocate(HEAP_SIZE));
+    private final static MemoryHeap heap = MemoryHeap.wrap(arena.allocate(HEAP_SIZE));
     private final static Int64_t prev = Int64_t.map(heap, 0);
 
     //Her is the place to write/read
@@ -107,7 +107,7 @@ public class MemoryAccessorTest {
 
     @AfterAll
     public static void afterAll() {
-        ms.close();
+        arena.close();
     }
 
     //byte order native

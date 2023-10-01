@@ -35,15 +35,15 @@ public abstract class AbstractLinuxSyscallStruct extends Struct {
     /**
      * Memory accessor with the natural byte order and byte alignment
      */
-    protected final static MemoryAccessor MEM_ACCESS_BYTE_ALIGNED = MemoryAccessor.getMemoryAccessor(ByteOrder.nativeOrder(), 8);
+    protected final static MemoryAccessor MEM_ACCESS_BYTE_ALIGNED = MemoryAccessor.getMemoryAccessor(ByteOrder.nativeOrder(), 1);
     /**
      * Memory accessor with the little endian byte order and byte alignment
      */
-    protected final static MemoryAccessor MEM_ACCESS_LE_BYTE_ALIGNED = MemoryAccessor.getMemoryAccessor(ByteOrder.LITTLE_ENDIAN, 8);
+    protected final static MemoryAccessor MEM_ACCESS_LE_BYTE_ALIGNED = MemoryAccessor.getMemoryAccessor(ByteOrder.LITTLE_ENDIAN, 1);
     /**
      * Memory accessor with the big endian byte order and byte alignment
      */
-    protected final static MemoryAccessor MEM_ACCESS_BE_BYTE_ALIGNED = MemoryAccessor.getMemoryAccessor(ByteOrder.BIG_ENDIAN, 8);
+    protected final static MemoryAccessor MEM_ACCESS_BE_BYTE_ALIGNED = MemoryAccessor.getMemoryAccessor(ByteOrder.BIG_ENDIAN, 1);
 
     public AbstractLinuxSyscallStruct(MemorySegment memorySegment, long offset, int sizeInBytes) {
         super(memorySegment, offset, sizeInBytes);

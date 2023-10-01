@@ -47,11 +47,11 @@ public final class MemoryAccessorImpl_ILP32 extends AbstractMemoryAccessorImpl {
         LAYOUT_UINTPTR_T = ValueLayout.JAVA_INT.withOrder(byteOrder);
     }
 
-    public MemoryAccessorImpl_ILP32(ByteOrder byteOrder, long alignmentBits) {
-        super(byteOrder, alignmentBits);
-        LAYOUT__LONG = ValueLayout.JAVA_INT.withOrder(byteOrder).withBitAlignment(alignmentBits);
-        LAYOUT__UNSIGNED_LONG = ValueLayout.JAVA_INT.withOrder(byteOrder).withBitAlignment(alignmentBits);
-        LAYOUT_UINTPTR_T = ValueLayout.JAVA_INT.withOrder(byteOrder).withBitAlignment(alignmentBits);
+    public MemoryAccessorImpl_ILP32(ByteOrder byteOrder, long byteAlignment) {
+        super(byteOrder, byteAlignment);
+        LAYOUT__LONG = ValueLayout.JAVA_INT.withOrder(byteOrder).withByteAlignment(byteAlignment);
+        LAYOUT__UNSIGNED_LONG = ValueLayout.JAVA_INT.withOrder(byteOrder).withByteAlignment(byteAlignment);
+        LAYOUT_UINTPTR_T = ValueLayout.JAVA_INT.withOrder(byteOrder).withByteAlignment(byteAlignment);
     }
 
     @Override

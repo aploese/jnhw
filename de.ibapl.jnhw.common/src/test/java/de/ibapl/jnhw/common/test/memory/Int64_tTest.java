@@ -81,8 +81,8 @@ public class Int64_tTest {
      */
     @Test
     public void testRawInt64_t() {
-        try (Arena ms = Arena.openConfined()) {
-            Int64_t instance = Int64_t.allocateNative(ms.scope());
+        try (Arena arena = Arena.ofConfined()) {
+            Int64_t instance = Int64_t.allocateNative(arena);
             long expResult = 0x08070605040302010L;
             instance.int64_t(expResult);
             assertEquals(expResult, instance.int64_t());
@@ -91,8 +91,8 @@ public class Int64_tTest {
 
     @Test
     public void testNativeToString() {
-        try (Arena ms = Arena.openConfined()) {
-            Int64_t instance = new Int64_t(ms.allocate(BaseDataType.int64_t.SIZE_OF), 0);
+        try (Arena arena = Arena.ofConfined()) {
+            Int64_t instance = new Int64_t(arena.allocate(BaseDataType.int64_t.SIZE_OF), 0);
             instance.int64_t(-2);
             assertEquals("-2", instance.nativeToString());
             assertEquals("0xfffffffffffffffe", instance.nativeToHexString());

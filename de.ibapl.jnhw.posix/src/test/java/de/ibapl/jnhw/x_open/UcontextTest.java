@@ -57,17 +57,17 @@ public class UcontextTest {
         JnhwTestLogger.logAfterAll(testTnfo);
     }
 
-    private Arena ms;
+    private Arena arena;
 
     @BeforeEach
     public void setUp(TestInfo testInfo) throws Exception {
         JnhwTestLogger.logBeforeEach(testInfo);
-        ms = Arena.openConfined();
+        arena = Arena.ofConfined();
     }
 
     @AfterEach
     public void tearDown(TestInfo testInfo) {
-        ms.close();
+        arena.close();
         JnhwTestLogger.logAfterEach(testInfo);
     }
 
@@ -78,10 +78,10 @@ public class UcontextTest {
     public void testGetcontext() throws Exception {
         switch (MultiarchTupelBuilder.getOS()) {
             case APPLE, OPEN_BSD ->
-                assertThrows(NoSuchNativeTypeException.class, () -> Ucontext.getcontext(Signal.Ucontext_t.tryAllocateNative(ms.scope())));
+                assertThrows(NoSuchNativeTypeException.class, () -> Ucontext.getcontext(Signal.Ucontext_t.tryAllocateNative(arena)));
             default -> {
                 assertThrows(NullPointerException.class, () -> Ucontext.getcontext(null));
-                Signal.Ucontext_t ucp = Signal.Ucontext_t.tryAllocateNative(ms.scope());
+                Signal.Ucontext_t ucp = Signal.Ucontext_t.tryAllocateNative(arena);
                 Ucontext.getcontext(ucp);
                 StringBuilder sb = new StringBuilder();
                 ucp.nativeToString(sb, "", " ");
@@ -103,7 +103,7 @@ public class UcontextTest {
                 assertThrows(NoSuchNativeMethodException.class, () -> Ucontext.setcontext(null));
             default -> {
                 assertThrows(NullPointerException.class, () -> Ucontext.setcontext(null));
-                Signal.Ucontext_t ucp = Signal.Ucontext_t.tryAllocateNative(ms.scope());
+                Signal.Ucontext_t ucp = Signal.Ucontext_t.tryAllocateNative(arena);
                 count = 0;
                 Ucontext.getcontext(ucp);
                 count++;

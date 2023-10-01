@@ -79,23 +79,23 @@ public class TermiosTest {
         JnhwTestLogger.logAfterAll(testTnfo);
     }
 
-    private Arena ms;
+    private Arena arena;
 
     @BeforeEach
     public void setUp(TestInfo testInfo) throws Exception {
         JnhwTestLogger.logBeforeEach(testInfo);
-        ms = Arena.openConfined();
+        arena = Arena.ofConfined();
     }
 
     @AfterEach
     public void tearDown(TestInfo testInfo) throws Exception {
-        ms.close();
+        arena.close();
         JnhwTestLogger.logAfterEach(testInfo);
     }
 
     @Test
     public void structTermios_c_ispeed() throws Exception {
-        Termios.StructTermios structTermios = Termios.StructTermios.allocateNative(ms.scope());
+        Termios.StructTermios structTermios = Termios.StructTermios.allocateNative(arena);
         switch (MultiarchTupelBuilder.getOS()) {
             case APPLE, FREE_BSD -> {
                 //Do the test
@@ -125,7 +125,7 @@ public class TermiosTest {
 
     @Test
     public void structTermios_c_ospeed() throws Exception {
-        Termios.StructTermios structTermios = Termios.StructTermios.allocateNative(ms.scope());
+        Termios.StructTermios structTermios = Termios.StructTermios.allocateNative(arena);
         switch (MultiarchTupelBuilder.getOS()) {
             case APPLE, FREE_BSD -> {
                 //Do the test
@@ -155,7 +155,7 @@ public class TermiosTest {
 
     @Test
     public void structTermiosToString() throws Exception {
-        Termios.StructTermios termios = Termios.StructTermios.allocateNative(ms.scope());
+        Termios.StructTermios termios = Termios.StructTermios.allocateNative(arena);
         Termios.StructTermios.clear(termios);
 
         Termios.cfsetspeed(termios, Termios.B9600);

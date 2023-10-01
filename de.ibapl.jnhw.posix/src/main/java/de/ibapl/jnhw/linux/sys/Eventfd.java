@@ -37,8 +37,8 @@ import de.ibapl.jnhw.isoc.Errno;
 import de.ibapl.jnhw.libloader.MultiarchTupelBuilder;
 import de.ibapl.jnhw.libloader.libraries.LibcLoader;
 import de.ibapl.jnhw.util.linux.LinuxDataType;
+import java.lang.foreign.Arena;
 import java.lang.foreign.MemorySegment;
-import java.lang.foreign.SegmentScope;
 
 /**
  * Wrapper around the linux {@code <sys/eventfd.h>} header. execute
@@ -52,8 +52,8 @@ public final class Eventfd {
     @eventfd_t
     public final static class PtrEventfd_t extends Uint64_t {
 
-        public static PtrEventfd_t allocateNative(SegmentScope ms) {
-            return new PtrEventfd_t(MemorySegment.allocateNative(DATA_TYPE.SIZE_OF, DATA_TYPE.ALIGN_OF.alignof, ms), 0);
+        public static PtrEventfd_t allocateNative(Arena arena) {
+            return new PtrEventfd_t(arena.allocate(DATA_TYPE.SIZE_OF, DATA_TYPE.ALIGN_OF.alignof), 0);
         }
 
         public PtrEventfd_t(MemorySegment memorySegment, long offset) {

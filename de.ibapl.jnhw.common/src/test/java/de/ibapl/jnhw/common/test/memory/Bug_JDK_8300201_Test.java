@@ -79,9 +79,9 @@ public class Bug_JDK_8300201_Test {
             //Nothing to test ... only 32bit are of interest here.
             return;
         }
-        try (Arena ms = Arena.openConfined()) {
+        try (Arena arena = Arena.ofConfined()) {
 
-            MemorySegment pointerArray = ms.allocate(128);
+            MemorySegment pointerArray = arena.allocate(128);
             MemorySegment expected = MemorySegment.ofAddress(TEST_VALUE);
 
             pointerArray.setAtIndex(ValueLayout.ADDRESS, 0, expected);
@@ -99,9 +99,9 @@ public class Bug_JDK_8300201_Test {
             //Nothing to test ... only 32bit are of interest here.
             return;
         }
-        try (Arena ms = Arena.openConfined()) {
+        try (Arena arena = Arena.ofConfined()) {
 
-            MemorySegment pointerArray = ms.allocate(128);
+            MemorySegment pointerArray = arena.allocate(128);
             MemorySegment expected = MemorySegment.ofAddress(TEST_VALUE);
 
             pointerArray.set(ValueLayout.ADDRESS, 0, expected);
@@ -122,7 +122,8 @@ public class Bug_JDK_8300201_Test {
         JnhwMh_MA___V.ExceptionErased call_uintptr_t = JnhwMh_MA___V.mandatoryOf(
                 LibJnhwCommonTestLoader.SYMBOL_LOOKUP,
                 "JnhwUintptrT__MA___V_0x0000000080000000L",
-                BaseDataType.uintptr_t);
+                BaseDataType.uintptr_t,
+                0);
 
         MemorySegment actual = call_uintptr_t.invoke_MA___V();
         Assertions.assertEquals(TEST_VALUE, actual.address());
@@ -130,7 +131,8 @@ public class Bug_JDK_8300201_Test {
         JnhwMh_MA___V.ExceptionErased call_intptr_t = JnhwMh_MA___V.mandatoryOf(
                 LibJnhwCommonTestLoader.SYMBOL_LOOKUP,
                 "JnhwIntptrT__MA___V_0x0000000080000000L",
-                BaseDataType.intptr_t);
+                BaseDataType.intptr_t,
+                0);
 
         actual = call_intptr_t.invoke_MA___V();
         Assertions.assertEquals(TEST_VALUE, actual.address());

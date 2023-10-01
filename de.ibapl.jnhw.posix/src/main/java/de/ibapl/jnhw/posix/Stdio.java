@@ -188,8 +188,8 @@ public class Stdio {
      * indicates an error.
      */
     public final static void remove(String path) throws NativeErrorException {
-        try (Arena ms = Arena.openConfined()) {
-            MemorySegment _path = ms.allocate(path.length() + 1);
+        try (Arena arena = Arena.ofConfined()) {
+            MemorySegment _path = arena.allocate(path.length() + 1);
             _path.setUtf8String(0, path);
             int result = remove.invoke_sI___A(_path);
             if (result != 0) {

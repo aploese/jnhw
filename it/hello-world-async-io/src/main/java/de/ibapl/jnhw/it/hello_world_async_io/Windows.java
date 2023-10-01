@@ -39,7 +39,7 @@ import java.lang.foreign.ValueLayout;
 
 public class Windows {
 
-    private final static Arena ms = Arena.openShared();
+    private final static Arena arena = Arena.ofShared();
 
     public static void aio(File file, MemorySegment aioBuffer, final boolean debug) throws NativeErrorException, IOException {
 
@@ -51,16 +51,16 @@ public class Windows {
                 Winbase.FILE_FLAG_OVERLAPPED,
                 null);
 
-        final Minwinbase.LPOVERLAPPED overlapped = Minwinbase.LPOVERLAPPED.allocateNative(ms.scope());
+        final Minwinbase.LPOVERLAPPED overlapped = Minwinbase.LPOVERLAPPED.allocateNative(arena);
         final long COMPLETION_KEY = 24;
         Winnt.HANDLE hIoCompletionPort = IoAPI.CreateIoCompletionPort(hFile, null, COMPLETION_KEY, 0);
 
-        WinDef.LPDWORD lpNumberOfBytesTransferred = WinDef.LPDWORD.allocateNative(ms.scope());
-        BaseTsd.PULONG_PTR lpCompletionKey = BaseTsd.PULONG_PTR.allocateNative(ms.scope());
+        WinDef.LPDWORD lpNumberOfBytesTransferred = WinDef.LPDWORD.allocateNative(arena);
+        BaseTsd.PULONG_PTR lpCompletionKey = BaseTsd.PULONG_PTR.allocateNative(arena);
 
         Fileapi.WriteFile(hFile, aioBuffer, overlapped);
 
-        UintPtr_t<Minwinbase.LPOVERLAPPED> overlappedPtr = UintPtr_t.allocateNative(ms.scope());
+        UintPtr_t<Minwinbase.LPOVERLAPPED> overlappedPtr = UintPtr_t.allocateNative(arena);
         IoAPI.GetQueuedCompletionStatus(hIoCompletionPort, lpNumberOfBytesTransferred, lpCompletionKey, overlappedPtr, 1000);
 
         /*

@@ -22,17 +22,10 @@
 package de.ibapl.jnhw.common.test.datatypes;
 
 import de.ibapl.jnhw.common.test.JnhwTestLogger;
-import de.ibapl.jnhw.libloader.MultiarchTupelBuilder;
-import java.lang.foreign.Arena;
-import java.lang.foreign.MemorySegment;
-import java.lang.foreign.VaList;
-import java.lang.foreign.ValueLayout;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
-import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInfo;
 
 /**
@@ -64,6 +57,8 @@ public class VaListTest {
         JnhwTestLogger.logAfterEach(testTnfo);
     }
 
+    //TODO VaList dissapeard in JDK22 ??? why??
+    /*
     @Test
     public void testEmptyVaList() {
         switch (MultiarchTupelBuilder.getMultiarch()) {
@@ -102,7 +97,7 @@ public class VaListTest {
                     for (int i = 0; i < 1024; i++) {
                         assertEquals(0, vaList.nextVarg(ValueLayout.JAVA_INT));
                     }
-                     */
+                     * /
                 }
                 default ->
                     assertThrows(UnsupportedOperationException.class, () -> VaList.make((t) -> {
@@ -133,5 +128,5 @@ public class VaListTest {
             }
         }
     }
-
+     */
 }

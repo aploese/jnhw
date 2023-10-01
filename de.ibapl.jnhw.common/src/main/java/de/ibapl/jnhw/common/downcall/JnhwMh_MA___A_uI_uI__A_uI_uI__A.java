@@ -57,22 +57,22 @@ public interface JnhwMh_MA___A_uI_uI__A_uI_uI__A extends JnhwMethodHandle {
         MemorySegment invoke_MA___A_uI_uI__A_uI_uI__A(MemorySegment arg1, int arg2, int arg3, MemorySegment arg4, int arg5, int arg6, MemorySegment arg7);
     }
 
-    static JnhwMh_MA___A_uI_uI__A_uI_uI__A.ExceptionErased mandatoryOf(SymbolLookup symbolLookup, String name, BaseDataType result, BaseDataType arg1, BaseDataType arg2, BaseDataType arg3, BaseDataType arg4, BaseDataType arg5, BaseDataType arg6, BaseDataType arg7) {
+    static JnhwMh_MA___A_uI_uI__A_uI_uI__A.ExceptionErased mandatoryOf(SymbolLookup symbolLookup, String name, BaseDataType result, BaseDataType arg1, BaseDataType arg2, BaseDataType arg3, BaseDataType arg4, BaseDataType arg5, BaseDataType arg6, BaseDataType arg7, long targetByteSize) {
         return Util.buidExistingMethod(symbolLookup,
                 name,
-                (oms) -> of(oms, name, result, arg1, arg2, arg3, arg4, arg5, arg6, arg7));
+                (oms) -> of(oms, name, result, arg1, arg2, arg3, arg4, arg5, arg6, arg7, targetByteSize));
     }
 
-    static JnhwMh_MA___A_uI_uI__A_uI_uI__A optionalOf(SymbolLookup symbolLookup, String name, BaseDataType result, BaseDataType arg1, BaseDataType arg2, BaseDataType arg3, BaseDataType arg4, BaseDataType arg5, BaseDataType arg6, BaseDataType arg7) {
+    static JnhwMh_MA___A_uI_uI__A_uI_uI__A optionalOf(SymbolLookup symbolLookup, String name, BaseDataType result, BaseDataType arg1, BaseDataType arg2, BaseDataType arg3, BaseDataType arg4, BaseDataType arg5, BaseDataType arg6, BaseDataType arg7, long targetByteSize) {
         return Util.buidOptionalMethod(symbolLookup,
                 name,
-                (oms) -> of(oms, name, result, arg1, arg2, arg3, arg4, arg5, arg6, arg7),
+                (oms) -> of(oms, name, result, arg1, arg2, arg3, arg4, arg5, arg6, arg7, targetByteSize),
                 () -> (JnhwMh_MA___A_uI_uI__A_uI_uI__A) (cArg1, cArg2, cArg3, cArg4, cArg5, cArg6, cArg7) -> {
                     throw new NoSuchNativeMethodException(name);
                 });
     }
 
-    public static JnhwMh_MA___A_uI_uI__A_uI_uI__A.ExceptionErased of(MemorySegment methodAddress, String name, BaseDataType result, BaseDataType arg1, BaseDataType arg2, BaseDataType arg3, BaseDataType arg4, BaseDataType arg5, BaseDataType arg6, BaseDataType arg7) {
+    public static JnhwMh_MA___A_uI_uI__A_uI_uI__A.ExceptionErased of(MemorySegment methodAddress, String name, BaseDataType result, BaseDataType arg1, BaseDataType arg2, BaseDataType arg3, BaseDataType arg4, BaseDataType arg5, BaseDataType arg6, BaseDataType arg7, long targetByteSize) {
         return switch (result) {
             case intptr_t, uintptr_t ->
                 switch (arg1) {
@@ -90,8 +90,8 @@ public interface JnhwMh_MA___A_uI_uI__A_uI_uI__A extends JnhwMethodHandle {
                                                                 switch (arg7) {
                                                                     case intptr_t, uintptr_t ->
                                                                         NativeProvider.getProvider(
-                                                                        () -> new JnhwMi_MA___A__I__I__A__I__I__A(methodAddress, name),
-                                                                        () -> new JniMi_MA___A__I__I__A__I__I__A(methodAddress, name));
+                                                                        () -> new JnhwMi_MA___A__I__I__A__I__I__A(methodAddress, name, targetByteSize),
+                                                                        () -> new JniMi_MA___A__I__I__A__I__I__A(methodAddress, name, targetByteSize));
                                                                     default ->
                                                                         throw new IllegalArgumentException("arg7 unexpected data type: " + name + " " + arg7);
                                                                 };

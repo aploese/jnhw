@@ -66,9 +66,9 @@ public class JavaForeignTest {
 
     @Test
     public void testGetAtIndex_32BitAddress() {
-        try (Arena ms = Arena.openConfined()) {
+        try (Arena arena = Arena.ofConfined()) {
 
-            MemorySegment pointerArray = ms.allocate(128);
+            MemorySegment pointerArray = arena.allocate(128);
             MemorySegment expected = MemorySegment.ofAddress(0x0000000080000000L);
 
             pointerArray.setAtIndex(ValueLayout.ADDRESS, 0, expected);
@@ -85,9 +85,9 @@ public class JavaForeignTest {
 
     @Test
     public void testGet_32BitAddress() {
-        try (Arena ms = Arena.openConfined()) {
+        try (Arena arena = Arena.ofConfined()) {
 
-            MemorySegment pointerArray = ms.allocate(128);
+            MemorySegment pointerArray = arena.allocate(128);
             MemorySegment expected = MemorySegment.ofAddress(0x0000000080000000L);
 
             pointerArray.set(ValueLayout.ADDRESS, 0, expected);

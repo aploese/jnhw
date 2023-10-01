@@ -24,8 +24,8 @@ package de.ibapl.jnhw.util.posix.downcall.foreign;
 import de.ibapl.jnhw.common.downcall.foreign.JnhwMi_MA___V;
 import de.ibapl.jnhw.posix.Pthread;
 import de.ibapl.jnhw.util.posix.downcall.JnhwMh_PthreadT___V;
+import java.lang.foreign.Arena;
 import java.lang.foreign.MemorySegment;
-import java.lang.foreign.SegmentScope;
 
 /**
  *
@@ -34,12 +34,12 @@ import java.lang.foreign.SegmentScope;
 public class JnhwMi_PthreadTMA___V extends JnhwMi_MA___V implements JnhwMh_PthreadT___V.ExceptionErased {
 
     public JnhwMi_PthreadTMA___V(MemorySegment methodAddress, String name) {
-        super(methodAddress, name);
+        super(methodAddress, name, Pthread.Pthread_t.sizeof);
     }
 
     @Override
-    public Pthread.Pthread_t invoke_PthreadT___V(SegmentScope ms) {
-        return Pthread.Pthread_t.ofAddress(invoke_MA___V().address(), ms);
+    public Pthread.Pthread_t invoke_PthreadT___V(Arena arena) {
+        return Pthread.Pthread_t.ofAddress(invoke_MA___V(), arena);
     }
 
 }

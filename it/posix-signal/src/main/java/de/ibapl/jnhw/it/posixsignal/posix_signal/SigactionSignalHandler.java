@@ -37,10 +37,10 @@ import java.lang.foreign.MemorySegment;
  */
 public class SigactionSignalHandler extends SignalHandler {
 
-    final Arena ms = Arena.openShared();
+    final Arena arena = Arena.ofShared();
 
-    final Signal.Sigaction act = Signal.Sigaction.allocateNative(ms.scope());
-    final Signal.Sigaction oact = Signal.Sigaction.allocateNative(ms.scope());
+    final Signal.Sigaction act = Signal.Sigaction.allocateNative(arena);
+    final Signal.Sigaction oact = Signal.Sigaction.allocateNative(arena);
     Callback__V___I_MA_MA<Signal.Siginfo_t, Signal.Ucontext_t> sa_handler = new Callback__V___I_MA_MA<>() {
 
         @Override
@@ -50,12 +50,12 @@ public class SigactionSignalHandler extends SignalHandler {
                 sb.append("\n\n********Caught Signal " + value + " in thread: " + Thread.currentThread() + "\n");
 
                 sb.append("siginfo: ");
-                final Signal.Siginfo_t siginfo = Signal.Siginfo_t.ofAddress(siginfoPtr.address(), ms.scope());
+                final Signal.Siginfo_t siginfo = Signal.Siginfo_t.ofAddress(siginfoPtr.address(), arena);
                 siginfo.nativeToString(sb, "", " ");
                 sb.append("\n");
 
                 sb.append("ucontext: ");
-                final Signal.Ucontext_t ucontext = Signal.Ucontext_t.tryOfAddress(ucontextPtr.address(), ms.scope());
+                final Signal.Ucontext_t ucontext = Signal.Ucontext_t.tryOfAddress(ucontextPtr.address(), arena);
                 ucontext.nativeToString(sb, "", " ");
                 sb.append("\n");
 
@@ -65,15 +65,13 @@ public class SigactionSignalHandler extends SignalHandler {
                     case PRINT_MSG_AND_SYSTEM_EXIT ->
                         System.exit(value);
                     case PRINT_MSG_AND_CALL_OLD_HANDLER -> {
-                        try (Arena ms = Arena.openConfined()) {
-                            JnhwMh__V__sI__A__A.of(
-                                    MemorySegment.ofAddress(oact.sa_sigaction().toMemorySegment().address(), 0, ms.scope()),
-                                    "testCallback",
-                                    BaseDataType.C_int,
-                                    BaseDataType.C_pointer,
-                                    BaseDataType.C_pointer
-                            ).invoke__V__sI__P__P(value, siginfo, ucontext);
-                        }
+                        JnhwMh__V__sI__A__A.of(
+                                MemorySegment.ofAddress(oact.sa_sigaction().toMemorySegment().address()),
+                                "testCallback",
+                                BaseDataType.C_int,
+                                BaseDataType.C_pointer,
+                                BaseDataType.C_pointer
+                        ).invoke__V__sI__P__P(value, siginfo, ucontext);
                     }
                     default ->
                         thrownInHandler = new RuntimeException("Can't handle signalAction: " + signalAction);

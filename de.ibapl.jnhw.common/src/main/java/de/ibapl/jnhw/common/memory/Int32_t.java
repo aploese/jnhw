@@ -24,8 +24,8 @@ package de.ibapl.jnhw.common.memory;
 import de.ibapl.jnhw.common.annotation.int32_t;
 import de.ibapl.jnhw.common.datatypes.BaseDataType;
 import java.io.IOException;
+import java.lang.foreign.Arena;
 import java.lang.foreign.MemorySegment;
-import java.lang.foreign.SegmentScope;
 
 /**
  *
@@ -36,8 +36,8 @@ public class Int32_t extends NativeIntNumber<Integer> {
 
     public final static BaseDataType DATA_TYPE = BaseDataType.int32_t;
 
-    public static Int32_t allocateNative(SegmentScope ms) {
-        return new Int32_t(MemorySegment.allocateNative(DATA_TYPE.SIZE_OF, DATA_TYPE.ALIGN_OF.alignof, ms), 0);
+    public static Int32_t allocateNative(Arena arena) {
+        return new Int32_t(arena.allocate(DATA_TYPE.SIZE_OF, DATA_TYPE.ALIGN_OF.alignof), 0);
     }
 
     public static Int32_t map(OpaqueMemory mem, long offset) {

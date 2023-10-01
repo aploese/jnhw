@@ -52,7 +52,8 @@ public final class IoAPI {
             WinApiDataType.HANDLE,
             WinApiDataType.HANDLE,
             WinApiDataType.ULONG_PTR,
-            WinApiDataType.DWORD);
+            WinApiDataType.DWORD,
+            0L);//Just a pointer with length 0!
 
     private final static JnhwMh_BL___A__A__A__A_uI.ExceptionErased GetQueuedCompletionStatus = JnhwMh_BL___A__A__A__A_uI.mandatoryOf(
             Kernel32Loader.DLL_KERNEL32_SYMBOL_LOOKUP,

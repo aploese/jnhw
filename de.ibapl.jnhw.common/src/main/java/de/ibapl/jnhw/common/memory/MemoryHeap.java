@@ -23,8 +23,8 @@ package de.ibapl.jnhw.common.memory;
 
 import de.ibapl.jnhw.common.datatypes.BaseDataType;
 import de.ibapl.jnhw.common.memory.layout.Alignment;
+import java.lang.foreign.Arena;
 import java.lang.foreign.MemorySegment;
-import java.lang.foreign.SegmentScope;
 
 /**
  *
@@ -32,20 +32,20 @@ import java.lang.foreign.SegmentScope;
  */
 public class MemoryHeap extends OpaqueMemory {
 
-    public static MemoryHeap allocateNative(long bytesSize, Alignment alignment, SegmentScope ms) {
-        return new MemoryHeap(MemorySegment.allocateNative(bytesSize, alignment.alignof, ms), 0, bytesSize);
+    public static MemoryHeap allocateNative(long bytesSize, Alignment alignment, Arena arena) {
+        return new MemoryHeap(arena.allocate(bytesSize, alignment.alignof), 0, bytesSize);
     }
 
-    public static MemoryHeap allocateNative(long bytesSize, SegmentScope ms) {
-        return new MemoryHeap(MemorySegment.allocateNative(bytesSize, ms), 0, bytesSize);
+    public static MemoryHeap allocateNative(long bytesSize, Arena arena) {
+        return new MemoryHeap(arena.allocate(bytesSize), 0, bytesSize);
     }
 
     public MemoryHeap(MemorySegment memorySegment, long offset, long sizeInBytes) {
         super(memorySegment, offset, sizeInBytes);
     }
 
-    public MemoryHeap(long address, SegmentScope ms, long sizeInBytes) {
-        super(address, ms, sizeInBytes);
+    public MemoryHeap(long address, Arena arena, long sizeInBytes) {
+        super(address, arena, sizeInBytes);
     }
 
     public static MemoryHeap ofArray(byte[] bytes) {

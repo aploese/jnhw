@@ -45,7 +45,7 @@ public class Posix {
 
     final boolean isDebug;
     long transmitted;
-    final Arena ms = Arena.openShared();
+    final Arena arena = Arena.ofShared();
     final Aio.Aiocb<Aio.Aiocb> aiocb;
 
     final Object[] objRef = new Object[1];
@@ -86,7 +86,7 @@ public class Posix {
     public Posix(boolean isDebug) {
         this.isDebug = isDebug;
         try {
-            aiocb = Aio.Aiocb.tryAllocateNative(ms.scope());
+            aiocb = Aio.Aiocb.tryAllocateNative(arena);
         } catch (NoSuchNativeTypeException nsnte) {
             throw new RuntimeException(nsnte);
         }
@@ -167,7 +167,7 @@ public class Posix {
 
     private void debugThread(String msg) {
         if (isDebug) {
-            System.out.append(msg).append(" thread: ").append(Thread.currentThread().toString()).append(" pthread_t: ").println(Pthread.pthread_self(ms.scope()).nativeToString());
+            System.out.append(msg).append(" thread: ").append(Thread.currentThread().toString()).append(" pthread_t: ").println(Pthread.pthread_self(arena).nativeToString());
             System.out.flush();
         }
     }
@@ -188,7 +188,7 @@ public class Posix {
                 } catch (InvalidCacheException ice) {
                     final long address = aiocb.aio_sigevent.sigev_notify_attributes().address();
                     if (address != 0L) {
-                        sigev_notify_attributes = Pthread.Pthread_attr_t.ofAddress(address, ms.scope());
+                        sigev_notify_attributes = Pthread.Pthread_attr_t.ofAddress(address, arena);
                     } else {
                         sigev_notify_attributes = null;
                     }

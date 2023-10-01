@@ -189,8 +189,8 @@ public class BaseDataTypeTest {
 
     @Test
     public void testEndianes() {
-        try (Arena ms = Arena.openConfined()) {
-            final Uint64_t uint64_t = new Uint64_t(ms.allocate(BaseDataType.uint64_t.SIZE_OF), 0);
+        try (Arena arena = Arena.ofConfined()) {
+            final Uint64_t uint64_t = new Uint64_t(arena.allocate(BaseDataType.uint64_t.SIZE_OF), 0);
             OpaqueMemory.setByte(uint64_t, 0, (byte) 0x01);
             OpaqueMemory.setByte(uint64_t, 1, (byte) 0x02);
             OpaqueMemory.setByte(uint64_t, 2, (byte) 0x03);

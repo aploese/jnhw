@@ -24,10 +24,10 @@ package de.ibapl.jnhw.winapi;
 import de.ibapl.jnhw.common.memory.NativeFunctionPointer;
 import de.ibapl.jnhw.common.util.ConversionsNative2Java;
 import de.ibapl.jnhw.util.winapi.WinApiDataType;
+import java.lang.foreign.Arena;
 import java.lang.foreign.FunctionDescriptor;
 import java.lang.foreign.Linker;
 import java.lang.foreign.MemorySegment;
-import java.lang.foreign.SegmentScope;
 import java.lang.foreign.ValueLayout;
 import java.lang.invoke.MethodHandle;
 import java.lang.invoke.MethodHandles;
@@ -74,11 +74,11 @@ final class CallbackFactoryPAPCFUNC {
         switch (WinApiDataType.ULONG_PTR.SIZE_OF) {
             case 4 -> {
                 final MethodHandle handle = MethodHandles.lookup().findStatic(CallbackFactoryPAPCFUNC.class, "trampoline32_" + index, MethodType.methodType(void.class, int.class));
-                return NATIVE_LINKER.upcallStub(handle, FunctionDescriptor.ofVoid(ValueLayout.JAVA_INT), SegmentScope.global());
+                return NATIVE_LINKER.upcallStub(handle, FunctionDescriptor.ofVoid(ValueLayout.JAVA_INT), Arena.global());
             }
             case 8 -> {
                 final MethodHandle handle = MethodHandles.lookup().findStatic(CallbackFactoryPAPCFUNC.class, "trampoline64_" + index, MethodType.methodType(void.class, long.class));
-                return NATIVE_LINKER.upcallStub(handle, FunctionDescriptor.ofVoid(ValueLayout.JAVA_LONG), SegmentScope.global());
+                return NATIVE_LINKER.upcallStub(handle, FunctionDescriptor.ofVoid(ValueLayout.JAVA_LONG), Arena.global());
             }
             default ->
                 throw new RuntimeException("Can't handle sizeof ULONG_PTR = " + WinApiDataType.ULONG_PTR.SIZE_OF);
