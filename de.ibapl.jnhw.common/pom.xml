@@ -38,15 +38,6 @@
     </dependencies>
 
     <build>
-        <!-- move native to separate jar testResources>
-            <testResource>
-                <directory>${basedir}/src/test/resources</directory>
-            </testResource>
-            <testResource>
-                <directory>${basedir}/src/main/native/lib</directory>
-                <targetPath>./lib/</targetPath>
-            </testResource>
-        </testResources-->
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -60,7 +51,6 @@
                         </goals>
                         <configuration>
                             <compilerArgs>
-                                <arg>--enable-preview</arg>        
                                 <arg>-h</arg>
                                 <arg>${basedir}/src/main/native/include/</arg>
                             </compilerArgs>
@@ -71,29 +61,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
-                <configuration>
-                    <argLine>${commandLineArg.ChooseVM} ${commandLineArg.NativeProvider} --enable-preview</argLine>
-                </configuration>
             </plugin>
-            <!-- move native to separate jar plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-assembly-plugin</artifactId>
-                <version>3.4.2</version>
-                <executions>
-                    <execution>
-                        <id>assembly-native-libs</id> <!- - this is used for inheritance merges - ->
-                        <phase>package</phase> <!- - append to the packaging phase. - ->
-                        <goals>
-                            <goal>single</goal> <!- - goals == mojos - ->
-                        </goals>
-                        <configuration>
-                            <descriptors>
-                                <descriptor>src/main/assembly/native-libs.xml</descriptor>
-                            </descriptors>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin-->
         </plugins>
     </build>
 

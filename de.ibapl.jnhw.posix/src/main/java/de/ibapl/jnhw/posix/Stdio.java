@@ -190,7 +190,7 @@ public class Stdio {
     public final static void remove(String path) throws NativeErrorException {
         try (Arena arena = Arena.ofConfined()) {
             MemorySegment _path = arena.allocate(path.length() + 1);
-            _path.setUtf8String(0, path);
+            _path.setString(0, path);
             int result = remove.invoke_sI___A(_path);
             if (result != 0) {
                 throw new NativeErrorException(Errno.errno());

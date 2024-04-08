@@ -269,7 +269,7 @@ public class Locale {
          * @return the native value of currency_symbol.
          */
         public final String currency_symbol() {
-            return MEM_ACCESS.getUTF_8String(memorySegment, Lconv.offsetof_Currency_symbol);
+            return MEM_ACCESS.getString(memorySegment, Lconv.offsetof_Currency_symbol);
         }
 
         /**
@@ -277,7 +277,7 @@ public class Locale {
          * @return the native value of decimal_point.
          */
         public final String decimal_point() {
-            return MEM_ACCESS.getUTF_8String(memorySegment, Lconv.offsetof_Decimal_point);
+            return MEM_ACCESS.getString(memorySegment, Lconv.offsetof_Decimal_point);
         }
 
         /**
@@ -298,7 +298,7 @@ public class Locale {
          * @return the native value of grouping.
          */
         public final String grouping() {
-            return MEM_ACCESS.getUTF_8String(memorySegment, Lconv.offsetof_Grouping);
+            return MEM_ACCESS.getString(memorySegment, Lconv.offsetof_Grouping);
         }
 
         /**
@@ -309,7 +309,7 @@ public class Locale {
          * @return the native value of int_curr_symbol.
          */
         public final String int_curr_symbol() {
-            return MEM_ACCESS.getUTF_8String(memorySegment, Lconv.offsetof_Int_curr_symbol);
+            return MEM_ACCESS.getString(memorySegment, Lconv.offsetof_Int_curr_symbol);
         }
 
         /**
@@ -413,7 +413,7 @@ public class Locale {
          * @return the native value of mon_decimal_point.
          */
         public final String mon_decimal_point() {
-            return MEM_ACCESS.getUTF_8String(memorySegment, Lconv.offsetof_Mon_decimal_point);
+            return MEM_ACCESS.getString(memorySegment, Lconv.offsetof_Mon_decimal_point);
         }
 
         /**
@@ -425,7 +425,7 @@ public class Locale {
          * @return the native value of mon_grouping.
          */
         public final String mon_grouping() {
-            return MEM_ACCESS.getUTF_8String(memorySegment, Lconv.offsetof_Mon_grouping);
+            return MEM_ACCESS.getString(memorySegment, Lconv.offsetof_Mon_grouping);
         }
 
         /**
@@ -438,7 +438,7 @@ public class Locale {
          * @return the native value of mon_thousands_sep.
          */
         public final String mon_thousands_sep() {
-            return MEM_ACCESS.getUTF_8String(memorySegment, Lconv.offsetof_Mon_thousands_sep);
+            return MEM_ACCESS.getString(memorySegment, Lconv.offsetof_Mon_thousands_sep);
         }
 
         /**
@@ -518,7 +518,7 @@ public class Locale {
          * @return the native value of negative_sign.
          */
         public final String negative_sign() {
-            return MEM_ACCESS.getUTF_8String(memorySegment, Lconv.offsetof_Negative_sign);
+            return MEM_ACCESS.getString(memorySegment, Lconv.offsetof_Negative_sign);
         }
 
         /**
@@ -568,7 +568,7 @@ public class Locale {
          * @return the native value of positive_sign.
          */
         public final String positive_sign() {
-            return MEM_ACCESS.getUTF_8String(memorySegment, Lconv.offsetof_Positive_sign);
+            return MEM_ACCESS.getString(memorySegment, Lconv.offsetof_Positive_sign);
         }
 
         /**
@@ -576,7 +576,7 @@ public class Locale {
          * @return the native value of thousands_sep.
          */
         public final String thousands_sep() {
-            return MEM_ACCESS.getUTF_8String(memorySegment, Lconv.offsetof_Thousands_sep);
+            return MEM_ACCESS.getString(memorySegment, Lconv.offsetof_Thousands_sep);
         }
 
     }
@@ -946,7 +946,7 @@ public class Locale {
         }
         try (Arena arena = Arena.ofConfined()) {
             MemorySegment _locale = arena.allocate(locale.length() + 1);
-            _locale.setUtf8String(0, locale);
+            _locale.setString(0, locale);
             final MemorySegment resultAdr = newlocale.invoke_MA__sI__A__P(category_mask, _locale, base);
             if (resultAdr.address() == 0L) {
                 throw new NativeErrorException(Errno.errno());
@@ -972,13 +972,13 @@ public class Locale {
                 resultAdr = setlocale.invoke_MA__sI__A(category, MemorySegment.NULL);
             } else {
                 MemorySegment _locale = arena.allocate(locale.length() + 1);
-                _locale.setUtf8String(0, locale);
+                _locale.setString(0, locale);
                 resultAdr = setlocale.invoke_MA__sI__A(category, _locale);
             }
             if (resultAdr.address() == 0L) {
                 return null;
             } else {
-                return resultAdr.getUtf8String(0);
+                return resultAdr.getString(0);
             }
         }
     }

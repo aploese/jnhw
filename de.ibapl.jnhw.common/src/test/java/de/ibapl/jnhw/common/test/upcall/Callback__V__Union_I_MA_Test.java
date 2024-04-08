@@ -270,7 +270,10 @@ public class Callback__V__Union_I_MA_Test {
                 default ->
                     throw new AssertionError("Can`t handle memory model: " + MultiarchTupelBuilder.getMemoryModel());
             }
-
+        } catch (Throwable t1) {
+            System.err.println(t1);
+            System.err.flush();
+            throw t1;
         } finally {
             callback.release();
         }

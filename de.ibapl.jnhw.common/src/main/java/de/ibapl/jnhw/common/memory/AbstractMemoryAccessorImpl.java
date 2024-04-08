@@ -29,6 +29,7 @@ import java.lang.foreign.MemorySegment;
 import java.lang.foreign.ValueLayout;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
+import java.nio.charset.Charset;
 
 /**
  *
@@ -249,13 +250,23 @@ public sealed abstract class AbstractMemoryAccessorImpl implements MemoryAccesso
     }
 
     @Override
-    public String getUTF_8String(MemorySegment mem, long offset) {
-        return mem.getUtf8String(offset);
+    public String getString(MemorySegment mem, long offset) {
+        return mem.getString(offset);
     }
 
     @Override
-    public void setUTF_8String(MemorySegment mem, long offset, String s) {
-        mem.setUtf8String(offset, s);
+    public void setString(MemorySegment mem, long offset, String s) {
+        mem.setString(offset, s);
+    }
+
+    @Override
+    public String getString(MemorySegment mem, long offset, Charset charset) {
+        return mem.getString(offset, charset);
+    }
+
+    @Override
+    public void setString(MemorySegment mem, long offset, String s, Charset charset) {
+        mem.setString(offset, s, charset);
     }
 
     @Override

@@ -39,6 +39,7 @@ public class LibJnhwCommon {
     private static LoadResult LIB_JNHW_COMMON_LOAD_RESULT;
 
     static {
+        //TODO only load jni lib if it is neccesary
         LIB_JNHW_COMMON_LOAD_RESULT = NativeLibResolver.loadNativeLib(LIB_JNHW_COMMON, LIB_JNHW_COMMON_VERSION, LibJnhwCommon::doSystemLoad);
     }
 

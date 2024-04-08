@@ -26,6 +26,12 @@ import de.ibapl.jnhw.common.memory.layout.Alignment;
 import de.ibapl.jnhw.common.test.JnhwTestLogger;
 import de.ibapl.jnhw.common.test.LibJnhwCommonTestLoader;
 import de.ibapl.jnhw.libloader.MultiarchTupelBuilder;
+import java.lang.foreign.Arena;
+import java.lang.foreign.MemoryLayout;
+import java.lang.foreign.MemorySegment;
+import java.lang.foreign.UnionLayout;
+import java.lang.foreign.ValueLayout;
+import java.lang.invoke.VarHandle;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
@@ -325,6 +331,28 @@ public class StructLayoutTest {
         Assertions.assertEquals(S_i8_i64Impl.sizeOf(), nativeLayout.sizeof);
         Assertions.assertEquals(S_i8_i64Impl.alignOf(), nativeLayout.alignment.alignof);
 
+    }
+
+    @Test
+    public void testForeignUnion_I_MA() {
+        final UnionLayout LAYOUT__UNION_I_MA = MemoryLayout.unionLayout(
+                ValueLayout.ADDRESS.withName("value_ptr"),
+                ValueLayout.JAVA_INT.withName("value_int")
+        );
+
+        final VarHandle HANDLE_VALUE_PTR
+                = LAYOUT__UNION_I_MA.varHandle(MemoryLayout.PathElement.groupElement("value_ptr"));
+        final VarHandle HANDLE_VALUE_INT
+                = LAYOUT__UNION_I_MA.varHandle(MemoryLayout.PathElement.groupElement("value_int"));
+
+        try (Arena a = Arena.ofConfined()) {
+            MemorySegment seg = a.allocate(LAYOUT__UNION_I_MA);
+            HANDLE_VALUE_INT.set(seg, 0L, 42);
+            Assertions.assertEquals(42, HANDLE_VALUE_INT.get(seg, 0L));
+
+            HANDLE_VALUE_PTR.set(seg, 0L, MemorySegment.ofAddress(11));
+            Assertions.assertEquals(11, ((MemorySegment) HANDLE_VALUE_PTR.get(seg, 0L)).address());
+        }
     }
 
 }

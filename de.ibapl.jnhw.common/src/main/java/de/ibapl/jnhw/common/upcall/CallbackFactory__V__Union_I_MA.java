@@ -91,24 +91,22 @@ public abstract class CallbackFactory__V__Union_I_MA {
     protected final static void trampoline_0(final MemorySegment value) {
         try {
             REFS[0].callback(
-                    (MemorySegment) JnhwCallbackFactory__V__Union_I_MA.HANDLE_VALUE_PTR.get(value),
-                    (int) JnhwCallbackFactory__V__Union_I_MA.HANDLE_VALUE_INT.get(value)
+                    (MemorySegment) JnhwCallbackFactory__V__Union_I_MA.HANDLE_VALUE_PTR.get(value, 0L),
+                    (int) JnhwCallbackFactory__V__Union_I_MA.HANDLE_VALUE_INT.get(value, 0L)
             );
         } catch (NullPointerException npe) {
             LOG.log(Level.SEVERE,
                     String.format(
                             "Unassigned callback for trampoline_0(%s, %d)",
-                            (MemorySegment) JnhwCallbackFactory__V__Union_I_MA.HANDLE_VALUE_PTR.get(value),
-                            (int) JnhwCallbackFactory__V__Union_I_MA.HANDLE_VALUE_INT.get(value)
+                            (MemorySegment) JnhwCallbackFactory__V__Union_I_MA.HANDLE_VALUE_PTR.get(value, 0L),
+                            (int) JnhwCallbackFactory__V__Union_I_MA.HANDLE_VALUE_INT.get(value, 0L)
                     )
             );
         } catch (Throwable t) {
             LOG.log(Level.SEVERE,
                     String.format(
-                            "Exception was thrown in  trampoline_0(%s, %d)",
-                            (MemorySegment) JnhwCallbackFactory__V__Union_I_MA.HANDLE_VALUE_PTR.get(value),
-                            (int) JnhwCallbackFactory__V__Union_I_MA.HANDLE_VALUE_INT.get(value)
-                    ),
+                            "Exception was thrown in  trampoline_0(%s)",
+                            value),
                     t
             );
         }
@@ -141,24 +139,22 @@ public abstract class CallbackFactory__V__Union_I_MA {
     protected final static void trampoline_1(final MemorySegment value) {
         try {
             REFS[1].callback(
-                    (MemorySegment) JnhwCallbackFactory__V__Union_I_MA.HANDLE_VALUE_PTR.get(value),
-                    (int) JnhwCallbackFactory__V__Union_I_MA.HANDLE_VALUE_INT.get(value)
+                    (MemorySegment) JnhwCallbackFactory__V__Union_I_MA.HANDLE_VALUE_PTR.get(value, 0L),
+                    (int) JnhwCallbackFactory__V__Union_I_MA.HANDLE_VALUE_INT.get(value, 0L)
             );
         } catch (NullPointerException npe) {
             LOG.log(
                     Level.SEVERE,
                     String.format(
                             "Unassigned callback for trampoline_1(%s, %d)",
-                            (MemorySegment) JnhwCallbackFactory__V__Union_I_MA.HANDLE_VALUE_PTR.get(value),
-                            (int) JnhwCallbackFactory__V__Union_I_MA.HANDLE_VALUE_INT.get(value)
+                            (MemorySegment) JnhwCallbackFactory__V__Union_I_MA.HANDLE_VALUE_PTR.get(value, 0L),
+                            (int) JnhwCallbackFactory__V__Union_I_MA.HANDLE_VALUE_INT.get(value, 0L)
                     )
             );
         } catch (Throwable t) {
             LOG.log(Level.SEVERE, String.format(
-                    "Exception was thrown in  trampoline_1(%s, %d)",
-                    (MemorySegment) JnhwCallbackFactory__V__Union_I_MA.HANDLE_VALUE_PTR.get(value),
-                    (int) JnhwCallbackFactory__V__Union_I_MA.HANDLE_VALUE_INT.get(value)
-            ),
+                    "Exception was thrown in  trampoline_1(%s)",
+                    value),
                     t
             );
         }
@@ -192,23 +188,22 @@ public abstract class CallbackFactory__V__Union_I_MA {
     protected final static void trampoline_2(final MemorySegment value) {
         try {
             REFS[2].callback(
-                    (MemorySegment) JnhwCallbackFactory__V__Union_I_MA.HANDLE_VALUE_PTR.get(value),
-                    (int) JnhwCallbackFactory__V__Union_I_MA.HANDLE_VALUE_INT.get(value)
+                    (MemorySegment) JnhwCallbackFactory__V__Union_I_MA.HANDLE_VALUE_PTR.get(value, 0L),
+                    (int) JnhwCallbackFactory__V__Union_I_MA.HANDLE_VALUE_INT.get(value, 0L)
             );
         } catch (NullPointerException npe) {
             LOG.log(Level.SEVERE,
                     String.format(
                             "Unassigned callback for trampoline_2(%s, %d)",
-                            (MemorySegment) JnhwCallbackFactory__V__Union_I_MA.HANDLE_VALUE_PTR.get(value),
-                            (int) JnhwCallbackFactory__V__Union_I_MA.HANDLE_VALUE_INT.get(value)
+                            (MemorySegment) JnhwCallbackFactory__V__Union_I_MA.HANDLE_VALUE_PTR.get(value, 0L),
+                            (int) JnhwCallbackFactory__V__Union_I_MA.HANDLE_VALUE_INT.get(value, 0L)
                     )
             );
         } catch (Throwable t) {
             LOG.log(Level.SEVERE,
-                    String.format("Exception was thrown in  trampoline_2(%s, %d)",
-                            (MemorySegment) JnhwCallbackFactory__V__Union_I_MA.HANDLE_VALUE_PTR.get(value),
-                            (int) JnhwCallbackFactory__V__Union_I_MA.HANDLE_VALUE_INT.get(value)
-                    ),
+                    String.format(
+                            "Exception was thrown in  trampoline_2(%s)",
+                            value),
                     t
             );
         }
@@ -242,24 +237,22 @@ public abstract class CallbackFactory__V__Union_I_MA {
     protected final static void trampoline_3(final MemorySegment value) {
         try {
             REFS[3].callback(
-                    (MemorySegment) JnhwCallbackFactory__V__Union_I_MA.HANDLE_VALUE_PTR.get(value),
-                    (int) JnhwCallbackFactory__V__Union_I_MA.HANDLE_VALUE_INT.get(value)
+                    (MemorySegment) JnhwCallbackFactory__V__Union_I_MA.HANDLE_VALUE_PTR.get(value, 0L),
+                    (int) JnhwCallbackFactory__V__Union_I_MA.HANDLE_VALUE_INT.get(value, 0L)
             );
         } catch (NullPointerException npe) {
             LOG.log(Level.SEVERE,
                     String.format(
                             "Unassigned callback for trampoline_3(%s, %d)",
-                            (MemorySegment) JnhwCallbackFactory__V__Union_I_MA.HANDLE_VALUE_PTR.get(value),
-                            (int) JnhwCallbackFactory__V__Union_I_MA.HANDLE_VALUE_INT.get(value)
+                            (MemorySegment) JnhwCallbackFactory__V__Union_I_MA.HANDLE_VALUE_PTR.get(value, 0L),
+                            (int) JnhwCallbackFactory__V__Union_I_MA.HANDLE_VALUE_INT.get(value, 0L)
                     )
             );
         } catch (Throwable t) {
             LOG.log(Level.SEVERE,
                     String.format(
-                            "Exception was thrown in  trampoline_3(%s, %d)",
-                            (MemorySegment) JnhwCallbackFactory__V__Union_I_MA.HANDLE_VALUE_PTR.get(value),
-                            (int) JnhwCallbackFactory__V__Union_I_MA.HANDLE_VALUE_INT.get(value)
-                    ),
+                            "Exception was thrown in  trampoline_3(%s)",
+                            value),
                     t);
         }
     }
@@ -292,24 +285,22 @@ public abstract class CallbackFactory__V__Union_I_MA {
     protected final static void trampoline_4(final MemorySegment value) {
         try {
             REFS[4].callback(
-                    (MemorySegment) JnhwCallbackFactory__V__Union_I_MA.HANDLE_VALUE_PTR.get(value),
-                    (int) JnhwCallbackFactory__V__Union_I_MA.HANDLE_VALUE_INT.get(value)
+                    (MemorySegment) JnhwCallbackFactory__V__Union_I_MA.HANDLE_VALUE_PTR.get(value, 0L),
+                    (int) JnhwCallbackFactory__V__Union_I_MA.HANDLE_VALUE_INT.get(value, 0L)
             );
         } catch (NullPointerException npe) {
             LOG.log(Level.SEVERE,
                     String.format(
                             "Unassigned callback for trampoline_4(%s, %d)",
-                            (MemorySegment) JnhwCallbackFactory__V__Union_I_MA.HANDLE_VALUE_PTR.get(value),
-                            (int) JnhwCallbackFactory__V__Union_I_MA.HANDLE_VALUE_INT.get(value)
+                            (MemorySegment) JnhwCallbackFactory__V__Union_I_MA.HANDLE_VALUE_PTR.get(value, 0L),
+                            (int) JnhwCallbackFactory__V__Union_I_MA.HANDLE_VALUE_INT.get(value, 0L)
                     )
             );
         } catch (Throwable t) {
             LOG.log(Level.SEVERE,
                     String.format(
-                            "Exception was thrown in  trampoline_4(%s, %d)",
-                            (MemorySegment) JnhwCallbackFactory__V__Union_I_MA.HANDLE_VALUE_PTR.get(value),
-                            (int) JnhwCallbackFactory__V__Union_I_MA.HANDLE_VALUE_INT.get(value)
-                    ),
+                            "Exception was thrown in  trampoline_4(%s)",
+                            value),
                     t
             );
         }
@@ -343,24 +334,22 @@ public abstract class CallbackFactory__V__Union_I_MA {
     protected final static void trampoline_5(final MemorySegment value) {
         try {
             REFS[5].callback(
-                    (MemorySegment) JnhwCallbackFactory__V__Union_I_MA.HANDLE_VALUE_PTR.get(value),
-                    (int) JnhwCallbackFactory__V__Union_I_MA.HANDLE_VALUE_INT.get(value)
+                    (MemorySegment) JnhwCallbackFactory__V__Union_I_MA.HANDLE_VALUE_PTR.get(value, 0L),
+                    (int) JnhwCallbackFactory__V__Union_I_MA.HANDLE_VALUE_INT.get(value, 0L)
             );
         } catch (NullPointerException npe) {
             LOG.log(Level.SEVERE,
                     String.format(
                             "Unassigned callback for trampoline_5(%s, %d)",
-                            (MemorySegment) JnhwCallbackFactory__V__Union_I_MA.HANDLE_VALUE_PTR.get(value),
-                            (int) JnhwCallbackFactory__V__Union_I_MA.HANDLE_VALUE_INT.get(value)
+                            (MemorySegment) JnhwCallbackFactory__V__Union_I_MA.HANDLE_VALUE_PTR.get(value, 0L),
+                            (int) JnhwCallbackFactory__V__Union_I_MA.HANDLE_VALUE_INT.get(value, 0L)
                     )
             );
         } catch (Throwable t) {
             LOG.log(Level.SEVERE,
                     String.format(
-                            "Exception was thrown in  trampoline_5(%s, %d)",
-                            (MemorySegment) JnhwCallbackFactory__V__Union_I_MA.HANDLE_VALUE_PTR.get(value),
-                            (int) JnhwCallbackFactory__V__Union_I_MA.HANDLE_VALUE_INT.get(value)
-                    ),
+                            "Exception was thrown in  trampoline_5(%s)",
+                            value),
                     t
             );
         }
@@ -394,24 +383,22 @@ public abstract class CallbackFactory__V__Union_I_MA {
     protected final static void trampoline_6(final MemorySegment value) {
         try {
             REFS[6].callback(
-                    (MemorySegment) JnhwCallbackFactory__V__Union_I_MA.HANDLE_VALUE_PTR.get(value),
-                    (int) JnhwCallbackFactory__V__Union_I_MA.HANDLE_VALUE_INT.get(value)
+                    (MemorySegment) JnhwCallbackFactory__V__Union_I_MA.HANDLE_VALUE_PTR.get(value, 0L),
+                    (int) JnhwCallbackFactory__V__Union_I_MA.HANDLE_VALUE_INT.get(value, 0L)
             );
         } catch (NullPointerException npe) {
             LOG.log(Level.SEVERE,
                     String.format(
                             "Unassigned callback for trampoline_6(%s, %d)",
-                            (MemorySegment) JnhwCallbackFactory__V__Union_I_MA.HANDLE_VALUE_PTR.get(value),
-                            (int) JnhwCallbackFactory__V__Union_I_MA.HANDLE_VALUE_INT.get(value)
+                            (MemorySegment) JnhwCallbackFactory__V__Union_I_MA.HANDLE_VALUE_PTR.get(value, 0L),
+                            (int) JnhwCallbackFactory__V__Union_I_MA.HANDLE_VALUE_INT.get(value, 0L)
                     )
             );
         } catch (Throwable t) {
             LOG.log(Level.SEVERE,
                     String.format(
-                            "Exception was thrown in  trampoline_6(%s, %d)",
-                            (MemorySegment) JnhwCallbackFactory__V__Union_I_MA.HANDLE_VALUE_PTR.get(value),
-                            (int) JnhwCallbackFactory__V__Union_I_MA.HANDLE_VALUE_INT.get(value)
-                    ),
+                            "Exception was thrown in  trampoline_6(%s)",
+                            value),
                     t
             );
         }
@@ -445,24 +432,22 @@ public abstract class CallbackFactory__V__Union_I_MA {
     protected final static void trampoline_7(final MemorySegment value) {
         try {
             REFS[7].callback(
-                    (MemorySegment) JnhwCallbackFactory__V__Union_I_MA.HANDLE_VALUE_PTR.get(value),
-                    (int) JnhwCallbackFactory__V__Union_I_MA.HANDLE_VALUE_INT.get(value)
+                    (MemorySegment) JnhwCallbackFactory__V__Union_I_MA.HANDLE_VALUE_PTR.get(value, 0L),
+                    (int) JnhwCallbackFactory__V__Union_I_MA.HANDLE_VALUE_INT.get(value, 0L)
             );
         } catch (NullPointerException npe) {
             LOG.log(Level.SEVERE,
                     String.format(
                             "Unassigned callback for trampoline_7(%s, %d)",
-                            (MemorySegment) JnhwCallbackFactory__V__Union_I_MA.HANDLE_VALUE_PTR.get(value),
-                            (int) JnhwCallbackFactory__V__Union_I_MA.HANDLE_VALUE_INT.get(value)
+                            (MemorySegment) JnhwCallbackFactory__V__Union_I_MA.HANDLE_VALUE_PTR.get(value, 0L),
+                            (int) JnhwCallbackFactory__V__Union_I_MA.HANDLE_VALUE_INT.get(value, 0L)
                     )
             );
         } catch (Throwable t) {
             LOG.log(Level.SEVERE,
                     String.format(
-                            "Exception was thrown in  trampoline_7(%s, %d)",
-                            (MemorySegment) JnhwCallbackFactory__V__Union_I_MA.HANDLE_VALUE_PTR.get(value),
-                            (int) JnhwCallbackFactory__V__Union_I_MA.HANDLE_VALUE_INT.get(value)
-                    ),
+                            "Exception was thrown in  trampoline_7(%s)",
+                            value),
                     t
             );
         }
@@ -496,24 +481,22 @@ public abstract class CallbackFactory__V__Union_I_MA {
     protected final static void trampoline_8(final MemorySegment value) {
         try {
             REFS[8].callback(
-                    (MemorySegment) JnhwCallbackFactory__V__Union_I_MA.HANDLE_VALUE_PTR.get(value),
-                    (int) JnhwCallbackFactory__V__Union_I_MA.HANDLE_VALUE_INT.get(value)
+                    (MemorySegment) JnhwCallbackFactory__V__Union_I_MA.HANDLE_VALUE_PTR.get(value, 0L),
+                    (int) JnhwCallbackFactory__V__Union_I_MA.HANDLE_VALUE_INT.get(value, 0L)
             );
         } catch (NullPointerException npe) {
             LOG.log(Level.SEVERE,
                     String.format(
                             "Unassigned callback for trampoline_8(%s, %d)",
-                            (MemorySegment) JnhwCallbackFactory__V__Union_I_MA.HANDLE_VALUE_PTR.get(value),
-                            (int) JnhwCallbackFactory__V__Union_I_MA.HANDLE_VALUE_INT.get(value)
+                            (MemorySegment) JnhwCallbackFactory__V__Union_I_MA.HANDLE_VALUE_PTR.get(value, 0L),
+                            (int) JnhwCallbackFactory__V__Union_I_MA.HANDLE_VALUE_INT.get(value, 0L)
                     )
             );
         } catch (Throwable t) {
             LOG.log(Level.SEVERE,
                     String.format(
-                            "Exception was thrown in  trampoline_8(%s, %d)",
-                            (MemorySegment) JnhwCallbackFactory__V__Union_I_MA.HANDLE_VALUE_PTR.get(value),
-                            (int) JnhwCallbackFactory__V__Union_I_MA.HANDLE_VALUE_INT.get(value)
-                    ),
+                            "Exception was thrown in  trampoline_8(%s)",
+                            value),
                     t
             );
         }
@@ -546,22 +529,20 @@ public abstract class CallbackFactory__V__Union_I_MA {
     protected final static void trampoline_9(final MemorySegment value) {
         try {
             REFS[9].callback(
-                    (MemorySegment) JnhwCallbackFactory__V__Union_I_MA.HANDLE_VALUE_PTR.get(value),
-                    (int) JnhwCallbackFactory__V__Union_I_MA.HANDLE_VALUE_INT.get(value)
+                    (MemorySegment) JnhwCallbackFactory__V__Union_I_MA.HANDLE_VALUE_PTR.get(value, 0L),
+                    (int) JnhwCallbackFactory__V__Union_I_MA.HANDLE_VALUE_INT.get(value, 0L)
             );
         } catch (NullPointerException npe) {
             LOG.log(Level.SEVERE,
                     String.format("Unassigned callback for trampoline_9(%s, %d)",
-                            (MemorySegment) JnhwCallbackFactory__V__Union_I_MA.HANDLE_VALUE_PTR.get(value),
-                            (int) JnhwCallbackFactory__V__Union_I_MA.HANDLE_VALUE_INT.get(value)
+                            (MemorySegment) JnhwCallbackFactory__V__Union_I_MA.HANDLE_VALUE_PTR.get(value, 0L),
+                            (int) JnhwCallbackFactory__V__Union_I_MA.HANDLE_VALUE_INT.get(value, 0L)
                     )
             );
         } catch (Throwable t) {
             LOG.log(Level.SEVERE,
-                    String.format("Exception was thrown in  trampoline_9(%s, %d)",
-                            (MemorySegment) JnhwCallbackFactory__V__Union_I_MA.HANDLE_VALUE_PTR.get(value),
-                            (int) JnhwCallbackFactory__V__Union_I_MA.HANDLE_VALUE_INT.get(value)
-                    ),
+                    String.format("Exception was thrown in  trampoline_9(%s)",
+                            value),
                     t
             );
         }
@@ -595,24 +576,22 @@ public abstract class CallbackFactory__V__Union_I_MA {
     protected final static void trampoline_10(final MemorySegment value) {
         try {
             REFS[10].callback(
-                    (MemorySegment) JnhwCallbackFactory__V__Union_I_MA.HANDLE_VALUE_PTR.get(value),
-                    (int) JnhwCallbackFactory__V__Union_I_MA.HANDLE_VALUE_INT.get(value)
+                    (MemorySegment) JnhwCallbackFactory__V__Union_I_MA.HANDLE_VALUE_PTR.get(value, 0L),
+                    (int) JnhwCallbackFactory__V__Union_I_MA.HANDLE_VALUE_INT.get(value, 0L)
             );
         } catch (NullPointerException npe) {
             LOG.log(Level.SEVERE,
                     String.format(
                             "Unassigned callback for trampoline_10(%s, %d)",
-                            (MemorySegment) JnhwCallbackFactory__V__Union_I_MA.HANDLE_VALUE_PTR.get(value),
-                            (int) JnhwCallbackFactory__V__Union_I_MA.HANDLE_VALUE_INT.get(value)
+                            (MemorySegment) JnhwCallbackFactory__V__Union_I_MA.HANDLE_VALUE_PTR.get(value, 0L),
+                            (int) JnhwCallbackFactory__V__Union_I_MA.HANDLE_VALUE_INT.get(value, 0L)
                     )
             );
         } catch (Throwable t) {
             LOG.log(Level.SEVERE,
                     String.format(
-                            "Exception was thrown in  trampoline_10(%s, %d)",
-                            (MemorySegment) JnhwCallbackFactory__V__Union_I_MA.HANDLE_VALUE_PTR.get(value),
-                            (int) JnhwCallbackFactory__V__Union_I_MA.HANDLE_VALUE_INT.get(value)
-                    ),
+                            "Exception was thrown in  trampoline_10(%s)",
+                            value),
                     t
             );
         }
@@ -646,24 +625,22 @@ public abstract class CallbackFactory__V__Union_I_MA {
     protected final static void trampoline_11(final MemorySegment value) {
         try {
             REFS[11].callback(
-                    (MemorySegment) JnhwCallbackFactory__V__Union_I_MA.HANDLE_VALUE_PTR.get(value),
-                    (int) JnhwCallbackFactory__V__Union_I_MA.HANDLE_VALUE_INT.get(value)
+                    (MemorySegment) JnhwCallbackFactory__V__Union_I_MA.HANDLE_VALUE_PTR.get(value, 0L),
+                    (int) JnhwCallbackFactory__V__Union_I_MA.HANDLE_VALUE_INT.get(value, 0L)
             );
         } catch (NullPointerException npe) {
             LOG.log(Level.SEVERE,
                     String.format(
                             "Unassigned callback for trampoline_11(%s, %d)",
-                            (MemorySegment) JnhwCallbackFactory__V__Union_I_MA.HANDLE_VALUE_PTR.get(value),
-                            (int) JnhwCallbackFactory__V__Union_I_MA.HANDLE_VALUE_INT.get(value)
+                            (MemorySegment) JnhwCallbackFactory__V__Union_I_MA.HANDLE_VALUE_PTR.get(value, 0L),
+                            (int) JnhwCallbackFactory__V__Union_I_MA.HANDLE_VALUE_INT.get(value, 0L)
                     )
             );
         } catch (Throwable t) {
             LOG.log(Level.SEVERE,
                     String.format(
-                            "Exception was thrown in  trampoline_11(%s, %d)",
-                            (MemorySegment) JnhwCallbackFactory__V__Union_I_MA.HANDLE_VALUE_PTR.get(value),
-                            (int) JnhwCallbackFactory__V__Union_I_MA.HANDLE_VALUE_INT.get(value)
-                    ),
+                            "Exception was thrown in  trampoline_11(%s)",
+                            value),
                     t
             );
         }
@@ -697,24 +674,22 @@ public abstract class CallbackFactory__V__Union_I_MA {
     protected final static void trampoline_12(final MemorySegment value) {
         try {
             REFS[12].callback(
-                    (MemorySegment) JnhwCallbackFactory__V__Union_I_MA.HANDLE_VALUE_PTR.get(value),
-                    (int) JnhwCallbackFactory__V__Union_I_MA.HANDLE_VALUE_INT.get(value)
+                    (MemorySegment) JnhwCallbackFactory__V__Union_I_MA.HANDLE_VALUE_PTR.get(value, 0L),
+                    (int) JnhwCallbackFactory__V__Union_I_MA.HANDLE_VALUE_INT.get(value, 0L)
             );
         } catch (NullPointerException npe) {
             LOG.log(Level.SEVERE,
                     String.format(
                             "Unassigned callback for trampoline_12(%s, %d)",
-                            (MemorySegment) JnhwCallbackFactory__V__Union_I_MA.HANDLE_VALUE_PTR.get(value),
-                            (int) JnhwCallbackFactory__V__Union_I_MA.HANDLE_VALUE_INT.get(value)
+                            (MemorySegment) JnhwCallbackFactory__V__Union_I_MA.HANDLE_VALUE_PTR.get(value, 0L),
+                            (int) JnhwCallbackFactory__V__Union_I_MA.HANDLE_VALUE_INT.get(value, 0L)
                     )
             );
         } catch (Throwable t) {
             LOG.log(Level.SEVERE,
                     String.format(
-                            "Exception was thrown in  trampoline_12(%s, %d)",
-                            (MemorySegment) JnhwCallbackFactory__V__Union_I_MA.HANDLE_VALUE_PTR.get(value),
-                            (int) JnhwCallbackFactory__V__Union_I_MA.HANDLE_VALUE_INT.get(value)
-                    ),
+                            "Exception was thrown in  trampoline_12(%s)",
+                            value),
                     t
             );
         }
@@ -748,24 +723,22 @@ public abstract class CallbackFactory__V__Union_I_MA {
     protected final static void trampoline_13(final MemorySegment value) {
         try {
             REFS[13].callback(
-                    (MemorySegment) JnhwCallbackFactory__V__Union_I_MA.HANDLE_VALUE_PTR.get(value),
-                    (int) JnhwCallbackFactory__V__Union_I_MA.HANDLE_VALUE_INT.get(value)
+                    (MemorySegment) JnhwCallbackFactory__V__Union_I_MA.HANDLE_VALUE_PTR.get(value, 0L),
+                    (int) JnhwCallbackFactory__V__Union_I_MA.HANDLE_VALUE_INT.get(value, 0L)
             );
         } catch (NullPointerException npe) {
             LOG.log(Level.SEVERE,
                     String.format(
                             "Unassigned callback for trampoline_13(%s, %d)",
-                            (MemorySegment) JnhwCallbackFactory__V__Union_I_MA.HANDLE_VALUE_PTR.get(value),
-                            (int) JnhwCallbackFactory__V__Union_I_MA.HANDLE_VALUE_INT.get(value)
+                            (MemorySegment) JnhwCallbackFactory__V__Union_I_MA.HANDLE_VALUE_PTR.get(value, 0L),
+                            (int) JnhwCallbackFactory__V__Union_I_MA.HANDLE_VALUE_INT.get(value, 0L)
                     )
             );
         } catch (Throwable t) {
             LOG.log(Level.SEVERE,
                     String.format(
-                            "Exception was thrown in  trampoline_13(%s, %d)",
-                            (MemorySegment) JnhwCallbackFactory__V__Union_I_MA.HANDLE_VALUE_PTR.get(value),
-                            (int) JnhwCallbackFactory__V__Union_I_MA.HANDLE_VALUE_INT.get(value)
-                    ),
+                            "Exception was thrown in  trampoline_13(%s)",
+                            value),
                     t
             );
         }
@@ -799,24 +772,22 @@ public abstract class CallbackFactory__V__Union_I_MA {
     protected final static void trampoline_14(final MemorySegment value) {
         try {
             REFS[14].callback(
-                    (MemorySegment) JnhwCallbackFactory__V__Union_I_MA.HANDLE_VALUE_PTR.get(value),
-                    (int) JnhwCallbackFactory__V__Union_I_MA.HANDLE_VALUE_INT.get(value)
+                    (MemorySegment) JnhwCallbackFactory__V__Union_I_MA.HANDLE_VALUE_PTR.get(value, 0L),
+                    (int) JnhwCallbackFactory__V__Union_I_MA.HANDLE_VALUE_INT.get(value, 0L)
             );
         } catch (NullPointerException npe) {
             LOG.log(Level.SEVERE,
                     String.format(
                             "Unassigned callback for trampoline_14(%s, %d)",
-                            (MemorySegment) JnhwCallbackFactory__V__Union_I_MA.HANDLE_VALUE_PTR.get(value),
-                            (int) JnhwCallbackFactory__V__Union_I_MA.HANDLE_VALUE_INT.get(value)
+                            (MemorySegment) JnhwCallbackFactory__V__Union_I_MA.HANDLE_VALUE_PTR.get(value, 0L),
+                            (int) JnhwCallbackFactory__V__Union_I_MA.HANDLE_VALUE_INT.get(value, 0L)
                     )
             );
         } catch (Throwable t) {
             LOG.log(Level.SEVERE,
                     String.format(
-                            "Exception was thrown in  trampoline_14(%s, %d)",
-                            (MemorySegment) JnhwCallbackFactory__V__Union_I_MA.HANDLE_VALUE_PTR.get(value),
-                            (int) JnhwCallbackFactory__V__Union_I_MA.HANDLE_VALUE_INT.get(value)
-                    ),
+                            "Exception was thrown in  trampoline_14(%s)",
+                            value),
                     t
             );
         }
@@ -850,24 +821,22 @@ public abstract class CallbackFactory__V__Union_I_MA {
     protected final static void trampoline_15(final MemorySegment value) {
         try {
             REFS[15].callback(
-                    (MemorySegment) JnhwCallbackFactory__V__Union_I_MA.HANDLE_VALUE_PTR.get(value),
-                    (int) JnhwCallbackFactory__V__Union_I_MA.HANDLE_VALUE_INT.get(value)
+                    (MemorySegment) JnhwCallbackFactory__V__Union_I_MA.HANDLE_VALUE_PTR.get(value, 0L),
+                    (int) JnhwCallbackFactory__V__Union_I_MA.HANDLE_VALUE_INT.get(value, 0L)
             );
         } catch (NullPointerException npe) {
             LOG.log(Level.SEVERE,
                     String.format(
                             "Unassigned callback for trampoline_15(%s, %d)",
-                            (MemorySegment) JnhwCallbackFactory__V__Union_I_MA.HANDLE_VALUE_PTR.get(value),
-                            (int) JnhwCallbackFactory__V__Union_I_MA.HANDLE_VALUE_INT.get(value)
+                            (MemorySegment) JnhwCallbackFactory__V__Union_I_MA.HANDLE_VALUE_PTR.get(value, 0L),
+                            (int) JnhwCallbackFactory__V__Union_I_MA.HANDLE_VALUE_INT.get(value, 0L)
                     )
             );
         } catch (Throwable t) {
             LOG.log(Level.SEVERE,
                     String.format(
-                            "Exception was thrown in  trampoline_15(%s, %d)",
-                            (MemorySegment) JnhwCallbackFactory__V__Union_I_MA.HANDLE_VALUE_PTR.get(value),
-                            (int) JnhwCallbackFactory__V__Union_I_MA.HANDLE_VALUE_INT.get(value)
-                    ),
+                            "Exception was thrown in  trampoline_15(%s)",
+                            value),
                     t
             );
         }

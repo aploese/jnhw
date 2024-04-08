@@ -843,15 +843,16 @@ public class MemoryAccessorTest {
 
         assertEquals("263a0020 00480069  00210020 263a0000 | &:\u0000 \u0000H\u0000i\u0000!\u0000 &:\u0000\u0000", OpaqueMemory.printMemory(buff_16, false));
         assertEquals(expectedString, maBE.getUnicodeString(OpaqueMemory.getMemorySegment(buff_16), 0, LENGTH));
+        //TODO use getString + Charset
     }
 
     @Test
     public void testStringAsUTF_ASCII_Only() {
         String expectedString = "Hello!";
 
-        ma.setUTF_8String(OpaqueMemory.getMemorySegment(buff_16), 0, expectedString);
+        ma.setString(OpaqueMemory.getMemorySegment(buff_16), 0, expectedString);
         assertEquals("48656c6c 6f210000  00000000 00000000 | Hello!\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000", OpaqueMemory.printMemory(buff_16, false));
-        assertEquals(expectedString, ma.getUTF_8String(OpaqueMemory.getMemorySegment(buff_16), 0));
+        assertEquals(expectedString, ma.getString(OpaqueMemory.getMemorySegment(buff_16), 0));
 
     }
 
@@ -864,20 +865,20 @@ public class MemoryAccessorTest {
         assertEquals(LENGTH, chars.length);
 
 //        assertEquals(LENGTH + 4, NATIVE_LENGTH);
-        ma.setUTF_8String(OpaqueMemory.getMemorySegment(buff_16), 0, expectedString);
-        assertEquals(expectedString, ma.getUTF_8String(OpaqueMemory.getMemorySegment(buff_16), 0));
+        ma.setString(OpaqueMemory.getMemorySegment(buff_16), 0, expectedString);
+        assertEquals(expectedString, ma.getString(OpaqueMemory.getMemorySegment(buff_16), 0));
         assertEquals("""
                      e298ba48 6921e298  ba000000 00000000 | \u00e2\u0098\u00ba\u0048\u0069\u0021\u00e2\u0098\u00ba\u0000\u0000\u0000\u0000\u0000\u0000\u0000""", OpaqueMemory.printMemory(buff_16, false));
         assertThrows(IndexOutOfBoundsException.class, () -> {
-            ma.setUTF_8String(OpaqueMemory.getMemorySegment(heap), heap.sizeof() - 4, expectedString);
+            ma.setString(OpaqueMemory.getMemorySegment(heap), heap.sizeof() - 4, expectedString);
         });
 
         assertThrows(IndexOutOfBoundsException.class, () -> {
-            ma.setUTF_8String(OpaqueMemory.getMemorySegment(heap).asSlice(0, mem32.sizeof()), mem32.sizeof(), expectedString);
+            ma.setString(OpaqueMemory.getMemorySegment(heap).asSlice(0, mem32.sizeof()), mem32.sizeof(), expectedString);
         });
         assertThrows(IndexOutOfBoundsException.class, () -> {
             //Just try to override some memory
-            ma.setUTF_8String(OpaqueMemory.getMemorySegment(mem32), 0, expectedString);
+            ma.setString(OpaqueMemory.getMemorySegment(mem32), 0, expectedString);
         });
     }
 

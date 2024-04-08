@@ -74,14 +74,14 @@ public class MemoryHeap extends OpaqueMemory {
         return BaseDataType.intptr_t;
     }
 
+    /*
     @Deprecated
     public long nextOffset(OpaqueMemory fieldOnTheFly, Alignment fieldAlignment) {
-        return OpaqueMemory.calcOffsetForAlignment(this, fieldAlignment, memorySegment.segmentOffset(fieldOnTheFly.memorySegment) + fieldOnTheFly.sizeof());
+        //return OpaqueMemory.calcOffsetForAlignment(this, fieldAlignment, memorySegment.segmentOffset(fieldOnTheFly.memorySegment) + fieldOnTheFly.sizeof());
     }
+     */
 
-    @Deprecated
     public long getAlignmentOffset(long offset, Alignment alignment) {
         return OpaqueMemory.calcOffsetForAlignment(this, alignment, offset);
     }
-
 }

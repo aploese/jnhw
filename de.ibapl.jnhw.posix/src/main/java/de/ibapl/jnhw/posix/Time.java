@@ -1067,7 +1067,7 @@ public class Time {
         if (resultAdr.address() == 0L) {
             return null;
         } else {
-            return resultAdr.getUtf8String(0);
+            return resultAdr.getString(0);
         }
     }
 
@@ -1090,7 +1090,7 @@ public class Time {
         if (resultAdr.address() == 0L) {
             return null;
         } else {
-            return buf.toMemorySegment().getUtf8String(0);
+            return buf.toMemorySegment().getString(0);
         }
     }
 
@@ -1227,7 +1227,7 @@ public class Time {
         if (resultAdr.address() == 0L) {
             return null;
         } else {
-            return resultAdr.getUtf8String(0);
+            return resultAdr.getString(0);
         }
 
     }
@@ -1252,7 +1252,7 @@ public class Time {
         if (resultAdr.address() == 0L) {
             return null;
         } else {
-            return buf.toMemorySegment().getUtf8String(0);
+            return buf.toMemorySegment().getString(0);
         }
     }
 
@@ -1318,7 +1318,7 @@ public class Time {
     public final static Tm getdate(String string) throws NativeException, NoSuchNativeMethodException {
         try (Arena arena = Arena.ofConfined()) {
             MemorySegment _string = arena.allocate(string.length() + 1);
-            _string.setUtf8String(0, string);
+            _string.setString(0, string);
             final MemorySegment result = getdate.invoke_MA___A(_string);
             if (result.address() == 0L) {
                 throw new NativeException("getdate");
@@ -1473,12 +1473,12 @@ public class Time {
         try (Arena arena = Arena.ofConfined()) {
             MemorySegment s = arena.allocate(maxsize);
             MemorySegment _format = arena.allocate(format.length() + 1);
-            _format.setUtf8String(0, format);
+            _format.setString(0, format);
             final int result = strftime.invoke_sI___A_uL__A__P(s, maxsize, _format, timeptr);
             if (result == 0) {
                 return null;
             } else {
-                return s.getUtf8String(0);
+                return s.getString(0);
             }
         }
     }
@@ -1500,12 +1500,12 @@ public class Time {
         try (Arena arena = Arena.ofConfined()) {
             MemorySegment s = arena.allocate(maxsize);
             MemorySegment _format = arena.allocate(format.length() + 1);
-            _format.setUtf8String(0, format);
+            _format.setString(0, format);
             final int result = strftime_l.invoke_sI___A_uL_A__P__P(s, maxsize, _format, timeptr, locale);
             if (result == 0) {
                 return null;
             } else {
-                return s.getUtf8String(0);
+                return s.getString(0);
             }
         }
     }
@@ -1526,14 +1526,14 @@ public class Time {
     public final static String strptime(String buf, String format, Tm tm) {
         try (Arena arena = Arena.ofConfined()) {
             MemorySegment _format = arena.allocate(format.length() + 1);
-            _format.setUtf8String(0, format);
+            _format.setString(0, format);
             MemorySegment _buf = arena.allocate(buf.length() + 1);
-            _buf.setUtf8String(0, buf);
+            _buf.setString(0, buf);
             final MemorySegment result = strptime.invoke_MA__A_A_P(_buf, _format, tm);
             if (result.address() == 0L) {
                 return null;
             } else {
-                return result.getUtf8String(0);
+                return result.getString(0);
             }
         }
     }
@@ -1691,7 +1691,7 @@ public class Time {
         final String[] result = new String[TZNAME_ENTRIES];
         for (int i = 0; i < TZNAME_ENTRIES; i++) {
             // its a string so we do not know the size in advance so use Long.MAX_VALUE... TODO set saveguards???
-            result[i] = tzname.get(ValueLayout.ADDRESS.withTargetLayout(MemoryLayout.paddingLayout(Long.MAX_VALUE)), i * ValueLayout.ADDRESS.byteSize()).getUtf8String(0);
+            result[i] = tzname.get(ValueLayout.ADDRESS.withTargetLayout(MemoryLayout.paddingLayout(Long.MAX_VALUE)), i * ValueLayout.ADDRESS.byteSize()).getString(0);
         }
         return result;
     }

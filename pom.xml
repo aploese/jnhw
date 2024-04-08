@@ -13,8 +13,8 @@
     </description>
 
     <properties>
-        <compile.source>21</compile.source>
-        <compile.target>21</compile.target>
+        <compile.source>22</compile.source>
+        <compile.target>22</compile.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <commandLineArg.ChooseVM/>
         <nativeProvider.propertyName>de.ibapl.jnhw.common.util.NativeProvider</nativeProvider.propertyName>
@@ -172,7 +172,7 @@
                          <configuration>
                         <!--forkedProcessExitTimeoutInSeconds>3600</forkedProcessExitTimeoutInSeconds>
                         <forkedProcessTimeoutInSeconds>1800</forkedProcessTimeoutInSeconds-->
-                        <argLine>${commandLineArg.ChooseVM} ${commandLineArg.NativeProvider} --enable-preview</argLine>
+                        <argLine>${commandLineArg.ChooseVM} ${commandLineArg.NativeProvider}</argLine>
                     </configuration>
                 </plugin>
                 <plugin>
@@ -180,7 +180,7 @@
                     <artifactId>exec-maven-plugin</artifactId>
                     <version>3.2.0</version>
                     <configuration>
-                        <arguments>${commandLineArg.ChooseVM} ${commandLineArg.NativeProvider} --enable-preview </arguments>                    
+                        <arguments>${commandLineArg.ChooseVM} ${commandLineArg.NativeProvider}</arguments>                    
                     </configuration>
                 </plugin>
                 <plugin>

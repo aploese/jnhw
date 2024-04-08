@@ -38,6 +38,7 @@ import de.ibapl.jnhw.libloader.MultiarchTupelBuilder;
 import java.lang.foreign.MemorySegment;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
+import java.nio.charset.Charset;
 
 /**
  *
@@ -654,12 +655,18 @@ public sealed interface MemoryAccessor permits AbstractMemoryAccessorImpl {
      * @param offset
      * @return
      */
-    String getUTF_8String(MemorySegment mem, long offset);
+    String getString(MemorySegment mem, long offset);
 
-    void setUTF_8String(MemorySegment mem, long offset, String s);
+    void setString(MemorySegment mem, long offset, String s);
 
+    String getString(MemorySegment mem, long offset, Charset charset);
+
+    void setString(MemorySegment mem, long offset, String s, Charset charset);
+
+    @Deprecated //TODO use getString + Charset
     String getUnicodeString(MemorySegment mem, long offset, int len);
 
+    @Deprecated //TODO use setString + Charset
     void setUnicodeString(MemorySegment mem, long offset, int len, String s);
 
     static long getBitsInLong(long value, int bitpos, int bitsize) {

@@ -95,7 +95,7 @@ public class StringHeader {
         if (result.address() == 0L) {
             throw new NativeErrorException(Errno.errno());
         }
-        return result.getUtf8String(0);
+        return result.getString(0);
     }
 
     /**
@@ -111,7 +111,7 @@ public class StringHeader {
         if (result.address() == 0L) {
             throw new NativeErrorException(Errno.errno());
         }
-        return result.getUtf8String(0);
+        return result.getString(0);
     }
 
     /**
@@ -124,7 +124,7 @@ public class StringHeader {
         if (result.address() == 0L) {
             return null;
         }
-        return result.getUtf8String(0);
+        return result.getString(0);
     }
 
 }

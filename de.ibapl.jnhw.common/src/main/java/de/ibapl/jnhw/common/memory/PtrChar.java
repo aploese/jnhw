@@ -25,6 +25,7 @@ import de.ibapl.jnhw.common.datatypes.BaseDataType;
 import java.io.IOException;
 import java.lang.foreign.Arena;
 import java.lang.foreign.MemorySegment;
+import java.nio.charset.Charset;
 
 /**
  *
@@ -47,11 +48,19 @@ public class PtrChar extends OpaqueMemory {
     }
 
     public String get() {
-        return MEM_ACCESS.getUTF_8String(memorySegment, 0);
+        return MEM_ACCESS.getString(memorySegment, 0);
     }
 
     public void set(String value) {
-        MEM_ACCESS.setUTF_8String(memorySegment, 0, value);
+        MEM_ACCESS.setString(memorySegment, 0, value);
+    }
+
+    public String get(Charset charset) {
+        return MEM_ACCESS.getString(memorySegment, 0, charset);
+    }
+
+    public void set(String value, Charset charset) {
+        MEM_ACCESS.setString(memorySegment, 0, value, charset);
     }
 
     @Override

@@ -3164,7 +3164,7 @@ public class Signal {
                 message = "";
             }
             MemorySegment _message = arena.allocate(message.length() + 1);
-            _message.setUtf8String(0, message);
+            _message.setString(0, message);
             final int old_errno = Errno.errno();
             Errno.errno(0);
             psiginfo.invoke__V___P__A(pinfo, _message);
@@ -3190,7 +3190,7 @@ public class Signal {
                 message = "";
             }
             MemorySegment _message = arena.allocate(message.length() + 1);
-            _message.setUtf8String(0, message);
+            _message.setString(0, message);
             final int old_errno = Errno.errno();
             Errno.errno(0);
             psignal.invoke__V__sI__A(signum, _message);
