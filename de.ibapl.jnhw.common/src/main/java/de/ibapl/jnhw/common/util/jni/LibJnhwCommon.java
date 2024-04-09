@@ -1,6 +1,6 @@
 /*
  * JNHW - Java Native header Wrapper, https://github.com/aploese/jnhw/
- * Copyright (C) 2019-2023, Arne Plöse and individual contributors as indicated
+ * Copyright (C) 2023-2024, Arne Plöse and individual contributors as indicated
  * by the @authors tag. See the copyright.txt in the distribution for a
  * full listing of individual contributors.
  *
@@ -21,10 +21,9 @@
  */
 package de.ibapl.jnhw.common.util.jni;
 
-import de.ibapl.jnhw.libloader.Arch;
+import de.ibapl.jnhw.common.util.NativeProvider;
 import de.ibapl.jnhw.libloader.LoadResult;
 import de.ibapl.jnhw.libloader.NativeLibResolver;
-import de.ibapl.jnhw.libloader.OS;
 import java.lang.foreign.Arena;
 
 /**
@@ -41,9 +40,8 @@ public class LibJnhwCommon {
     private static LoadResult LIB_JNHW_COMMON_LOAD_RESULT;
 
     static {
-        if (NativeLibResolver.getOS() == OS.LINUX && NativeLibResolver.getArch() == Arch.X86_64) {
-            //TODO Force loading? - for nativeProvider.propertyName
-        } else {
+        //only load lib if it is needed
+        if (NativeProvider.DEFAULT_PROVIDER == NativeProvider.JNI) {
             LIB_JNHW_COMMON_LOAD_RESULT = NativeLibResolver.loadNativeLib(LIB_JNHW_COMMON, LIB_JNHW_COMMON_VERSION, LibJnhwCommon::doSystemLoad);
         }
     }
