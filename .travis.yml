@@ -7,27 +7,27 @@ matrix:
     - os: linux
       dist: focal
       arch: amd64
-      jdk: oraclejdk11
+      jdk: oraclejdk22
     - os: linux
       dist: focal
       arch: amd64
-      jdk: openjdk11
+      jdk: openjdk22
     - os: linux
       dist: focal
       arch: arm64
-      jdk: openjdk11
+      jdk: openjdk22
     - os: linux
       dist: focal
       arch: ppc64le
-      jdk: openjdk11
+      jdk: openjdk22
     - os: linux
       dist: focal
       arch: s390x
-      jdk: openjdk11
-#    - os: windows
-#      jdk: openjdk11
-#    - os: windows
-#      jdk: oraclejdk11
+      jdk: openjdk22
+    - os: windows
+      jdk: openjdk22
+    - os: windows
+      jdk: oraclejdk22
 sudo: false
 cache:
   directories:
