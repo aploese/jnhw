@@ -21,8 +21,10 @@
  */
 package de.ibapl.jnhw.common.util.jni;
 
+import de.ibapl.jnhw.libloader.Arch;
 import de.ibapl.jnhw.libloader.LoadResult;
 import de.ibapl.jnhw.libloader.NativeLibResolver;
+import de.ibapl.jnhw.libloader.OS;
 import java.lang.foreign.Arena;
 
 /**
@@ -39,8 +41,11 @@ public class LibJnhwCommon {
     private static LoadResult LIB_JNHW_COMMON_LOAD_RESULT;
 
     static {
-        //TODO only load jni lib if it is neccesary
-        LIB_JNHW_COMMON_LOAD_RESULT = NativeLibResolver.loadNativeLib(LIB_JNHW_COMMON, LIB_JNHW_COMMON_VERSION, LibJnhwCommon::doSystemLoad);
+        if (NativeLibResolver.getOS() == OS.LINUX && NativeLibResolver.getArch() == Arch.X86_64) {
+            //TODO Force loading? - for nativeProvider.propertyName
+        } else {
+            LIB_JNHW_COMMON_LOAD_RESULT = NativeLibResolver.loadNativeLib(LIB_JNHW_COMMON, LIB_JNHW_COMMON_VERSION, LibJnhwCommon::doSystemLoad);
+        }
     }
 
     protected static void doSystemLoad(String absoluteLibName) {
