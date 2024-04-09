@@ -42,7 +42,7 @@ public enum NativeProvider {
     public final static NativeProvider DEFAULT_PROVIDER;
 
     static {
-        //fallback is
+        //set fallback to jni
         NativeProvider provider = JNI;
         try {
             Linker nativeLinker = Linker.nativeLinker();
@@ -61,7 +61,7 @@ public enum NativeProvider {
                 case "JAVA_FOREIGN" -> {
                     LOGGER.info("Use JAVA_FOREIGN native provider ");
                     if (provider != JAVA_FOREIGN) {
-                        String msg = "Cant set JAVA_FOREIGN as native pßrovider only JNI is available";
+                        String msg = "Can't set JAVA_FOREIGN as native pßrovider only JNI is available";
                         LOGGER.severe(msg);
                         throw new RuntimeException(msg);
                     }
