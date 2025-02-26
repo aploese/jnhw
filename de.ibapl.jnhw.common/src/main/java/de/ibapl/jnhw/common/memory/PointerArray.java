@@ -1,6 +1,6 @@
 /*
  * JNHW - Java Native header Wrapper, https://github.com/aploese/jnhw/
- * Copyright (C) 2022-2024, Arne Plöse and individual contributors as indicated
+ * Copyright (C) 2022-2025, Arne Plöse and individual contributors as indicated
  * by the @authors tag. See the copyright.txt in the distribution for a
  * full listing of individual contributors.
  *
@@ -37,7 +37,7 @@ public class PointerArray<D extends Pointer> extends OpaqueMemory {
     private final D[] cachedReferences;
 
     public PointerArray(MemorySegment memorySegment, long offset, int arrayLength) {
-        super(memorySegment, offset, arrayLength * BaseDataType.uintptr_t.SIZE_OF);
+        super(memorySegment, offset, arrayLength * BaseDataType.uintptr_t.byteSize);
         cachedReferences = (D[]) new Pointer[arrayLength];
     }
 

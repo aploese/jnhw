@@ -1,6 +1,6 @@
 /**
  * JNHW - Java Native header Wrapper, https://github.com/aploese/jnhw/
- * Copyright (C) 2021-2024, Arne Plöse and individual contributors as indicated
+ * Copyright (C) 2021-2025, Arne Plöse and individual contributors as indicated
  * by the @authors tag. See the copyright.txt in the distribution for a
  * full listing of individual contributors.
  *
@@ -37,6 +37,15 @@ int32_t* tryGetValueOf__BSD_SOURCE(int32_t* value) {
 int32_t* tryGetValueOf__FILE_OFFSET_BITS(int32_t* value) {
 #if defined (_FILE_OFFSET_BITS)
     *value = _FILE_OFFSET_BITS;
+#else
+    value = NULL;
+#endif
+    return value;
+}
+
+int32_t* tryGetValueOf__TIME_BITS(int32_t* value) {
+#if defined (_TIME_BITS)
+    *value = _TIME_BITS;
 #else
     value = NULL;
 #endif

@@ -1,6 +1,6 @@
 /**
  * JNHW - Java Native header Wrapper, https://github.com/aploese/jnhw/
- * Copyright (C) 2021-2024, Arne Plöse and individual contributors as indicated
+ * Copyright (C) 2021-2025, Arne Plöse and individual contributors as indicated
  * by the @authors tag. See the copyright.txt in the distribution for a
  * full listing of individual contributors.
  *
@@ -27,308 +27,35 @@
 #include <termios.h>
 #include <poll.h>
 
-int8_t JNHW__cc_t__IS__uint8_t() {
-#ifdef _JNHW__cc_t__IS__uint8_t
-    return 1;
-#else
-    return 0;
-#endif
-}
+#define SIGNED 0x01
+#define UNSIGNED 0x02
+#define NO_SIGN 0x04
 
-int8_t JNHW__clock_t__IS__int64_t() {
-#ifdef _JNHW__clock_t__IS__int64_t
-    return 1;
-#else
-    return 0;
-#endif
-}
 
-int8_t JNHW__clock_t__IS__uint64_t() {
-#ifdef _JNHW__clock_t__IS__uint64_t
-    return 1;
-#else
-    return 0;
-#endif
-}
+#define DATA_TYPE_TEST(name, type) \
+int8_t JNHW__ ## name ## __Sign() {return 0 > ((type) - 1) ? SIGNED :  0 < ((type) - 1) ? UNSIGNED : NO_SIGN;} \
+int32_t JNHW__sizeof__ ## name () {return sizeof(type);} \
+int32_t JNHW__alignof__ ## name () {return __alignof__ (type);}
 
-int8_t JNHW__clock_t__IS__int32_t() {
-#ifdef _JNHW__clock_t__IS__int32_t
-    return 1;
-#else
-    return 0;
-#endif
-}
+DATA_TYPE_TEST(cc_t, cc_t)
+DATA_TYPE_TEST(clock_t, clock_t)
 
-int8_t JNHW__clockid_t__IS__int32_t() {
-#ifdef _JNHW__clockid_t__IS__int32_t
-    return 1;
-#else
-    return 0;
-#endif
-}
-
-int8_t JNHW__off_t__IS__int64_t() {
-#ifdef _JNHW__off_t__IS__int64_t
-    return 1;
-#else
-    return 0;
-#endif
-}
-
-int8_t JNHW__off_t__IS__int32_t() {
-#ifdef _JNHW__off_t__IS__int32_t
-    return 1;
-#else
-    return 0;
-#endif
-}
-
-int8_t JNHW__mode_t__IS__uint16_t() {
-#ifdef _JNHW__mode_t__IS__uint16_t
-    return 1;
-#else
-    return 0;
-#endif
-}
-
-int8_t JNHW__mode_t__IS__uint32_t() {
-#ifdef _JNHW__mode_t__IS__uint32_t
-    return 1;
-#else
-    return 0;
-#endif
-}
-
-int8_t JNHW__nfds_t__IS__uint32_t() {
-#ifdef _JNHW__nfds_t__IS__uint32_t
-    return 1;
-#else
-    return 0;
-#endif
-}
-
-int8_t JNHW__nfds_t__IS__uint64_t() {
-#ifdef _JNHW__nfds_t__IS__uint64_t
-    return 1;
-#else
-    return 0;
-#endif
-}
-
-int8_t JNHW__pid_t__IS__int32_t() {
-#ifdef _JNHW__pid_t__IS__int32_t
-    return 1;
-#else
-    return 0;
-#endif
-}
-
-int8_t JNHW__speed_t__IS__uint32_t() {
-#ifdef _JNHW__speed_t__IS__uint32_t
-    return 1;
-#else
-    return 0;
-#endif
-}
-
-int8_t JNHW__speed_t__IS__uint64_t() {
-#ifdef _JNHW__speed_t__IS__uint64_t
-    return 1;
-#else
-    return 0;
-#endif
-}
-
-int8_t JNHW__size_t__IS__uint64_t() {
-#ifdef _JNHW__size_t__IS__uint64_t
-    return 1;
-#else
-    return 0;
-#endif
-}
-
-int8_t JNHW__size_t__IS__uint32_t() {
-#ifdef _JNHW__size_t__IS__uint32_t
-    return 1;
-#else
-    return 0;
-#endif
-}
-
-int8_t JNHW__ssize_t__IS__int64_t() {
-#ifdef _JNHW__ssize_t__IS__int64_t
-    return 1;
-#else
-    return 0;
-#endif
-}
-
-int8_t JNHW__ssize_t__IS__int32_t() {
-#ifdef _JNHW__ssize_t__IS__int32_t
-    return 1;
-#else
-    return 0;
-#endif
-}
-
-int8_t JNHW__tcflag_t__IS__uint32_t() {
-#ifdef _JNHW__tcflag_t__IS__uint32_t
-    return 1;
-#else
-    return 0;
-#endif
-}
-
-int8_t JNHW__tcflag_t__IS__uint64_t() {
-#ifdef _JNHW__tcflag_t__IS__uint64_t
-    return 1;
-#else
-    return 0;
-#endif
-}
-
-int8_t JNHW__time_t__IS__int64_t() {
-#ifdef _JNHW__time_t__IS__int64_t
-    return 1;
-#else
-    return 0;
-#endif
-}
-
-int8_t JNHW__time_t__IS__int32_t() {
-#ifdef _JNHW__time_t__IS__int32_t
-    return 1;
-#else
-    return 0;
-#endif
-}
-
-int8_t JNHW__uid_t__IS__uint32_t() {
-#ifdef _JNHW__uid_t__IS__uint32_t
-    return 1;
-#else
-    return 0;
-#endif
-}
-
-#define TEST_PATTERN 0x8000000080008080L;
-
-int8_t JNHW__cc_t__isUnsigned() {
-    return 0 < (cc_t) - 1;
-}
-
-uint64_t JNHW__cc_t__AS_Uint64_t() {
-    return (uint64_t) (cc_t) TEST_PATTERN;
-}
-
-int8_t JNHW__clock_t__isSigned() {
-    return 0 > (clock_t) - 1;
-}
-
-int8_t JNHW__clock_t__isUnsigned() {
-    return 0 < (clock_t) - 1;
-}
-
-uint64_t JNHW__clock_t__AS_Uint64_t() {
-    return (uint64_t) (clock_t) TEST_PATTERN;
-}
-
-int8_t JNHW__clockid_t__isSigned() {
 #ifdef __APPLE__
 //TODO clockid_t is an enum
-    return 0 > (int32_t) - 1;
+    DATA_TYPE_TEST(clockid_t, int32_t);
 #else
-    return 0 > (clockid_t) - 1;
+    DATA_TYPE_TEST(clockid_t, clockid_t)
 #endif
-}
 
-uint64_t JNHW__clockid_t__AS_Uint64_t() {
-#ifdef __APPLE__
-//TODO clockid_t is an enum
-    return (uint64_t) (int32_t) TEST_PATTERN;
-#else
-    return (uint64_t) (clockid_t) TEST_PATTERN;
-#endif
-}
-
-int8_t JNHW__mode_t__isUnsigned() {
-    return 0 < (mode_t) - 1;
-}
-
-uint64_t JNHW__mode_t__AS_Uint64_t() {
-    return (uint64_t) (mode_t) TEST_PATTERN;
-}
-
-int8_t JNHW__nfds_t__isUnsigned() {
-    return 0 < (nfds_t) - 1;
-}
-
-uint64_t JNHW__nfds_t__AS_Uint64_t() {
-    return (uint64_t) (nfds_t) TEST_PATTERN;
-}
-
-int8_t JNHW__off_t__isSigned() {
-    return 0 > (off_t) - 1;
-}
-
-uint64_t JNHW__off_t__AS_Uint64_t() {
-    return (uint64_t) (off_t) TEST_PATTERN;
-}
-
-int8_t JNHW__pid_t__isSigned() {
-    return 0 > (pid_t) - 1;
-}
-
-uint64_t JNHW__pid_t__AS_Uint64_t() {
-    return (uint64_t) (pid_t) TEST_PATTERN;
-}
-
-int8_t JNHW__size_t__isUnsigned() {
-    return 0 < (size_t) - 1;
-}
-
-uint64_t JNHW__size_t__AS_Uint64_t() {
-    return (uint64_t) (size_t) TEST_PATTERN;
-}
-
-int8_t JNHW__speed_t__isUnsigned() {
-    return 0 < (speed_t) - 1;
-}
-
-uint64_t JNHW__speed_t__AS_Uint64_t() {
-    return (uint64_t) (speed_t) TEST_PATTERN;
-}
-
-int8_t JNHW__ssize_t__isSigned() {
-    return 0 > (ssize_t) - 1;
-}
-
-uint64_t JNHW__ssize_t__AS_Uint64_t() {
-    return (uint64_t) (ssize_t) TEST_PATTERN;
-}
-
-int8_t JNHW__tcflag_t__isUnsigned() {
-    return 0 < (tcflag_t) - 1;
-}
-
-uint64_t JNHW__tcflag_t__AS_Uint64_t() {
-    return (uint64_t) (tcflag_t) TEST_PATTERN;
-}
-
-int8_t JNHW__time_t__isSigned() {
-    return 0 > (time_t) - 1;
-}
-
-uint64_t JNHW__time_t__AS_Uint64_t() {
-    return (uint64_t) (time_t) TEST_PATTERN;
-}
-
-int8_t JNHW__uid_t__isUnsigned() {
-    return 0 < (uid_t) - 1;
-}
-
-uint64_t JNHW__uid_t__AS_Uint64_t() {
-    return (uint64_t) (uid_t) TEST_PATTERN;
-}
+DATA_TYPE_TEST(mode_t, mode_t)
+DATA_TYPE_TEST(nfds_t, nfds_t)
+DATA_TYPE_TEST(off_t, off_t)
+DATA_TYPE_TEST(pid_t, pid_t)
+DATA_TYPE_TEST(size_t, size_t)
+DATA_TYPE_TEST(speed_t, speed_t)
+DATA_TYPE_TEST(ssize_t, ssize_t)
+DATA_TYPE_TEST(tcflag_t, tcflag_t)
+DATA_TYPE_TEST(time_t, time_t)
+DATA_TYPE_TEST(uid_t, uid_t)
 
 #endif

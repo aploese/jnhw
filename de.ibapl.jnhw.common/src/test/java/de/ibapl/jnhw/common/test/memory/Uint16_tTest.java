@@ -1,6 +1,6 @@
 /*
  * JNHW - Java Native header Wrapper, https://github.com/aploese/jnhw/
- * Copyright (C) 2021-2024, Arne Plöse and individual contributors as indicated
+ * Copyright (C) 2021-2025, Arne Plöse and individual contributors as indicated
  * by the @authors tag. See the copyright.txt in the distribution for a
  * full listing of individual contributors.
  *
@@ -25,7 +25,9 @@ import de.ibapl.jnhw.common.datatypes.BaseDataType;
 import de.ibapl.jnhw.common.memory.Uint16_t;
 import de.ibapl.jnhw.common.memory.layout.Alignment;
 import de.ibapl.jnhw.common.test.JnhwTestLogger;
+import de.ibapl.jnhw.common.test.LibJnhwCommonTestLoader;
 import java.lang.foreign.Arena;
+import java.lang.foreign.ValueLayout;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
 import static org.junit.jupiter.api.Assertions.*;
@@ -33,6 +35,8 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInfo;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 
 /**
  *
@@ -68,7 +72,7 @@ public class Uint16_tTest {
      */
     @Test
     public void testSizeofUInt16_t() {
-        assertEquals(2, Uint16_t.DATA_TYPE.SIZE_OF);
+        assertEquals(2, Uint16_t.DATA_TYPE.byteSize);
     }
 
     /**
@@ -76,9 +80,21 @@ public class Uint16_tTest {
      */
     @Test
     public void testAlignofUInt16_t() {
-        assertEquals(Alignment.AT_2, Uint16_t.DATA_TYPE.ALIGN_OF);
+        assertEquals(Alignment.AT_2, Uint16_t.DATA_TYPE.ALIGNMENT);
     }
 
+    @ParameterizedTest
+    @ValueSource(shorts = {
+        (short)0x0001,
+        (short)0x8fff,
+        (short)0x0000,
+        (short)0xf000,
+        (short)0xffff})
+    public void testSetGetUInt16_t(final short value) {
+        LibJnhwCommonTestLoader.invokeExact_V__S("jnhw_uint16_t_set", value);
+        assertEquals(value, LibJnhwCommonTestLoader.SYMBOL_LOOKUP.findOrThrow("jnhw_uint16_t_mem").reinterpret(ValueLayout.JAVA_SHORT.byteSize(), Arena.ofAuto(), null).get(ValueLayout.JAVA_SHORT, 0), "uint16_t mem");
+        assertEquals(value, LibJnhwCommonTestLoader.invokeExact__S__V("jnhw_uint16_t_get"), "uint16_t get");
+    }
     /**
      * Test of rawUint16_t method, of class Uint16_t.
      */
@@ -98,7 +114,7 @@ public class Uint16_tTest {
     @Test
     public void testNativeToString() {
         try (Arena arena = Arena.ofConfined()) {
-            Uint16_t instance = new Uint16_t(arena.allocate(BaseDataType.uint16_t.SIZE_OF), 0);
+            Uint16_t instance = new Uint16_t(arena.allocate(BaseDataType.uint16_t.byteSize), 0);
             instance.uint16_t((short) -2);
             assertEquals(String.valueOf(0x0000FFFF & -2), instance.nativeToString());
             assertEquals(String.valueOf(Short.toUnsignedInt((short) -2)), instance.nativeToString());

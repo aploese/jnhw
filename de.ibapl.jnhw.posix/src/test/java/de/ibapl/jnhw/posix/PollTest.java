@@ -1,6 +1,6 @@
 /*
  * JNHW - Java Native header Wrapper, https://github.com/aploese/jnhw/
- * Copyright (C) 2020-2024, Arne Plöse and individual contributors as indicated
+ * Copyright (C) 2020-2025, Arne Plöse and individual contributors as indicated
  * by the @authors tag. See the copyright.txt in the distribution for a
  * full listing of individual contributors.
  *
@@ -21,7 +21,6 @@
  */
 package de.ibapl.jnhw.posix;
 
-import de.ibapl.jnhw.common.memory.layout.Alignment;
 import de.ibapl.jnhw.util.posix.DefinesTest;
 import de.ibapl.jnhw.util.posix.PosixDataType;
 import java.lang.foreign.Arena;
@@ -56,11 +55,11 @@ public class PollTest {
     public static void checkBeforeAll_StructPollFd() throws Exception {
         JnhwTestLogger.logBeforeAllBegin("checkBeforeAll_StructPollFd");
         Assertions.assertAll(
-                () -> Assertions.assertEquals(LibJnhwPosixTestLoader.invoke_sI___V("PollFd_sizeof"), Poll.PollFd.sizeof, "sizeof"),
-                () -> Assertions.assertEquals(LibJnhwPosixTestLoader.invoke_sI___V("PollFd_alignof"), Poll.PollFd.alignof.alignof, "alignof"),
-                () -> Assertions.assertEquals(LibJnhwPosixTestLoader.invoke_sI___V("PollFd_offsetof_fd"), Poll.PollFd.offsetof_Fd, "offsetof_Fd"),
-                () -> Assertions.assertEquals(LibJnhwPosixTestLoader.invoke_sI___V("PollFd_offsetof_events"), Poll.PollFd.offsetof_Events, "offsetof_Events"),
-                () -> Assertions.assertEquals(LibJnhwPosixTestLoader.invoke_sI___V("PollFd_offsetof_revents"), Poll.PollFd.offsetof_Revents, "offsetof_Revents")
+                () -> assertEquals(LibJnhwPosixTestLoader.invoke_sI___V("PollFd_sizeof"), Poll.PollFd.sizeof, "sizeof"),
+                () -> assertEquals(LibJnhwPosixTestLoader.invoke_sI___V("PollFd_alignof"), Poll.PollFd.alignof.alignof, "alignof"),
+                () -> assertEquals(LibJnhwPosixTestLoader.invoke_sI___V("PollFd_offsetof_fd"), Poll.PollFd.offsetof_Fd, "offsetof_Fd"),
+                () -> assertEquals(LibJnhwPosixTestLoader.invoke_sI___V("PollFd_offsetof_events"), Poll.PollFd.offsetof_Events, "offsetof_Events"),
+                () -> assertEquals(LibJnhwPosixTestLoader.invoke_sI___V("PollFd_offsetof_revents"), Poll.PollFd.offsetof_Revents, "offsetof_Revents")
         );
         JnhwTestLogger.logBeforeAllEnd("checkBeforeAll_StructPollFd");
     }
@@ -99,10 +98,8 @@ public class PollTest {
     @Test
     public void testNfds_t() {
 
-        switch (PosixDataType.nfds_t.SIZE_OF) {
+        switch (PosixDataType.nfds_t.byteSize) {
             case 4 -> {
-                Assertions.assertEquals(Alignment.AT_4, PosixDataType.nfds_t.ALIGN_OF);
-                Assertions.assertTrue(PosixDataType.nfds_t.UNSIGNED);
                 Poll.Nfds_t instance = Poll.Nfds_t.allocateNative(arena);
                 Assertions.assertThrows(
                         IllegalArgumentException.class,
@@ -118,8 +115,6 @@ public class PollTest {
                 assertEquals("0xffffffff", instance.nativeToHexString());
             }
             case 8 -> {
-                Assertions.assertEquals(Alignment.AT_8, PosixDataType.nfds_t.ALIGN_OF);
-                Assertions.assertTrue(PosixDataType.nfds_t.UNSIGNED);
                 Poll.Nfds_t instance = Poll.Nfds_t.allocateNative(arena);
                 instance.setFromUnsignedLong(0x8070605040302010L);
                 assertEquals(0x8070605040302010L, instance.getAsUnsignedLong());

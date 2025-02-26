@@ -1,6 +1,6 @@
 /*
  * JNHW - Java Native header Wrapper, https://github.com/aploese/jnhw/
- * Copyright (C) 2019-2023, Arne Plöse and individual contributors as indicated
+ * Copyright (C) 2019-2025, Arne Plöse and individual contributors as indicated
  * by the @authors tag. See the copyright.txt in the distribution for a
  * full listing of individual contributors.
  *
@@ -53,7 +53,7 @@ public final class Eventfd {
     public final static class PtrEventfd_t extends Uint64_t {
 
         public static PtrEventfd_t allocateNative(Arena arena) {
-            return new PtrEventfd_t(arena.allocate(DATA_TYPE.SIZE_OF, DATA_TYPE.ALIGN_OF.alignof), 0);
+            return new PtrEventfd_t(arena.allocate(DATA_TYPE.byteSize, DATA_TYPE.byteAlignment), 0);
         }
 
         public PtrEventfd_t(MemorySegment memorySegment, long offset) {

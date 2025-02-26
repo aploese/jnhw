@@ -1,6 +1,6 @@
 /*
  * JNHW - Java Native header Wrapper, https://github.com/aploese/jnhw/
- * Copyright (C) 2021-2024, Arne Plöse and individual contributors as indicated
+ * Copyright (C) 2021-2025, Arne Plöse and individual contributors as indicated
  * by the @authors tag. See the copyright.txt in the distribution for a
  * full listing of individual contributors.
  *
@@ -130,7 +130,7 @@ public class Struct {
         _int8_t.int8_t((byte) 'a');
 
         //use the biggest alignment to align union
-        final long unionOffset = offsetInHeap + slf.union(BaseDataType.int64_t.SIZE_OF, BaseDataType.int64_t.ALIGN_OF);
+        final long unionOffset = offsetInHeap + slf.union(BaseDataType.int64_t.byteSize, BaseDataType.int64_t.ALIGNMENT);
         //alignment on 2 byte boundary after int16_t
         final Int16_t _int16_t = Int16_t.map(heap, unionOffset);
         final Int32_t _int32_t = Int32_t.map(heap, unionOffset);

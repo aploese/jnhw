@@ -1,6 +1,6 @@
 /*
  * JNHW - Java Native header Wrapper, https://github.com/aploese/jnhw/
- * Copyright (C) 2019-2023, Arne Plöse and individual contributors as indicated
+ * Copyright (C) 2019-2025, Arne Plöse and individual contributors as indicated
  * by the @authors tag. See the copyright.txt in the distribution for a
  * full listing of individual contributors.
  *
@@ -49,6 +49,7 @@ import de.ibapl.jnhw.common.util.ByteBufferUtils;
 import de.ibapl.jnhw.common.util.IntDefine;
 import de.ibapl.jnhw.libloader.MultiarchTupelBuilder;
 import de.ibapl.jnhw.libloader.libraries.LibcLoader;
+import de.ibapl.jnhw.util.posix.Defines;
 import de.ibapl.jnhw.util.posix.PosixDataType;
 import java.lang.foreign.Arena;
 import java.lang.foreign.MemorySegment;
@@ -289,11 +290,11 @@ public final class Unistd {
         }
 
         public final static JnhwPipeFiledes allocateNative(Arena arena) {
-            return new JnhwPipeFiledes(arena.allocate(Int32_t.DATA_TYPE.SIZE_OF * ARRAY_LENGTH, Int32_t.DATA_TYPE.ALIGN_OF.alignof), 0);
+            return new JnhwPipeFiledes(arena.allocate(Int32_t.DATA_TYPE.byteSize * ARRAY_LENGTH, Int32_t.DATA_TYPE.byteAlignment), 0);
         }
 
         public JnhwPipeFiledes(MemorySegment memorySegment, long offset) {
-            super(memorySegment, offset, new Int32_t[ARRAY_LENGTH], JnhwPipeFiledes::createAtOffset, Int32_t.DATA_TYPE.SIZE_OF);
+            super(memorySegment, offset, new Int32_t[ARRAY_LENGTH], JnhwPipeFiledes::createAtOffset, Int32_t.DATA_TYPE.byteSize);
         }
 
         public int readFd() {
@@ -354,7 +355,7 @@ public final class Unistd {
 
     private final static JnhwMh_sL__sI_sL_sI.ExceptionErased lseek = JnhwMh_sL__sI_sL_sI.mandatoryOf(
             LibcLoader.LIB_C_SYMBOL_LOOKUP,
-            "lseek",
+            Defines._FILE_OFFSET_BITS.equals(64) ? "lseek64" : "lseek",
             PosixDataType.off_t,
             BaseDataType.C_int,
             PosixDataType.off_t,

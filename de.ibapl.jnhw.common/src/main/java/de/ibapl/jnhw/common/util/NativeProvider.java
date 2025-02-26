@@ -1,6 +1,6 @@
 /*
  * JNHW - Java Native header Wrapper, https://github.com/aploese/jnhw/
- * Copyright (C) 2023-2024, Arne Plöse and individual contributors as indicated
+ * Copyright (C) 2023-2025, Arne Plöse and individual contributors as indicated
  * by the @authors tag. See the copyright.txt in the distribution for a
  * full listing of individual contributors.
  *
@@ -23,6 +23,7 @@ package de.ibapl.jnhw.common.util;
 
 import de.ibapl.jnhw.libloader.MultiarchTupelBuilder;
 import java.lang.foreign.Linker;
+import java.text.MessageFormat;
 import java.util.function.Supplier;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -49,21 +50,28 @@ public enum NativeProvider {
             if (nativeLinker != null) {
                 provider = JAVA_FOREIGN;
             }
-        } catch (UnsupportedOperationException e) {
-            LOGGER.log(Level.INFO, "Found no java.lang.foreign.Linker for this platform: {0}", MultiarchTupelBuilder.getMultiarch());
+        } catch (UnsupportedOperationException | ExceptionInInitializerError e) {
+            LOGGER.log(Level.SEVERE, e, () -> {
+                return MessageFormat.format("Found no java.lang.foreign.Linker for this platform: {0}", MultiarchTupelBuilder.getMultiarch());
+            });
         }
 
         String nativeProviderProperty = System.getProperty(NATIVE_PROVIDER_PROPERTY);
         if (nativeProviderProperty == null) {
-            LOGGER.info("Use platform default native provider ");
+            if (provider == JAVA_FOREIGN) {
+                LOGGER.log(Level.INFO, "Use platform default native provider: {0} java foreign impl: {1}", new Object[]{provider, Linker.nativeLinker()});
+            } else {
+                LOGGER.log(Level.INFO, "Use platform default native provider: {0}", provider);
+            }
         } else {
             switch (nativeProviderProperty) {
                 case "JAVA_FOREIGN" -> {
-                    LOGGER.info("Use JAVA_FOREIGN native provider ");
                     if (provider != JAVA_FOREIGN) {
                         String msg = "Can't set JAVA_FOREIGN as native pßrovider only JNI is available";
                         LOGGER.severe(msg);
                         throw new RuntimeException(msg);
+                    } else {
+                        LOGGER.log(Level.INFO, "Use JAVA_FOREIGN native provider ava foreign impl: {0}", Linker.nativeLinker());
                     }
                 }
                 case "JNI" -> {

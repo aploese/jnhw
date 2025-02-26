@@ -1,6 +1,6 @@
 /*
  * JNHW - Java Native header Wrapper, https://github.com/aploese/jnhw/
- * Copyright (C) 2019-2024, Arne Plöse and individual contributors as indicated
+ * Copyright (C) 2019-2025, Arne Plöse and individual contributors as indicated
  * by the @authors tag. See the copyright.txt in the distribution for a
  * full listing of individual contributors.
  *
@@ -43,6 +43,7 @@ import de.ibapl.jnhw.libloader.MultiarchInfo;
 import de.ibapl.jnhw.libloader.MultiarchTupelBuilder;
 import de.ibapl.jnhw.libloader.libraries.LibcLoader;
 import de.ibapl.jnhw.posix.sys.Stat;
+import de.ibapl.jnhw.util.posix.Defines;
 import de.ibapl.jnhw.util.posix.PosixDataType;
 import java.lang.foreign.Arena;
 import java.lang.foreign.MemorySegment;
@@ -154,8 +155,8 @@ public final class Fcntl {
         public final int F_RDLCK = 0;
         public final int F_SETFD = 2;
         public final int F_SETFL = 4;
-        public final int F_SETLK = 6;
-        public final int F_SETLKW = 7;
+        public final int F_SETLK = Defines._FILE_OFFSET_BITS.equals(64) ? 13 : 6;
+        public final int F_SETLKW = Defines._FILE_OFFSET_BITS.equals(64) ? 14 : 7;
         public final int F_UNLCK = 2;
         public final int F_WRLCK = 1;
         public final int FD_CLOEXEC = 1;
@@ -209,7 +210,7 @@ public final class Fcntl {
                     O_SYNC = 040020;
                 }
                 default -> {
-                    F_GETLK = 5;
+                    F_GETLK = Defines._FILE_OFFSET_BITS.equals(64) ? 12 : 5;
                     F_GETOWN = 9;
                     F_SETOWN = 8;
                     O_APPEND = 02000;
@@ -870,7 +871,7 @@ public final class Fcntl {
 
     private final static JnhwMh_sI___A_uI.ExceptionErased creat = JnhwMh_sI___A_uI.mandatoryOf(
             LibcLoader.LIB_C_SYMBOL_LOOKUP,
-            "creat",
+            Defines._FILE_OFFSET_BITS.equals(64) ? "creat64" : "creat",
             BaseDataType.C_int,
             BaseDataType.C_const_char_pointer,
             PosixDataType.mode_t);
@@ -884,7 +885,7 @@ public final class Fcntl {
 
     private final static JnhwMh_sI__sI_sI_VARARGS_NONE.ExceptionErased fcntl = JnhwMh_sI__sI_sI_VARARGS_NONE.mandatoryOf(
             LibcLoader.LIB_C_SYMBOL_LOOKUP,
-            "fcntl",
+            Defines._FILE_OFFSET_BITS.equals(64) ? Defines._TIME_BITS.equals(64) ? "__fcntl_time64" : "fcntl64" : "fcntl",
             BaseDataType.C_int,
             BaseDataType.C_int,
             BaseDataType.C_int);
@@ -898,7 +899,7 @@ public final class Fcntl {
 
     private final static JnhwMh_sI__sI_sI_VARARGS_sI.ExceptionErased fcntl__VARARG_sI = JnhwMh_sI__sI_sI_VARARGS_sI.mandatoryOf(
             LibcLoader.LIB_C_SYMBOL_LOOKUP,
-            "fcntl",
+            Defines._FILE_OFFSET_BITS.equals(64) ? Defines._TIME_BITS.equals(64) ? "__fcntl_time64" : "fcntl64" : "fcntl",
             BaseDataType.C_int,
             BaseDataType.C_int,
             BaseDataType.C_int,
@@ -914,7 +915,7 @@ public final class Fcntl {
 
     private final static JnhwMh_sI___A_sI_VARARGS_NONE.ExceptionErased open = JnhwMh_sI___A_sI_VARARGS_NONE.mandatoryOf(
             LibcLoader.LIB_C_SYMBOL_LOOKUP,
-            "open",
+            Defines._FILE_OFFSET_BITS.equals(64) ? "open64" : "open",
             BaseDataType.C_int,
             BaseDataType.C_const_char_pointer,
             BaseDataType.C_int);
@@ -928,7 +929,7 @@ public final class Fcntl {
 
     private final static JnhwMh_sI___A_sI_VARARGS_uI.ExceptionErased open__VARARG_mode_t = JnhwMh_sI___A_sI_VARARGS_uI.mandatoryOf(
             LibcLoader.LIB_C_SYMBOL_LOOKUP,
-            "open",
+            Defines._FILE_OFFSET_BITS.equals(64) ? "open64" : "open",
             BaseDataType.C_int,
             BaseDataType.C_const_char_pointer,
             BaseDataType.C_int,
@@ -944,7 +945,7 @@ public final class Fcntl {
 
     private final static JnhwMh_sI__sI__A_sI_VARARGS_NONE.ExceptionErased openat = JnhwMh_sI__sI__A_sI_VARARGS_NONE.mandatoryOf(
             LibcLoader.LIB_C_SYMBOL_LOOKUP,
-            "openat",
+            Defines._FILE_OFFSET_BITS.equals(64) ? "openat64" : "openat",
             BaseDataType.C_int,
             BaseDataType.C_int,
             BaseDataType.C_const_char_pointer,
@@ -952,7 +953,7 @@ public final class Fcntl {
 
     private final static JnhwMh_sI__sI__A_sI_VARARGS_uI.ExceptionErased openat__VARARG_mode_t = JnhwMh_sI__sI__A_sI_VARARGS_uI.mandatoryOf(
             LibcLoader.LIB_C_SYMBOL_LOOKUP,
-            "openat",
+            Defines._FILE_OFFSET_BITS.equals(64) ? "openat64" : "openat",
             BaseDataType.C_int,
             BaseDataType.C_int,
             BaseDataType.C_const_char_pointer,
@@ -978,7 +979,7 @@ public final class Fcntl {
 
     private final static JnhwMh_sI__sI_sL_sL_sI posix_fadvise = JnhwMh_sI__sI_sL_sL_sI.optionalOf(
             LibcLoader.LIB_C_SYMBOL_LOOKUP,
-            "posix_fadvise",
+            Defines._FILE_OFFSET_BITS.equals(64) ? "posix_fadvise64" : "posix_fadvise",
             BaseDataType.C_int,
             BaseDataType.C_int,
             PosixDataType.off_t,
@@ -996,7 +997,7 @@ public final class Fcntl {
 
     private final static JnhwMh_sI__sI_sL_sL posix_fallocate = JnhwMh_sI__sI_sL_sL.optionalOf(
             LibcLoader.LIB_C_SYMBOL_LOOKUP,
-            "posix_fallocate",
+            Defines._FILE_OFFSET_BITS.equals(64) ? "posix_fallocate64" : "posix_fallocate",
             BaseDataType.C_int,
             BaseDataType.C_int,
             PosixDataType.off_t,

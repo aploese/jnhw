@@ -1,6 +1,6 @@
 /*
  * JNHW - Java Native header Wrapper, https://github.com/aploese/jnhw/
- * Copyright (C) 2020-2024, Arne Plöse and individual contributors as indicated
+ * Copyright (C) 2020-2025, Arne Plöse and individual contributors as indicated
  * by the @authors tag. See the copyright.txt in the distribution for a
  * full listing of individual contributors.
  *
@@ -660,8 +660,8 @@ public class Pthread {
      */
     public static final class Pthread_t extends OpaqueMemory {
 
-        public final static Alignment alignof = PosixDataType.pthread_t.ALIGN_OF;
-        public final static int sizeof = PosixDataType.pthread_t.SIZE_OF;
+        public final static Alignment alignof = PosixDataType.pthread_t.ALIGNMENT;
+        public final static int sizeof = PosixDataType.pthread_t.byteSize;
 
         public final static Pthread_t allocateNative(Arena arena) {
             return new Pthread_t(arena.allocate(sizeof, alignof.alignof), 0);

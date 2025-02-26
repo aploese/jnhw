@@ -1,6 +1,6 @@
 /*
  * JNHW - Java Native header Wrapper, https://github.com/aploese/jnhw/
- * Copyright (C) 2021-2024, Arne Plöse and individual contributors as indicated
+ * Copyright (C) 2021-2025, Arne Plöse and individual contributors as indicated
  * by the @authors tag. See the copyright.txt in the distribution for a
  * full listing of individual contributors.
  *
@@ -162,9 +162,9 @@ public class JnhwStringBuilderTest {
         JsonStringBuilder jsb = new JsonStringBuilder("", "");
         jsb.appendAddressMember("_address", MemorySegment.ofAddress(42));
         switch (MultiarchTupelBuilder.getMemoryModel().sizeOf_pointer) {
-            case _64_BIT ->
+            case _64_Bit ->
                 assertEquals("{_address : 0x000000000000002a}", jsb.toString());
-            case _32_BIT ->
+            case _32_Bit ->
                 assertEquals("{_address : 0x0000002a}", jsb.toString());
             default ->
                 throw new RuntimeException();

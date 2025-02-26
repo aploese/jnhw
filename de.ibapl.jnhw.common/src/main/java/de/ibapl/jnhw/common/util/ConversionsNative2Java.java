@@ -26,7 +26,9 @@ import de.ibapl.jnhw.common.annotation.uint16_t;
 import de.ibapl.jnhw.common.annotation.uint32_t;
 import de.ibapl.jnhw.common.annotation.uint8_t;
 import de.ibapl.jnhw.common.annotation.uintptr_t;
+import de.ibapl.jnhw.libloader.Endianess;
 import de.ibapl.jnhw.libloader.MemoryModel;
+import static de.ibapl.jnhw.libloader.MemoryModel.ILP32;
 import de.ibapl.jnhw.libloader.MultiarchTupelBuilder;
 import java.lang.foreign.MemorySegment;
 
@@ -36,7 +38,48 @@ import java.lang.foreign.MemorySegment;
  */
 public final class ConversionsNative2Java {
 
+    /**
+     * Convert an native address 32 or 64 bit to 32 bit int on address == 644
+     * bit the int (32bit) BIG Endian the int will be in the upper 32 bit!!
+     */
+    @FunctionalInterface
+    public interface Address2Int {
+
+        int convert(final MemorySegment mem);
+    }
+
     private final static MemoryModel MEMORY_MODEL = MultiarchTupelBuilder.getMemoryModel();
+    private final static Endianess ENDIANESS = MultiarchTupelBuilder.getEndianess();
+
+    public final static int convertAddressToIntDirect(final MemorySegment mem) {
+        return (int) mem.address();
+    }
+
+    public final static int convertAddress64ToInt32Be(final MemorySegment mem) {
+        return (int) (mem.address() >>> 32);
+    }
+
+    public final static Address2Int getAdress2Int() {
+        switch (ENDIANESS) {
+            case LITTLE -> {
+                return ConversionsNative2Java::convertAddressToIntDirect;
+            }
+            case BIG -> {
+                switch (MEMORY_MODEL) {
+                    case ILP32 -> {
+                        return ConversionsNative2Java::convertAddressToIntDirect;
+                    }
+                    case LP64 -> {
+                        return ConversionsNative2Java::convertAddress64ToInt32Be;
+                    }
+                    default ->
+                        throw new RuntimeException("Can't handle endianess: " + ENDIANESS + " and memory model: " + MEMORY_MODEL);
+                }
+            }
+            default ->
+                throw new RuntimeException("Can't handle endianess: " + ENDIANESS);
+        }
+    }
 
     public final static long uint32_t_TO_long(@uint32_t int value) {
         return 0x00000000ffffffffL & value;

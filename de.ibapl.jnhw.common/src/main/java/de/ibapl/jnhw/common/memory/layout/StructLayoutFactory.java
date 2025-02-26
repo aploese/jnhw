@@ -1,6 +1,6 @@
 /*
  * JNHW - Java Native header Wrapper, https://github.com/aploese/jnhw/
- * Copyright (C) 2021-2024, Arne Plöse and individual contributors as indicated
+ * Copyright (C) 2021-2025, Arne Plöse and individual contributors as indicated
  * by the @authors tag. See the copyright.txt in the distribution for a
  * full listing of individual contributors.
  *
@@ -24,7 +24,6 @@ package de.ibapl.jnhw.common.memory.layout;
 /**
  *
  * @author aploese
- * @param <T>
  */
 public interface StructLayoutFactory {
 

@@ -1,6 +1,6 @@
 /*
  * JNHW - Java Native header Wrapper, https://github.com/aploese/jnhw/
- * Copyright (C) 2021-2024, Arne Plöse and individual contributors as indicated
+ * Copyright (C) 2021-2025, Arne Plöse and individual contributors as indicated
  * by the @authors tag. See the copyright.txt in the distribution for a
  * full listing of individual contributors.
  *
@@ -22,7 +22,6 @@
 package de.ibapl.jnhw.posix.sys;
 
 import de.ibapl.jnhw.common.datatypes.BaseDataType;
-import de.ibapl.jnhw.common.memory.layout.Alignment;
 import de.ibapl.jnhw.posix.JnhwTestLogger;
 import de.ibapl.jnhw.util.posix.DefinesTest;
 import de.ibapl.jnhw.util.posix.PosixDataType;
@@ -125,11 +124,9 @@ public class TypesTest {
 
     @Test
     public void testMode_t() {
-        Assertions.assertTrue(PosixDataType.mode_t.UNSIGNED);
         Types.Mode_t instance = Types.Mode_t.allocateNative(arena);
-        switch (PosixDataType.mode_t.SIZE_OF) {
+        switch (PosixDataType.mode_t.byteSize) {
             case 2 -> {
-                Assertions.assertEquals(Alignment.AT_2, PosixDataType.mode_t.ALIGN_OF);
                 assertEquals(BaseDataType.uint16_t, instance.getBaseDataType());
                 assertThrows(IllegalArgumentException.class, () -> instance.setFromUnsignedInt(0x00010000));
                 assertThrows(IllegalArgumentException.class, () -> instance.setFromUnsignedInt(-1));
@@ -142,7 +139,6 @@ public class TypesTest {
                 assertThrows(IllegalArgumentException.class, () -> instance.setFromUnsignedInt(-1));
             }
             case 4 -> {
-                Assertions.assertEquals(Alignment.AT_4, PosixDataType.mode_t.ALIGN_OF);
                 assertEquals(BaseDataType.uint32_t, instance.getBaseDataType());
                 instance.setFromUnsignedInt(0x80706050);
                 assertEquals(0x80706050, instance.getAsUnsignedInt());
@@ -161,13 +157,11 @@ public class TypesTest {
 
     @Test
     public void testOff_t() {
-        Assertions.assertFalse(PosixDataType.off_t.UNSIGNED);
         Types.Off_t instance = Types.Off_t.allocateNative(arena);
         instance.setFromSignedLong(-1);
         assertEquals(-1L, instance.getAsSignedLong());
-        switch (PosixDataType.off_t.SIZE_OF) {
+        switch (PosixDataType.off_t.byteSize) {
             case 4 -> {
-                Assertions.assertEquals(Alignment.AT_4, PosixDataType.off_t.ALIGN_OF);
                 assertEquals(BaseDataType.int32_t, instance.getBaseDataType());
                 instance.setFromSignedLong(0x80706050);
                 assertEquals(0x80706050, instance.getAsSignedLong());
@@ -177,7 +171,6 @@ public class TypesTest {
                 assertThrows(IllegalArgumentException.class, () -> instance.setFromSignedLong((long) Integer.MIN_VALUE - 1L));
             }
             case 8 -> {
-                Assertions.assertEquals(Alignment.AT_8, PosixDataType.off_t.ALIGN_OF);
                 assertEquals(BaseDataType.int64_t, instance.getBaseDataType());
                 instance.setFromSignedLong(0x8070605040302010L);
                 assertEquals(0x8070605040302010L, instance.getAsSignedLong());
@@ -191,9 +184,7 @@ public class TypesTest {
 
     @Test
     public void testPid_t() {
-        Assertions.assertEquals(4, PosixDataType.pid_t.SIZE_OF);
-        Assertions.assertEquals(Alignment.AT_4, PosixDataType.pid_t.ALIGN_OF);
-        Assertions.assertFalse(PosixDataType.pid_t.UNSIGNED);
+        Assertions.assertEquals(BaseDataType.int32_t, PosixDataType.pid_t);
         Types.Pid_t instance = Types.Pid_t.allocateNative(arena);
         instance.int32_t(0x80706050);
         assertEquals(0x80706050, instance.int32_t());
@@ -203,11 +194,9 @@ public class TypesTest {
 
     @Test
     public void testSize_t() {
-        Assertions.assertTrue(PosixDataType.size_t.UNSIGNED);
         Types.Size_t instance = Types.Size_t.allocateNative(arena);
-        switch (PosixDataType.size_t.SIZE_OF) {
+        switch (PosixDataType.size_t.byteSize) {
             case 4 -> {
-                Assertions.assertEquals(Alignment.AT_4, PosixDataType.size_t.ALIGN_OF);
                 assertEquals(BaseDataType.uint32_t, instance.getBaseDataType());
                 assertThrows(IllegalArgumentException.class, () -> instance.setFromUnsignedLong(0x80706050));
                 assertThrows(IllegalArgumentException.class, () -> instance.setFromUnsignedLong(0x0000000080706050));
@@ -220,7 +209,6 @@ public class TypesTest {
                 assertThrows(IllegalArgumentException.class, () -> instance.setFromUnsignedLong(-1));
             }
             case 8 -> {
-                Assertions.assertEquals(Alignment.AT_8, PosixDataType.size_t.ALIGN_OF);
                 assertEquals(BaseDataType.uint64_t, instance.getBaseDataType());
                 instance.setFromUnsignedLong(0x8070605040302010L);
                 assertEquals(0x8070605040302010L, instance.getAsUnsignedLong());
@@ -239,63 +227,59 @@ public class TypesTest {
 
     @Test
     public void testSsize_t() {
-        Assertions.assertFalse(PosixDataType.ssize_t.UNSIGNED);
         Types.Ssize_t instance = Types.Ssize_t.allocateNative(arena);
         instance.setFromSignedLong(-1);
         assertEquals(-1L, instance.getAsSignedLong());
-        if (PosixDataType.ssize_t.SIZE_OF == 4) {
-            Assertions.assertEquals(Alignment.AT_4, PosixDataType.ssize_t.ALIGN_OF);
-            assertEquals(BaseDataType.int32_t, instance.getBaseDataType());
-            instance.setFromSignedLong(0x80706050);
-            assertEquals(0x80706050, instance.getAsSignedLong());
-            assertEquals(Integer.toString(0x80706050), instance.nativeToString());
-            assertEquals("0x80706050", instance.nativeToHexString());
-            assertThrows(IllegalArgumentException.class, () -> instance.setFromSignedLong(1L + Integer.MAX_VALUE));
-            assertThrows(IllegalArgumentException.class, () -> instance.setFromSignedLong((long) Integer.MIN_VALUE - 1L));
-        } else if (PosixDataType.ssize_t.SIZE_OF == 8) {
-            Assertions.assertEquals(Alignment.AT_8, PosixDataType.ssize_t.ALIGN_OF);
-            assertEquals(BaseDataType.int64_t, instance.getBaseDataType());
-            instance.setFromSignedLong(0x8070605040302010L);
-            assertEquals(0x8070605040302010L, instance.getAsSignedLong());
-            assertEquals(Long.toString(0x8070605040302010L), instance.nativeToString());
-            assertEquals("0x8070605040302010", instance.nativeToHexString());
-        } else {
-            fail();
+        switch (PosixDataType.ssize_t.byteSize) {
+            case 4 -> {
+                assertEquals(BaseDataType.int32_t, instance.getBaseDataType());
+                instance.setFromSignedLong(0x80706050);
+                assertEquals(0x80706050, instance.getAsSignedLong());
+                assertEquals(Integer.toString(0x80706050), instance.nativeToString());
+                assertEquals("0x80706050", instance.nativeToHexString());
+                assertThrows(IllegalArgumentException.class, () -> instance.setFromSignedLong(1L + Integer.MAX_VALUE));
+                assertThrows(IllegalArgumentException.class, () -> instance.setFromSignedLong((long) Integer.MIN_VALUE - 1L));
+            }
+            case 8 -> {
+                assertEquals(BaseDataType.int64_t, instance.getBaseDataType());
+                instance.setFromSignedLong(0x8070605040302010L);
+                assertEquals(0x8070605040302010L, instance.getAsSignedLong());
+                assertEquals(Long.toString(0x8070605040302010L), instance.nativeToString());
+                assertEquals("0x8070605040302010", instance.nativeToHexString());
+            }
+            default -> fail();
         }
     }
 
     @Test
     public void testTime_t() {
-        Assertions.assertFalse(PosixDataType.time_t.UNSIGNED);
         Types.Time_t instance = Types.Time_t.allocateNative(arena);
         instance.setFromSignedLong(-1);
         assertEquals(-1L, instance.getAsSignedLong());
-        if (PosixDataType.time_t.SIZE_OF == 4) {
-            Assertions.assertEquals(Alignment.AT_4, PosixDataType.time_t.ALIGN_OF);
-            assertEquals(BaseDataType.int32_t, instance.getBaseDataType());
-            instance.setFromSignedLong(0x80706050);
-            assertEquals(0x80706050, instance.getAsSignedLong());
-            assertEquals(Integer.toString(0x80706050), instance.nativeToString());
-            assertEquals("0x80706050", instance.nativeToHexString());
-            assertThrows(IllegalArgumentException.class, () -> instance.setFromSignedLong(1L + Integer.MAX_VALUE));
-            assertThrows(IllegalArgumentException.class, () -> instance.setFromSignedLong((long) Integer.MIN_VALUE - 1L));
-        } else if (PosixDataType.time_t.SIZE_OF == 8) {
-            Assertions.assertEquals(Alignment.AT_8, PosixDataType.time_t.ALIGN_OF);
-            assertEquals(BaseDataType.int64_t, instance.getBaseDataType());
-            instance.setFromSignedLong(0x8070605040302010L);
-            assertEquals(0x8070605040302010L, instance.getAsSignedLong());
-            assertEquals(Long.toString(0x8070605040302010L), instance.nativeToString());
-            assertEquals("0x8070605040302010", instance.nativeToHexString());
-        } else {
-            fail();
+        switch (PosixDataType.time_t.byteSize) {
+            case 4 -> {
+                assertEquals(BaseDataType.int32_t, instance.getBaseDataType());
+                instance.setFromSignedLong(0x80706050);
+                assertEquals(0x80706050, instance.getAsSignedLong());
+                assertEquals(Integer.toString(0x80706050), instance.nativeToString());
+                assertEquals("0x80706050", instance.nativeToHexString());
+                assertThrows(IllegalArgumentException.class, () -> instance.setFromSignedLong(1L + Integer.MAX_VALUE));
+                assertThrows(IllegalArgumentException.class, () -> instance.setFromSignedLong((long) Integer.MIN_VALUE - 1L));
+            }
+            case 8 -> {
+                assertEquals(BaseDataType.int64_t, instance.getBaseDataType());
+                instance.setFromSignedLong(0x8070605040302010L);
+                assertEquals(0x8070605040302010L, instance.getAsSignedLong());
+                assertEquals(Long.toString(0x8070605040302010L), instance.nativeToString());
+                assertEquals("0x8070605040302010", instance.nativeToHexString());
+            }
+            default -> fail();
         }
     }
 
     @Test
     public void testUid_t() {
-        Assertions.assertEquals(4, PosixDataType.uid_t.SIZE_OF);
-        Assertions.assertEquals(Alignment.AT_4, PosixDataType.uid_t.ALIGN_OF);
-        Assertions.assertTrue(PosixDataType.uid_t.UNSIGNED);
+        Assertions.assertEquals(BaseDataType.uint32_t, PosixDataType.uid_t);
         Types.Uid_t instance = Types.Uid_t.allocateNative(arena);
         instance.uint32_t(0x80706050);
         assertEquals(0x80706050, instance.uint32_t());
@@ -305,9 +289,7 @@ public class TypesTest {
 
     @Test
     public void testGid_t() {
-        Assertions.assertEquals(4, PosixDataType.gid_t.SIZE_OF);
-        Assertions.assertEquals(Alignment.AT_4, PosixDataType.gid_t.ALIGN_OF);
-        Assertions.assertTrue(PosixDataType.gid_t.UNSIGNED);
+        Assertions.assertEquals(BaseDataType.uint32_t, PosixDataType.gid_t);
         Types.Gid_t instance = Types.Gid_t.allocateNative(arena);
         instance.uint32_t(0x80706050);
         assertEquals(0x80706050, instance.uint32_t());

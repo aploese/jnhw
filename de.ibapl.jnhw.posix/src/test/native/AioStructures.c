@@ -1,6 +1,6 @@
 /**
  * JNHW - Java Native header Wrapper, https://github.com/aploese/jnhw/
- * Copyright (C) 2021-2024, Arne Plöse and individual contributors as indicated
+ * Copyright (C) 2021-2025, Arne Plöse and individual contributors as indicated
  * by the @authors tag. See the copyright.txt in the distribution for a
  * full listing of individual contributors.
  *
@@ -31,10 +31,6 @@
 
     //for offsetof
 #include <stddef.h>
-
-JNHW_ASSERT__off_t__IS__int64_t__OR__int32_t
-JNHW_ASSERT__size_t__IS__uint64_t__OR__uint32_t
-JNHW_ASSERT__ssize_t__IS__int64_t__OR__int32_t
 
 int32_t Aiocb_alignof() {
     return __alignof__ (struct aiocb);

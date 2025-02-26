@@ -1,6 +1,6 @@
 /*
  * JNHW - Java Native header Wrapper, https://github.com/aploese/jnhw/
- * Copyright (C) 2021-2024, Arne Plöse and individual contributors as indicated
+ * Copyright (C) 2021-2025, Arne Plöse and individual contributors as indicated
  * by the @authors tag. See the copyright.txt in the distribution for a
  * full listing of individual contributors.
  *
@@ -30,7 +30,7 @@ import de.ibapl.jnhw.common.memory.Uint32_t;
 import de.ibapl.jnhw.common.memory.Uint64_t;
 import de.ibapl.jnhw.common.test.JnhwTestLogger;
 import de.ibapl.jnhw.libloader.MultiarchTupelBuilder;
-import de.ibapl.jnhw.libloader.SizeInBit;
+import de.ibapl.jnhw.libloader.SizeInByte;
 import java.lang.foreign.Arena;
 import java.lang.foreign.MemorySegment;
 import java.nio.ByteOrder;
@@ -136,7 +136,7 @@ public class MemoryAccessorTest {
      */
     @ParameterizedTest
     @ValueSource(bytes = {Byte.MIN_VALUE, -1, 0, 1, Byte.MAX_VALUE})
-    public void testInt8_t_ByteTest(byte value) {
+    public void testInt8_t_Byte(byte value) {
         ma.int8_t(OpaqueMemory.getMemorySegment(mem64), 0, value);
         assertMemIsClean();
         assertMemEqualsByte(value);
@@ -151,7 +151,7 @@ public class MemoryAccessorTest {
      */
     @ParameterizedTest
     @ValueSource(ints = {Byte.MIN_VALUE, -1, 0, 1, Byte.MAX_VALUE})
-    public void testSignedIntOf_ByteTest(int value) {
+    public void testSignedIntOf_Byte(int value) {
         ma.setSignedIntOf(OpaqueMemory.getMemorySegment(mem64), 0, 1, value);
         assertMemIsClean();
         assertMemEqualsByte((byte) value);
@@ -166,7 +166,7 @@ public class MemoryAccessorTest {
      */
     @ParameterizedTest
     @ValueSource(longs = {Byte.MIN_VALUE, -1, 0, 1, Byte.MAX_VALUE})
-    public void testSignedLongOf_ByteTest(long value) {
+    public void testSignedLongOf_Byte(long value) {
         ma.setSignedLongOf(OpaqueMemory.getMemorySegment(mem64), 0, 1, value);
         assertMemIsClean();
         assertMemEqualsByte((byte) value);
@@ -181,7 +181,7 @@ public class MemoryAccessorTest {
      */
     @ParameterizedTest
     @ValueSource(bytes = {Byte.MIN_VALUE, -1, 0, 1, Byte.MAX_VALUE})
-    public void testUint8_t_ByteTest(byte value) {
+    public void testUint8_t_Byte(byte value) {
         ma.uint8_t(OpaqueMemory.getMemorySegment(mem64), 0, value);
         assertMemIsClean();
         assertMemEqualsByte(value);
@@ -196,7 +196,7 @@ public class MemoryAccessorTest {
      */
     @ParameterizedTest
     @ValueSource(shorts = {-1, 0, 1, 0x00ff, 0x0100})
-    public void testUint8_t_ShortTest(short value) {
+    public void testUint8_t_Short(short value) {
         if ((value < 0) || (value > 0xff)) {
             assertThrows(IllegalArgumentException.class,
                     () -> ma.uint8_t_FromShort(OpaqueMemory.getMemorySegment(mem64), 0, value));
@@ -219,7 +219,7 @@ public class MemoryAccessorTest {
      */
     @ParameterizedTest
     @ValueSource(ints = {Byte.MIN_VALUE, -1, 0, 1, Byte.MAX_VALUE})
-    public void testUnsignedInt_ByteTest(int value) {
+    public void testUnsignedInt_Byte(int value) {
         if ((value < 0) || (value > 0xff)) {
             assertThrows(IllegalArgumentException.class,
                     () -> ma.setUnsignedIntOf(OpaqueMemory.getMemorySegment(mem64), 0, 1, value));
@@ -242,7 +242,7 @@ public class MemoryAccessorTest {
      */
     @ParameterizedTest
     @ValueSource(longs = {Byte.MIN_VALUE, -1, 0, 1, Byte.MAX_VALUE})
-    public void testUnsignedLong_ByteTest(long value) {
+    public void testUnsignedLong_Byte(long value) {
         if ((value < 0) || (value > 0xff)) {
             assertThrows(IllegalArgumentException.class,
                     () -> ma.setUnsignedLongOf(OpaqueMemory.getMemorySegment(mem64), 0, 1, value));
@@ -265,7 +265,7 @@ public class MemoryAccessorTest {
      */
     @ParameterizedTest
     @ValueSource(shorts = {Short.MIN_VALUE, -1, 0, 1, Short.MAX_VALUE})
-    public void testInt16_t_ShortTest(short value) {
+    public void testInt16_t_Short(short value) {
         ma.int16_t(OpaqueMemory.getMemorySegment(mem64), 0, value);
         assertMemIsClean();
         assertMemEqualsShort(value);
@@ -280,7 +280,7 @@ public class MemoryAccessorTest {
      */
     @ParameterizedTest
     @ValueSource(ints = {Short.MIN_VALUE, -1, 0, 1, Short.MAX_VALUE})
-    public void testSignedIntOf_ShortTest(int value) {
+    public void testSignedIntOf_Short(int value) {
         ma.setSignedIntOf(OpaqueMemory.getMemorySegment(mem64), 0, 2, value);
         assertMemIsClean();
         assertMemEqualsShort((short) value);
@@ -295,7 +295,7 @@ public class MemoryAccessorTest {
      */
     @ParameterizedTest
     @ValueSource(shorts = {Short.MIN_VALUE, -1, 0, 1, Short.MAX_VALUE})
-    public void testSignedLongOf_ShortTest(long value) {
+    public void testSignedLongOf_Short(long value) {
         ma.setSignedLongOf(OpaqueMemory.getMemorySegment(mem64), 0, 2, value);
         assertMemIsClean();
         assertMemEqualsShort((short) value);
@@ -310,7 +310,7 @@ public class MemoryAccessorTest {
      */
     @ParameterizedTest
     @ValueSource(shorts = {Short.MIN_VALUE, -1, 0, 1, Short.MAX_VALUE})
-    public void testUint16_t_ShortTest(short value) {
+    public void testUint16_t_Short(short value) {
         ma.uint16_t(OpaqueMemory.getMemorySegment(mem64), 0, value);
         assertMemIsClean();
         assertMemEqualsShort(value);
@@ -325,7 +325,7 @@ public class MemoryAccessorTest {
      */
     @ParameterizedTest
     @ValueSource(ints = {-1, 0, 1, 0x0000ffff, 0x00010000})
-    public void testUint16_t_IntTest(int value) {
+    public void testUint16_t_Int(int value) {
         if ((value < 0) || (value > 0xffff)) {
             assertThrows(IllegalArgumentException.class,
                     () -> ma.uint16_t_FromInt(OpaqueMemory.getMemorySegment(mem64), 0, value));
@@ -348,7 +348,7 @@ public class MemoryAccessorTest {
      */
     @ParameterizedTest
     @ValueSource(ints = {-1, 0, 1, 0x0000ffff, 0x00010000})
-    public void testUnsignedInt_ShortTest(int value) {
+    public void testUnsignedInt_Short(int value) {
         if ((value < 0) || (value > 0xffff)) {
             assertThrows(IllegalArgumentException.class,
                     () -> ma.setUnsignedIntOf(OpaqueMemory.getMemorySegment(mem64), 0, 2, value));
@@ -371,7 +371,7 @@ public class MemoryAccessorTest {
      */
     @ParameterizedTest
     @ValueSource(longs = {-1, 0, 1, 0x0000ffff, 0x00010000})
-    public void testUnsignedLong_ShortTest(long value) {
+    public void testUnsignedLong_Short(long value) {
         if ((value < 0) || (value > 0xffff)) {
             assertThrows(IllegalArgumentException.class,
                     () -> ma.setUnsignedLongOf(OpaqueMemory.getMemorySegment(mem64), 0, 2, value));
@@ -394,7 +394,7 @@ public class MemoryAccessorTest {
      */
     @ParameterizedTest
     @ValueSource(ints = {Integer.MIN_VALUE, -1, 0, 1, Integer.MAX_VALUE})
-    public void testInt32_t_IntTest(int value) {
+    public void testInt32_t_Int(int value) {
         ma.int32_t(OpaqueMemory.getMemorySegment(mem64), 0, value);
         assertMemIsClean();
         assertMemEqualsInt(value);
@@ -409,7 +409,7 @@ public class MemoryAccessorTest {
      */
     @ParameterizedTest
     @ValueSource(ints = {Integer.MIN_VALUE, -1, 0, 1, Integer.MAX_VALUE})
-    public void testSignedIntOf_IntTest(int value) {
+    public void testSignedIntOf_Int(int value) {
         ma.setSignedIntOf(OpaqueMemory.getMemorySegment(mem64), 0, 4, value);
         assertMemIsClean();
         assertMemEqualsInt(value);
@@ -424,7 +424,7 @@ public class MemoryAccessorTest {
      */
     @ParameterizedTest
     @ValueSource(longs = {Long.MIN_VALUE, Integer.MIN_VALUE, -1, 0, 1, Integer.MAX_VALUE, Long.MAX_VALUE})
-    public void testSignedLongOf_IntTest(long value) {
+    public void testSignedLongOf_Int(long value) {
         if (value < Integer.MIN_VALUE || value > Integer.MAX_VALUE) {
             assertThrows(IllegalArgumentException.class,
                     () -> ma.setSignedLongOf(OpaqueMemory.getMemorySegment(mem64), 0, 4, value));
@@ -447,7 +447,7 @@ public class MemoryAccessorTest {
      */
     @ParameterizedTest
     @ValueSource(ints = {Integer.MIN_VALUE, -1, 0, 1, Integer.MAX_VALUE})
-    public void testUint32_t_IntTest(int value) {
+    public void testUint32_t_Int(int value) {
         ma.uint32_t(OpaqueMemory.getMemorySegment(mem64), 0, value);
         assertMemIsClean();
         assertMemEqualsInt(value);
@@ -462,7 +462,7 @@ public class MemoryAccessorTest {
      */
     @ParameterizedTest
     @ValueSource(longs = {-1, 0, 1, 0x00000000ffffffff, 0x0000000100000000L})
-    public void testUint32_t_LongTest(long value) {
+    public void testUint32_t_Long(long value) {
         if ((value < 0) || (value > 0xffffffffL)) {
             assertThrows(IllegalArgumentException.class,
                     () -> ma.uint32_t_FromLong(OpaqueMemory.getMemorySegment(mem64), 0, value));
@@ -485,7 +485,7 @@ public class MemoryAccessorTest {
      */
     @ParameterizedTest
     @ValueSource(ints = {Integer.MIN_VALUE, -1, 0, 1, Integer.MAX_VALUE})
-    public void testUnsignedInt_IntTest(int value) {
+    public void testUnsignedInt_Int(int value) {
         ma.setUnsignedIntOf(OpaqueMemory.getMemorySegment(mem64), 0, 4, value);
         assertMemIsClean();
         assertMemEqualsInt((int) value);
@@ -500,7 +500,7 @@ public class MemoryAccessorTest {
      */
     @ParameterizedTest
     @ValueSource(longs = {-1, 0, 1, 0x00000000ffffffff, 0x0000000100000000L})
-    public void testUnsignedLong_IntTest(long value) {
+    public void testUnsignedLong_Int(long value) {
         if ((value < 0) || (value > 0xffffffffL)) {
             assertThrows(IllegalArgumentException.class,
                     () -> ma.setUnsignedLongOf(OpaqueMemory.getMemorySegment(mem64), 0, 4, value));
@@ -523,7 +523,7 @@ public class MemoryAccessorTest {
      */
     @ParameterizedTest
     @ValueSource(longs = {Long.MIN_VALUE, -1, 0, 1, Long.MAX_VALUE})
-    public void testInt64_t_LongTest(long value) {
+    public void testInt64_t_Long(long value) {
         ma.int64_t(OpaqueMemory.getMemorySegment(mem64), 0, value);
         assertMemIsClean();
         assertMemEqualsLong(value);
@@ -538,7 +538,7 @@ public class MemoryAccessorTest {
      */
     @ParameterizedTest
     @ValueSource(longs = {Long.MIN_VALUE, -1, 0, 1, Long.MAX_VALUE})
-    public void testSignedLongOf_LongTest(long value) {
+    public void testSignedLongOf_Long(long value) {
         ma.setSignedLongOf(OpaqueMemory.getMemorySegment(mem64), 0, 8, value);
         assertMemIsClean();
         assertMemEqualsLong(value);
@@ -553,7 +553,7 @@ public class MemoryAccessorTest {
      */
     @ParameterizedTest
     @ValueSource(longs = {Long.MIN_VALUE, -1, 0, 1, Long.MAX_VALUE})
-    public void testUint64_t_LongTest(long value) {
+    public void testUint64_t_Long(long value) {
         ma.uint64_t(OpaqueMemory.getMemorySegment(mem64), 0, value);
         assertMemIsClean();
         assertMemEqualsLong(value);
@@ -568,7 +568,7 @@ public class MemoryAccessorTest {
      */
     @ParameterizedTest
     @ValueSource(longs = {Long.MIN_VALUE, -1, 0, 1, Long.MAX_VALUE})
-    public void testUnsignedLong_LongTest(long value) {
+    public void testUnsignedLong_Long(long value) {
         ma.setUnsignedLongOf(OpaqueMemory.getMemorySegment(mem64), 0, 8, value);
         assertMemIsClean();
         assertMemEqualsLong(value);
@@ -580,16 +580,15 @@ public class MemoryAccessorTest {
 
     @ParameterizedTest
     @ValueSource(longs = {Long.MIN_VALUE, Integer.MIN_VALUE, -1, 0, 1, Integer.MAX_VALUE, Long.MAX_VALUE})
-    public void testIntptr_tTest(long value) {
+    public void testIntptr_t(long value) {
         switch (MultiarchTupelBuilder.getMemoryModel().sizeOf_pointer) {
-            case _32_BIT -> {
-                // TODO BUG OpneJDK silent masking with 0x000000ffffffL
+            case _32_Bit -> {
                 ma.intptr_t(OpaqueMemory.getMemorySegment(mem64), 0, MemorySegment.ofAddress(value));
                 assertMemIsClean();
                 assertMemEqualsInt((int) value);
                 assertEquals(MemorySegment.ofAddress((int) value), ma.intptr_t(OpaqueMemory.getMemorySegment(mem32), 0));
             }
-            case _64_BIT -> {
+            case _64_Bit -> {
                 ma.intptr_t(OpaqueMemory.getMemorySegment(mem64), 0, MemorySegment.ofAddress(value));
                 assertMemIsClean();
                 assertMemEqualsLong(value);
@@ -604,7 +603,7 @@ public class MemoryAccessorTest {
     public void testIntptr_t_AtIndex() {
         final MemorySegment address;
         switch (MultiarchTupelBuilder.getMemoryModel().sizeOf_pointer) {
-            case _32_BIT -> {
+            case _32_Bit -> {
                 address = MemorySegment.ofAddress(0x04030201L);
                 ma.intptr_t_AtIndex(OpaqueMemory.getMemorySegment(heap), 2, address);
                 assertEquals(address, ma.intptr_t_AtIndex(OpaqueMemory.getMemorySegment(heap), 2));
@@ -612,7 +611,7 @@ public class MemoryAccessorTest {
                 assertEquals(address, MemorySegment.ofAddress(ma.int32_t(OpaqueMemory.getMemorySegment(mem32), 0)));
                 assertEquals(0, succ32_1.uint32_t());
             }
-            case _64_BIT -> {
+            case _64_Bit -> {
                 address = MemorySegment.ofAddress(0x0807060504030201L);
                 ma.intptr_t_AtIndex(OpaqueMemory.getMemorySegment(heap), 1, address);
                 assertEquals(address, ma.intptr_t_AtIndex(OpaqueMemory.getMemorySegment(heap), 1));
@@ -629,14 +628,14 @@ public class MemoryAccessorTest {
     @ValueSource(longs = {Long.MIN_VALUE, Integer.MIN_VALUE, -1, 0, 1, Integer.MAX_VALUE, Long.MAX_VALUE})
     public void testIntptr_t_AtIndex(long value) {
         switch (MultiarchTupelBuilder.getMemoryModel().sizeOf_pointer) {
-            case _32_BIT -> {
+            case _32_Bit -> {
                 // TODO BUG OpneJDK silent masking with 0x000000ffffffL
                 ma.intptr_t(OpaqueMemory.getMemorySegment(mem64), 0, MemorySegment.ofAddress(value));
                 assertMemIsClean();
                 assertMemEqualsInt((int) value);
                 assertEquals(MemorySegment.ofAddress((int) value), ma.intptr_t_AtIndex(OpaqueMemory.getMemorySegment(mem32), 0));
             }
-            case _64_BIT -> {
+            case _64_Bit -> {
                 ma.intptr_t(OpaqueMemory.getMemorySegment(mem64), 0, MemorySegment.ofAddress(value));
                 assertMemIsClean();
                 assertMemEqualsLong(value);
@@ -649,9 +648,9 @@ public class MemoryAccessorTest {
 
     @ParameterizedTest
     @ValueSource(longs = {-1, 0, 1, 0x00000000ffffffff, 0x0000000100000000L})
-    public void testUintPtr_tTest(long value) {
+    public void testUintPtr_t(long value) {
         switch (MultiarchTupelBuilder.getMemoryModel().sizeOf_pointer) {
-            case _32_BIT -> {
+            case _32_Bit -> {
                 // TODO BUG OpneJDK silent masking with 0x000000ffffffL
                 ma.uintptr_t(OpaqueMemory.getMemorySegment(mem64), 0, MemorySegment.ofAddress(value));
                 assertMemIsClean();
@@ -659,7 +658,7 @@ public class MemoryAccessorTest {
                 assertEquals(MemorySegment.ofAddress(0xffffffffL & value), ma.uintptr_t(OpaqueMemory.getMemorySegment(mem32), 0));
                 assertEquals(String.format("0x%08x", 0xffffffffL & value), ma.uintptr_t_AsHex(OpaqueMemory.getMemorySegment(mem32), 0));
             }
-            case _64_BIT -> {
+            case _64_Bit -> {
                 ma.uintptr_t(OpaqueMemory.getMemorySegment(mem64), 0, MemorySegment.ofAddress(value));
                 assertMemIsClean();
                 assertMemEqualsLong(value);
@@ -675,7 +674,7 @@ public class MemoryAccessorTest {
     public void testUintptr_t_AtIndex() {
         final MemorySegment address;
         switch (MultiarchTupelBuilder.getMemoryModel().sizeOf_pointer) {
-            case _32_BIT -> {
+            case _32_Bit -> {
                 address = MemorySegment.ofAddress(0x04030201L);
                 ma.uintptr_t_AtIndex(OpaqueMemory.getMemorySegment(heap), 2, address);
                 assertEquals(address, ma.uintptr_t_AtIndex(OpaqueMemory.getMemorySegment(heap), 2));
@@ -683,7 +682,7 @@ public class MemoryAccessorTest {
                 assertEquals(address, MemorySegment.ofAddress(ma.uint32_t(OpaqueMemory.getMemorySegment(mem32), 0)));
                 assertEquals(0, succ32_1.uint32_t());
             }
-            case _64_BIT -> {
+            case _64_Bit -> {
                 address = MemorySegment.ofAddress(0x0807060504030201L);
                 ma.uintptr_t_AtIndex(OpaqueMemory.getMemorySegment(heap), 1, address);
                 assertEquals(address, ma.uintptr_t_AtIndex(OpaqueMemory.getMemorySegment(heap), 1));
@@ -700,7 +699,7 @@ public class MemoryAccessorTest {
     @ValueSource(longs = {-1, 0, 1, 0x00000000ffffffff, 0x0000000100000000L})
     public void testUintPtr_t_AtIndex(long value) {
         switch (MultiarchTupelBuilder.getMemoryModel().sizeOf_pointer) {
-            case _32_BIT -> {
+            case _32_Bit -> {
                 //TODO OpenJDK bug int to long wiht sign ....
                 ma.uintptr_t(OpaqueMemory.getMemorySegment(mem64), 0, MemorySegment.ofAddress(value));
                 assertMemIsClean();
@@ -708,7 +707,7 @@ public class MemoryAccessorTest {
                 assertEquals(MemorySegment.ofAddress(0xffffffffL & value), ma.uintptr_t_AtIndex(OpaqueMemory.getMemorySegment(mem32), 0));
 
             }
-            case _64_BIT -> {
+            case _64_Bit -> {
                 ma.uintptr_t_AtIndex(OpaqueMemory.getMemorySegment(mem64), 0, MemorySegment.ofAddress(value));
                 assertMemIsClean();
                 assertMemEqualsLong(value);
@@ -721,17 +720,17 @@ public class MemoryAccessorTest {
 
     @Test
     public void testunsigned_long_AtIndex() {
-        final long expected = MultiarchTupelBuilder.getMemoryModel().sizeOf_long == SizeInBit._32_BIT ? 0x04030201L : 0x0807060504030201L;
+        final long expected = MultiarchTupelBuilder.getMemoryModel().sizeOf_long == SizeInByte._32_Bit ? 0x04030201L : 0x0807060504030201L;
         ma.unsigned_long_AtIndex(OpaqueMemory.getMemorySegment(heap), OpaqueMemory.offsetof(heap, mem64), 3, expected);
 
         assertEquals(expected, ma.unsigned_long_AtIndex(OpaqueMemory.getMemorySegment(heap), OpaqueMemory.offsetof(heap, mem64), 3));
         switch (MultiarchTupelBuilder.getMemoryModel().sizeOf_long) {
-            case _32_BIT -> {
+            case _32_Bit -> {
                 assertEquals(0, succ32_2.uint32_t());
                 assertEquals(expected, succ32_3.uint32_t_AsLong());
                 assertEquals(0, succ32_4.uint32_t());
             }
-            case _64_BIT -> {
+            case _64_Bit -> {
                 assertEquals(0, succ64_2.uint64_t());
                 assertEquals(expected, succ64_3.uint64_t());
                 assertEquals(0, succ64_4.uint64_t());
@@ -743,16 +742,16 @@ public class MemoryAccessorTest {
 
     @Test
     public void testsigned_long_AtIndex() {
-        final long expected = MultiarchTupelBuilder.getMemoryModel().sizeOf_long == SizeInBit._32_BIT ? 0x04030201L : 0x0807060504030201L;
+        final long expected = MultiarchTupelBuilder.getMemoryModel().sizeOf_long == SizeInByte._32_Bit ? 0x04030201L : 0x0807060504030201L;
         ma.signed_long_AtIndex(OpaqueMemory.getMemorySegment(heap), OpaqueMemory.offsetof(heap, mem64), 3, expected);
         assertEquals(expected, ma.signed_long_AtIndex(OpaqueMemory.getMemorySegment(heap), OpaqueMemory.offsetof(heap, mem64), 3));
         switch (MultiarchTupelBuilder.getMemoryModel().sizeOf_long) {
-            case _32_BIT -> {
+            case _32_Bit -> {
                 assertEquals(0, succ32_2.uint32_t());
                 assertEquals(expected, succ32_3.uint32_t_AsLong());
                 assertEquals(0, succ32_4.uint32_t());
             }
-            case _64_BIT -> {
+            case _64_Bit -> {
                 assertEquals(0, succ64_2.uint64_t());
                 assertEquals(expected, succ64_3.uint64_t());
                 assertEquals(0, succ64_4.uint64_t());

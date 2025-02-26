@@ -1,6 +1,6 @@
 /*
  * JNHW - Java Native header Wrapper, https://github.com/aploese/jnhw/
- * Copyright (C) 2023-2024, Arne Plöse and individual contributors as indicated
+ * Copyright (C) 2023-2025, Arne Plöse and individual contributors as indicated
  * by the @authors tag. See the copyright.txt in the distribution for a
  * full listing of individual contributors.
  *
@@ -24,6 +24,9 @@ package de.ibapl.jnhw.common.upcall.foreign;
 import de.ibapl.jnhw.common.upcall.CallbackFactory__V__Union_I_MA;
 import de.ibapl.jnhw.common.upcall.Callback__V__Union_I_MA;
 import de.ibapl.jnhw.common.util.jni.LibJnhwCommon;
+import de.ibapl.jnhw.libloader.Arch;
+import de.ibapl.jnhw.libloader.MemoryModel;
+import de.ibapl.jnhw.libloader.MultiarchTupelBuilder;
 import java.lang.foreign.FunctionDescriptor;
 import java.lang.foreign.Linker;
 import java.lang.foreign.MemoryLayout;
@@ -35,12 +38,15 @@ import java.lang.invoke.MethodHandles;
 import java.lang.invoke.MethodType;
 import java.lang.invoke.VarHandle;
 import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
  * @author aploese
  */
 public class JnhwCallbackFactory__V__Union_I_MA extends CallbackFactory__V__Union_I_MA {
+
+    public final static Logger LOG = Logger.getLogger("d.i.j.c.u.foreign");
 
     public final static UnionLayout LAYOUT__UNION_I_MA = MemoryLayout.unionLayout(
             ValueLayout.ADDRESS.withName("value_ptr"),
@@ -80,8 +86,32 @@ public class JnhwCallbackFactory__V__Union_I_MA extends CallbackFactory__V__Unio
     private static final MemorySegment[] NATIVE_SYMBOLS = new MemorySegment[MAX_CALL_BACKS];
 
     private MemorySegment registerCallBack(int index) throws NoSuchMethodException, IllegalAccessException {
-        MethodHandle handle = MethodHandles.lookup().findStatic(JnhwCallbackFactory__V__Union_I_MA.class, "trampoline_" + index, MethodType.methodType(void.class, MemorySegment.class));
-        return NATIVE_LINKER.upcallStub(handle, FunctionDescriptor.ofVoid(LAYOUT__UNION_I_MA), LibJnhwCommon.arena());
+        try {
+            MethodHandle handle = MethodHandles.lookup().findStatic(CallbackFactory__V__Union_I_MA.class, "trampoline_" + index, MethodType.methodType(void.class, MemorySegment.class));
+            return NATIVE_LINKER.upcallStub(handle, FunctionDescriptor.ofVoid(LAYOUT__UNION_I_MA), LibJnhwCommon.arena());
+        } catch (IllegalArgumentException iae) {
+
+            //POWERPC "Fallback linker does not support by-value unions: [A4|I4]" so make all to lower case
+            if (iae.getMessage().toLowerCase().contains("Fallback linker does not support by-value unions: [a4|i4]".toLowerCase())
+                    || iae.getMessage().toLowerCase().contains("Fallback linker does not support by-value unions: [a8|i4]".toLowerCase())) {
+
+                
+                final MemoryModel mm = MultiarchTupelBuilder.getMemoryModel();
+                switch (mm) {
+                    case ILP32, LP64 -> {
+                        // int 32 bit and pointer 64 or 32 bit
+                        LOG.log(Level.SEVERE, "Build a by value on stack callback __V__Union_I_MA for memory model: {0}", mm);
+                        MethodHandle handle = MethodHandles.lookup().findStatic(JnhwCallbackFactory__V__Union_I_MA.class, "trampoline_" + index + "_fallback_by_value", MethodType.methodType(void.class, MemorySegment.class));
+                        return NATIVE_LINKER.upcallStub(handle, FunctionDescriptor.ofVoid(ValueLayout.ADDRESS), LibJnhwCommon.arena());
+                    }
+                    default ->
+                        throw new RuntimeException("Can't build a callback for memory model: " + mm, iae);
+                }
+
+            } else {
+                throw iae;
+            }
+        }
     }
 
     /**
@@ -104,7 +134,6 @@ public class JnhwCallbackFactory__V__Union_I_MA extends CallbackFactory__V__Unio
     protected MemorySegment aquire0(Callback__V__Union_I_MA cb) {
         for (int i = 0; i < MAX_CALL_BACKS; i++) {
             if (REFS[i] == null) {
-                REFS[i] = cb;
                 //Lazy initialize the handles
                 if (NATIVE_SYMBOLS[i] == null) {
                     try {
@@ -114,6 +143,7 @@ public class JnhwCallbackFactory__V__Union_I_MA extends CallbackFactory__V__Unio
                         throw new RuntimeException(ex);
                     }
                 }
+                REFS[i] = cb;
                 return NATIVE_SYMBOLS[i];
             }
         }

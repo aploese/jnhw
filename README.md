@@ -44,24 +44,33 @@ If an native error occured and the called function flags an error condition to t
 
 ## Branch master
 
-| Test Platform         | VM version | Hotspot VM (Java Foreign)  | Zero VM (Java Foreign)  | Hotspot VM (JNI)        | Zero VM (JNI)           |
-| :-------------------- | :--------- | :------------------------: | :---------------------: | :---------------------: | :---------------------: |
-| aarch64-linux-gnu     | 19.0.1     | success         2023-01-26 | success      2023-01-27 | success      2023-01-27 | crashed      2023-01-27 |
-| arm-linux-gnueabihf   | 19.0.1     | n.a.            2023-01-26 | n.a.         2023-01-26 | success      2023-01-26 | success      2023-01-26 |
-| i386-linux-gnu        | 19.0.1     | n.a.            2023-01-26 | n.a.         2023-01-26 | success      2023-01-26 | success      2023-01-26 |
-| mipsel-linux-gnu      | 19.0.1     | n.a.            2023-01-26 | n.a.         2023-01-26 | n.a.         2023-01-26 | success      2023-01-26 |
-| mips64el-linux-gnu    | 19.0.1     | n.a.            2023-01-27 | n.a.         2023-01-27 | n.a.         2023-01-27 |                         |
-| powerpc-linux-gnu     | 19.0.1     | n.a.            2023-01-26 | n.a.         2023-01-26 | n.a.         2023-01-26 | crashed      2023-01-26 |
-| powerpc64le-linux-gnu | 19.0.1     | n.a.            2023-01-26 | n.a.         2023-01-26 | success      2023-01-26 | success      2023-01-26 |
-| riscv64-linux-gnu     | 19.0.1     | n.a.            2023-01-26 | n.a.         2023-01-26 | success      2023-01-26 | success      2023-01-26 |
-| s390x-linux-gnu       | 19.0.1     | n.a.            2023-01-26 | n.a.         2023-01-26 | success      2023-01-26 | success      2023-01-26 |
-| x86_64-apple-darwin   | 19.0.1     | success         2023-01-27 | n.a.         2023-01-27 | success      2023-01-26 | n.a.         2023-01-27 |
-| x86_64-freebsd-bsd    | 19.0.1     | success         2023-01-27 | n.a.         2023-01-26 | success      2023-01-27 | n.a.         2023-01-26 |
-| x86_64-openbsd-bsd    | 19.0.1     | no OpenJDK19    2023-01-27 | no OpenJDK19 2023-01-27 | no OpenJDK19 2023-01-27 | no OpenJDK19 2023-01-27 |
-| x86_64-linux-gnu      | 19.0.1     | success         2023-01-26 | crashed      2023-01-26 | success      2023-01-26 | success      2023-01-26 |
-| x86_64-windows-pe32+  | 19.0.1     | success         2023-01-26 | n.a.         2023-01-27 | success      2023-01-27 | zero n.a.    2023-01-27 |
+| Test Platform         | VM version | Hotspot VM (Java Foreign)  | Zero VM (Java Foreign)     | Hotspot VM (JNI)           | Zero VM (JNI)              |
+| :-------------------- | :--------- | :------------------------: | :------------------------: | :------------------------: | :------------------------: |
+| aarch64-freebsd-bsd   | 23         | no OpenJDK23    2025-02-17 | no OpenJDK23    2025-02-17 | no OpenJDK23    2025-02-17 | no OpenJDK23    2025-02-17 |
+| aarch64-linux-gnu     | 23.0.2     | success         2025-02-26 | no JFF          2025-02-26 | not included by default    | not included by default    |
+| aarch64-netbsd-bsd    | 23         | no OpenJDK23    2025-02-17 | no OpenJDK23    2025-02-17 | no OpenJDK23    2025-02-17 | no OpenJDK23    2025-02-17 |
+| aarch64-openbsd-bsd   | 23         | no OpenJDK23    2025-02-17 | no OpenJDK23    2025-02-17 | no OpenJDK23    2025-02-17 | no OpenJDK23    2025-02-17 |
+| arm-freebsd-bsd       | 23         | no OpenJDK23    2025-02-17 | no OpenJDK23    2025-02-17 | no OpenJDK23    2025-02-17 | no OpenJDK23    2025-02-17 |
+| arm-linux-gnueabihf   | 23.0.2     | no Server VM    2025-02-26 | success         2025-02-26 | not included by default    | not included by default    |
+| arm-netbsd-bsd        | 23         | no OpenJDK23    2025-02-17 | no OpenJDK23    2025-02-17 | no OpenJDK23    2025-02-17 | no OpenJDK23    2025-02-17 |
+| arm-openbsd-bsd       | 23         | no OpenJDK23    2025-02-17 | no OpenJDK23    2025-02-17 | no OpenJDK23    2025-02-17 | no OpenJDK23    2025-02-17 |
+| i386-freebsd-bsd      | 23         | no OpenJDK23    2025-02-17 | no OpenJDK23    2025-02-17 | no OpenJDK23    2025-02-17 | no OpenJDK23    2025-02-17 |
+| i386-linux-gnu        | 23.0.2     | no Server VM    2025-02-26 | success         2025-02-26 | not included by default    | not included by default    |
+| i386-netbsd-bsd       | 23         | no OpenJDK23    2025-02-17 | no OpenJDK23    2025-02-17 | no OpenJDK23    2025-02-17 | no OpenJDK23    2025-02-17 |
+| i386-openbsd-bsd      | 23         | no OpenJDK23    2025-02-17 | no OpenJDK23    2025-02-17 | no OpenJDK23    2025-02-17 | no OpenJDK23    2025-02-17 |
+| mips64el-linux-gnu    | 23.0.2     | success         2025-02-24 | Test Garbage    2025-02-24 | not included by default    | not included by default    |
+| powerpc-linux-gnu     | 23.0.2     | no Server VM    2025-02-26 | JFF is broken   2025-02-26 | not included by default    | not included by default    |
+| powerpc64le-linux-gnu | 23.0.2     | success         2025-02-26 | no JFF          2025-02-26 | not included by default    | not included by default    |
+| riscv64-linux-gnu     | 23.0.2     | success         2025-02-26 | no JFF          2025-02-26 | not included by default    | not included by default    |
+| s390x-linux-gnu       | 23.0.2     | success         2025-02-26 | no JFF          2025-02-26 | not included by default    | not included by default    |
+| x86_64-apple-darwin   | 19.0.1     | success         2023-01-27 | n.a.            2023-01-27 | success         2023-01-26 | n.a.            2023-01-27 |
+| x86_64-freebsd-bsd    | 23         | no OpenJDK23    2025-02-17 | no OpenJDK23    2025-02-17 | no OpenJDK23    2025-02-17 | no OpenJDK23    2025-02-17 |
+| x86_64-linux-gnu      | 23.0.2     | success         2025-02-26 | no JFF          2025-02-26 | not included by default    | not included by default    |
+| x86_64-netbsd-bsd     | 23         | no OpenJDK23    2025-02-17 | no OpenJDK23    2025-02-17 | no OpenJDK23    2025-02-17 | no OpenJDK23    2025-02-17 |
+| x86_64-openbsd-bsd    | 23         | no OpenJDK23    2025-02-17 | no OpenJDK23    2025-02-17 | no OpenJDK23    2025-02-17 | no OpenJDK23    2025-02-17 |
+| x86_64-windows-pe32+  | 19.0.1     | success         2023-01-26 | n.a.            2023-01-27 | not included by default    | not included by default    |
 
-n.a. ... the VM and/or feature are  not available.
+n.a. ... the feature are not available.
 
 # Demos
 ## Hello World

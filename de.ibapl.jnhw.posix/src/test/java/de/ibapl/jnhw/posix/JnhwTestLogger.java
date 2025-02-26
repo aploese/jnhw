@@ -1,6 +1,6 @@
 /*
  * JNHW - Java Native header Wrapper, https://github.com/aploese/jnhw/
- * Copyright (C) 2023-2024, Arne Plöse and individual contributors as indicated
+ * Copyright (C) 2023-2025, Arne Plöse and individual contributors as indicated
  * by the @authors tag. See the copyright.txt in the distribution for a
  * full listing of individual contributors.
  *
@@ -32,7 +32,7 @@ public class JnhwTestLogger {
     //set this to true to see lot of output
     //it may be useful to see which test crashed the VM ...
     final static boolean PRINT_LOG = false;
-    final static int WAIT_TIME = 0;
+    final static int WAIT_TIME = 10;
 
     private static void flushAndWait() {
         System.out.flush();

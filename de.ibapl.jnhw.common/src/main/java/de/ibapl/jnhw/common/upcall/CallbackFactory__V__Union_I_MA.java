@@ -1,6 +1,6 @@
 /*
  * JNHW - Java Native header Wrapper, https://github.com/aploese/jnhw/
- * Copyright (C) 2023-2024, Arne Plöse and individual contributors as indicated
+ * Copyright (C) 2023-2025, Arne Plöse and individual contributors as indicated
  * by the @authors tag. See the copyright.txt in the distribution for a
  * full listing of individual contributors.
  *
@@ -24,14 +24,9 @@ package de.ibapl.jnhw.common.upcall;
 import de.ibapl.jnhw.common.memory.NativeFunctionPointer;
 import de.ibapl.jnhw.common.upcall.foreign.JnhwCallbackFactory__V__Union_I_MA;
 import de.ibapl.jnhw.common.upcall.jni.JniCallbackFactory__V__Union_I_MA;
+import de.ibapl.jnhw.common.util.ConversionsNative2Java;
 import de.ibapl.jnhw.common.util.NativeProvider;
-import static de.ibapl.jnhw.libloader.Endianess.BIG;
-import static de.ibapl.jnhw.libloader.Endianess.LITTLE;
-import static de.ibapl.jnhw.libloader.MemoryModel.ILP32;
-import static de.ibapl.jnhw.libloader.MemoryModel.LP64;
-import de.ibapl.jnhw.libloader.MultiarchTupelBuilder;
 import java.lang.foreign.MemorySegment;
-import java.util.function.ToIntFunction;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -49,21 +44,7 @@ public abstract class CallbackFactory__V__Union_I_MA {
     public static final int MAX_CALL_BACKS = 16;
     protected static final Callback__V__Union_I_MA[] REFS = new Callback__V__Union_I_MA[MAX_CALL_BACKS];
 
-    private final static ToIntFunction<MemorySegment> I_OF_UNION_I_MA = switch (MultiarchTupelBuilder.getEndianess()) {
-        case BIG ->
-            switch (MultiarchTupelBuilder.getMemoryModel()) {
-                case LP64 ->
-                    (value) -> (int) (value.address() >>> 32);
-                case ILP32 ->
-                    (value) -> (int) value.address();
-                default ->
-                    throw new RuntimeException("Can't handle big endian and memory model " + MultiarchTupelBuilder.getMemoryModel());
-            };
-        case LITTLE ->
-            (value) -> (int) value.address();
-        default ->
-            throw new RuntimeException("Can't handle endianness " + MultiarchTupelBuilder.getEndianess());
-    };
+    private final static ConversionsNative2Java.Address2Int FALLBACK_ADDRESS_TO_INT = ConversionsNative2Java.getAdress2Int();
 
     protected final static void trampoline_0(final long value_ptr, final int value_int) {
         try {
@@ -112,6 +93,32 @@ public abstract class CallbackFactory__V__Union_I_MA {
         }
     }
 
+    protected final static void trampoline_0_fallback_by_value(final MemorySegment value) {
+        try {
+            REFS[0].callback(
+                    value,
+                    FALLBACK_ADDRESS_TO_INT.convert(value)
+            );
+        } catch (NullPointerException npe) {
+            LOG.log(Level.SEVERE,
+                    String.format(
+                            "Unassigned callback for trampoline_0_fallback_by_value(%s, %d)",
+                            value,
+                            FALLBACK_ADDRESS_TO_INT.convert(value)
+                    )
+            );
+        } catch (Throwable t) {
+            LOG.log(Level.SEVERE,
+                    String.format(
+                            "Exception was thrown in  trampoline_0_fallback_by_value(%s, %d)",
+                            value,
+                            FALLBACK_ADDRESS_TO_INT.convert(value)
+                    ),
+                    t
+            );
+        }
+    }
+
     protected final static void trampoline_1(final long value_ptr, final int value_int) {
         try {
             REFS[1].callback(MemorySegment.ofAddress(value_ptr),
@@ -155,6 +162,32 @@ public abstract class CallbackFactory__V__Union_I_MA {
             LOG.log(Level.SEVERE, String.format(
                     "Exception was thrown in  trampoline_1(%s)",
                     value),
+                    t
+            );
+        }
+    }
+
+    protected final static void trampoline_1_fallback_by_value(final MemorySegment value) {
+        try {
+            REFS[1].callback(
+                    value,
+                    FALLBACK_ADDRESS_TO_INT.convert(value)
+            );
+        } catch (NullPointerException npe) {
+            LOG.log(Level.SEVERE,
+                    String.format(
+                            "Unassigned callback for trampoline_1_fallback_by_value(%s, %d)",
+                            value,
+                            FALLBACK_ADDRESS_TO_INT.convert(value)
+                    )
+            );
+        } catch (Throwable t) {
+            LOG.log(Level.SEVERE,
+                    String.format(
+                            "Exception was thrown in  trampoline_1_fallback_by_value(%s, %d)",
+                            value,
+                            FALLBACK_ADDRESS_TO_INT.convert(value)
+                    ),
                     t
             );
         }
@@ -209,6 +242,32 @@ public abstract class CallbackFactory__V__Union_I_MA {
         }
     }
 
+    protected final static void trampoline_2_fallback_by_value(final MemorySegment value) {
+        try {
+            REFS[2].callback(
+                    value,
+                    FALLBACK_ADDRESS_TO_INT.convert(value)
+            );
+        } catch (NullPointerException npe) {
+            LOG.log(Level.SEVERE,
+                    String.format(
+                            "Unassigned callback for trampoline_2_fallback_by_value(%s, %d)",
+                            value,
+                            FALLBACK_ADDRESS_TO_INT.convert(value)
+                    )
+            );
+        } catch (Throwable t) {
+            LOG.log(Level.SEVERE,
+                    String.format(
+                            "Exception was thrown in  trampoline_2_fallback_by_value(%s, %d)",
+                            value,
+                            FALLBACK_ADDRESS_TO_INT.convert(value)
+                    ),
+                    t
+            );
+        }
+    }
+
     protected final static void trampoline_3(final long value_ptr, final int value_int) {
         try {
             REFS[3].callback(MemorySegment.ofAddress(value_ptr),
@@ -257,6 +316,32 @@ public abstract class CallbackFactory__V__Union_I_MA {
         }
     }
 
+    protected final static void trampoline_3_fallback_by_value(final MemorySegment value) {
+        try {
+            REFS[3].callback(
+                    value,
+                    FALLBACK_ADDRESS_TO_INT.convert(value)
+            );
+        } catch (NullPointerException npe) {
+            LOG.log(Level.SEVERE,
+                    String.format(
+                            "Unassigned callback for trampoline_3_fallback_by_value(%s, %d)",
+                            value,
+                            FALLBACK_ADDRESS_TO_INT.convert(value)
+                    )
+            );
+        } catch (Throwable t) {
+            LOG.log(Level.SEVERE,
+                    String.format(
+                            "Exception was thrown in  trampoline_3_fallback_by_value(%s, %d)",
+                            value,
+                            FALLBACK_ADDRESS_TO_INT.convert(value)
+                    ),
+                    t
+            );
+        }
+    }
+
     protected final static void trampoline_4(final long value_ptr, final int value_int) {
         try {
             REFS[4].callback(MemorySegment.ofAddress(value_ptr),
@@ -301,6 +386,32 @@ public abstract class CallbackFactory__V__Union_I_MA {
                     String.format(
                             "Exception was thrown in  trampoline_4(%s)",
                             value),
+                    t
+            );
+        }
+    }
+
+    protected final static void trampoline_4_fallback_by_value(final MemorySegment value) {
+        try {
+            REFS[4].callback(
+                    value,
+                    FALLBACK_ADDRESS_TO_INT.convert(value)
+            );
+        } catch (NullPointerException npe) {
+            LOG.log(Level.SEVERE,
+                    String.format(
+                            "Unassigned callback for trampoline_4_fallback_by_value(%s, %d)",
+                            value,
+                            FALLBACK_ADDRESS_TO_INT.convert(value)
+                    )
+            );
+        } catch (Throwable t) {
+            LOG.log(Level.SEVERE,
+                    String.format(
+                            "Exception was thrown in  trampoline_4_fallback_by_value(%s, %d)",
+                            value,
+                            FALLBACK_ADDRESS_TO_INT.convert(value)
+                    ),
                     t
             );
         }
@@ -355,6 +466,32 @@ public abstract class CallbackFactory__V__Union_I_MA {
         }
     }
 
+    protected final static void trampoline_5_fallback_by_value(final MemorySegment value) {
+        try {
+            REFS[5].callback(
+                    value,
+                    FALLBACK_ADDRESS_TO_INT.convert(value)
+            );
+        } catch (NullPointerException npe) {
+            LOG.log(Level.SEVERE,
+                    String.format(
+                            "Unassigned callback for trampoline_5_fallback_by_value(%s, %d)",
+                            value,
+                            FALLBACK_ADDRESS_TO_INT.convert(value)
+                    )
+            );
+        } catch (Throwable t) {
+            LOG.log(Level.SEVERE,
+                    String.format(
+                            "Exception was thrown in  trampoline_5_fallback_by_value(%s, %d)",
+                            value,
+                            FALLBACK_ADDRESS_TO_INT.convert(value)
+                    ),
+                    t
+            );
+        }
+    }
+
     protected final static void trampoline_6(final long value_ptr, final int value_int) {
         try {
             REFS[6].callback(MemorySegment.ofAddress(value_ptr),
@@ -399,6 +536,32 @@ public abstract class CallbackFactory__V__Union_I_MA {
                     String.format(
                             "Exception was thrown in  trampoline_6(%s)",
                             value),
+                    t
+            );
+        }
+    }
+
+    protected final static void trampoline_6_fallback_by_value(final MemorySegment value) {
+        try {
+            REFS[0].callback(
+                    value,
+                    FALLBACK_ADDRESS_TO_INT.convert(value)
+            );
+        } catch (NullPointerException npe) {
+            LOG.log(Level.SEVERE,
+                    String.format(
+                            "Unassigned callback for trampoline_6_fallback_by_value(%s, %d)",
+                            value,
+                            FALLBACK_ADDRESS_TO_INT.convert(value)
+                    )
+            );
+        } catch (Throwable t) {
+            LOG.log(Level.SEVERE,
+                    String.format(
+                            "Exception was thrown in  trampoline_6_fallback_by_value(%s, %d)",
+                            value,
+                            FALLBACK_ADDRESS_TO_INT.convert(value)
+                    ),
                     t
             );
         }
@@ -453,6 +616,32 @@ public abstract class CallbackFactory__V__Union_I_MA {
         }
     }
 
+    protected final static void trampoline_7_fallback_by_value(final MemorySegment value) {
+        try {
+            REFS[7].callback(
+                    value,
+                    FALLBACK_ADDRESS_TO_INT.convert(value)
+            );
+        } catch (NullPointerException npe) {
+            LOG.log(Level.SEVERE,
+                    String.format(
+                            "Unassigned callback for trampoline_7_fallback_by_value(%s, %d)",
+                            value,
+                            FALLBACK_ADDRESS_TO_INT.convert(value)
+                    )
+            );
+        } catch (Throwable t) {
+            LOG.log(Level.SEVERE,
+                    String.format(
+                            "Exception was thrown in  trampoline_7_fallback_by_value(%s, %d)",
+                            value,
+                            FALLBACK_ADDRESS_TO_INT.convert(value)
+                    ),
+                    t
+            );
+        }
+    }
+
     protected final static void trampoline_8(final long value_ptr, final int value_int) {
         try {
             REFS[8].callback(MemorySegment.ofAddress(value_ptr),
@@ -502,6 +691,32 @@ public abstract class CallbackFactory__V__Union_I_MA {
         }
     }
 
+    protected final static void trampoline_8_fallback_by_value(final MemorySegment value) {
+        try {
+            REFS[8].callback(
+                    value,
+                    FALLBACK_ADDRESS_TO_INT.convert(value)
+            );
+        } catch (NullPointerException npe) {
+            LOG.log(Level.SEVERE,
+                    String.format(
+                            "Unassigned callback for trampoline_8_fallback_by_value(%s, %d)",
+                            value,
+                            FALLBACK_ADDRESS_TO_INT.convert(value)
+                    )
+            );
+        } catch (Throwable t) {
+            LOG.log(Level.SEVERE,
+                    String.format(
+                            "Exception was thrown in  trampoline_8_fallback_by_value(%s, %d)",
+                            value,
+                            FALLBACK_ADDRESS_TO_INT.convert(value)
+                    ),
+                    t
+            );
+        }
+    }
+
     protected final static void trampoline_9(final long value_ptr, final int value_int) {
         try {
             REFS[9].callback(MemorySegment.ofAddress(value_ptr),
@@ -543,6 +758,32 @@ public abstract class CallbackFactory__V__Union_I_MA {
             LOG.log(Level.SEVERE,
                     String.format("Exception was thrown in  trampoline_9(%s)",
                             value),
+                    t
+            );
+        }
+    }
+
+    protected final static void trampoline_9_fallback_by_value(final MemorySegment value) {
+        try {
+            REFS[9].callback(
+                    value,
+                    FALLBACK_ADDRESS_TO_INT.convert(value)
+            );
+        } catch (NullPointerException npe) {
+            LOG.log(Level.SEVERE,
+                    String.format(
+                            "Unassigned callback for trampoline_9_fallback_by_value(%s, %d)",
+                            value,
+                            FALLBACK_ADDRESS_TO_INT.convert(value)
+                    )
+            );
+        } catch (Throwable t) {
+            LOG.log(Level.SEVERE,
+                    String.format(
+                            "Exception was thrown in  trampoline_9_fallback_by_value(%s, %d)",
+                            value,
+                            FALLBACK_ADDRESS_TO_INT.convert(value)
+                    ),
                     t
             );
         }
@@ -597,6 +838,32 @@ public abstract class CallbackFactory__V__Union_I_MA {
         }
     }
 
+    protected final static void trampoline_10_fallback_by_value(final MemorySegment value) {
+        try {
+            REFS[10].callback(
+                    value,
+                    FALLBACK_ADDRESS_TO_INT.convert(value)
+            );
+        } catch (NullPointerException npe) {
+            LOG.log(Level.SEVERE,
+                    String.format(
+                            "Unassigned callback for trampoline_10_fallback_by_value(%s, %d)",
+                            value,
+                            FALLBACK_ADDRESS_TO_INT.convert(value)
+                    )
+            );
+        } catch (Throwable t) {
+            LOG.log(Level.SEVERE,
+                    String.format(
+                            "Exception was thrown in  trampoline_10_fallback_by_value(%s, %d)",
+                            value,
+                            FALLBACK_ADDRESS_TO_INT.convert(value)
+                    ),
+                    t
+            );
+        }
+    }
+
     protected final static void trampoline_11(final long value_ptr, final int value_int) {
         try {
             REFS[11].callback(MemorySegment.ofAddress(value_ptr),
@@ -641,6 +908,32 @@ public abstract class CallbackFactory__V__Union_I_MA {
                     String.format(
                             "Exception was thrown in  trampoline_11(%s)",
                             value),
+                    t
+            );
+        }
+    }
+
+    protected final static void trampoline_11_fallback_by_value(final MemorySegment value) {
+        try {
+            REFS[11].callback(
+                    value,
+                    FALLBACK_ADDRESS_TO_INT.convert(value)
+            );
+        } catch (NullPointerException npe) {
+            LOG.log(Level.SEVERE,
+                    String.format(
+                            "Unassigned callback for trampoline_11_fallback_by_value(%s, %d)",
+                            value,
+                            FALLBACK_ADDRESS_TO_INT.convert(value)
+                    )
+            );
+        } catch (Throwable t) {
+            LOG.log(Level.SEVERE,
+                    String.format(
+                            "Exception was thrown in  trampoline_11_fallback_by_value(%s, %d)",
+                            value,
+                            FALLBACK_ADDRESS_TO_INT.convert(value)
+                    ),
                     t
             );
         }
@@ -695,6 +988,32 @@ public abstract class CallbackFactory__V__Union_I_MA {
         }
     }
 
+    protected final static void trampoline_12_fallback_by_value(final MemorySegment value) {
+        try {
+            REFS[12].callback(
+                    value,
+                    FALLBACK_ADDRESS_TO_INT.convert(value)
+            );
+        } catch (NullPointerException npe) {
+            LOG.log(Level.SEVERE,
+                    String.format(
+                            "Unassigned callback for trampoline_12_fallback_by_value(%s, %d)",
+                            value,
+                            FALLBACK_ADDRESS_TO_INT.convert(value)
+                    )
+            );
+        } catch (Throwable t) {
+            LOG.log(Level.SEVERE,
+                    String.format(
+                            "Exception was thrown in  trampoline_12_fallback_by_value(%s, %d)",
+                            value,
+                            FALLBACK_ADDRESS_TO_INT.convert(value)
+                    ),
+                    t
+            );
+        }
+    }
+
     protected final static void trampoline_13(final long value_ptr, final int value_int) {
         try {
             REFS[13].callback(MemorySegment.ofAddress(value_ptr),
@@ -739,6 +1058,32 @@ public abstract class CallbackFactory__V__Union_I_MA {
                     String.format(
                             "Exception was thrown in  trampoline_13(%s)",
                             value),
+                    t
+            );
+        }
+    }
+
+    protected final static void trampoline_13_fallback_by_value(final MemorySegment value) {
+        try {
+            REFS[13].callback(
+                    value,
+                    FALLBACK_ADDRESS_TO_INT.convert(value)
+            );
+        } catch (NullPointerException npe) {
+            LOG.log(Level.SEVERE,
+                    String.format(
+                            "Unassigned callback for trampoline_13_fallback_by_value(%s, %d)",
+                            value,
+                            FALLBACK_ADDRESS_TO_INT.convert(value)
+                    )
+            );
+        } catch (Throwable t) {
+            LOG.log(Level.SEVERE,
+                    String.format(
+                            "Exception was thrown in  trampoline_13_fallback_by_value(%s, %d)",
+                            value,
+                            FALLBACK_ADDRESS_TO_INT.convert(value)
+                    ),
                     t
             );
         }
@@ -793,6 +1138,32 @@ public abstract class CallbackFactory__V__Union_I_MA {
         }
     }
 
+    protected final static void trampoline_14_fallback_by_value(final MemorySegment value) {
+        try {
+            REFS[14].callback(
+                    value,
+                    FALLBACK_ADDRESS_TO_INT.convert(value)
+            );
+        } catch (NullPointerException npe) {
+            LOG.log(Level.SEVERE,
+                    String.format(
+                            "Unassigned callback for trampoline_14_fallback_by_value(%s, %d)",
+                            value,
+                            FALLBACK_ADDRESS_TO_INT.convert(value)
+                    )
+            );
+        } catch (Throwable t) {
+            LOG.log(Level.SEVERE,
+                    String.format(
+                            "Exception was thrown in  trampoline_14_fallback_by_value(%s, %d)",
+                            value,
+                            FALLBACK_ADDRESS_TO_INT.convert(value)
+                    ),
+                    t
+            );
+        }
+    }
+
     protected final static void trampoline_15(final long value_ptr, final int value_int) {
         try {
             REFS[15].callback(MemorySegment.ofAddress(value_ptr),
@@ -837,6 +1208,32 @@ public abstract class CallbackFactory__V__Union_I_MA {
                     String.format(
                             "Exception was thrown in  trampoline_15(%s)",
                             value),
+                    t
+            );
+        }
+    }
+
+    protected final static void trampoline_15_fallback_by_value(final MemorySegment value) {
+        try {
+            REFS[15].callback(
+                    value,
+                    FALLBACK_ADDRESS_TO_INT.convert(value)
+            );
+        } catch (NullPointerException npe) {
+            LOG.log(Level.SEVERE,
+                    String.format(
+                            "Unassigned callback for trampoline_15_fallback_by_value(%s, %d)",
+                            value,
+                            FALLBACK_ADDRESS_TO_INT.convert(value)
+                    )
+            );
+        } catch (Throwable t) {
+            LOG.log(Level.SEVERE,
+                    String.format(
+                            "Exception was thrown in  trampoline_15_fallback_by_value(%s, %d)",
+                            value,
+                            FALLBACK_ADDRESS_TO_INT.convert(value)
+                    ),
                     t
             );
         }

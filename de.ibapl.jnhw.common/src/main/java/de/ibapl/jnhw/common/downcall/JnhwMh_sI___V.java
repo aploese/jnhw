@@ -1,6 +1,6 @@
 /*
  * JNHW - Java Native header Wrapper, https://github.com/aploese/jnhw/
- * Copyright (C) 2023-2024, Arne Plöse and individual contributors as indicated
+ * Copyright (C) 2023-2025, Arne Plöse and individual contributors as indicated
  * by the @authors tag. See the copyright.txt in the distribution for a
  * full listing of individual contributors.
  *
@@ -30,7 +30,6 @@ import de.ibapl.jnhw.common.exception.NoSuchNativeMethodException;
 import de.ibapl.jnhw.common.util.NativeProvider;
 import java.lang.foreign.MemorySegment;
 import java.lang.foreign.SymbolLookup;
-import java.util.Optional;
 
 /**
  *

@@ -1,6 +1,6 @@
 /*
  * JNHW - Java Native header Wrapper, https://github.com/aploese/jnhw/
- * Copyright (C) 2019-2024, Arne Plöse and individual contributors as indicated
+ * Copyright (C) 2019-2025, Arne Plöse and individual contributors as indicated
  * by the @authors tag. See the copyright.txt in the distribution for a
  * full listing of individual contributors.
  *
@@ -61,6 +61,7 @@ import de.ibapl.jnhw.libloader.MultiarchInfo;
 import de.ibapl.jnhw.libloader.MultiarchTupelBuilder;
 import de.ibapl.jnhw.libloader.libraries.LibcLoader;
 import de.ibapl.jnhw.libloader.libraries.LibrtLoader;
+import de.ibapl.jnhw.util.posix.Defines;
 import de.ibapl.jnhw.util.posix.PosixDataType;
 import de.ibapl.jnhw.util.posix.downcall.JnhwMh_sI__PthreadT_sI;
 import de.ibapl.jnhw.util.posix.memory.PosixStruct;
@@ -847,12 +848,12 @@ public class Signal {
         }
 
         public static String sigev_notify2String(int value) {
-            if (Signal.SIGEV_NONE.isEqualsTo(value)) {
+            if (Signal.SIGEV_NONE.equals(value)) {
                 return "SIGEV_NONE";
             }
-            if (Signal.SIGEV_SIGNAL.isEqualsTo(value)) {
+            if (Signal.SIGEV_SIGNAL.equals(value)) {
                 return "SIGEV_SIGNAL";
-            } else if (Signal.SIGEV_THREAD.isEqualsTo(value)) {
+            } else if (Signal.SIGEV_THREAD.equals(value)) {
                 return "SIGEV_THREAD";
             } else {
                 return String.format("0x%08x", value);
@@ -3093,7 +3094,7 @@ public class Signal {
 
     private final static JnhwMh_sI___A__A__A sigtimedwait = JnhwMh_sI___A__A__A.optionalOf(
             LibcLoader.LIB_C_SYMBOL_LOOKUP,
-            "sigtimedwait",
+            Defines._TIME_BITS.equals(64) ? "__sigtimedwait64" : "sigtimedwait",
             BaseDataType.C_int,
             BaseDataType.C_const_struct_pointer,
             BaseDataType.C_struct_pointer,
@@ -3459,7 +3460,7 @@ public class Signal {
             return "SIGKILL";
         } else if (SIGPIPE == signalNumber) {
             return "SIGPIPE";
-        } else if (SIGPOLL.isEqualsTo(signalNumber)) {
+        } else if (SIGPOLL.equals(signalNumber)) {
             return "SIGPOLL";
         } else if (SIGPROF == signalNumber) {
             return "SIGPROF";

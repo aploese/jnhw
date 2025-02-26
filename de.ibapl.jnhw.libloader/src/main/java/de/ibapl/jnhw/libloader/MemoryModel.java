@@ -1,6 +1,6 @@
 /*
  * JNHW - Java Native header Wrapper, https://github.com/aploese/jnhw/
- * Copyright (C) 2022-2024, Arne Plöse and individual contributors as indicated
+ * Copyright (C) 2022-2025, Arne Plöse and individual contributors as indicated
  * by the @authors tag. See the copyright.txt in the distribution for a
  * full listing of individual contributors.
  *
@@ -21,7 +21,7 @@
  */
 package de.ibapl.jnhw.libloader;
 
-import static de.ibapl.jnhw.libloader.SizeInBit.*;
+import static de.ibapl.jnhw.libloader.SizeInByte.*;
 
 /**
  *
@@ -36,7 +36,7 @@ public enum MemoryModel {
      * long long is 64 bit. <br>
      * pointer is 32 bit. <br>
      */
-    L64(_8_BIT, _16_BIT, _32_BIT, _64_BIT, _64_BIT, _32_BIT),
+    L64(_8_Bit, _16_Bit, _32_Bit, _64_Bit, _64_Bit, _32_Bit),
     /**
      * char is 8 bit. <br>
      * short is 16 bit. <br>
@@ -45,7 +45,7 @@ public enum MemoryModel {
      * long long is 64 bit. <br>
      * pointer is 64 bit. <br>
      */
-    LP64(_8_BIT, _16_BIT, _32_BIT, _64_BIT, _64_BIT, _64_BIT),
+    LP64(_8_Bit, _16_Bit, _32_Bit, _64_Bit, _64_Bit, _64_Bit),
     /**
      * Unix 64 bit. <br>
      *
@@ -56,7 +56,7 @@ public enum MemoryModel {
      * long long is 64 bit. <br>
      * pointer is 64 bit. <br>
      */
-    ILP64(_8_BIT, _16_BIT, _64_BIT, _64_BIT, _64_BIT, _64_BIT),
+    ILP64(_8_Bit, _16_Bit, _64_Bit, _64_Bit, _64_Bit, _64_Bit),
     /**
      * char is 8 bit. <br>
      * short is 16 bit. <br>
@@ -65,7 +65,7 @@ public enum MemoryModel {
      * long long is 64 bit. <br>
      * pointer is 64 bit. <br>
      */
-    LLP64(_8_BIT, _16_BIT, _32_BIT, _32_BIT, _64_BIT, _64_BIT),
+    LLP64(_8_Bit, _16_Bit, _32_Bit, _32_Bit, _64_Bit, _64_Bit),
     /**
      * Windows 64 bit. <br>
      *
@@ -76,7 +76,7 @@ public enum MemoryModel {
      * long long is 64 bit. <br>
      * pointer is 32 bit. <br>
      */
-    ILP32(_8_BIT, _16_BIT, _32_BIT, _32_BIT, _64_BIT, _32_BIT),
+    ILP32(_8_Bit, _16_Bit, _32_Bit, _32_Bit, _64_Bit, _32_Bit),
     /**
      * Unix 32 bit and Windows 32 bit. <br>
      *
@@ -87,9 +87,9 @@ public enum MemoryModel {
      * long long is 64 bit. <br>
      * pointer is 32 bit. <br>
      */
-    LP32(_8_BIT, _16_BIT, _16_BIT, _32_BIT, _64_BIT, _32_BIT);
+    LP32(_8_Bit, _16_Bit, _16_Bit, _32_Bit, _64_Bit, _32_Bit);
 
-    private MemoryModel(SizeInBit sizeOf_char, SizeInBit sizeOf_short, SizeInBit sizeOf_int, SizeInBit sizeOf_long, SizeInBit sizeOf_long_long, SizeInBit sizeOf_pointer) {
+    private MemoryModel(SizeInByte sizeOf_char, SizeInByte sizeOf_short, SizeInByte sizeOf_int, SizeInByte sizeOf_long, SizeInByte sizeOf_long_long, SizeInByte sizeOf_pointer) {
         this.sizeOf_char = sizeOf_char;
         this.sizeOf_short = sizeOf_short;
         this.sizeOf_int = sizeOf_int;
@@ -98,13 +98,13 @@ public enum MemoryModel {
         this.sizeOf_pointer = sizeOf_pointer;
     }
 
-    public final SizeInBit sizeOf_char;
-    public final SizeInBit sizeOf_short;
-    public final SizeInBit sizeOf_int;
-    public final SizeInBit sizeOf_long;
-    public final SizeInBit sizeOf_long_long;
-    public final SizeInBit sizeOf_pointer;
-    public final SizeInBit sizeOf_float = SizeInBit._32_BIT;
-    public final SizeInBit sizeOf_double = SizeInBit._64_BIT;
+    public final SizeInByte sizeOf_char;
+    public final SizeInByte sizeOf_short;
+    public final SizeInByte sizeOf_int;
+    public final SizeInByte sizeOf_long;
+    public final SizeInByte sizeOf_long_long;
+    public final SizeInByte sizeOf_pointer;
+    public final SizeInByte sizeOf_float = _32_Bit;
+    public final SizeInByte sizeOf_double = _64_Bit;
 
 }

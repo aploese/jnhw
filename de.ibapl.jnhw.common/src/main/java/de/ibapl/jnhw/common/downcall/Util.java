@@ -1,6 +1,6 @@
 /*
  * JNHW - Java Native header Wrapper, https://github.com/aploese/jnhw/
- * Copyright (C) 2023-2024, Arne Plöse and individual contributors as indicated
+ * Copyright (C) 2023-2025, Arne Plöse and individual contributors as indicated
  * by the @authors tag. See the copyright.txt in the distribution for a
  * full listing of individual contributors.
  *
@@ -40,13 +40,8 @@ public class Util {
     public final static MemoryModel MEMORY_MODEL = MultiarchTupelBuilder.getMemoryModel();
 
     public static <T> T buidExistingMethod(SymbolLookup symbolLookup, String name, Function<MemorySegment, T> onSuccess) {
-        final Optional<MemorySegment> oms = symbolLookup.find(name);
-        if (oms.isEmpty()) {
-            //TODO which ex?
-            throw new RuntimeException("Method: \"" + name + "\" not found!");
-        } else {
-            return onSuccess.apply(oms.get());
-        }
+        final MemorySegment ms = symbolLookup.findOrThrow(name);
+        return onSuccess.apply(ms);
     }
 
     public static <T> T buidOptionalMethod(SymbolLookup symbolLookup, String name, Function<MemorySegment, T> onSuccess, Supplier<T> onFailure) {

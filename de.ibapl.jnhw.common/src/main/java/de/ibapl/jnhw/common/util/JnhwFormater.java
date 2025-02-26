@@ -1,6 +1,6 @@
 /*
  * JNHW - Java Native header Wrapper, https://github.com/aploese/jnhw/
- * Copyright (C) 2021-2024, Arne Plöse and individual contributors as indicated
+ * Copyright (C) 2021-2025, Arne Plöse and individual contributors as indicated
  * by the @authors tag. See the copyright.txt in the distribution for a
  * full listing of individual contributors.
  *
@@ -22,7 +22,7 @@
 package de.ibapl.jnhw.common.util;
 
 import de.ibapl.jnhw.libloader.MultiarchTupelBuilder;
-import de.ibapl.jnhw.libloader.SizeInBit;
+import de.ibapl.jnhw.libloader.SizeInByte;
 import java.lang.foreign.MemorySegment;
 
 /**
@@ -31,7 +31,7 @@ import java.lang.foreign.MemorySegment;
  */
 public class JnhwFormater {
 
-    private final static SizeInBit POINTER_SIZE = MultiarchTupelBuilder.getMemoryModel().sizeOf_pointer;
+    private final static SizeInByte POINTER_SIZE = MultiarchTupelBuilder.getMemoryModel().sizeOf_pointer;
 
     /**
      * formats an Address according to 32 or 64 bit
@@ -41,10 +41,10 @@ public class JnhwFormater {
      */
     public static String formatAddress(MemorySegment address) {
         switch (POINTER_SIZE) {
-            case _64_BIT -> {
+            case _64_Bit -> {
                 return String.format("0x%016x", address.address());
             }
-            case _32_BIT -> {
+            case _32_Bit -> {
                 final long upper32 = address.address() & 0xFFFFFFFF00000000L;
                 final long lower32 = address.address() & 0x00000000FFFFFFFFL;
                 if (upper32 == 0L) {

@@ -1,6 +1,6 @@
 /*
  * JNHW - Java Native header Wrapper, https://github.com/aploese/jnhw/
- * Copyright (C) 2021-2024, Arne Plöse and individual contributors as indicated
+ * Copyright (C) 2021-2025, Arne Plöse and individual contributors as indicated
  * by the @authors tag. See the copyright.txt in the distribution for a
  * full listing of individual contributors.
  *
@@ -24,7 +24,7 @@ package de.ibapl.jnhw.common.memory.layout;
 import de.ibapl.jnhw.common.annotation.Define;
 import static de.ibapl.jnhw.libloader.Arch.S390_X;
 import de.ibapl.jnhw.libloader.MultiarchTupelBuilder;
-import de.ibapl.jnhw.libloader.SizeInBit;
+import de.ibapl.jnhw.libloader.SizeInByte;
 
 /**
  *
@@ -140,7 +140,7 @@ public enum Alignment {
     public final static Alignment __ALIGN_OF_DOUBLE;
     public final static Alignment __ALIGN_OF_STRUCT_DOUBLE;
 
-    public final static SizeInBit __SIZE_OF_LONG_DOUBLE;
+    public final static SizeInByte __SIZE_OF_LONG_DOUBLE;
     public final static Alignment __ALIGN_OF_LONG_DOUBLE;
     public final static Alignment __ALIGN_OF_STRUCT_LONG_DOUBLE;
 
@@ -180,17 +180,17 @@ public enum Alignment {
                 };
                 switch (MultiarchTupelBuilder.getArch()) {
                     case POWER_PC -> {
-                        __SIZE_OF_LONG_DOUBLE = SizeInBit.of_16_Byte;
+                        __SIZE_OF_LONG_DOUBLE = SizeInByte._16_Byte;
                         __ALIGN_OF_LONG_DOUBLE = AT_16;
                         __ALIGN_OF_STRUCT_LONG_DOUBLE = AT_16;
                     }
                     case I386 -> {
-                        __SIZE_OF_LONG_DOUBLE = SizeInBit.of_12_Byte;
+                        __SIZE_OF_LONG_DOUBLE = SizeInByte._12_Byte;
                         __ALIGN_OF_LONG_DOUBLE = AT_4;
                         __ALIGN_OF_STRUCT_LONG_DOUBLE = AT_4;
                     }
                     default -> {
-                        __SIZE_OF_LONG_DOUBLE = SizeInBit.of_8_Byte;
+                        __SIZE_OF_LONG_DOUBLE = SizeInByte._8_Byte;
                         __ALIGN_OF_LONG_DOUBLE = AT_8;
                         __ALIGN_OF_STRUCT_LONG_DOUBLE = AT_8;
                     }
@@ -212,7 +212,7 @@ public enum Alignment {
 
                 __ALIGN_OF_DOUBLE = AT_8;
                 __ALIGN_OF_STRUCT_DOUBLE = AT_8;
-                __SIZE_OF_LONG_DOUBLE = SizeInBit.of_16_Byte;
+                __SIZE_OF_LONG_DOUBLE = SizeInByte._16_Byte;
                 switch (MultiarchTupelBuilder.getArch()) {
                     case S390_X -> {
                         __ALIGN_OF_LONG_DOUBLE = AT_8;
@@ -235,7 +235,7 @@ public enum Alignment {
 
                 __ALIGN_OF_DOUBLE = AT_8;
                 __ALIGN_OF_STRUCT_DOUBLE = AT_8;
-                __SIZE_OF_LONG_DOUBLE = SizeInBit.of_16_Byte;
+                __SIZE_OF_LONG_DOUBLE = SizeInByte._16_Byte;
                 __ALIGN_OF_LONG_DOUBLE = AT_16;
                 __ALIGN_OF_STRUCT_LONG_DOUBLE = AT_16;
             }

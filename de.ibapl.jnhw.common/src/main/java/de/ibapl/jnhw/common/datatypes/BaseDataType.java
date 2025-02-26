@@ -1,6 +1,6 @@
 /*
  * JNHW - Java Native header Wrapper, https://github.com/aploese/jnhw/
- * Copyright (C) 2021-2024, Arne Plöse and individual contributors as indicated
+ * Copyright (C) 2021-2025, Arne Plöse and individual contributors as indicated
  * by the @authors tag. See the copyright.txt in the distribution for a
  * full listing of individual contributors.
  *
@@ -24,30 +24,32 @@ package de.ibapl.jnhw.common.datatypes;
 import de.ibapl.jnhw.common.memory.layout.Alignment;
 import static de.ibapl.jnhw.common.memory.layout.Alignment.*;
 import de.ibapl.jnhw.libloader.MultiarchTupelBuilder;
-import de.ibapl.jnhw.libloader.SizeInBit;
+import de.ibapl.jnhw.libloader.SizeInByte;
+import static de.ibapl.jnhw.libloader.SizeInByte.*;
 import java.lang.foreign.ValueLayout;
+import static de.ibapl.jnhw.common.datatypes.Sign.*;
 
 /**
  *
  * @author aploese
  */
 public enum BaseDataType {
-    int8_t(SizeInBit.of_1_Byte, ValueLayout.JAVA_BYTE, __ALIGN_OF_INT8_T, __ALIGN_OF_STRUCT_INT8_T, false),
-    uint8_t(SizeInBit.of_1_Byte, ValueLayout.JAVA_BYTE, __ALIGN_OF_INT8_T, __ALIGN_OF_STRUCT_INT8_T, true),
-    int16_t(SizeInBit.of_2_Byte, ValueLayout.JAVA_SHORT, __ALIGN_OF_INT16_T, __ALIGN_OF_STRUCT_INT16_T, false),
-    uint16_t(SizeInBit.of_2_Byte, ValueLayout.JAVA_SHORT, __ALIGN_OF_INT16_T, __ALIGN_OF_STRUCT_INT16_T, true),
-    int32_t(SizeInBit.of_4_Byte, ValueLayout.JAVA_INT, __ALIGN_OF_INT32_T, __ALIGN_OF_STRUCT_INT32_T, false),
-    uint32_t(SizeInBit.of_4_Byte, ValueLayout.JAVA_INT, __ALIGN_OF_INT32_T, __ALIGN_OF_STRUCT_INT32_T, true),
-    _float(MultiarchTupelBuilder.getMemoryModel().sizeOf_float, ValueLayout.JAVA_FLOAT, __ALIGN_OF_FLOAT, __ALIGN_OF_STRUCT_FLOAT, false),
-    _double(MultiarchTupelBuilder.getMemoryModel().sizeOf_double, ValueLayout.JAVA_DOUBLE, __ALIGN_OF_DOUBLE, __ALIGN_OF_STRUCT_DOUBLE, false),
-    _long_double(__SIZE_OF_LONG_DOUBLE, null, __ALIGN_OF_LONG_DOUBLE, __ALIGN_OF_STRUCT_LONG_DOUBLE, false),
-    int64_t(SizeInBit.of_8_Byte, ValueLayout.JAVA_LONG, __ALIGN_OF_INT64_T, __ALIGN_OF_STRUCT_INT64_T, false),
-    uint64_t(SizeInBit.of_8_Byte, ValueLayout.JAVA_LONG, __ALIGN_OF_INT64_T, __ALIGN_OF_STRUCT_INT64_T, true),
+    int8_t(_8_Bit, ValueLayout.JAVA_BYTE, __ALIGN_OF_INT8_T, __ALIGN_OF_STRUCT_INT8_T, Signed),
+    uint8_t(_8_Bit, ValueLayout.JAVA_BYTE, __ALIGN_OF_INT8_T, __ALIGN_OF_STRUCT_INT8_T, Unsigned),
+    int16_t(_16_Bit, ValueLayout.JAVA_SHORT, __ALIGN_OF_INT16_T, __ALIGN_OF_STRUCT_INT16_T, Signed),
+    uint16_t(_16_Bit, ValueLayout.JAVA_SHORT, __ALIGN_OF_INT16_T, __ALIGN_OF_STRUCT_INT16_T, Unsigned),
+    int32_t(_32_Bit, ValueLayout.JAVA_INT, __ALIGN_OF_INT32_T, __ALIGN_OF_STRUCT_INT32_T, Signed),
+    uint32_t(_32_Bit, ValueLayout.JAVA_INT, __ALIGN_OF_INT32_T, __ALIGN_OF_STRUCT_INT32_T, Unsigned),
+    _float(MultiarchTupelBuilder.getMemoryModel().sizeOf_float, ValueLayout.JAVA_FLOAT, __ALIGN_OF_FLOAT, __ALIGN_OF_STRUCT_FLOAT, Signed),
+    _double(MultiarchTupelBuilder.getMemoryModel().sizeOf_double, ValueLayout.JAVA_DOUBLE, __ALIGN_OF_DOUBLE, __ALIGN_OF_STRUCT_DOUBLE, Signed),
+    _long_double(__SIZE_OF_LONG_DOUBLE, null, __ALIGN_OF_LONG_DOUBLE, __ALIGN_OF_STRUCT_LONG_DOUBLE, Signed),
+    int64_t(_64_Bit, ValueLayout.JAVA_LONG, __ALIGN_OF_INT64_T, __ALIGN_OF_STRUCT_INT64_T, Signed),
+    uint64_t(_64_Bit, ValueLayout.JAVA_LONG, __ALIGN_OF_INT64_T, __ALIGN_OF_STRUCT_INT64_T, Unsigned),
     struct(),
     union(),
     array(),
-    intptr_t(MultiarchTupelBuilder.getMemoryModel().sizeOf_pointer, ValueLayout.ADDRESS, __ALIGN_OF_INTPTR_T, __ALIGN_OF_STRUCT_INTPTR_T, false),
-    uintptr_t(MultiarchTupelBuilder.getMemoryModel().sizeOf_pointer, ValueLayout.ADDRESS, __ALIGN_OF_INTPTR_T, __ALIGN_OF_STRUCT_INTPTR_T, true),
+    intptr_t(MultiarchTupelBuilder.getMemoryModel().sizeOf_pointer, ValueLayout.ADDRESS, __ALIGN_OF_INTPTR_T, __ALIGN_OF_STRUCT_INTPTR_T, Signed),
+    uintptr_t(MultiarchTupelBuilder.getMemoryModel().sizeOf_pointer, ValueLayout.ADDRESS, __ALIGN_OF_INTPTR_T, __ALIGN_OF_STRUCT_INTPTR_T, Unsigned),
     function(MultiarchTupelBuilder.getMemoryModel().sizeOf_pointer, ValueLayout.ADDRESS, __ALIGN_OF_POINTER);
 
     public final static BaseDataType C_char = int8_t;
@@ -119,19 +121,21 @@ public enum BaseDataType {
     public final static BaseDataType C_const_struct_pointer = BaseDataType.C_pointer;
     public final static BaseDataType C_function_pointer = BaseDataType.C_pointer;
 
-    private BaseDataType(SizeInBit sizeof, ValueLayout valueLayout, Alignment alignof, Alignment alignInStructure, boolean unsigned) {
-        this.UNSIGNED = unsigned;
-        this.ALIGN_OF = alignof;
-        this.ALIGN_IN_STRUCT = alignInStructure;
-        this.SIZE_OF = sizeof.sizeInByte;
+    private BaseDataType(SizeInByte sizeof, ValueLayout valueLayout, Alignment alignof, Alignment alignInStructure, Sign sign) {
+        this.sign = sign;
+        this.ALIGNMENT = alignof;
+        this.ALIGNMENT_IN_STRUCT = alignInStructure;
+        this.byteSize = sizeof.sizeInByte;
+        this.byteAlignment = ALIGNMENT.alignof;
         this.valueLayout = valueLayout;
     }
 
-    private BaseDataType(SizeInBit sizeof, ValueLayout valueLayout, Alignment alignof) {
-        this.UNSIGNED = null;
-        this.ALIGN_OF = alignof;
-        this.ALIGN_IN_STRUCT = null;
-        this.SIZE_OF = sizeof.sizeInByte;
+    private BaseDataType(SizeInByte sizeof, ValueLayout valueLayout, Alignment alignof) {
+        this.sign = No_Sign;
+        this.ALIGNMENT = alignof;
+        this.ALIGNMENT_IN_STRUCT = null;
+        this.byteSize = sizeof.sizeInByte;
+        this.byteAlignment = ALIGNMENT.alignof;
         this.valueLayout = valueLayout;
     }
 
@@ -143,17 +147,27 @@ public enum BaseDataType {
      * @param alignment
      */
     private BaseDataType() {
-        this.UNSIGNED = null;
-        this.SIZE_OF = 0;
-        this.ALIGN_OF = null;
-        this.ALIGN_IN_STRUCT = null;
+        this.sign = No_Sign;
+        this.byteSize = 0;
+        this.byteAlignment = 0;
+        this.ALIGNMENT = null;
+        this.ALIGNMENT_IN_STRUCT = null;
         this.valueLayout = null;
     }
 
-    public final Boolean UNSIGNED;
-    public final Alignment ALIGN_OF;
-    public final Alignment ALIGN_IN_STRUCT;
-    public final int SIZE_OF;
+    public Sign sign;
+    public final Alignment ALIGNMENT;
+    public final Alignment ALIGNMENT_IN_STRUCT;
+    public final int byteSize;
+    public final int byteAlignment;
     public final ValueLayout valueLayout;
 
+    public boolean isUnsigned() {
+        return sign == Unsigned;
+    }
+
+    public boolean isSigned() {
+        return sign == Signed;
+    }
+    
 }

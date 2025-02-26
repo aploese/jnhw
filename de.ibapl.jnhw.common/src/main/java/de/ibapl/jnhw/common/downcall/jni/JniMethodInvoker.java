@@ -1,6 +1,6 @@
 /*
  * JNHW - Java Native header Wrapper, https://github.com/aploese/jnhw/
- * Copyright (C) 2023-2024, Arne Plöse and individual contributors as indicated
+ * Copyright (C) 2023-2025, Arne Plöse and individual contributors as indicated
  * by the @authors tag. See the copyright.txt in the distribution for a
  * full listing of individual contributors.
  *
@@ -43,7 +43,7 @@ public abstract class JniMethodInvoker {
     }
 
     protected RuntimeException createRuntimeExceptionInvoke(Throwable t) {
-        throw new RuntimeException("Native call to: \"" + name + "\" failed!", t);
+        throw new RuntimeException("Native (jni) call to: \"" + name + "\" failed!", t);
     }
 
 }

@@ -1,6 +1,6 @@
 /*
  * JNHW - Java Native header Wrapper, https://github.com/aploese/jnhw/
- * Copyright (C) 2020-2024, Arne Plöse and individual contributors as indicated
+ * Copyright (C) 2020-2025, Arne Plöse and individual contributors as indicated
  * by the @authors tag. See the copyright.txt in the distribution for a
  * full listing of individual contributors.
  *
@@ -101,7 +101,7 @@ public class TermiosTest {
                 //Do the test
             }
             case LINUX -> {
-                if (!Termios._HAVE_STRUCT_TERMIOS_C_ISPEED.isDefined() | Termios._HAVE_STRUCT_TERMIOS_C_ISPEED.isEqualsTo(0)) {
+                if (!Termios._HAVE_STRUCT_TERMIOS_C_ISPEED.isDefined() | Termios._HAVE_STRUCT_TERMIOS_C_ISPEED.equals(0)) {
                     Assertions.assertThrows(NoSuchNativeTypeMemberException.class,
                             () -> structTermios.c_ispeed());
                     return;
@@ -131,7 +131,7 @@ public class TermiosTest {
                 //Do the test
             }
             case LINUX -> {
-                if (!Termios._HAVE_STRUCT_TERMIOS_C_OSPEED.isDefined() | Termios._HAVE_STRUCT_TERMIOS_C_OSPEED.isEqualsTo(0)) {
+                if (!Termios._HAVE_STRUCT_TERMIOS_C_OSPEED.isDefined() | Termios._HAVE_STRUCT_TERMIOS_C_OSPEED.equals(0)) {
                     Assertions.assertThrows(NoSuchNativeTypeMemberException.class,
                             () -> structTermios.c_ospeed());
                     return;

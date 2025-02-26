@@ -1,6 +1,6 @@
 /*
  * JNHW - Java Native header Wrapper, https://github.com/aploese/jnhw/
- * Copyright (C) 2021-2024, Arne Plöse and individual contributors as indicated
+ * Copyright (C) 2021-2025, Arne Plöse and individual contributors as indicated
  * by the @authors tag. See the copyright.txt in the distribution for a
  * full listing of individual contributors.
  *
@@ -99,7 +99,7 @@ public interface PosixDataType {
                 case LP64 ->
                     BaseDataType.int64_t;
                 case ILP32 ->
-                    BaseDataType.int32_t;
+                    Defines._FILE_OFFSET_BITS.equals(64) ? BaseDataType.int64_t : BaseDataType.int32_t;
                 default ->
                     throw new NoClassDefFoundError("can't get linux datatype of off_t on " + MultiarchTupelBuilder.getMultiarch());
             };
@@ -189,7 +189,7 @@ public interface PosixDataType {
                 case LP64 ->
                     BaseDataType.int64_t;
                 case ILP32 ->
-                    BaseDataType.int32_t;
+                    Defines._TIME_BITS.equals(64) ? BaseDataType.int64_t : BaseDataType.int32_t;
                 default ->
                     throw new NoClassDefFoundError("can't get linux datatype of time_t on " + MultiarchTupelBuilder.getMultiarch());
             };

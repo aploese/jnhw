@@ -1,6 +1,6 @@
 /*
  * JNHW - Java Native header Wrapper, https://github.com/aploese/jnhw/
- * Copyright (C) 2021-2024, Arne Plöse and individual contributors as indicated
+ * Copyright (C) 2021-2025, Arne Plöse and individual contributors as indicated
  * by the @authors tag. See the copyright.txt in the distribution for a
  * full listing of individual contributors.
  *
@@ -25,7 +25,9 @@ import de.ibapl.jnhw.common.datatypes.BaseDataType;
 import de.ibapl.jnhw.common.memory.Int32_t;
 import de.ibapl.jnhw.common.memory.layout.Alignment;
 import de.ibapl.jnhw.common.test.JnhwTestLogger;
+import de.ibapl.jnhw.common.test.LibJnhwCommonTestLoader;
 import java.lang.foreign.Arena;
+import java.lang.foreign.ValueLayout;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
 import static org.junit.jupiter.api.Assertions.*;
@@ -33,6 +35,8 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInfo;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 
 /**
  *
@@ -65,7 +69,7 @@ public class Int32_tTest {
      */
     @Test
     public void testSizeofInt32_t() {
-        assertEquals(4, Int32_t.DATA_TYPE.SIZE_OF);
+        assertEquals(4, Int32_t.DATA_TYPE.byteSize);
     }
 
     /**
@@ -73,7 +77,20 @@ public class Int32_tTest {
      */
     @Test
     public void testAlignofInt32_t() {
-        assertEquals(Alignment.AT_4, Int32_t.DATA_TYPE.ALIGN_OF);
+        assertEquals(Alignment.AT_4, Int32_t.DATA_TYPE.ALIGNMENT);
+    }
+
+    @ParameterizedTest
+    @ValueSource(ints = {
+        0x00000001,
+        0x8fffffff,
+        0x00000000,
+        0xf0000000,
+        0xffffffff})
+    public void testSetGetInt32_t(final int value) {
+        LibJnhwCommonTestLoader.invokeExact_V__I("jnhw_int32_t_set", value);
+        assertEquals(value, LibJnhwCommonTestLoader.SYMBOL_LOOKUP.findOrThrow("jnhw_int32_t_mem").reinterpret(ValueLayout.JAVA_INT.byteSize(), Arena.ofAuto(), null).get(ValueLayout.JAVA_INT, 0), "int32_t mem");
+        assertEquals(value, LibJnhwCommonTestLoader.invokeExact__I__V("jnhw_int32_t_get"), "int32_t get");
     }
 
     /**
@@ -92,7 +109,7 @@ public class Int32_tTest {
     @Test
     public void testNativeToString() {
         try (Arena arena = Arena.ofConfined()) {
-            Int32_t instance = new Int32_t(arena.allocate(BaseDataType.int32_t.SIZE_OF), 0);
+            Int32_t instance = new Int32_t(arena.allocate(BaseDataType.int32_t.byteSize), 0);
             instance.int32_t(-2);
             assertEquals("-2", instance.nativeToString());
             assertEquals("0xfffffffe", instance.nativeToHexString());

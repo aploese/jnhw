@@ -1,6 +1,6 @@
 /*
  * JNHW - Java Native header Wrapper, https://github.com/aploese/jnhw/
- * Copyright (C) 2020-2024, Arne Plöse and individual contributors as indicated
+ * Copyright (C) 2020-2025, Arne Plöse and individual contributors as indicated
  * by the @authors tag. See the copyright.txt in the distribution for a
  * full listing of individual contributors.
  *
@@ -121,18 +121,18 @@ public class IoctlTest {
 
     @Test
     public void test_IOR() throws Exception {
-        final int value = Ioctl._IOR('U', 21, BaseDataType.int32_t.SIZE_OF);
+        final int value = Ioctl._IOR('U', 21, BaseDataType.int32_t.byteSize);
         Assertions.assertEquals(LibJnhwPosixTestLoader.invoke_sI__sB_sI("get_IOR_int32_t", (byte) 'U', 21), value);
         switch (MultiarchTupelBuilder.getOS()) {
             case APPLE, FREE_BSD, OPEN_BSD -> {
-                Assertions.assertEquals(BaseDataType.int32_t.SIZE_OF, Ioctl.IOCPARM_LEN(value));
+                Assertions.assertEquals(BaseDataType.int32_t.byteSize, Ioctl.IOCPARM_LEN(value));
                 Assertions.assertEquals('U', Ioctl.IOCGROUP(value));
                 Assertions.assertEquals(1073763605, Ioctl.IOCBASECMD(value));
             }
             case LINUX -> {
                 Assertions.assertEquals(Ioctl._IOC_READ.get(), Ioctl._IOC_DIR(value));
                 Assertions.assertEquals(21, Ioctl._IOC_NR(value));
-                Assertions.assertEquals(BaseDataType.int32_t.SIZE_OF, Ioctl._IOC_SIZE(value));
+                Assertions.assertEquals(BaseDataType.int32_t.byteSize, Ioctl._IOC_SIZE(value));
                 Assertions.assertEquals('U', Ioctl._IOC_TYPE(value));
             }
             default ->
@@ -142,18 +142,18 @@ public class IoctlTest {
 
     @Test
     public void test_IOW() throws Exception {
-        final int value = Ioctl._IOW('A', 65, BaseDataType.int32_t.SIZE_OF);
+        final int value = Ioctl._IOW('A', 65, BaseDataType.int32_t.byteSize);
         Assertions.assertEquals(LibJnhwPosixTestLoader.invoke_sI__sB_sI("get_IOW_int32_t", (byte) 'A', 65), value);
         switch (MultiarchTupelBuilder.getOS()) {
             case APPLE, FREE_BSD, OPEN_BSD -> {
-                Assertions.assertEquals(BaseDataType.int32_t.SIZE_OF, Ioctl.IOCPARM_LEN(value));
+                Assertions.assertEquals(BaseDataType.int32_t.byteSize, Ioctl.IOCPARM_LEN(value));
                 Assertions.assertEquals('A', Ioctl.IOCGROUP(value));
                 Assertions.assertEquals(-2147466943, Ioctl.IOCBASECMD(value));
             }
             case LINUX -> {
                 Assertions.assertEquals(Ioctl._IOC_WRITE.get(), Ioctl._IOC_DIR(value));
                 Assertions.assertEquals(65, Ioctl._IOC_NR(value));
-                Assertions.assertEquals(BaseDataType.int32_t.SIZE_OF, Ioctl._IOC_SIZE(value));
+                Assertions.assertEquals(BaseDataType.int32_t.byteSize, Ioctl._IOC_SIZE(value));
                 Assertions.assertEquals('A', Ioctl._IOC_TYPE(value));
             }
             default ->
@@ -163,18 +163,18 @@ public class IoctlTest {
 
     @Test
     public void test_IOWR() throws Exception {
-        final int value = Ioctl._IOWR('U', 7, BaseDataType.int32_t.SIZE_OF);
+        final int value = Ioctl._IOWR('U', 7, BaseDataType.int32_t.byteSize);
         Assertions.assertEquals(LibJnhwPosixTestLoader.invoke_sI__sB_sI("get_IOWR_int32_t", (byte) 'U', 7), value);
         switch (MultiarchTupelBuilder.getOS()) {
             case APPLE, FREE_BSD, OPEN_BSD -> {
-                Assertions.assertEquals(BaseDataType.int32_t.SIZE_OF, Ioctl.IOCPARM_LEN(value));
+                Assertions.assertEquals(BaseDataType.int32_t.byteSize, Ioctl.IOCPARM_LEN(value));
                 Assertions.assertEquals('U', Ioctl.IOCGROUP(value));
                 Assertions.assertEquals(-1073720057, Ioctl.IOCBASECMD(value));
             }
             case LINUX -> {
                 Assertions.assertEquals(Ioctl._IOC_READ.get() | Ioctl._IOC_WRITE.get(), Ioctl._IOC_DIR(value));
                 Assertions.assertEquals(7, Ioctl._IOC_NR(value));
-                Assertions.assertEquals(BaseDataType.int32_t.SIZE_OF, Ioctl._IOC_SIZE(value));
+                Assertions.assertEquals(BaseDataType.int32_t.byteSize, Ioctl._IOC_SIZE(value));
                 Assertions.assertEquals('U', Ioctl._IOC_TYPE(value));
             }
             default ->

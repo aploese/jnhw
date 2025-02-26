@@ -1,6 +1,6 @@
 /*
  * JNHW - Java Native header Wrapper, https://github.com/aploese/jnhw/
- * Copyright (C) 2019-2023, Arne Plöse and individual contributors as indicated
+ * Copyright (C) 2019-2025, Arne Plöse and individual contributors as indicated
  * by the @authors tag. See the copyright.txt in the distribution for a
  * full listing of individual contributors.
  *
@@ -37,12 +37,12 @@ public final class MultiarchTupelBuilder {
 
     private final static MultiarchTupelBuilder INSTANCE = new MultiarchTupelBuilder();
 
-    private SizeInBit sun_arch_data_modelAsWordsize() {
+    private SizeInByte sun_arch_data_modelAsWordsize() {
         return switch (sun_arch_data_model) {
             case "32" ->
-                SizeInBit._32_BIT;
+                SizeInByte._32_Bit;
             case "64" ->
-                SizeInBit._64_BIT;
+                SizeInByte._64_Bit;
             default ->
                 throw new RuntimeException("Unknown WordSize" + sun_arch_data_model);
         };
@@ -123,7 +123,7 @@ public final class MultiarchTupelBuilder {
         Set<MultiarchInfo> result = EnumSet.noneOf(MultiarchInfo.class);
         switch (os_arch) {
             case "amd64" -> {
-                if (SizeInBit._64_BIT != sun_arch_data_modelAsWordsize()) {
+                if (SizeInByte._64_Bit != sun_arch_data_modelAsWordsize()) {
                     throw new UnsupportedOperationException(
                             "Can't handle sun.arch.data.model of amd64 linux\n" + listSystemProperties());
                 } else if (Endianess.LITTLE != sun_cpu_endianAsEndianess()) {
@@ -138,7 +138,7 @@ public final class MultiarchTupelBuilder {
                 }
             }
             case "i386" -> {
-                if (SizeInBit._32_BIT != sun_arch_data_modelAsWordsize()) {
+                if (SizeInByte._32_Bit != sun_arch_data_modelAsWordsize()) {
                     throw new UnsupportedOperationException(
                             "Can't handle sun.arch.data.model of i386 linux\n" + listSystemProperties());
                 } else if (Endianess.LITTLE != sun_cpu_endianAsEndianess()) {
@@ -153,7 +153,7 @@ public final class MultiarchTupelBuilder {
                 }
             }
             case "arm" -> {
-                if (SizeInBit._32_BIT != sun_arch_data_modelAsWordsize()) {
+                if (SizeInByte._32_Bit != sun_arch_data_modelAsWordsize()) {
                     throw new UnsupportedOperationException(
                             "Can't handle sun.arch.data.model of arm linux\n" + listSystemProperties());
                 } else if (Endianess.LITTLE != sun_cpu_endianAsEndianess()) {
@@ -181,7 +181,7 @@ public final class MultiarchTupelBuilder {
                 }
             }
             case "aarch64" -> {
-                if (SizeInBit._64_BIT != sun_arch_data_modelAsWordsize()) {
+                if (SizeInByte._64_Bit != sun_arch_data_modelAsWordsize()) {
                     throw new UnsupportedOperationException(
                             "Can't handle sun.arch.data.model of aarch64 linux\n" + listSystemProperties());
                 } else if (Endianess.LITTLE != sun_cpu_endianAsEndianess()) {
@@ -196,7 +196,7 @@ public final class MultiarchTupelBuilder {
                 }
             }
             case "mips" -> {
-                if (SizeInBit._32_BIT != sun_arch_data_modelAsWordsize()) {
+                if (SizeInByte._32_Bit != sun_arch_data_modelAsWordsize()) {
                     throw new UnsupportedOperationException(
                             "Can't handle sun.arch.data.model of mips linux\n" + listSystemProperties());
                 } else if (Endianess.BIG != sun_cpu_endianAsEndianess()) {
@@ -211,7 +211,7 @@ public final class MultiarchTupelBuilder {
                 }
             }
             case "mipsel" -> {
-                if (SizeInBit._32_BIT != sun_arch_data_modelAsWordsize()) {
+                if (SizeInByte._32_Bit != sun_arch_data_modelAsWordsize()) {
                     throw new UnsupportedOperationException(
                             "Can't handle sun.arch.data.model of mipsel linux\n" + listSystemProperties());
                 } else if (Endianess.LITTLE != sun_cpu_endianAsEndianess()) {
@@ -226,7 +226,7 @@ public final class MultiarchTupelBuilder {
                 }
             }
             case "mips64" -> {
-                if (SizeInBit._64_BIT != sun_arch_data_modelAsWordsize()) {
+                if (SizeInByte._64_Bit != sun_arch_data_modelAsWordsize()) {
                     throw new UnsupportedOperationException(
                             "Can't handle sun.arch.data.model of mips linux\n" + listSystemProperties());
                 } else if (Endianess.BIG != sun_cpu_endianAsEndianess()) {
@@ -241,7 +241,7 @@ public final class MultiarchTupelBuilder {
                 }
             }
             case "mips64el" -> {
-                if (SizeInBit._64_BIT != sun_arch_data_modelAsWordsize()) {
+                if (SizeInByte._64_Bit != sun_arch_data_modelAsWordsize()) {
                     throw new UnsupportedOperationException(
                             "Can't handle sun.arch.data.model of mipsel linux\n" + listSystemProperties());
                 } else if (Endianess.LITTLE != sun_cpu_endianAsEndianess()) {
@@ -256,7 +256,7 @@ public final class MultiarchTupelBuilder {
                 }
             }
             case "ppc" -> {
-                if (SizeInBit._32_BIT != sun_arch_data_modelAsWordsize()) {
+                if (SizeInByte._32_Bit != sun_arch_data_modelAsWordsize()) {
                     throw new UnsupportedOperationException(
                             "Can't handle sun.arch.data.model of ppc linux\n" + listSystemProperties());
                 } else if (Endianess.BIG != sun_cpu_endianAsEndianess()) {
@@ -268,7 +268,7 @@ public final class MultiarchTupelBuilder {
                 }
             }
             case "ppc64le" -> {
-                if (SizeInBit._64_BIT != sun_arch_data_modelAsWordsize()) {
+                if (SizeInByte._64_Bit != sun_arch_data_modelAsWordsize()) {
                     throw new UnsupportedOperationException(
                             "Can't handle sun.arch.data.model of ppc64le linux\n" + listSystemProperties());
                 } else if (Endianess.LITTLE != sun_cpu_endianAsEndianess()) {
@@ -280,7 +280,7 @@ public final class MultiarchTupelBuilder {
                 }
             }
             case "ppc64" -> {
-                if (SizeInBit._64_BIT != sun_arch_data_modelAsWordsize()) {
+                if (SizeInByte._64_Bit != sun_arch_data_modelAsWordsize()) {
                     throw new UnsupportedOperationException(
                             "Can't handle sun.arch.data.model of ppc64le linux\n" + listSystemProperties());
                 } else if (Endianess.BIG != sun_cpu_endianAsEndianess()) {
@@ -292,7 +292,7 @@ public final class MultiarchTupelBuilder {
                 }
             }
             case "riscv64" -> {
-                if (SizeInBit._64_BIT != sun_arch_data_modelAsWordsize()) {
+                if (SizeInByte._64_Bit != sun_arch_data_modelAsWordsize()) {
                     throw new UnsupportedOperationException(
                             "Can't handle sun.arch.data.model of riscv64 linux\n" + listSystemProperties());
                 } else if (Endianess.LITTLE != sun_cpu_endianAsEndianess()) {
@@ -304,7 +304,7 @@ public final class MultiarchTupelBuilder {
                 }
             }
             case "s390x" -> {
-                if (SizeInBit._64_BIT != sun_arch_data_modelAsWordsize()) {
+                if (SizeInByte._64_Bit != sun_arch_data_modelAsWordsize()) {
                     throw new UnsupportedOperationException(
                             "Can't handle sun.arch.data.model of s390 linux\n" + listSystemProperties());
                 } else if (Endianess.BIG != sun_cpu_endianAsEndianess()) {
@@ -316,7 +316,7 @@ public final class MultiarchTupelBuilder {
                 }
             }
             case "sparc64" -> {
-                if (SizeInBit._64_BIT != sun_arch_data_modelAsWordsize()) {
+                if (SizeInByte._64_Bit != sun_arch_data_modelAsWordsize()) {
                     throw new UnsupportedOperationException(
                             "Can't handle sun.arch.data.model of sparc64 linux\n" + listSystemProperties());
                 } else if (Endianess.BIG != sun_cpu_endianAsEndianess()) {
@@ -337,7 +337,7 @@ public final class MultiarchTupelBuilder {
         Set<MultiarchInfo> result = EnumSet.noneOf(MultiarchInfo.class);
         switch (os_arch) {
             case "amd64" -> {
-                if (SizeInBit._64_BIT != sun_arch_data_modelAsWordsize()) {
+                if (SizeInByte._64_Bit != sun_arch_data_modelAsWordsize()) {
                     throw new UnsupportedOperationException(
                             "Can't handle sun.arch.data.model of amd64 FreeBSD\n" + listSystemProperties());
                 } else if (Endianess.LITTLE != sun_cpu_endianAsEndianess()) {
@@ -352,7 +352,7 @@ public final class MultiarchTupelBuilder {
                 }
             }
             case "aarch64" -> {
-                if (SizeInBit._64_BIT != sun_arch_data_modelAsWordsize()) {
+                if (SizeInByte._64_Bit != sun_arch_data_modelAsWordsize()) {
                     throw new UnsupportedOperationException(
                             "Can't handle sun.arch.data.model of aarch64 FreeBSD\n" + listSystemProperties());
                 } else if (Endianess.LITTLE != sun_cpu_endianAsEndianess()) {
@@ -376,7 +376,7 @@ public final class MultiarchTupelBuilder {
         Set<MultiarchInfo> result = EnumSet.noneOf(MultiarchInfo.class);
         switch (os_arch) {
             case "amd64" -> {
-                if (SizeInBit._64_BIT != sun_arch_data_modelAsWordsize()) {
+                if (SizeInByte._64_Bit != sun_arch_data_modelAsWordsize()) {
                     throw new UnsupportedOperationException(
                             "Can't handle sun.arch.data.model of amd64 OpenBSD\n" + listSystemProperties());
                 } else if (Endianess.LITTLE != sun_cpu_endianAsEndianess()) {
@@ -391,7 +391,7 @@ public final class MultiarchTupelBuilder {
                 }
             }
             case "aarch64" -> {
-                if (SizeInBit._64_BIT != sun_arch_data_modelAsWordsize()) {
+                if (SizeInByte._64_Bit != sun_arch_data_modelAsWordsize()) {
                     throw new UnsupportedOperationException(
                             "Can't handle sun.arch.data.model of aarch64 OpenBSD\n" + listSystemProperties());
                 } else if (Endianess.LITTLE != sun_cpu_endianAsEndianess()) {
@@ -416,7 +416,7 @@ public final class MultiarchTupelBuilder {
         );
         switch (os_arch) {
             case "x86_64" -> {
-                if (SizeInBit._64_BIT != sun_arch_data_modelAsWordsize()) {
+                if (SizeInByte._64_Bit != sun_arch_data_modelAsWordsize()) {
                     throw new UnsupportedOperationException(
                             "Can't handle sun.arch.data.model of x86_64 Mac OS X\n" + listSystemProperties());
                 } else if (Endianess.LITTLE != sun_cpu_endianAsEndianess()) {
@@ -431,7 +431,7 @@ public final class MultiarchTupelBuilder {
                 }
             }
             case "aarch64" -> {
-                if (SizeInBit._64_BIT != sun_arch_data_modelAsWordsize()) {
+                if (SizeInByte._64_Bit != sun_arch_data_modelAsWordsize()) {
                     throw new UnsupportedOperationException(
                             "Can't handle sun.arch.data.model of aarch64 Mac OS X\n" + listSystemProperties());
                 } else if (Endianess.LITTLE != sun_cpu_endianAsEndianess()) {
@@ -504,7 +504,7 @@ public final class MultiarchTupelBuilder {
     }
 
     public static boolean isBigEndian() {
-        return INSTANCE.getEndianess().isBigEndian();
+        return INSTANCE.cachedMultiarchinfo.getEndianess().isBigEndian();
     }
 
     public static String listSystemProperties() {

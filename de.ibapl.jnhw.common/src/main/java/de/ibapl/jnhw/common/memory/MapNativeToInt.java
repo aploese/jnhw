@@ -1,6 +1,6 @@
 /*
  * JNHW - Java Native header Wrapper, https://github.com/aploese/jnhw/
- * Copyright (C) 2021-2024, Arne Plöse and individual contributors as indicated
+ * Copyright (C) 2021-2025, Arne Plöse and individual contributors as indicated
  * by the @authors tag. See the copyright.txt in the distribution for a
  * full listing of individual contributors.
  *
@@ -32,15 +32,13 @@ import java.lang.foreign.MemorySegment;
 public class MapNativeToInt extends NativeIntNumber {
 
     private final BaseDataType dataType;
-    private final boolean unsigned;
 
     public MapNativeToInt(BaseDataType nativeType, MemorySegment memorySegment, long offset) {
-        super(memorySegment, offset, nativeType.SIZE_OF);
-        if (nativeType.SIZE_OF > BaseDataType.int32_t.SIZE_OF) {
+        super(memorySegment, offset, nativeType.byteSize);
+        if (nativeType.byteSize > BaseDataType.int32_t.byteSize) {
             throw new IllegalArgumentException("Data type is too big, a smaller data type was expected");
         }
         dataType = nativeType;
-        unsigned = dataType.UNSIGNED;
     }
 
     public static Uint16_t map(OpaqueMemory mem, long offset) {
@@ -48,37 +46,37 @@ public class MapNativeToInt extends NativeIntNumber {
     }
 
     public int asInt() {
-        if (unsigned) {
-            return MEM_ACCESS.getUnsignedIntOf(memorySegment, 0, dataType.SIZE_OF);
+        if (dataType.isUnsigned()) {
+            return MEM_ACCESS.getUnsignedIntOf(memorySegment, 0, dataType.byteSize);
         } else {
-            return MEM_ACCESS.getSignedIntOf(memorySegment, 0, dataType.SIZE_OF);
+            return MEM_ACCESS.getSignedIntOf(memorySegment, 0, dataType.byteSize);
         }
     }
 
     public void asInt(int value) {
-        if (unsigned) {
-            MEM_ACCESS.setUnsignedIntOf(memorySegment, 0, dataType.SIZE_OF, value);
+        if (dataType.isUnsigned()) {
+            MEM_ACCESS.setUnsignedIntOf(memorySegment, 0, dataType.byteSize, value);
         } else {
-            MEM_ACCESS.setSignedIntOf(memorySegment, 0, dataType.SIZE_OF, value);
+            MEM_ACCESS.setSignedIntOf(memorySegment, 0, dataType.byteSize, value);
 
         }
     }
 
     @Override
     public String nativeToHexString() {
-        if (unsigned) {
-            return MEM_ACCESS.getUnsignedIntOf_AsHex(memorySegment, 0, dataType.SIZE_OF);
+        if (dataType.isUnsigned()) {
+            return MEM_ACCESS.getUnsignedIntOf_AsHex(memorySegment, 0, dataType.byteSize);
         } else {
-            return MEM_ACCESS.getSignedIntOf_AsHex(memorySegment, 0, dataType.SIZE_OF);
+            return MEM_ACCESS.getSignedIntOf_AsHex(memorySegment, 0, dataType.byteSize);
         }
     }
 
     @Override
     public void nativeToString(Appendable sb, String indentPrefix, String indent) throws IOException {
-        if (unsigned) {
-            sb.append(MEM_ACCESS.getUnsignedLongOf_nativeToString(memorySegment, 0, dataType.SIZE_OF));
+        if (dataType.isUnsigned()) {
+            sb.append(MEM_ACCESS.getUnsignedLongOf_nativeToString(memorySegment, 0, dataType.byteSize));
         } else {
-            sb.append(MEM_ACCESS.getSignedLongOf_nativeToString(memorySegment, 0, dataType.SIZE_OF));
+            sb.append(MEM_ACCESS.getSignedLongOf_nativeToString(memorySegment, 0, dataType.byteSize));
         }
     }
 

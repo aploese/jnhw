@@ -1,6 +1,6 @@
 /*
  * JNHW - Java Native header Wrapper, https://github.com/aploese/jnhw/
- * Copyright (C) 2021-2024, Arne Plöse and individual contributors as indicated
+ * Copyright (C) 2021-2025, Arne Plöse and individual contributors as indicated
  * by the @authors tag. See the copyright.txt in the distribution for a
  * full listing of individual contributors.
  *
@@ -67,7 +67,7 @@ public class AsSignedIntTest {
             instance.setFromSignedInt(expResult);
             assertEquals(expResult, instance.getAsSignedInt());
             assertThrows(IllegalArgumentException.class, () -> instance.setFromSignedInt(Integer.MAX_VALUE));
-            assertThrows(IllegalArgumentException.class, () -> new AsSignedInt(BaseDataType.uint8_t, arena.allocate(BaseDataType.uint8_t.SIZE_OF), 0));
+            assertThrows(IllegalArgumentException.class, () -> new AsSignedInt(BaseDataType.uint8_t, arena.allocate(BaseDataType.uint8_t.byteSize), 0));
         }
     }
 }

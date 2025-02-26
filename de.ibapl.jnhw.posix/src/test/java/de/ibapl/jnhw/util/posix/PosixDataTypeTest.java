@@ -1,6 +1,6 @@
 /*
  * JNHW - Java Native header Wrapper, https://github.com/aploese/jnhw/
- * Copyright (C) 2021-2024, Arne Plöse and individual contributors as indicated
+ * Copyright (C) 2021-2025, Arne Plöse and individual contributors as indicated
  * by the @authors tag. See the copyright.txt in the distribution for a
  * full listing of individual contributors.
  *
@@ -21,13 +21,12 @@
  */
 package de.ibapl.jnhw.util.posix;
 
-import de.ibapl.jnhw.common.datatypes.BaseDataType;
 import de.ibapl.jnhw.posix.JnhwTestLogger;
-import de.ibapl.jnhw.posix.LibJnhwPosixTestLoader;
+import static de.ibapl.jnhw.posix.LibJnhwPosixTestLoader.*;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeAll;
 import static org.junit.jupiter.api.Assertions.*;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInfo;
@@ -63,177 +62,119 @@ public class PosixDataTypeTest {
 
     @Test
     public void testCc_t() {
-        assertTrue(LibJnhwPosixTestLoader.invokeExact_CharToBool_V("JNHW__cc_t__isUnsigned"));
-        if (LibJnhwPosixTestLoader.invokeExact_CharToBool_V("JNHW__cc_t__IS__uint8_t")) {
-            assertEquals(PosixDataType.cc_t, BaseDataType.uint8_t);
-            assertEquals(0x0080L, LibJnhwPosixTestLoader.invoke_sL___V("JNHW__cc_t__AS_Uint64_t"));
-        } else {
-            fail("cc_t is not datatype uint8_t");
-        }
+        assertAll(
+                () -> assertEquals(invokeExact_CharToSign_V("JNHW__cc_t__Sign"), PosixDataType.cc_t.sign, "cc_t sign" ),
+                () -> assertEquals(invoke_sI___V("JNHW__sizeof__cc_t"), PosixDataType.cc_t.byteSize, "cc_t sizeof" ),
+                () -> assertEquals(invoke_sI___V("JNHW__alignof__cc_t"), PosixDataType.cc_t.byteAlignment, "cc_t alignof" )
+        );
     }
 
     @Test
     public void testClock_t() {
-        if (LibJnhwPosixTestLoader.invokeExact_CharToBool_V("JNHW__clock_t__IS__int32_t")) {
-            assertTrue(LibJnhwPosixTestLoader.invokeExact_CharToBool_V("JNHW__clock_t__isSigned"));
-            assertEquals(PosixDataType.clock_t, BaseDataType.int32_t);
-            assertEquals(0xFFFFFFFF80008080L, LibJnhwPosixTestLoader.invoke_sL___V("JNHW__clock_t__AS_Uint64_t"));
-        } else if (LibJnhwPosixTestLoader.invokeExact_CharToBool_V("JNHW__clock_t__IS__int64_t")) {
-            assertTrue(LibJnhwPosixTestLoader.invokeExact_CharToBool_V("JNHW__clock_t__isSigned"));
-            assertEquals(PosixDataType.clock_t, BaseDataType.int64_t);
-            assertEquals(0x8000000080008080L, LibJnhwPosixTestLoader.invoke_sL___V("JNHW__clock_t__AS_Uint64_t"));
-        } else if (LibJnhwPosixTestLoader.invokeExact_CharToBool_V("JNHW__clock_t__IS__uint64_t")) {
-            assertTrue(LibJnhwPosixTestLoader.invokeExact_CharToBool_V("JNHW__clock_t__isUnsigned"));
-            assertEquals(PosixDataType.clock_t, BaseDataType.uint64_t);
-            assertEquals(0x8000000080008080L, LibJnhwPosixTestLoader.invoke_sL___V("JNHW__clock_t__AS_Uint64_t"));
-        } else {
-            fail("clock_t is not datatype int32_t or int64_t or uint64_t");
-        }
+        assertAll(
+                () -> assertEquals(invokeExact_CharToSign_V("JNHW__clock_t__Sign"), PosixDataType.clock_t.sign, "clock_t sign" ),
+                () -> assertEquals(invoke_sI___V("JNHW__sizeof__clock_t"), PosixDataType.clock_t.byteSize, "clock_t sizeof" ),
+                () -> assertEquals(invoke_sI___V("JNHW__alignof__clock_t"), PosixDataType.clock_t.byteAlignment, "clock_t alignof" )
+        );
     }
 
     @Test
     public void testClockid_t() {
-        assertTrue(LibJnhwPosixTestLoader.invokeExact_CharToBool_V("JNHW__clockid_t__isSigned"));
-        if (LibJnhwPosixTestLoader.invokeExact_CharToBool_V("JNHW__clockid_t__IS__int32_t")) {
-            assertEquals(PosixDataType.clockid_t, BaseDataType.int32_t);
-            assertEquals(0xFFFFFFFF80008080L, LibJnhwPosixTestLoader.invoke_sL___V("JNHW__clockid_t__AS_Uint64_t"));
-        } else {
-            fail("clockid_t is not datatype int32_t");
-        }
+        assertAll(
+                () -> assertEquals(invokeExact_CharToSign_V("JNHW__clockid_t__Sign"), PosixDataType.clockid_t.sign, "clockid_t sign" ),
+                () -> assertEquals(invoke_sI___V("JNHW__sizeof__clockid_t"), PosixDataType.clockid_t.byteSize, "clockid_t sizeof" ),
+                () -> assertEquals(invoke_sI___V("JNHW__alignof__clockid_t"), PosixDataType.clockid_t.byteAlignment, "clockid_t alignof" )
+        );
     }
 
     @Test
     public void testMode_t() {
-        assertTrue(LibJnhwPosixTestLoader.invokeExact_CharToBool_V("JNHW__mode_t__isUnsigned"));
-        if (LibJnhwPosixTestLoader.invokeExact_CharToBool_V("JNHW__mode_t__IS__uint16_t")) {
-            assertEquals(PosixDataType.mode_t, BaseDataType.uint16_t);
-            assertEquals(0x00008080L, LibJnhwPosixTestLoader.invoke_sL___V("JNHW__mode_t__AS_Uint64_t"));
-        } else if (LibJnhwPosixTestLoader.invokeExact_CharToBool_V("JNHW__mode_t__IS__uint32_t")) {
-            assertEquals(PosixDataType.mode_t, BaseDataType.uint32_t);
-            assertEquals(0x0000000080008080L, LibJnhwPosixTestLoader.invoke_sL___V("JNHW__mode_t__AS_Uint64_t"));
-        } else {
-            fail("mode_t is not datatype uint16_t or uint32_t");
-        }
+        assertAll(
+                () -> assertEquals(invokeExact_CharToSign_V("JNHW__mode_t__Sign"), PosixDataType.mode_t.sign, "mode_t sign" ),
+                () -> assertEquals(invoke_sI___V("JNHW__sizeof__mode_t"), PosixDataType.mode_t.byteSize, "mode_t sizeof" ),
+                () -> assertEquals(invoke_sI___V("JNHW__alignof__mode_t"), PosixDataType.mode_t.byteAlignment, "mode_t alignof" )
+        );
     }
 
     @Test
     public void testNfds_t() {
-        assertTrue(LibJnhwPosixTestLoader.invokeExact_CharToBool_V("JNHW__nfds_t__isUnsigned"));
-        if (LibJnhwPosixTestLoader.invokeExact_CharToBool_V("JNHW__nfds_t__IS__uint32_t")) {
-            assertEquals(PosixDataType.nfds_t, BaseDataType.uint32_t);
-            assertEquals(0x0000000080008080L, LibJnhwPosixTestLoader.invoke_sL___V("JNHW__nfds_t__AS_Uint64_t"));
-        } else if (LibJnhwPosixTestLoader.invokeExact_CharToBool_V("JNHW__nfds_t__IS__uint64_t")) {
-            assertEquals(PosixDataType.nfds_t, BaseDataType.uint64_t);
-            assertEquals(0x8000000080008080L, LibJnhwPosixTestLoader.invoke_sL___V("JNHW__nfds_t__AS_Uint64_t"));
-        } else {
-            fail("nfds_t is not datatype uint32_t or uint64_t");
-        }
+        assertAll(
+                () -> assertEquals(invokeExact_CharToSign_V("JNHW__nfds_t__Sign"), PosixDataType.nfds_t.sign, "nfds_t sign" ),
+                () -> assertEquals(invoke_sI___V("JNHW__sizeof__nfds_t"), PosixDataType.nfds_t.byteSize, "nfds_t sizeof" ),
+                () -> assertEquals(invoke_sI___V("JNHW__alignof__nfds_t"), PosixDataType.nfds_t.byteAlignment, "nfds_t alignof" )
+        );
     }
 
     @Test
     public void testOff_t() {
-        assertTrue(LibJnhwPosixTestLoader.invokeExact_CharToBool_V("JNHW__off_t__isSigned"));
-        if (LibJnhwPosixTestLoader.invokeExact_CharToBool_V("JNHW__off_t__IS__int32_t")) {
-            assertEquals(PosixDataType.off_t, BaseDataType.int32_t);
-            assertEquals(0xFFFFFFFF80008080L, LibJnhwPosixTestLoader.invoke_sL___V("JNHW__off_t__AS_Uint64_t"));
-        } else if (LibJnhwPosixTestLoader.invokeExact_CharToBool_V("JNHW__off_t__IS__int64_t")) {
-            assertEquals(PosixDataType.off_t, BaseDataType.int64_t);
-            assertEquals(0x8000000080008080L, LibJnhwPosixTestLoader.invoke_sL___V("JNHW__off_t__AS_Uint64_t"));
-        } else {
-            fail("off_t is not datatype int32_t or int64_t");
-        }
+        assertAll(
+                () -> assertEquals(invokeExact_CharToSign_V("JNHW__off_t__Sign"), PosixDataType.off_t.sign, "off_t sign" ),
+                () -> assertEquals(invoke_sI___V("JNHW__sizeof__off_t"), PosixDataType.off_t.byteSize, "off_t sizeof" ),
+                () -> assertEquals(invoke_sI___V("JNHW__alignof__off_t"), PosixDataType.off_t.byteAlignment, "off_t alignof" )
+        );
     }
 
     @Test
     public void testPid_t() {
-        assertTrue(LibJnhwPosixTestLoader.invokeExact_CharToBool_V("JNHW__pid_t__isSigned"));
-        if (LibJnhwPosixTestLoader.invokeExact_CharToBool_V("JNHW__pid_t__IS__int32_t")) {
-            assertEquals(PosixDataType.pid_t, BaseDataType.int32_t);
-            assertEquals(0xFFFFFFFF80008080L, LibJnhwPosixTestLoader.invoke_sL___V("JNHW__pid_t__AS_Uint64_t"));
-        } else {
-            fail("pid_t is not datatype int32_t");
-        }
+        assertAll(
+                () -> assertEquals(invokeExact_CharToSign_V("JNHW__pid_t__Sign"), PosixDataType.pid_t.sign, "pid_t sign" ),
+                () -> assertEquals(invoke_sI___V("JNHW__sizeof__pid_t"), PosixDataType.pid_t.byteSize, "pid_t sizeof" ),
+                () -> assertEquals(invoke_sI___V("JNHW__alignof__pid_t"), PosixDataType.pid_t.byteAlignment, "pid_t alignof" )
+        );
     }
 
     @Test
     public void testSize_t() {
-        assertTrue(LibJnhwPosixTestLoader.invokeExact_CharToBool_V("JNHW__size_t__isUnsigned"));
-        if (LibJnhwPosixTestLoader.invokeExact_CharToBool_V("JNHW__size_t__IS__uint32_t")) {
-            assertEquals(PosixDataType.size_t, BaseDataType.uint32_t);
-            assertEquals(0x0000000080008080L, LibJnhwPosixTestLoader.invoke_sL___V("JNHW__size_t__AS_Uint64_t"));
-        } else if (LibJnhwPosixTestLoader.invokeExact_CharToBool_V("JNHW__size_t__IS__uint64_t")) {
-            assertEquals(PosixDataType.size_t, BaseDataType.uint64_t);
-            assertEquals(0x8000000080008080L, LibJnhwPosixTestLoader.invoke_sL___V("JNHW__size_t__AS_Uint64_t"));
-        } else {
-            fail("size_t is not datatype uint32_t or uint64_t");
-        }
+        assertAll(
+                () -> assertEquals(invokeExact_CharToSign_V("JNHW__size_t__Sign"), PosixDataType.size_t.sign, "size_t sign" ),
+                () -> assertEquals(invoke_sI___V("JNHW__sizeof__size_t"), PosixDataType.size_t.byteSize, "size_t sizeof" ),
+                () -> assertEquals(invoke_sI___V("JNHW__alignof__size_t"), PosixDataType.size_t.byteAlignment, "size_t alignof" )
+        );
     }
 
     @Test
     public void testSpeed_t() {
-        assertTrue(LibJnhwPosixTestLoader.invokeExact_CharToBool_V("JNHW__speed_t__isUnsigned"));
-        if (LibJnhwPosixTestLoader.invokeExact_CharToBool_V("JNHW__speed_t__IS__uint32_t")) {
-            assertEquals(PosixDataType.speed_t, BaseDataType.uint32_t);
-            assertEquals(0x0000000080008080L, LibJnhwPosixTestLoader.invoke_sL___V("JNHW__speed_t__AS_Uint64_t"));
-        } else if (LibJnhwPosixTestLoader.invokeExact_CharToBool_V("JNHW__speed_t__IS__uint64_t")) {
-            assertEquals(PosixDataType.speed_t, BaseDataType.uint64_t);
-            assertEquals(0x8000000080008080L, LibJnhwPosixTestLoader.invoke_sL___V("JNHW__speed_t__AS_Uint64_t"));
-        } else {
-            fail("speed_t is not datatype uint32_t or uint64_t");
-        }
+        assertAll(
+                () -> assertEquals(invokeExact_CharToSign_V("JNHW__speed_t__Sign"), PosixDataType.speed_t.sign, "speed_t sign" ),
+                () -> assertEquals(invoke_sI___V("JNHW__sizeof__speed_t"), PosixDataType.speed_t.byteSize, "speed_t sizeof" ),
+                () -> assertEquals(invoke_sI___V("JNHW__alignof__speed_t"), PosixDataType.speed_t.byteAlignment, "speed_t alignof" )
+        );
     }
 
     @Test
     public void testSsize_t() {
-        assertTrue(LibJnhwPosixTestLoader.invokeExact_CharToBool_V("JNHW__ssize_t__isSigned"));
-        if (LibJnhwPosixTestLoader.invokeExact_CharToBool_V("JNHW__ssize_t__IS__int32_t")) {
-            assertEquals(PosixDataType.ssize_t, BaseDataType.int32_t);
-            assertEquals(0xFFFFFFFF80008080L, LibJnhwPosixTestLoader.invoke_sL___V("JNHW__ssize_t__AS_Uint64_t"));
-        } else if (LibJnhwPosixTestLoader.invokeExact_CharToBool_V("JNHW__ssize_t__IS__int64_t")) {
-            assertEquals(PosixDataType.ssize_t, BaseDataType.int64_t);
-            assertEquals(0x8000000080008080L, LibJnhwPosixTestLoader.invoke_sL___V("JNHW__ssize_t__AS_Uint64_t"));
-        } else {
-            fail("ssize_t is not datatype int32_t or int64_t");
-        }
+        assertAll(
+                () -> assertEquals(invokeExact_CharToSign_V("JNHW__ssize_t__Sign"), PosixDataType.ssize_t.sign, "ssize_t sign" ),
+                () -> assertEquals(invoke_sI___V("JNHW__sizeof__ssize_t"), PosixDataType.ssize_t.byteSize, "ssize_t sizeof" ),
+                () -> assertEquals(invoke_sI___V("JNHW__alignof__ssize_t"), PosixDataType.ssize_t.byteAlignment, "ssize_t alignof" )
+        );
     }
 
     @Test
     public void testTcflag_t() {
-        assertTrue(LibJnhwPosixTestLoader.invokeExact_CharToBool_V("JNHW__tcflag_t__isUnsigned"));
-        if (LibJnhwPosixTestLoader.invokeExact_CharToBool_V("JNHW__tcflag_t__IS__uint32_t")) {
-            assertEquals(PosixDataType.tcflag_t, BaseDataType.uint32_t);
-            assertEquals(0x0000000080008080L, LibJnhwPosixTestLoader.invoke_sL___V("JNHW__tcflag_t__AS_Uint64_t"));
-        } else if (LibJnhwPosixTestLoader.invokeExact_CharToBool_V("JNHW__tcflag_t__IS__uint64_t")) {
-            assertEquals(PosixDataType.tcflag_t, BaseDataType.uint64_t);
-            assertEquals(0x8000000080008080L, LibJnhwPosixTestLoader.invoke_sL___V("JNHW__tcflag_t__AS_Uint64_t"));
-        } else {
-            fail("tcflag_t is not datatype uint32_t or uint64_t");
-        }
+        assertAll(
+                () -> assertEquals(invokeExact_CharToSign_V("JNHW__tcflag_t__Sign"), PosixDataType.tcflag_t.sign, "tcflag_t sign" ),
+                () -> assertEquals(invoke_sI___V("JNHW__sizeof__tcflag_t"), PosixDataType.tcflag_t.byteSize, "tcflag_t sizeof" ),
+                () -> assertEquals(invoke_sI___V("JNHW__alignof__tcflag_t"), PosixDataType.tcflag_t.byteAlignment, "tcflag_t alignof" )
+        );
     }
 
     @Test
     public void testTime_t() {
-        assertTrue(LibJnhwPosixTestLoader.invokeExact_CharToBool_V("JNHW__time_t__isSigned"));
-        if (LibJnhwPosixTestLoader.invokeExact_CharToBool_V("JNHW__time_t__IS__int32_t")) {
-            assertEquals(PosixDataType.time_t, BaseDataType.int32_t);
-            assertEquals(0xFFFFFFFF80008080L, LibJnhwPosixTestLoader.invoke_sL___V("JNHW__time_t__AS_Uint64_t"));
-        } else if (LibJnhwPosixTestLoader.invokeExact_CharToBool_V("JNHW__time_t__IS__int64_t")) {
-            assertEquals(PosixDataType.time_t, BaseDataType.int64_t);
-            assertEquals(0x8000000080008080L, LibJnhwPosixTestLoader.invoke_sL___V("JNHW__time_t__AS_Uint64_t"));
-        } else {
-            fail("time_t is not datatype int32_t or int64_t");
-        }
+        assertAll(
+                () -> assertEquals(invokeExact_CharToSign_V("JNHW__time_t__Sign"), PosixDataType.time_t.sign, "time_t sign" ),
+                () -> assertEquals(invoke_sI___V("JNHW__sizeof__time_t"), PosixDataType.time_t.byteSize, "time_t sizeof" ),
+                () -> assertEquals(invoke_sI___V("JNHW__alignof__time_t"), PosixDataType.time_t.byteAlignment, "time_t alignof" )
+        );
     }
 
     @Test
     public void testUid_t() {
-        assertTrue(LibJnhwPosixTestLoader.invokeExact_CharToBool_V("JNHW__uid_t__isUnsigned"));
-        if (LibJnhwPosixTestLoader.invokeExact_CharToBool_V("JNHW__uid_t__IS__uint32_t")) {
-            assertEquals(PosixDataType.uid_t, BaseDataType.uint32_t);
-            assertEquals(0x0000000080008080L, LibJnhwPosixTestLoader.invoke_sL___V("JNHW__uid_t__AS_Uint64_t"));
-        } else {
-            fail("uid_t is not datatype uint32_t");
-        }
+        assertAll(
+                () -> assertEquals(invokeExact_CharToSign_V("JNHW__uid_t__Sign"), PosixDataType.uid_t.sign, "uid_t sign" ),
+                () -> assertEquals(invoke_sI___V("JNHW__sizeof__uid_t"), PosixDataType.uid_t.byteSize, "uid_t sizeof" ),
+                () -> assertEquals(invoke_sI___V("JNHW__alignof__uid_t"), PosixDataType.uid_t.byteAlignment, "uid_t alignof" )
+        );
     }
 
 }

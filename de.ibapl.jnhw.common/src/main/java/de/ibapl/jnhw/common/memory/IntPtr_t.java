@@ -1,6 +1,6 @@
 /*
  * JNHW - Java Native header Wrapper, https://github.com/aploese/jnhw/
- * Copyright (C) 2022-2024, Arne Plöse and individual contributors as indicated
+ * Copyright (C) 2022-2025, Arne Plöse and individual contributors as indicated
  * by the @authors tag. See the copyright.txt in the distribution for a
  * full listing of individual contributors.
  *
@@ -38,17 +38,17 @@ public class IntPtr_t<D extends Pointer> extends OpaqueMemory {
     public final static BaseDataType DATA_TYPE = BaseDataType.intptr_t;
 
     public static <T extends Pointer> IntPtr_t<T> allocateNative(Arena arena) {
-        return new IntPtr_t<>(arena.allocate(DATA_TYPE.SIZE_OF, DATA_TYPE.ALIGN_OF.alignof), 0);
+        return new IntPtr_t<>(arena.allocate(DATA_TYPE.byteSize, DATA_TYPE.byteAlignment), 0);
     }
 
     public static <T extends Pointer> IntPtr_t<T> ofAddress(MemorySegment baseAddress, Arena arena) {
-        return new IntPtr_t<>(baseAddress.reinterpret(DATA_TYPE.SIZE_OF, arena, null), 0);
+        return new IntPtr_t<>(baseAddress.reinterpret(DATA_TYPE.byteSize, arena, null), 0);
     }
 
     private D cached;
 
     public IntPtr_t(MemorySegment memorySegment, long offset) {
-        super(memorySegment, offset, DATA_TYPE.SIZE_OF);
+        super(memorySegment, offset, DATA_TYPE.byteSize);
     }
 
     public D getAs() throws InvalidCacheException {

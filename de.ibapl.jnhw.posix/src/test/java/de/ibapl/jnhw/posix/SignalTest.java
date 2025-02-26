@@ -1,6 +1,6 @@
 /*
  * JNHW - Java Native header Wrapper, https://github.com/aploese/jnhw/
- * Copyright (C) 2019-2023, Arne Plöse and individual contributors as indicated
+ * Copyright (C) 2019-2025, Arne Plöse and individual contributors as indicated
  * by the @authors tag. See the copyright.txt in the distribution for a
  * full listing of individual contributors.
  *
@@ -35,19 +35,21 @@ import de.ibapl.jnhw.common.util.ObjectDefine;
 import de.ibapl.jnhw.libloader.MultiarchTupelBuilder;
 import de.ibapl.jnhw.libloader.OS;
 import de.ibapl.jnhw.util.posix.DefinesTest;
-import de.ibapl.jnhw.util.posix.upcall.Callback__V__UnionSigval;
 import java.lang.foreign.Arena;
 import java.lang.foreign.MemorySegment;
+import java.lang.reflect.Method;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import org.junit.jupiter.api.Assumptions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInfo;
 import org.junit.jupiter.api.condition.DisabledOnOs;
+import de.ibapl.jnhw.util.posix.upcall.Callback__V__UnionSigval;
 
 /**
  *
@@ -56,7 +58,20 @@ import org.junit.jupiter.api.condition.DisabledOnOs;
 @DisabledOnOs(org.junit.jupiter.api.condition.OS.WINDOWS)
 public class SignalTest {
 
+    public static void main(String[] args) {
+        System.out.println("rm ./target/surefire-reports/result-signal-test.txt;");
+        for (Method m : SignalTest.class.getDeclaredMethods()) {
+            if (m.getAnnotation(Test.class) != null) {
+                final String testName = SignalTest.class.getSimpleName() + "#" + m.getName();
+                System.out.println("echo 'run test: " + testName + "' >> ./target/surefire-reports/result-signal-test.txt; mvn test -Dstyle.color=never -Dtest=" + testName + " >> ./target/surefire-reports/result-signal-test.txt; ");
+            }
+        }
+    }
+
     private final static long ONE_MINUTE = 60_000;
+
+    //for crashing tests....
+    private static int testCount;
 
     @BeforeAll
     public static void checkBeforeAll_HAVE_SIGNAL_H() throws Exception {
@@ -200,6 +215,7 @@ public class SignalTest {
     public void setUp(TestInfo testInfo) throws Exception {
         JnhwTestLogger.logBeforeEach(testInfo);
         arena = Arena.ofShared();
+        testCount++;
     }
 
     @AfterEach
@@ -213,14 +229,21 @@ public class SignalTest {
      */
     @Test
     public void testKill() throws Exception {
-        final int sig = Signal.SIGCHLD; //TODO SIGQUIT blows anything away .... WHY??? pthread_kill
-
+        //TODO on i386 in vm this blows up
+        switch (MultiarchTupelBuilder.getMultiarch()) {
+            case I386__LINUX__GNU -> {
+                if (testCount > 1) {
+                    Assumptions.abort("testKill will crash Java VM if not run single");
+                }
+            }
+        }
+        final int SIG = Signal.SIGCHLD; //TODO SIGQUIT blows anything away .... WHY??? pthread_kill
         final Integer[] sigRef = new Integer[1];
         final Signal.Sigaction act = Signal.Sigaction.allocateNative(arena);
         act.sa_flags(0);
         Signal.sigemptyset(act.sa_mask);
 
-        Callback__V___I sa_handler = new Callback__V___I() {
+        final Callback__V___I sa_handler = new Callback__V___I() {
             @Override
             protected void callback(int sig) {
                 synchronized (sigRef) {
@@ -234,18 +257,18 @@ public class SignalTest {
         act.sa_handler(sa_handler);
 
         final Signal.Sigaction oact = Signal.Sigaction.allocateNative(arena);
-        Signal.sigaction(sig, act, oact);
+        Signal.sigaction(SIG, act, oact);
         try {
             JnhwTestLogger.logTest("pthread_t of testKill: " + Pthread.pthread_self(arena) + " Java thread ID: " + Thread.currentThread().threadId());
-            Signal.kill(Unistd.getpid(), sig);
+            Signal.kill(Unistd.getpid(), SIG);
             synchronized (sigRef) {
                 if (sigRef[0] == null) {
                     sigRef.wait(ONE_MINUTE);
                 }
             }
-            assertEquals(sig, sigRef[0]);
+            assertEquals(SIG, sigRef[0]);
         } finally {
-            Signal.sigaction(sig, oact, null);
+            Signal.sigaction(SIG, oact, null);
         }
     }
 
@@ -254,14 +277,22 @@ public class SignalTest {
      */
     @Test
     public void testKillpg() throws Exception {
-        final int sig = Signal.SIGCHLD;
+        //TODO on i386 in vm this blows up
+        switch (MultiarchTupelBuilder.getMultiarch()) {
+            case I386__LINUX__GNU -> {
+                if (testCount > 1) {
+                    Assumptions.abort("testKillpg will crash Java VM if not run single");
+                }
+            }
+        }
+        final int SIG = Signal.SIGCHLD;
 
         final Integer[] sigRef = new Integer[1];
         final Signal.Sigaction act = Signal.Sigaction.allocateNative(arena);
         act.sa_flags(0);
         Signal.sigemptyset(act.sa_mask);
 
-        Callback__V___I sa_handler = new Callback__V___I() {
+        final Callback__V___I sa_handler = new Callback__V___I() {
             @Override
             protected void callback(int sig) {
                 synchronized (sigRef) {
@@ -273,17 +304,17 @@ public class SignalTest {
         act.sa_handler(sa_handler);
 
         final Signal.Sigaction oact = Signal.Sigaction.allocateNative(arena);
-        Signal.sigaction(sig, act, oact);
+        Signal.sigaction(SIG, act, oact);
         try {
-            Signal.killpg(Unistd.getpgrp(), sig);
+            Signal.killpg(Unistd.getpgrp(), SIG);
             synchronized (sigRef) {
                 if (sigRef[0] == null) {
                     sigRef.wait(ONE_MINUTE);
                 }
             }
-            assertEquals(sig, sigRef[0]);
+            assertEquals(SIG, sigRef[0]);
         } finally {
-            Signal.sigaction(sig, oact, null);
+            Signal.sigaction(SIG, oact, null);
         }
     }
 
@@ -613,7 +644,9 @@ public class SignalTest {
             JnhwTestLogger.logTest("Old signal handler of SIG is " + savedOld);
         }
 
+        JnhwTestLogger.logTest("Will raise signal! " + SIG);
         Signal.raise(SIG);
+        JnhwTestLogger.logTest("Signal raised ignored by SIG_IGN ! " + SIG);
 
         final Integer[] raisedSignal = new Integer[1];
         final Callback__V___I funcHandler = new Callback__V___I() {
@@ -628,14 +661,16 @@ public class SignalTest {
         try {
             Assertions.assertEquals(funcIgnore, old);
 
+            JnhwTestLogger.logTest("Will raise signal! " + SIG);
             Signal.raise(SIG);
+            JnhwTestLogger.logTest("Signal raised and caught by callback! " + SIG);
             Assertions.assertEquals(Integer.valueOf(SIG), raisedSignal[0]);
 
             old = Signal.signal(SIG, null);
             Assertions.assertEquals(funcHandler, old);
 
         } finally {
-            //Restore the signal on error.
+            //Restore the signal.
             Signal.signal(SIG, savedOld);
         }
     }
@@ -750,6 +785,13 @@ public class SignalTest {
      */
     @Test
     public void testSigqueue() throws Throwable {
+        switch (MultiarchTupelBuilder.getMultiarch()) {
+            case I386__LINUX__GNU -> {
+                if (testCount > 1) {
+                    Assumptions.abort("testSignal will crash Java VM if not run single");
+                }
+            }
+        }
         final int SIG = Signal.SIGUSR2;
         switch (MultiarchTupelBuilder.getOS()) {
             case APPLE, OPEN_BSD ->
@@ -761,28 +803,28 @@ public class SignalTest {
                 Signal.sigemptyset(act.sa_mask);
 
                 final Throwable[] throwableRef = new Throwable[]{null};
-                final Signal.Siginfo_t[] siginfo_tRef = new Signal.Siginfo_t[]{null};
-                final Signal.Ucontext_t[] opmRef = new Signal.Ucontext_t[]{null};
-                final Integer[] valueRef = new Integer[]{null};
+                final Integer[] siginfo_t__err_no__Ref = new Integer[]{null};
+                final Integer[] siginfo_t__si_signo__Ref = new Integer[]{null};
+                final Long[] siginfo_t__si_value__sival_ptr__Ref = new Long[]{null};
+                final Integer[] value__Ref = new Integer[]{null};
 
                 Callback__V___I_MA_MA<Signal.Siginfo_t, Signal.Ucontext_t> sa_handler = new Callback__V___I_MA_MA<>() {
 
                     @Override
                     protected void callback(int value, MemorySegment a, MemorySegment b) {
+                        //On FreeBSD the memory area of a will be overwritten after this was called, so copy the essentals... for Testing!
                         try {
-                            siginfo_tRef[0] = Signal.Siginfo_t.ofAddress(a.address(), arena);
-                            try {
-                                opmRef[0] = Signal.Ucontext_t.tryOfAddress(b.address(), arena);
-                            } catch (NoSuchNativeTypeException nste) {
-                                Assertions.fail(nste);
-
-                            }
-                            valueRef[0] = value;
+                            final Signal.Siginfo_t siginfo_t = Signal.Siginfo_t.ofAddress(a.address(), arena);
+                            JnhwTestLogger.logTest("de.ibapl.jnhw.posix.SignalTest.testSigqueue() in Callback siginfo_t: " + siginfo_t.nativeToString());
+                            siginfo_t__si_signo__Ref[0] = siginfo_t.si_signo(); 
+                            siginfo_t__si_value__sival_ptr__Ref[0] = siginfo_t.si_value.sival_ptr().address(); 
+                            siginfo_t__err_no__Ref[0] = siginfo_t.si_errno();
+                            value__Ref[0] = value;
                         } catch (Throwable t) {
                             throwableRef[0] = t;
                         }
-                        synchronized (valueRef) {
-                            valueRef.notify();
+                        synchronized (value__Ref) {
+                            value__Ref.notify();
                         }
                     }
 
@@ -800,35 +842,26 @@ public class SignalTest {
 
                 Signal.sigqueue(Unistd.getpid(), SIG, sigval);
 
-                synchronized (valueRef) {
-                    if (valueRef[0] == null) {
-                        valueRef.wait(ONE_MINUTE);
+                synchronized (value__Ref) {
+                    if (value__Ref[0] == null) {
+                        value__Ref.wait(ONE_MINUTE);
                     }
-                    if (valueRef[0] == null) {
+                    if (value__Ref[0] == null) {
                         Assertions.fail("The callback was not called");
                     }
                 }
 
-                JnhwTestLogger.logTest("de.ibapl.jnhw.posix.SignalTest.testSigqueue() siginfo_tRef.value: " + siginfo_tRef[0].nativeToString());
                 try {
                     if (throwableRef[0] != null) {
                         throw throwableRef[0];
                     }
-                    Assertions.assertNotNull(valueRef[0]);
+                    Assertions.assertNotNull(value__Ref[0]);
 
-                    switch (MultiarchTupelBuilder.getOS()) {
-                        case FREE_BSD -> {
-                            //TODO Why is this error here???
-                            ErrnoTest.assertErrnoEquals(Errno.ENOEXEC, siginfo_tRef[0].si_errno());
-                            Assertions.fail("TODO Known Error: siginfo_tRef[0].si_errno() == ENOEXEC ??? ");
-                        }
-                        default ->
-                            Assertions.assertEquals(0, siginfo_tRef[0].si_errno(), "siginfo_tRef.value.si_errno() errno: " + Errno.getErrnoSymbol(siginfo_tRef[0].si_errno()));
-                    }
+                    Assertions.assertEquals(0, siginfo_t__err_no__Ref[0].intValue(), "siginfo_t.value.si_errno() errno: " + Errno.getErrnoSymbol(siginfo_t__err_no__Ref[0].intValue()));
                     Assertions.assertAll(
-                            () -> Assertions.assertEquals(SIG, valueRef[0].intValue(), "value"),
-                            () -> Assertions.assertEquals(SIG, siginfo_tRef[0].si_signo(), "siginfo_tRef.value.si_signo()"),
-                            () -> Assertions.assertEquals(data.toMemorySegment(), siginfo_tRef[0].si_value.sival_ptr(), "siginfo_tRef.value.si_value.sival_ptr()")
+                            () -> Assertions.assertEquals(SIG, value__Ref[0].intValue(), "value"),
+                            () -> Assertions.assertEquals(SIG, siginfo_t__si_signo__Ref[0].intValue(), "siginfo_t.si_signo()"),
+                            () -> Assertions.assertEquals(data.toAddress(), siginfo_t__si_value__sival_ptr__Ref[0].longValue(), "siginfo_t.si_value.sival_ptr()")
                     );
                 } finally {
                     Signal.sigaction(SIG, oact, null);

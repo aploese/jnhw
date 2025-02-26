@@ -1,6 +1,6 @@
 /*
  * JNHW - Java Native header Wrapper, https://github.com/aploese/jnhw/
- * Copyright (C) 2023-2024, Arne Plöse and individual contributors as indicated
+ * Copyright (C) 2023-2025, Arne Plöse and individual contributors as indicated
  * by the @authors tag. See the copyright.txt in the distribution for a
  * full listing of individual contributors.
  *
@@ -37,6 +37,7 @@ import static de.ibapl.jnhw.libloader.MemoryModel.ILP32;
 import static de.ibapl.jnhw.libloader.MemoryModel.LP64;
 import de.ibapl.jnhw.libloader.MultiarchTupelBuilder;
 import java.lang.foreign.MemorySegment;
+import java.util.HexFormat;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
 import static org.junit.jupiter.api.Assertions.*;
@@ -176,6 +177,14 @@ public class Callback__V__Union_I_MA_Test {
         //testPtr.release();
     }
 
+    private final String toHex(long value) {
+        return HexFormat.of().toHexDigits(value);
+    }
+    
+    private final String toHex(int value) {
+        return HexFormat.of().toHexDigits(value);
+    }
+
     /**
      * Test of release method
      */
@@ -221,17 +230,17 @@ public class Callback__V__Union_I_MA_Test {
             switch (MultiarchTupelBuilder.getMemoryModel()) {
                 case ILP32 ->
                     assertAll(
-                            () -> assertEquals(testValue & 0xffffffffL, addressValueRef[0], "sival_ptr"),
-                            () -> assertEquals((int) testValue, intValueRef[0], "sival_int"));
+                            () -> assertEquals(toHex(testValue & 0xffffffffL), toHex(addressValueRef[0]), "sival_ptr"),
+                            () -> assertEquals(toHex((int) testValue), toHex(intValueRef[0]), "sival_int"));
                 case LLP64, LP64 ->
                     assertAll(
                             () -> assertEquals(testValue, addressValueRef[0], "sival_ptr"),
                             () -> {
                                 switch (MultiarchTupelBuilder.getEndianess()) {
                                     case BIG ->
-                                        assertEquals((int) (testValue >>> 32), intValueRef[0], "sival_int");
+                                        assertEquals(toHex((int) (testValue >>> 32)), toHex(intValueRef[0]), "sival_int");
                                     case LITTLE ->
-                                        assertEquals((int) testValue, intValueRef[0], "sival_int");
+                                        assertEquals(toHex((int) testValue), toHex(intValueRef[0]), () -> "sival_int");
                                     default ->
                                         throw new AssertionError("Can`t handle endianess: " + MultiarchTupelBuilder.getEndianess());
                                 }
@@ -252,17 +261,17 @@ public class Callback__V__Union_I_MA_Test {
             switch (MultiarchTupelBuilder.getMemoryModel()) {
                 case ILP32 ->
                     assertAll(
-                            () -> assertEquals(testValue & 0xffffffffL, addressValueRef[0], "sival_ptr"),
-                            () -> assertEquals((int) testValue, intValueRef[0], "sival_int"));
+                            () -> assertEquals(toHex(testValue & 0xffffffffL), toHex(addressValueRef[0]), "sival_ptr"),
+                            () -> assertEquals(toHex((int) testValue), toHex(intValueRef[0]), "sival_int"));
                 case LLP64, LP64 ->
                     assertAll(
-                            () -> assertEquals(testValue, addressValueRef[0], "sival_ptr"),
+                            () -> assertEquals(toHex(testValue), toHex(addressValueRef[0]), "sival_ptr"),
                             () -> {
                                 switch (MultiarchTupelBuilder.getEndianess()) {
                                     case BIG ->
-                                        assertEquals((int) (testValue >>> 32), intValueRef[0], "sival_int");
+                                        assertEquals(toHex((int) (testValue >>> 32)), toHex(intValueRef[0]), "sival_int");
                                     case LITTLE ->
-                                        assertEquals((int) testValue, intValueRef[0], "sival_int");
+                                        assertEquals(toHex((int) testValue), toHex(intValueRef[0]), "sival_int");
                                     default ->
                                         throw new AssertionError("Can`t handle endianess: " + MultiarchTupelBuilder.getEndianess());
                                 }
@@ -344,13 +353,13 @@ public class Callback__V__Union_I_MA_Test {
             assertSame(Callback__V__Union_I_MA.find(getCallback__V__Union_I_MA()), callback);
             doCallback__V__Union_I_MAI(testValue);
             assertAll(
-                    () -> assertEquals(testValue, intValueRef[0], "sival_int"),
+                    () -> assertEquals(toHex(testValue), toHex(intValueRef[0]), "sival_int"),
                     () -> {
                         switch (MultiarchTupelBuilder.getEndianess()) {
                             case BIG ->
-                                assertEquals(testValue, (int) (addressValueRef[0] >>> 32), "sival_ptr");
+                                assertEquals(toHex(testValue), toHex((int) (addressValueRef[0] >>> 32)), "sival_ptr");
                             case LITTLE ->
-                                assertEquals(0xffffffffL & testValue, addressValueRef[0], "sival_ptr");
+                                assertEquals(toHex(0xffffffffL & testValue), toHex(addressValueRef[0]), "sival_ptr");
                             default ->
                                 throw new AssertionError("Can`t handle endianess: " + MultiarchTupelBuilder.getEndianess());
                         }
@@ -383,17 +392,17 @@ public class Callback__V__Union_I_MA_Test {
                     throw new AssertionError("Can`t handle memory model: " + MultiarchTupelBuilder.getMemoryModel());
             }
             assertAll(
-                    () -> assertEquals(testValue, intValueRef[0], "sival_int"),
+                    () -> assertEquals(toHex(testValue), toHex(intValueRef[0]), "sival_int"),
                     () -> {
                         switch (MultiarchTupelBuilder.getMemoryModel()) {
                             case ILP32 ->
-                                assertEquals(0xffffffffL & testValue, addressValueRef[0], "sival_ptr");
+                                assertEquals(toHex(0xffffffffL & testValue), toHex(addressValueRef[0]), "sival_ptr");
                             case LLP64, LP64 -> {
                                 switch (MultiarchTupelBuilder.getEndianess()) {
                                     case BIG ->
-                                        assertEquals(0xffffffffL & testValue, addressValueRef[0] >>> 32, "sival_ptr");
+                                        assertEquals(toHex(0xffffffffL & testValue), toHex(addressValueRef[0] >>> 32), "sival_ptr");
                                     case LITTLE ->
-                                        assertEquals(0xffffffffL & testValue, addressValueRef[0], "sival_ptr");
+                                        assertEquals(toHex(0xffffffffL & testValue), toHex(addressValueRef[0]), "sival_ptr");
                                     default ->
                                         throw new AssertionError("Can`t handle endianess: " + MultiarchTupelBuilder.getEndianess());
                                 }

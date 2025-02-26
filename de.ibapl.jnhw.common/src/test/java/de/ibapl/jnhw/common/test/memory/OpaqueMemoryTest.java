@@ -1,6 +1,6 @@
 /*
  * JNHW - Java Native header Wrapper, https://github.com/aploese/jnhw/
- * Copyright (C) 2022-2024, Arne Plöse and individual contributors as indicated
+ * Copyright (C) 2022-2025, Arne Plöse and individual contributors as indicated
  * by the @authors tag. See the copyright.txt in the distribution for a
  * full listing of individual contributors.
  *
@@ -27,7 +27,7 @@ import de.ibapl.jnhw.common.memory.layout.Alignment;
 import de.ibapl.jnhw.common.test.JnhwTestLogger;
 import de.ibapl.jnhw.common.test.memory.layout.S_i8_i64OnTheFlyImpl;
 import de.ibapl.jnhw.libloader.MultiarchTupelBuilder;
-import de.ibapl.jnhw.libloader.SizeInBit;
+import de.ibapl.jnhw.libloader.SizeInByte;
 import java.lang.foreign.Arena;
 import java.lang.foreign.MemorySegment;
 import org.junit.jupiter.api.AfterAll;
@@ -255,12 +255,12 @@ public class OpaqueMemoryTest {
             OpaqueMemory mem1 = new MemToTest(MemorySegment.ofAddress(42L).reinterpret(8, arena, null));
             OpaqueMemory mem2 = new MemToTest(OpaqueMemory.getMemorySegment(mem));
             switch (MultiarchTupelBuilder.getMemoryModel().sizeOf_pointer) {
-                case _32_BIT -> {
+                case _32_Bit -> {
                     Assertions.assertEquals("{baseAddress : 0x0000002a, sizeof : 8}", mem.toString());
                     Assertions.assertEquals("{baseAddress : 0x0000002a, sizeof : 8}", mem1.toString());
                     Assertions.assertEquals("{baseAddress : 0x0000002a, sizeof : 8}", mem2.toString());
                 }
-                case _64_BIT -> {
+                case _64_Bit -> {
                     Assertions.assertEquals("{baseAddress : 0x000000000000002a, sizeof : 8}", mem.toString());
                     Assertions.assertEquals("{baseAddress : 0x000000000000002a, sizeof : 8}", mem1.toString());
                     Assertions.assertEquals("{baseAddress : 0x000000000000002a, sizeof : 8}", mem2.toString());
@@ -281,7 +281,7 @@ public class OpaqueMemoryTest {
     public void testAddressOn32BitNotNegative() {
         try (Arena arena = Arena.ofConfined()) {
             MemToTest parent = new MemToTest(48, arena);
-            if (MultiarchTupelBuilder.getMemoryModel().sizeOf_pointer == SizeInBit._32_BIT) {
+            if (MultiarchTupelBuilder.getMemoryModel().sizeOf_pointer == SizeInByte._32_Bit) {
                 Assertions.assertTrue(parent.toAddress() > 0, "baseaddress must not be negative");
             }
         }

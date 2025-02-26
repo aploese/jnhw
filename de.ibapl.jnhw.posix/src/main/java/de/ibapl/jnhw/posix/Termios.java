@@ -1,6 +1,6 @@
 /*
  * JNHW - Java Native header Wrapper, https://github.com/aploese/jnhw/
- * Copyright (C) 2019-2023, Arne Plöse and individual contributors as indicated
+ * Copyright (C) 2019-2025, Arne Plöse and individual contributors as indicated
  * by the @authors tag. See the copyright.txt in the distribution for a
  * full listing of individual contributors.
  *
@@ -560,29 +560,29 @@ public final class Termios {
                 return "115200";
             } else if (speed_t == B230400) {
                 return "230400";
-            } else if (B460800.isEqualsTo(speed_t)) {
+            } else if (B460800.equals(speed_t)) {
                 return "460800";
-            } else if (B500000.isEqualsTo(speed_t)) {
+            } else if (B500000.equals(speed_t)) {
                 return "500000";
-            } else if (B576000.isEqualsTo(speed_t)) {
+            } else if (B576000.equals(speed_t)) {
                 return "576000";
-            } else if (B921600.isEqualsTo(speed_t)) {
+            } else if (B921600.equals(speed_t)) {
                 return "921600";
-            } else if (B1000000.isEqualsTo(speed_t)) {
+            } else if (B1000000.equals(speed_t)) {
                 return "1000000";
-            } else if (B1152000.isEqualsTo(speed_t)) {
+            } else if (B1152000.equals(speed_t)) {
                 return "1152000";
-            } else if (B1500000.isEqualsTo(speed_t)) {
+            } else if (B1500000.equals(speed_t)) {
                 return "1500000";
-            } else if (B2000000.isEqualsTo(speed_t)) {
+            } else if (B2000000.equals(speed_t)) {
                 return "2000000";
-            } else if (B2500000.isEqualsTo(speed_t)) {
+            } else if (B2500000.equals(speed_t)) {
                 return "2500000";
-            } else if (B3000000.isEqualsTo(speed_t)) {
+            } else if (B3000000.equals(speed_t)) {
                 return "3000000";
-            } else if (B3500000.isEqualsTo(speed_t)) {
+            } else if (B3500000.equals(speed_t)) {
                 return "3500000";
-            } else if (B4000000.isEqualsTo(speed_t)) {
+            } else if (B4000000.equals(speed_t)) {
                 return "4000000";
             } else {
                 return "native speed id unknown to us: " + speed_t;

@@ -1,6 +1,6 @@
 /*
  * JNHW - Java Native header Wrapper, https://github.com/aploese/jnhw/
- * Copyright (C) 2019-2023, Arne Plöse and individual contributors as indicated
+ * Copyright (C) 2019-2025, Arne Plöse and individual contributors as indicated
  * by the @authors tag. See the copyright.txt in the distribution for a
  * full listing of individual contributors.
  *
@@ -63,22 +63,22 @@ public class Types {
         private final static BaseDataType dataType = PosixDataType.clock_t;
 
         public final static Clock_t allocateNative(Arena arena) {
-            return new Clock_t(arena.allocate(dataType.SIZE_OF, dataType.ALIGN_OF.alignof), 0);
+            return new Clock_t(arena.allocate(dataType.byteSize, dataType.byteAlignment), 0);
         }
 
         public Clock_t(MemorySegment memorySegment, long offset) {
-            super(memorySegment, offset, dataType.SIZE_OF);
-            if (dataType.SIZE_OF > BaseDataType.int64_t.SIZE_OF) {
+            super(memorySegment, offset, dataType.byteSize);
+            if (dataType.byteSize > BaseDataType.int64_t.byteSize) {
                 throw new IllegalArgumentException("Data type is too big, a smaller data type was expected");
             }
         }
 
         public long getAsSignedLong() {
-            return MEM_ACCESS.getSignedLongOf(memorySegment, 0, dataType.SIZE_OF);
+            return MEM_ACCESS.getSignedLongOf(memorySegment, 0, dataType.byteSize);
         }
 
         public long getAsUnsignedLong() {
-            return MEM_ACCESS.getUnsignedLongOf(memorySegment, 0, dataType.SIZE_OF);
+            return MEM_ACCESS.getUnsignedLongOf(memorySegment, 0, dataType.byteSize);
         }
 
         @Override
@@ -88,28 +88,28 @@ public class Types {
 
         @Override
         public String nativeToHexString() {
-            if (dataType.UNSIGNED) {
-                return MEM_ACCESS.getUnsignedLongOf_AsHex(memorySegment, 0, dataType.SIZE_OF);
+            if (dataType.isUnsigned()) {
+                return MEM_ACCESS.getUnsignedLongOf_AsHex(memorySegment, 0, dataType.byteSize);
             } else {
-                return MEM_ACCESS.getSignedLongOf_AsHex(memorySegment, 0, dataType.SIZE_OF);
+                return MEM_ACCESS.getSignedLongOf_AsHex(memorySegment, 0, dataType.byteSize);
             }
         }
 
         @Override
         public void nativeToString(Appendable sb, String indentPrefix, String indent) throws IOException {
-            if (dataType.UNSIGNED) {
-                sb.append(MEM_ACCESS.getUnsignedLongOf_nativeToString(memorySegment, 0, dataType.SIZE_OF));
+            if (dataType.isUnsigned()) {
+                sb.append(MEM_ACCESS.getUnsignedLongOf_nativeToString(memorySegment, 0, dataType.byteSize));
             } else {
-                sb.append(MEM_ACCESS.getSignedLongOf_nativeToString(memorySegment, 0, dataType.SIZE_OF));
+                sb.append(MEM_ACCESS.getSignedLongOf_nativeToString(memorySegment, 0, dataType.byteSize));
             }
         }
 
         public void setFromSignedLong(long value) {
-            MEM_ACCESS.setSignedLongOf(memorySegment, 0, dataType.SIZE_OF, value);
+            MEM_ACCESS.setSignedLongOf(memorySegment, 0, dataType.byteSize, value);
         }
 
         public void setFromUnsignedLong(long value) {
-            MEM_ACCESS.setUnsignedLongOf(memorySegment, 0, dataType.SIZE_OF, value);
+            MEM_ACCESS.setUnsignedLongOf(memorySegment, 0, dataType.byteSize, value);
         }
     }
 
@@ -119,22 +119,22 @@ public class Types {
         private final static BaseDataType dataType = PosixDataType.clockid_t;
 
         public final static Clockid_t allocateNative(Arena arena) {
-            return new Clockid_t(arena.allocate(dataType.SIZE_OF, dataType.ALIGN_OF.alignof), 0);
+            return new Clockid_t(arena.allocate(dataType.byteSize, dataType.byteAlignment), 0);
         }
 
         public Clockid_t(MemorySegment memorySegment, long offset) {
-            super(memorySegment, offset, dataType.SIZE_OF);
-            if (dataType.SIZE_OF > BaseDataType.int64_t.SIZE_OF) {
+            super(memorySegment, offset, dataType.byteSize);
+            if (dataType.byteSize > BaseDataType.int64_t.byteSize) {
                 throw new IllegalArgumentException("Data type is too big, a smaller data type was expected");
             }
         }
 
         public long getAsSignedLong() {
-            return MEM_ACCESS.getSignedLongOf(memorySegment, 0, dataType.SIZE_OF);
+            return MEM_ACCESS.getSignedLongOf(memorySegment, 0, dataType.byteSize);
         }
 
         public long getAsUnsignedLong() {
-            return MEM_ACCESS.getUnsignedLongOf(memorySegment, 0, dataType.SIZE_OF);
+            return MEM_ACCESS.getUnsignedLongOf(memorySegment, 0, dataType.byteSize);
         }
 
         @Override
@@ -144,28 +144,28 @@ public class Types {
 
         @Override
         public String nativeToHexString() {
-            if (dataType.UNSIGNED) {
-                return MEM_ACCESS.getUnsignedLongOf_AsHex(memorySegment, 0, dataType.SIZE_OF);
+            if (dataType.isUnsigned()) {
+                return MEM_ACCESS.getUnsignedLongOf_AsHex(memorySegment, 0, dataType.byteSize);
             } else {
-                return MEM_ACCESS.getSignedLongOf_AsHex(memorySegment, 0, dataType.SIZE_OF);
+                return MEM_ACCESS.getSignedLongOf_AsHex(memorySegment, 0, dataType.byteSize);
             }
         }
 
         @Override
         public void nativeToString(Appendable sb, String indentPrefix, String indent) throws IOException {
-            if (dataType.UNSIGNED) {
-                sb.append(MEM_ACCESS.getUnsignedLongOf_nativeToString(memorySegment, 0, dataType.SIZE_OF));
+            if (dataType.isUnsigned()) {
+                sb.append(MEM_ACCESS.getUnsignedLongOf_nativeToString(memorySegment, 0, dataType.byteSize));
             } else {
-                sb.append(MEM_ACCESS.getSignedLongOf_nativeToString(memorySegment, 0, dataType.SIZE_OF));
+                sb.append(MEM_ACCESS.getSignedLongOf_nativeToString(memorySegment, 0, dataType.byteSize));
             }
         }
 
         public void setFromSignedLong(long value) {
-            MEM_ACCESS.setSignedLongOf(memorySegment, 0, dataType.SIZE_OF, value);
+            MEM_ACCESS.setSignedLongOf(memorySegment, 0, dataType.byteSize, value);
         }
 
         public void setFromUnsignedLong(long value) {
-            MEM_ACCESS.setUnsignedLongOf(memorySegment, 0, dataType.SIZE_OF, value);
+            MEM_ACCESS.setUnsignedLongOf(memorySegment, 0, dataType.byteSize, value);
         }
     }
 
@@ -173,7 +173,7 @@ public class Types {
     public final static class Gid_t extends Uint32_t {
 
         public static Gid_t allocateNative(Arena arena) {
-            return new Gid_t(arena.allocate(PosixDataType.gid_t.SIZE_OF, PosixDataType.gid_t.ALIGN_OF.alignof), 0);
+            return new Gid_t(arena.allocate(PosixDataType.gid_t.byteSize, PosixDataType.gid_t.byteAlignment), 0);
         }
 
         public Gid_t(MemorySegment memorySegment, long offset) {
@@ -185,7 +185,7 @@ public class Types {
     public static class Mode_t extends AsUnsignedInt {
 
         public final static Mode_t allocateNative(Arena arena) {
-            return new Mode_t(arena.allocate(PosixDataType.mode_t.SIZE_OF, PosixDataType.mode_t.ALIGN_OF.alignof), 0);
+            return new Mode_t(arena.allocate(PosixDataType.mode_t.byteSize, PosixDataType.mode_t.byteAlignment), 0);
         }
 
         public Mode_t(MemorySegment memorySegment, int offset) {
@@ -198,7 +198,7 @@ public class Types {
     public static class Off_t extends AsSignedLong {
 
         public final static Off_t allocateNative(Arena arena) {
-            return new Off_t(arena.allocate(PosixDataType.off_t.SIZE_OF, PosixDataType.off_t.ALIGN_OF.alignof), 0);
+            return new Off_t(arena.allocate(PosixDataType.off_t.byteSize, PosixDataType.off_t.byteAlignment), 0);
         }
 
         public Off_t(MemorySegment memorySegment, int offset) {
@@ -211,7 +211,7 @@ public class Types {
     public static class Pid_t extends Int32_t {
 
         public static Pid_t allocateNative(Arena arena) {
-            return new Pid_t(arena.allocate(PosixDataType.pid_t.SIZE_OF, PosixDataType.pid_t.ALIGN_OF.alignof), 0);
+            return new Pid_t(arena.allocate(PosixDataType.pid_t.byteSize, PosixDataType.pid_t.byteAlignment), 0);
         }
 
         public Pid_t(MemorySegment memorySegment, int offset) {
@@ -224,7 +224,7 @@ public class Types {
     public static class Size_t extends AsUnsignedLong {
 
         public static Size_t allocateNative(Arena arena) {
-            return new Size_t(arena.allocate(PosixDataType.size_t.SIZE_OF, PosixDataType.size_t.ALIGN_OF.alignof), 0);
+            return new Size_t(arena.allocate(PosixDataType.size_t.byteSize, PosixDataType.size_t.byteAlignment), 0);
         }
 
         public Size_t(MemorySegment memorySegment, int offset) {
@@ -236,7 +236,7 @@ public class Types {
     public static class Ssize_t extends AsSignedLong {
 
         public static Ssize_t allocateNative(Arena arena) {
-            return new Ssize_t(arena.allocate(PosixDataType.ssize_t.SIZE_OF, PosixDataType.ssize_t.ALIGN_OF.alignof), 0);
+            return new Ssize_t(arena.allocate(PosixDataType.ssize_t.byteSize, PosixDataType.ssize_t.byteAlignment), 0);
         }
 
         public Ssize_t(MemorySegment memorySegment, int offset) {
@@ -249,7 +249,7 @@ public class Types {
     public static class Time_t extends AsSignedLong {
 
         public static Time_t allocateNative(Arena arena) {
-            return new Time_t(arena.allocate(PosixDataType.time_t.SIZE_OF, PosixDataType.time_t.ALIGN_OF.alignof), 0);
+            return new Time_t(arena.allocate(PosixDataType.time_t.byteSize, PosixDataType.time_t.byteAlignment), 0);
         }
 
         public Time_t(MemorySegment memorySegment, int offset) {
@@ -262,7 +262,7 @@ public class Types {
     public static class Uid_t extends Uint32_t {
 
         public static Uid_t allocateNative(Arena arena) {
-            return new Uid_t(arena.allocate(PosixDataType.uid_t.SIZE_OF, PosixDataType.uid_t.ALIGN_OF.alignof), 0);
+            return new Uid_t(arena.allocate(PosixDataType.uid_t.byteSize, PosixDataType.uid_t.byteAlignment), 0);
         }
 
         public Uid_t(MemorySegment memorySegment, int offset) {

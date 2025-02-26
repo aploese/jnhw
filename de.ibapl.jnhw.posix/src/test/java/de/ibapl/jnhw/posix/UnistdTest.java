@@ -1,6 +1,6 @@
 /*
  * JNHW - Java Native header Wrapper, https://github.com/aploese/jnhw/
- * Copyright (C) 2020-2024, Arne Plöse and individual contributors as indicated
+ * Copyright (C) 2020-2025, Arne Plöse and individual contributors as indicated
  * by the @authors tag. See the copyright.txt in the distribution for a
  * full listing of individual contributors.
  *
@@ -28,6 +28,7 @@ import de.ibapl.jnhw.common.memory.Int8_t;
 import de.ibapl.jnhw.common.memory.MemoryArray;
 import de.ibapl.jnhw.common.memory.MemoryHeap;
 import de.ibapl.jnhw.common.memory.OpaqueMemory;
+import de.ibapl.jnhw.libloader.MultiarchTupelBuilder;
 import de.ibapl.jnhw.posix.sys.Stat;
 import de.ibapl.jnhw.util.posix.Defines;
 import de.ibapl.jnhw.util.posix.DefinesTest;
@@ -274,15 +275,28 @@ public class UnistdTest {
 
     @Test
     public void testLseek() throws Exception {
-        if (Defines.__SIZEOF_LONG__ == 4) {
-            IllegalArgumentException iae = Assertions.assertThrows(IllegalArgumentException.class, () -> {
-                Unistd.lseek(-1, 1L + Integer.MAX_VALUE, Unistd.SEEK_SET);
-            });
-        } else if (Defines.__SIZEOF_LONG__ == 8) {
-            NativeErrorException nee = Assertions.assertThrows(NativeErrorException.class, () -> {
-                Unistd.lseek(-1, 1L + Integer.MAX_VALUE, Unistd.SEEK_SET);
-            });
-            ErrnoTest.assertErrnoEquals(Errno.EBADF, nee.errno);
+        switch (MultiarchTupelBuilder.getMemoryModel()) {
+            case ILP32 -> {
+                if (Defines._FILE_OFFSET_BITS.equals(64)) {
+                    NativeErrorException nee = Assertions.assertThrows(NativeErrorException.class, () -> {
+                        Unistd.lseek(-1, 1L + Integer.MAX_VALUE, Unistd.SEEK_SET);
+                    });
+                    ErrnoTest.assertErrnoEquals(Errno.EBADF, nee.errno);
+                } else {
+                    IllegalArgumentException iae = Assertions.assertThrows(IllegalArgumentException.class, () -> {
+                        Unistd.lseek(-1, 1L + Integer.MAX_VALUE, Unistd.SEEK_SET);
+                    });
+                }
+            }
+            case LP64 -> {
+                NativeErrorException nee = Assertions.assertThrows(NativeErrorException.class, () -> {
+                    Unistd.lseek(-1, 1L + Integer.MAX_VALUE, Unistd.SEEK_SET);
+                });
+                ErrnoTest.assertErrnoEquals(Errno.EBADF, nee.errno);
+            }
+            default -> {
+                throw new RuntimeException("Can't handle memory model: " + MultiarchTupelBuilder.getMemoryModel());
+            }
         }
     }
 
@@ -370,11 +384,11 @@ public class UnistdTest {
         }
 
         public final static TestPipeFiledes_1 allocateNative(Arena arena) {
-            return new TestPipeFiledes_1(arena.allocate(Int32_t.DATA_TYPE.SIZE_OF * ARRAY_LENGTH, Int32_t.DATA_TYPE.ALIGN_OF.alignof), 0);
+            return new TestPipeFiledes_1(arena.allocate(Int32_t.DATA_TYPE.byteSize * ARRAY_LENGTH, Int32_t.DATA_TYPE.byteAlignment), 0);
         }
 
         public TestPipeFiledes_1(MemorySegment memorySegment, long offset) {
-            super(memorySegment, offset, new Int32_t[ARRAY_LENGTH], TestPipeFiledes_1::createAtOffset, Int32_t.DATA_TYPE.SIZE_OF);
+            super(memorySegment, offset, new Int32_t[ARRAY_LENGTH], TestPipeFiledes_1::createAtOffset, Int32_t.DATA_TYPE.byteSize);
         }
 
     }

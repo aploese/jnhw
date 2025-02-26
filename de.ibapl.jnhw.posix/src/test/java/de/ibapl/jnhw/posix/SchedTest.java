@@ -1,6 +1,6 @@
 /*
  * JNHW - Java Native header Wrapper, https://github.com/aploese/jnhw/
- * Copyright (C) 2020-2024, Arne Plöse and individual contributors as indicated
+ * Copyright (C) 2020-2025, Arne Plöse and individual contributors as indicated
  * by the @authors tag. See the copyright.txt in the distribution for a
  * full listing of individual contributors.
  *
@@ -102,7 +102,9 @@ public class SchedTest {
             case APPLE ->
                 Assertions.assertEquals(47, result);
             case FREE_BSD ->
-                Assertions.assertEquals(103, result);
+                //freebsd 13 was 103
+                //freebsd 14 arm64 is 135
+                Assertions.assertEquals(135, result);
             case OPEN_BSD ->
                 Assertions.assertEquals(31, result);
             default ->
@@ -198,7 +200,13 @@ public class SchedTest {
 
                 Sched.sched_setparam(Unistd.getpid(), param);
                 Sched.sched_getparam(Unistd.getpid(), param1);
-                Assertions.assertEquals(param.sched_priority(), param1.sched_priority());
+
+                if (MultiarchTupelBuilder.getOS() == OS.FREE_BSD) {
+                    //since FreeBSD 14
+                    Assertions.assertEquals(Sched.sched_get_priority_max(Sched.SCHED_OTHER), param1.sched_priority());
+                } else {
+                    Assertions.assertEquals(param.sched_priority(), param1.sched_priority());
+                }
             }
         }
     }

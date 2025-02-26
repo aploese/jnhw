@@ -1,6 +1,6 @@
 /*
  * JNHW - Java Native header Wrapper, https://github.com/aploese/jnhw/
- * Copyright (C) 2020-2024, Arne Plöse and individual contributors as indicated
+ * Copyright (C) 2020-2025, Arne Plöse and individual contributors as indicated
  * by the @authors tag. See the copyright.txt in the distribution for a
  * full listing of individual contributors.
  *
@@ -22,6 +22,7 @@
 package de.ibapl.jnhw.posix;
 
 import de.ibapl.jnhw.common.datatypes.BaseDataType;
+import de.ibapl.jnhw.common.datatypes.Sign;
 import de.ibapl.jnhw.common.downcall.JnhwMh_MA___A;
 import de.ibapl.jnhw.common.downcall.JnhwMh_MA___A_sI;
 import de.ibapl.jnhw.common.downcall.JnhwMh_MA___V;
@@ -101,6 +102,24 @@ public final class LibJnhwPosixTestLoader {
 
     public static short invoke_sS___V(String name) {
         return JnhwMh_sS___V.mandatoryOf(SYMBOL_LOOKUP, name, BaseDataType.int16_t).invoke_sS___V();
+    }
+
+    //sync with PosixDataTYpesTest.c
+    private final static byte SIGNED = 0x01;
+    private final static byte UNSIGNED = 0x02;
+    private final static byte NO_SIGN = 0x04;
+
+    public static Sign invokeExact_CharToSign_V(String name) {
+        return switch (JnhwMh_sB___V.mandatoryOf(SYMBOL_LOOKUP, name, BaseDataType.int8_t).invoke_sB___V()) {
+            case SIGNED ->
+                Sign.Signed;
+            case UNSIGNED ->
+                Sign.Unsigned;
+            case NO_SIGN ->
+                Sign.No_Sign;
+            default ->
+                throw new RuntimeException("Cant get sign of: " + name + " value from native is: " + JnhwMh_sB___V.mandatoryOf(SYMBOL_LOOKUP, name, BaseDataType.int8_t).invoke_sB___V());
+        };
     }
 
     public static boolean invokeExact_CharToBool_V(String name) {

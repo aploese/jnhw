@@ -1,6 +1,6 @@
 /*
  * JNHW - Java Native header Wrapper, https://github.com/aploese/jnhw/
- * Copyright (C) 2019-2023, Arne Plöse and individual contributors as indicated
+ * Copyright (C) 2019-2025, Arne Plöse and individual contributors as indicated
  * by the @authors tag. See the copyright.txt in the distribution for a
  * full listing of individual contributors.
  *
@@ -59,7 +59,7 @@ public abstract class Errno {
             throw new RuntimeException("Dont know how to get errno location");
     },
             BaseDataType.C_int_pointer,
-            BaseDataType.C_int.SIZE_OF);
+            BaseDataType.C_int.byteSize);
 
     public static interface BsdDefines {
 

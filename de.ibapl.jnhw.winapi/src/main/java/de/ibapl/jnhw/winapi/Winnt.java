@@ -1,6 +1,6 @@
 /*
  * JNHW - Java Native header Wrapper, https://github.com/aploese/jnhw/
- * Copyright (C) 2019-2023, Arne Plöse and individual contributors as indicated
+ * Copyright (C) 2019-2025, Arne Plöse and individual contributors as indicated
  * by the @authors tag. See the copyright.txt in the distribution for a
  * full listing of individual contributors.
  *
@@ -55,11 +55,11 @@ public final class Winnt {
         public final int length;
 
         public static ArrayOfHandle allocateNative(int length, Arena arena) {
-            return new ArrayOfHandle(arena.allocate(length * WinApiDataType.HANDLE.SIZE_OF, WinApiDataType.HANDLE.ALIGN_OF.alignof), length);
+            return new ArrayOfHandle(arena.allocate(length * WinApiDataType.HANDLE.byteSize, WinApiDataType.HANDLE.byteAlignment), length);
         }
 
         public ArrayOfHandle(MemorySegment memorySegment, int length) {
-            super(memorySegment, 0, length * WinApiDataType.HANDLE.SIZE_OF);
+            super(memorySegment, 0, length * WinApiDataType.HANDLE.byteSize);
             this.length = length;
         }
 
@@ -196,7 +196,7 @@ public final class Winnt {
      */
     public static class LPWSTR extends WinApiStruct {
 
-        private final static int SIZE_OF_WCHAR = WinApiDataType.WCHAR.SIZE_OF;
+        private final static int SIZE_OF_WCHAR = WinApiDataType.WCHAR.byteSize;
 
         public static LPWSTR allocateNative(int stringLength, Arena arena) {
             return new LPWSTR(arena.allocate(stringLength * SIZE_OF_WCHAR, 2), 0, stringLength);
@@ -307,8 +307,8 @@ public final class Winnt {
 
         }
 
-        protected final static int SIZE_OF = WinApiDataType.PHANDLE.SIZE_OF;
-        protected final static Alignment ALIGN_OF = WinApiDataType.PHANDLE.ALIGN_OF;
+        protected final static int SIZE_OF = WinApiDataType.PHANDLE.byteSize;
+        protected final static Alignment ALIGN_OF = WinApiDataType.PHANDLE.ALIGNMENT;
 
         HANDLE cachedHandle;
 

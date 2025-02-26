@@ -1,6 +1,6 @@
 /*
  * JNHW - Java Native header Wrapper, https://github.com/aploese/jnhw/
- * Copyright (C) 2020-2024, Arne Plöse and individual contributors as indicated
+ * Copyright (C) 2020-2025, Arne Plöse and individual contributors as indicated
  * by the @authors tag. See the copyright.txt in the distribution for a
  * full listing of individual contributors.
  *
@@ -80,7 +80,7 @@ public abstract class BaseTsd {
         public final static BaseDataType DATA_TYPE = WinApiDataType.ULONG_PTR;
 
         public static PULONG_PTR allocateNative(Arena arena) {
-            final MemorySegment segment = arena.allocate(DATA_TYPE.SIZE_OF, DATA_TYPE.ALIGN_OF.alignof);
+            final MemorySegment segment = arena.allocate(DATA_TYPE.byteSize, DATA_TYPE.byteAlignment);
             switch (DATA_TYPE) {
                 case uint32_t -> {
                     return new PULONG_PTR32(segment, 0);
@@ -94,7 +94,7 @@ public abstract class BaseTsd {
         }
 
         protected PULONG_PTR(MemorySegment memorySegment, long offset) {
-            super(memorySegment, offset, DATA_TYPE.SIZE_OF);
+            super(memorySegment, offset, DATA_TYPE.byteSize);
         }
 
         public abstract long PULONG_PTR();

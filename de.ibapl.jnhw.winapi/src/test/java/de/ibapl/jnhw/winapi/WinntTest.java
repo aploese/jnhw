@@ -1,6 +1,6 @@
 /*
  * JNHW - Java Native header Wrapper, https://github.com/aploese/jnhw/
- * Copyright (C) 2021-2024, Arne Plöse and individual contributors as indicated
+ * Copyright (C) 2021-2025, Arne Plöse and individual contributors as indicated
  * by the @authors tag. See the copyright.txt in the distribution for a
  * full listing of individual contributors.
  *
@@ -61,7 +61,7 @@ public class WinntTest {
         Winnt.LPWSTR lpWStr = Winnt.LPWSTR.allocateNative(64, arena);
         OpaqueMemory.copy(data, 0, lpWStr, 0, data.length);
         Assertions.assertEquals("HELLO WORLD!", lpWStr.getUnicodeString(str.length() - 1));
-        Assertions.assertEquals("HELLO WORLD!", lpWStr.getUnicodeString(data.length / WinApiDataType.WCHAR.SIZE_OF - 1));
+        Assertions.assertEquals("HELLO WORLD!", lpWStr.getUnicodeString(data.length / WinApiDataType.WCHAR.byteSize - 1));
     }
 
     @Test

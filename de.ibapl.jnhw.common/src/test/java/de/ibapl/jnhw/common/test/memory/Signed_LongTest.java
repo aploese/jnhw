@@ -1,6 +1,6 @@
 /*
  * JNHW - Java Native header Wrapper, https://github.com/aploese/jnhw/
- * Copyright (C) 2021-2024, Arne Plöse and individual contributors as indicated
+ * Copyright (C) 2021-2025, Arne Plöse and individual contributors as indicated
  * by the @authors tag. See the copyright.txt in the distribution for a
  * full listing of individual contributors.
  *
@@ -66,7 +66,7 @@ public class Signed_LongTest {
         try (Arena arena = Arena.ofConfined()) {
             Signed_Long instance = Signed_Long.allocateNative(arena);
             long input64 = 0x8070605040302010L;
-            if (BaseDataType.C_long.SIZE_OF == 8) {
+            if (BaseDataType.C_long.byteSize == 8) {
                 instance.signed_long(input64);
                 assertEquals(input64, instance.signed_long());
             } else {
@@ -76,7 +76,7 @@ public class Signed_LongTest {
             }
             instance.signed_long(-33);
             assertEquals(-33, instance.signed_long());
-            if (BaseDataType.C_long.SIZE_OF == 8) {
+            if (BaseDataType.C_long.byteSize == 8) {
                 instance.signed_long(input64);
                 assertEquals(input64, instance.signed_long());
             } else {
@@ -88,8 +88,8 @@ public class Signed_LongTest {
     @Test
     public void testNativeToString() {
         try (Arena arena = Arena.ofConfined()) {
-            Signed_Long instance = new Signed_Long(arena.allocate(Signed_Long.DATA_TYPE.SIZE_OF), 0);
-            if (BaseDataType.C_long.SIZE_OF == 8) {
+            Signed_Long instance = new Signed_Long(arena.allocate(Signed_Long.DATA_TYPE.byteSize), 0);
+            if (BaseDataType.C_long.byteSize == 8) {
                 Int64_t int64_t = Int64_t.map(instance, 0);
                 int64_t.int64_t(0xfffffffffffffffeL);
                 assertEquals(Integer.toString(0xfffffffe), instance.nativeToString());

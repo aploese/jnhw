@@ -1,6 +1,6 @@
 /*
  * JNHW - Java Native header Wrapper, https://github.com/aploese/jnhw/
- * Copyright (C) 2022-2024, Arne Plöse and individual contributors as indicated
+ * Copyright (C) 2022-2025, Arne Plöse and individual contributors as indicated
  * by the @authors tag. See the copyright.txt in the distribution for a
  * full listing of individual contributors.
  *
@@ -71,7 +71,7 @@ final class CallbackFactoryPAPCFUNC {
     }
 
     static MemorySegment registerCallBack(int index) throws NoSuchMethodException, IllegalAccessException {
-        switch (WinApiDataType.ULONG_PTR.SIZE_OF) {
+        switch (WinApiDataType.ULONG_PTR.byteSize) {
             case 4 -> {
                 final MethodHandle handle = MethodHandles.lookup().findStatic(CallbackFactoryPAPCFUNC.class, "trampoline32_" + index, MethodType.methodType(void.class, int.class));
                 return NATIVE_LINKER.upcallStub(handle, FunctionDescriptor.ofVoid(ValueLayout.JAVA_INT), Arena.global());
@@ -81,7 +81,7 @@ final class CallbackFactoryPAPCFUNC {
                 return NATIVE_LINKER.upcallStub(handle, FunctionDescriptor.ofVoid(ValueLayout.JAVA_LONG), Arena.global());
             }
             default ->
-                throw new RuntimeException("Can't handle sizeof ULONG_PTR = " + WinApiDataType.ULONG_PTR.SIZE_OF);
+                throw new RuntimeException("Can't handle sizeof ULONG_PTR = " + WinApiDataType.ULONG_PTR.byteSize);
         }
     }
 

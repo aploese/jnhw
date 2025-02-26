@@ -1,6 +1,6 @@
 /*
  * JNHW - Java Native header Wrapper, https://github.com/aploese/jnhw/
- * Copyright (C) 2021-2024, Arne Plöse and individual contributors as indicated
+ * Copyright (C) 2021-2025, Arne Plöse and individual contributors as indicated
  * by the @authors tag. See the copyright.txt in the distribution for a
  * full listing of individual contributors.
  *
@@ -190,7 +190,7 @@ public class BaseDataTypeTest {
     @Test
     public void testEndianes() {
         try (Arena arena = Arena.ofConfined()) {
-            final Uint64_t uint64_t = new Uint64_t(arena.allocate(BaseDataType.uint64_t.SIZE_OF), 0);
+            final Uint64_t uint64_t = new Uint64_t(arena.allocate(BaseDataType.uint64_t.byteSize), 0);
             OpaqueMemory.setByte(uint64_t, 0, (byte) 0x01);
             OpaqueMemory.setByte(uint64_t, 1, (byte) 0x02);
             OpaqueMemory.setByte(uint64_t, 2, (byte) 0x03);
@@ -212,21 +212,14 @@ public class BaseDataTypeTest {
     @Test
     public void testSizes() {
         assertAll(
-                () -> {
-                    assertEquals(getSizeOf_int(), BaseDataType.C_int.SIZE_OF, "sizeOf int");
-                }, () -> {
-                    assertEquals(getSizeOf_long(), BaseDataType.C_long.SIZE_OF, "sizeOf long");
-                }, () -> {
-                    assertEquals(getSizeOf_long_long(), BaseDataType.C_long_long.SIZE_OF, "sizeOf long long");
-                }, () -> {
-                    assertEquals(getSizeOfPointer(), BaseDataType.C_pointer.SIZE_OF, "sizeof void*");
-                }, () -> {
-                    assertEquals(getSizeOf_float(), BaseDataType._float.SIZE_OF, "sizeOf float");
-                }, () -> {
-                    assertEquals(getSizeOf_double(), BaseDataType._double.SIZE_OF, "sizeOf double");
-                }, () -> {
-                    assertEquals(getSizeOf_long_double(), BaseDataType._long_double.SIZE_OF, "sizeOf long double");
-                });
+                () -> assertEquals(getSizeOf_int(), BaseDataType.C_int.byteSize, "sizeof int"),
+                () -> assertEquals(getSizeOf_long(), BaseDataType.C_long.byteSize, "sizeof long"),
+                () -> assertEquals(getSizeOf_long_long(), BaseDataType.C_long_long.byteSize, "sizeof long long"),
+                () -> assertEquals(getSizeOfPointer(), BaseDataType.C_pointer.byteSize, "sizeof void*"),
+                () -> assertEquals(getSizeOf_float(), BaseDataType._float.byteSize, "sizeof float"),
+                () -> assertEquals(getSizeOf_double(), BaseDataType._double.byteSize, "sizeof double"),
+                () -> assertEquals(getSizeOf_long_double(), BaseDataType._long_double.byteSize, "sizeof long double")
+        );
     }
 
 }

@@ -1,6 +1,6 @@
 /*
  * JNHW - Java Native header Wrapper, https://github.com/aploese/jnhw/
- * Copyright (C) 2020-2024, Arne Plöse and individual contributors as indicated
+ * Copyright (C) 2020-2025, Arne Plöse and individual contributors as indicated
  * by the @authors tag. See the copyright.txt in the distribution for a
  * full listing of individual contributors.
  *
@@ -37,6 +37,7 @@ import de.ibapl.jnhw.common.memory.layout.Alignment;
 import de.ibapl.jnhw.common.util.IntDefine;
 import de.ibapl.jnhw.libloader.MultiarchTupelBuilder;
 import de.ibapl.jnhw.libloader.libraries.LibcLoader;
+import de.ibapl.jnhw.util.posix.Defines;
 import de.ibapl.jnhw.util.posix.PosixDataType;
 import java.lang.foreign.Arena;
 import java.lang.foreign.MemorySegment;
@@ -354,7 +355,7 @@ public class Sched {
 
     private final static JnhwMh_sI__sI__A sched_rr_get_interval = JnhwMh_sI__sI__A.optionalOf(
             LibcLoader.LIB_C_SYMBOL_LOOKUP,
-            "sched_rr_get_interval",
+            Defines._TIME_BITS.equals(64) ? "__sched_rr_get_interval64" : "sched_rr_get_interval",
             BaseDataType.C_int,
             PosixDataType.pid_t,
             BaseDataType.C_struct_pointer);

@@ -1,6 +1,6 @@
 /*
  * JNHW - Java Native header Wrapper, https://github.com/aploese/jnhw/
- * Copyright (C) 2021-2024, Arne Plöse and individual contributors as indicated
+ * Copyright (C) 2021-2025, Arne Plöse and individual contributors as indicated
  * by the @authors tag. See the copyright.txt in the distribution for a
  * full listing of individual contributors.
  *
@@ -37,7 +37,7 @@ public class Int8_t extends NativeIntNumber<Byte> {
     public final static BaseDataType DATA_TYPE = BaseDataType.int8_t;
 
     public static Int8_t allocateNative(Arena arena) {
-        return new Int8_t(arena.allocate(DATA_TYPE.SIZE_OF, DATA_TYPE.ALIGN_OF.alignof), 0);
+        return new Int8_t(arena.allocate(DATA_TYPE.byteSize, DATA_TYPE.byteAlignment), 0);
     }
 
     public static Int8_t map(OpaqueMemory mem, long offset) {
@@ -45,7 +45,7 @@ public class Int8_t extends NativeIntNumber<Byte> {
     }
 
     public Int8_t(MemorySegment memorySegment, long offset) {
-        super(memorySegment, offset, DATA_TYPE.SIZE_OF);
+        super(memorySegment, offset, DATA_TYPE.byteSize);
     }
 
     @int8_t

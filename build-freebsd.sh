@@ -1,4 +1,4 @@
-export JAVA_HOME=/usr/local/openjdk19/
+export JAVA_HOME=/usr/local/openjdk23/
 
 mvn clean compile  || exit 1
 

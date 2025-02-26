@@ -13,8 +13,8 @@
     </description>
 
     <properties>
-        <compile.source>22</compile.source>
-        <compile.target>22</compile.target>
+        <compile.source>23</compile.source>
+        <compile.target>23</compile.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <commandLineArg.ChooseVM/>
         <nativeProvider.propertyName>de.ibapl.jnhw.common.util.NativeProvider</nativeProvider.propertyName>
@@ -84,19 +84,19 @@
                 <groupId>org.junit.jupiter</groupId>
                 <artifactId>junit-jupiter-api</artifactId>
                 <scope>test</scope>
-                <version>5.10.2</version>
+                <version>5.11.4</version>
             </dependency>
             <dependency>
                 <groupId>org.junit.jupiter</groupId>
                 <artifactId>junit-jupiter-engine</artifactId>
                 <scope>test</scope>
-                <version>5.10.2</version>
+                <version>5.11.4</version>
             </dependency>
             <dependency>
                 <groupId>org.junit.jupiter</groupId>
                 <artifactId>junit-jupiter-params</artifactId>
                 <scope>test</scope>
-                <version>5.10.2</version>
+                <version>5.11.4</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
@@ -135,6 +135,12 @@
             </properties>
         </profile>
         <profile>
+            <id>ServerVM</id>
+            <properties>
+                <commandLineArg.ChooseVM>-server</commandLineArg.ChooseVM>
+            </properties>
+        </profile>
+        <profile>
             <id>ZeroVM</id>
             <properties>
                 <commandLineArg.ChooseVM>-zero</commandLineArg.ChooseVM>
@@ -148,7 +154,7 @@
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-enforcer-plugin</artifactId>
-                    <version>3.4.1</version>
+                    <version>3.5.0</version>
                     <executions>
                         <execution>
                             <id>enforce-maven</id>
@@ -168,7 +174,7 @@
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-surefire-plugin</artifactId>
-                    <version>3.2.5</version>
+                    <version>3.5.2</version>
                     <configuration>
                         <!--forkedProcessExitTimeoutInSeconds>3600</forkedProcessExitTimeoutInSeconds>
                         <forkedProcessTimeoutInSeconds>1800</forkedProcessTimeoutInSeconds-->
@@ -178,7 +184,7 @@
                 <plugin>
                     <groupId>org.codehaus.mojo</groupId>
                     <artifactId>exec-maven-plugin</artifactId>
-                    <version>3.2.0</version>
+                    <version>3.5.0</version>
                     <configuration>
                         <arguments>${commandLineArg.ChooseVM} ${commandLineArg.NativeProvider}</arguments>                    
                     </configuration>
@@ -186,7 +192,7 @@
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-compiler-plugin</artifactId>
-                    <version>3.12.1</version>
+                    <version>3.13.0</version>
                     <configuration>
                         <source>${compile.source}</source>
                         <release>${compile.target}</release>
@@ -205,7 +211,7 @@
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-jar-plugin</artifactId>
-                    <version>3.3.0</version>
+                    <version>3.4.2</version>
                     <configuration>
                         <archive>
                             <manifestFile>${project.build.outputDirectory}/META-INF/MANIFEST.MF</manifestFile>
@@ -215,7 +221,7 @@
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-release-plugin</artifactId>
-                    <version>3.0.1</version>
+                    <version>3.1.1</version>
                     <configuration>
                         <localCheckout>true</localCheckout>
                         <pushChanges>false</pushChanges>
@@ -224,7 +230,7 @@
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-gpg-plugin</artifactId>
-                    <version>3.2.0</version>
+                    <version>3.2.7</version>
                     <executions>
                         <execution>
                             <id>sign-artifacts</id>
@@ -238,29 +244,29 @@
                 <plugin>
                     <groupId>com.mycila</groupId>
                     <artifactId>license-maven-plugin</artifactId>
-                    <version>4.3</version>
+                    <version>4.6</version>
                     <dependencies>
                         <dependency>
                             <groupId>com.mycila</groupId>
                             <artifactId>license-maven-plugin-git</artifactId>
-                            <version>4.3</version>
+                            <version>4.6</version>
                         </dependency>
                     </dependencies>
                 </plugin>
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-javadoc-plugin</artifactId>
-                    <version>3.6.3</version>
+                    <version>3.11.2</version>
                 </plugin>
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-source-plugin</artifactId>
-                    <version>3.3.0</version>
+                    <version>3.3.1</version>
                 </plugin>
                 <plugin>
                     <groupId>biz.aQute.bnd</groupId>
                     <artifactId>bnd-maven-plugin</artifactId>
-                    <version>7.0.0</version>
+                    <version>7.1.0</version>
                     <executions>
                         <execution>
                             <goals>
@@ -273,12 +279,12 @@
                 <plugin>
                     <groupId>biz.aQute.bnd</groupId>
                     <artifactId>bnd-testing-maven-plugin</artifactId>
-                    <version>7.0.0</version>
+                    <version>7.1.0</version>
                 </plugin>
                 <plugin>
                     <groupId>com.github.spotbugs</groupId>
                     <artifactId>spotbugs-maven-plugin</artifactId>
-                    <version>4.8.3.1</version>
+                    <version>4.8.6.6</version>
                 </plugin>
             </plugins>
         </pluginManagement>

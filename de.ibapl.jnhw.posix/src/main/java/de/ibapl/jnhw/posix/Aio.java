@@ -1,6 +1,6 @@
 /*
  * JNHW - Java Native header Wrapper, https://github.com/aploese/jnhw/
- * Copyright (C) 2019-2023, Arne Plöse and individual contributors as indicated
+ * Copyright (C) 2019-2025, Arne Plöse and individual contributors as indicated
  * by the @authors tag. See the copyright.txt in the distribution for a
  * full listing of individual contributors.
  *
@@ -41,11 +41,13 @@ import de.ibapl.jnhw.common.memory.PointerArray;
 import de.ibapl.jnhw.common.memory.layout.Alignment;
 import de.ibapl.jnhw.common.util.IntDefine;
 import de.ibapl.jnhw.common.util.JsonStringBuilder;
+import de.ibapl.jnhw.libloader.Arch;
 import de.ibapl.jnhw.libloader.MultiarchTupelBuilder;
 import de.ibapl.jnhw.libloader.libraries.LibcLoader;
 import de.ibapl.jnhw.libloader.libraries.LibrtLoader;
 import de.ibapl.jnhw.posix.Signal.Sigevent;
 import de.ibapl.jnhw.posix.Time.Timespec;
+import de.ibapl.jnhw.util.posix.Defines;
 import de.ibapl.jnhw.util.posix.PosixDataType;
 import de.ibapl.jnhw.util.posix.memory.PosixStruct;
 import java.io.IOException;
@@ -95,7 +97,7 @@ public class Aio {
                             offsetof_Aio_reqprio = 8;
                             offsetof_Aio_sigevent = 20;
                             offsetof_Aio_lio_opcode = 4;
-                            alignof = Alignment.AT_4;
+                            alignof = Defines._FILE_OFFSET_BITS.equals(64) ? Alignment.AT_8 : Alignment.AT_4;
                             sizeof = 144;
                         }
                         case LP64 -> {
@@ -527,7 +529,7 @@ public class Aio {
             if (Aiocb.alignof == null) {
                 throw new NoSuchNativeTypeException("aiocb");
             }
-            return new Aiocbs(arena.allocate(BaseDataType.uintptr_t.SIZE_OF * arraylength, BaseDataType.uintptr_t.ALIGN_OF.alignof), 0, arraylength);
+            return new Aiocbs(arena.allocate(BaseDataType.uintptr_t.byteSize * arraylength, BaseDataType.uintptr_t.byteAlignment), 0, arraylength);
         }
 
         public Aiocbs(MemorySegment memorySegment, long offset, int arrayLength) throws NoSuchNativeTypeException {
@@ -718,39 +720,39 @@ public class Aio {
 
     private final static JnhwMh_sI__sI__A aio_cancel = JnhwMh_sI__sI__A.optionalOf(
             getRtLib(),
-            "aio_cancel",
+            Defines._FILE_OFFSET_BITS.equals(64) ? "aio_cancel64" : "aio_cancel",
             BaseDataType.C_int,
             BaseDataType.C_int,
             BaseDataType.C_struct_pointer);
 
     private final static JnhwMh_sI___A aio_error = JnhwMh_sI___A.optionalOf(
             getRtLib(),
-            "aio_error",
+            Defines._FILE_OFFSET_BITS.equals(64) ? "aio_error64" : "aio_error",
             BaseDataType.C_int,
             BaseDataType.C_const_struct_pointer);
 
     private final static JnhwMh_sI__sI__A aio_fsync = JnhwMh_sI__sI__A.optionalOf(
             getRtLib(),
-            "aio_fsync",
+            Defines._FILE_OFFSET_BITS.equals(64) ? "aio_fsync64" : "aio_fsync",
             BaseDataType.C_int,
             BaseDataType.C_int,
             BaseDataType.C_struct_pointer);
 
     private final static JnhwMh_sI___A aio_read = JnhwMh_sI___A.optionalOf(
             getRtLib(),
-            "aio_read",
+            Defines._FILE_OFFSET_BITS.equals(64) ? "aio_read64" : "aio_read",
             BaseDataType.C_int,
             BaseDataType.C_struct_pointer);
 
     private final static JnhwMh_sL___A aio_return = JnhwMh_sL___A.optionalOf(
             getRtLib(),
-            "aio_return",
+            Defines._FILE_OFFSET_BITS.equals(64) ? "aio_return64" : "aio_return",
             PosixDataType.ssize_t,
             BaseDataType.C_struct_pointer);
 
     private final static JnhwMh_sI___A_sI__A aio_suspend = JnhwMh_sI___A_sI__A.optionalOf(
             getRtLib(),
-            "aio_suspend",
+            Defines._FILE_OFFSET_BITS.equals(64) ? Defines._TIME_BITS.equals(64) ? "__aio_suspend_time64" : "aio_suspend64" : "aio_suspend",
             BaseDataType.C_int,
             BaseDataType.C_const_struct_array,
             BaseDataType.C_int,
@@ -758,13 +760,13 @@ public class Aio {
 
     private final static JnhwMh_sI___A aio_write = JnhwMh_sI___A.optionalOf(
             getRtLib(),
-            "aio_write",
+            Defines._FILE_OFFSET_BITS.equals(64) ? "aio_write64" : "aio_write",
             BaseDataType.C_int,
             BaseDataType.C_struct_pointer);
 
     private final static JnhwMh_sI__sI__A_sI__A lio_listio = JnhwMh_sI__sI__A_sI__A.optionalOf(
             getRtLib(),
-            "lio_listio",
+            Defines._FILE_OFFSET_BITS.equals(64) ? "lio_listio64" : "lio_listio",
             BaseDataType.C_int,
             BaseDataType.C_int,
             BaseDataType.C_const_struct_array,

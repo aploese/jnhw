@@ -1,6 +1,6 @@
 /*
  * JNHW - Java Native header Wrapper, https://github.com/aploese/jnhw/
- * Copyright (C) 2019-2024, Arne Plöse and individual contributors as indicated
+ * Copyright (C) 2019-2025, Arne Plöse and individual contributors as indicated
  * by the @authors tag. See the copyright.txt in the distribution for a
  * full listing of individual contributors.
  *
@@ -58,12 +58,14 @@ import de.ibapl.jnhw.common.memory.Struct;
 import de.ibapl.jnhw.common.memory.layout.Alignment;
 import de.ibapl.jnhw.common.util.IntDefine;
 import de.ibapl.jnhw.common.util.JsonStringBuilder;
+import de.ibapl.jnhw.libloader.Arch;
 import de.ibapl.jnhw.libloader.MultiarchTupelBuilder;
 import de.ibapl.jnhw.libloader.libraries.LibcLoader;
 import de.ibapl.jnhw.libloader.libraries.LibrtLoader;
 import de.ibapl.jnhw.posix.Signal.Sigevent;
 import de.ibapl.jnhw.posix.sys.Types;
 import de.ibapl.jnhw.posix.sys.Types.Clockid_t;
+import de.ibapl.jnhw.util.posix.Defines;
 import de.ibapl.jnhw.util.posix.PosixDataType;
 import de.ibapl.jnhw.util.posix.downcall.JnhwMh_clock_t___V;
 import de.ibapl.jnhw.util.posix.memory.PosixStruct;
@@ -139,9 +141,16 @@ public class Time {
                     offsetof_It_interval = 0;
                     switch (MultiarchTupelBuilder.getMemoryModel()) {
                         case ILP32 -> {
-                            offsetof_It_value = 8;
-                            alignof = Alignment.AT_4;
-                            sizeof = 16;
+                            if (Defines._TIME_BITS.equals(64)) {
+                                //glibc > 2.34
+                                offsetof_It_value = 16;
+                                alignof = MultiarchTupelBuilder.getArch() == Arch.I386 ? Alignment.AT_4 : Alignment.AT_8;
+                                sizeof = 32;
+                            } else {
+                                offsetof_It_value = 8;
+                                alignof = Alignment.AT_4;
+                                sizeof = 16;
+                            }
                         }
                         case LP64 -> {
                             offsetof_It_value = 16;
@@ -252,8 +261,8 @@ public class Time {
     @timer_t
     public static final class Timer_t extends OpaqueMemory {
 
-        public final static Alignment alignof = PosixDataType.timer_t != null ? PosixDataType.timer_t.ALIGN_OF : null;
-        public final static int sizeof = PosixDataType.timer_t != null ? PosixDataType.timer_t.SIZE_OF : 0;
+        public final static Alignment alignof = PosixDataType.timer_t != null ? PosixDataType.timer_t.ALIGNMENT : null;
+        public final static int sizeof = PosixDataType.timer_t != null ? PosixDataType.timer_t.byteSize : 0;
 
         public static Timer_t tryAllocateNative(Arena arena) throws NoSuchNativeTypeException {
             if (alignof == null) {
@@ -308,7 +317,7 @@ public class Time {
             if (Timer_t.alignof == null) {
                 throw new NoSuchNativeTypeException("Timer_t");
             }
-            return new PtrTimer_t(arena.allocate(DATA_TYPE.SIZE_OF, DATA_TYPE.ALIGN_OF.alignof), 0);
+            return new PtrTimer_t(arena.allocate(DATA_TYPE.byteSize, DATA_TYPE.byteAlignment), 0);
         }
 
         public PtrTimer_t(MemorySegment memorySegment, long offset) {
@@ -343,9 +352,15 @@ public class Time {
         static {
             switch (MultiarchTupelBuilder.getMemoryModel()) {
                 case ILP32 -> {
-                    offsetof_Tv_nsec = 4;
-                    alignof = Alignment.AT_4;
-                    sizeof = 8;
+                    if (Defines._TIME_BITS.equals(64)) {
+                        offsetof_Tv_nsec = MultiarchTupelBuilder.getArch() == Arch.POWER_PC ? 12 : 8;
+                        alignof = MultiarchTupelBuilder.getArch() == Arch.I386 ? Alignment.AT_4 : Alignment.AT_8;
+                        sizeof = 16;
+                    } else {
+                        offsetof_Tv_nsec = 4;
+                        alignof = Alignment.AT_4;
+                        sizeof = 8;
+                    }
                 }
                 case LP64 -> {
                     offsetof_Tv_nsec = 8;
@@ -879,21 +894,21 @@ public class Time {
 
     private final static JnhwMh_sI__sI__A.ExceptionErased clock_getres = JnhwMh_sI__sI__A.mandatoryOf(
             LibcLoader.LIB_C_SYMBOL_LOOKUP,
-            "clock_getres",
+            Defines._TIME_BITS.equals(64) ? "__clock_getres64" : "clock_getres",
             BaseDataType.C_int,
             PosixDataType.clockid_t,
             BaseDataType.C_struct_pointer);
 
     private final static JnhwMh_sI__sI__A.ExceptionErased clock_gettime = JnhwMh_sI__sI__A.mandatoryOf(
             LibcLoader.LIB_C_SYMBOL_LOOKUP,
-            "clock_gettime",
+            Defines._TIME_BITS.equals(64) ? "__clock_gettime64" : "clock_gettime",
             BaseDataType.C_int,
             PosixDataType.clockid_t,
             BaseDataType.C_struct_pointer);
 
     private final static JnhwMh_sI__sI_sI__A__A clock_nanosleep = JnhwMh_sI__sI_sI__A__A.optionalOf(
             LibcLoader.LIB_C_SYMBOL_LOOKUP,
-            "clock_nanosleep",
+            Defines._TIME_BITS.equals(64) ? "__clock_nanosleep_time64" : "clock_nanosleep",
             BaseDataType.C_int,
             PosixDataType.clockid_t,
             BaseDataType.C_int,
@@ -902,21 +917,21 @@ public class Time {
 
     private final static JnhwMh_sI__sI__A.ExceptionErased clock_settime = JnhwMh_sI__sI__A.mandatoryOf(
             LibcLoader.LIB_C_SYMBOL_LOOKUP,
-            "clock_settime",
+            Defines._TIME_BITS.equals(64) ? "__clock_settime64" : "clock_settime",
             BaseDataType.C_int,
             PosixDataType.clockid_t,
             BaseDataType.C_const_struct_pointer);
 
     private final static JnhwMh_MA___A.ExceptionErased ctime = JnhwMh_MA___A.mandatoryOf(
             LibcLoader.LIB_C_SYMBOL_LOOKUP,
-            "ctime",
+            Defines._TIME_BITS.equals(64) ? "__ctime64" : "ctime",
             BaseDataType.C_char_pointer,
             BaseDataType.C_const_pointer,
             Long.MAX_VALUE);//result is a string, which length is not known.
 
     private final static JnhwMh_MA___A__A.ExceptionErased ctime_r = JnhwMh_MA___A__A.mandatoryOf(
             LibcLoader.LIB_C_SYMBOL_LOOKUP,
-            "ctime_r",
+            Defines._TIME_BITS.equals(64) ? "__ctime64_r" : "ctime_r",
             BaseDataType.C_char_pointer,
             BaseDataType.C_const_pointer,
             BaseDataType.C_char_pointer,
@@ -924,7 +939,7 @@ public class Time {
 
     private final static JnhwMh__D__sL_sL.ExceptionErased difftime = JnhwMh__D__sL_sL.mandatoryOf(
             LibcLoader.LIB_C_SYMBOL_LOOKUP,
-            "difftime",
+            Defines._TIME_BITS.equals(64) ? "__difftime64" : "difftime",
             BaseDataType._double,
             PosixDataType.time_t,
             PosixDataType.time_t);
@@ -938,14 +953,14 @@ public class Time {
 
     private final static JnhwMh_MA___A.ExceptionErased gmtime = JnhwMh_MA___A.mandatoryOf(
             LibcLoader.LIB_C_SYMBOL_LOOKUP,
-            "gmtime",
+            Defines._TIME_BITS.equals(64) ? "__gmtime64" : "gmtime",
             BaseDataType.C_struct_pointer,
             BaseDataType.C_pointer,
             Tm.sizeof);
 
     private final static JnhwMh_MA___A__A.ExceptionErased gmtime_r = JnhwMh_MA___A__A.mandatoryOf(
             LibcLoader.LIB_C_SYMBOL_LOOKUP,
-            "gmtime_r",
+            Defines._TIME_BITS.equals(64) ? "__gmtime64_r" : "gmtime_r",
             BaseDataType.C_struct_pointer,
             BaseDataType.C_pointer,
             BaseDataType.C_struct_pointer,
@@ -953,14 +968,14 @@ public class Time {
 
     private final static JnhwMh_MA___A.ExceptionErased localtime = JnhwMh_MA___A.mandatoryOf(
             LibcLoader.LIB_C_SYMBOL_LOOKUP,
-            "localtime",
+            Defines._TIME_BITS.equals(64) ? "__localtime64" : "localtime",
             BaseDataType.C_struct_pointer,
             BaseDataType.C_pointer,
             Tm.sizeof);
 
     private final static JnhwMh_MA___A__A.ExceptionErased localtime_r = JnhwMh_MA___A__A.mandatoryOf(
             LibcLoader.LIB_C_SYMBOL_LOOKUP,
-            "localtime_r",
+            Defines._TIME_BITS.equals(64) ? "__localtime64_r" : "localtime_r",
             BaseDataType.C_struct_pointer,
             BaseDataType.C_pointer,
             BaseDataType.C_struct_pointer,
@@ -968,13 +983,13 @@ public class Time {
 
     private final static JnhwMh_sL___A.ExceptionErased mktime = JnhwMh_sL___A.mandatoryOf(
             LibcLoader.LIB_C_SYMBOL_LOOKUP,
-            "mktime",
+            Defines._TIME_BITS.equals(64) ? "__mktime64" : "mktime",
             PosixDataType.time_t,
             BaseDataType.C_struct_pointer);
 
     private final static JnhwMh_sI___A__A.ExceptionErased nanosleep = JnhwMh_sI___A__A.mandatoryOf(
             LibcLoader.LIB_C_SYMBOL_LOOKUP,
-            "nanosleep",
+            Defines._TIME_BITS.equals(64) ? "__nanosleep64" : "nanosleep",
             BaseDataType.C_int,
             BaseDataType.C_const_struct_pointer,
             BaseDataType.C_struct_pointer);
@@ -1009,7 +1024,7 @@ public class Time {
 
     private final static JnhwMh_sL___A.ExceptionErased time = JnhwMh_sL___A.mandatoryOf(
             LibcLoader.LIB_C_SYMBOL_LOOKUP,
-            "time",
+            Defines._TIME_BITS.equals(64) ? "__time64" : "time",
             PosixDataType.time_t,
             BaseDataType.C_pointer);
 
@@ -1035,14 +1050,14 @@ public class Time {
 
     private final static JnhwMh_sI___A__A timer_gettime = JnhwMh_sI___A__A.optionalOf(
             getRtLib(),
-            "timer_gettime",
+            Defines._TIME_BITS.equals(64) ? "__timer_gettime64" : "timer_gettime",
             BaseDataType.C_int,
             PosixDataType.timer_t,
             BaseDataType.C_struct_pointer);
 
     private final static JnhwMh_sI___A_sI__A__A timer_settime = JnhwMh_sI___A_sI__A__A.optionalOf(
             getRtLib(),
-            "timer_settime",
+            Defines._TIME_BITS.equals(64) ? "__timer_settime64" : "timer_settime",
             BaseDataType.C_int,
             PosixDataType.timer_t,
             BaseDataType.C_int,
@@ -1256,7 +1271,7 @@ public class Time {
         }
     }
 
-    private final static Optional<MemorySegment> daylight = LibcLoader.find("daylight", BaseDataType.C_int.SIZE_OF);
+    private final static Optional<MemorySegment> daylight = LibcLoader.find("daylight", BaseDataType.C_int.byteSize);
 
     /**
      * <b>POSIX.XSI:</b>
@@ -1286,7 +1301,7 @@ public class Time {
         return difftime.invoke__D__sL_sL(time1, time0);
     }
 
-    private final static Optional<MemorySegment> getdate_err = LibcLoader.find("getdate_err", BaseDataType.C_int.SIZE_OF);
+    private final static Optional<MemorySegment> getdate_err = LibcLoader.find("getdate_err", BaseDataType.C_int.byteSize);
 
     /**
      * <b>POSIX.XSI:</b>
@@ -1661,7 +1676,7 @@ public class Time {
     private final static AsSignedLong timezone;
 
     static {
-        MemorySegment mem = LibcLoader.find("timezone", BaseDataType.C_long.SIZE_OF).get();
+        MemorySegment mem = LibcLoader.find("timezone", BaseDataType.C_long.byteSize).get();
         timezone = new AsSignedLong(BaseDataType.C_long, mem, 0);
     }
 
@@ -1677,7 +1692,7 @@ public class Time {
     }
 
     private final static int TZNAME_ENTRIES = 2;
-    private final static MemorySegment tzname = LibcLoader.find("tzname", BaseDataType.C_char_pointer.SIZE_OF * 2).get();
+    private final static MemorySegment tzname = LibcLoader.find("tzname", BaseDataType.C_char_pointer.byteSize * 2).get();
 
     /**
      * <b>POSIX.CX:</b>

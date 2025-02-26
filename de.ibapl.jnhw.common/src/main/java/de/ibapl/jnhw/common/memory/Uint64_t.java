@@ -1,6 +1,6 @@
 /*
  * JNHW - Java Native header Wrapper, https://github.com/aploese/jnhw/
- * Copyright (C) 2021-2024, Arne Plöse and individual contributors as indicated
+ * Copyright (C) 2021-2025, Arne Plöse and individual contributors as indicated
  * by the @authors tag. See the copyright.txt in the distribution for a
  * full listing of individual contributors.
  *
@@ -37,11 +37,11 @@ public class Uint64_t extends NativeIntNumber {
     public final static BaseDataType DATA_TYPE = BaseDataType.uint64_t;
 
     public static Uint64_t allocateNative(Arena arena) {
-        return new Uint64_t(arena.allocate(DATA_TYPE.SIZE_OF, DATA_TYPE.ALIGN_OF.alignof), 0);
+        return new Uint64_t(arena.allocate(DATA_TYPE.byteSize, DATA_TYPE.byteAlignment), 0);
     }
 
     public Uint64_t(MemorySegment memorySegment, long offset) {
-        super(memorySegment, offset, DATA_TYPE.SIZE_OF);
+        super(memorySegment, offset, DATA_TYPE.byteSize);
     }
 
     public static Uint64_t map(OpaqueMemory mem, long offset) {

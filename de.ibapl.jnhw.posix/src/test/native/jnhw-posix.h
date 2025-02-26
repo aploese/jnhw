@@ -1,6 +1,6 @@
 /**
  * JNHW - Java Native header Wrapper, https://github.com/aploese/jnhw/
- * Copyright (C) 2022-2024, Arne Plöse and individual contributors as indicated
+ * Copyright (C) 2022-2025, Arne Plöse and individual contributors as indicated
  * by the @authors tag. See the copyright.txt in the distribution for a
  * full listing of individual contributors.
  *
@@ -31,8 +31,30 @@
 #endif
 
 #if  defined(__linux__)
+
 # define _GNU_SOURCE
+
+//ARM does not define _ILP32 ...
+#if defined(__ARM__)
+// as of 20250213 debian does define _FILE_OFFSET_BITS 64 and _TIME_BITS 64 on arm
+//#define _FILE_OFFSET_BITS 64
+//#define _TIME_BITS 64
+//undefine for testing... as of 2025/02/13...
+//#undef _FILE_OFFSET_BITS
+//#undef _TIME_BITS
+#endif
+
+# if defined(_ILP32)  
+// as of 20250213 debian does not define _FILE_OFFSET_BITS on i386
+//#  define _FILE_OFFSET_BITS 64
+//#  define _TIME_BITS 64 
+//undefine for testing... as of 2025/02/13...
+//#undef _FILE_OFFSET_BITS
+//#undef _TIME_BITS
+# endif
+
 #elif defined(__FreeBSD__)
+
 # define _POSIX_C_SOURCE 200809
 # define _XOPEN_SOURCE 700
 # define _XOPEN_SOURCE_EXTENDED 1
@@ -40,17 +62,22 @@
 # define __BSD_VISIBLE 1
 # define __EXT1_VISIBLE 1
 //no
+
 #elif defined(__OpenBSD__)
+
 # define _POSIX_C_SOURCE 200809
 # define _XOPEN_SOURCE 700
 # define _XOPEN_SOURCE_EXTENDED 1
 //force this here, /usr/include/sys/cdefs does not set these if _POSIX_C_SOURCE is defined
 # define _BSD_SOURCE 1
+
 #elif defined(__APPLE__)
+
 # define _POSIX_C_SOURCE 200809
 # define _XOPEN_SOURCE 700
 # define _XOPEN_SOURCE_EXTENDED 1
 # define _DARWIN_C_SOURCE 1
+
 #endif
 
 
@@ -65,10 +92,6 @@
 //include unistd.h to have _POSIX_VERSION defined...
 #if HAVE_UNISTD_H
 # include <unistd.h>
-#endif
-
-#if _POSIX_C_SOURCE
-# include "jnhw-posix-datatypes.h"
 #endif
 
 #endif

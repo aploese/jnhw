@@ -1,6 +1,6 @@
 /*
  * JNHW - Java Native header Wrapper, https://github.com/aploese/jnhw/
- * Copyright (C) 2019-2023, Arne Plöse and individual contributors as indicated
+ * Copyright (C) 2019-2025, Arne Plöse and individual contributors as indicated
  * by the @authors tag. See the copyright.txt in the distribution for a
  * full listing of individual contributors.
  *
@@ -23,18 +23,23 @@ package de.ibapl.jnhw.util.posix;
 
 import de.ibapl.jnhw.common.annotation.Define;
 import de.ibapl.jnhw.common.datatypes.BaseDataType;
-import de.ibapl.jnhw.common.util.IntDefine;
 import de.ibapl.jnhw.common.memory.layout.Alignment;
+import de.ibapl.jnhw.common.util.IntDefine;
 import de.ibapl.jnhw.libloader.Arch;
 import de.ibapl.jnhw.libloader.Endianess;
 import de.ibapl.jnhw.libloader.MemoryModel;
 import de.ibapl.jnhw.libloader.MultiarchTupelBuilder;
 import de.ibapl.jnhw.libloader.OS;
+import de.ibapl.jnhw.libloader.libraries.LibcLoader;
 
 /**
  * get the defines with gcc: create an empty file c.c run
  * {@code gcc -dD -dI -E c.c &gt; c.txt} c.txt contains all macros. add an
  * {@code #include &lt;headerFileName.h>} to get the defines for that header.
+ *
+ * macros for gnu libc see
+ * <a href="https://www.gnu.org/software/libc/manual/html_node/Feature-Test-Macros.html">1.3.4
+ * Feature Test Macros</a>
  *
  * @author aploese
  */
@@ -190,10 +195,21 @@ public class Defines {
 
     /**
      * maybe defined in jnhw-posix.h
+     * <a href="https://www.gnu.org/software/libc/manual/html_node/Feature-Test-Macros.html">1.3.4
+     * Feature Test Macros#Macro <b>_FILE_OFFSET_BITS</b></a>
      *
      */
     @Define
     public final static IntDefine _FILE_OFFSET_BITS;
+
+    /**
+     * maybe defined in jnhw-posix.h
+     * <a href="https://www.gnu.org/software/libc/manual/html_node/Feature-Test-Macros.html">1.3.4
+     * Feature Test Macros#Macro <b>_TIME_BITS</b></a>
+     *
+     */
+    @Define
+    public final static IntDefine _TIME_BITS;
 
     /**
      * maybe defined in jnhw-posix.h
@@ -283,11 +299,37 @@ public class Defines {
 
         __APPLE__ = os == OS.APPLE ? IntDefine.toIntDefine(1) : IntDefine.UNDEFINED;
         _BSD_SOURCE = os == OS.OPEN_BSD ? IntDefine.toIntDefine(1) : IntDefine.UNDEFINED;
-        __FreeBSD__ = os == OS.FREE_BSD ? IntDefine.toIntDefine(13) : IntDefine.UNDEFINED;
+        __FreeBSD__ = os == OS.FREE_BSD ? IntDefine.toIntDefine(14) : IntDefine.UNDEFINED;
         __linux__ = os == OS.LINUX ? IntDefine.toIntDefine(1) : IntDefine.UNDEFINED;
         __OpenBSD__ = os == OS.OPEN_BSD ? IntDefine.toIntDefine(1) : IntDefine.UNDEFINED;
 
-        _FILE_OFFSET_BITS = IntDefine.UNDEFINED;
+        //TODO make settable via property
+        switch (os) {
+            case LINUX -> {
+                if (mm == MemoryModel.ILP32) {
+                    // as of 20250213 debian does not define _FILE_OFFSET_BITS on i386
+                    if (LibcLoader.LIB_C_SYMBOL_LOOKUP.find("fcntl64").isPresent() & arch != Arch.I386) {
+                        _FILE_OFFSET_BITS = IntDefine.toIntDefine(64);
+                        if (LibcLoader.LIB_C_SYMBOL_LOOKUP.find("__time64").isPresent()) {
+                            _TIME_BITS = IntDefine.toIntDefine(64);
+                        } else {
+                            _TIME_BITS = IntDefine.UNDEFINED;
+                        }
+                    } else {
+                        _FILE_OFFSET_BITS = IntDefine.UNDEFINED;
+                        _TIME_BITS = IntDefine.UNDEFINED;
+                    }
+                } else {
+                    _FILE_OFFSET_BITS = IntDefine.UNDEFINED;
+                    _TIME_BITS = IntDefine.UNDEFINED;
+                }
+            }
+            default -> {
+                _FILE_OFFSET_BITS = IntDefine.UNDEFINED;
+                _TIME_BITS = IntDefine.UNDEFINED;
+            }
+        }
+
         switch (os) {
             case APPLE, FREE_BSD, OPEN_BSD -> {
                 _LARGEFILE64_SOURCE = IntDefine.UNDEFINED;
@@ -321,7 +363,7 @@ public class Defines {
 
         switch (os) {
             case LINUX -> {
-                __GLIBC_MINOR__ = IntDefine.toIntDefine(36);
+                __GLIBC_MINOR__ = IntDefine.toIntDefine(40);
                 __GLIBC__ = IntDefine.toIntDefine(2);
                 __GNU_LIBRARY__ = IntDefine.toIntDefine(6);
             }
@@ -338,7 +380,6 @@ public class Defines {
             default ->
                 throw new NoClassDefFoundError("No default value for __GLIBC__, __GLIBC_MINOR__ and __GNU_LIBRARY__ " + MultiarchTupelBuilder.getMultiarch());
         }
-
         __ILP32__ = switch (MultiarchTupelBuilder.getMemoryModel()) {
             case ILP32 ->
                 switch (MultiarchTupelBuilder.getArch()) {
@@ -375,9 +416,9 @@ public class Defines {
             case LINUX ->
                 switch (MultiarchTupelBuilder.getMemoryModel()) {
                     case ILP32 ->
-                        IntDefine.toIntDefine(BaseDataType.uint64_t.SIZE_OF * 4);
+                        IntDefine.toIntDefine(BaseDataType.uint64_t.byteSize * 4);
                     case LP64 ->
-                        IntDefine.toIntDefine(BaseDataType.uint64_t.SIZE_OF * 8);
+                        IntDefine.toIntDefine(BaseDataType.uint64_t.byteSize * 8);
                     default ->
                         throw new RuntimeException("Cant handle memory model: " + MultiarchTupelBuilder.getMemoryModel());
                 };
@@ -390,7 +431,7 @@ public class Defines {
             case OPEN_BSD, WINDOWS ->
                 IntDefine.UNDEFINED;
             default ->
-                IntDefine.toIntDefine(MultiarchTupelBuilder.getMemoryModel().sizeOf_pointer.sizeInBit);
+                IntDefine.toIntDefine(MultiarchTupelBuilder.getMemoryModel().sizeOf_pointer.sizeInBit());
         };
     }
 }

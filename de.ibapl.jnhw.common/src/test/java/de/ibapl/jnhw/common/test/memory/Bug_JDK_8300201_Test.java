@@ -1,6 +1,6 @@
 /*
  * JNHW - Java Native header Wrapper, https://github.com/aploese/jnhw/
- * Copyright (C) 2023-2024, Arne Plöse and individual contributors as indicated
+ * Copyright (C) 2023-2025, Arne Plöse and individual contributors as indicated
  * by the @authors tag. See the copyright.txt in the distribution for a
  * full listing of individual contributors.
  *
@@ -27,7 +27,7 @@ import de.ibapl.jnhw.common.downcall.JnhwMh_MA___V;
 import de.ibapl.jnhw.common.test.JnhwTestLogger;
 import de.ibapl.jnhw.common.test.LibJnhwCommonTestLoader;
 import de.ibapl.jnhw.libloader.MultiarchTupelBuilder;
-import de.ibapl.jnhw.libloader.SizeInBit;
+import de.ibapl.jnhw.libloader.SizeInByte;
 import java.lang.foreign.Arena;
 import java.lang.foreign.MemorySegment;
 import java.lang.foreign.ValueLayout;
@@ -75,7 +75,7 @@ public class Bug_JDK_8300201_Test {
 
     @Test
     public void testGetAtIndex_32BitAddress() {
-        if (MultiarchTupelBuilder.getMemoryModel().sizeOf_pointer != SizeInBit._32_BIT) {
+        if (MultiarchTupelBuilder.getMemoryModel().sizeOf_pointer != SizeInByte._32_Bit) {
             //Nothing to test ... only 32bit are of interest here.
             return;
         }
@@ -89,13 +89,14 @@ public class Bug_JDK_8300201_Test {
             MemorySegment actual = pointerArray.getAtIndex(ValueLayout.ADDRESS, 0);
 
             Assertions.assertEquals(BUGGY_VALUE, actual);
-//            Assertions.assertEquals(expected, actual);
+            Assertions.assertEquals(expected, actual);
+            Assertions.assertEquals(TEST_VALUE, actual.address());
         }
     }
 
     @Test
     public void testGet_32BitAddress() {
-        if (MultiarchTupelBuilder.getMemoryModel().sizeOf_pointer != SizeInBit._32_BIT) {
+        if (MultiarchTupelBuilder.getMemoryModel().sizeOf_pointer != SizeInByte._32_Bit) {
             //Nothing to test ... only 32bit are of interest here.
             return;
         }
@@ -109,7 +110,8 @@ public class Bug_JDK_8300201_Test {
             MemorySegment actual = pointerArray.get(ValueLayout.ADDRESS, 0);
 
             Assertions.assertEquals(BUGGY_VALUE, actual);
-//            Assertions.assertEquals(expected, actual);
+            Assertions.assertEquals(expected, actual);
+            Assertions.assertEquals(TEST_VALUE, actual.address());
         }
     }
 

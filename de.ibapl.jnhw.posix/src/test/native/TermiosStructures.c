@@ -1,6 +1,6 @@
 /**
  * JNHW - Java Native header Wrapper, https://github.com/aploese/jnhw/
- * Copyright (C) 2021-2024, Arne Plöse and individual contributors as indicated
+ * Copyright (C) 2021-2025, Arne Plöse and individual contributors as indicated
  * by the @authors tag. See the copyright.txt in the distribution for a
  * full listing of individual contributors.
  *
@@ -26,10 +26,6 @@
 
     //for offsetof
 #include <stddef.h>
-
-    JNHW_ASSERT__speed_t__IS__uint32_t__OR__uint64_t
-    JNHW_ASSERT__tcflag_t__IS__uint32_t__OR__uint64_t
-    JNHW_ASSERT__cc_t__IS__uint8_t
 
 int32_t StructTermios_alignof() {
     return __alignof__ (struct termios);

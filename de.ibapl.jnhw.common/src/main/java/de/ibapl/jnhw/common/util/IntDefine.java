@@ -1,6 +1,6 @@
 /*
  * JNHW - Java Native header Wrapper, https://github.com/aploese/jnhw/
- * Copyright (C) 2021-2024, Arne Plöse and individual contributors as indicated
+ * Copyright (C) 2021-2025, Arne Plöse and individual contributors as indicated
  * by the @authors tag. See the copyright.txt in the distribution for a
  * full listing of individual contributors.
  *
@@ -44,13 +44,25 @@ public abstract class IntDefine {
         }
 
         @Override
-        public boolean isEqualsTo(int value) {
+        public boolean equals(Object other) {
+            //We are a singleton
+            return this == other;
+        }
+
+        @Override
+        public boolean equals(int value) {
             return false;
         }
 
         @Override
-        public boolean isEqualsTo(long value) {
+        public boolean equals(long value) {
             return false;
+        }
+
+        @Override
+        public int hashCode() {
+            int hash = 5;
+            return hash;
         }
     };
 
@@ -73,12 +85,30 @@ public abstract class IntDefine {
         }
 
         @Override
-        public boolean isEqualsTo(int value) {
+        public boolean equals(int value) {
             return this.value == value;
         }
 
         @Override
-        public boolean isEqualsTo(long value) {
+        public boolean equals(Object other) {
+            if (this == other) {
+                return true;
+            }
+            if (other instanceof IntDefined o) {
+                return this.value == o.value;
+            }
+            return false;
+        }
+
+        @Override
+        public int hashCode() {
+            int hash = 3;
+            hash = 67 * hash + this.value;
+            return hash;
+        }
+
+        @Override
+        public boolean equals(long value) {
             return this.value == value;
         }
     }
@@ -87,7 +117,7 @@ public abstract class IntDefine {
 
     public abstract int get();
 
-    public abstract boolean isEqualsTo(int value);
+    public abstract boolean equals(int value);
 
-    public abstract boolean isEqualsTo(long value);
+    public abstract boolean equals(long value);
 }

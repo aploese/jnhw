@@ -1,6 +1,6 @@
 /*
  * JNHW - Java Native header Wrapper, https://github.com/aploese/jnhw/
- * Copyright (C) 2021-2024, Arne Plöse and individual contributors as indicated
+ * Copyright (C) 2021-2025, Arne Plöse and individual contributors as indicated
  * by the @authors tag. See the copyright.txt in the distribution for a
  * full listing of individual contributors.
  *
@@ -64,12 +64,12 @@ public class JnhwFormaterTest {
     @Test
     public void testFormatAddress() {
         switch (MultiarchTupelBuilder.getMemoryModel().sizeOf_pointer) {
-            case _64_BIT ->
+            case _64_Bit ->
                 assertEquals("0xfedcba9876543210", JnhwFormater.formatAddress(MemorySegment.ofAddress(0xfedcba9876543210L)));
-            case _32_BIT -> {
+            case _32_Bit -> {
                 assertEquals("0xfedcba98", JnhwFormater.formatAddress(MemorySegment.ofAddress(0x00000000fedcba98L)));
-                assertEquals("0x(!>>>)fedcba98(<<<!)76543210", JnhwFormater.formatAddress(MemorySegment.ofAddress(0xfedcba9876543210L)));
-                assertEquals("0x(!>>>)00000098(<<<!)76543210", JnhwFormater.formatAddress(MemorySegment.ofAddress(0x0000009876543210L)));
+                assertEquals("0x76543210", JnhwFormater.formatAddress(MemorySegment.ofAddress(0xfedcba9876543210L)));
+                assertEquals("0x76543210", JnhwFormater.formatAddress(MemorySegment.ofAddress(0x0000009876543210L)));
             }
             default ->
                 throw new RuntimeException();

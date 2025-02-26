@@ -1,6 +1,6 @@
 /*
  * JNHW - Java Native header Wrapper, https://github.com/aploese/jnhw/
- * Copyright (C) 2019-2023, Arne Plöse and individual contributors as indicated
+ * Copyright (C) 2019-2025, Arne Plöse and individual contributors as indicated
  * by the @authors tag. See the copyright.txt in the distribution for a
  * full listing of individual contributors.
  *
@@ -27,25 +27,25 @@ package de.ibapl.jnhw.libloader;
  * @author aploese
  */
 public enum Arch {
-    X86_64(SizeInBit._64_BIT, "x86_64", "%s", null),
-    X86(SizeInBit._32_BIT, "x86", "%s", null),
-    I386(SizeInBit._32_BIT, "i386", "%s", null),
-    ARM(SizeInBit._32_BIT, "arm", "%s", null),
-    AARCH64(SizeInBit._64_BIT, "aarch64", "%s", null),
-    MIPS(SizeInBit._64_BIT, "mips", "%sel", "%s"),
-    MIPS_64(SizeInBit._64_BIT, "mips64", "%sel", "%s"),
-    POWER_PC(SizeInBit._32_BIT, "powerpc", "%s", "%s"),
-    POWER_PC_64(SizeInBit._64_BIT, "powerpc64", "%sle", "%s"),
-    RISC_V_64(SizeInBit._64_BIT, "riscv64", "%s", null),
-    S390_X(SizeInBit._64_BIT, "s390x", null, "%s"),
-    SPARC_64(SizeInBit._64_BIT, "sparc64", null, "%s");
+    X86_64(SizeInByte._64_Bit, "x86_64", "%s", null),
+    X86(SizeInByte._32_Bit, "x86", "%s", null),
+    I386(SizeInByte._32_Bit, "i386", "%s", null),
+    ARM(SizeInByte._32_Bit, "arm", "%s", null),
+    AARCH64(SizeInByte._64_Bit, "aarch64", "%s", null),
+    MIPS(SizeInByte._64_Bit, "mips", "%sel", "%s"),
+    MIPS_64(SizeInByte._64_Bit, "mips64", "%sel", "%s"),
+    POWER_PC(SizeInByte._32_Bit, "powerpc", "%s", "%s"),
+    POWER_PC_64(SizeInByte._64_Bit, "powerpc64", "%sle", "%s"),
+    RISC_V_64(SizeInByte._64_Bit, "riscv64", "%s", null),
+    S390_X(SizeInByte._64_Bit, "s390x", null, "%s"),
+    SPARC_64(SizeInByte._64_Bit, "sparc64", null, "%s");
 
     public final String archName;
     public final String fmtLittleEndian;
     public final String fmtBigEndian;
-    public final SizeInBit wordSize;
+    public final SizeInByte wordSize;
 
-    private Arch(SizeInBit wordSize, String archName, String fmtLittleEndian, String fmtBigEndian) {
+    private Arch(SizeInByte wordSize, String archName, String fmtLittleEndian, String fmtBigEndian) {
         this.wordSize = wordSize;
         this.archName = archName;
         this.fmtLittleEndian = fmtLittleEndian;

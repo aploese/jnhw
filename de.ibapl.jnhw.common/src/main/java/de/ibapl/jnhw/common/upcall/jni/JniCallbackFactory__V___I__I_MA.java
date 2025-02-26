@@ -1,6 +1,6 @@
 /*
  * JNHW - Java Native header Wrapper, https://github.com/aploese/jnhw/
- * Copyright (C) 2023-2024, Arne Plöse and individual contributors as indicated
+ * Copyright (C) 2023-2025, Arne Plöse and individual contributors as indicated
  * by the @authors tag. See the copyright.txt in the distribution for a
  * full listing of individual contributors.
  *
@@ -74,11 +74,11 @@ public class JniCallbackFactory__V___I__I_MA extends CallbackFactory__V___I__I_M
     protected MemorySegment aquire0(Callback__V___I__I_MA cb) {
         for (int i = 0; i < MAX_CALL_BACKS; i++) {
             if (REFS[i] == null) {
-                REFS[i] = cb;
                 //Lazy initialize the handles
                 if (NATIVE_SYMBOLS[i] == null) {
                     NATIVE_SYMBOLS[i] = registerCallBack(i);
                 }
+                REFS[i] = cb;
                 return NATIVE_SYMBOLS[i];
             }
         }

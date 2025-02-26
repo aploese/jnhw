@@ -1,6 +1,6 @@
 /*
  * JNHW - Java Native header Wrapper, https://github.com/aploese/jnhw/
- * Copyright (C) 2021-2024, Arne Plöse and individual contributors as indicated
+ * Copyright (C) 2021-2025, Arne Plöse and individual contributors as indicated
  * by the @authors tag. See the copyright.txt in the distribution for a
  * full listing of individual contributors.
  *
@@ -67,7 +67,7 @@ public class Unsigned_LongTest {
         try (Arena arena = Arena.ofConfined()) {
             Unsigned_Long instance = Unsigned_Long.allocateNative(arena);
             final long input = 0x8070605040302010L;
-            if (BaseDataType.C_unsigned_long.SIZE_OF == 8) {
+            if (BaseDataType.C_unsigned_long.byteSize == 8) {
                 instance.unsigned_long(input);
                 assertEquals(input, instance.unsigned_long());
             } else {
@@ -77,7 +77,7 @@ public class Unsigned_LongTest {
             }
             instance.unsigned_long(33);
             assertEquals(33, instance.unsigned_long());
-            if (BaseDataType.C_unsigned_long.SIZE_OF == 8) {
+            if (BaseDataType.C_unsigned_long.byteSize == 8) {
                 instance.unsigned_long(input);
                 assertEquals(input, instance.unsigned_long());
                 instance.unsigned_long(-1);
@@ -92,8 +92,8 @@ public class Unsigned_LongTest {
     @Test
     public void testNativeToString() {
         try (Arena arena = Arena.ofConfined()) {
-            Unsigned_Long instance = new Unsigned_Long(arena.allocate(BaseDataType.C_unsigned_long.SIZE_OF), 0);
-            if (BaseDataType.C_unsigned_long.SIZE_OF == 8) {
+            Unsigned_Long instance = new Unsigned_Long(arena.allocate(BaseDataType.C_unsigned_long.byteSize), 0);
+            if (BaseDataType.C_unsigned_long.byteSize == 8) {
                 Uint64_t uint64_t = Uint64_t.map(instance, 0);
                 uint64_t.uint64_t(0xfffffffffffffffeL);
                 assertEquals(Long.toUnsignedString(0xfffffffffffffffeL), instance.nativeToString());
@@ -110,11 +110,11 @@ public class Unsigned_LongTest {
     @Test
     public void testNative_1() {
         try (Arena arena = Arena.ofConfined()) {
-            AsUnsignedLong instance = new AsUnsignedLong(BaseDataType.uint32_t, arena.allocate(BaseDataType.uint32_t.SIZE_OF), 0);
+            AsUnsignedLong instance = new AsUnsignedLong(BaseDataType.uint32_t, arena.allocate(BaseDataType.uint32_t.byteSize), 0);
             instance.setFromUnsignedLong(33);
             assertEquals(33, instance.getAsUnsignedLong());
             assertThrows(IllegalArgumentException.class, () -> instance.setFromUnsignedLong(-1));
-            assertThrows(IllegalArgumentException.class, () -> new AsUnsignedLong(BaseDataType.int8_t, arena.allocate(BaseDataType.int8_t.SIZE_OF), 0));
+            assertThrows(IllegalArgumentException.class, () -> new AsUnsignedLong(BaseDataType.int8_t, arena.allocate(BaseDataType.int8_t.byteSize), 0));
         }
     }
 

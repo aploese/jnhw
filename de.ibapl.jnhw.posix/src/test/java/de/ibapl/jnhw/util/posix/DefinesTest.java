@@ -1,6 +1,6 @@
 /*
  * JNHW - Java Native header Wrapper, https://github.com/aploese/jnhw/
- * Copyright (C) 2019-2023, Arne Plöse and individual contributors as indicated
+ * Copyright (C) 2019-2025, Arne Plöse and individual contributors as indicated
  * by the @authors tag. See the copyright.txt in the distribution for a
  * full listing of individual contributors.
  *
@@ -26,6 +26,11 @@ import de.ibapl.jnhw.common.util.IntDefine;
 import de.ibapl.jnhw.common.util.ObjectDefine;
 import de.ibapl.jnhw.libloader.MultiarchTupelBuilder;
 import de.ibapl.jnhw.libloader.OS;
+import static de.ibapl.jnhw.libloader.OS.APPLE;
+import static de.ibapl.jnhw.libloader.OS.FREE_BSD;
+import static de.ibapl.jnhw.libloader.OS.LINUX;
+import static de.ibapl.jnhw.libloader.OS.OPEN_BSD;
+import static de.ibapl.jnhw.libloader.OS.WINDOWS;
 import de.ibapl.jnhw.posix.JnhwTestLogger;
 import de.ibapl.jnhw.posix.LibJnhwPosixTestLoader;
 import java.lang.reflect.Field;
@@ -58,19 +63,19 @@ public class DefinesTest {
                     throw new AssertionError("Unexpected type " + type + " for " + f.getName());
                 } else if (long.class.equals(type)) {
                     streamBuilder.accept(() -> {
-                        assertEquals(LibJnhwPosixTestLoader.getLongDefine(f.getName()), f.getLong(javaDefines), f.getName());
+                        assertEquals(LibJnhwPosixTestLoader.getLongDefine(f.getName()), f.getLong(javaDefines), f.getName() + " (native is expected) ");
                     });
                 } else if (int.class.equals(type)) {
                     streamBuilder.accept(() -> {
-                        assertEquals(LibJnhwPosixTestLoader.getIntDefine(f.getName()), f.getInt(javaDefines), f.getName());
+                        assertEquals(LibJnhwPosixTestLoader.getIntDefine(f.getName()), f.getInt(javaDefines), f.getName() + " (native is expected) ");
                     });
                 } else if (short.class.equals(type)) {
                     streamBuilder.accept(() -> {
-                        assertEquals(LibJnhwPosixTestLoader.getShortDefine(f.getName()), f.getShort(javaDefines), f.getName());
+                        assertEquals(LibJnhwPosixTestLoader.getShortDefine(f.getName()), f.getShort(javaDefines), f.getName() + " (native is expected) ");
                     });
                 } else if (byte.class.equals(type)) {
                     streamBuilder.accept(() -> {
-                        assertEquals(LibJnhwPosixTestLoader.getByteDefine(f.getName()), f.getByte(javaDefines), f.getName());
+                        assertEquals(LibJnhwPosixTestLoader.getByteDefine(f.getName()), f.getByte(javaDefines), f.getName() + " (native is expected) ");
                     });
                 } else if (IntDefine.class.equals(type)) {
                     Integer nativeResult = LibJnhwPosixTestLoader.getClassIntegerDefine(f.getName());
@@ -85,7 +90,7 @@ public class DefinesTest {
                             assertTrue(((IntDefine) f.get(javaDefines)).isDefined(), () -> {
                                 return f.getName() + " is not defined";
                             });
-                            assertEquals(nativeResult, ((IntDefine) f.get(javaDefines)).get(), f.getName());
+                            assertEquals(nativeResult, ((IntDefine) f.get(javaDefines)).get(), f.getName() + " (native is expected) ");
                         });
                     }
                 } else if (ObjectDefine.class.equals(type)) {
@@ -96,16 +101,16 @@ public class DefinesTest {
                     if (nativeResult.isDefined()) {
                         streamBuilder.accept(() -> {
                             assertTrue(((ObjectDefine) f.get(javaDefines)).isDefined(), () -> {
-                                return f.getName() + " is not defined";
+                                return f.getName() + " native is defined, stored is not defined";
                             });
-                            assertEquals(nativeResult.get(), ((ObjectDefine) f.get(javaDefines)).get(), f.getName());
+                            assertEquals(nativeResult.get(), ((ObjectDefine) f.get(javaDefines)).get(), f.getName() + " (native is expected) ");
                         });
                     } else {
                         streamBuilder.accept(() -> {
                             assertFalse(((ObjectDefine) f.get(javaDefines)).isDefined(), () -> {
-                                return f.getName() + " is defined";
+                                return f.getName() + " native is not defined, but stored is defined";
                             });
-                            assertEquals(nativeResult, ((ObjectDefine) f.get(javaDefines)).get(), f.getName());
+                            assertEquals(nativeResult, ((ObjectDefine) f.get(javaDefines)).get(), f.getName() + " (native is expected) ");
                         });
 
                     }
@@ -122,7 +127,7 @@ public class DefinesTest {
                         });
                     } else {
                         streamBuilder.accept(() -> {
-                            assertEquals(nativeResult, f.get(javaDefines), f.getName());
+                            assertEquals(nativeResult, f.get(javaDefines), f.getName() + " (native is expected) ");
                         });
                     }
                 } else {
@@ -132,7 +137,7 @@ public class DefinesTest {
                 }
             } else if (haveHeaderName.equals(f.getName())) {
                 streamBuilder.accept(() -> {
-                    assertEquals(LibJnhwPosixTestLoader.getIntDefine(f.getName()) != 0, f.getBoolean(javaDefines), haveHeaderName);
+                    assertEquals(LibJnhwPosixTestLoader.getIntDefine(f.getName()) != 0, f.getBoolean(javaDefines), haveHeaderName + " (native is expected) ");
                 });
             }
         }
@@ -230,59 +235,6 @@ public class DefinesTest {
     }
 
     /**
-     * Test of _FILE_OFFSET_BITS method, of class Defines.
-     */
-    @Test
-    public void test_FILE_OFFSET_BITS() throws Exception {
-        assertFalse(Defines._FILE_OFFSET_BITS.isDefined());
-    }
-
-    /**
-     * Test of _POSIX_C_SOURCE method, of class Defines.
-     */
-    @Test
-    public void test_POSIX_C_SOURCE() throws Exception {
-        switch (MultiarchTupelBuilder.getOS()) {
-            case APPLE, LINUX, FREE_BSD, OPEN_BSD ->
-                assertEquals(200809, Defines._POSIX_C_SOURCE.get());
-            case WINDOWS ->
-                assertFalse(Defines._POSIX_C_SOURCE.isDefined());
-            default ->
-                fail("No testcase for OS: " + MultiarchTupelBuilder.getOS());
-        }
-    }
-
-    /**
-     * Test of _XOPEN_SOURCE method, of class Defines.
-     */
-    @Test
-    public void test_XOPEN_SOURCE() throws Exception {
-        switch (MultiarchTupelBuilder.getOS()) {
-            case APPLE, LINUX, FREE_BSD, OPEN_BSD ->
-                assertEquals(700, Defines._XOPEN_SOURCE.get());
-            case WINDOWS ->
-                assertFalse(Defines._XOPEN_SOURCE.isDefined());
-            default ->
-                fail("No testcase for OS: " + MultiarchTupelBuilder.getOS());
-        }
-    }
-
-    /**
-     * Test of _XOPEN_SOURCE_EXTENDED method, of class Defines.
-     */
-    @Test
-    public void test_XOPEN_SOURCE_EXTENDED() throws Exception {
-        switch (MultiarchTupelBuilder.getOS()) {
-            case APPLE, LINUX, FREE_BSD, OPEN_BSD ->
-                assertEquals(1, Defines._XOPEN_SOURCE_EXTENDED.get());
-            case WINDOWS ->
-                assertFalse(Defines._XOPEN_SOURCE_EXTENDED.isDefined());
-            default ->
-                fail("No testcase for OS: " + MultiarchTupelBuilder.getOS());
-        }
-    }
-
-    /**
      * Test of __APPLE__ method, of class Defines.
      */
     @Test
@@ -307,8 +259,8 @@ public class DefinesTest {
             case OPEN_BSD, WINDOWS ->
                 assertFalse(Defines.__WORDSIZE.isDefined());
             default -> {
-                assertEquals(MultiarchTupelBuilder.getMemoryModel().sizeOf_pointer.sizeInBit, Defines.__WORDSIZE.get(), "size of pointer != wordsize");
-                assertEquals(MultiarchTupelBuilder.getMemoryModel().sizeOf_long.sizeInBit, Defines.__WORDSIZE.get(), "size of long != wordsize");
+                assertEquals(MultiarchTupelBuilder.getMemoryModel().sizeOf_pointer.sizeInBit(), Defines.__WORDSIZE.get(), "size of pointer != wordsize");
+                assertEquals(MultiarchTupelBuilder.getMemoryModel().sizeOf_long.sizeInBit(), Defines.__WORDSIZE.get(), "size of long != wordsize");
             }
         }
     }

@@ -1,6 +1,6 @@
 /*
  * JNHW - Java Native header Wrapper, https://github.com/aploese/jnhw/
- * Copyright (C) 2020-2024, Arne Plöse and individual contributors as indicated
+ * Copyright (C) 2020-2025, Arne Plöse and individual contributors as indicated
  * by the @authors tag. See the copyright.txt in the distribution for a
  * full listing of individual contributors.
  *
@@ -81,7 +81,7 @@ public abstract class WinDef {
      */
     public static class LPBYTE extends OpaqueMemory {
 
-        private final static int SIZE_OF_WCHAR = WinApiDataType.WCHAR.SIZE_OF;
+        private final static int SIZE_OF_WCHAR = WinApiDataType.WCHAR.byteSize;
 
         public static LPBYTE allocateNative(int size, Arena arena) {
             return new LPBYTE(arena.allocate(size, 1), 0, size);
@@ -123,7 +123,7 @@ public abstract class WinDef {
     public static class LPDWORD extends Uint32_t {
 
         public static LPDWORD allocateNative(Arena arena) {
-            return new LPDWORD(arena.allocate(DATA_TYPE.SIZE_OF, DATA_TYPE.ALIGN_OF.alignof), 0);
+            return new LPDWORD(arena.allocate(DATA_TYPE.byteSize, DATA_TYPE.byteAlignment), 0);
         }
 
         public LPDWORD(MemorySegment memorySegment, long offset) {
@@ -149,7 +149,7 @@ public abstract class WinDef {
             return result;
         }
 
-        private final static int SIZE_OF_WCHAR = WinApiDataType.WCHAR.SIZE_OF;
+        private final static int SIZE_OF_WCHAR = WinApiDataType.WCHAR.byteSize;
 
         /**
          * if isNullTerminated do skip the last two 0 bytes aka the last 0 char.

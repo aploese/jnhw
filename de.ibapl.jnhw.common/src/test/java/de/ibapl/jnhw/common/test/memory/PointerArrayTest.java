@@ -1,6 +1,6 @@
 /*
  * JNHW - Java Native header Wrapper, https://github.com/aploese/jnhw/
- * Copyright (C) 2022-2024, Arne Plöse and individual contributors as indicated
+ * Copyright (C) 2022-2025, Arne Plöse and individual contributors as indicated
  * by the @authors tag. See the copyright.txt in the distribution for a
  * full listing of individual contributors.
  *
@@ -75,10 +75,10 @@ public class PointerArrayTest {
     @Test
     public void testSizeofPointer() {
         switch (MultiarchTupelBuilder.getMemoryModel().sizeOf_pointer) {
-            case _32_BIT ->
-                Assertions.assertEquals(4, BaseDataType.uintptr_t.SIZE_OF);
-            case _64_BIT ->
-                Assertions.assertEquals(8, BaseDataType.uintptr_t.SIZE_OF);
+            case _32_Bit ->
+                Assertions.assertEquals(4, BaseDataType.uintptr_t.byteSize);
+            case _64_Bit ->
+                Assertions.assertEquals(8, BaseDataType.uintptr_t.byteSize);
             default ->
                 throw new RuntimeException("Unknown SizeOfPointer");
         }
@@ -87,10 +87,10 @@ public class PointerArrayTest {
     @Test
     public void testAlignofPointer() {
         switch (MultiarchTupelBuilder.getMemoryModel().sizeOf_pointer) {
-            case _32_BIT ->
-                Assertions.assertEquals(Alignment.AT_4, BaseDataType.uintptr_t.ALIGN_OF);
-            case _64_BIT ->
-                Assertions.assertEquals(Alignment.AT_8, BaseDataType.uintptr_t.ALIGN_OF);
+            case _32_Bit ->
+                Assertions.assertEquals(Alignment.AT_4, BaseDataType.uintptr_t.ALIGNMENT);
+            case _64_Bit ->
+                Assertions.assertEquals(Alignment.AT_8, BaseDataType.uintptr_t.ALIGNMENT);
             default ->
                 throw new RuntimeException("Unknown SizeOfPointer");
         }
@@ -108,7 +108,7 @@ public class PointerArrayTest {
             final Int8_t element2 = Int8_t.allocateNative(arena);
             element2.int8_t((byte) 2);
 
-            PointerArray<Int8_t> instance = new PointerArray<>(arena.allocate(16 * BaseDataType.uintptr_t.SIZE_OF), 0, 16);
+            PointerArray<Int8_t> instance = new PointerArray<>(arena.allocate(16 * BaseDataType.uintptr_t.byteSize), 0, 16);
 
             instance.set(1, element1);
             Assertions.assertEquals(1, instance.getAs(1).int8_t());
@@ -130,7 +130,7 @@ public class PointerArrayTest {
     @SuppressWarnings("unchecked")
     public void testNativeToString() {
         try (Arena arena = Arena.ofConfined()) {
-            PointerArray<OpaqueMemory> instance = new PointerArray<>(arena.allocate(6 * BaseDataType.uintptr_t.SIZE_OF), 0, 6);
+            PointerArray<OpaqueMemory> instance = new PointerArray<>(arena.allocate(6 * BaseDataType.uintptr_t.byteSize), 0, 6);
             OpaqueMemory element1 = MemoryHeap.wrap(arena.allocate(1));
             instance.set(1, element1);
             String result = instance.nativeToString();
@@ -142,7 +142,7 @@ public class PointerArrayTest {
     @SuppressWarnings("unchecked")
     public void testArrayBounds() {
         try (Arena arena = Arena.ofConfined()) {
-            PointerArray<Pointer> instance = new PointerArray<>(arena.allocate(2 * BaseDataType.uintptr_t.SIZE_OF), 0, 2);
+            PointerArray<Pointer> instance = new PointerArray<>(arena.allocate(2 * BaseDataType.uintptr_t.byteSize), 0, 2);
 
             Assertions.assertThrows(IndexOutOfBoundsException.class, () -> {
                 instance.set(-1, Pointer.NULL);

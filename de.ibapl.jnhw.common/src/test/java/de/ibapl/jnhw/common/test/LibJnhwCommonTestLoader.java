@@ -22,12 +22,21 @@
 package de.ibapl.jnhw.common.test;
 
 import de.ibapl.jnhw.common.datatypes.BaseDataType;
+import de.ibapl.jnhw.common.downcall.JnhwMh__V__BL_sI;
+import de.ibapl.jnhw.common.downcall.JnhwMh_sB___V;
 import de.ibapl.jnhw.common.downcall.JnhwMh_sI___V;
 import de.ibapl.jnhw.libloader.LoadResult;
 import de.ibapl.jnhw.libloader.LoadState;
 import de.ibapl.jnhw.libloader.NativeLibResolver;
 import java.lang.foreign.Arena;
+import java.lang.foreign.FunctionDescriptor;
+import java.lang.foreign.Linker;
+import java.lang.foreign.MemorySegment;
 import java.lang.foreign.SymbolLookup;
+import java.lang.foreign.ValueLayout;
+import java.lang.invoke.MethodHandle;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -79,8 +88,94 @@ public final class LibJnhwCommonTestLoader {
         return state;
     }
 
+    public static byte invokeExact__B__V(String name) {
+        final MemorySegment methodAddress = SYMBOL_LOOKUP.findOrThrow(name);
+        final MethodHandle mh = Linker.nativeLinker().downcallHandle(methodAddress, FunctionDescriptor.of(ValueLayout.JAVA_BYTE));
+        try {
+            return (byte) mh.invokeExact();
+        } catch (Throwable ex) {
+            throw new RuntimeException(ex);
+        }
+    }
+
+    public static void invokeExact_V__B(String name, byte value) {
+        final MemorySegment methodAddress = SYMBOL_LOOKUP.findOrThrow(name);
+        final MethodHandle mh = Linker.nativeLinker().downcallHandle(methodAddress, FunctionDescriptor.ofVoid(ValueLayout.JAVA_BYTE));
+        try {
+            mh.invokeExact(value);
+        } catch (Throwable ex) {
+            throw new RuntimeException(ex);
+        }
+    }
+
+    public static short invokeExact__S__V(String name) {
+        final MemorySegment methodAddress = SYMBOL_LOOKUP.findOrThrow(name);
+        final MethodHandle mh = Linker.nativeLinker().downcallHandle(methodAddress, FunctionDescriptor.of(ValueLayout.JAVA_SHORT));
+        try {
+            return (short) mh.invokeExact();
+        } catch (Throwable ex) {
+            throw new RuntimeException(ex);
+        }
+    }
+
+    public static void invokeExact_V__S(String name, short value) {
+        final MemorySegment methodAddress = SYMBOL_LOOKUP.findOrThrow(name);
+        final MethodHandle mh = Linker.nativeLinker().downcallHandle(methodAddress, FunctionDescriptor.ofVoid(ValueLayout.JAVA_SHORT));
+        try {
+            mh.invokeExact(value);
+        } catch (Throwable ex) {
+            throw new RuntimeException(ex);
+        }
+    }
+
+    public static int invokeExact__I__V(String name) {
+        final MemorySegment methodAddress = SYMBOL_LOOKUP.findOrThrow(name);
+        final MethodHandle mh = Linker.nativeLinker().downcallHandle(methodAddress, FunctionDescriptor.of(ValueLayout.JAVA_INT));
+        try {
+            return (int) mh.invokeExact();
+        } catch (Throwable ex) {
+            throw new RuntimeException(ex);
+        }
+    }
+
+    public static void invokeExact_V__I(String name, int value) {
+        final MemorySegment methodAddress = SYMBOL_LOOKUP.findOrThrow(name);
+        final MethodHandle mh = Linker.nativeLinker().downcallHandle(methodAddress, FunctionDescriptor.ofVoid(ValueLayout.JAVA_INT));
+        try {
+            mh.invokeExact(value);
+        } catch (Throwable ex) {
+            throw new RuntimeException(ex);
+        }
+    }
+
+    public static long invokeExact__L__V(String name) {
+        final MemorySegment methodAddress = SYMBOL_LOOKUP.findOrThrow(name);
+        final MethodHandle mh = Linker.nativeLinker().downcallHandle(methodAddress, FunctionDescriptor.of(ValueLayout.JAVA_LONG));
+        try {
+            return (long) mh.invokeExact();
+        } catch (Throwable ex) {
+            throw new RuntimeException(ex);
+        }
+    }
+
+    public static void invokeExact_V__L(String name, long value) {
+        final MemorySegment methodAddress = SYMBOL_LOOKUP.findOrThrow(name);
+        final MethodHandle mh = Linker.nativeLinker().downcallHandle(methodAddress, FunctionDescriptor.ofVoid(ValueLayout.JAVA_LONG));
+        try {
+            mh.invokeExact(value);
+        } catch (Throwable ex) {
+            throw new RuntimeException(ex);
+        }
+    }
+
     public static int invokeExact_Int_V(String name) {
-        return JnhwMh_sI___V.mandatoryOf(SYMBOL_LOOKUP, name, BaseDataType.int32_t).invoke_sI___V();
+        final MemorySegment methodAddress = SYMBOL_LOOKUP.findOrThrow(name);
+        final MethodHandle mh = Linker.nativeLinker().downcallHandle(methodAddress, FunctionDescriptor.of(ValueLayout.JAVA_INT));
+        try {
+            return (int) mh.invokeExact();
+        } catch (Throwable ex) {
+            throw new RuntimeException(ex);
+        }
     }
 
     private LibJnhwCommonTestLoader() {
