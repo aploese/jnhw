@@ -63,7 +63,7 @@ If an native error occured and the called function flags an error condition to t
 | powerpc64le-linux-gnu | 23.0.2     | success         2025-02-26 | no JFF          2025-02-26 | not included by default    | not included by default    |
 | riscv64-linux-gnu     | 23.0.2     | success         2025-02-26 | no JFF          2025-02-26 | not included by default    | not included by default    |
 | s390x-linux-gnu       | 23.0.2     | success         2025-02-26 | no JFF          2025-02-26 | not included by default    | not included by default    |
-| x86_64-apple-darwin   | 19.0.1     | success         2023-01-27 | n.a.            2023-01-27 | success         2023-01-26 | n.a.            2023-01-27 |
+| x86_64-apple-darwin   | 23.0.2     | success         2025-03-11 | n.a.            2025-03-11 | success         2025-03-11 | n.a.            2025-03-11 |
 | x86_64-freebsd-bsd    | 23         | no OpenJDK23    2025-02-17 | no OpenJDK23    2025-02-17 | no OpenJDK23    2025-02-17 | no OpenJDK23    2025-02-17 |
 | x86_64-linux-gnu      | 23.0.2     | success         2025-02-26 | no JFF          2025-02-26 | not included by default    | not included by default    |
 | x86_64-netbsd-bsd     | 23         | no OpenJDK23    2025-02-17 | no OpenJDK23    2025-02-17 | no OpenJDK23    2025-02-17 | no OpenJDK23    2025-02-17 |

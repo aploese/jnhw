@@ -282,13 +282,7 @@ public class PthreadTest {
                 NativeErrorException nee = Assertions.assertThrows(NativeErrorException.class, () -> {
                     Pthread.pthread_setschedparam(Pthread.pthread_self(arena), policy.int32_t(), param);
                 });
-                switch (MultiarchTupelBuilder.getOS()) {
-                    case APPLE ->
-                        //TODO ?why?
-                        ErrnoTest.assertErrnoEquals(0, nee.errno);
-                    default ->
-                        ErrnoTest.assertErrnoEquals(Errno.EINVAL, nee.errno);
-                }
+                ErrnoTest.assertErrnoEquals(Errno.EINVAL, nee.errno);
             }
         }
 
